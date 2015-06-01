@@ -5,8 +5,9 @@ import com.chaos.databinding.services.GitHub;
 import com.chaos.databinding.views.UserView;
 
 import retrofit.RestAdapter;
+import rx.Observer;
 
-public class ActivityMainPresenter {
+public class ActivityMainPresenter implements Observer<User> {
     private static final String GITHUB_API = "https://api.github.com";
 
     private final GitHub service;
@@ -24,15 +25,26 @@ public class ActivityMainPresenter {
 
     private static RestAdapter getRestAdapter() {
         return new RestAdapter.Builder()
+                .setLogLevel(RestAdapter.LogLevel.FULL)
                 .setEndpoint(GITHUB_API)
                 .build();
     }
 
-    public void updateUser() {
-        this.view.setUser(this.getUser());
+    public void getUser(final String user) {
+        this.service.user(user).subscribe(this);
     }
 
-    private User getUser() {
-        return new User("Ash Davies", "Berlin");
+    @Override
+    public void onCompleted() {
+    }
+
+    @Override
+    public void onError(final Throwable exception) {
+        this.view.toast(exception.getMessage());
+    }
+
+    @Override
+    public void onNext(final User user) {
+        this.view.setUser(user);
     }
 }

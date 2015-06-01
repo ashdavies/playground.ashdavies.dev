@@ -4,4 +4,6 @@ import com.chaos.databinding.models.User;
 
 public interface UserView {
     void setUser(User user);
+
+    void toast(String message);
 }
