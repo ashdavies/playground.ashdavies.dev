@@ -9,15 +9,18 @@ import com.chaos.databinding.models.User;
 import com.chaos.databinding.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
+    private ActivityMainBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        final ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
-        final User user = this.getUser();
+        this.binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        this.updateUser();
+    }
 
-        binding.setUser(user);
+    private void updateUser() {
+        binding.setUser(this.getUser());
     }
 
     private User getUser() {
