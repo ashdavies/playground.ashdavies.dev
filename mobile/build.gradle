@@ -24,8 +24,12 @@ android {
 
     lintOptions {
         abortOnError false
+        disable 'InvalidPackage'
     }
 
+    packagingOptions {
+        exclude 'META-INF/services/javax.annotation.processing.Processor'
+    }
 }
 
 dependencies {
@@ -36,4 +40,7 @@ dependencies {
     compile 'io.reactivex:rxandroid:0.23.0'
 
     compile 'com.squareup.retrofit:retrofit:1.6.1'
+
+    compile 'com.android.support:cardview-v7:22.2.0'
+    compile 'com.android.support:recyclerview-v7:22.2.0'
 }
