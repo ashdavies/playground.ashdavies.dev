@@ -40,6 +40,11 @@ public class MainActivity extends BaseActivity implements ListingsView<Repo>, Se
     }
 
     @Override
+    protected int onCreateViewToolbarId() {
+        return R.id.toolbar;
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(final Menu menu) {
         final MenuInflater inflater = this.getMenuInflater();
         inflater.inflate(R.menu.menu_main, menu);
