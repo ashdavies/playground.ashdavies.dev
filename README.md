@@ -6,7 +6,7 @@ Enter a GitHub username in the ActionBar SearchView component to trigger the obs
 ![device-2015-06-02-145653](https://cloud.githubusercontent.com/assets/1892070/7936230/c3141dc0-0937-11e5-9463-35d8cb06092a.png)
 
 ### Usage
-Requires Android 1.3.0-beta1 or higher.
+Requires Android Studio 1.3.0-beta1 or higher.
 
 **Classpath dependencies**
 ```java
