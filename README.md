@@ -57,5 +57,6 @@ apply plugin: 'com.android.databinding'
 ### Links
  - Play Store Listing (https://play.google.com/store/apps/details?id=com.chaos.databinding)
  - Data Bindings (https://developer.android.com/tools/data-binding/guide.html)
+ - RecyclerView (https://developer.android.com/training/material/lists-cards.html#RecyclerView)
  - App Compat (http://android-developers.blogspot.de/2014/10/appcompat-v21-material-design-for-pre.html)
  - AppCompatActivity (https://plus.google.com/+AndroidDevelopers/posts/LNyDnnBYJ8r)
