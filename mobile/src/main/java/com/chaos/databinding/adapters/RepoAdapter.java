@@ -16,7 +16,13 @@ import java.util.Arrays;
 import java.util.List;
 
 public class RepoAdapter extends RecyclerView.Adapter<RepoAdapter.ViewHolder> {
+    private final View empty;
+
     private List<Repo> repos = new ArrayList<>();
+
+    public RepoAdapter(final View empty) {
+        this.empty = empty;
+    }
 
     @Override
     public RepoAdapter.ViewHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
@@ -37,22 +43,32 @@ public class RepoAdapter extends RecyclerView.Adapter<RepoAdapter.ViewHolder> {
         return repos.size();
     }
 
+    @Override
+    public void onViewRecycled(ViewHolder holder) {
+        super.onViewRecycled(holder);
+    }
+
+    private void dataSetChanged() {
+        this.notifyDataSetChanged();
+        this.empty.setVisibility(this.getItemCount() == 0 ? View.VISIBLE : View.GONE);
+    }
+
     @UiThread
     public void addItem(final Repo repo) {
         this.repos.add(repo);
-        this.notifyDataSetChanged();
+        this.dataSetChanged();
     }
 
     @UiThread
     public void addItems(final Repo[] repos) {
         this.repos.addAll(Arrays.asList(repos));
-        this.notifyDataSetChanged();
+        this.dataSetChanged();
     }
 
     @UiThread
     public void clearItems() {
         this.repos.clear();
-        this.notifyDataSetChanged();
+        this.dataSetChanged();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
