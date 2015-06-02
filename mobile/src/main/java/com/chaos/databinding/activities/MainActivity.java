@@ -1,7 +1,6 @@
 package com.chaos.databinding.activities;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
@@ -12,26 +11,32 @@ import com.chaos.databinding.models.Repo;
 import com.chaos.databinding.presenters.ActivityMainPresenter;
 import com.chaos.databinding.views.ListingsView;
 
-public class MainActivity extends AppCompatActivity implements ListingsView<Repo> {
+
+public class MainActivity extends BaseActivity implements ListingsView<Repo> {
     private static final String DEFAULT_USER = "ashdavies";
 
     private ActivityMainPresenter presenter;
 
     private RecyclerView repos;
+
     private RepoAdapter adapter;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.setContentView(R.layout.activity_main);
 
         this.presenter = ActivityMainPresenter.create(this);
-
-        this.repos = (RecyclerView) findViewById(R.id.repos);
-        repos.setLayoutManager(new LinearLayoutManager(this));
-
         this.adapter = new RepoAdapter();
+
+        this.repos = (RecyclerView) this.findViewById(R.id.repos);
         this.repos.setAdapter(this.adapter);
+        this.repos.setHasFixedSize(true);
+        this.repos.setLayoutManager(new LinearLayoutManager(this));
+    }
+
+    @Override
+    protected int onCreateViewId() {
+        return R.layout.activity_main;
     }
 
     @Override
