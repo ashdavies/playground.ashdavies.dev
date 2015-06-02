@@ -1,8 +1,13 @@
 package com.chaos.databinding.activities;
 
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.chaos.databinding.R;
@@ -11,27 +16,22 @@ import com.chaos.databinding.models.Repo;
 import com.chaos.databinding.presenters.ActivityMainPresenter;
 import com.chaos.databinding.views.ListingsView;
 
-
-public class MainActivity extends BaseActivity implements ListingsView<Repo> {
-    private static final String DEFAULT_USER = "ashdavies";
-
+public class MainActivity extends BaseActivity implements ListingsView<Repo>, SearchView.OnQueryTextListener {
     private ActivityMainPresenter presenter;
-
-    private RecyclerView repos;
-
     private RepoAdapter adapter;
+    private SearchView search;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         this.presenter = ActivityMainPresenter.create(this);
-        this.adapter = new RepoAdapter();
+        this.adapter = new RepoAdapter(this.findViewById(R.id.empty));
 
-        this.repos = (RecyclerView) this.findViewById(R.id.repos);
-        this.repos.setAdapter(this.adapter);
-        this.repos.setHasFixedSize(true);
-        this.repos.setLayoutManager(new LinearLayoutManager(this));
+        final RecyclerView recycler = (RecyclerView) this.findViewById(R.id.repos);
+        recycler.setAdapter(this.adapter);
+        recycler.setHasFixedSize(true);
+        recycler.setLayoutManager(new LinearLayoutManager(this));
     }
 
     @Override
@@ -40,9 +40,16 @@ public class MainActivity extends BaseActivity implements ListingsView<Repo> {
     }
 
     @Override
-    protected void onPostResume() {
-        super.onPostResume();
-        this.presenter.getRepos(DEFAULT_USER);
+    public boolean onCreateOptionsMenu(final Menu menu) {
+        final MenuInflater inflater = this.getMenuInflater();
+        inflater.inflate(R.menu.menu_main, menu);
+
+        final MenuItem item = menu.findItem(R.id.action_search);
+        this.search = (SearchView) MenuItemCompat.getActionView(item);
+        this.search.setOnQueryTextListener(this);
+        this.search.onActionViewExpanded();
+
+        return true;
     }
 
     @Override
@@ -63,5 +70,17 @@ public class MainActivity extends BaseActivity implements ListingsView<Repo> {
     @Override
     public void clearItems() {
         this.adapter.clearItems();
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(final String query) {
+        this.presenter.getRepos(query);
+        this.search.clearFocus();
+        return true;
+    }
+
+    @Override
+    public boolean onQueryTextChange(final String query) {
+        return true;
     }
 }
