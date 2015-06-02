@@ -1,6 +1,7 @@
 <resources>
-    <string name="app_name">DataBinding</string>
+    <string name="application">Data Binding</string>
 
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
+    <string name="activity_main">Search repositories by user</string>
+
+    <string name="action_search">Search</string>
 </resources>

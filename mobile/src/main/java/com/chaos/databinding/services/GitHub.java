@@ -10,7 +10,7 @@ import rx.Observable;
 public interface GitHub {
 
     @GET("/users/{user}")
-    Observable<User> getUser(@Path("getUser") final String user);
+    Observable<User> getUser(@Path("user") final String user);
 
     @GET("/users/{user}/repos")
     Observable<Repo[]> getRepos(@Path("user") final String user);
