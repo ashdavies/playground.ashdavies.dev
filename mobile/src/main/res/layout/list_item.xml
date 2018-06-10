@@ -12,34 +12,49 @@
 
   <androidx.constraintlayout.ConstraintLayout
       android:layout_width="match_parent"
-      android:layout_height="match_parent"
+      android:layout_height="wrap_content"
       android:layout_margin="@dimen/activity_default_margin">
 
     <TextView
         style="@style/Base.TextAppearance.AppCompat.Large"
         android:id="@+id/name"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@{item.name}"
+        app:layout_constraintEnd_toStartOf="@+id/barrier"
+        app:layout_constraintStart_toStartOf="parent"
         tools:text="data-binding"/>
 
     <TextView
         style="@style/Base.TextAppearance.AppCompat.Medium"
         android:id="@+id/description"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/content_spacing"
         android:text="@{item.description}"
+        app:layout_constraintEnd_toStartOf="@+id/barrier"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/name"
-        tools:text="Android Data Binding Library Sample"/>
+        tools:text="Droidcon Berlin 2018: Leveraging Android Databinding with Kotlin"/>
 
     <TextView
         style="@style/Base.TextAppearance.AppCompat.Small"
         android:id="@+id/updatedAt"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/content_spacing"
         android:text="@{item.updatedAt}"
+        app:layout_constraintEnd_toStartOf="@+id/barrier"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/description"
         tools:text="Updated at: Sun 10th June, 2018"/>
+
+    <androidx.constraintlayout.Barrier
+        android:id="@+id/barrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="start"
+        app:constraint_referenced_ids="language,stargazersCount,watchersCount"/>
 
     <TextView
         style="@style/Base.TextAppearance.AppCompat.Small"
@@ -50,24 +65,48 @@
         app:layout_constraintEnd_toEndOf="parent"
         tools:text="Kotlin"/>
 
+    <ImageView
+        android:id="@+id/stargazersIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/content_spacing"
+        android:contentDescription="@string/repo_item_stargazers"
+        android:src="@drawable/ic_stargazer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/language"/>
+
     <TextView
         style="@style/Base.TextAppearance.AppCompat.Small"
         android:id="@+id/stargazersCount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/content_spacing"
         android:text="@{item.stargazersCount}"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/language"
+        app:layout_constraintBottom_toBottomOf="@+id/stargazersIcon"
+        app:layout_constraintEnd_toStartOf="@+id/stargazersIcon"
+        app:layout_constraintTop_toTopOf="@+id/stargazersIcon"
         tools:text="74"/>
+
+    <ImageView
+        android:id="@+id/watchersIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/content_spacing"
+        android:contentDescription="@string/repo_item_watchers"
+        android:src="@drawable/ic_watcher"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/stargazersIcon"/>
 
     <TextView
         style="@style/Base.TextAppearance.AppCompat.Small"
         android:id="@+id/watchersCount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/content_spacing"
         android:text="@{item.watchersCount}"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/stargazersCount"
+        app:layout_constraintBottom_toBottomOf="@+id/watchersIcon"
+        app:layout_constraintEnd_toStartOf="@+id/watchersIcon"
+        app:layout_constraintTop_toTopOf="@+id/watchersIcon"
         tools:text="4"/>
 
   </androidx.constraintlayout.ConstraintLayout>

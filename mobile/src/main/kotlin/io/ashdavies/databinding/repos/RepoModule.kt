@@ -1,9 +1,9 @@
 package io.ashdavies.databinding.repos
 
+import com.jakewharton.retrofit2.adapter.kotlin.coroutines.experimental.CoroutineCallAdapterFactory
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
 
 private const val GITHUB_API = "https://api.github.com"
@@ -12,7 +12,7 @@ internal val retrofit: Retrofit
   get() = Retrofit.Builder()
       .baseUrl(GITHUB_API)
       .client(client)
-      .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+      .addCallAdapterFactory(CoroutineCallAdapterFactory())
       .addConverterFactory(MoshiConverterFactory.create())
       .build()
 

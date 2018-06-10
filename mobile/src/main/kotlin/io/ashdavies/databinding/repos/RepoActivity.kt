@@ -17,6 +17,7 @@ import io.ashdavies.databinding.extensions.snack
 import io.ashdavies.databinding.models.Repo
 import kotlinx.android.synthetic.main.activity_repo.coordinator
 import kotlinx.android.synthetic.main.activity_repo.recycler
+import kotlinx.android.synthetic.main.activity_repo.search
 import kotlinx.android.synthetic.main.activity_repo.toolbar
 
 internal class RepoActivity : AppCompatActivity() {
@@ -38,13 +39,13 @@ internal class RepoActivity : AppCompatActivity() {
     recycler.layoutManager = LinearLayoutManager(this)
     recycler.itemDecorations += DividerItemDecoration(this, VERTICAL)
 
+    search.onActionViewExpanded()
+
     model.items.observe(this, NotNullObserver { adapter.items = it })
     model.error.observe(this, NotNullObserver(::error))
   }
 
   private fun error(throwable: Throwable) {
-    Log.e("RepoActivity", throwable.message, throwable)
-
     val message = throwable.message
     if (message == null) {
       coordinator.snack(R.string.unexpected_error)
