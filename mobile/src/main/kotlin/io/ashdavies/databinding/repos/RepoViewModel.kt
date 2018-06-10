@@ -1,51 +1,56 @@
 package io.ashdavies.databinding.repos
 
+import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations.map
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import io.ashdavies.databinding.common.SingleLiveData
+import io.ashdavies.databinding.extensions.create
 import io.ashdavies.databinding.extensions.mutableLiveDataOf
 import io.ashdavies.databinding.extensions.plusAssign
+import io.ashdavies.databinding.extensions.singleLiveDataOf
 import io.ashdavies.databinding.models.Repo
 import io.ashdavies.databinding.services.GitHub
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.processors.PublishProcessor
 import io.reactivex.schedulers.Schedulers
-import retrofit2.Retrofit
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
-import retrofit2.converter.moshi.MoshiConverterFactory
+import java.util.concurrent.TimeUnit.MILLISECONDS
 
-internal class RepoViewModel(private val service: GitHub) : ViewModel() {
+internal class RepoViewModel(service: GitHub) : ViewModel() {
 
   private val disposables = CompositeDisposable()
+  private val query = PublishProcessor.create<String>()
 
-  val items = mutableLiveDataOf<List<Repo>>()
-  val error = mutableLiveDataOf<Throwable>()
+  val items: MutableLiveData<List<Repo>> = mutableLiveDataOf()
+  val loading: MutableLiveData<Boolean> = mutableLiveDataOf()
+  val error: SingleLiveData<Throwable> = singleLiveDataOf()
 
-  fun getRepos(user: String) {
-    disposables += service.getRepos(user)
-        .subscribeOn(Schedulers.newThread())
+  val hasItems: LiveData<Boolean> = map(loading) { !it && items.value?.isNotEmpty() ?: false }
+
+  init {
+    hasItems.observeForever { Log.e("RepoViewModel", "HasItems: $it") }
+
+    disposables += query
+        .doOnNext { loading.postValue(true) }
+        .debounce(500, MILLISECONDS)
+        .switchMapSingle(service::getRepos)
+        .doOnNext { loading.postValue(false) }
+        .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(
-            { items.value = it },
-            { error.value = it }
-        )
+        .subscribe(items::setValue, error::setValue)
+  }
+
+  fun onQuery(value: String): Boolean {
+    query.onNext(value)
+    return true
   }
 
   class Factory : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(kls: Class<T>): T {
       return RepoViewModel(retrofit.create()) as T
     }
-  }
-
-  companion object {
-
-    private const val GITHUB_API = "https://api.github.com"
-
-    private val retrofit: Retrofit = Retrofit.Builder()
-        .baseUrl(GITHUB_API)
-        .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-        .addConverterFactory(MoshiConverterFactory.create())
-        .build()
-
-    private inline fun <reified T> Retrofit.create(): T = create(T::class.java)
   }
 }

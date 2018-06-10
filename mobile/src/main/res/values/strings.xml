@@ -1,6 +1,7 @@
 <resources>
 
-  <string name="application">Data Binding</string>
-  <string name="activity_main">Search repositories by user</string>
-  <string name="action_search">Search</string>
+  <string name="application">Leveraging Android Data Binding with Kotlin</string>
+  <string name="activity_repos">Search GitHub repositories by user</string>
+
+  <string name="unexpected_error">An unexpected error has occured</string>
 </resources>
