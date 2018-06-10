@@ -8,5 +8,6 @@ internal class EmptyLiveData<in T>(items: LiveData<List<T>>, loading: LiveData<B
   init {
     addSource(items) { value = it?.isEmpty() ?: false && loading.value ?: false }
     addSource(loading) { value = it ?: false && items.value?.isEmpty() ?: false }
+    value = true
   }
 }

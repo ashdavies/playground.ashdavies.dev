@@ -39,7 +39,7 @@ internal class RepoActivity : AppCompatActivity() {
     recycler.layoutManager = LinearLayoutManager(this)
     recycler.itemDecorations += DividerItemDecoration(this, VERTICAL)
 
-    search.onActionViewExpanded()
+    //search.onActionViewExpanded()
 
     model.items.observe(this, NotNullObserver { adapter.items = it })
     model.error.observe(this, NotNullObserver(::error))

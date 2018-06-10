@@ -16,7 +16,7 @@
       android:layout_margin="@dimen/activity_default_margin">
 
     <TextView
-        style="@style/Base.TextAppearance.AppCompat.Large"
+        style="@style/Base.TextAppearance.AppCompat.Medium"
         android:id="@+id/name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -26,7 +26,6 @@
         tools:text="data-binding"/>
 
     <TextView
-        style="@style/Base.TextAppearance.AppCompat.Medium"
         android:id="@+id/description"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -38,7 +37,6 @@
         tools:text="Droidcon Berlin 2018: Leveraging Android Databinding with Kotlin"/>
 
     <TextView
-        style="@style/Base.TextAppearance.AppCompat.Small"
         android:id="@+id/updatedAt"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -57,7 +55,6 @@
         app:constraint_referenced_ids="language,stargazersCount,watchersCount"/>
 
     <TextView
-        style="@style/Base.TextAppearance.AppCompat.Small"
         android:id="@+id/language"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -76,7 +73,6 @@
         app:layout_constraintTop_toBottomOf="@+id/language"/>
 
     <TextView
-        style="@style/Base.TextAppearance.AppCompat.Small"
         android:id="@+id/stargazersCount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -98,7 +94,6 @@
         app:layout_constraintTop_toBottomOf="@+id/stargazersIcon"/>
 
     <TextView
-        style="@style/Base.TextAppearance.AppCompat.Small"
         android:id="@+id/watchersCount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
