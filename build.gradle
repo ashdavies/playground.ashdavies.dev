@@ -1,15 +1,18 @@
 buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:1.2.3'
-        classpath 'com.android.databinding:dataBinder:1.0-rc0'
-    }
+  repositories {
+    google()
+    jcenter()
+  }
+
+  dependencies {
+    classpath 'com.android.tools.build:gradle:3.2.0-alpha17'
+    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.2.41"
+  }
 }
 
 allprojects {
-    repositories {
-        jcenter()
-    }
+  repositories {
+    google()
+    jcenter()
+  }
 }

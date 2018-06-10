@@ -1,72 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <data>
-        <variable name="repo" type="com.chaos.databinding.models.Repo" />
-    </data>
+  <data>
 
-    <LinearLayout
+    <variable
+        name="item"
+        type="io.ashdavies.databinding.models.Repo"/>
+  </data>
+
+  <androidx.constraintlayout.ConstraintLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_margin="@dimen/activity_default_margin">
+
+    <TextView
+        style="@style/Base.TextAppearance.AppCompat.Large"
+        android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@{item.name}"
+        tools:text="data-binding"/>
+
+    <TextView
+        style="@style/Base.TextAppearance.AppCompat.Medium"
+        android:id="@+id/description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@{item.description}"
+        app:layout_constraintTop_toBottomOf="@+id/name"
+        tools:text="Android Data Binding Library Sample"/>
+
+    <TextView
+        style="@style/Base.TextAppearance.AppCompat.Small"
+        android:id="@+id/updatedAt"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="@dimen/activity_vertical_margin"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content"
+        android:text="@{item.updatedAt}"
+        app:layout_constraintTop_toBottomOf="@+id/description"
+        tools:text="Updated at: Sun 10th June, 2018"/>
 
-        <LinearLayout
-            android:layout_width="0dip"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical">
+    <TextView
+        style="@style/Base.TextAppearance.AppCompat.Small"
+        android:id="@+id/language"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@{item.language}"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="Kotlin"/>
 
-            <TextView
-                style="@style/Base.TextAppearance.AppCompat.Large"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@{repo.name}" />
+    <TextView
+        style="@style/Base.TextAppearance.AppCompat.Small"
+        android:id="@+id/stargazersCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@{item.stargazersCount}"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/language"
+        tools:text="74"/>
 
-            <TextView
-                style="@style/Base.TextAppearance.AppCompat.Medium"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@{repo.description}" />
+    <TextView
+        style="@style/Base.TextAppearance.AppCompat.Small"
+        android:id="@+id/watchersCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@{item.watchersCount}"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/stargazersCount"
+        tools:text="4"/>
 
-            <TextView
-                style="@style/Base.TextAppearance.AppCompat.Small"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@{repo.updatedAt}" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <TextView
-                style="@style/Base.TextAppearance.AppCompat.Small"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="right"
-                android:text="@{repo.language}" />
-
-            <TextView
-                style="@style/Base.TextAppearance.AppCompat.Small"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="right"
-                android:text="@{repo.stargazersCount}" />
-
-            <TextView
-                style="@style/Base.TextAppearance.AppCompat.Small"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="right"
-                android:text="@{repo.watchersCount}" />
-
-        </LinearLayout>
-    </LinearLayout>
-
+  </androidx.constraintlayout.ConstraintLayout>
 </layout>

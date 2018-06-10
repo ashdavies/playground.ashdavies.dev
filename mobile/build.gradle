@@ -1,45 +1,61 @@
 apply plugin: 'com.android.application'
-apply plugin: 'com.android.databinding'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion 22
-    buildToolsVersion '23.0.1'
+  compileSdkVersion 28
 
-    defaultConfig {
-        applicationId 'com.chaos.databinding'
+  defaultConfig {
+    applicationId 'io.ashdavies.databinding'
 
-        minSdkVersion 14
-        targetSdkVersion 22
+    minSdkVersion 21
+    targetSdkVersion 28
 
-        versionCode 1
-        versionName '1.0'
+    versionCode 1
+    versionName '1.0'
+
+    vectorDrawables.useSupportLibrary true
+  }
+
+  dataBinding {
+    enabled true
+  }
+
+  buildTypes {
+    release {
+      minifyEnabled false
     }
+  }
 
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-    }
-
-    lintOptions {
-        abortOnError false
-        disable 'InvalidPackage'
-    }
-
-    packagingOptions {
-        exclude 'META-INF/services/javax.annotation.processing.Processor'
-    }
+  sourceSets {
+    main.java.srcDirs += 'src/main/kotlin'
+    test.java.srcDirs += 'src/test/kotlin'
+  }
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:22.2.0'
-    compile 'com.android.support:recyclerview-v7:22.2.0'
+  implementation 'androidx.annotation:annotation:1.0.0-alpha3'
+  implementation 'androidx.appcompat:appcompat:1.0.0-alpha3'
+  implementation 'androidx.constraintlayout:constraintlayout:1.1.1'
+  implementation 'androidx.core:core-ktx:1.0.0-alpha3'
+  implementation 'androidx.lifecycle:lifecycle-livedata:2.0.0-alpha1'
+  implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0-alpha1'
+  implementation 'androidx.lifecycle:lifecycle-viewmodel:2.0.0-alpha1'
+  implementation 'androidx.recyclerview:recyclerview:1.0.0-alpha3'
 
-    compile 'io.reactivex:rxjava:1.0.0'
-    compile 'io.reactivex:rxandroid:0.23.0'
+  implementation 'com.google.android.material:material:1.0.0-alpha3'
 
-    compile 'com.squareup.retrofit:retrofit:1.6.1'
+  implementation 'com.squareup.moshi:moshi:1.6.0'
+  implementation 'com.squareup.retrofit2:retrofit:2.4.0'
+  implementation 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
+  implementation 'com.squareup.retrofit2:converter-moshi:2.4.0'
 
+  implementation 'io.reactivex.rxjava2:rxjava:2.1.14'
+  implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
+
+  implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.2.41'
+
+  kapt 'com.squareup.moshi:moshi-kotlin-codegen:1.6.0'
+  kapt 'androidx.databinding:databinding-compiler:3.2.0-alpha17'
 }
