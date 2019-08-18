@@ -2,6 +2,7 @@ package io.ashdavies.databinding.repos
 
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import okhttp3.logging.HttpLoggingInterceptor.Level.HEADERS
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
@@ -21,4 +22,4 @@ private val client: OkHttpClient
 
 private val logger: HttpLoggingInterceptor
   get() = HttpLoggingInterceptor()
-      .setLevel(HttpLoggingInterceptor.Level.HEADERS)
+      .setLevel(HEADERS)

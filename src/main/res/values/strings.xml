@@ -1,10 +1,10 @@
 <resources>
 
-  <string name="application">Leveraging Android Data Binding with Kotlin</string>
+  <string name="application">Implementing the Paging Library</string>
   <string name="activity_repos">Search GitHub repositories by user</string>
 
   <string name="repo_item_stargazers">Stargazers</string>
   <string name="repo_item_watchers">Watchers</string>
 
-  <string name="unexpected_error">An unexpected error has occured</string>
+  <string name="unexpected_error">An unexpected error has occurred</string>
 </resources>

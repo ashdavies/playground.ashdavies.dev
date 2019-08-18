@@ -8,8 +8,8 @@ import retrofit2.http.Path
 internal interface GitHub {
 
   @GET("/users/{user}")
-  fun getUser(@Path("user") user: CharSequence): User
+  suspend fun getUser(@Path("user") user: CharSequence): User
 
   @GET("/users/{user}/repos")
-  fun getRepos(@Path("user") user: CharSequence): List<Repo>
+  suspend fun getRepos(@Path("user") user: CharSequence): List<Repo>
 }
