@@ -10,7 +10,7 @@
         type="io.ashdavies.databinding.models.Repo"/>
   </data>
 
-  <androidx.constraintlayout.ConstraintLayout
+  <androidx.constraintlayout.widget.ConstraintLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_margin="@dimen/activity_default_margin">
@@ -23,7 +23,8 @@
         android:text="@{item.name}"
         app:layout_constraintEnd_toStartOf="@+id/barrier"
         app:layout_constraintStart_toStartOf="parent"
-        tools:text="data-binding"/>
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="data-binding" />
 
     <TextView
         android:id="@+id/description"
@@ -47,7 +48,7 @@
         app:layout_constraintTop_toBottomOf="@+id/description"
         tools:text="Updated at: Sun 10th June, 2018"/>
 
-    <androidx.constraintlayout.Barrier
+    <androidx.constraintlayout.widget.Barrier
         android:id="@+id/barrier"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -104,5 +105,5 @@
         app:layout_constraintTop_toTopOf="@+id/watchersIcon"
         tools:text="4"/>
 
-  </androidx.constraintlayout.ConstraintLayout>
+  </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

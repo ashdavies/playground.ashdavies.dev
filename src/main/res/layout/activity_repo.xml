@@ -32,24 +32,26 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
-            android:onQueryTextChange="@{model::onQuery}">
+            app:onQueryTextChange="@{model::onQuery}">
 
         </androidx.appcompat.widget.SearchView>
       </androidx.appcompat.widget.Toolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.constraintlayout.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
       <androidx.recyclerview.widget.RecyclerView
           android:id="@+id/recycler"
-          android:layout_width="match_parent"
+          android:layout_width="0dp"
           android:layout_height="match_parent"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
           app:visible="@{!model.loading}"
-          tools:listitem="@layout/list_item"/>
+          tools:listitem="@layout/list_item" />
 
       <ProgressBar
           android:layout_width="wrap_content"
@@ -59,7 +61,7 @@
           app:layout_constraintStart_toStartOf="parent"
           app:layout_constraintTop_toTopOf="parent"
           app:visible="@{model.loading}"
-          tools:visibility="gone"/>
+          tools:visibility="gone" />
 
       <TextView
           style="@style/Base.TextAppearance.AppCompat.Medium"
@@ -72,9 +74,9 @@
           app:layout_constraintStart_toStartOf="parent"
           app:layout_constraintTop_toTopOf="parent"
           app:visible="@{model.empty}"
-          tools:visibility="gone"/>
+          tools:visibility="gone" />
 
-    </androidx.constraintlayout.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
   </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

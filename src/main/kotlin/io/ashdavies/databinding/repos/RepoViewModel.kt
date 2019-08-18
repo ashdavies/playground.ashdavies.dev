@@ -4,62 +4,67 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import io.ashdavies.databinding.common.SingleLiveData
-import io.ashdavies.databinding.extensions.create
-import io.ashdavies.databinding.extensions.mutableLiveDataOf
-import io.ashdavies.databinding.extensions.singleLiveDataOf
+import androidx.lifecycle.viewModelScope
+import io.ashdavies.architecture.Event
+import io.ashdavies.databinding.extensions.mutableLiveData
 import io.ashdavies.databinding.models.Repo
 import io.ashdavies.databinding.services.GitHub
-import kotlinx.coroutines.experimental.DefaultDispatcher
-import kotlinx.coroutines.experimental.Job
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.channels.Channel
-import kotlinx.coroutines.experimental.channels.ReceiveChannel
-import kotlinx.coroutines.experimental.channels.consumeEach
-import kotlinx.coroutines.experimental.channels.filter
-import kotlinx.coroutines.experimental.channels.produce
-import kotlinx.coroutines.experimental.delay
-import kotlinx.coroutines.experimental.launch
-import kotlin.coroutines.experimental.CoroutineContext
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.ObsoleteCoroutinesApi
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.channels.ReceiveChannel
+import kotlinx.coroutines.channels.consumeEach
+import kotlinx.coroutines.channels.filter
+import kotlinx.coroutines.channels.produce
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import retrofit2.create
 
+@ObsoleteCoroutinesApi
+@ExperimentalCoroutinesApi
 internal class RepoViewModel(service: GitHub) : ViewModel() {
 
-  private val jobs = Job()
-  private val query = Channel<String>()
+  private val query = Channel<CharSequence>()
 
-  val items: MutableLiveData<List<Repo>> = mutableLiveDataOf()
-  val loading: MutableLiveData<Boolean> = mutableLiveDataOf()
-  val error: SingleLiveData<Throwable> = singleLiveDataOf()
+  private val _items: MutableLiveData<List<Repo>> = mutableLiveData()
+  val items: LiveData<List<Repo>> = _items
+
+  private val _loading: MutableLiveData<Boolean> = mutableLiveData()
+  val loading: LiveData<Boolean> = _loading
+
+  private val _error: MutableLiveData<Event<Throwable>> = mutableLiveData()
+  val error: LiveData<Event<Throwable>> = _error
 
   val empty: LiveData<Boolean> = EmptyLiveData(items, loading)
 
   init {
-    launch(UI, parent = jobs) {
+    viewModelScope.launch {
       query
           .filter { it.length >= MIN_LENGTH }
-          .debounce()
-          .consumeEach {
-            try {
-              items.value = service.getRepos(it).await()
-            } catch (throwable: Throwable) {
-              error.value = throwable
-            } finally {
-              loading.value = false
-            }
+          .debounce(this)
+          .consumeEach { query ->
+            _loading.value = true
+
+            runCatching { service.getRepos(query) }
+                .onSuccess { _items.value = it }
+                .onFailure { _error.value = Event(it) }
+
+            _loading.value = false
           }
     }
   }
 
-  fun onQuery(value: String): Boolean {
-    launch(UI, parent = jobs) { query.send(value) }
-    loading.value = true
+  fun onQuery(value: CharSequence): Boolean {
+    viewModelScope.launch { query.send(value) }
+    _loading.value = true
     return true
   }
 
+  @Suppress("UNCHECKED_CAST")
   class Factory : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(kls: Class<T>): T {
-      return RepoViewModel(retrofit.create()) as T
-    }
+    override fun <T : ViewModel> create(kls: Class<T>): T = RepoViewModel(retrofit.create()) as T
   }
 
   companion object {
@@ -68,8 +73,9 @@ internal class RepoViewModel(service: GitHub) : ViewModel() {
   }
 }
 
-internal fun <T> ReceiveChannel<T>.debounce(timeout: Long = 500, context: CoroutineContext = DefaultDispatcher): ReceiveChannel<T> = produce(context) {
-
+@ObsoleteCoroutinesApi
+@ExperimentalCoroutinesApi
+internal fun <T> ReceiveChannel<T>.debounce(scope: CoroutineScope, timeout: Long = 500): ReceiveChannel<T> = scope.produce {
   var last: Job? = null
 
   consumeEach {

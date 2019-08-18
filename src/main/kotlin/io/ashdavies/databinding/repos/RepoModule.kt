@@ -1,6 +1,5 @@
 package io.ashdavies.databinding.repos
 
-import com.jakewharton.retrofit2.adapter.kotlin.coroutines.experimental.CoroutineCallAdapterFactory
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -12,7 +11,6 @@ internal val retrofit: Retrofit
   get() = Retrofit.Builder()
       .baseUrl(GITHUB_API)
       .client(client)
-      .addCallAdapterFactory(CoroutineCallAdapterFactory())
       .addConverterFactory(MoshiConverterFactory.create())
       .build()
 
