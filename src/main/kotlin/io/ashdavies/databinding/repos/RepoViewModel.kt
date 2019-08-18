@@ -1,30 +1,27 @@
 package io.ashdavies.databinding.repos
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import io.ashdavies.architecture.Event
+import io.ashdavies.databinding.database.GitHubDatabase
 import io.ashdavies.databinding.extensions.mutableLiveData
 import io.ashdavies.databinding.models.Repo
 import io.ashdavies.databinding.services.GitHubService
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.ObsoleteCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.channels.ReceiveChannel
-import kotlinx.coroutines.channels.consumeEach
-import kotlinx.coroutines.channels.filter
-import kotlinx.coroutines.channels.produce
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.consumeAsFlow
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 import retrofit2.create
 
-@ObsoleteCoroutinesApi
-@ExperimentalCoroutinesApi
-internal class RepoViewModel(service: GitHubService) : ViewModel() {
+@FlowPreview
+internal class RepoViewModel(repository: RepoRepository) : ViewModel() {
 
   private val query = Channel<String>()
 
@@ -40,12 +37,13 @@ internal class RepoViewModel(service: GitHubService) : ViewModel() {
   init {
     viewModelScope.launch {
       query
+          .consumeAsFlow()
           .filter { it.length >= MIN_LENGTH }
-          .debounce(this)
-          .consumeEach { query ->
+          .debounce(500)
+          .collect { query ->
             _loading.value = true
 
-            runCatching { service.repos(query) }
+            runCatching { repository.repos(query) }
                 .onSuccess { _items.value = it }
                 .onFailure { _error.value = Event(it) }
 
@@ -58,29 +56,21 @@ internal class RepoViewModel(service: GitHubService) : ViewModel() {
     viewModelScope.launch { query.send(value) }
   }
 
-  @Suppress("UNCHECKED_CAST")
-  class Factory : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(kls: Class<T>): T = RepoViewModel(retrofit.create()) as T
+  class Factory(private val context: Context) : ViewModelProvider.Factory {
+
+    @Suppress("UNCHECKED_CAST")
+    override fun <T : ViewModel> create(kls: Class<T>): T {
+      val database: GitHubDatabase = database(context)
+      val service: GitHubService = retrofit.create()
+
+      val repository = RepoRepository(service, database.repo())
+
+      return RepoViewModel(repository) as T
+    }
   }
 
   companion object {
 
     private const val MIN_LENGTH = 3
   }
-}
-
-@ObsoleteCoroutinesApi
-@ExperimentalCoroutinesApi
-internal fun <T> ReceiveChannel<T>.debounce(scope: CoroutineScope, timeout: Long = 500): ReceiveChannel<T> = scope.produce {
-  var last: Job? = null
-
-  consumeEach {
-    last?.cancel()
-    last = launch {
-      delay(timeout)
-      send(it)
-    }
-  }
-
-  last?.join()
 }

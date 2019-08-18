@@ -12,26 +12,25 @@ import io.ashdavies.databinding.extensions.activityBinding
 import io.ashdavies.databinding.extensions.snack
 import io.ashdavies.databinding.models.Repo
 import io.ashdavies.lifecycle.EventObserver
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.ObsoleteCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 
-@ObsoleteCoroutinesApi
-@ExperimentalCoroutinesApi
+@FlowPreview
 internal class RepoActivity : AppCompatActivity() {
 
   private val binding: ActivityRepoBinding by activityBinding(R.layout.activity_repo)
-  private val model: RepoViewModel by viewModels { RepoViewModel.Factory() }
+  private val model: RepoViewModel by viewModels { RepoViewModel.Factory(this) }
 
   private val adapter: RepoAdapter<Repo> = RepoAdapter(R.layout.list_item)
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
 
-    binding.model = model
-    binding.lifecycleOwner = this
-    setSupportActionBar(binding.toolbar)
-
     with(binding) {
+      setSupportActionBar(toolbar)
+
+      lifecycleOwner = this@RepoActivity
+      model = model
+
       recycler.addItemDecoration(DividerItemDecoration(this@RepoActivity, VERTICAL))
       recycler.adapter = adapter
     }

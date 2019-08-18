@@ -1,15 +1,16 @@
 package io.ashdavies.databinding.services
 
 import io.ashdavies.databinding.models.Repo
-import io.ashdavies.databinding.models.User
+import io.ashdavies.databinding.network.Response
 import retrofit2.http.GET
-import retrofit2.http.Path
+import retrofit2.http.Query
 
 internal interface GitHubService {
 
-  @GET("/users/{user}")
-  suspend fun user(@Path("user") user: String): User
-
-  @GET("/users/{user}/repos")
-  suspend fun repos(@Path("user") user: String): List<Repo>
+  @GET("search/repositories?sort=stars")
+  suspend fun repos(
+      @Query("q", encoded = true) query: String,
+      @Query("page") page: Int,
+      @Query("per_page") itemsPerPage: Int
+  ): Response<Repo>
 }

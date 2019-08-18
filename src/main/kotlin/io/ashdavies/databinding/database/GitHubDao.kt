@@ -10,8 +10,8 @@ import io.ashdavies.databinding.models.Repo
 internal interface GitHubDao {
 
   @Insert(onConflict = REPLACE)
-  suspend fun insert(posts: List<Repo>)
+  suspend fun insert(repos: List<Repo>)
 
-  @Query("SELECT * FROM repos WHERE name == :user ORDER BY stargazersCount DESC")
-  suspend fun repos(user: String): List<Repo>
+  @Query("SELECT * FROM repos WHERE fullName LIKE :query ORDER BY stargazersCount DESC, fullName ASC")
+  suspend fun repos(query: String): List<Repo>
 }
