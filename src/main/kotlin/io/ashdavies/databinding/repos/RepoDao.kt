@@ -14,5 +14,5 @@ internal interface RepoDao {
   fun insert(posts: List<Repo>)
 
   @Query("SELECT * FROM repos WHERE name == :user ORDER BY stargazersCount DESC")
-  fun repos(user: CharSequence): LiveData<List<Repo>>
+  fun repos(user: String): LiveData<List<Repo>>
 }

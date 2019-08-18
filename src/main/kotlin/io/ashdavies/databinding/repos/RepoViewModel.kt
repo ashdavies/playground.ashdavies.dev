@@ -26,7 +26,7 @@ import retrofit2.create
 @ExperimentalCoroutinesApi
 internal class RepoViewModel(service: GitHub) : ViewModel() {
 
-  private val query = Channel<CharSequence>()
+  private val query = Channel<String>()
 
   private val _items: MutableLiveData<List<Repo>> = mutableLiveData()
   val items: LiveData<List<Repo>> = _items
@@ -56,7 +56,7 @@ internal class RepoViewModel(service: GitHub) : ViewModel() {
     }
   }
 
-  fun onQuery(value: CharSequence) {
+  fun onQuery(value: String) {
     viewModelScope.launch { query.send(value) }
   }
 
