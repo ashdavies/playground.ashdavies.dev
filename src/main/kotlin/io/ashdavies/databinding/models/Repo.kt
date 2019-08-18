@@ -1,8 +1,10 @@
 package io.ashdavies.databinding.models
 
+import androidx.room.Entity
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
+@Entity(tableName = "repos")
 @JsonClass(generateAdapter = true)
 internal data class Repo(
     @Json(name = "name") val name: String,

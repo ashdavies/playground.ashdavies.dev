@@ -51,6 +51,7 @@ dependencies {
   implementation 'androidx.fragment:fragment-ktx:1.2.0-alpha02'
   implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0-alpha03'
   implementation 'androidx.lifecycle:lifecycle-runtime:2.2.0-alpha03'
+  implementation 'androidx.room:room-runtime:2.2.0-alpha02'
   implementation 'androidx.lifecycle:lifecycle-viewmodel:2.2.0-alpha03'
   implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0-alpha03'
   implementation 'androidx.recyclerview:recyclerview:1.1.0-beta03'
@@ -69,6 +70,7 @@ dependencies {
   implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.1.1'
   implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.1.1'
 
+  kapt 'androidx.room:room-compiler:2.2.0-alpha02'
   kapt 'com.squareup.moshi:moshi-kotlin-codegen:1.6.0'
 }
 

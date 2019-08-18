@@ -1,5 +1,7 @@
 package io.ashdavies.databinding.repos
 
+import android.content.Context
+import io.ashdavies.databinding.extensions.database
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import okhttp3.logging.HttpLoggingInterceptor.Level.HEADERS
@@ -23,3 +25,7 @@ private val client: OkHttpClient
 private val logger: HttpLoggingInterceptor
   get() = HttpLoggingInterceptor()
       .setLevel(HEADERS)
+
+internal fun database(context: Context): RepoDatabase {
+  return context.database("GitHub.db")
+}

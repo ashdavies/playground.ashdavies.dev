@@ -47,7 +47,7 @@ internal class RepoViewModel(service: GitHub) : ViewModel() {
           .consumeEach { query ->
             _loading.value = true
 
-            runCatching { service.getRepos(query) }
+            runCatching { service.repos(query) }
                 .onSuccess { _items.value = it }
                 .onFailure { _error.value = Event(it) }
 
