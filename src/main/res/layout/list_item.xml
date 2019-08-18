@@ -35,7 +35,7 @@
         app:layout_constraintEnd_toStartOf="@+id/barrier"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/name"
-        tools:text="Droidcon Berlin 2018: Leveraging Android Databinding with Kotlin"/>
+        tools:text="Droidcon NYC 2019: Implementing the Paging Library"/>
 
     <TextView
         android:id="@+id/updatedAt"
@@ -46,12 +46,12 @@
         app:layout_constraintEnd_toStartOf="@+id/barrier"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/description"
-        tools:text="Updated at: Sun 10th June, 2018"/>
+        tools:text="Updated at: Sun 10th June, 2018" />
 
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/barrier"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         app:barrierDirection="start"
         app:constraint_referenced_ids="language,stargazersCount,watchersCount"/>
 
@@ -60,6 +60,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@{item.language}"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         tools:text="Kotlin"/>
 

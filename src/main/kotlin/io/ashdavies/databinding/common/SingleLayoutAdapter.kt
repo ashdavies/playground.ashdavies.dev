@@ -2,12 +2,11 @@ package io.ashdavies.databinding.common
 
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
-import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import io.ashdavies.databinding.BR
-import io.ashdavies.databinding.extensions.inflater
+import io.ashdavies.databinding.extensions.binding
 import kotlin.properties.Delegates.observable
 
 internal class SingleLayoutAdapter<T>(@LayoutRes private val resId: Int) : RecyclerView.Adapter<SingleLayoutAdapter.ViewHolder<T>>() {
@@ -22,9 +21,7 @@ internal class SingleLayoutAdapter<T>(@LayoutRes private val resId: Int) : Recyc
 
   override fun onBindViewHolder(holder: ViewHolder<T>, position: Int) = holder.bind(items[position])
 
-  override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder<T>(parent.inflate())
-
-  private fun ViewGroup.inflate() = DataBindingUtil.inflate<ViewDataBinding>(inflater, resId, this, false)
+  override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder<T>(parent.binding(resId, false))
 
   class ViewHolder<in T>(private val binding: ViewDataBinding) : RecyclerView.ViewHolder(binding.root) {
 

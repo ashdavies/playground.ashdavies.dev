@@ -46,11 +46,13 @@
 
       <androidx.recyclerview.widget.RecyclerView
           android:id="@+id/recycler"
-          android:layout_width="0dp"
+          android:layout_width="match_parent"
           android:layout_height="match_parent"
+          app:layoutManager="LinearLayoutManager"
+          app:isVisible="@{!model.loading}"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
-          app:isVisible="@{!model.loading}"
+          app:layout_constraintTop_toTopOf="parent"
           tools:listitem="@layout/list_item" />
 
       <ProgressBar

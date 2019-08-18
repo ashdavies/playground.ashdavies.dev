@@ -56,10 +56,8 @@ internal class RepoViewModel(service: GitHub) : ViewModel() {
     }
   }
 
-  fun onQuery(value: CharSequence): Boolean {
+  fun onQuery(value: CharSequence) {
     viewModelScope.launch { query.send(value) }
-    _loading.value = true
-    return true
   }
 
   @Suppress("UNCHECKED_CAST")

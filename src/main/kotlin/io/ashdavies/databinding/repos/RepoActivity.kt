@@ -6,12 +6,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.DividerItemDecoration.VERTICAL
-import androidx.recyclerview.widget.LinearLayoutManager
 import io.ashdavies.databinding.R
 import io.ashdavies.databinding.common.SingleLayoutAdapter
 import io.ashdavies.databinding.databinding.ActivityRepoBinding
 import io.ashdavies.databinding.extensions.activityBinding
-import io.ashdavies.databinding.extensions.itemDecorations
 import io.ashdavies.databinding.extensions.snack
 import io.ashdavies.databinding.models.Repo
 import io.ashdavies.lifecycle.EventObserver
@@ -35,10 +33,8 @@ internal class RepoActivity : AppCompatActivity() {
     setSupportActionBar(binding.toolbar)
 
     with(binding) {
+      recycler.addItemDecoration(DividerItemDecoration(this@RepoActivity, VERTICAL))
       recycler.adapter = adapter
-      recycler.setHasFixedSize(true)
-      recycler.layoutManager = LinearLayoutManager(this@RepoActivity)
-      recycler.itemDecorations += DividerItemDecoration(this@RepoActivity, VERTICAL)
     }
 
     model
@@ -48,6 +44,8 @@ internal class RepoActivity : AppCompatActivity() {
     model
         .error
         .observe(this, EventObserver(::error))
+
+    model.onQuery("ashdavies")
   }
 
   private fun error(throwable: Throwable) {
