@@ -1,18 +1,75 @@
-buildscript {
-  repositories {
-    google()
-    jcenter()
-  }
+buildscript { handler ->
+  apply from: file('gradle/repositories.gradle'), to: handler
 
   dependencies {
-    classpath 'com.android.tools.build:gradle:3.2.0-alpha17'
-    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.2.41"
+    classpath 'com.android.tools.build:gradle:3.6.0-alpha06'
+    classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.41'
   }
 }
 
-allprojects {
-  repositories {
-    google()
-    jcenter()
+apply from: file('gradle/repositories.gradle')
+
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
+android {
+  compileSdkVersion 29
+
+  defaultConfig {
+    applicationId 'io.ashdavies.databinding'
+
+    minSdkVersion 21
+    targetSdkVersion 29
+
+    versionCode 3
+    versionName '3.0'
+
+    vectorDrawables.useSupportLibrary true
+  }
+
+  dataBinding {
+    enabled true
+  }
+
+  sourceSets {
+    main.java.srcDirs += 'src/main/kotlin'
+  }
+}
+
+dependencies {
+  implementation 'androidx.annotation:annotation:1.1.0'
+  implementation 'androidx.appcompat:appcompat:1.1.0-rc01'
+  implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+  implementation 'androidx.core:core-ktx:1.2.0-alpha03'
+  implementation 'androidx.lifecycle:lifecycle-livedata:2.2.0-alpha03'
+  implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0-alpha03'
+  implementation 'androidx.lifecycle:lifecycle-viewmodel:2.2.0-alpha03'
+  implementation 'androidx.recyclerview:recyclerview:1.1.0-beta03'
+
+  implementation 'com.google.android.material:material:1.1.0-alpha09'
+
+  implementation 'com.squareup.moshi:moshi:1.6.0'
+  implementation 'com.squareup.okhttp3:logging-interceptor:3.14.2'
+  implementation 'com.squareup.okhttp3:okhttp:3.14.2'
+  implementation 'com.squareup.retrofit2:retrofit:2.6.1'
+  implementation 'com.squareup.retrofit2:converter-moshi:2.4.0'
+
+  implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.3.41'
+  implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.1.1'
+  implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.1.1'
+
+  kapt 'com.squareup.moshi:moshi-kotlin-codegen:1.6.0'
+}
+
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+  kotlinOptions {
+    freeCompilerArgs += [
+        '-Xuse-experimental=kotlin.contracts.ExperimentalContracts',
+        '-Xuse-experimental=kotlin.Experimental',
+    ]
+
+    jvmTarget = JavaVersion.VERSION_1_8
   }
 }
