@@ -8,7 +8,7 @@ import androidx.lifecycle.viewModelScope
 import io.ashdavies.architecture.Event
 import io.ashdavies.databinding.extensions.mutableLiveData
 import io.ashdavies.databinding.models.Repo
-import io.ashdavies.databinding.services.GitHub
+import io.ashdavies.databinding.services.GitHubService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
@@ -24,7 +24,7 @@ import retrofit2.create
 
 @ObsoleteCoroutinesApi
 @ExperimentalCoroutinesApi
-internal class RepoViewModel(service: GitHub) : ViewModel() {
+internal class RepoViewModel(service: GitHubService) : ViewModel() {
 
   private val query = Channel<String>()
 

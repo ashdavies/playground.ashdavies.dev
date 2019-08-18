@@ -1,4 +1,4 @@
-package io.ashdavies.databinding.repos
+package io.ashdavies.databinding.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
@@ -9,7 +9,7 @@ import io.ashdavies.databinding.models.Repo
     exportSchema = false,
     version = 1
 )
-internal abstract class RepoDatabase : RoomDatabase() {
+internal abstract class GitHubDatabase : RoomDatabase() {
 
-  abstract fun dao(): RepoDao
+  abstract fun repo(): GitHubDao
 }

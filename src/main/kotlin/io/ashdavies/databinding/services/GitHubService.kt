@@ -5,7 +5,7 @@ import io.ashdavies.databinding.models.User
 import retrofit2.http.GET
 import retrofit2.http.Path
 
-internal interface GitHub {
+internal interface GitHubService {
 
   @GET("/users/{user}")
   suspend fun user(@Path("user") user: String): User
