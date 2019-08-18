@@ -1,4 +1,6 @@
 ## Droidcon Berlin 2018: Leveraging Android Data Binding with Kotlin
+[![#DCBerlin18 104 Davies LEVERAGING ANDROID DATABINDING WITH KOTLIN DAY2](https://img.youtube.com/vi/Bl9DatA1RAk/0.jpg)](https://www.youtube.com/watch?v=Bl9DatA1RAk)
+
 Android Data Binding is considered as both a powerful toolchain, empowering your views with access to view data without the necessity to build cumbersome presenters, and conversely as an overly complex, convoluted mess of binding statements opening the door to unnecessary, irresponsible domain logic in your view layouts.
 
 Whilst the latter of these statements can be true, data binding offers a very powerful code generation syntax, allowing you to utilise the power of the compiler to ensure that your binding statements are runtime safe. Combining this with the concise syntax afforded by Kotlin allows us to dramatically cut down on boilerplate and build complex user interfaces with relative ease.
