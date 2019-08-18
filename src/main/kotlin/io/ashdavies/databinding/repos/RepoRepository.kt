@@ -15,7 +15,7 @@ internal class RepoRepository(
 
   suspend fun repos(query: String): List<Repo> {
     val result: Result<Response<Repo>> = runCatching {
-      service.repos("$query+in:full_name", page, size)
+      service.repos("$query+in:name,description", page, size)
     }
 
     result.onSuccess {

@@ -12,6 +12,6 @@ internal interface GitHubDao {
   @Insert(onConflict = REPLACE)
   suspend fun insert(repos: List<Repo>)
 
-  @Query("SELECT * FROM repos WHERE fullName LIKE :query ORDER BY stargazersCount DESC, fullName ASC")
+  @Query("SELECT * FROM repos WHERE name LIKE :query ORDER BY stargazersCount DESC, name ASC")
   suspend fun repos(query: String): List<Repo>
 }

@@ -43,7 +43,7 @@ internal class RepoActivity : AppCompatActivity() {
         .error
         .observe(this, EventObserver(::error))
 
-    model.onQuery("ashdavies")
+    model.onQuery("rxjava")
   }
 
   private fun error(throwable: Throwable) {
