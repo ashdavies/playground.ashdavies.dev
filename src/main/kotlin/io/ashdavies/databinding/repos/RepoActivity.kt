@@ -7,7 +7,6 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.DividerItemDecoration.VERTICAL
 import io.ashdavies.databinding.R
-import io.ashdavies.databinding.common.SingleLayoutAdapter
 import io.ashdavies.databinding.databinding.ActivityRepoBinding
 import io.ashdavies.databinding.extensions.activityBinding
 import io.ashdavies.databinding.extensions.snack
@@ -23,7 +22,7 @@ internal class RepoActivity : AppCompatActivity() {
   private val binding: ActivityRepoBinding by activityBinding(R.layout.activity_repo)
   private val model: RepoViewModel by viewModels { RepoViewModel.Factory() }
 
-  private val adapter: SingleLayoutAdapter<Repo> = SingleLayoutAdapter(R.layout.list_item)
+  private val adapter: RepoAdapter<Repo> = RepoAdapter(R.layout.list_item)
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -39,7 +38,7 @@ internal class RepoActivity : AppCompatActivity() {
 
     model
         .items
-        .observe(this, Observer { adapter.items = it })
+        .observe(this, Observer(adapter::submitList))
 
     model
         .error

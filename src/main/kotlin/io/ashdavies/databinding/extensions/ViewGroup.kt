@@ -5,4 +5,6 @@ import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil.inflate
 import androidx.databinding.ViewDataBinding
 
-internal fun ViewGroup.binding(@LayoutRes resId: Int, attachToParent: Boolean = true) = inflate<ViewDataBinding>(inflater, resId, this, attachToParent)
+internal fun <T : ViewDataBinding> ViewGroup.binding(@LayoutRes resId: Int, attachToParent: Boolean = true): T {
+  return inflate<T>(inflater, resId, this, attachToParent)
+}
