@@ -75,7 +75,7 @@
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
           app:layout_constraintTop_toTopOf="parent"
-          app:isVisible="@{model.empty}"
+          app:isVisible="@{!model.loading &amp;&amp; model.items.isEmpty()}"
           tools:visibility="gone" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

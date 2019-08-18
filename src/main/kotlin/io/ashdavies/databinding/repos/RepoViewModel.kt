@@ -37,8 +37,6 @@ internal class RepoViewModel(service: GitHub) : ViewModel() {
   private val _error: MutableLiveData<Event<Throwable>> = mutableLiveData()
   val error: LiveData<Event<Throwable>> = _error
 
-  val empty: LiveData<Boolean> = EmptyLiveData(items, loading)
-
   init {
     viewModelScope.launch {
       query
