@@ -32,13 +32,12 @@ internal class RepoActivity : AppCompatActivity() {
       lifecycleOwner = this@RepoActivity
       model = model
 
-      recycler.addItemDecoration(DividerItemDecoration(this@RepoActivity, VERTICAL))
       recycler.adapter = adapter
 
       search.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
         override fun onQueryTextSubmit(value: String): Boolean = true
         override fun onQueryTextChange(value: String): Boolean {
-          model?.onQuery(value)
+          this@RepoActivity.model.onQuery(value)
           return true
         }
       })
@@ -51,6 +50,8 @@ internal class RepoActivity : AppCompatActivity() {
     model
         .error
         .observe(this, EventObserver(::error))
+
+    model.onQuery("Kotlin")
   }
 
   private fun error(throwable: Throwable) {

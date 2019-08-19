@@ -41,7 +41,7 @@ internal class RepoBoundaryCallback(
       }
 
       result.onFailure {
-        _error.value = it
+        _error.postValue(it)
       }
     }
   }

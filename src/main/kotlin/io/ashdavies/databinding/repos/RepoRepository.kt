@@ -17,7 +17,13 @@ internal class RepoRepository(
     val factory: DataSource.Factory<Int, Repo> = dao.repos("%$query%")
     val callback = RepoBoundaryCallback(service, dao, query)
 
-    val data: LiveData<PagedList<Repo>> = LivePagedListBuilder(factory, DATABASE_PAGE_SIZE)
+    val config: PagedList.Config = PagedList.Config.Builder()
+        .setPageSize(PAGE_SIZE)
+        .setEnablePlaceholders(true)
+        .setPrefetchDistance(50)
+        .build()
+
+    val data: LiveData<PagedList<Repo>> = LivePagedListBuilder(factory, config)
         .setBoundaryCallback(callback)
         .build()
 
@@ -26,6 +32,6 @@ internal class RepoRepository(
 
   companion object {
 
-    private const val DATABASE_PAGE_SIZE = 20
+    private const val PAGE_SIZE = 20
   }
 }

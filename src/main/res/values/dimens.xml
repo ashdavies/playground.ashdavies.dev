@@ -1,5 +1,11 @@
 <resources>
 
-  <dimen name="activity_default_margin">16dp</dimen>
-  <dimen name="content_spacing">4dp</dimen>
+  <dimen name="horizontal_spacing">16dp</dimen>
+  <dimen name="vertical_spacing">12dp</dimen>
+
+  <dimen name="bottom_elevation">8dp</dimen>
+  <dimen name="content_elevation">1dp</dimen>
+  <dimen name="content_spacing">12dp</dimen>
+
+  <dimen name="text_spacing">4dp</dimen>
 </resources>
