@@ -8,7 +8,7 @@
       android:icon="@mipmap/ic_launcher"
       android:theme="@style/Theme.DataBinding">
 
-    <activity android:name="io.ashdavies.databinding.repos.RepoActivity"
+    <activity android:name=".repos.RepoActivity"
         android:label="@string/application">
 
       <intent-filter>
@@ -17,6 +17,10 @@
       </intent-filter>
 
     </activity>
+
+    <activity android:name=".list.ListActivity"
+        android:exported="true"
+        android:label="@string/application" />
 
   </application>
 

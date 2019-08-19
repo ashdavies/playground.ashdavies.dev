@@ -43,13 +43,11 @@ internal class RepoViewModel(repository: RepoRepository) : ViewModel() {
           .consumeAsFlow()
           .filter { it.length >= MIN_LENGTH }
           .debounce(500)
-          .onEach { println("query $it") }
           .collect { query.value = it }
     }
   }
 
   fun onQuery(value: String) {
-    println("offered $value")
     viewModelScope.launch {
       _query.send(value)
     }

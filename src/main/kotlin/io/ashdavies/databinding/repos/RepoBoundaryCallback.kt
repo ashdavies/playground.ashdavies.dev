@@ -19,7 +19,7 @@ internal class RepoBoundaryCallback(
   private val _error: MutableLiveData<Throwable> = MutableLiveData()
   val error: LiveData<Throwable> = _error
 
-  private var page: Int = 1
+  private var page: Int = 0
 
   override fun onZeroItemsLoaded() {
     requestItems()
