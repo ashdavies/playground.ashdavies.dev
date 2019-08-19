@@ -2,14 +2,14 @@ package io.ashdavies.databinding.repos
 
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
-import androidx.recyclerview.widget.ListAdapter
+import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import io.ashdavies.databinding.repos.RepoAdapter.ViewHolder
 import io.ashdavies.databinding.databinding.ListItemBinding
 import io.ashdavies.databinding.extensions.binding
 import io.ashdavies.databinding.models.Repo
+import io.ashdavies.databinding.repos.RepoAdapter.ViewHolder
 
-internal class RepoAdapter<T>(@LayoutRes private val resId: Int) : ListAdapter<Repo, ViewHolder>(RepoItemCallback) {
+internal class RepoAdapter<T>(@LayoutRes private val resId: Int) : PagedListAdapter<Repo, ViewHolder>(RepoComparator) {
 
   override fun onCreateViewHolder(parent: ViewGroup, type: Int): ViewHolder = ViewHolder(parent.binding(resId, false))
 
@@ -17,7 +17,7 @@ internal class RepoAdapter<T>(@LayoutRes private val resId: Int) : ListAdapter<R
 
   class ViewHolder(private val binding: ListItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(item: Repo) {
+    fun bind(item: Repo?) {
       binding.item = item
     }
   }

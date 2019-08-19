@@ -1,5 +1,6 @@
 package io.ashdavies.databinding.database
 
+import androidx.paging.DataSource
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy.REPLACE
@@ -13,5 +14,5 @@ internal interface GitHubDao {
   suspend fun insert(repos: List<Repo>)
 
   @Query("SELECT * FROM repos WHERE name LIKE :query ORDER BY stargazersCount DESC, name ASC")
-  suspend fun repos(query: String): List<Repo>
+  fun repos(query: String): DataSource.Factory<Int, Repo>
 }

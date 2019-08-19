@@ -3,6 +3,7 @@ package io.ashdavies.databinding.repos
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.DividerItemDecoration.VERTICAL
@@ -33,6 +34,14 @@ internal class RepoActivity : AppCompatActivity() {
 
       recycler.addItemDecoration(DividerItemDecoration(this@RepoActivity, VERTICAL))
       recycler.adapter = adapter
+
+      search.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+        override fun onQueryTextSubmit(value: String): Boolean = true
+        override fun onQueryTextChange(value: String): Boolean {
+          model?.onQuery(value)
+          return true
+        }
+      })
     }
 
     model
@@ -42,8 +51,6 @@ internal class RepoActivity : AppCompatActivity() {
     model
         .error
         .observe(this, EventObserver(::error))
-
-    model.onQuery("rxjava")
   }
 
   private fun error(throwable: Throwable) {

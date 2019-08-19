@@ -31,54 +31,22 @@
             android:id="@+id/search"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            app:onQueryTextChange="@{model::onQuery}">
+            android:layout_gravity="end"/>
 
-        </androidx.appcompat.widget.SearchView>
       </androidx.appcompat.widget.Toolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-      <androidx.recyclerview.widget.RecyclerView
-          android:id="@+id/recycler"
-          android:layout_width="match_parent"
-          android:layout_height="match_parent"
-          app:layoutManager="LinearLayoutManager"
-          app:isVisible="@{!model.loading}"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toTopOf="parent"
-          tools:listitem="@layout/list_item" />
-
-      <ProgressBar
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          app:layout_constraintBottom_toBottomOf="parent"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toTopOf="parent"
-          app:isVisible="@{model.loading}"
-          tools:visibility="gone" />
-
-      <TextView
-          style="@style/Base.TextAppearance.AppCompat.Medium"
-          android:id="@+id/empty"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@string/activity_repos"
-          app:layout_constraintBottom_toBottomOf="parent"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toTopOf="parent"
-          app:isVisible="@{!model.loading &amp;&amp; model.items.isEmpty()}"
-          tools:visibility="gone" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        app:layoutManager="LinearLayoutManager"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:listitem="@layout/list_item" />
 
   </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

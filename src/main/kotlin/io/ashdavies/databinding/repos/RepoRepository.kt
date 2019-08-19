@@ -1,8 +1,11 @@
 package io.ashdavies.databinding.repos
 
+import androidx.lifecycle.LiveData
+import androidx.paging.DataSource
+import androidx.paging.LivePagedListBuilder
+import androidx.paging.PagedList
 import io.ashdavies.databinding.database.GitHubDao
 import io.ashdavies.databinding.models.Repo
-import io.ashdavies.databinding.network.Response
 import io.ashdavies.databinding.services.GitHubService
 
 internal class RepoRepository(
@@ -10,23 +13,19 @@ internal class RepoRepository(
     private val dao: GitHubDao
 ) {
 
-  private var page: Int = 1
-  private val size: Int = 50
+  fun repos(query: String): Pair<LiveData<PagedList<Repo>>, LiveData<Throwable>> {
+    val factory: DataSource.Factory<Int, Repo> = dao.repos("%$query%")
+    val callback = RepoBoundaryCallback(service, dao, query)
 
-  suspend fun repos(query: String): List<Repo> {
-    val result: Result<Response<Repo>> = runCatching {
-      service.repos("$query+in:name,description", page, size)
-    }
+    val data: LiveData<PagedList<Repo>> = LivePagedListBuilder(factory, DATABASE_PAGE_SIZE)
+        .setBoundaryCallback(callback)
+        .build()
 
-    result.onSuccess {
-      dao.insert(it.items)
-      page++
-    }
+    return data to callback.error
+  }
 
-    result.onFailure {
-      TODO()
-    }
+  companion object {
 
-    return dao.repos("%$query%")
+    private const val DATABASE_PAGE_SIZE = 20
   }
 }
