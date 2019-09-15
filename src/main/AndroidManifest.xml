@@ -18,10 +18,5 @@
 
     </activity>
 
-    <activity android:name=".list.ListActivity"
-        android:exported="true"
-        android:label="@string/application" />
-
   </application>
-
 </manifest>
