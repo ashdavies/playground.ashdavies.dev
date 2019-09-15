@@ -1,20 +1,16 @@
-# Implementing the Paging Library
-## [nyc.droidcon.com](https://www.nyc.droidcon.com/speaker/Ash-Davies)
+# Android Playground
 
-The Android Paging Library makes it easy to integrate complex paging behaviour, gradually loading small chunks of data at a time to help reduce usage of network bandwidth and system resources.
+[![](https://action-badges.now.sh/ashdavies/playground)](https://github.com/ashdavies/playground/actions)
+[![](https://img.shields.io/codacy/coverage/03ae86d9ce934421879bc407aa157732.svg)](https://app.codacy.com/project/ash.davies/playground/dashboard)
+[![](https://img.shields.io/maven-central/v/io.ashdavies.lifecycle/lifecycle.svg)](https://search.maven.org/artifact/io.ashdavies.lifecycle/lifecycle)
+![](https://img.shields.io/github/license/ashdavies/playground.svg)
 
-The library allows you to implement this behaviour using compositional components in a decoupled architecture making your code more reliable, scalable, and testable. Furthermore, you’ll be able to use familiar components such as LiveData or RxJava to interface with your existing architecture.
+[![](https://api.codacy.com/project/badge/Grade/82402de64cf942cbada71dfb8695bbe4)](https://app.codacy.com/app/ash.davies/playground)
+[![](https://img.shields.io/github/last-commit/ashdavies/playground.svg)](https://github.com/ashdavies/playground/commits/master)
+[![](https://img.shields.io/github/issues-pr/ashdavies/playground.svg)](https://github.com/ashdavies/playground/pulls)
 
-In this talk you’ll learn:
- - how to integrate the PagedList component into your architecture
- - how to implement a DataSource to load snapshots when necessary
- - how to use BoundaryCallback to signal the end of available data
- - how to integrate LiveData or RxJava to fit your project
+## Releases
 
-## Project
-An example application for the Android Data Binding library, making use of Retrofit, Coroutines, Moshi, and Android Jetpack components, to fetch a list of GitHub repositories and update a RecyclerView using the binding methods to display each repository as a view component.
-
-Enter a GitHub username in the ActionBar SearchView component to trigger the observable request, the application uses Retrofit to query the open GitHub api for repositories, results are returned in the RecyclerView with data bindings.
-
-![device-2018-06-10-200109](https://github.com/ashdavies/data-binding/raw/master/art/device-2018-06-10-200109.png)
-![device-2018-06-10-191700](https://github.com/ashdavies/data-binding/raw/master/art/device-2018-06-10-191700.png)
+- [Droidcon NYC 2019: Implementing the Paging Library](https://github.com/ashdavies/github-repo-search/releases/tag/v3.0)
+- [Droidcon Berlin 2018: Leveraging Android Data Binding with Kotlin](https://github.com/ashdavies/github-repo-search/releases/tag/v2.0)
+- [Android Data Binding Beta: Sample](https://github.com/ashdavies/github-repo-search/releases/tag/v1.0)
