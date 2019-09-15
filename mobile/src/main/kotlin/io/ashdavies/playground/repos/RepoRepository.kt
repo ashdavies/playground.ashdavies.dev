@@ -4,9 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.paging.DataSource
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
-import io.ashdavies.playground.database.GitHubDao
+import io.ashdavies.playground.github.GitHubDao
+import io.ashdavies.playground.github.GitHubService
 import io.ashdavies.playground.models.Repo
-import io.ashdavies.playground.services.GitHubService
 
 internal class RepoRepository(
     private val service: GitHubService,

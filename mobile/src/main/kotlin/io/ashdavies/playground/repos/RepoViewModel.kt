@@ -8,12 +8,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagedList
 import io.ashdavies.architecture.Event
-import io.ashdavies.playground.database.GitHubDatabase
-import io.ashdavies.playground.mutableLiveData
-import io.ashdavies.playground.models.Repo
-import io.ashdavies.playground.services.GitHubService
 import io.ashdavies.extensions.map
 import io.ashdavies.extensions.switchMap
+import io.ashdavies.playground.github.GitHubDatabase
+import io.ashdavies.playground.github.GitHubService
+import io.ashdavies.playground.models.Repo
+import io.ashdavies.playground.mutableLiveData
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.collect
@@ -52,7 +52,9 @@ internal class RepoViewModel(repository: RepoRepository) : ViewModel() {
     }
   }
 
-  class Factory(private val context: Context) : ViewModelProvider.Factory {
+  class Factory(
+      private val context: Context
+  ) : ViewModelProvider.Factory {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(kls: Class<T>): T {
@@ -60,7 +62,6 @@ internal class RepoViewModel(repository: RepoRepository) : ViewModel() {
       val service: GitHubService = retrofit.create()
 
       val repository = RepoRepository(service, database.repo())
-
       return RepoViewModel(repository) as T
     }
   }

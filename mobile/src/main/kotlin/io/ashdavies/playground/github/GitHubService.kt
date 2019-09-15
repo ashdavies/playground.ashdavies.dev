@@ -1,4 +1,4 @@
-package io.ashdavies.playground.services
+package io.ashdavies.playground.github
 
 import io.ashdavies.playground.models.Repo
 import io.ashdavies.playground.network.Response

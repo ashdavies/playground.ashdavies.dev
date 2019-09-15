@@ -27,15 +27,16 @@ internal class RepoActivity : AppCompatActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
 
-    with(binding) {
-      setSupportActionBar(toolbar)
+    setSupportActionBar(binding.toolbar)
+    binding.model = model
 
-      lifecycleOwner = this@RepoActivity
-      model = model
+    binding
+        .recycler
+        .adapter = adapter
 
-      recycler.adapter = adapter
-      search.setOnQueryTextChanged(this@RepoActivity.model::onQuery)
-    }
+    binding
+        .search
+        .setOnQueryTextChanged(model::onQuery)
 
     model
         .items

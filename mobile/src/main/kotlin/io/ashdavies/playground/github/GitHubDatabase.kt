@@ -1,4 +1,4 @@
-package io.ashdavies.playground.database
+package io.ashdavies.playground.github
 
 import androidx.room.Database
 import androidx.room.RoomDatabase

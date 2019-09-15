@@ -3,10 +3,10 @@ package io.ashdavies.playground.repos
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagedList
-import io.ashdavies.playground.database.GitHubDao
+import io.ashdavies.playground.github.GitHubDao
+import io.ashdavies.playground.github.GitHubService
 import io.ashdavies.playground.models.Repo
 import io.ashdavies.playground.network.Response
-import io.ashdavies.playground.services.GitHubService
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 

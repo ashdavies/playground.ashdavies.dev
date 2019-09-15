@@ -2,7 +2,7 @@ package io.ashdavies.playground.repos
 
 import android.content.Context
 import io.ashdavies.playground.database
-import io.ashdavies.playground.database.GitHubDatabase
+import io.ashdavies.playground.github.GitHubDatabase
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import okhttp3.logging.HttpLoggingInterceptor.Level.HEADERS
