@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobileNavigation"
+    app:startDestination="@+id/repoFragment">
+
+  <fragment
+      android:id="@+id/repoFragment"
+      android:name="io.ashdavies.playground.repos.RepoFragment"
+      android:label="@string/application"
+      tools:layout="@layout/repo_fragment" />
+
+</navigation>

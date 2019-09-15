@@ -2,25 +2,17 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".repos.RepoActivity">
-
-  <data>
-
-    <variable
-        name="model"
-        type="io.ashdavies.playground.repos.RepoViewModel"/>
-
-  </data>
+    tools:context="de.is24.mobile.finance.extended.FinanceExtendedLeadActivity">
 
   <androidx.coordinatorlayout.widget.CoordinatorLayout
       android:id="@+id/coordinator"
       android:layout_width="match_parent"
-      android:layout_height="match_parent">
+      android:layout_height="match_parent"
+      android:fitsSystemWindows="true">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fitsSystemWindows="true">
+        android:layout_height="wrap_content">
 
       <androidx.appcompat.widget.Toolbar
           android:id="@+id/toolbar"
@@ -31,24 +23,21 @@
             android:id="@+id/search"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="end"/>
+            android:layout_gravity="end" />
 
       </androidx.appcompat.widget.Toolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler"
+    <fragment
+        android:id="@+id/host"
+        android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:clipToPadding="false"
-        android:paddingTop="@dimen/vertical_spacing"
-        app:layoutManager="LinearLayoutManager"
+        app:defaultNavHost="true"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:listitem="@layout/list_item" />
+        app:navGraph="@navigation/mobile_navigation"
+        tools:layout="@layout/repo_fragment" />
 
   </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

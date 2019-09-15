@@ -32,7 +32,7 @@ internal class RepoViewModel(repository: RepoRepository) : ViewModel() {
   private val result: LiveData<RepoViewState> = query.map(repository::repos)
 
   val items: LiveData<PagedList<Repo>> = result.switchMap { it.data }
-  val error: LiveData<Event<Throwable>> = result
+  val errors: LiveData<Event<Throwable>> = result
       .switchMap { it.errors }
       .map(::Event)
 
