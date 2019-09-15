@@ -13,7 +13,7 @@ internal class RepoRepository(
     private val dao: GitHubDao
 ) {
 
-  fun repos(query: String): Pair<LiveData<PagedList<Repo>>, LiveData<Throwable>> {
+  fun repos(query: String): RepoViewState {
     val factory: DataSource.Factory<Int, Repo> = dao.repos("%$query%")
     val callback = RepoBoundaryCallback(service, dao, query)
 
@@ -27,7 +27,7 @@ internal class RepoRepository(
         .setBoundaryCallback(callback)
         .build()
 
-    return data to callback.error
+    return RepoViewState(data, callback.error)
   }
 
   companion object {

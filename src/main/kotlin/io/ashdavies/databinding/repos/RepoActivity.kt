@@ -3,22 +3,23 @@ package io.ashdavies.databinding.repos
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.SearchView
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.DividerItemDecoration.VERTICAL
 import io.ashdavies.databinding.R
 import io.ashdavies.databinding.databinding.ActivityRepoBinding
 import io.ashdavies.databinding.extensions.activityBinding
+import io.ashdavies.databinding.extensions.setOnQueryTextChanged
 import io.ashdavies.databinding.extensions.snack
 import io.ashdavies.databinding.models.Repo
 import io.ashdavies.lifecycle.EventObserver
 import kotlinx.coroutines.FlowPreview
+import kotlin.LazyThreadSafetyMode.NONE
 
 @FlowPreview
 internal class RepoActivity : AppCompatActivity() {
 
   private val binding: ActivityRepoBinding by activityBinding(R.layout.activity_repo)
+  private val coordinator: CoordinatorLayout by lazy(NONE) { binding.coordinator }
   private val model: RepoViewModel by viewModels { RepoViewModel.Factory(this) }
 
   private val adapter: RepoAdapter<Repo> = RepoAdapter(R.layout.list_item)
@@ -33,14 +34,7 @@ internal class RepoActivity : AppCompatActivity() {
       model = model
 
       recycler.adapter = adapter
-
-      search.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-        override fun onQueryTextSubmit(value: String): Boolean = true
-        override fun onQueryTextChange(value: String): Boolean {
-          this@RepoActivity.model.onQuery(value)
-          return true
-        }
-      })
+      search.setOnQueryTextChanged(this@RepoActivity.model::onQuery)
     }
 
     model
@@ -55,14 +49,12 @@ internal class RepoActivity : AppCompatActivity() {
   }
 
   private fun error(throwable: Throwable) {
-    with(binding) {
-      val message: String? = throwable.message
-      if (message == null) {
-        coordinator.snack(R.string.unexpected_error)
-        return
-      }
-
-      coordinator.snack(message)
+    val message: String? = throwable.message
+    if (message == null) {
+      coordinator.snack(R.string.unexpected_error)
+      return
     }
+
+    coordinator.snack(message)
   }
 }

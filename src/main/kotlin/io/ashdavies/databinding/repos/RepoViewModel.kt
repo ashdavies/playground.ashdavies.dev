@@ -20,7 +20,6 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import retrofit2.create
 
@@ -30,11 +29,11 @@ internal class RepoViewModel(repository: RepoRepository) : ViewModel() {
   private val _query: Channel<String> = Channel()
   private val query: MutableLiveData<String> = mutableLiveData()
 
-  private val result: LiveData<Pair<LiveData<PagedList<Repo>>, LiveData<Throwable>>> = query.map(repository::repos)
+  private val result: LiveData<RepoViewState> = query.map(repository::repos)
 
-  val items: LiveData<PagedList<Repo>> = result.switchMap { it.first }
+  val items: LiveData<PagedList<Repo>> = result.switchMap { it.data }
   val error: LiveData<Event<Throwable>> = result
-      .switchMap { it.second }
+      .switchMap { it.errors }
       .map(::Event)
 
   init {
