@@ -25,7 +25,7 @@ internal class RepoFragment : Fragment() {
   private lateinit var binding: RepoFragmentBinding
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-    binding = inflater.binding(R.layout.repo_fragment, container)
+    binding = inflater.binding(R.layout.repo_fragment, container, false)
     binding.lifecycleOwner = viewLifecycleOwner
     binding.model = model
     return binding.root
