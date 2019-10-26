@@ -2,10 +2,9 @@ package io.ashdavies.playground.repos
 
 import android.content.Context
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.asLiveData
 import androidx.paging.PagedList
 import io.ashdavies.architecture.Event
 import io.ashdavies.extensions.map
@@ -13,43 +12,35 @@ import io.ashdavies.extensions.switchMap
 import io.ashdavies.playground.github.GitHubDatabase
 import io.ashdavies.playground.github.GitHubService
 import io.ashdavies.playground.models.Repo
-import io.ashdavies.playground.mutableLiveData
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.map
 import retrofit2.create
 
 @FlowPreview
 internal class RepoViewModel(repository: RepoRepository) : ViewModel() {
 
   private val _query: Channel<String> = Channel()
-  private val query: MutableLiveData<String> = mutableLiveData()
+  private val query: Flow<String> = _query
+      .consumeAsFlow()
+      .filter { it.length > MIN_LENGTH }
+      .debounce(DEBOUNCE_TIMEOUT)
 
-  private val result: LiveData<RepoViewState> = query.map(repository::repos)
+  private val result: LiveData<RepoViewState> = query
+      .map { repository.repos(it) }
+      .asLiveData()
 
   val items: LiveData<PagedList<Repo>> = result.switchMap { it.data }
   val errors: LiveData<Event<Throwable>> = result
       .switchMap { it.errors }
       .map(::Event)
 
-  init {
-    viewModelScope.launch {
-      _query
-          .consumeAsFlow()
-          .filter { it.length >= MIN_LENGTH }
-          .debounce(500)
-          .collect { query.value = it }
-    }
-  }
-
   fun onQuery(value: String) {
-    viewModelScope.launch {
-      _query.send(value)
-    }
+    _query.offer(value)
   }
 
   class Factory(
@@ -68,6 +59,7 @@ internal class RepoViewModel(repository: RepoRepository) : ViewModel() {
 
   companion object {
 
+    private const val DEBOUNCE_TIMEOUT = 500L
     private const val MIN_LENGTH = 3
   }
 }
