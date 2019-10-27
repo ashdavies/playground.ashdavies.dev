@@ -5,7 +5,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.navigation.NavController
-import androidx.navigation.Navigation.findNavController
+import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import io.ashdavies.lifecycle.EventObserver
 import io.ashdavies.playground.R
@@ -18,9 +18,10 @@ import kotlin.LazyThreadSafetyMode.NONE
 internal class MainActivity : AppCompatActivity() {
 
   private val binding: MainActivityBinding by binding(R.layout.main_activity)
-  private val coordinator: CoordinatorLayout by lazy(NONE) { binding.coordinator }
-  private val controller: NavController by lazy(NONE) { findNavController(this, R.id.host) }
   private val model: MainViewModel by viewModels()
+
+  private val controller: NavController by lazy(NONE) { findNavController(R.id.host) }
+  private val coordinator: CoordinatorLayout by lazy(NONE) { binding.coordinator }
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)

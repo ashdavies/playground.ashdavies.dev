@@ -11,6 +11,9 @@ build
 /local.properties
 /captures
 
+# Firebase
+**/google-services.json
+
 # Signing
 *.gpg
 

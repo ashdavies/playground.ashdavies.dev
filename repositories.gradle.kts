@@ -8,6 +8,12 @@ repositories {
     }
   }
 
+  maven("https://dl.bintray.com/kotlin/kotlin-eap") {
+    content {
+      includeGroup("org.jetbrains.kotlin")
+    }
+  }
+
   maven("https://jcenter.bintray.com") {
     content {
       includeGroup("org.jetbrains.trove4j")
@@ -20,7 +26,7 @@ repositories {
 
   maven("https://jitpack.io") {
     content {
-      includeGroup("com.github.ashdavies")
+      includeGroupByRegex("com\\.github\\.ashdavies.*")
     }
   }
 
