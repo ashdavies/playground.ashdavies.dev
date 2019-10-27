@@ -1,8 +1,8 @@
-package io.ashdavies.playground.widget
+package io.ashdavies.playground
 
 import androidx.appcompat.widget.SearchView
 
-internal class OnQueryTextChangedListener(private val block: (String) -> Unit) : SearchView.OnQueryTextListener {
+fun SearchView.setOnQueryTextChanged(block: (String) -> Unit) = setOnQueryTextListener(object : SearchView.OnQueryTextListener {
 
   override fun onQueryTextSubmit(value: String): Boolean {
     return true
@@ -12,4 +12,4 @@ internal class OnQueryTextChangedListener(private val block: (String) -> Unit) :
     block(value)
     return true
   }
-}
+})

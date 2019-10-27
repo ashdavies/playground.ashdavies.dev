@@ -11,7 +11,7 @@ import io.ashdavies.lifecycle.EventObserver
 import io.ashdavies.playground.R
 import io.ashdavies.playground.binding
 import io.ashdavies.playground.databinding.MainActivityBinding
-import io.ashdavies.playground.extensions.setOnQueryTextChanged
+import io.ashdavies.playground.setOnQueryTextChanged
 import io.ashdavies.playground.snack
 import kotlin.LazyThreadSafetyMode.NONE
 
@@ -40,9 +40,8 @@ internal class MainActivity : AppCompatActivity() {
   }
 
   private fun error(throwable: Throwable) {
-    throwable
-        .message
-        ?.let { coordinator.snack(it) }
-        ?: coordinator.snack(R.string.unexpected_error)
+    val message: String? = throwable.message
+    if (message != null) coordinator.snack(message)
+    else coordinator.snack(R.string.unexpected_error)
   }
 }
