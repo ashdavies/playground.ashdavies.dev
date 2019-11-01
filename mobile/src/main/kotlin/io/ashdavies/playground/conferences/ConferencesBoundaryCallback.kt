@@ -1,4 +1,4 @@
-package io.ashdavies.playground.repos
+package io.ashdavies.playground.conferences
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -10,7 +10,7 @@ import io.ashdavies.playground.network.Response
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-internal class RepoBoundaryCallback(
+internal class ConferencesBoundaryCallback(
     private val service: GitHubService,
     private val dao: GitHubDao,
     private val query: String

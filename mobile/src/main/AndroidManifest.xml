@@ -8,7 +8,7 @@
       android:icon="@mipmap/ic_launcher"
       android:theme="@style/Theme.DataBinding">
 
-    <activity android:name="io.ashdavies.playground.repos.MainActivity"
+    <activity android:name="io.ashdavies.playground.common.MainActivity"
         android:label="@string/application">
 
       <intent-filter>

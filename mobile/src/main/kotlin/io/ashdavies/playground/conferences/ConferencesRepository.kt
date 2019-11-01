@@ -1,4 +1,4 @@
-package io.ashdavies.playground.repos
+package io.ashdavies.playground.conferences
 
 import androidx.lifecycle.LiveData
 import androidx.paging.DataSource
@@ -8,14 +8,14 @@ import io.ashdavies.playground.github.GitHubDao
 import io.ashdavies.playground.github.GitHubService
 import io.ashdavies.playground.models.Repo
 
-internal class RepoRepository(
+internal class ConferencesRepository(
     private val service: GitHubService,
     private val dao: GitHubDao
 ) {
 
-  fun repos(query: String): RepoViewState {
+  fun repos(query: String): ConferencesViewState {
     val factory: DataSource.Factory<Int, Repo> = dao.repos("%$query%")
-    val callback = RepoBoundaryCallback(service, dao, query)
+    val callback = ConferencesBoundaryCallback(service, dao, query)
 
     val config: PagedList.Config = PagedList.Config.Builder()
         .setPageSize(PAGE_SIZE)
@@ -27,7 +27,7 @@ internal class RepoRepository(
         .setBoundaryCallback(callback)
         .build()
 
-    return RepoViewState(data, callback.error)
+    return ConferencesViewState(data, callback.error)
   }
 
   companion object {

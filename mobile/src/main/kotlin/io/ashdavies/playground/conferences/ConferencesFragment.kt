@@ -1,4 +1,4 @@
-package io.ashdavies.playground.repos
+package io.ashdavies.playground.conferences
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,17 +10,18 @@ import androidx.lifecycle.Observer
 import io.ashdavies.lifecycle.EventObserver
 import io.ashdavies.playground.R
 import io.ashdavies.playground.binding
+import io.ashdavies.playground.common.MainViewModel
 import io.ashdavies.playground.databinding.RepoFragmentBinding
 import io.ashdavies.playground.models.Repo
 import kotlinx.coroutines.FlowPreview
 
 @FlowPreview
-internal class RepoFragment : Fragment() {
+internal class ConferencesFragment : Fragment() {
 
-  private val model: RepoViewModel by viewModels { RepoViewModel.Factory(requireContext()) }
+  private val model: ConferencesViewModel by viewModels { ConferencesViewModel.Factory(requireContext()) }
   private val parent: MainViewModel by viewModels()
 
-  private val adapter: RepoAdapter<Repo> = RepoAdapter(R.layout.list_item)
+  private val adapter: ConferencesAdapter<Repo> = ConferencesAdapter(R.layout.list_item)
 
   private lateinit var binding: RepoFragmentBinding
 

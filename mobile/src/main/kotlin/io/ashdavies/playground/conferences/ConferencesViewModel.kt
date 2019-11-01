@@ -1,4 +1,4 @@
-package io.ashdavies.playground.repos
+package io.ashdavies.playground.conferences
 
 import android.content.Context
 import androidx.lifecycle.LiveData
@@ -22,7 +22,7 @@ import kotlinx.coroutines.flow.map
 import retrofit2.create
 
 @FlowPreview
-internal class RepoViewModel(repository: RepoRepository) : ViewModel() {
+internal class ConferencesViewModel(repository: ConferencesRepository) : ViewModel() {
 
   private val _query: Channel<String> = Channel()
   private val query: Flow<String> = _query
@@ -30,7 +30,7 @@ internal class RepoViewModel(repository: RepoRepository) : ViewModel() {
       .filter { it.length > MIN_LENGTH }
       .debounce(DEBOUNCE_TIMEOUT)
 
-  private val result: LiveData<RepoViewState> = query
+  private val result: LiveData<ConferencesViewState> = query
       .map { repository.repos(it) }
       .asLiveData()
 
@@ -52,8 +52,8 @@ internal class RepoViewModel(repository: RepoRepository) : ViewModel() {
       val database: GitHubDatabase = database(context)
       val service: GitHubService = retrofit.create()
 
-      val repository = RepoRepository(service, database.repo())
-      return RepoViewModel(repository) as T
+      val repository = ConferencesRepository(service, database.repo())
+      return ConferencesViewModel(repository) as T
     }
   }
 

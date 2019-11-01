@@ -1,4 +1,4 @@
-package io.ashdavies.playground.repos
+package io.ashdavies.playground.common
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

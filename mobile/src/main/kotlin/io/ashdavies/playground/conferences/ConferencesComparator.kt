@@ -1,9 +1,9 @@
-package io.ashdavies.playground.repos
+package io.ashdavies.playground.conferences
 
 import androidx.recyclerview.widget.DiffUtil.ItemCallback
 import io.ashdavies.playground.models.Repo
 
-internal object RepoComparator : ItemCallback<Repo>() {
+internal object ConferencesComparator : ItemCallback<Repo>() {
 
   override fun areContentsTheSame(oldItem: Repo, newItem: Repo): Boolean = oldItem == newItem
 

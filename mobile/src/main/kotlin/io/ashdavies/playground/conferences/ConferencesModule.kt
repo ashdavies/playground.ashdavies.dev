@@ -1,4 +1,4 @@
-package io.ashdavies.playground.repos
+package io.ashdavies.playground.conferences
 
 import android.content.Context
 import io.ashdavies.playground.database

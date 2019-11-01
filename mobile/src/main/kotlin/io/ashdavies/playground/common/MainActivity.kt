@@ -1,4 +1,4 @@
-package io.ashdavies.playground.repos
+package io.ashdavies.playground.common
 
 import android.os.Bundle
 import androidx.activity.viewModels

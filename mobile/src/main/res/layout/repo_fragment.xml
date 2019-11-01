@@ -2,13 +2,13 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".repos.MainActivity">
+    tools:context=".common.MainActivity">
 
   <data>
 
     <variable
         name="model"
-        type="io.ashdavies.playground.repos.RepoViewModel" />
+        type="io.ashdavies.playground.conferences.ConferencesViewModel" />
 
   </data>
 

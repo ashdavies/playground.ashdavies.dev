@@ -7,7 +7,7 @@
 
   <fragment
       android:id="@+id/repoFragment"
-      android:name="io.ashdavies.playground.repos.RepoFragment"
+      android:name="io.ashdavies.playground.conferences.ConferencesFragment"
       android:label="@string/application"
       tools:layout="@layout/repo_fragment" />
 
