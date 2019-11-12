@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
   id("com.android.application")
 
@@ -18,19 +19,19 @@ android {
   }
 
   defaultConfig {
-    setApplicationId("io.ashdavies.playground")
+    applicationId = "io.ashdavies.playground"
 
     setMinSdkVersion(21)
     setTargetSdkVersion(29)
 
-    setVersionCode(3)
-    setVersionName("3.0")
+    versionCode = 3
+    versionName = "3.0"
 
-    vectorDrawables.setUseSupportLibrary(true)
+    vectorDrawables.useSupportLibrary = true
   }
 
   dataBinding {
-    setEnabled(true)
+    isEnabled = true
   }
 
   /*sourceSets {
@@ -45,8 +46,7 @@ android {
 }
 
 androidExtensions {
-  isExperimental = true
-  //features = ["parcelize"]
+  features = setOf("parcelize")
 }
 
 dependencies {
