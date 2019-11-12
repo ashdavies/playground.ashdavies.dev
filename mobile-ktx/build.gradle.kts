@@ -18,15 +18,15 @@ android {
     setTargetSdkVersion(29)
   }
 
-  /*sourceSets {
-    main
+  sourceSets {
+    getByName("main")
         .java
-        .srcDirs("src/main/kotlin")
+        .srcDir("src/main/kotlin")
 
-    test
+    getByName("test")
         .java
-        .srcDirs("src/test/kotlin")
-  }*/
+        .srcDir("src/test/kotlin")
+  }
 }
 
 dependencies {
