@@ -1,11 +1,13 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+plugins {
+  id("com.android.application")
 
-apply plugin: "com.android.application"
-apply plugin: "kotlin-android"
-apply plugin: "kotlin-android-extensions"
-apply plugin: "kotlin-kapt"
+  id("kotlin-android")
+  id("kotlin-android-extensions")
+  id("kotlin-kapt")
 
-apply plugin: "androidx.navigation.safeargs.kotlin"
+  id("androidx.navigation.safeargs.kotlin")
+}
 
 android {
   setCompileSdkVersion(29)
@@ -31,14 +33,20 @@ android {
     setEnabled(true)
   }
 
-  sourceSets {
-    main.java.srcDirs("src/main/kotlin")
-    test.java.srcDirs("src/test/kotlin")
-  }
+  /*sourceSets {
+    main
+        .java
+        .srcDirs("src/main/kotlin")
+
+    test
+        .java
+        .srcDirs("src/test/kotlin")
+  }*/
 }
 
 androidExtensions {
-  features = ["parcelize"]
+  isExperimental = true
+  //features = ["parcelize"]
 }
 
 dependencies {
@@ -83,8 +91,10 @@ dependencies {
   testImplementation("org.junit.jupiter:junit-jupiter:5.5.2")
 }
 
-tasks.withType(KotlinCompile).configureEach {
-  kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8
-}
+tasks
+    .withType<KotlinCompile>()
+    .configureEach {
+      kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
 
-apply plugin: "com.google.gms.google-services"
+apply(plugin = "com.google.gms.google-services")

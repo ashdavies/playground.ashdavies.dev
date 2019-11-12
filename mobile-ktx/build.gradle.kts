@@ -1,6 +1,9 @@
-apply plugin: "com.android.library"
-apply plugin: "kotlin-android"
-apply plugin: "kotlin-kapt"
+plugins {
+  id("com.android.library")
+
+  id("kotlin-android")
+  id("kotlin-kapt")
+}
 
 android {
   setCompileSdkVersion(29)
@@ -15,10 +18,15 @@ android {
     setTargetSdkVersion(29)
   }
 
-  sourceSets {
-    main.java.srcDirs("src/main/kotlin")
-    test.java.srcDirs("src/test/kotlin")
-  }
+  /*sourceSets {
+    main
+        .java
+        .srcDirs("src/main/kotlin")
+
+    test
+        .java
+        .srcDirs("src/test/kotlin")
+  }*/
 }
 
 dependencies {
