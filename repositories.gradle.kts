@@ -17,10 +17,6 @@ repositories {
   maven("https://jcenter.bintray.com") {
     content {
       includeGroup("org.jetbrains.trove4j")
-
-      excludeGroupByRegex("androidx.*")
-      excludeGroupByRegex("com\\.android.*")
-      excludeGroupByRegex("com\\.google.*")
     }
   }
 
@@ -30,5 +26,5 @@ repositories {
     }
   }
 
-  maven("https://repo.maven.apache.org/maven2")
+  mavenCentral()
 }

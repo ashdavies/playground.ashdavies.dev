@@ -32,12 +32,12 @@ android {
 dependencies {
   implementation("androidx.annotation:annotation:1.1.0")
   implementation("androidx.coordinatorlayout:coordinatorlayout:1.1.0-rc01")
-  implementation("androidx.databinding:databinding-runtime:4.0.0-alpha01")
-  implementation("androidx.lifecycle:lifecycle-livedata-core:2.2.0-rc01")
+  implementation("androidx.databinding:databinding-runtime:4.0.0-alpha02")
+  implementation("androidx.lifecycle:lifecycle-livedata-core:2.2.0-rc02")
   implementation("androidx.room:room-runtime:2.2.1")
 
   implementation("com.google.android.material:material:1.2.0-alpha01")
-  implementation("org.jetbrains.kotlin:kotlin-stdlib:1.3.50")
+  implementation("org.jetbrains.kotlin:kotlin-stdlib:1.3.60-eap-143")
 
   testImplementation("com.google.truth:truth:1.0")
   testImplementation("org.junit.jupiter:junit-jupiter:5.5.2")
