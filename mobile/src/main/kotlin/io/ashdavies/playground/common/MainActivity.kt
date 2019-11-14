@@ -11,7 +11,6 @@ import io.ashdavies.lifecycle.EventObserver
 import io.ashdavies.playground.R
 import io.ashdavies.playground.binding
 import io.ashdavies.playground.databinding.MainActivityBinding
-import io.ashdavies.playground.setOnQueryTextChanged
 import io.ashdavies.playground.snack
 import kotlin.LazyThreadSafetyMode.NONE
 
@@ -30,10 +29,6 @@ internal class MainActivity : AppCompatActivity() {
     binding
         .toolbar
         .setupWithNavController(controller)
-
-    binding
-        .search
-        .setOnQueryTextChanged(model::onQuery)
 
     model
         .errors

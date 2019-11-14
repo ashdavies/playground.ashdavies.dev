@@ -17,15 +17,7 @@
       <androidx.appcompat.widget.Toolbar
           android:id="@+id/toolbar"
           android:layout_width="match_parent"
-          android:layout_height="wrap_content">
-
-        <androidx.appcompat.widget.SearchView
-            android:id="@+id/search"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end" />
-
-      </androidx.appcompat.widget.Toolbar>
+          android:layout_height="wrap_content" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
