@@ -1,21 +1,6 @@
 buildscript {
   repositories {
-    // TODO apply(from = "repositories.gradle.kts")
-
-    maven("https://dl.bintray.com/kotlin/kotlin-eap") {
-      content {
-        includeGroup("org.jetbrains.kotlin")
-      }
-    }
-
-    maven("https://jcenter.bintray.com") {
-      content {
-        includeGroup("org.jetbrains.trove4j")
-      }
-    }
-
-    google()
-    mavenCentral()
+    configure()
   }
 
   dependencies {
@@ -27,5 +12,7 @@ buildscript {
 }
 
 allprojects {
-  apply(from = "${rootProject.projectDir}/repositories.gradle.kts")
+  repositories {
+    configure()
+  }
 }
