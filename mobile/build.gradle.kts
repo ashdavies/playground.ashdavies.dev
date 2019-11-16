@@ -65,9 +65,9 @@ dependencies {
 
   implementation("com.github.ashdavies:lifecycle-flow:0.7.2")
   implementation("com.google.android.material:material:1.2.0-alpha01")
-  implementation("com.google.firebase:firebase-common-ktx:19.2.0")
+  implementation("com.google.firebase:firebase-common-ktx:19.3.0")
   implementation("com.google.firebase:firebase-analytics:17.2.1")
-  implementation("com.google.firebase:firebase-firestore-ktx:21.2.1")
+  implementation("com.google.firebase:firebase-firestore-ktx:21.3.0")
 
   implementation("com.squareup.moshi:moshi:1.9.1")
   implementation("com.squareup.okhttp3:logging-interceptor:4.2.2")
