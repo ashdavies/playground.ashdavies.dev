@@ -11,6 +11,6 @@
 
 ## Releases
 
-- [Droidcon NYC 2019: Implementing the Paging Library](https://github.com/ashdavies/github-repo-search/releases/tag/v3.0)
-- [Droidcon Berlin 2018: Leveraging Android Data Binding with Kotlin](https://github.com/ashdavies/github-repo-search/releases/tag/v2.0)
-- [Android Data Binding Beta: Sample](https://github.com/ashdavies/github-repo-search/releases/tag/v1.0)
+- [Droidcon NYC 2019: Implementing the Paging Library](https://github.com/ashdavies/playground/releases/tag/v3.0)
+- [Droidcon Berlin 2018: Leveraging Android Data Binding with Kotlin](https://github.com/ashdavies/playground/releases/tag/v2.0)
+- [Android Data Binding Beta: Sample](https://github.com/ashdavies/playground/releases/tag/v1.0)
