@@ -1,7 +1,12 @@
-apply(from = "${rootProject.projectDir}/../repositories.gradle.kts")
-
 plugins {
   `kotlin-dsl`
+}
+
+repositories {
+  google()
+  maven("https://dl.bintray.com/kotlin/kotlin-eap")
+  mavenCentral()
+  jcenter()
 }
 
 dependencies {
