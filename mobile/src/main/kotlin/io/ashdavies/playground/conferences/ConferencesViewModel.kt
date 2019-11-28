@@ -10,11 +10,14 @@ import io.ashdavies.extensions.switchMap
 import io.ashdavies.playground.github.GitHubDatabase
 import io.ashdavies.playground.github.GitHubService
 import io.ashdavies.playground.models.Repo
-import kotlinx.coroutines.FlowPreview
+import io.ashdavies.playground.navigation.ChannelNavDirector
+import io.ashdavies.playground.navigation.NavDirector
 import retrofit2.create
 
-@FlowPreview
-internal class ConferencesViewModel(repository: ConferencesRepository) : ViewModel() {
+internal class ConferencesViewModel(
+    repository: ConferencesRepository
+) : NavDirector by ChannelNavDirector(),
+    ViewModel() {
 
   private val result: LiveData<ConferencesViewState> = liveData { repository.repos("kotlin") }
 
