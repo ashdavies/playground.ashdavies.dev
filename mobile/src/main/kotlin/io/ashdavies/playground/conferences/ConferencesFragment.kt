@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import io.ashdavies.lifecycle.EventObserver
 import io.ashdavies.playground.R
 import io.ashdavies.playground.binding
 import io.ashdavies.playground.common.MainViewModel
@@ -39,13 +38,9 @@ internal class ConferencesFragment : Fragment() {
         .recycler
         .adapter = adapter
 
-    parent
-        .query
-        .observe(viewLifecycleOwner, Observer(model::onQuery))
-
     with(model) {
       items.observe(viewLifecycleOwner, Observer(adapter::submitList))
-      errors.observe(viewLifecycleOwner, EventObserver(parent::onError))
+      errors.observe(viewLifecycleOwner, Observer(parent::onError))
     }
   }
 }
