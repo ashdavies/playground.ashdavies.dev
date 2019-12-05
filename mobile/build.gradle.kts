@@ -69,12 +69,6 @@ dependencies {
   implementation("com.google.firebase:firebase-analytics:17.2.1")
   implementation("com.google.firebase:firebase-firestore-ktx:21.3.0")
 
-  implementation("com.squareup.moshi:moshi:1.9.2")
-  implementation("com.squareup.okhttp3:logging-interceptor:4.2.2")
-  implementation("com.squareup.okhttp3:okhttp:4.2.2")
-  implementation("com.squareup.retrofit2:retrofit:2.6.2")
-  implementation("com.squareup.retrofit2:converter-moshi:2.6.2")
-
   implementation("org.jetbrains.kotlin:kotlin-stdlib:1.3.60")
   implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.2")
   implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.2")

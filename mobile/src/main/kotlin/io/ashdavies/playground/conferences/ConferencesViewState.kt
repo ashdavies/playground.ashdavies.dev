@@ -2,9 +2,9 @@ package io.ashdavies.playground.conferences
 
 import androidx.lifecycle.LiveData
 import androidx.paging.PagedList
-import io.ashdavies.playground.models.Repo
+import io.ashdavies.playground.network.Conference
 
 internal class ConferencesViewState(
-    val data: LiveData<PagedList<Repo>>,
+    val data: LiveData<PagedList<Conference>>,
     val errors: LiveData<Throwable>
 )

@@ -1,10 +1,5 @@
 <resources>
-
   <string name="application">Playground</string>
-  <string name="activity_repos">Playground</string>
-
-  <string name="repo_item_stargazers">Stargazers</string>
-  <string name="repo_item_watchers">Watchers</string>
 
   <string name="unexpected_error">An unexpected error has occurred</string>
 </resources>

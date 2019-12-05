@@ -29,7 +29,7 @@
         app:defaultNavHost="true"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         app:navGraph="@navigation/mobile_navigation"
-        tools:layout="@layout/repo_fragment" />
+        tools:layout="@layout/conferences_fragment" />
 
   </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

@@ -4,18 +4,18 @@ import androidx.lifecycle.LiveData
 import androidx.paging.DataSource
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
-import io.ashdavies.playground.github.GitHubDao
-import io.ashdavies.playground.github.GitHubService
-import io.ashdavies.playground.models.Repo
+import io.ashdavies.playground.github.ConferenceDao
+import io.ashdavies.playground.network.Conference
+import kotlinx.coroutines.CoroutineScope
 
 internal class ConferencesRepository(
-    private val service: GitHubService,
-    private val dao: GitHubDao
+    private val dao: ConferenceDao,
+    private val service: ConferencesService
 ) {
 
-  fun repos(query: String): ConferencesViewState {
-    val factory: DataSource.Factory<Int, Repo> = dao.repos("%$query%")
-    val callback = ConferencesBoundaryCallback(service, dao, query)
+  fun conferences(scope: CoroutineScope): ConferencesViewState {
+    val factory: DataSource.Factory<Int, Conference> = dao.conferences()
+    val callback = ConferencesBoundaryCallback(dao, scope, service)
 
     val config: PagedList.Config = PagedList.Config.Builder()
         .setPageSize(PAGE_SIZE)
@@ -23,7 +23,7 @@ internal class ConferencesRepository(
         .setPrefetchDistance(50)
         .build()
 
-    val data: LiveData<PagedList<Repo>> = LivePagedListBuilder(factory, config)
+    val data: LiveData<PagedList<Conference>> = LivePagedListBuilder(factory, config)
         .setBoundaryCallback(callback)
         .build()
 

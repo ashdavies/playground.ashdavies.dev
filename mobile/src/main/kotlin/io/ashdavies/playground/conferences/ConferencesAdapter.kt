@@ -5,13 +5,13 @@ import androidx.annotation.LayoutRes
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import io.ashdavies.playground.binding
-import io.ashdavies.playground.databinding.ListItemBinding
-import io.ashdavies.playground.models.Repo
 import io.ashdavies.playground.conferences.ConferencesAdapter.ViewHolder
+import io.ashdavies.playground.databinding.ListItemBinding
+import io.ashdavies.playground.network.Conference
 
-internal class ConferencesAdapter<T>(
+internal class ConferencesAdapter(
     @LayoutRes private val resId: Int
-) : PagedListAdapter<Repo, ViewHolder>(ConferencesComparator) {
+) : PagedListAdapter<Conference, ViewHolder>(ConferencesComparator) {
 
   override fun onCreateViewHolder(parent: ViewGroup, type: Int): ViewHolder {
     return ViewHolder(parent.binding(resId, false))
@@ -25,7 +25,7 @@ internal class ConferencesAdapter<T>(
       private val binding: ListItemBinding
   ) : RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(item: Repo?) {
+    fun bind(item: Conference?) {
       binding.item = item
     }
   }

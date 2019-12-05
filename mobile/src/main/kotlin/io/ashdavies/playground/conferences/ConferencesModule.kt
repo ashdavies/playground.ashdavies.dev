@@ -1,39 +1,28 @@
 package io.ashdavies.playground.conferences
 
 import android.content.Context
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.FirebaseFirestore.getInstance
+import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.Query.Direction.DESCENDING
 import io.ashdavies.playground.database
-import io.ashdavies.playground.github.GitHubDatabase
-import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
-import okhttp3.logging.HttpLoggingInterceptor.Level.HEADERS
-import retrofit2.Converter
-import retrofit2.Retrofit
-import retrofit2.converter.moshi.MoshiConverterFactory
+import io.ashdavies.playground.github.ConferenceDatabase
 
-private const val GITHUB_API = "https://api.github.com"
-
-internal val retrofit: Retrofit
-  get() = Retrofit.Builder()
-      .baseUrl(GITHUB_API)
-      .client(client)
-      .addConverterFactory(converter)
-      .build()
-
-private val client: OkHttpClient
-  get() = OkHttpClient.Builder()
-      .addInterceptor(logger)
-      .build()
-
-private val converter: Converter.Factory
-  get() = MoshiConverterFactory.create()
-
-private val logger: HttpLoggingInterceptor
-  get() {
-    val interceptor = HttpLoggingInterceptor()
-    interceptor.level = HEADERS
-    return interceptor
-  }
-
-internal fun database(context: Context): GitHubDatabase = context
+internal fun database(
+    context: Context
+): ConferenceDatabase = context
     .applicationContext
     .database("GitHub.db")
+
+internal fun firestore(
+): FirebaseFirestore = getInstance()
+
+internal fun service(
+    query: Query = query()
+): ConferencesService = ConferencesService(query)
+
+internal fun query(
+    firestore: FirebaseFirestore = firestore()
+): Query = firestore
+    .collection("conference")
+    .orderBy("dateStart", DESCENDING)

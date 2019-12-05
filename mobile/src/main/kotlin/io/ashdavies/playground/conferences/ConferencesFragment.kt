@@ -11,13 +11,8 @@ import androidx.lifecycle.lifecycleScope
 import io.ashdavies.playground.R
 import io.ashdavies.playground.binding
 import io.ashdavies.playground.common.MainViewModel
-import io.ashdavies.playground.databinding.RepoFragmentBinding
+import io.ashdavies.playground.databinding.ConferencesFragmentBinding
 import io.ashdavies.playground.extensions.navigate
-import io.ashdavies.playground.models.Repo
-import io.ashdavies.playground.navController
-import io.ashdavies.playground.navigation.NavDirector
-import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 internal class ConferencesFragment : Fragment() {
@@ -25,12 +20,12 @@ internal class ConferencesFragment : Fragment() {
   private val model: ConferencesViewModel by viewModels { ConferencesViewModel.Factory(requireContext()) }
   private val parent: MainViewModel by viewModels()
 
-  private val adapter: ConferencesAdapter<Repo> = ConferencesAdapter(R.layout.list_item)
+  private val adapter = ConferencesAdapter(R.layout.list_item)
 
-  private lateinit var binding: RepoFragmentBinding
+  private lateinit var binding: ConferencesFragmentBinding
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-    binding = inflater.binding(R.layout.repo_fragment, container, false)
+    binding = inflater.binding(R.layout.conferences_fragment, container, false)
     binding.lifecycleOwner = viewLifecycleOwner
     binding.model = model
     return binding.root

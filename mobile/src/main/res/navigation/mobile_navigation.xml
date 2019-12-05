@@ -3,12 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobileNavigation"
-    app:startDestination="@+id/repoFragment">
+    app:startDestination="@+id/conferencesFragment">
 
   <fragment
-      android:id="@+id/repoFragment"
+      android:id="@+id/conferencesFragment"
       android:name="io.ashdavies.playground.conferences.ConferencesFragment"
       android:label="@string/application"
-      tools:layout="@layout/repo_fragment" />
+      tools:layout="@layout/conferences_fragment" />
 
 </navigation>

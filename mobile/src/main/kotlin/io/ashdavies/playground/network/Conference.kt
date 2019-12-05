@@ -1,12 +1,11 @@
 package io.ashdavies.playground.network
 
-import androidx.annotation.Keep
-import com.squareup.moshi.JsonClass
+import androidx.room.Entity
 import java.util.Date
 
-@Keep
-@JsonClass(generateAdapter = true)
+@Entity(tableName = "conferences")
 internal data class Conference(
+    val uuid: String,
     val name: String,
     val country: String,
     val city: String,

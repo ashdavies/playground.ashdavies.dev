@@ -7,7 +7,8 @@
 
     <variable
         name="item"
-        type="io.ashdavies.playground.models.Repo"/>
+        type="io.ashdavies.playground.network.Conference" />
+
   </data>
 
   <androidx.cardview.widget.CardView
@@ -36,76 +37,52 @@
           tools:text="data-binding" />
 
       <TextView
-          android:id="@+id/description"
+          android:id="@+id/website"
           android:layout_width="0dp"
           android:layout_height="wrap_content"
           android:layout_marginEnd="@dimen/horizontal_spacing"
           android:layout_marginTop="@dimen/content_spacing"
           android:ellipsize="end"
           android:lines="3"
-          android:text="@{item.description}"
+          android:text="@{item.website}"
           app:layout_constraintEnd_toStartOf="@+id/barrier"
           app:layout_constraintStart_toStartOf="parent"
           app:layout_constraintTop_toBottomOf="@+id/name"
-          tools:text="Droidcon NYC 2019: Implementing the Paging Library"/>
+          tools:text="https://droidcon.de/en" />
 
       <androidx.constraintlayout.widget.Barrier
           android:id="@+id/barrier"
           android:layout_width="wrap_content"
           android:layout_height="0dp"
           app:barrierDirection="start"
-          app:constraint_referenced_ids="language,stargazersCount,watchersCount"/>
+          app:constraint_referenced_ids="country,city,dateStart" />
 
       <TextView
-          android:id="@+id/language"
+          android:id="@+id/country"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:text="@{item.language}"
+          android:text="@{item.country}"
           app:layout_constraintTop_toTopOf="parent"
           app:layout_constraintEnd_toEndOf="parent"
-          tools:text="Kotlin"/>
-
-      <ImageView
-          android:id="@+id/stargazersIcon"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="@dimen/content_spacing"
-          android:contentDescription="@string/repo_item_stargazers"
-          android:src="@drawable/ic_stargazer"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/language"/>
+          tools:text="Germany" />
 
       <TextView
-          android:id="@+id/stargazersCount"
+          android:id="@+id/city"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:layout_marginEnd="@dimen/content_spacing"
-          android:text="@{item.stargazersCount}"
-          app:layout_constraintBottom_toBottomOf="@+id/stargazersIcon"
-          app:layout_constraintEnd_toStartOf="@+id/stargazersIcon"
-          app:layout_constraintTop_toTopOf="@+id/stargazersIcon"
-          tools:text="74"/>
-
-      <ImageView
-          android:id="@+id/watchersIcon"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="@dimen/content_spacing"
-          android:contentDescription="@string/repo_item_watchers"
-          android:src="@drawable/ic_watcher"
+          android:text="@{item.city}"
           app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/stargazersIcon"/>
+          app:layout_constraintTop_toBottomOf="@+id/country"
+          tools:text="Berlin" />
 
       <TextView
-          android:id="@+id/watchersCount"
+          android:id="@+id/dateStart"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:layout_marginEnd="@dimen/content_spacing"
-          android:text="@{item.watchersCount}"
-          app:layout_constraintBottom_toBottomOf="@+id/watchersIcon"
-          app:layout_constraintEnd_toStartOf="@+id/watchersIcon"
-          app:layout_constraintTop_toTopOf="@+id/watchersIcon"
-          tools:text="4"/>
+          android:text="@{item.dateStart}"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintTop_toBottomOf="@+id/city"
+          tools:text="3 Sep '17" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
   </androidx.cardview.widget.CardView>
