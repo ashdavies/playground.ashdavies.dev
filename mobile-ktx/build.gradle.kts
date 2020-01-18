@@ -27,14 +27,14 @@ android {
 dependencies {
   implementation("androidx.annotation:annotation:1.1.0")
   implementation("androidx.coordinatorlayout:coordinatorlayout:1.1.0")
-  implementation("androidx.databinding:databinding-runtime:4.0.0-alpha05")
+  implementation("androidx.databinding:databinding-runtime:4.0.0-alpha08")
   implementation("androidx.lifecycle:lifecycle-livedata-core:2.2.0-rc03")
-  implementation("androidx.navigation:navigation-fragment-ktx:2.2.0-rc03")
-  implementation("androidx.room:room-runtime:2.2.2")
+  implementation("androidx.navigation:navigation-fragment-ktx:2.2.0-rc04")
+  implementation("androidx.room:room-runtime:2.2.3")
 
-  implementation("com.google.android.material:material:1.2.0-alpha02")
+  implementation("com.google.android.material:material:1.2.0-alpha03")
   implementation("org.jetbrains.kotlin:kotlin-stdlib:1.3.61")
 
-  testImplementation("com.google.truth:truth:1.0")
+  testImplementation("com.google.truth:truth:1.0.1")
   testImplementation("org.junit.jupiter:junit-jupiter:5.5.2")
 }
