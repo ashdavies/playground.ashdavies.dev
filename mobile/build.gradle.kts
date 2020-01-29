@@ -11,10 +11,6 @@ plugins {
 }
 
 android {
-  buildFeatures {
-    compose = true
-  }
-
   setCompileSdkVersion(29)
 
   compileOptions {
@@ -55,7 +51,6 @@ dependencies {
   implementation("androidx.annotation:annotation:1.1.0")
   implementation("androidx.appcompat:appcompat:1.1.0")
   implementation("androidx.cardview:cardview:1.0.0")
-  implementation("androidx.compose:compose-runtime:0.1.0-dev03")
   implementation("androidx.constraintlayout:constraintlayout:1.1.3")
   implementation("androidx.core:core-ktx:1.2.0-rc01")
   implementation("androidx.fragment:fragment-ktx:1.2.0")
@@ -64,7 +59,7 @@ dependencies {
   implementation("androidx.paging:paging-runtime:2.1.1")
   implementation("androidx.room:room-ktx:2.2.3")
   implementation("androidx.navigation:navigation-fragment-ktx:2.2.0")
-  implementation("androidx.navigation:navigation-ui-ktx:2.2.0-rc04")
+  implementation("androidx.navigation:navigation-ui-ktx:2.2.0")
   implementation("androidx.recyclerview:recyclerview:1.1.0")
   implementation("androidx.ui:ui-animation:0.1.0-dev03")
   implementation("androidx.ui:ui-foundation:0.1.0-dev03")
@@ -75,7 +70,7 @@ dependencies {
 
   implementation("com.dropbox.mobile.store:store4:4.0.0-alpha01")
   implementation("com.github.ashdavies:lifecycle-flow:0.7.2")
-  implementation("com.google.android.material:material:1.2.0-alpha03")
+  implementation("com.google.android.material:material:1.2.0-alpha04")
   implementation("com.google.firebase:firebase-common-ktx:19.3.0")
   implementation("com.google.firebase:firebase-analytics:17.2.2")
   implementation("com.google.firebase:firebase-firestore-ktx:21.3.1")
@@ -90,7 +85,7 @@ dependencies {
   kapt("com.squareup.moshi:moshi-kotlin-codegen:1.9.2")
 
   testImplementation("com.google.truth:truth:1.0.1")
-  testImplementation("org.junit.jupiter:junit-jupiter:5.5.2")
+  testImplementation("org.junit.jupiter:junit-jupiter:5.6.0")
 }
 
 tasks
