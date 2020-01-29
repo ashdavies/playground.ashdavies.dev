@@ -8,6 +8,8 @@ fun RepositoryHandler.android(): MavenArtifactRepository = google {
     includeGroupByRegex("com\\.android.*")
     includeGroupByRegex("com\\.google.*")
     includeGroupByRegex("zipflinger.*")
+
+    includeModule("org.jetbrains.kotlin", "kotlin-compiler-embeddable")
   }
 }
 

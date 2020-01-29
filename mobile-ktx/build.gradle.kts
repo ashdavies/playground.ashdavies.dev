@@ -33,7 +33,7 @@ dependencies {
   implementation("androidx.room:room-runtime:2.2.3")
 
   implementation("com.google.android.material:material:1.2.0-alpha04")
-  implementation("org.jetbrains.kotlin:kotlin-stdlib:1.3.61")
+  implementation("org.jetbrains.kotlin:kotlin-stdlib:1.3.70-eap-42")
 
   testImplementation("com.google.truth:truth:1.0.1")
   testImplementation("org.junit.jupiter:junit-jupiter:5.6.0")

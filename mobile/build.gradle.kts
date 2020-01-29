@@ -12,6 +12,10 @@ plugins {
 }
 
 android {
+  buildFeatures {
+    compose = true
+  }
+
   setCompileSdkVersion(29)
 
   compileOptions {
@@ -50,10 +54,11 @@ dependencies {
 
   implementation("androidx.activity:activity-ktx:1.1.0")
   implementation("androidx.annotation:annotation:1.1.0")
-  implementation("androidx.appcompat:appcompat:1.1.0")
+  implementation("androidx.appcompat:appcompat:1.2.0-alpha02")
   implementation("androidx.cardview:cardview:1.0.0")
-  implementation("androidx.constraintlayout:constraintlayout:1.1.3")
-  implementation("androidx.core:core-ktx:1.2.0-rc01")
+  implementation("androidx.compose:compose-runtime:0.1.0-dev04")
+  implementation("androidx.constraintlayout:constraintlayout:2.0.0-beta4")
+  implementation("androidx.core:core-ktx:1.3.0-alpha01")
   implementation("androidx.fragment:fragment-ktx:1.2.0")
   implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.2.0")
   implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0")
@@ -61,26 +66,26 @@ dependencies {
   implementation("androidx.room:room-ktx:2.2.3")
   implementation("androidx.navigation:navigation-fragment-ktx:2.2.0")
   implementation("androidx.navigation:navigation-ui-ktx:2.2.0")
-  implementation("androidx.recyclerview:recyclerview:1.1.0")
-  implementation("androidx.ui:ui-animation:0.1.0-dev03")
-  implementation("androidx.ui:ui-foundation:0.1.0-dev03")
-  implementation("androidx.ui:ui-framework:0.1.0-dev03")
-  implementation("androidx.ui:ui-layout:0.1.0-dev03")
-  implementation("androidx.ui:ui-material:0.1.0-dev03")
-  implementation("androidx.ui:ui-tooling:0.1.0-dev03")
+  implementation("androidx.recyclerview:recyclerview:1.2.0-alpha01")
+  implementation("androidx.ui:ui-animation:0.1.0-dev04")
+  implementation("androidx.ui:ui-foundation:0.1.0-dev04")
+  implementation("androidx.ui:ui-framework:0.1.0-dev04")
+  implementation("androidx.ui:ui-layout:0.1.0-dev04")
+  implementation("androidx.ui:ui-material:0.1.0-dev04")
+  implementation("androidx.ui:ui-tooling:0.1.0-dev04")
 
-  implementation("com.dropbox.mobile.store:store4:4.0.0-alpha01")
+  implementation("com.dropbox.mobile.store:store4:4.0.0-alpha02")
   implementation("com.github.ashdavies:lifecycle-flow:0.7.2")
   implementation("com.google.android.material:material:1.2.0-alpha04")
   implementation("com.google.firebase:firebase-common-ktx:19.3.0")
   implementation("com.google.firebase:firebase-analytics:17.2.2")
   implementation("com.google.firebase:firebase-firestore-ktx:21.3.1")
 
-  implementation("org.jetbrains.kotlin:kotlin-stdlib:1.3.61")
+  implementation("org.jetbrains.kotlin:kotlin-stdlib:1.3.70-eap-42")
   implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.3")
   implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.3")
-  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.3.2")
-  implementation("org.reduxkotlin:redux-kotlin-jvm:0.2.6")
+  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.3.3")
+  implementation("org.reduxkotlin:redux-kotlin-jvm:0.3.1")
 
   kapt("androidx.room:room-compiler:2.2.3")
   kapt("com.squareup.moshi:moshi-kotlin-codegen:1.9.2")
