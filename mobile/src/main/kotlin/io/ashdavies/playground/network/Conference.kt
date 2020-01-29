@@ -3,7 +3,7 @@ package io.ashdavies.playground.network
 import androidx.room.Entity
 import java.util.Date
 
-@Entity(tableName = "conferences")
+@Entity(primaryKeys = ["uuid"])
 internal data class Conference(
     val uuid: String,
     val name: String,

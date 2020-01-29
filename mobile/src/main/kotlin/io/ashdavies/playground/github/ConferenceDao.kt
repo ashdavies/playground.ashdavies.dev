@@ -13,6 +13,6 @@ internal interface ConferenceDao {
   @Insert(onConflict = REPLACE)
   suspend fun insert(conferences: List<Conference>)
 
-  @Query("SELECT * FROM conferences ORDER BY dateStart ASC")
+  @Query("SELECT * FROM conference ORDER BY dateStart ASC")
   fun conferences(): DataSource.Factory<Int, Conference>
 }
