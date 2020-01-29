@@ -2,6 +2,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
   id("com.android.application")
+  id("com.github.ben-manes.versions")
 
   kotlin("android")
   kotlin("android.extensions")
