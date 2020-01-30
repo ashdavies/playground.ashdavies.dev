@@ -1,8 +1,7 @@
 # Android Playground
 
-[![](https://action-badges.now.sh/ashdavies/playground)](https://github.com/ashdavies/playground/actions)
+![.github/workflows/android.yml](https://github.com/ashdavies/playground/workflows/.github/workflows/android.yml/badge.svg)
 [![](https://img.shields.io/codacy/coverage/03ae86d9ce934421879bc407aa157732.svg)](https://app.codacy.com/project/ash.davies/playground/dashboard)
-[![](https://img.shields.io/maven-central/v/io.ashdavies.lifecycle/lifecycle.svg)](https://search.maven.org/artifact/io.ashdavies.lifecycle/lifecycle)
 ![](https://img.shields.io/github/license/ashdavies/playground.svg)
 
 [![](https://api.codacy.com/project/badge/Grade/82402de64cf942cbada71dfb8695bbe4)](https://app.codacy.com/app/ash.davies/playground)

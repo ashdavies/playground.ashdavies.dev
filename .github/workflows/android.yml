@@ -15,7 +15,7 @@ jobs:
       run: gpg --quiet --batch --yes --decrypt --passphrase="GOOGLE_SERVICES_PASSPHRASE" \
       --output mobile/google-services.json mobile/google-services.json.gpg
       env:
-        GOOGLE_SERVICES_PASSPHRASE: $
+        GOOGLE_SERVICES_PASSPHRASE: ${{ secrets.GOOGLE_SERVICES_PASSPHRASE }}
 
     - name: set up JDK 1.8
       uses: actions/setup-java@v1
