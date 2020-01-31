@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 buildscript {
   repositories {
     android()
@@ -25,3 +26,5 @@ subprojects {
     trove4j()
   }
 }
+=======
+>>>>>>> Stashed changes

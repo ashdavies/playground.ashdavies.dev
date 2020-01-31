@@ -2,13 +2,20 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
   id("com.android.application")
+<<<<<<< Updated upstream
   id("com.github.ben-manes.versions")
 
   kotlin("android")
   kotlin("android.extensions")
   kotlin("kapt")
 
+=======
+>>>>>>> Stashed changes
   id("androidx.navigation.safeargs.kotlin")
+
+  kotlin("android")
+  kotlin("android.extensions")
+  kotlin("kapt")
 }
 
 android {
