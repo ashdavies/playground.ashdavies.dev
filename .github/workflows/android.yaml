@@ -20,7 +20,7 @@ jobs:
       run: openssl aes-256-cbc -md sha256 -d -in mobile/google-services.aes -out mobile/google-services.json -k ${{ secrets.GOOGLE_SERVICES_PASSPHRASE }}
 
     - name: Build with Gradle
-      run: ./gradlew build -Pandroid.useAndroidX=true
+      run: ./gradlew build
 
     - name: Display dependency updates
       run: ./gradlew dependencyUpdates
