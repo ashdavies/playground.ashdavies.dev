@@ -7,7 +7,6 @@ fun RepositoryHandler.android(): MavenArtifactRepository = google {
     includeGroupByRegex("androidx.*")
     includeGroupByRegex("com\\.android.*")
     includeGroupByRegex("com\\.google.*")
-    includeGroupByRegex("zipflinger.*")
 
     includeModule("org.jetbrains.kotlin", "kotlin-compiler-embeddable")
   }
@@ -25,8 +24,14 @@ fun RepositoryHandler.kotlin(): MavenArtifactRepository = maven("https://dl.bint
   }
 }
 
+fun RepositoryHandler.tensorflow(): MavenArtifactRepository = jcenter {
+  content {
+    includeModule("org.tensorflow", "tensorflow-lite-support")
+  }
+}
+
 fun RepositoryHandler.trove4j(): MavenArtifactRepository = jcenter {
   content {
-    includeGroup("org.jetbrains.trove4j")
+    includeModule("org.jetbrains.trove4j", "trove4j")
   }
 }

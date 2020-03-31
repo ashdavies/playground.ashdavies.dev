@@ -8,7 +8,6 @@ repositories {
       includeGroupByRegex("androidx.*")
       includeGroupByRegex("com\\.android.*")
       includeGroupByRegex("com\\.google.*")
-      includeGroupByRegex("zipflinger.*")
     }
   }
 
@@ -20,7 +19,9 @@ repositories {
 
   jcenter {
     content {
-      includeGroup("org.jetbrains.trove4j")
+      includeModule("eu.appcom.gradle", "android-versioning")
+      includeModule("org.jetbrains.trove4j", "trove4j")
+      includeModule("org.tensorflow", "tensorflow-lite-support")
     }
   }
 
@@ -28,5 +29,6 @@ repositories {
 }
 
 dependencies {
-  implementation("com.android.tools.build:gradle:4.0.0-alpha09")
+  implementation("com.android.tools.build:gradle:4.1.0-alpha04")
+  implementation("eu.appcom.gradle:android-versioning:1.0.2")
 }

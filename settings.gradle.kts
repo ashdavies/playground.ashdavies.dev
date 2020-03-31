@@ -1,1 +1,4 @@
-include(":mobile", ":mobile-ktx")
+include(
+  ":mobile",
+  ":mobile-ktx"
+)
