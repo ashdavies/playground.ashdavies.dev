@@ -4,25 +4,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".common.MainActivity">
 
-  <data>
+    <data>
 
-    <variable
-        name="model"
-        type="io.ashdavies.playground.conferences.ConferencesViewModel" />
+        <variable
+            name="model"
+            type="io.ashdavies.playground.conferences.ConferencesViewModel" />
 
-  </data>
+    </data>
 
-  <androidx.recyclerview.widget.RecyclerView
-      android:id="@+id/recycler"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:clipToPadding="false"
-      android:paddingTop="@dimen/vertical_spacing"
-      app:layoutManager="LinearLayoutManager"
-      app:layout_behavior="@string/appbar_scrolling_view_behavior"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent"
-      tools:listitem="@layout/list_item" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:paddingTop="@dimen/vertical_spacing"
+        app:layoutManager="LinearLayoutManager"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:listitem="@layout/list_item" />
 
 </layout>

@@ -9,5 +9,5 @@ import kotlin.LazyThreadSafetyMode.NONE
 fun <T : ViewDataBinding> Activity.binding(
     @LayoutRes resId: Int
 ): Lazy<T> = lazy(NONE) {
-  setContentView<T>(this, resId)
+    setContentView<T>(this, resId)
 }

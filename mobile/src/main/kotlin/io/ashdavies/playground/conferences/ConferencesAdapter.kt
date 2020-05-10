@@ -13,20 +13,20 @@ internal class ConferencesAdapter(
     @LayoutRes private val resId: Int
 ) : PagedListAdapter<Conference, ViewHolder>(ConferencesComparator) {
 
-  override fun onCreateViewHolder(parent: ViewGroup, type: Int): ViewHolder {
-    return ViewHolder(parent.binding(resId, false))
-  }
-
-  override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-    return holder.bind(getItem(position))
-  }
-
-  class ViewHolder(
-      private val binding: ListItemBinding
-  ) : RecyclerView.ViewHolder(binding.root) {
-
-    fun bind(item: Conference?) {
-      binding.item = item
+    override fun onCreateViewHolder(parent: ViewGroup, type: Int): ViewHolder {
+        return ViewHolder(parent.binding(resId, false))
     }
-  }
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        return holder.bind(getItem(position))
+    }
+
+    class ViewHolder(
+        private val binding: ListItemBinding
+    ) : RecyclerView.ViewHolder(binding.root) {
+
+        fun bind(item: Conference?) {
+            binding.item = item
+        }
+    }
 }

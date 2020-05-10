@@ -18,22 +18,23 @@ internal class ConferencesViewModel(
 ) : NavDirector by ChannelNavDirector(),
     ViewModel() {
 
-  private val result: LiveData<ConferencesViewState> = liveData { repository.conferences(viewModelScope) }
+    private val result: LiveData<ConferencesViewState> =
+        liveData { repository.conferences(viewModelScope) }
 
-  val items: LiveData<PagedList<Conference>> = result.switchMap(ConferencesViewState::data)
-  val errors: LiveData<Throwable> = result.switchMap(ConferencesViewState::errors)
+    val items: LiveData<PagedList<Conference>> = result.switchMap(ConferencesViewState::data)
+    val errors: LiveData<Throwable> = result.switchMap(ConferencesViewState::errors)
 
-  class Factory(
-      private val context: Context
-  ) : ViewModelProvider.Factory {
+    class Factory(
+        private val context: Context
+    ) : ViewModelProvider.Factory {
 
-    @Suppress("UNCHECKED_CAST")
-    override fun <T : ViewModel> create(kls: Class<T>): T {
-      val database: ConferenceDatabase = database(context)
-      val service: ConferencesService = service()
+        @Suppress("UNCHECKED_CAST")
+        override fun <T : ViewModel> create(kls: Class<T>): T {
+            val database: ConferenceDatabase = database(context)
+            val service: ConferencesService = service()
 
-      val repository = ConferencesRepository(database.dao(), service)
-      return ConferencesViewModel(repository) as T
+            val repository = ConferencesRepository(database.dao(), service)
+            return ConferencesViewModel(repository) as T
+        }
     }
-  }
 }

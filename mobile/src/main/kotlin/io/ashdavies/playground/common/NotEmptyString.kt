@@ -5,9 +5,9 @@ internal class NotEmptyString(
 ) : CharSequence by value,
     Comparable<String> by value {
 
-  init {
-    if (value.isEmpty()) {
-      throw IllegalArgumentException("Value cannot be empty")
+    init {
+        if (value.isEmpty()) {
+            throw IllegalArgumentException("Value cannot be empty")
+        }
     }
-  }
 }

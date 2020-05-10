@@ -17,34 +17,42 @@ import kotlinx.coroutines.launch
 
 internal class ConferencesFragment : Fragment() {
 
-  private val model: ConferencesViewModel by viewModels { ConferencesViewModel.Factory(requireContext()) }
-  private val parent: MainViewModel by viewModels()
-
-  private val adapter = ConferencesAdapter(R.layout.list_item)
-
-  private lateinit var binding: ConferencesFragmentBinding
-
-  override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-    binding = inflater.binding(R.layout.conferences_fragment, container, false)
-    binding.lifecycleOwner = viewLifecycleOwner
-    binding.model = model
-    return binding.root
-  }
-
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-    super.onViewCreated(view, savedInstanceState)
-
-    viewLifecycleOwner
-        .lifecycleScope
-        .launch { navigate(model) }
-
-    binding
-        .recycler
-        .adapter = adapter
-
-    with(model) {
-      items.observe(viewLifecycleOwner, Observer(adapter::submitList))
-      errors.observe(viewLifecycleOwner, Observer(parent::onError))
+    private val model: ConferencesViewModel by viewModels {
+        ConferencesViewModel.Factory(
+            requireContext()
+        )
     }
-  }
+    private val parent: MainViewModel by viewModels()
+
+    private val adapter = ConferencesAdapter(R.layout.list_item)
+
+    private lateinit var binding: ConferencesFragmentBinding
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = inflater.binding(R.layout.conferences_fragment, container, false)
+        binding.lifecycleOwner = viewLifecycleOwner
+        binding.model = model
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        viewLifecycleOwner
+            .lifecycleScope
+            .launch { navigate(model) }
+
+        binding
+            .recycler
+            .adapter = adapter
+
+        with(model) {
+            items.observe(viewLifecycleOwner, Observer(adapter::submitList))
+            errors.observe(viewLifecycleOwner, Observer(parent::onError))
+        }
+    }
 }

@@ -7,9 +7,9 @@ import kotlinx.coroutines.tasks.await
 
 internal class ConferencesService(private val query: Query) {
 
-  suspend fun conferences(page: Int, limit: Long): List<Conference> = query
-      .limit(limit)
-      .get()
-      .await()
-      .toObjects()
+    suspend fun conferences(page: Int, limit: Long): List<Conference> = query
+        .limit(limit)
+        .get()
+        .await()
+        .toObjects()
 }

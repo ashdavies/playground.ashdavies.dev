@@ -16,28 +16,28 @@ import kotlin.LazyThreadSafetyMode.NONE
 
 internal class MainActivity : AppCompatActivity() {
 
-  private val binding: MainActivityBinding by binding(R.layout.main_activity)
-  private val model: MainViewModel by viewModels()
+    private val binding: MainActivityBinding by binding(R.layout.main_activity)
+    private val model: MainViewModel by viewModels()
 
-  private val controller: NavController by lazy(NONE) { findNavController(R.id.host) }
-  private val coordinator: CoordinatorLayout by lazy(NONE) { binding.coordinator }
+    private val controller: NavController by lazy(NONE) { findNavController(R.id.host) }
+    private val coordinator: CoordinatorLayout by lazy(NONE) { binding.coordinator }
 
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-    binding.lifecycleOwner = this
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding.lifecycleOwner = this
 
-    binding
-        .toolbar
-        .setupWithNavController(controller)
+        binding
+            .toolbar
+            .setupWithNavController(controller)
 
-    model
-        .errors
-        .observe(this, EventObserver(::error))
-  }
+        model
+            .errors
+            .observe(this, EventObserver(::error))
+    }
 
-  private fun error(throwable: Throwable) {
-    val message: String? = throwable.message
-    if (message != null) coordinator.snack(message)
-    else coordinator.snack(R.string.unexpected_error)
-  }
+    private fun error(throwable: Throwable) {
+        val message: String? = throwable.message
+        if (message != null) coordinator.snack(message)
+        else coordinator.snack(R.string.unexpected_error)
+    }
 }

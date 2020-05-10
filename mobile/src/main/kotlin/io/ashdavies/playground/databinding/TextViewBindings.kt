@@ -8,9 +8,9 @@ import java.util.Calendar.SHORT
 import java.util.Date
 
 private val FORMAT: DateFormat
-  get() = getDateInstance(SHORT)
+    get() = getDateInstance(SHORT)
 
 @BindingAdapter("android:text")
 fun setText(view: TextView, value: Date) {
-  view.text = FORMAT.format(value)
+    view.text = FORMAT.format(value)
 }

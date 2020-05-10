@@ -5,10 +5,10 @@
     android:id="@+id/mobileNavigation"
     app:startDestination="@+id/conferencesFragment">
 
-  <fragment
-      android:id="@+id/conferencesFragment"
-      android:name="io.ashdavies.playground.conferences.ConferencesFragment"
-      android:label="@string/application"
-      tools:layout="@layout/conferences_fragment" />
+    <fragment
+        android:id="@+id/conferencesFragment"
+        android:name="io.ashdavies.playground.conferences.ConferencesFragment"
+        android:label="@string/application"
+        tools:layout="@layout/conferences_fragment" />
 
 </navigation>

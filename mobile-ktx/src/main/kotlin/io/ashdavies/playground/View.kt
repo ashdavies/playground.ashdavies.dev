@@ -5,4 +5,4 @@ import android.view.LayoutInflater.from
 import android.view.View
 
 val View.inflater: LayoutInflater
-  get() = from(context)
+    get() = from(context)

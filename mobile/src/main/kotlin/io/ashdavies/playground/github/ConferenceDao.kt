@@ -10,9 +10,9 @@ import io.ashdavies.playground.network.Conference
 @Dao
 internal interface ConferenceDao {
 
-  @Insert(onConflict = REPLACE)
-  suspend fun insert(conferences: List<Conference>)
+    @Insert(onConflict = REPLACE)
+    suspend fun insert(conferences: List<Conference>)
 
-  @Query("SELECT * FROM conference ORDER BY dateStart ASC")
-  fun conferences(): DataSource.Factory<Int, Conference>
+    @Query("SELECT * FROM conference ORDER BY dateStart ASC")
+    fun conferences(): DataSource.Factory<Int, Conference>
 }

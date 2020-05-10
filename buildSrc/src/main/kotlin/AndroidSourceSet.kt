@@ -5,13 +5,13 @@ private const val Main = "main"
 private const val Test = "test"
 
 val NamedDomainObjectContainer<AndroidSourceSet>.main: AndroidSourceSet
-  get() = getByName(Main)
+    get() = getByName(Main)
 
 val NamedDomainObjectContainer<AndroidSourceSet>.test: AndroidSourceSet
-  get() = getByName(Test)
+    get() = getByName(Test)
 
 var AndroidSourceSet.srcDirs: Set<Any>
-  get() = throw IllegalStateException()
-  set(value) {
-    java.setSrcDirs(value)
-  }
+    get() = throw IllegalStateException()
+    set(value) {
+        java.setSrcDirs(value)
+    }

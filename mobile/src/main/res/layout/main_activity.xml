@@ -4,32 +4,32 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="de.is24.mobile.finance.extended.FinanceExtendedLeadActivity">
 
-  <androidx.coordinatorlayout.widget.CoordinatorLayout
-      android:id="@+id/coordinator"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:fitsSystemWindows="true">
-
-    <com.google.android.material.appbar.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-      <androidx.appcompat.widget.Toolbar
-          android:id="@+id/toolbar"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content" />
-
-    </com.google.android.material.appbar.AppBarLayout>
-
-    <fragment
-        android:id="@+id/host"
-        android:name="androidx.navigation.fragment.NavHostFragment"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/coordinator"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:defaultNavHost="true"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        app:navGraph="@navigation/mobile_navigation"
-        tools:layout="@layout/conferences_fragment" />
+        android:fitsSystemWindows="true">
 
-  </androidx.coordinatorlayout.widget.CoordinatorLayout>
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <fragment
+            android:id="@+id/host"
+            android:name="androidx.navigation.fragment.NavHostFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:defaultNavHost="true"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            app:navGraph="@navigation/mobile_navigation"
+            tools:layout="@layout/conferences_fragment" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

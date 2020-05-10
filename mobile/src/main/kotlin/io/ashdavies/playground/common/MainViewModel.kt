@@ -11,10 +11,10 @@ internal class MainViewModel :
     NavDirector by ChannelNavDirector(),
     ViewModel() {
 
-  private val _errors: MutableLiveData<Event<Throwable>> = MutableLiveData()
-  val errors: LiveData<Event<Throwable>> = _errors
+    private val _errors: MutableLiveData<Event<Throwable>> = MutableLiveData()
+    val errors: LiveData<Event<Throwable>> = _errors
 
-  fun onError(throwable: Throwable) {
-    _errors.value = Event(throwable)
-  }
+    fun onError(throwable: Throwable) {
+        _errors.value = Event(throwable)
+    }
 }

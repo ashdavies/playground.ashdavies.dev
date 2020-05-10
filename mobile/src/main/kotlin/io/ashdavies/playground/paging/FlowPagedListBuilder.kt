@@ -20,13 +20,13 @@ import android.annotation.SuppressLint
 import androidx.arch.core.executor.ArchTaskExecutor
 import androidx.paging.DataSource
 import androidx.paging.PagedList
+import java.util.concurrent.Executor
 import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.util.concurrent.Executor
 
 /**
  * Builder for `Flow<PagedList>` given a [DataSource.Factory] and a [PagedList.Config].
@@ -78,73 +78,73 @@ class FlowPagedListBuilder<K, V>(
     private var notifyExecutor: Executor? = null,
     private var fetchExecutor: Executor? = null
 ) {
-  /**
-   * Constructs a `Flow<PagedList>`.
-   *
-   * @return The Flow of PagedLists
-   */
-  @SuppressLint("RestrictedApi")
-  fun buildFlow(): Flow<PagedList<V>> = channelFlow {
-    val nExecutor = notifyExecutor ?: ArchTaskExecutor.getMainThreadExecutor()
-    val fExecutor = fetchExecutor ?: ArchTaskExecutor.getIOThreadExecutor()
+    /**
+     * Constructs a `Flow<PagedList>`.
+     *
+     * @return The Flow of PagedLists
+     */
+    @SuppressLint("RestrictedApi")
+    fun buildFlow(): Flow<PagedList<V>> = channelFlow {
+        val nExecutor = notifyExecutor ?: ArchTaskExecutor.getMainThreadExecutor()
+        val fExecutor = fetchExecutor ?: ArchTaskExecutor.getIOThreadExecutor()
 
-    val nDispatcher = nExecutor.asCoroutineDispatcher()
-    val fDispatcher = fExecutor.asCoroutineDispatcher()
+        val nDispatcher = nExecutor.asCoroutineDispatcher()
+        val fDispatcher = fExecutor.asCoroutineDispatcher()
 
-    val invalidateCallback = object : ClearableInvalidatedCallback {
-      private var prevList: PagedList<V>? = null
-      private var dataSource: DataSource<K, V>? = null
+        val invalidateCallback = object : ClearableInvalidatedCallback {
+            private var prevList: PagedList<V>? = null
+            private var dataSource: DataSource<K, V>? = null
 
-      override fun onInvalidated() = sendNewList()
+            override fun onInvalidated() = sendNewList()
 
-      override fun clear() {
-        dataSource?.removeInvalidatedCallback(this)
-      }
+            override fun clear() {
+                dataSource?.removeInvalidatedCallback(this)
+            }
 
-      private fun sendNewList() {
-        launch(fDispatcher) {
-          // Compute on the fetch dispatcher
-          val list = createPagedList()
+            private fun sendNewList() {
+                launch(fDispatcher) {
+                    // Compute on the fetch dispatcher
+                    val list = createPagedList()
 
-          withContext(nDispatcher) {
-            // Send on the notify dispatcher
-            send(list)
-          }
+                    withContext(nDispatcher) {
+                        // Send on the notify dispatcher
+                        send(list)
+                    }
+                }
+            }
+
+            @Suppress("UNCHECKED_CAST")
+            private fun createPagedList(): PagedList<V> {
+                do {
+                    dataSource?.removeInvalidatedCallback(this)
+
+                    dataSource = dataSourceFactory.create()
+                        .also {
+                            it.addInvalidatedCallback(this)
+                        }
+
+                    val list = PagedList.Builder(dataSource!!, config)
+                        .setNotifyExecutor(nExecutor)
+                        .setFetchExecutor(fExecutor)
+                        .setBoundaryCallback(boundaryCallback)
+                        .setInitialKey(prevList?.lastKey as? K ?: initialLoadKey)
+                        .build()
+                        .also { prevList = it }
+                } while (list.isDetached)
+
+                return prevList!!
+            }
         }
-      }
 
-      @Suppress("UNCHECKED_CAST")
-      private fun createPagedList(): PagedList<V> {
-        do {
-          dataSource?.removeInvalidatedCallback(this)
+        // Do the initial load
+        invalidateCallback.onInvalidated()
 
-          dataSource = dataSourceFactory.create()
-              .also {
-                it.addInvalidatedCallback(this)
-              }
-
-          val list = PagedList.Builder(dataSource!!, config)
-              .setNotifyExecutor(nExecutor)
-              .setFetchExecutor(fExecutor)
-              .setBoundaryCallback(boundaryCallback)
-              .setInitialKey(prevList?.lastKey as? K ?: initialLoadKey)
-              .build()
-              .also { prevList = it }
-        } while (list.isDetached)
-
-        return prevList!!
-      }
+        awaitClose {
+            invalidateCallback.clear()
+        }
     }
 
-    // Do the initial load
-    invalidateCallback.onInvalidated()
-
-    awaitClose {
-      invalidateCallback.clear()
+    private interface ClearableInvalidatedCallback : DataSource.InvalidatedCallback {
+        fun clear()
     }
-  }
-
-  private interface ClearableInvalidatedCallback : DataSource.InvalidatedCallback {
-    fun clear()
-  }
 }

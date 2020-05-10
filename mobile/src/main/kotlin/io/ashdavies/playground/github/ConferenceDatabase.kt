@@ -14,5 +14,5 @@ import io.ashdavies.playground.network.Conference
 @TypeConverters(DateConverter::class)
 internal abstract class ConferenceDatabase : RoomDatabase() {
 
-  abstract fun dao(): ConferenceDao
+    abstract fun dao(): ConferenceDao
 }

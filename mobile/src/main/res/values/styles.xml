@@ -1,15 +1,15 @@
 <resources>
 
-  <style name="Theme.DataBinding" parent="Theme.MaterialComponents.Light.NoActionBar">
-    <item name="colorPrimary">@color/colorPrimary</item>
-    <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-    <item name="colorAccent">@color/colorAccent</item>
+    <style name="Theme.DataBinding" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
 
-    <item name="toolbarStyle">@style/Theme.DataBinding.Toolbar</item>
-    <item name="android:windowBackground">@color/colorBackground</item>
-  </style>
+        <item name="toolbarStyle">@style/Theme.DataBinding.Toolbar</item>
+        <item name="android:windowBackground">@color/colorBackground</item>
+    </style>
 
-  <style name="Theme.DataBinding.Toolbar" parent="Widget.MaterialComponents.Toolbar">
-    <item name="android:textColor">@android:color/white</item>
-  </style>
+    <style name="Theme.DataBinding.Toolbar" parent="Widget.MaterialComponents.Toolbar">
+        <item name="android:textColor">@android:color/white</item>
+    </style>
 </resources>

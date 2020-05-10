@@ -3,87 +3,87 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-  <data>
+    <data>
 
-    <variable
-        name="item"
-        type="io.ashdavies.playground.network.Conference" />
+        <variable
+            name="item"
+            type="io.ashdavies.playground.network.Conference" />
 
-  </data>
+    </data>
 
-  <androidx.cardview.widget.CardView
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_marginBottom="@dimen/vertical_spacing"
-      android:layout_marginEnd="@dimen/horizontal_spacing"
-      android:layout_marginStart="@dimen/horizontal_spacing">
-
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/content_spacing">
+        android:layout_marginBottom="@dimen/vertical_spacing"
+        android:layout_marginEnd="@dimen/horizontal_spacing"
+        android:layout_marginStart="@dimen/horizontal_spacing">
 
-      <TextView
-          style="@style/Base.TextAppearance.AppCompat.Medium"
-          android:id="@+id/name"
-          android:layout_width="0dp"
-          android:layout_height="wrap_content"
-          android:layout_marginEnd="@dimen/horizontal_spacing"
-          android:text="@{item.name}"
-          android:textStyle="bold"
-          app:layout_constraintEnd_toStartOf="@+id/barrier"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toTopOf="parent"
-          tools:text="data-binding" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/content_spacing">
 
-      <TextView
-          android:id="@+id/website"
-          android:layout_width="0dp"
-          android:layout_height="wrap_content"
-          android:layout_marginEnd="@dimen/horizontal_spacing"
-          android:layout_marginTop="@dimen/content_spacing"
-          android:ellipsize="end"
-          android:lines="3"
-          android:text="@{item.website}"
-          app:layout_constraintEnd_toStartOf="@+id/barrier"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/name"
-          tools:text="https://droidcon.de/en" />
+            <TextView
+                style="@style/Base.TextAppearance.AppCompat.Medium"
+                android:id="@+id/name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/horizontal_spacing"
+                android:text="@{item.name}"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toStartOf="@+id/barrier"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="data-binding" />
 
-      <androidx.constraintlayout.widget.Barrier
-          android:id="@+id/barrier"
-          android:layout_width="wrap_content"
-          android:layout_height="0dp"
-          app:barrierDirection="start"
-          app:constraint_referenced_ids="country,city,dateStart" />
+            <TextView
+                android:id="@+id/website"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/horizontal_spacing"
+                android:layout_marginTop="@dimen/content_spacing"
+                android:ellipsize="end"
+                android:lines="3"
+                android:text="@{item.website}"
+                app:layout_constraintEnd_toStartOf="@+id/barrier"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/name"
+                tools:text="https://droidcon.de/en" />
 
-      <TextView
-          android:id="@+id/country"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@{item.country}"
-          app:layout_constraintTop_toTopOf="parent"
-          app:layout_constraintEnd_toEndOf="parent"
-          tools:text="Germany" />
+            <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/barrier"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                app:barrierDirection="start"
+                app:constraint_referenced_ids="country,city,dateStart" />
 
-      <TextView
-          android:id="@+id/city"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@{item.city}"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/country"
-          tools:text="Berlin" />
+            <TextView
+                android:id="@+id/country"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{item.country}"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:text="Germany" />
 
-      <TextView
-          android:id="@+id/dateStart"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@{item.dateStart}"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/city"
-          tools:text="3 Sep '17" />
+            <TextView
+                android:id="@+id/city"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{item.city}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/country"
+                tools:text="Berlin" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-  </androidx.cardview.widget.CardView>
+            <TextView
+                android:id="@+id/dateStart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{item.dateStart}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/city"
+                tools:text="3 Sep '17" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
 </layout>

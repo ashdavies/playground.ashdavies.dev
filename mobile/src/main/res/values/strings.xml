@@ -1,5 +1,5 @@
 <resources>
-  <string name="application">Playground</string>
+    <string name="application">Playground</string>
 
-  <string name="unexpected_error">An unexpected error has occurred</string>
+    <string name="unexpected_error">An unexpected error has occurred</string>
 </resources>

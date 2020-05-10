@@ -14,8 +14,7 @@ internal fun database(
     .applicationContext
     .database("GitHub.db")
 
-internal fun firestore(
-): FirebaseFirestore = getInstance()
+internal fun firestore(): FirebaseFirestore = getInstance()
 
 internal fun service(
     query: Query = query()

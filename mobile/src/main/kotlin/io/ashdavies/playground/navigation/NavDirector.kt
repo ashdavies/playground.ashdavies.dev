@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.Flow
 
 internal interface NavDirector {
 
-  val directions: Flow<NavDirections>
+    val directions: Flow<NavDirections>
 
-  fun navigate(directions: NavDirections)
+    fun navigate(directions: NavDirections)
 }
