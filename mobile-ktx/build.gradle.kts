@@ -27,7 +27,7 @@ android {
 dependencies {
   implementation("androidx.annotation:annotation:1.1.0")
   implementation("androidx.coordinatorlayout:coordinatorlayout:1.1.0")
-  implementation("androidx.databinding:databinding-runtime:4.1.0-alpha08")
+  implementation("androidx.databinding:databinding-runtime:4.1.0-alpha09")
   implementation("androidx.lifecycle:lifecycle-livedata-core:2.2.0")
   implementation("androidx.navigation:navigation-fragment-ktx:2.3.0-alpha06")
   implementation("androidx.room:room-runtime:2.2.5")
