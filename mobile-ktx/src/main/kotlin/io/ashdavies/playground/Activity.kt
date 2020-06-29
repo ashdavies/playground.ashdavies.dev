@@ -2,14 +2,18 @@ package io.ashdavies.playground
 
 import android.app.Activity
 import android.view.View
+import androidx.fragment.app.FragmentActivity
 import androidx.viewbinding.ViewBinding
-import kotlin.LazyThreadSafetyMode.NONE
 
 val Activity.rootView: View
     get() = window
         .decorView
         .rootView
 
-inline fun <T : ViewBinding> Activity.viewBinding(
-    crossinline block: (View) -> T
-): Lazy<T> = lazy(NONE) { block(rootView) }
+fun <T : ViewBinding> FragmentActivity.viewBinding(
+    bindingProducer: (View) -> T
+): Lazy<T> = ViewBindingLazy(
+    bindingProducer = bindingProducer,
+    ownerProducer = { this },
+    viewProducer = { rootView }
+)

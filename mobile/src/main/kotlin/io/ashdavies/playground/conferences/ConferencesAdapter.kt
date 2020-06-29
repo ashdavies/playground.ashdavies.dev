@@ -26,7 +26,7 @@ internal class ConferencesAdapter(
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: Conference?) {
-            binding.item = item
+            TODO()
         }
     }
 }

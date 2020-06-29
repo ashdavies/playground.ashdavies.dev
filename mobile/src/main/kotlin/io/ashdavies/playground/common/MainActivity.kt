@@ -12,23 +12,22 @@ import io.ashdavies.playground.R
 import io.ashdavies.playground.databinding.MainActivityBinding
 import io.ashdavies.playground.snack
 import io.ashdavies.playground.viewBinding
+import kotlin.LazyThreadSafetyMode.NONE
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlin.LazyThreadSafetyMode.NONE
 
 internal class MainActivity : AppCompatActivity(R.layout.main_activity) {
 
-    private val binding: MainActivityBinding by viewBinding(MainActivityBinding::bind)
+    private val viewBinding: MainActivityBinding by viewBinding(MainActivityBinding::bind)
     private val viewModel: MainViewModel by viewModels()
 
     private val controller: NavController by lazy(NONE) { findNavController(R.id.host) }
-    private val coordinator: CoordinatorLayout by lazy(NONE) { binding.coordinator }
+    private val coordinator: CoordinatorLayout by lazy(NONE) { viewBinding.coordinator }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding.lifecycleOwner = this
 
-        binding
+        viewBinding
             .toolbar
             .setupWithNavController(controller)
 
