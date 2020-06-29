@@ -3,9 +3,7 @@ package io.ashdavies.playground.navigation
 import androidx.navigation.NavDirections
 import kotlinx.coroutines.flow.Flow
 
-internal interface NavDirector {
+internal interface NavDirectionsStore {
 
-    val directions: Flow<NavDirections>
-
-    fun navigate(directions: NavDirections)
+    val navDirections: Flow<NavDirections>
 }

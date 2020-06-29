@@ -1,13 +1,15 @@
 package io.ashdavies.playground
 
 import android.app.Activity
-import androidx.annotation.LayoutRes
-import androidx.databinding.DataBindingUtil.setContentView
-import androidx.databinding.ViewDataBinding
+import android.view.View
+import androidx.viewbinding.ViewBinding
 import kotlin.LazyThreadSafetyMode.NONE
 
-fun <T : ViewDataBinding> Activity.binding(
-    @LayoutRes resId: Int
-): Lazy<T> = lazy(NONE) {
-    setContentView<T>(this, resId)
-}
+val Activity.rootView: View
+    get() = window
+        .decorView
+        .rootView
+
+inline fun <T : ViewBinding> Activity.viewBinding(
+    crossinline block: (View) -> T
+): Lazy<T> = lazy(NONE) { block(rootView) }

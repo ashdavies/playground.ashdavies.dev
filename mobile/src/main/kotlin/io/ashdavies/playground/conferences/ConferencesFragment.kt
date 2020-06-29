@@ -1,58 +1,52 @@
 package io.ashdavies.playground.conferences
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import io.ashdavies.playground.R
-import io.ashdavies.playground.binding
 import io.ashdavies.playground.common.MainViewModel
+import io.ashdavies.playground.conferences.ConferencesViewModel.Factory
 import io.ashdavies.playground.databinding.ConferencesFragmentBinding
-import io.ashdavies.playground.extensions.navigate
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlin.LazyThreadSafetyMode.NONE
 
-internal class ConferencesFragment : Fragment() {
+@ExperimentalCoroutinesApi
+internal class ConferencesFragment : Fragment(R.layout.conferences_fragment) {
 
-    private val model: ConferencesViewModel by viewModels {
-        ConferencesViewModel.Factory(
-            requireContext()
-        )
-    }
-    private val parent: MainViewModel by viewModels()
+    private val viewModel: ConferencesViewModel by viewModels { Factory(requireContext()) }
+    private val parentModel: MainViewModel by viewModels()
 
+    private val navController: NavController by lazy(NONE) { findNavController() }
     private val adapter = ConferencesAdapter(R.layout.list_item)
 
     private lateinit var binding: ConferencesFragmentBinding
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding = inflater.binding(R.layout.conferences_fragment, container, false)
-        binding.lifecycleOwner = viewLifecycleOwner
-        binding.model = model
-        return binding.root
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        viewLifecycleOwner
-            .lifecycleScope
-            .launch { navigate(model) }
 
         binding
             .recycler
             .adapter = adapter
 
-        with(model) {
-            items.observe(viewLifecycleOwner, Observer(adapter::submitList))
-            errors.observe(viewLifecycleOwner, Observer(parent::onError))
-        }
+        viewModel
+            .navDirections
+            .onEach { navController.navigate(it) }
+            .launchIn(lifecycleScope)
+
+        viewModel
+            .items
+            .onEach { adapter.submitList(it) }
+            .launchIn(lifecycleScope)
+
+        viewModel
+            .errors
+            .onEach { parentModel.onError(it) }
+            .launchIn(lifecycleScope)
     }
 }

@@ -1,20 +1,22 @@
 package io.ashdavies.playground.common
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import io.ashdavies.architecture.Event
-import io.ashdavies.playground.navigation.ChannelNavDirector
-import io.ashdavies.playground.navigation.NavDirector
+import androidx.navigation.NavDirections
+import io.ashdavies.playground.navigation.NavDirectionsStore
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.channels.Channel.Factory.CONFLATED
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.receiveAsFlow
 
-internal class MainViewModel :
-    NavDirector by ChannelNavDirector(),
-    ViewModel() {
+internal class MainViewModel : NavDirectionsStore, ViewModel() {
 
-    private val _errors: MutableLiveData<Event<Throwable>> = MutableLiveData()
-    val errors: LiveData<Event<Throwable>> = _errors
+    private val _navDirections: Channel<NavDirections> = Channel(CONFLATED)
+    override val navDirections: Flow<NavDirections> get() = _navDirections.receiveAsFlow()
+
+    private val _navErrors: Channel<Throwable> = Channel(CONFLATED)
+    val navErrors: Flow<Throwable> get() = _navErrors.receiveAsFlow()
 
     fun onError(throwable: Throwable) {
-        _errors.value = Event(throwable)
+        _navErrors.offer(throwable)
     }
 }

@@ -1,3 +1,5 @@
+@file:Suppress("UnstableApiUsage")
+
 plugins {
     `kotlin-dsl`
 }
@@ -21,7 +23,8 @@ repositories {
         content {
             includeModule("eu.appcom.gradle", "android-versioning")
             includeModule("org.jetbrains.trove4j", "trove4j")
-            includeModule("org.tensorflow", "tensorflow-lite-support")
+
+            includeGroup("org.tensorflow")
         }
     }
 
@@ -29,6 +32,6 @@ repositories {
 }
 
 dependencies {
-    implementation("com.android.tools.build:gradle:4.1.0-alpha09")
+    implementation("com.android.tools.build:gradle:4.2.0-alpha02")
     implementation("eu.appcom.gradle:android-versioning:1.0.2")
 }
