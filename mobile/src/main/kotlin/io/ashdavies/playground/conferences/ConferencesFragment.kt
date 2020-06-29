@@ -12,10 +12,10 @@ import io.ashdavies.playground.common.MainViewModel
 import io.ashdavies.playground.conferences.ConferencesViewModel.Factory
 import io.ashdavies.playground.databinding.ConferencesFragmentBinding
 import io.ashdavies.playground.viewBinding
-import kotlin.LazyThreadSafetyMode.NONE
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlin.LazyThreadSafetyMode.NONE
 
 @ExperimentalCoroutinesApi
 internal class ConferencesFragment : Fragment(R.layout.conferences_fragment) {
@@ -25,7 +25,7 @@ internal class ConferencesFragment : Fragment(R.layout.conferences_fragment) {
     private val parentModel: MainViewModel by viewModels()
 
     private val navController: NavController by lazy(NONE) { findNavController() }
-    private val adapter = ConferencesAdapter(R.layout.list_item)
+    private val adapter = ConferencesAdapter()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

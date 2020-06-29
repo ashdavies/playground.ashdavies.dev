@@ -19,7 +19,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/horizontal_spacing"
-            android:text="@{item.name}"
             android:textStyle="bold"
             app:layout_constraintEnd_toStartOf="@+id/barrier"
             app:layout_constraintStart_toStartOf="parent"
@@ -34,7 +33,6 @@
             android:layout_marginEnd="@dimen/horizontal_spacing"
             android:ellipsize="end"
             android:lines="3"
-            android:text="@{item.website}"
             app:layout_constraintEnd_toStartOf="@+id/barrier"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/name"
@@ -51,7 +49,6 @@
             android:id="@+id/country"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{item.country}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Germany" />
@@ -60,7 +57,6 @@
             android:id="@+id/city"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{item.city}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/country"
             tools:text="Berlin" />
@@ -69,7 +65,6 @@
             android:id="@+id/dateStart"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{item.dateStart}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/city"
             tools:text="3 Sep '17" />
