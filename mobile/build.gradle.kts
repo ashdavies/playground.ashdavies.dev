@@ -70,6 +70,7 @@ dependencies {
     // implementation("androidx.compose:compose-runtime:0.1.0-dev14")
     implementation("androidx.constraintlayout:constraintlayout:2.0.0-beta7")
     implementation("androidx.core:core-ktx:1.5.0-alpha01")
+    implementation("androidx.datastore:datastore-core:1.0.0-SNAPSHOT")
     implementation("androidx.fragment:fragment-ktx:1.3.0-alpha06")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.3.0-alpha05")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.0-alpha05")

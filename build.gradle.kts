@@ -32,6 +32,8 @@ subprojects {
         jitpack()
         kotlin()
 
+        dataStore()
+
         // android()
         // jitpack()
         // kotlin()
