@@ -32,6 +32,6 @@ repositories {
 }
 
 dependencies {
-    implementation("com.android.tools.build:gradle:4.2.0-alpha02")
+    implementation("com.android.tools.build:gradle:4.2.0-alpha04")
     implementation("eu.appcom.gradle:android-versioning:1.0.2")
 }

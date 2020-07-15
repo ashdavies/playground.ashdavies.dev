@@ -68,7 +68,7 @@ dependencies {
     implementation("androidx.cardview:cardview:1.0.0")
     // implementation("androidx.compose:compose-compiler:0.1.0-dev14")
     // implementation("androidx.compose:compose-runtime:0.1.0-dev14")
-    implementation("androidx.constraintlayout:constraintlayout:2.0.0-beta7")
+    implementation("androidx.constraintlayout:constraintlayout:2.0.0-beta8")
     implementation("androidx.core:core-ktx:1.5.0-alpha01")
     implementation("androidx.datastore:datastore-core:1.0.0-SNAPSHOT")
     implementation("androidx.fragment:fragment-ktx:1.3.0-alpha06")
@@ -91,10 +91,10 @@ dependencies {
     implementation("com.google.android.gms:play-services-oss-licenses:17.0.0")
     implementation("com.google.android.material:material:1.3.0-alpha01")
     implementation("com.google.firebase:firebase-common-ktx:19.3.0")
-    implementation("com.google.firebase:firebase-analytics:17.4.3")
-    implementation("com.google.firebase:firebase-firestore-ktx:21.4.3")
+    implementation("com.google.firebase:firebase-analytics:17.4.4")
+    implementation("com.google.firebase:firebase-firestore-ktx:21.5.0")
 
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.4-M2")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.4-M3")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.7")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.7")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.3.7")
@@ -104,7 +104,8 @@ dependencies {
     kapt("com.squareup.moshi:moshi-kotlin-codegen:1.9.3")
 
     testImplementation("com.google.truth:truth:1.0.1")
-    testImplementation("org.junit.jupiter:junit-jupiter:5.7.0-M1")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.3.7")
+    testImplementation("junit:junit:4.13")
 
     // ktlint("com.pinterest:ktlint:0.36.0")
 }
