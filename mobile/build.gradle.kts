@@ -89,6 +89,7 @@ dependencies {
     implementation(ProjectDependencies.JetBrains.Kotlin.StdLib)
     implementation(ProjectDependencies.JetBrains.Kotlin.Coroutines.Android)
     implementation(ProjectDependencies.JetBrains.Kotlin.Coroutines.Core)
+    implementation(ProjectDependencies.JetBrains.Kotlin.Coroutines.Play)
 
     kapt(ProjectDependencies.AndroidX.Room.Compiler)
 

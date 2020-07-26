@@ -73,11 +73,12 @@ object ProjectDependencies {
 
     object JetBrains {
         object Kotlin {
-            const val StdLib = "org.jetbrains.kotlin:kotlin-stdlib:1.4-M3"
+            const val StdLib = "org.jetbrains.kotlin:kotlin-stdlib:1.3.72"
 
             object Coroutines {
                 const val Android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.7"
                 const val Core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.7"
+                const val Play = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.3.8"
                 const val Test = "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.3.7"
             }
         }
