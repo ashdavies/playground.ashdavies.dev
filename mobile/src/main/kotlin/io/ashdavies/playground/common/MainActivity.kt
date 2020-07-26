@@ -6,24 +6,21 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
-import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import io.ashdavies.playground.R
 import io.ashdavies.playground.databinding.MainActivityBinding
 import io.ashdavies.playground.databinding.MainActivityBinding.inflate
+import io.ashdavies.playground.navController
 import io.ashdavies.playground.snack
 import io.ashdavies.playground.viewBinding
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlin.LazyThreadSafetyMode.NONE
 
 internal class MainActivity : AppCompatActivity() {
 
+    private val navController: NavController by navController(R.id.host)
     private val viewBinding: MainActivityBinding by viewBinding(::inflate)
     private val viewModel: MainViewModel by viewModels()
-
-    private val controller: NavController by lazy(NONE) { findNavController(R.id.host) }
-    private val coordinator: CoordinatorLayout by lazy(NONE) { viewBinding.coordinator }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,7 +28,7 @@ internal class MainActivity : AppCompatActivity() {
 
         viewBinding
             .toolbar
-            .setupWithNavController(controller)
+            .setupWithNavController(navController)
 
         viewModel
             .navErrors
@@ -40,8 +37,10 @@ internal class MainActivity : AppCompatActivity() {
     }
 
     private fun onError(throwable: Throwable) {
-        val message: String? = throwable.message
-        if (message != null) coordinator.snack(message)
-        else coordinator.snack(R.string.unexpected_error)
+        val coordinator: CoordinatorLayout = viewBinding.coordinator
+        when (val message: String? = throwable.message) {
+            null -> coordinator.snack(R.string.unexpected_error)
+            else -> coordinator.snack(message)
+        }
     }
 }

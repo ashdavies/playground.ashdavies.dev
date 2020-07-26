@@ -30,6 +30,7 @@ android {
 }
 
 dependencies {
+    implementation(ProjectDependencies.AndroidX.Annotation)
     implementation(ProjectDependencies.AndroidX.CoordinatorLayout)
     implementation(ProjectDependencies.AndroidX.Lifecycle.Common)
     implementation(ProjectDependencies.AndroidX.Lifecycle.LiveData)
