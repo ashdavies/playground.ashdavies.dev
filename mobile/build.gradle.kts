@@ -18,7 +18,6 @@ plugins {
 
 android {
     buildFeatures {
-        // compose = true
         viewBinding = true
     }
 
@@ -67,50 +66,37 @@ configurations {
 dependencies {
     implementation(project(":mobile-ktx"))
 
-    implementation("androidx.activity:activity-ktx:1.2.0-alpha07")
-    implementation("androidx.annotation:annotation:1.2.0-alpha01")
-    implementation("androidx.appcompat:appcompat:1.3.0-alpha01")
-    implementation("androidx.cardview:cardview:1.0.0")
-    // implementation("androidx.compose:compose-compiler:0.1.0-dev14")
-    // implementation("androidx.compose:compose-runtime:0.1.0-dev14")
-    implementation("androidx.constraintlayout:constraintlayout:2.0.0-beta8")
-    implementation("androidx.core:core-ktx:1.5.0-alpha01")
-    // implementation("androidx.datastore:datastore-core:1.0.0-SNAPSHOT")
-    implementation("androidx.fragment:fragment-ktx:1.3.0-alpha07")
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.3.0-alpha06")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.0-alpha06")
-    implementation("androidx.paging:paging-runtime:3.0.0-alpha03")
-    implementation("androidx.room:room-ktx:2.3.0-alpha02")
-    implementation("androidx.navigation:navigation-fragment-ktx:2.3.0")
-    implementation("androidx.navigation:navigation-ui-ktx:2.3.0")
-    implementation("androidx.recyclerview:recyclerview:1.2.0-alpha05")
-    // implementation("androidx.ui:ui-animation:0.1.0-dev14")
-    // implementation("androidx.ui:ui-foundation:0.1.0-dev14")
-    // implementation("androidx.ui:ui-framework:0.1.0-dev14")
-    // implementation("androidx.ui:ui-layout:0.1.0-dev14")
-    // implementation("androidx.ui:ui-material:0.1.0-dev14")
-    // implementation("androidx.ui:ui-tooling:0.1.0-dev14")
+    implementation(ProjectDependencies.AndroidX.Activity)
+    implementation(ProjectDependencies.AndroidX.Annotation)
+    implementation(ProjectDependencies.AndroidX.AppCompat)
+    implementation(ProjectDependencies.AndroidX.CardView)
+    implementation(ProjectDependencies.AndroidX.ConstraintLayout)
+    implementation(ProjectDependencies.AndroidX.Core)
+    implementation(ProjectDependencies.AndroidX.Fragment)
+    implementation(ProjectDependencies.AndroidX.Lifecycle.LiveData)
+    implementation(ProjectDependencies.AndroidX.Lifecycle.ViewModel)
+    implementation(ProjectDependencies.AndroidX.Paging)
+    implementation(ProjectDependencies.AndroidX.Room.Room)
+    implementation(ProjectDependencies.AndroidX.Navigation.Fragment)
+    implementation(ProjectDependencies.AndroidX.Navigation.Ui)
+    implementation(ProjectDependencies.AndroidX.RecyclerView)
 
-    implementation("com.dropbox.mobile.store:store4:4.0.0-alpha06")
-    implementation("com.google.android.gms:play-services-oss-licenses:17.0.0")
-    implementation("com.google.android.material:material:1.3.0-alpha02")
-    implementation("com.google.firebase:firebase-common-ktx:19.3.0")
-    implementation("com.google.firebase:firebase-analytics:17.4.4")
-    implementation("com.google.firebase:firebase-firestore-ktx:21.5.0")
+    implementation(ProjectDependencies.Google.Firebase.Common)
+    implementation(ProjectDependencies.Google.Firebase.Analytics)
+    implementation(ProjectDependencies.Google.Firebase.Firestore)
+    implementation(ProjectDependencies.Google.MaterialDesign)
 
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.3.72")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.8")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.8")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.3.8")
+    implementation(ProjectDependencies.JetBrains.Kotlin.StdLib)
+    implementation(ProjectDependencies.JetBrains.Kotlin.Coroutines.Android)
+    implementation(ProjectDependencies.JetBrains.Kotlin.Coroutines.Core)
 
-    kapt("androidx.room:room-compiler:2.3.0-alpha02")
-    kapt("com.squareup.moshi:moshi-kotlin-codegen:1.9.3")
+    kapt(ProjectDependencies.AndroidX.Room.Compiler)
 
-    testImplementation("com.google.truth:truth:1.0.1")
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.3.71")
-    testImplementation("junit:junit:4.13")
+    testImplementation(ProjectDependencies.Google.Truth)
+    testImplementation(ProjectDependencies.JetBrains.Kotlin.Coroutines.Test)
+    testImplementation(ProjectDependencies.JUnit)
 
-    // ktlint("com.pinterest:ktlint:0.36.0")
+    // ktlint(ProjectDependencies.Pinterest.KtLint)
 }
 
 tasks
