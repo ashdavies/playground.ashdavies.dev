@@ -5,11 +5,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asFlow
+import androidx.lifecycle.liveData
+import androidx.lifecycle.switchMap
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavDirections
 import androidx.paging.PagedList
-import io.ashdavies.extensions.liveData
-import io.ashdavies.extensions.switchMap
 import io.ashdavies.playground.github.ConferenceDatabase
 import io.ashdavies.playground.navigation.NavDirectionsStore
 import io.ashdavies.playground.network.Conference

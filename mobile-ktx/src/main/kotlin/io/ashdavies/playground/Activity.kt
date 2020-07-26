@@ -1,6 +1,7 @@
 package io.ashdavies.playground
 
 import android.app.Activity
+import android.view.LayoutInflater
 import android.view.View
 import androidx.fragment.app.FragmentActivity
 import androidx.viewbinding.ViewBinding
@@ -11,9 +12,9 @@ val Activity.rootView: View
         .rootView
 
 fun <T : ViewBinding> FragmentActivity.viewBinding(
-    bindingProducer: (View) -> T
+    bindingProducer: (LayoutInflater) -> T
 ): Lazy<T> = ViewBindingLazy(
     bindingProducer = bindingProducer,
     ownerProducer = { this },
-    viewProducer = { rootView }
+    inflaterProducer = { layoutInflater }
 )

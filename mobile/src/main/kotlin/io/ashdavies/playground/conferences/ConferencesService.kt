@@ -1,8 +1,8 @@
 package io.ashdavies.playground.conferences
 
 import com.google.firebase.firestore.Query
-import io.ashdavies.playground.extensions.toObjects
 import io.ashdavies.playground.network.Conference
+import io.ashdavies.playground.toObjects
 import kotlinx.coroutines.tasks.await
 
 internal class ConferencesService(private val query: Query) {

@@ -1,13 +1,13 @@
 package io.ashdavies.playground
 
-import android.view.View
+import android.view.LayoutInflater
 import androidx.lifecycle.LifecycleOwner
 import androidx.viewbinding.ViewBinding
 
 internal class ViewBindingLazy<T : ViewBinding>(
-    private val bindingProducer: (View) -> T,
+    private val bindingProducer: (LayoutInflater) -> T,
     private val ownerProducer: () -> LifecycleOwner,
-    private val viewProducer: () -> View
+    private val inflaterProducer: () -> LayoutInflater
 ) : Lazy<T> {
 
     private var cached: T? = null
@@ -19,8 +19,8 @@ internal class ViewBindingLazy<T : ViewBinding>(
                 cached = null
             }
 
-            val view: View = viewProducer()
-            val binding: T = bindingProducer(view)
+            val inflater: LayoutInflater = inflaterProducer()
+            val binding: T = bindingProducer(inflater)
 
             cached = binding
             return binding

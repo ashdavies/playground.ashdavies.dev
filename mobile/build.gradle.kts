@@ -1,5 +1,6 @@
 @file:Suppress("UnstableApiUsage")
 
+import eu.appcom.gradle.VersioningExtension
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
@@ -21,11 +22,6 @@ android {
         viewBinding = true
     }
 
-    /*composeOptions {
-        kotlinCompilerVersion = "1.4.0-rc0-dev-withExperimentalGoogleExtensions-20200424"
-        kotlinCompilerExtensionVersion = "0.1.0-dev14"
-    }*/
-
     setCompileSdkVersion(29)
 
     compileOptions {
@@ -39,6 +35,10 @@ android {
         setMinSdkVersion(21)
         setTargetSdkVersion(29)
 
+        val versioning: VersioningExtension = extensions
+            .getByName("versioning")
+            .let { it as VersioningExtension }
+
         versionCode = versioning.getVersionCode()
         versionName = versioning.getVersionName()
 
@@ -46,8 +46,13 @@ android {
     }
 
     sourceSets {
-        main.srcDirs = setOf("src/main/kotlin")
-        test.srcDirs = setOf("src/test/kotlin")
+        getByName("main")
+            .java
+            .srcDirs("src/main/kotlin")
+
+        getByName("test")
+            .java
+            .srcDirs("src/test/kotlin")
     }
 }
 
@@ -70,7 +75,7 @@ dependencies {
     // implementation("androidx.compose:compose-runtime:0.1.0-dev14")
     implementation("androidx.constraintlayout:constraintlayout:2.0.0-beta8")
     implementation("androidx.core:core-ktx:1.5.0-alpha01")
-    implementation("androidx.datastore:datastore-core:1.0.0-SNAPSHOT")
+    // implementation("androidx.datastore:datastore-core:1.0.0-SNAPSHOT")
     implementation("androidx.fragment:fragment-ktx:1.3.0-alpha07")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.3.0-alpha06")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.0-alpha06")
@@ -87,24 +92,22 @@ dependencies {
     // implementation("androidx.ui:ui-tooling:0.1.0-dev14")
 
     implementation("com.dropbox.mobile.store:store4:4.0.0-alpha06")
-    implementation("com.github.ashdavies:lifecycle-flow:0.7.2")
     implementation("com.google.android.gms:play-services-oss-licenses:17.0.0")
     implementation("com.google.android.material:material:1.3.0-alpha02")
     implementation("com.google.firebase:firebase-common-ktx:19.3.0")
     implementation("com.google.firebase:firebase-analytics:17.4.4")
     implementation("com.google.firebase:firebase-firestore-ktx:21.5.0")
 
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.4.0-rc")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.0-rc")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.0-rc")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.4.0-rc")
-    implementation("org.reduxkotlin:redux-kotlin-jvm:0.5.1")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.3.72")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.8")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.8")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.3.8")
 
     kapt("androidx.room:room-compiler:2.3.0-alpha02")
     kapt("com.squareup.moshi:moshi-kotlin-codegen:1.9.3")
 
     testImplementation("com.google.truth:truth:1.0.1")
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.4.0-rc")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.3.71")
     testImplementation("junit:junit:4.13")
 
     // ktlint("com.pinterest:ktlint:0.36.0")

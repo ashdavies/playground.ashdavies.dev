@@ -10,15 +10,16 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import io.ashdavies.playground.R
 import io.ashdavies.playground.databinding.MainActivityBinding
+import io.ashdavies.playground.databinding.MainActivityBinding.inflate
 import io.ashdavies.playground.snack
 import io.ashdavies.playground.viewBinding
-import kotlin.LazyThreadSafetyMode.NONE
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlin.LazyThreadSafetyMode.NONE
 
-internal class MainActivity : AppCompatActivity(R.layout.main_activity) {
+internal class MainActivity : AppCompatActivity() {
 
-    private val viewBinding: MainActivityBinding by viewBinding(MainActivityBinding::bind)
+    private val viewBinding: MainActivityBinding by viewBinding(::inflate)
     private val viewModel: MainViewModel by viewModels()
 
     private val controller: NavController by lazy(NONE) { findNavController(R.id.host) }
@@ -26,6 +27,7 @@ internal class MainActivity : AppCompatActivity(R.layout.main_activity) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(viewBinding.root)
 
         viewBinding
             .toolbar
