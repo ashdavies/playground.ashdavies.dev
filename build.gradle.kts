@@ -16,12 +16,3 @@ buildscript {
         classpath(BuildPlugins.Versions)
     }
 }
-
-subprojects {
-    repositories {
-        google()
-        gradlePluginPortal()
-        mavenCentral()
-        jcenter()
-    }
-}

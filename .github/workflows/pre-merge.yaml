@@ -1,0 +1,41 @@
+name: Pre Merge Checks
+
+on:
+  push:
+    branches:
+      - main
+
+  pull_request:
+    branches:
+      - '*'
+
+jobs:
+  gradle:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+
+      - name: Cache Gradle Caches
+        uses: actions/cache@v1
+        with:
+          path: ~/.gradle/caches/
+          key: cache-gradle-cache
+
+      - name: Cache Gradle Wrapper
+        uses: actions/cache@v1
+        with:
+          path: ~/.gradle/wrapper/
+          key: cache-gradle-wrapper
+
+      - name: Decrypt Google Services config file
+        run: openssl aes-256-cbc -md sha256 -d -in mobile/google-services.aes -out mobile/google-services.json -k ${{ secrets.GOOGLE_SERVICES_PASSPHRASE }}
+
+      - name: Run Gradle tasks
+        run: ./gradlew build check
+
+      - name: Display dependency updates
+        run: ./gradlew dependencyUpdates
+
+      - name: Stop Gradle
+        run: ./gradlew --stop
