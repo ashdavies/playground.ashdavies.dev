@@ -6,13 +6,12 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     id("com.android.application")
     id("com.google.android.gms.oss-licenses-plugin")
-    id("com.github.ben-manes.versions")
-    id("eu.appcom.gradle.android-versioning")
 
     kotlin("android")
     kotlin("android.extensions")
     kotlin("kapt")
 
+    id("eu.appcom.gradle.android-versioning")
     id("androidx.navigation.safeargs.kotlin")
 }
 
