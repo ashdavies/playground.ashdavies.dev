@@ -30,18 +30,18 @@ android {
 }
 
 dependencies {
-    implementation(ProjectDependencies.AndroidX.Annotation)
-    implementation(ProjectDependencies.AndroidX.CoordinatorLayout)
-    implementation(ProjectDependencies.AndroidX.Lifecycle.Common)
-    implementation(ProjectDependencies.AndroidX.Lifecycle.LiveData)
-    implementation(ProjectDependencies.AndroidX.Navigation.Fragment)
-    implementation(ProjectDependencies.AndroidX.Room.Runtime)
-    implementation(ProjectDependencies.AndroidX.ViewBinding)
-    implementation(ProjectDependencies.Google.Firebase.Firestore)
-    implementation(ProjectDependencies.Google.MaterialDesign)
-    implementation(ProjectDependencies.JetBrains.Kotlin.StdLib)
+    implementation(ProjectDependencies.AndroidX.annotation)
+    implementation(ProjectDependencies.AndroidX.coordinatorLayout)
+    implementation(ProjectDependencies.AndroidX.Lifecycle.common)
+    implementation(ProjectDependencies.AndroidX.Lifecycle.liveData)
+    implementation(ProjectDependencies.AndroidX.Navigation.fragment)
+    implementation(ProjectDependencies.AndroidX.Room.runtime)
+    implementation(ProjectDependencies.AndroidX.viewBinding)
+    implementation(ProjectDependencies.Google.Firebase.firestore)
+    implementation(ProjectDependencies.Google.materialDesign)
+    implementation(ProjectDependencies.JetBrains.Kotlin.stdLib)
 
-    testImplementation(ProjectDependencies.Google.Truth)
-    testImplementation(ProjectDependencies.JetBrains.Kotlin.Coroutines.Test)
+    testImplementation(ProjectDependencies.Google.truth)
+    testImplementation(ProjectDependencies.JetBrains.Kotlin.Coroutines.test)
     testImplementation(ProjectDependencies.JUnit)
 }
