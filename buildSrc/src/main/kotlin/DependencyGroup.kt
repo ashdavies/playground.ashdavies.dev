@@ -13,7 +13,7 @@ abstract class DependencyGroup(
     VERSION to version
 )
 
-fun dependency(
+fun artifact(
     name: String? = null,
     version: String? = null
 ): ReadOnlyProperty<DependencyGroup, Map<String, String?>> {
