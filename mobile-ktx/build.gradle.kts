@@ -39,7 +39,6 @@ dependencies {
     implementation(ProjectDependencies.AndroidX.viewBinding)
     implementation(ProjectDependencies.Google.Firebase.firestore)
     implementation(ProjectDependencies.Google.materialDesign)
-    implementation(ProjectDependencies.JetBrains.Kotlin.stdLib)
 
     testImplementation(ProjectDependencies.Google.truth)
     testImplementation(ProjectDependencies.JetBrains.Kotlin.Coroutines.test)

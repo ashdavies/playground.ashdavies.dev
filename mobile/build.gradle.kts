@@ -85,7 +85,6 @@ dependencies {
     implementation(ProjectDependencies.Google.Firebase.firestore)
     implementation(ProjectDependencies.Google.materialDesign)
 
-    implementation(ProjectDependencies.JetBrains.Kotlin.stdLib)
     implementation(ProjectDependencies.JetBrains.Kotlin.Coroutines.android)
     implementation(ProjectDependencies.JetBrains.Kotlin.Coroutines.core)
     implementation(ProjectDependencies.JetBrains.Kotlin.Coroutines.play)

@@ -2,9 +2,9 @@ object ProjectDependencies {
     const val JUnit = "junit:junit:4.13"
 
     object AndroidX {
-        const val activity = "androidx.activity:activity-ktx:1.2.0-alpha06"
+        const val activity = "androidx.activity:activity-ktx:1.2.0-alpha08"
         const val annotation = "androidx.annotation:annotation:1.2.0-alpha01"
-        const val appCompat = "androidx.appcompat:appcompat:1.3.0-alpha01"
+        const val appCompat = "androidx.appcompat:appcompat:1.3.0-alpha02"
         const val cardView = "androidx.cardview:cardview:1.0.0"
 
         object Compose : DependencyGroup("androidx.compose", "0.1.0-dev14") {
@@ -12,21 +12,21 @@ object ProjectDependencies {
             val runtime by dependency("compose-runtime")
         }
 
-        const val constraintLayout = "androidx.constraintlayout:constraintlayout:2.0.0-beta8"
+        const val constraintLayout = "androidx.constraintlayout:constraintlayout:2.0.1"
         const val coordinatorLayout = "androidx.coordinatorlayout:coordinatorlayout:1.1.0"
-        const val core = "androidx.core:core-ktx:1.5.0-alpha01"
+        const val core = "androidx.core:core-ktx:1.5.0-alpha02"
         const val dataStore = "androidx.datastore:datastore-core:1.0.0-SNAPSHOT"
-        const val fragment = "androidx.fragment:fragment-ktx:1.3.0-alpha06"
+        const val fragment = "androidx.fragment:fragment-ktx:1.3.0-alpha08"
 
-        object Lifecycle : DependencyGroup("androidx.lifecycle", "2.3.0-alpha05") {
+        object Lifecycle : DependencyGroup("androidx.lifecycle", "2.3.0-alpha07") {
             val common by dependency("lifecycle-common-java8")
             val liveData by dependency("lifecycle-livedata-ktx")
             val viewModel by dependency("lifecycle-viewmodel-ktx")
         }
 
-        const val paging = "androidx.paging:paging-runtime:3.0.0-alpha02"
+        const val paging = "androidx.paging:paging-runtime:3.0.0-alpha05"
 
-        object Room : DependencyGroup("androidx.room", "2.3.0-alpha01") {
+        object Room : DependencyGroup("androidx.room", "2.3.0-alpha02") {
             val compiler by dependency("room-compiler")
             val room by dependency("room-ktx")
             val runtime by dependency("room-runtime")
@@ -37,7 +37,7 @@ object ProjectDependencies {
             val ui by dependency("navigation-ui-ktx")
         }
 
-        const val recyclerView = "androidx.recyclerview:recyclerview:1.2.0-alpha04"
+        const val recyclerView = "androidx.recyclerview:recyclerview:1.2.0-alpha05"
 
         object Ui : DependencyGroup("androidx.ui", "0.1.0-dev14") {
             val animation by dependency("ui-animation")
@@ -48,7 +48,7 @@ object ProjectDependencies {
             val tooling by dependency("ui-tooling")
         }
 
-        const val viewBinding = "androidx.databinding:viewbinding:4.2.0-alpha05"
+        val viewBinding = "androidx.databinding:viewbinding:${BuildPlugins.BuildTools.version}"
     }
 
     object Dropbox {
@@ -57,21 +57,21 @@ object ProjectDependencies {
 
     object Google {
         object Firebase : DependencyGroup("com.google.firebase") {
-            val common by dependency("firebase-common-ktx", "19.3.0")
-            val analytics by dependency("firebase-analytics", "17.4.4")
-            val firestore by dependency("firebase-firestore-ktx", "21.5.0")
+            val common by dependency("firebase-common-ktx", "19.3.1")
+            val analytics by dependency("firebase-analytics", "17.5.0")
+            val firestore by dependency("firebase-firestore-ktx", "21.6.0")
         }
 
-        const val materialDesign = "com.google.android.material:material:1.3.0-alpha01"
+        const val materialDesign = "com.google.android.material:material:1.3.0-alpha02"
         const val ossLicences = "com.google.android.gms:play-services-oss-licenses:17.0.0"
         const val truth = "com.google.truth:truth:1.0.1"
     }
 
     object JetBrains {
         object Kotlin {
-            const val stdLib = "org.jetbrains.kotlin:kotlin-stdlib:1.3.72"
+            val stdLib = "org.jetbrains.kotlin:kotlin-stdlib:${BuildPlugins.Kotlin.version}"
 
-            object Coroutines : DependencyGroup("org.jetbrains.kotlinx", "1.3.7") {
+            object Coroutines : DependencyGroup("org.jetbrains.kotlinx", "1.3.9") {
                 val android by dependency("kotlinx-coroutines-android")
                 val core by dependency("kotlinx-coroutines-core")
                 val play by dependency("kotlinx-coroutines-play-services")
@@ -81,6 +81,6 @@ object ProjectDependencies {
     }
 
     object Pinterest : DependencyGroup("com.pinterest") {
-        const val ktlint = "com.pinterest:ktlint:0.36.0"
+        const val ktlint = "com.pinterest:ktlint:0.38.1"
     }
 }
