@@ -1,14 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobileNavigation"
     app:startDestination="@id/conferencesFragment">
 
     <fragment
         android:id="@+id/conferencesFragment"
         android:name="io.ashdavies.playground.conferences.ConferencesFragment"
-        android:label="@string/application"
-        tools:layout="@layout/conferences_fragment" />
+        android:label="@string/application">
+
+        <action
+            android:id="@+id/navigateToErrorDialog"
+            app:destination="@id/errorDialog" />
+
+    </fragment>
+
+    <dialog
+        android:id="@+id/errorDialog"
+        android:name="io.ashdavies.playground.conferences.ErrorDialogFragment"
+        android:label="@string/unexpected_error">
+
+        <argument
+            android:name="title"
+            app:argType="string" />
+
+        <argument
+            android:name="message"
+            app:argType="string" />
+
+    </dialog>
 
 </navigation>

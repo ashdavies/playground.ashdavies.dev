@@ -1,36 +1,39 @@
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
-private const val GROUP = "group"
-private const val NAME = "name"
-private const val VERSION = "version"
-
 abstract class DependencyGroup(
-    group: String? = null,
-    version: String? = null
-) : Map<String, String?> by mapOf(
-    GROUP to group,
-    VERSION to version
-)
+    val group: String? = null,
+    val version: String? = null
+) {
 
-fun artifact(
-    name: String? = null,
-    version: String? = null
-): ReadOnlyProperty<DependencyGroup, Map<String, String?>> {
-    return DependencyGroupArtifact(name, version)
+    fun artifact(
+        group: String? = this.group,
+        version: String? = this.version
+    ): ReadOnlyProperty<DependencyGroup, String> = DependencyGroupImpl(
+        version = version,
+        group = group
+    )
 }
 
-private class DependencyGroupArtifact(
-    private val name: String? = null,
-    private val version: String? = null
-): ReadOnlyProperty<DependencyGroup, Map<String, String?>> {
+private class DependencyGroupImpl(
+    private val group: String?,
+    private val version: String?
+) : ReadOnlyProperty<DependencyGroup, String> {
 
     override fun getValue(
         thisRef: DependencyGroup,
         property: KProperty<*>
-    ): Map<String, String?> = mapOf(
-        GROUP to thisRef[GROUP],
-        NAME to (thisRef[NAME] ?: name ?: property.name),
-        VERSION to (thisRef[VERSION] ?: version)
-    )
+    ): String {
+        val artifactName: String = CamelCaseString(property.name).toKebabCase()
+
+        val artifactVersion: String = requireNotNull(version ?: thisRef.version) {
+            "Version declaration for dependency with name '$artifactName' not found"
+        }
+
+        val artifactGroup: String = requireNotNull(group ?: thisRef.group) {
+            "Group declaration for dependency with name '$artifactName' not found"
+        }
+
+        return "$artifactGroup:$artifactName:$artifactVersion"
+    }
 }

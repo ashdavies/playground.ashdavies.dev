@@ -12,11 +12,4 @@ internal class MainViewModel : NavDirectionsStore, ViewModel() {
 
     private val _navDirections: Channel<NavDirections> = Channel(CONFLATED)
     override val navDirections: Flow<NavDirections> get() = _navDirections.receiveAsFlow()
-
-    private val _navErrors: Channel<Throwable> = Channel(CONFLATED)
-    val navErrors: Flow<Throwable> get() = _navErrors.receiveAsFlow()
-
-    fun onError(throwable: Throwable) {
-        _navErrors.offer(throwable)
-    }
 }

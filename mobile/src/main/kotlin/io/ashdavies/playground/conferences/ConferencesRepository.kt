@@ -1,37 +1,18 @@
 package io.ashdavies.playground.conferences
 
-import androidx.lifecycle.LiveData
-import androidx.paging.DataSource
-import androidx.paging.LivePagedListBuilder
-import androidx.paging.PagedList
-import io.ashdavies.playground.github.ConferenceDao
 import io.ashdavies.playground.network.Conference
-import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 
 internal class ConferencesRepository(
-    private val dao: ConferenceDao,
-    private val service: ConferencesService
+    private val conferencesClient: ConferencesClient,
+    private val conferencesDao: ConferencesDao,
+    private val conferencesStore: ConferencesStore,
 ) {
 
-    fun conferences(scope: CoroutineScope): ConferencesViewState {
-        val factory: DataSource.Factory<Int, Conference> = dao.conferences()
-        val callback = ConferencesBoundaryCallback(dao, scope, service)
-
-        val config: PagedList.Config = PagedList.Config.Builder()
-            .setPageSize(PAGE_SIZE)
-            .setEnablePlaceholders(true)
-            .setPrefetchDistance(50)
-            .build()
-
-        val data: LiveData<PagedList<Conference>> = LivePagedListBuilder(factory, config)
-            .setBoundaryCallback(callback)
-            .build()
-
-        return ConferencesViewState(data, callback.error)
-    }
-
-    companion object {
-
-        private const val PAGE_SIZE = 20
+    fun getAll(): Flow<List<Conference>> = flow {
+        val result: List<Conference> = conferencesClient.getAll()
+        conferencesDao.insert(result)
+        emit(result)
     }
 }

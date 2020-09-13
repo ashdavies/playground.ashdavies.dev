@@ -1,27 +1,72 @@
 package io.ashdavies.playground.conferences
 
 import android.content.Context
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.FirebaseFirestore.getInstance
-import com.google.firebase.firestore.Query
-import com.google.firebase.firestore.Query.Direction.DESCENDING
+import com.dropbox.android.external.store4.Fetcher
+import com.dropbox.android.external.store4.SourceOfTruth
+import com.dropbox.android.external.store4.Store
+import com.dropbox.android.external.store4.StoreBuilder
 import io.ashdavies.playground.database
-import io.ashdavies.playground.github.ConferenceDatabase
+import io.ashdavies.playground.network.Conference
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
+import retrofit2.Converter
+import retrofit2.Retrofit
+import retrofit2.converter.moshi.MoshiConverterFactory
+import retrofit2.create
 
-internal fun database(
-    context: Context
-): ConferenceDatabase = context
-    .applicationContext
-    .database("GitHub.db")
+private const val CONFERENCES_DATABASE = "Conferences.db"
+private const val GITHUB_BASE_URL = "https://api.github.com/repos/AndroidStudyGroup/conferences"
 
-internal fun firestore(): FirebaseFirestore = getInstance()
+private val moshiConverterFactory: Converter.Factory
+    get() = MoshiConverterFactory.create()
 
-internal fun service(
-    query: Query = query()
-): ConferencesService = ConferencesService(query)
+private val retrofit: Retrofit
+    get() = Retrofit.Builder()
+        .baseUrl(GITHUB_BASE_URL)
+        .addConverterFactory(moshiConverterFactory)
+        .build()
 
-internal fun query(
-    firestore: FirebaseFirestore = firestore()
-): Query = firestore
-    .collection("conference")
-    .orderBy("dateStart", DESCENDING)
+private val conferencesService: ConferencesService
+    get() = retrofit.create()
+
+private val conferencesClient: ConferencesClient
+    get() = ConferencesClient(conferencesService)
+
+private val conferencesFetcher: Fetcher<String, List<Conference>>
+    get() = Fetcher.of { conferencesClient.getAll() }
+
+private val Context.conferencesDatabase: ConferencesDatabase
+    get() = applicationContext.database(CONFERENCES_DATABASE)
+
+private val Context.conferencesDao: ConferencesDao
+    get() = conferencesDatabase.dao()
+
+private val ConferencesDao.sourceOfTruth: ConferencesSourceOfTruth
+    get() = SourceOfTruth.of(
+        nonFlowReader = { getAll() },
+        writer = { _, it -> insert(it) },
+        deleteAll = { deleteAll() },
+        delete = null,
+    )
+
+private val Context.sourceOfTruth: ConferencesSourceOfTruth
+    get() = conferencesDao.sourceOfTruth
+
+@FlowPreview
+@ExperimentalCoroutinesApi
+private val Context.conferencesStore: ConferencesStore
+    get() = StoreBuilder.from(
+        sourceOfTruth = sourceOfTruth,
+        fetcher = conferencesFetcher
+    ).build()
+
+@FlowPreview
+@ExperimentalCoroutinesApi
+internal val Context.conferencesRepository: ConferencesRepository
+    get() = ConferencesRepository(conferencesClient, conferencesDao, conferencesStore)
+
+internal typealias ConferencesSourceOfTruth =
+    SourceOfTruth<String, List<Conference>, List<Conference>>
+
+internal typealias ConferencesStore =
+    Store<String, List<Conference>>

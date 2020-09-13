@@ -1,4 +1,4 @@
-package io.ashdavies.playground.github
+package io.ashdavies.playground.conferences
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
@@ -12,7 +12,7 @@ import io.ashdavies.playground.network.Conference
     version = 1
 )
 @TypeConverters(DateConverter::class)
-internal abstract class ConferenceDatabase : RoomDatabase() {
+internal abstract class ConferencesDatabase : RoomDatabase() {
 
-    abstract fun dao(): ConferenceDao
+    abstract fun dao(): ConferencesDao
 }

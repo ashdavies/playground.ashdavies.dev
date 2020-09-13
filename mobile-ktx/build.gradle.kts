@@ -1,8 +1,6 @@
 plugins {
     id("com.android.library")
-
     id("kotlin-android")
-    id("kotlin-kapt")
 }
 
 android {
@@ -18,6 +16,11 @@ android {
         setTargetSdkVersion(29)
     }
 
+    kotlinOptions {
+        jvmTarget = "1.8"
+        useIR = true
+    }
+
     sourceSets {
         getByName("main")
             .java
@@ -31,16 +34,15 @@ android {
 
 dependencies {
     implementation(ProjectDependencies.AndroidX.annotation)
-    implementation(ProjectDependencies.AndroidX.coordinatorLayout)
-    implementation(ProjectDependencies.AndroidX.Lifecycle.common)
-    implementation(ProjectDependencies.AndroidX.Lifecycle.liveData)
-    implementation(ProjectDependencies.AndroidX.Navigation.fragment)
-    implementation(ProjectDependencies.AndroidX.Room.runtime)
-    implementation(ProjectDependencies.AndroidX.viewBinding)
-    implementation(ProjectDependencies.Google.Firebase.firestore)
-    implementation(ProjectDependencies.Google.materialDesign)
+    implementation(ProjectDependencies.AndroidX.Compose.runtime)
+    implementation(ProjectDependencies.AndroidX.Compose.ui)
+    implementation(ProjectDependencies.AndroidX.Lifecycle.lifecycleCommonJava8)
+    implementation(ProjectDependencies.AndroidX.Lifecycle.lifecycleLivedataKtx)
+    implementation(ProjectDependencies.AndroidX.Navigation.navigationFragmentKtx)
+    implementation(ProjectDependencies.AndroidX.Room.roomRuntime)
+    implementation(ProjectDependencies.Google.Android.material)
 
     testImplementation(ProjectDependencies.Google.truth)
-    testImplementation(ProjectDependencies.JetBrains.Kotlin.Coroutines.test)
+    testImplementation(ProjectDependencies.JetBrains.KotlinX.kotlinxCoroutinesTest)
     testImplementation(ProjectDependencies.JUnit)
 }

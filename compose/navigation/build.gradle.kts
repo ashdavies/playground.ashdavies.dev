@@ -4,11 +4,20 @@ plugins {
 }
 
 android {
+    buildFeatures {
+        compose = true
+    }
+
     setCompileSdkVersion(29)
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
+    composeOptions {
+        kotlinCompilerVersion = BuildPlugins.Kotlin.version
+        kotlinCompilerExtensionVersion = ProjectDependencies.AndroidX.Compose.version
     }
 
     defaultConfig {
@@ -25,5 +34,5 @@ android {
 dependencies {
     implementation(ProjectDependencies.AndroidX.Compose.runtime)
     implementation(ProjectDependencies.AndroidX.Compose.ui)
-    implementation(ProjectDependencies.AndroidX.Navigation.runtime)
+    implementation(ProjectDependencies.AndroidX.Navigation.navigationRuntimeKtx)
 }
