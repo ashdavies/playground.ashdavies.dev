@@ -7,20 +7,20 @@ buildscript {
     }
 
     dependencies {
-        classpath(BuildPlugins.BuildTools)
+        classpath(BuildPlugins.Gradle)
         classpath(BuildPlugins.GoogleServices)
-        classpath(BuildPlugins.Kotlin)
-        classpath(BuildPlugins.OssLicenses)
-        classpath(BuildPlugins.SafeArgs)
-        classpath(BuildPlugins.Versioning)
+        classpath(BuildPlugins.KotlinGradlePlugin)
+        classpath(BuildPlugins.OssLicensesPlugin)
+        classpath(BuildPlugins.NavigationSafeArgsGradlePlugin)
+        classpath(BuildPlugins.AndroidVersioning)
     }
 }
 
 plugins {
-    id("com.github.ben-manes.versions") version BuildPlugins.Versions.version
-    id("com.osacky.doctor") version BuildPlugins.GradleDoctor.version
-    id("io.gitlab.arturbosch.detekt") version BuildPlugins.Detekt.version
-    id("org.jlleitschuh.gradle.ktlint") version BuildPlugins.KtLint.version
+    id("com.github.ben-manes.versions") version BuildPlugins.GradleVersionsPlugin.version
+    id("com.osacky.doctor") version BuildPlugins.DoctorPlugin.version
+    id("io.gitlab.arturbosch.detekt") version BuildPlugins.DetektGradlePlugin.version
+    id("org.jlleitschuh.gradle.ktlint") version BuildPlugins.KtlintGradle.version
 }
 
 allprojects {

@@ -16,7 +16,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerVersion = BuildPlugins.Kotlin.version
+        kotlinCompilerVersion = BuildPlugins.KotlinGradlePlugin.version
         kotlinCompilerExtensionVersion = ProjectDependencies.AndroidX.Compose.version
     }
 

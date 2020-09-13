@@ -1,21 +1,21 @@
 interface PluginDescriptor {
-    val module: String
+    val id: String
     val version: String
 }
 
 @Suppress("FunctionName")
 fun PluginDescriptor(
-    module: String,
+    id: String,
     version: String
 ): PluginDescriptor = PluginDescriptorImpl(
-    module = module,
+    id = id,
     version = version
 )
 
 private class PluginDescriptorImpl(
-    override val module: String,
+    override val id: String,
     override val version: String
-) : StringFacade("$module:$version"), PluginDescriptor
+) : StringFacade("$id:$version"), PluginDescriptor
 
 private abstract class StringFacade(
     private val value: String
