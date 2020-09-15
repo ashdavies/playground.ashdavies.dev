@@ -2,6 +2,7 @@ package io.ashdavies.playground.conferences
 
 import androidx.compose.foundation.Text
 import androidx.compose.foundation.lazy.LazyColumnFor
+import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.ui.tooling.preview.Preview
 import io.ashdavies.playground.network.Conference
@@ -10,7 +11,11 @@ import java.util.Date
 @Preview
 @Composable
 internal fun ConferencesScreen(parser: DateParser = dateParser) = ConferencesList(
-    data = listOf(StubConference(parser))
+    data = listOf(
+        StubConference(parser),
+        StubConference(parser),
+        StubConference(parser),
+    )
 )
 
 @Composable
@@ -22,7 +27,9 @@ internal fun ConferencesList(data: List<Conference>) {
 
 @Composable
 internal fun ConferenceItem(data: Conference) {
-    Text(text = data.name)
+    Surface {
+        Text(text = data.name)
+    }
 }
 
 @Suppress("FunctionName")

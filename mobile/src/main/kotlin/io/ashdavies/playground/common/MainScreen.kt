@@ -1,6 +1,8 @@
 package io.ashdavies.playground.common
 
 import androidx.compose.foundation.Text
+import androidx.compose.foundation.layout.Column
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.TopAppBar
 import androidx.compose.navigation.NavHost
 import androidx.compose.navigation.composable
@@ -14,11 +16,15 @@ import io.ashdavies.playground.navigation.ScreenDestination.Conferences
 @Preview
 @Composable
 fun MainScreen() {
-    TopAppBar {
-        Text(text = stringResource(R.string.application))
-    }
+    MaterialTheme {
+        Column {
+            TopAppBar {
+                Text(text = stringResource(R.string.application))
+            }
 
-    NavHost(startDestination = Conferences) {
-        composable(Conferences) { ConferencesScreen() }
+            NavHost(startDestination = Conferences) {
+                composable(Conferences) { ConferencesScreen() }
+            }
+        }
     }
 }
