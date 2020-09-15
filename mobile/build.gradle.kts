@@ -68,13 +68,14 @@ configurations {
 }
 
 dependencies {
-    implementation(project(":compose:navigation"))
     implementation(project(":mobile-ktx"))
 
     implementation(ProjectDependencies.AndroidX.activityKtx)
     implementation(ProjectDependencies.AndroidX.annotation)
     implementation(ProjectDependencies.AndroidX.Compose.foundation)
     implementation(ProjectDependencies.AndroidX.Compose.material)
+    implementation(ProjectDependencies.AndroidX.Compose.navigation)
+    implementation(ProjectDependencies.AndroidX.Compose.runtime)
     implementation(ProjectDependencies.AndroidX.Compose.ui)
     implementation(ProjectDependencies.AndroidX.coreKtx)
     implementation(ProjectDependencies.AndroidX.fragmentKtx)

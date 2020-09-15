@@ -2,9 +2,6 @@ import org.gradle.api.artifacts.dsl.RepositoryHandler
 import org.gradle.api.artifacts.repositories.MavenArtifactRepository
 import org.gradle.kotlin.dsl.maven
 
-private const val DATA_STORE_SNAPSHOT =
-    "https://androidx.dev/snapshots/builds/6639139/artifacts/repository"
-
 private const val JITPACK =
     "https://jitpack.io"
 
@@ -19,6 +16,10 @@ fun RepositoryHandler.android(): MavenArtifactRepository = google {
 
         includeModule("org.jetbrains.kotlin", "kotlin-compiler-embeddable")
     }
+}
+
+fun RepositoryHandler.androidx(build: String): MavenArtifactRepository {
+    return maven("https://androidx.dev/snapshots/builds/$build/artifacts/ui/repository/")
 }
 
 fun RepositoryHandler.jitpack(): MavenArtifactRepository = maven(JITPACK) {
@@ -42,11 +43,5 @@ fun RepositoryHandler.tensorflow(): MavenArtifactRepository = jcenter {
 fun RepositoryHandler.trove4j(): MavenArtifactRepository = jcenter {
     content {
         includeModule("org.jetbrains.trove4j", "trove4j")
-    }
-}
-
-fun RepositoryHandler.dataStore(): MavenArtifactRepository = maven(DATA_STORE_SNAPSHOT) {
-    content {
-        includeGroup("androidx.datastore")
     }
 }

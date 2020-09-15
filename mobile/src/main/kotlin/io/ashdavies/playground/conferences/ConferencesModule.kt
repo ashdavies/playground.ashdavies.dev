@@ -13,6 +13,9 @@ import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.create
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 private const val CONFERENCES_DATABASE = "Conferences.db"
 private const val GITHUB_BASE_URL = "https://api.github.com/repos/AndroidStudyGroup/conferences"
@@ -64,6 +67,12 @@ private val Context.conferencesStore: ConferencesStore
 @ExperimentalCoroutinesApi
 internal val Context.conferencesRepository: ConferencesRepository
     get() = ConferencesRepository(conferencesClient, conferencesDao, conferencesStore)
+
+private val dateFormat: DateFormat
+    get() = SimpleDateFormat("yyyy-MM-dd", Locale.UK)
+
+internal val dateParser: DateParser
+    get() = DateParser(dateFormat::parse)
 
 internal typealias ConferencesSourceOfTruth =
     SourceOfTruth<String, List<Conference>, List<Conference>>

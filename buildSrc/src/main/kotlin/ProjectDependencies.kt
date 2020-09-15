@@ -5,9 +5,10 @@ object ProjectDependencies {
         val activityKtx by artifact("$group.activity", "1.2.0-alpha08")
         val annotation by artifact("$group.annotation", "1.2.0-alpha01")
 
-        object Compose : DependencyGroup("androidx.compose", "1.0.0-alpha02") {
+        object Compose : DependencyGroup("androidx.compose", "1.0.0-SNAPSHOT") {
             val foundation by artifact("$group.foundation")
             val material by artifact("$group.material")
+            val navigation by artifact("$group.navigation")
             val runtime by artifact("$group.runtime")
             val ui by artifact( "$group.ui")
         }

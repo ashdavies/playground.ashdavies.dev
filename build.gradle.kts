@@ -25,6 +25,8 @@ plugins {
 
 allprojects {
     repositories {
+        androidx("6834848")
+
         google()
         gradlePluginPortal()
         mavenCentral()
