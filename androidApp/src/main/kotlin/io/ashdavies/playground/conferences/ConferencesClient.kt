@@ -1,6 +1,6 @@
 package io.ashdavies.playground.conferences
 
-import io.ashdavies.playground.github.GitHub
+import io.ashdavies.playground.network.GitHub
 import io.ashdavies.playground.network.Conference
 import java.util.Date
 

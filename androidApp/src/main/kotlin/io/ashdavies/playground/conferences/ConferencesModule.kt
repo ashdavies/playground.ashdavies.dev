@@ -5,13 +5,19 @@ import com.dropbox.android.external.store4.Fetcher
 import com.dropbox.android.external.store4.SourceOfTruth
 import com.dropbox.android.external.store4.Store
 import com.dropbox.android.external.store4.StoreBuilder
-import io.ashdavies.playground.database
+import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
+import io.ashdavies.playground.ktx.database
 import io.ashdavies.playground.network.Conference
+import io.ashdavies.playground.util.DateParser
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.json.Json
+import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.OkHttpClient
 import retrofit2.Converter
 import retrofit2.Retrofit
-import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.create
 import java.text.DateFormat
 import java.text.SimpleDateFormat
@@ -20,21 +26,30 @@ import java.util.Locale
 private const val CONFERENCES_DATABASE = "Conferences.db"
 private const val GITHUB_BASE_URL = "https://api.github.com/repos/AndroidStudyGroup/conferences"
 
-private val moshiConverterFactory: Converter.Factory
-    get() = MoshiConverterFactory.create()
+private val mediaType: MediaType
+    get() = "application/json".toMediaType()
 
+@ExperimentalSerializationApi
+private val kotlinJsonConverterFactory: Converter.Factory
+    get() = Json.asConverterFactory(mediaType)
+
+@ExperimentalSerializationApi
 private val retrofit: Retrofit
     get() = Retrofit.Builder()
         .baseUrl(GITHUB_BASE_URL)
-        .addConverterFactory(moshiConverterFactory)
+        .addConverterFactory(kotlinJsonConverterFactory)
+        .client(OkHttpClient())
         .build()
 
+@ExperimentalSerializationApi
 private val conferencesService: ConferencesService
     get() = retrofit.create()
 
+@ExperimentalSerializationApi
 private val conferencesClient: ConferencesClient
     get() = ConferencesClient(conferencesService)
 
+@ExperimentalSerializationApi
 private val conferencesFetcher: Fetcher<String, List<Conference>>
     get() = Fetcher.of { conferencesClient.getAll() }
 
@@ -57,6 +72,7 @@ private val Context.sourceOfTruth: ConferencesSourceOfTruth
 
 @FlowPreview
 @ExperimentalCoroutinesApi
+@ExperimentalSerializationApi
 private val Context.conferencesStore: ConferencesStore
     get() = StoreBuilder.from(
         sourceOfTruth = sourceOfTruth,
@@ -65,6 +81,7 @@ private val Context.conferencesStore: ConferencesStore
 
 @FlowPreview
 @ExperimentalCoroutinesApi
+@ExperimentalSerializationApi
 internal val Context.conferencesRepository: ConferencesRepository
     get() = ConferencesRepository(conferencesClient, conferencesDao, conferencesStore)
 

@@ -3,7 +3,7 @@ package io.ashdavies.playground.conferences
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import io.ashdavies.playground.database.DateConverter
+import io.ashdavies.playground.util.DateConverter
 import io.ashdavies.playground.network.Conference
 
 @Database(

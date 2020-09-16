@@ -1,4 +1,4 @@
-package io.ashdavies.playground.conferences
+package io.ashdavies.playground.util
 
 import java.util.Date
 

@@ -1,4 +1,4 @@
-package io.ashdavies.playground
+package io.ashdavies.playground.ktx
 
 import android.content.Context
 import androidx.room.Room.databaseBuilder

@@ -1,4 +1,4 @@
-package io.ashdavies.playground.database
+package io.ashdavies.playground.util
 
 import androidx.room.TypeConverter
 import java.util.Date

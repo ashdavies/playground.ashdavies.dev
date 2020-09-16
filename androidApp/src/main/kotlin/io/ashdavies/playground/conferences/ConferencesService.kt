@@ -1,6 +1,6 @@
 package io.ashdavies.playground.conferences
 
-import io.ashdavies.playground.github.GitHub
+import io.ashdavies.playground.network.GitHub
 import io.ashdavies.playground.network.Conference
 import retrofit2.http.GET
 import retrofit2.http.Path

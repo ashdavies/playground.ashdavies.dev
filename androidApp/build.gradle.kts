@@ -1,17 +1,13 @@
 @file:Suppress("UnstableApiUsage")
 
-import eu.appcom.gradle.VersioningExtension
-
 plugins {
     id("com.android.application")
-    id("com.google.android.gms.oss-licenses-plugin")
-
-    kotlin("android")
-    kotlin("android.extensions")
-    kotlin("kapt")
-
+    //id("com.google.android.gms.oss-licenses-plugin")
     id("eu.appcom.gradle.android-versioning")
-    id("androidx.navigation.safeargs.kotlin")
+
+    kotlin("multiplatform")
+    kotlin("plugin.serialization")
+    kotlin("kapt")
 }
 
 android {
@@ -37,19 +33,10 @@ android {
         setMinSdkVersion(21)
         setTargetSdkVersion(29)
 
-        val versioning: VersioningExtension = extensions
-            .getByName("versioning")
-            .let { it as VersioningExtension }
-
         versionCode = versioning.getVersionCode()
         versionName = versioning.getVersionName()
 
         vectorDrawables.useSupportLibrary = true
-    }
-
-    kotlinOptions {
-        jvmTarget = "1.8"
-        useIR = true
     }
 
     sourceSets {
@@ -63,13 +50,17 @@ android {
     }
 }
 
-configurations {
-    create("ktlint")
+kotlin {
+    android {
+        kotlinOptions {
+            jvmTarget = "1.8"
+            useIR = true
+
+        }
+    }
 }
 
 dependencies {
-    implementation(project(":mobile-ktx"))
-
     implementation(ProjectDependencies.AndroidX.activityKtx)
     implementation(ProjectDependencies.AndroidX.annotation)
     implementation(ProjectDependencies.AndroidX.Compose.foundation)
@@ -91,18 +82,19 @@ dependencies {
     implementation(ProjectDependencies.Google.Firebase.firebaseCommonKtx)
     implementation(ProjectDependencies.Google.Firebase.firebaseAnalytics)
     implementation(ProjectDependencies.Google.Android.material)
+    implementation(ProjectDependencies.JakeWharton.retrofit2KotlinxSerializationConverter)
+    implementation(ProjectDependencies.JetBrains.Kotlin.kotlinSerialization)
     implementation(ProjectDependencies.JetBrains.KotlinX.kotlinxCoroutinesAndroid)
     implementation(ProjectDependencies.JetBrains.KotlinX.kotlinxCoroutinesCore)
-    implementation(ProjectDependencies.Square.Retrofit.converterMoshi)
+    implementation(ProjectDependencies.Square.okhttp)
+    implementation(ProjectDependencies.Square.Retrofit.converterSimplexml)
     implementation(ProjectDependencies.Square.Retrofit.retrofit)
-    implementation(ProjectDependencies.Square.Moshi.moshi)
 
     kapt(ProjectDependencies.AndroidX.Room.roomCompiler)
-    kapt(ProjectDependencies.Square.Moshi.moshiKotlinCodegen)
 
     testImplementation(ProjectDependencies.Google.truth)
     testImplementation(ProjectDependencies.JetBrains.KotlinX.kotlinxCoroutinesTest)
     testImplementation(ProjectDependencies.JUnit)
 }
 
-apply(plugin = "com.google.gms.google-services")
+//apply(plugin = "com.google.gms.google-services")

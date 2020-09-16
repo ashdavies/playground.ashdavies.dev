@@ -1,6 +1,3 @@
 rootProject.name = ("playground")
 
-include(
-    ":mobile-ktx",
-    ":mobile"
-)
+include(":androidApp")

@@ -1,3 +1,5 @@
+import BuildPlugins.KotlinGradlePlugin
+
 object ProjectDependencies {
     const val JUnit = "junit:junit:4.13"
 
@@ -10,7 +12,7 @@ object ProjectDependencies {
             val material by artifact("$group.material")
             val navigation by artifact("$group.navigation")
             val runtime by artifact("$group.runtime")
-            val ui by artifact( "$group.ui")
+            val ui by artifact("$group.ui")
         }
 
         val coreKtx by artifact("$group.core", "1.5.0-alpha02")
@@ -61,7 +63,17 @@ object ProjectDependencies {
         val truth by artifact("$group.truth", "1.0.1")
     }
 
+    object JakeWharton : DependencyGroup("com.jakewharton") {
+        //val retrofit2KotlinxSerializationConverter by artifact("$group.retrofit", "0.7.0")
+        const val retrofit2KotlinxSerializationConverter =
+            "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.7.0"
+    }
+
     object JetBrains : DependencyGroup("org.jetbrains") {
+        object Kotlin : DependencyGroup("$group.kotlin", KotlinGradlePlugin.version) {
+            val kotlinSerialization by artifact()
+        }
+
         object KotlinX : DependencyGroup("$group.kotlinx", "1.3.9") {
             val kotlinxCoroutinesAndroid by artifact()
             val kotlinxCoroutinesCore by artifact()
@@ -74,13 +86,10 @@ object ProjectDependencies {
     }
 
     object Square : DependencyGroup("com.squareup") {
-        object Moshi : DependencyGroup("$group.moshi", "1.10.0") {
-            val moshi by artifact()
-            val moshiKotlinCodegen by artifact()
-        }
+        val okhttp by artifact("$group.okhttp3", "4.9.0")
 
         object Retrofit : DependencyGroup("$group.retrofit2", "2.9.0") {
-            val converterMoshi by artifact()
+            val converterSimplexml by artifact()
             val retrofit by artifact()
         }
     }
