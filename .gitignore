@@ -9,7 +9,7 @@ build
 
 # Gradle Android
 /gradle.properties
-/local.properties
+**/local.properties
 /captures
 
 # Firebase
