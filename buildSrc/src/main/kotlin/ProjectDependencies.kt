@@ -8,6 +8,8 @@ object ProjectDependencies {
         val annotation by artifact("$group.annotation", "1.2.0-alpha01")
 
         object Compose : DependencyGroup("androidx.compose", "1.0.0-SNAPSHOT") {
+            val composeCompiler by artifact()
+
             val foundation by artifact("$group.foundation")
             val material by artifact("$group.material")
             val navigation by artifact("$group.navigation")

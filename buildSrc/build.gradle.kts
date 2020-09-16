@@ -9,8 +9,7 @@ repositories {
 tasks {
     compileKotlin {
         kotlinOptions {
-            freeCompilerArgs = freeCompilerArgs + "-Xinline-classes"
-            jvmTarget = "1.8"
+            freeCompilerArgs = listOf("-Xinline-classes")
         }
     }
 }

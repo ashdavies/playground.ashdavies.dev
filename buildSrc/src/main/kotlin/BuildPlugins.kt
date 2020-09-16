@@ -9,6 +9,5 @@ object BuildPlugins {
     val KotlinSerialization = PluginDescriptor("org.jetbrains.kotlin:kotlin-serialization", "1.4.10")
     val KotlinGradlePlugin = PluginDescriptor("org.jetbrains.kotlin:kotlin-gradle-plugin", "1.4.10")
     val KtlintGradle = PluginDescriptor("org.jlleitschuh.gradle:ktlint-gradle","9.4.0")
-    val NavigationSafeArgsGradlePlugin = PluginDescriptor("androidx.navigation:navigation-safe-args-gradle-plugin", "2.3.0")
     val OssLicensesPlugin = PluginDescriptor("com.google.android.gms:oss-licenses-plugin", "0.10.2")
 }
