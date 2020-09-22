@@ -42,7 +42,7 @@ object ProjectDependencies {
     }
 
     object Dropbox : DependencyGroup("com.dropbox.mobile") {
-        val store4 by artifact("$group.store", "4.0.0-alpha07")
+        val store4 by artifact("$group.store", "4.0.0-beta01")
     }
 
     object Google : DependencyGroup("com.google") {
@@ -78,7 +78,7 @@ object ProjectDependencies {
     }
 
     object Pinterest : DependencyGroup("com.pinterest") {
-        val ktlint by artifact(version = "0.38.1")
+        val ktlint by artifact(version = "0.39.0")
     }
 
     object Square : DependencyGroup("com.squareup") {
