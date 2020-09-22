@@ -7,7 +7,6 @@ import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.ContextAmbient
 import androidx.ui.tooling.preview.Preview
 import io.ashdavies.playground.network.Conference
@@ -19,12 +18,10 @@ internal fun ConferencesScreen(
     context: Context = ContextAmbient.current,
     parser: DateParser = dateParser,
 ) {
-    val state: State<List<Conference>> = remember {
-        context
-            .conferencesRepository
-            .getAll()
-            .collectAsState(emptyList())
-    }
+    val state: State<List<Conference>> = context
+        .conferencesRepository
+        .getAll()
+        .collectAsState(emptyList())
 
     ConferencesList(state.value)
 }
