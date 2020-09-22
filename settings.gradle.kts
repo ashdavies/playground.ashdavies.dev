@@ -1,4 +1,4 @@
 rootProject.name = ("playground")
 
 include(":androidApp")
-include(":conferences")
+include(":shared")
