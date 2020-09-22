@@ -7,7 +7,6 @@ import androidx.compose.runtime.Composable
 import androidx.ui.tooling.preview.Preview
 import io.ashdavies.playground.network.Conference
 import io.ashdavies.playground.util.DateParser
-import java.util.Date
 
 @Preview
 @Composable
@@ -34,7 +33,7 @@ internal fun ConferenceItem(data: Conference) {
 }
 
 @Suppress("FunctionName")
-private fun StubConference(parser: (String) -> Date) = Conference(
+private fun StubConference(parser: (String) -> Long) = Conference(
     name = "Droidcon EMEA",
     website = "https://www.online.droidcon.com/emea2020",
     location = "Online",

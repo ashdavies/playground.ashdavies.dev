@@ -7,19 +7,15 @@ buildscript {
     }
 
     dependencies {
-        classpath(BuildPlugins.AndroidVersioning)
         classpath(BuildPlugins.Gradle)
-        // classpath(BuildPlugins.GoogleServices)
         classpath(BuildPlugins.KotlinGradlePlugin)
         classpath(BuildPlugins.KotlinSerialization)
-        // classpath(BuildPlugins.OssLicensesPlugin)
+        classpath(BuildPlugins.SqlDelight)
     }
 }
 
 plugins {
     id("com.github.ben-manes.versions") version BuildPlugins.GradleVersionsPlugin.version
-    // id("com.osacky.doctor") version BuildPlugins.DoctorPlugin.version
-    // id("io.gitlab.arturbosch.detekt") version BuildPlugins.DetektGradlePlugin.version
     id("org.jlleitschuh.gradle.ktlint") version BuildPlugins.KtlintGradle.version
 }
 

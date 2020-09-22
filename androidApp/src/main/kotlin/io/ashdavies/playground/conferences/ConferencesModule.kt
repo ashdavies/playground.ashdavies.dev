@@ -6,8 +6,13 @@ import com.dropbox.android.external.store4.SourceOfTruth
 import com.dropbox.android.external.store4.Store
 import com.dropbox.android.external.store4.StoreBuilder
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
-import io.ashdavies.playground.ktx.database
+import com.squareup.sqldelight.android.AndroidSqliteDriver
+import com.squareup.sqldelight.db.SqlDriver
+import io.ashdavies.playground.Database
+import io.ashdavies.playground.ktx.insertOrReplaceAll
+import io.ashdavies.playground.ktx.selectAllAsFlowList
 import io.ashdavies.playground.network.Conference
+import io.ashdavies.playground.network.ConferencesQueries
 import io.ashdavies.playground.util.DateParser
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
@@ -53,22 +58,25 @@ private val conferencesClient: ConferencesClient
 private val conferencesFetcher: Fetcher<String, List<Conference>>
     get() = Fetcher.of { conferencesClient.getAll() }
 
-private val Context.conferencesDatabase: ConferencesDatabase
-    get() = applicationContext.database(CONFERENCES_DATABASE)
+private val Context.sqlDriver: SqlDriver
+    get() = AndroidSqliteDriver(Database.Schema, applicationContext, CONFERENCES_DATABASE)
 
-private val Context.conferencesDao: ConferencesDao
-    get() = conferencesDatabase.dao()
+private val Context.database: Database
+    get() = Database(sqlDriver)
 
-private val ConferencesDao.sourceOfTruth: ConferencesSourceOfTruth
+private val Context.conferenceQueries: ConferencesQueries
+    get() = database.conferencesQueries
+
+private val ConferencesQueries.sourceOfTruth: ConferencesSourceOfTruth
     get() = SourceOfTruth.of(
-        nonFlowReader = { getAll() },
-        writer = { _, it -> insert(it) },
+        reader = { selectAllAsFlowList() },
+        writer = { _, it -> insertOrReplaceAll(it) },
         deleteAll = { deleteAll() },
-        delete = null,
+        delete = { deleteByName(it) },
     )
 
 private val Context.sourceOfTruth: ConferencesSourceOfTruth
-    get() = conferencesDao.sourceOfTruth
+    get() = conferenceQueries.sourceOfTruth
 
 @FlowPreview
 @ExperimentalCoroutinesApi
@@ -83,13 +91,17 @@ private val Context.conferencesStore: ConferencesStore
 @ExperimentalCoroutinesApi
 @ExperimentalSerializationApi
 internal val Context.conferencesRepository: ConferencesRepository
-    get() = ConferencesRepository(conferencesClient, conferencesDao, conferencesStore)
+    get() = ConferencesRepository(conferencesClient, conferenceQueries, conferencesStore)
 
 private val dateFormat: DateFormat
     get() = SimpleDateFormat("yyyy-MM-dd", Locale.UK)
 
 internal val dateParser: DateParser
-    get() = DateParser(dateFormat::parse)
+    get() = DateParser {
+        dateFormat
+            .parse(it)
+            .time
+    }
 
 internal typealias ConferencesSourceOfTruth =
     SourceOfTruth<String, List<Conference>, List<Conference>>

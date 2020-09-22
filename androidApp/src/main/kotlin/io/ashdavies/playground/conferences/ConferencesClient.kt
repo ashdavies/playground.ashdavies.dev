@@ -1,8 +1,8 @@
 package io.ashdavies.playground.conferences
 
-import io.ashdavies.playground.network.GitHub
 import io.ashdavies.playground.network.Conference
-import java.util.Date
+import io.ashdavies.playground.network.GitHub
+import java.lang.System.currentTimeMillis
 
 private const val UNKNOWN = "unknown"
 
@@ -12,14 +12,17 @@ internal class ConferencesClient(private val conferencesService: ConferencesServ
         .getAll()
         .map(::resolve)
 
-    private fun resolve(item: GitHub.Item<Conference>): Conference = Conference(
+    private fun resolve(
+        item: GitHub.Item<Conference>,
+        time: Long = currentTimeMillis()
+    ): Conference = Conference(
         name = item.name,
         website = item.url,
         location = UNKNOWN,
-        dateStart = Date(),
-        dateEnd = Date(),
-        cfpStart = Date(),
-        cfpEnd = Date(),
+        dateStart = time,
+        dateEnd = time,
+        cfpStart = time,
+        cfpEnd = time,
         cfpSite = UNKNOWN,
     )
 }

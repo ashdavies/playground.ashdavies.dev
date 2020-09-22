@@ -35,12 +35,6 @@ object ProjectDependencies {
 
         val pagingRuntime by artifact("$group.paging", "3.0.0-alpha06")
 
-        object Room : DependencyGroup("androidx.room", "2.3.0-alpha02") {
-            val roomCompiler by artifact()
-            val roomKtx by artifact()
-            val roomRuntime by artifact()
-        }
-
         object Ui : DependencyGroup("androidx.ui", Compose.version) {
             val uiTooling by artifact()
             val uiTest by artifact()
@@ -93,6 +87,14 @@ object ProjectDependencies {
         object Retrofit : DependencyGroup("$group.retrofit2", "2.9.0") {
             val converterSimplexml by artifact()
             val retrofit by artifact()
+        }
+
+        object SqlDelight : DependencyGroup("$group.sqldelight", "1.4.3") {
+            val androidDriver by artifact()
+            val coroutinesExtensionsJvm by artifact()
+            val nativeDriver by artifact()
+            val sqliteDriver by artifact()
+            val runtime by artifact()
         }
     }
 
