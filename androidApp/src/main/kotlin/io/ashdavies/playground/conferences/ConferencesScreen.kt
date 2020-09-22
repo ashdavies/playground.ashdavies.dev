@@ -1,22 +1,33 @@
 package io.ashdavies.playground.conferences
 
+import android.content.Context
 import androidx.compose.foundation.Text
 import androidx.compose.foundation.lazy.LazyColumnFor
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.ContextAmbient
 import androidx.ui.tooling.preview.Preview
 import io.ashdavies.playground.network.Conference
 import io.ashdavies.playground.util.DateParser
 
 @Preview
 @Composable
-internal fun ConferencesScreen(parser: DateParser = dateParser) = ConferencesList(
-    data = listOf(
-        StubConference(parser),
-        StubConference(parser),
-        StubConference(parser),
-    )
-)
+internal fun ConferencesScreen(
+    context: Context = ContextAmbient.current,
+    parser: DateParser = dateParser,
+) {
+    val state: State<List<Conference>> = remember {
+        context
+            .conferencesRepository
+            .getAll()
+            .collectAsState(emptyList())
+    }
+
+    ConferencesList(state.value)
+}
 
 @Composable
 internal fun ConferencesList(data: List<Conference>) {

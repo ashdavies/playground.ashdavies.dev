@@ -37,6 +37,12 @@ android {
     }
 
     kotlinOptions {
+        freeCompilerArgs += listOf(
+            "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
+            "-Xopt-in=kotlinx.coroutines.FlowPreview",
+            "-Xopt-in=kotlinx.serialization.ExperimentalSerializationApi"
+        )
+
         jvmTarget = "1.8"
         useIR = true
     }

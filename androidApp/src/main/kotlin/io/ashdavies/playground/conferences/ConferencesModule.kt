@@ -14,9 +14,6 @@ import io.ashdavies.playground.ktx.selectAllAsFlowList
 import io.ashdavies.playground.network.Conference
 import io.ashdavies.playground.network.ConferencesQueries
 import io.ashdavies.playground.util.DateParser
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
-import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaType
@@ -34,11 +31,9 @@ private const val GITHUB_BASE_URL = "https://api.github.com/repos/AndroidStudyGr
 private val mediaType: MediaType
     get() = "application/json".toMediaType()
 
-@ExperimentalSerializationApi
 private val kotlinJsonConverterFactory: Converter.Factory
     get() = Json.asConverterFactory(mediaType)
 
-@ExperimentalSerializationApi
 private val retrofit: Retrofit
     get() = Retrofit.Builder()
         .baseUrl(GITHUB_BASE_URL)
@@ -46,15 +41,12 @@ private val retrofit: Retrofit
         .client(OkHttpClient())
         .build()
 
-@ExperimentalSerializationApi
 private val conferencesService: ConferencesService
     get() = retrofit.create()
 
-@ExperimentalSerializationApi
 private val conferencesClient: ConferencesClient
     get() = ConferencesClient(conferencesService)
 
-@ExperimentalSerializationApi
 private val conferencesFetcher: Fetcher<String, List<Conference>>
     get() = Fetcher.of { conferencesClient.getAll() }
 
@@ -78,18 +70,12 @@ private val ConferencesQueries.sourceOfTruth: ConferencesSourceOfTruth
 private val Context.sourceOfTruth: ConferencesSourceOfTruth
     get() = conferenceQueries.sourceOfTruth
 
-@FlowPreview
-@ExperimentalCoroutinesApi
-@ExperimentalSerializationApi
 private val Context.conferencesStore: ConferencesStore
     get() = StoreBuilder.from(
         sourceOfTruth = sourceOfTruth,
         fetcher = conferencesFetcher
     ).build()
 
-@FlowPreview
-@ExperimentalCoroutinesApi
-@ExperimentalSerializationApi
 internal val Context.conferencesRepository: ConferencesRepository
     get() = ConferencesRepository(conferencesClient, conferenceQueries, conferencesStore)
 
