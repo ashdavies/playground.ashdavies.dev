@@ -10,13 +10,11 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.platform.ContextAmbient
 import androidx.ui.tooling.preview.Preview
 import io.ashdavies.playground.network.Conference
-import io.ashdavies.playground.util.DateParser
 
 @Preview
 @Composable
 internal fun ConferencesScreen(
     context: Context = ContextAmbient.current,
-    parser: DateParser = dateParser,
 ) {
     val state: State<List<Conference>> = context
         .conferencesRepository

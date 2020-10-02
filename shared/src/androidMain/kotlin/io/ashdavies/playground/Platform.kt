@@ -1,4 +1,4 @@
-package io.ashdavies.conferences
+package io.ashdavies.playground
 
 import android.os.Build.VERSION.SDK_INT
 

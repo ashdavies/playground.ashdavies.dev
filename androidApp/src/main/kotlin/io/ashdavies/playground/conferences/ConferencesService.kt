@@ -1,23 +1,26 @@
 package io.ashdavies.playground.conferences
 
-import io.ashdavies.playground.network.GitHub
 import io.ashdavies.playground.network.Conference
-import retrofit2.http.GET
-import retrofit2.http.Path
+import io.ashdavies.playground.network.GitHub
 
 private const val ASG_CONFERENCES = "AndroidStudyGroup/conferences"
 
-private const val CONFERENCES_API = "https://api.github.com/repos/$ASG_CONFERENCES/contents/_conferences"
-private const val CONFERENCES_RAW = "https://raw.githubusercontent.com/$ASG_CONFERENCES/gh-pages/_conferences"
+private const val CONFERENCES_API =
+    "https://api.github.com/repos/$ASG_CONFERENCES/contents/_conferences"
+private const val CONFERENCES_RAW =
+    "https://raw.githubusercontent.com/$ASG_CONFERENCES/gh-pages/_conferences"
 
-internal interface ConferencesService {
+internal class ConferencesService {
 
-    @GET(CONFERENCES_API)
-    suspend fun getAll(): List<GitHub.Item<Conference>>
+    suspend fun getAll(): List<GitHub.Item<Conference>> {
+        TODO("Not yet implemented $CONFERENCES_API")
+    }
 
-    @GET("$CONFERENCES_API/{name}")
-    suspend fun get(@Path("name") name: String): GitHub.Item<Conference>
+    suspend fun get(name: String): GitHub.Item<Conference> {
+        TODO("Not yet implemented $CONFERENCES_API/{name}")
+    }
 
-    @GET("$CONFERENCES_RAW/{name}")
-    suspend fun raw(@Path("name") name: String): Conference
+    suspend fun raw(name: String): Conference {
+        TODO("Not yet implemented $CONFERENCES_RAW/{name}")
+    }
 }

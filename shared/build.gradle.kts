@@ -1,8 +1,9 @@
 plugins {
     kotlin("multiplatform")
+    kotlin("plugin.serialization") version "1.4.10"
 
     id("com.android.library")
-    id("kotlin-android-extensions")
+    id("com.squareup.sqldelight")
 }
 
 android {
@@ -13,8 +14,8 @@ android {
         .srcFile("src/androidMain/AndroidManifest.xml")
 
     defaultConfig {
-        setMinSdkVersion(24)
-        setTargetSdkVersion(30)
+        minSdkVersion(21)
+        targetSdkVersion(30)
     }
 }
 
@@ -30,14 +31,43 @@ kotlin {
     }
 
     sourceSets {
-        val commonMain by getting
+        all {
+            languageSettings.apply {
+                useExperimentalAnnotation("kotlinx.coroutines.ExperimentalCoroutinesApi")
+            }
+        }
 
         val androidMain by getting {
             dependencies {
                 implementation(ProjectDependencies.AndroidX.coreKtx)
+                implementation(ProjectDependencies.JetBrains.KotlinX.kotlinxCoroutinesAndroid)
+                implementation(ProjectDependencies.Ktor.ktorClientAndroid)
+                implementation(ProjectDependencies.Square.SqlDelight.androidDriver)
             }
         }
 
-        val iosMain by getting
+        val commonMain by getting {
+            dependencies {
+                //implementation(ProjectDependencies.JetBrains.KotlinX.kotlinxDatetime)
+                implementation(ProjectDependencies.JetBrains.KotlinX.kotlinxSerializationJson)
+                implementation(ProjectDependencies.JetBrains.KotlinX.kotlinxCoroutinesCore)
+                implementation(ProjectDependencies.Ktor.ktorClientCore)
+                implementation(ProjectDependencies.Square.SqlDelight.coroutinesExtensions)
+                implementation(ProjectDependencies.Square.SqlDelight.runtime)
+            }
+        }
+
+        val iosMain by getting {
+            dependencies {
+                implementation(ProjectDependencies.Ktor.ktorClientIos)
+                implementation(ProjectDependencies.Square.SqlDelight.nativeDriver)
+            }
+        }
+    }
+}
+
+sqldelight {
+    database("PlaygroundDatabase") {
+        packageName = "io.ashdavies.playground.database"
     }
 }

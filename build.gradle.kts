@@ -9,7 +9,6 @@ buildscript {
     dependencies {
         classpath(BuildPlugins.Gradle)
         classpath(BuildPlugins.KotlinGradlePlugin)
-        classpath(BuildPlugins.KotlinSerialization)
         classpath(BuildPlugins.SqlDelight)
     }
 }

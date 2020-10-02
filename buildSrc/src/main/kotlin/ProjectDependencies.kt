@@ -1,15 +1,12 @@
-import BuildPlugins.KotlinGradlePlugin
-
 object ProjectDependencies {
-    const val JUnit = "junit:junit:4.13"
-
     object AndroidX : DependencyGroup("androidx") {
-        val activityKtx by artifact("$group.activity", "1.2.0-alpha08")
+        val activityKtx by artifact("$group.activity", "1.2.0-beta01")
         val annotation by artifact("$group.annotation", "1.2.0-alpha01")
 
-        object Compose : DependencyGroup("androidx.compose", "1.0.0-SNAPSHOT") {
-            val composeCompiler by artifact()
+        // https://androidx.dev/snapshots/builds/6834848/artifacts/ui/repository/androidx/compose/compose-compiler/1.0.0-SNAPSHOT/maven-metadata.xml
 
+        object Compose : DependencyGroup("androidx.compose", "1.0.0-SNAPSHOT") {
+            val composeCompiler by artifact("$group-compiler")
             val foundation by artifact("$group.foundation")
             val material by artifact("$group.material")
             val navigation by artifact("$group.navigation")
@@ -17,11 +14,11 @@ object ProjectDependencies {
             val ui by artifact("$group.ui")
         }
 
-        val coreKtx by artifact("$group.core", "1.5.0-alpha02")
+        val coreKtx by artifact("$group.core", "1.5.0-alpha04")
         val datastoreCore by artifact("$group.datastore", "1.0.0-SNAPSHOT")
-        val fragmentKtx by artifact("$group.fragment", "1.3.0-alpha08")
+        val fragmentKtx by artifact("$group.fragment", "1.3.0-beta01")
 
-        object Lifecycle : DependencyGroup("androidx.lifecycle", "2.3.0-alpha07") {
+        object Lifecycle : DependencyGroup("androidx.lifecycle", "2.3.0-beta01") {
             val lifecycleCommonJava8 by artifact()
             val lifecycleLivedataKtx by artifact()
             val lifecycleViewmodelKtx by artifact()
@@ -33,7 +30,7 @@ object ProjectDependencies {
             val navigationUiKtx by artifact()
         }
 
-        val pagingRuntime by artifact("$group.paging", "3.0.0-alpha06")
+        val pagingRuntime by artifact("$group.paging", "3.0.0-alpha07")
 
         object Ui : DependencyGroup("androidx.ui", Compose.version) {
             val uiTooling by artifact()
@@ -59,22 +56,24 @@ object ProjectDependencies {
         val truth by artifact("$group.truth", "1.0.1")
     }
 
-    object JakeWharton : DependencyGroup("com.jakewharton") {
-        //val retrofit2KotlinxSerializationConverter by artifact("$group.retrofit", "0.7.0")
-        const val retrofit2KotlinxSerializationConverter =
-            "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.7.0"
-    }
-
     object JetBrains : DependencyGroup("org.jetbrains") {
-        object Kotlin : DependencyGroup("$group.kotlin", KotlinGradlePlugin.version) {
-            val kotlinSerialization by artifact()
-        }
-
         object KotlinX : DependencyGroup("$group.kotlinx", "1.3.9") {
             val kotlinxCoroutinesAndroid by artifact()
             val kotlinxCoroutinesCore by artifact()
             val kotlinxCoroutinesTest by artifact()
+            val kotlinxDatetime by artifact(version = "0.1.0")
+            val kotlinxSerializationJson by artifact(version = "1.0.0-RC2")
         }
+    }
+
+    const val jUnit = "junit:junit:4.13"
+
+    object Ktor : DependencyGroup("io.ktor", "1.4.1") {
+        val ktorClientAndroid by artifact()
+        val ktorClientCore by artifact()
+        val ktorClientCurl by artifact()
+        val ktorClientIos by artifact()
+        val ktorClientJs by artifact()
     }
 
     object Pinterest : DependencyGroup("com.pinterest") {
@@ -82,16 +81,9 @@ object ProjectDependencies {
     }
 
     object Square : DependencyGroup("com.squareup") {
-        val okhttp by artifact("$group.okhttp3", "4.9.0")
-
-        object Retrofit : DependencyGroup("$group.retrofit2", "2.9.0") {
-            val converterSimplexml by artifact()
-            val retrofit by artifact()
-        }
-
         object SqlDelight : DependencyGroup("$group.sqldelight", "1.4.3") {
             val androidDriver by artifact()
-            val coroutinesExtensionsJvm by artifact()
+            val coroutinesExtensions by artifact()
             val nativeDriver by artifact()
             val sqliteDriver by artifact()
             val runtime by artifact()

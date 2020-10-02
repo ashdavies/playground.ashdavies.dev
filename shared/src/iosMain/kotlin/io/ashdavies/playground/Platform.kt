@@ -1,4 +1,4 @@
-package io.ashdavies.conferences
+package io.ashdavies.playground
 
 import platform.UIKit.UIDevice
 

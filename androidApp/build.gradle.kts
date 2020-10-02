@@ -6,7 +6,6 @@ plugins {
     id("com.squareup.sqldelight")
 
     kotlin("android")
-    kotlin("plugin.serialization")
 }
 
 android {
@@ -38,9 +37,9 @@ android {
 
     kotlinOptions {
         freeCompilerArgs += listOf(
+            "-Xallow-result-return-type",
             "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
-            "-Xopt-in=kotlinx.coroutines.FlowPreview",
-            "-Xopt-in=kotlinx.serialization.ExperimentalSerializationApi"
+            "-Xopt-in=kotlinx.coroutines.FlowPreview"
         )
 
         jvmTarget = "1.8"
@@ -54,7 +53,17 @@ android {
     }
 }
 
+configurations.all {
+    resolutionStrategy.eachDependency {
+        if (requested.group == "androidx.compose.compiler") {
+            useTarget("androidx.compose:compose-compiler:${requested.version}")
+        }
+    }
+}
+
 dependencies {
+    implementation(project(":shared"))
+
     implementation(ProjectDependencies.AndroidX.activityKtx)
     implementation(ProjectDependencies.AndroidX.annotation)
     implementation(ProjectDependencies.AndroidX.Compose.foundation)
@@ -74,19 +83,14 @@ dependencies {
     implementation(ProjectDependencies.Google.Firebase.firebaseCommonKtx)
     implementation(ProjectDependencies.Google.Firebase.firebaseAnalytics)
     implementation(ProjectDependencies.Google.Android.material)
-    implementation(ProjectDependencies.JakeWharton.retrofit2KotlinxSerializationConverter)
-    implementation(ProjectDependencies.JetBrains.Kotlin.kotlinSerialization)
     implementation(ProjectDependencies.JetBrains.KotlinX.kotlinxCoroutinesAndroid)
     implementation(ProjectDependencies.JetBrains.KotlinX.kotlinxCoroutinesCore)
-    implementation(ProjectDependencies.Square.okhttp)
     implementation(ProjectDependencies.Square.SqlDelight.androidDriver)
-    implementation(ProjectDependencies.Square.SqlDelight.coroutinesExtensionsJvm)
+    implementation(ProjectDependencies.Square.SqlDelight.coroutinesExtensions)
     implementation(ProjectDependencies.Square.SqlDelight.runtime)
-    implementation(ProjectDependencies.Square.Retrofit.converterSimplexml)
-    implementation(ProjectDependencies.Square.Retrofit.retrofit)
 
     testImplementation(ProjectDependencies.Google.truth)
     testImplementation(ProjectDependencies.JetBrains.KotlinX.kotlinxCoroutinesTest)
-    testImplementation(ProjectDependencies.JUnit)
+    testImplementation(ProjectDependencies.jUnit)
     testImplementation(ProjectDependencies.Square.SqlDelight.sqliteDriver)
 }

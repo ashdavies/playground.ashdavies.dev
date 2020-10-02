@@ -3,7 +3,7 @@ package io.ashdavies.playground.network
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-internal class GitHub {
+public class GitHub {
 
     @Serializable
     data class Item<T : Any>(
