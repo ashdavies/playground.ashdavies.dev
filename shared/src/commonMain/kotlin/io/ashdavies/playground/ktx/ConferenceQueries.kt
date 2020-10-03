@@ -6,12 +6,13 @@ import io.ashdavies.playground.network.Conference
 import io.ashdavies.playground.network.ConferencesQueries
 import kotlinx.coroutines.flow.Flow
 
-public fun ConferencesQueries.selectAllAsFlowList(): Flow<List<Conference>> {
-    return selectAll()
-        .asFlow()
-        .mapToList()
-}
+fun ConferencesQueries.readByName(
+    name: String
+): Flow<List<Conference>> = selectByName(name)
+    .asFlow()
+    .mapToList()
 
-public fun ConferencesQueries.insertOrReplaceAll(values: List<Conference>) {
-    values.forEach(::insertOrReplace)
-}
+suspend fun ConferencesQueries.writeAll(
+    key: String,
+    conferences: Iterable<Conference>
+) = conferences.forEach(::insertOrReplace)

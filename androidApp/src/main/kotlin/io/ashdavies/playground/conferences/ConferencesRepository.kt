@@ -1,20 +1,15 @@
 package io.ashdavies.playground.conferences
 
-import io.ashdavies.playground.ktx.insertOrReplaceAll
+import com.dropbox.android.external.store4.StoreRequest
 import io.ashdavies.playground.network.Conference
-import io.ashdavies.playground.network.ConferencesQueries
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 
 internal class ConferencesRepository(
-    private val conferencesClient: ConferencesClient,
-    private val conferencesQueries: ConferencesQueries,
     private val conferencesStore: ConferencesStore,
 ) {
 
-    fun getAll(): Flow<List<Conference>> = flow {
-        val result: List<Conference> = conferencesClient.getAll()
-        conferencesQueries.insertOrReplaceAll(result)
-        emit(result)
-    }
+    fun getAll(): Flow<List<Conference>> = conferencesStore
+        .stream(StoreRequest.fresh(""))
+        .map { it.dataOrNull() ?: emptyList() }
 }

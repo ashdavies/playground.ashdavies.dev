@@ -49,8 +49,8 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 //implementation(ProjectDependencies.JetBrains.KotlinX.kotlinxDatetime)
-                implementation(ProjectDependencies.JetBrains.KotlinX.kotlinxSerializationJson)
                 implementation(ProjectDependencies.JetBrains.KotlinX.kotlinxCoroutinesCore)
+                implementation(ProjectDependencies.JetBrains.KotlinX.kotlinxSerializationJson)
                 implementation(ProjectDependencies.Ktor.ktorClientCore)
                 implementation(ProjectDependencies.Square.SqlDelight.coroutinesExtensions)
                 implementation(ProjectDependencies.Square.SqlDelight.runtime)

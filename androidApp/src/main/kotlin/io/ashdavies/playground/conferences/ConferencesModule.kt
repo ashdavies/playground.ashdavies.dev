@@ -5,45 +5,43 @@ import com.dropbox.android.external.store4.Fetcher
 import com.dropbox.android.external.store4.SourceOfTruth
 import com.dropbox.android.external.store4.Store
 import com.dropbox.android.external.store4.StoreBuilder
+import io.ashdavies.playground.conferences.StoreModule.conferencesStore
 import io.ashdavies.playground.database.DriverFactory
 import io.ashdavies.playground.database.PlaygroundDatabase
-import io.ashdavies.playground.ktx.insertOrReplaceAll
-import io.ashdavies.playground.ktx.selectAllAsFlowList
+import io.ashdavies.playground.ktx.readByName
+import io.ashdavies.playground.ktx.writeAll
 import io.ashdavies.playground.network.Conference
 import io.ashdavies.playground.network.ConferencesQueries
 
-private val conferencesClient: ConferencesClient
-    get() = ConferencesClient(ConferencesService())
+private val conferencesService: ConferencesService
+    get() = ConferencesService()
 
 private val Context.conferencesQueries: ConferencesQueries
-    get() = DriverFactory(this)
+    get() = DriverFactory(applicationContext)
         .create()
         .let { PlaygroundDatabase(it) }
         .conferencesQueries
 
-private val Context.conferencesStore: ConferencesStore
-    get() = StoreBuilder.from(
-        fetcher = Fetcher.of { conferencesClient.getAll() },
-        sourceOfTruth = conferencesQueries.sourceOfTruth
-    ).build()
-
-private val ConferencesQueries.sourceOfTruth: ConferencesSourceOfTruth
-    get() = SourceOfTruth.of(
-        reader = { selectAllAsFlowList() },
-        writer = { _, it -> insertOrReplaceAll(it) },
-        deleteAll = { deleteAll() },
-        delete = { deleteByName(it) },
-    )
-
 internal val Context.conferencesRepository: ConferencesRepository
-    get() = ConferencesRepository(
-        conferencesClient = conferencesClient,
-        conferencesQueries = conferencesQueries,
-        conferencesStore = conferencesStore,
-    )
+    get() = ConferencesRepository(conferencesStore)
 
-internal typealias ConferencesSourceOfTruth =
-    SourceOfTruth<String, List<Conference>, List<Conference>>
+internal object StoreModule {
 
-internal typealias ConferencesStore =
-    Store<String, List<Conference>>
+    private val ConferencesQueries.sourceOfTruth: ConferencesSourceOfTruth
+        get() = SourceOfTruth.of(
+            writer = { k, i -> writeAll(k, i) },
+            delete = { deleteByName(it) },
+            deleteAll = { deleteAll() },
+            reader = { readByName(it) },
+        )
+
+    val Context.conferencesStore: ConferencesStore
+        get() = StoreBuilder.from(
+            fetcher = Fetcher.of { conferencesService.getAll() },
+            sourceOfTruth = conferencesQueries.sourceOfTruth,
+        ).build()
+}
+
+internal typealias ConferencesSourceOfTruth = ListingSourceOfTruth<String, Conference>
+
+internal typealias ConferencesStore = Store<String, List<Conference>>
