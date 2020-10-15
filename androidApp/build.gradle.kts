@@ -85,6 +85,7 @@ dependencies {
     implementation(ProjectDependencies.Google.Android.material)
     implementation(ProjectDependencies.JetBrains.KotlinX.kotlinxCoroutinesAndroid)
     implementation(ProjectDependencies.JetBrains.KotlinX.kotlinxCoroutinesCore)
+    implementation(ProjectDependencies.Ktor.ktorClientCore)
     implementation(ProjectDependencies.Square.SqlDelight.androidDriver)
     implementation(ProjectDependencies.Square.SqlDelight.coroutinesExtensions)
     implementation(ProjectDependencies.Square.SqlDelight.runtime)

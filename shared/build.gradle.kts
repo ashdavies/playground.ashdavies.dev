@@ -33,6 +33,7 @@ kotlin {
     sourceSets {
         all {
             languageSettings.apply {
+                enableLanguageFeature("InlineClasses")
                 useExperimentalAnnotation("kotlinx.coroutines.ExperimentalCoroutinesApi")
             }
         }

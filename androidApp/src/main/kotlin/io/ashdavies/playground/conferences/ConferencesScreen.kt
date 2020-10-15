@@ -9,6 +9,8 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.platform.ContextAmbient
 import androidx.ui.tooling.preview.Preview
+import io.ashdavies.playground.graph
+import io.ashdavies.playground.invoke
 import io.ashdavies.playground.network.Conference
 
 @Preview
@@ -16,10 +18,11 @@ import io.ashdavies.playground.network.Conference
 internal fun ConferencesScreen(
     context: Context = ContextAmbient.current,
 ) {
-    val state: State<List<Conference>> = context
-        .conferencesRepository
-        .getAll()
-        .collectAsState(emptyList())
+    val state: State<List<Conference>> = context.graph {
+        conferencesRepository
+            .getAll()
+            .collectAsState(emptyList())
+    }
 
     ConferencesList(state.value)
 }
@@ -37,15 +40,3 @@ internal fun ConferenceItem(data: Conference) {
         Text(text = data.name)
     }
 }
-
-@Suppress("FunctionName")
-private fun StubConference(parser: (String) -> Long) = Conference(
-    name = "Droidcon EMEA",
-    website = "https://www.online.droidcon.com/emea2020",
-    location = "Online",
-    dateStart = parser("2020-10-08"),
-    dateEnd = parser("2020-10-09"),
-    cfpStart = parser("2020-07-25"),
-    cfpEnd = parser("2020-08-15"),
-    cfpSite = "https://sessionize.com/droidconEMEA/"
-)

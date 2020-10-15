@@ -1,5 +1,4 @@
 object BuildPlugins {
-
     val GradleVersionsPlugin = PluginDescriptor("com.github.ben-manes:gradle-versions-plugin", "0.33.0")
     val Gradle = PluginDescriptor("com.android.tools.build:gradle", "4.2.0-alpha13")
     val KotlinGradlePlugin = PluginDescriptor("org.jetbrains.kotlin:kotlin-gradle-plugin", "1.4.10")

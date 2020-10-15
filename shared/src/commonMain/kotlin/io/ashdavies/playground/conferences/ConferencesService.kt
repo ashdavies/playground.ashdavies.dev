@@ -14,8 +14,6 @@ private const val CONFERENCES_RAW =
 
 class ConferencesService(private val httpClient: HttpClient) {
 
-    constructor() : this(HttpClient())
-
     suspend fun getAll(): List<Conference> =
         httpClient
             .get<List<GitHub.Item<Conference>>>(CONFERENCES_API)
