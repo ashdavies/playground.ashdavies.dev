@@ -3,8 +3,6 @@ object ProjectDependencies {
         val activityKtx by artifact("$group.activity", "1.2.0-beta01")
         val annotation by artifact("$group.annotation", "1.2.0-alpha01")
 
-        // https://androidx.dev/snapshots/builds/6834848/artifacts/ui/repository/androidx/compose/compose-compiler/1.0.0-SNAPSHOT/maven-metadata.xml
-
         object Compose : DependencyGroup("androidx.compose", "1.0.0-SNAPSHOT") {
             val composeCompiler by artifact("$group-compiler")
             val foundation by artifact("$group.foundation")
@@ -24,7 +22,7 @@ object ProjectDependencies {
             val lifecycleViewmodelKtx by artifact()
         }
 
-        object Navigation : DependencyGroup("androidx.navigation", "2.3.0") {
+        object Navigation : DependencyGroup("androidx.navigation", "2.3.1") {
             val navigationFragmentKtx by artifact()
             val navigationRuntimeKtx by artifact()
             val navigationUiKtx by artifact()
@@ -45,11 +43,11 @@ object ProjectDependencies {
     object Google : DependencyGroup("com.google") {
         object Firebase : DependencyGroup("$group.firebase") {
             val firebaseCommonKtx by artifact(version = "19.3.1")
-            val firebaseAnalytics by artifact(version = "17.5.0")
+            val firebaseAnalytics by artifact(version = "17.6.0")
         }
 
         object Android : DependencyGroup("$group.android") {
-            val material by artifact("$group.material", "1.3.0-alpha02")
+            val material by artifact("$group.material", "1.3.0-alpha03")
             val playServicesOssLicenses by artifact("$group.gms", "17.0.0")
         }
 
@@ -57,16 +55,16 @@ object ProjectDependencies {
     }
 
     object JetBrains : DependencyGroup("org.jetbrains") {
-        object KotlinX : DependencyGroup("$group.kotlinx", "1.3.9") {
+        object KotlinX : DependencyGroup("$group.kotlinx", "1.4.0-M1") {
             val kotlinxCoroutinesAndroid by artifact()
             val kotlinxCoroutinesCore by artifact()
             val kotlinxCoroutinesTest by artifact()
             val kotlinxDatetime by artifact(version = "0.1.0")
-            val kotlinxSerializationJson by artifact(version = "1.0.0-RC2")
+            val kotlinxSerializationJson by artifact(version = "1.0.0")
         }
     }
 
-    const val jUnit = "junit:junit:4.13"
+    const val jUnit = "junit:junit:4.13.1"
 
     object Ktor : DependencyGroup("io.ktor", "1.4.1") {
         val ktorClientAndroid by artifact()
@@ -83,7 +81,7 @@ object ProjectDependencies {
     }
 
     object Square : DependencyGroup("com.squareup") {
-        object SqlDelight : DependencyGroup("$group.sqldelight", "1.4.3") {
+        object SqlDelight : DependencyGroup("$group.sqldelight", "1.4.4") {
             val androidDriver by artifact()
             val coroutinesExtensions by artifact()
             val nativeDriver by artifact()
