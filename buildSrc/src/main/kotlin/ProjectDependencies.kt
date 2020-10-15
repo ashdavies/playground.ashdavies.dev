@@ -73,7 +73,9 @@ object ProjectDependencies {
         val ktorClientCore by artifact()
         val ktorClientCurl by artifact()
         val ktorClientIos by artifact()
-        val ktorClientJs by artifact()
+        val ktorClientJson by artifact()
+        val ktorClientLogging by artifact()
+        val ktorClientSerialization by artifact()
     }
 
     object Pinterest : DependencyGroup("com.pinterest") {
