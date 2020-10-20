@@ -10,6 +10,6 @@ internal class ConferencesRepository(
 ) {
 
     fun getAll(): Flow<List<Conference>> = conferencesStore
-        .stream(StoreRequest.fresh(""))
+        .stream(StoreRequest.fresh(Unit))
         .map { it.dataOrNull() ?: emptyList() }
 }

@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 public class GitHub {
 
     @Serializable
-    data class Item<T : Any>(
+    data class Item(
         @SerialName("name") val name: String,
         @SerialName("path") val path: String,
         @SerialName("sha") val sha: String,

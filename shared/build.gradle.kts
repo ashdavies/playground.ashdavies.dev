@@ -9,9 +9,11 @@ plugins {
 android {
     compileSdkVersion(30)
 
-    sourceSets["main"]
-        .manifest
-        .srcFile("src/androidMain/AndroidManifest.xml")
+    sourceSets.forEach { sourceSet ->
+        sourceSet
+            .manifest
+            .srcFile("src/androidMain/AndroidManifest.xml")
+    }
 
     defaultConfig {
         minSdkVersion(21)

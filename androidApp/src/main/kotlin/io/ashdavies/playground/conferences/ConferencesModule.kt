@@ -10,7 +10,7 @@ import io.ashdavies.playground.database.DriverFactory
 import io.ashdavies.playground.database.PlaygroundDatabase
 import io.ashdavies.playground.graph
 import io.ashdavies.playground.invoke
-import io.ashdavies.playground.ktx.readByName
+import io.ashdavies.playground.ktx.readAll
 import io.ashdavies.playground.ktx.writeAll
 import io.ashdavies.playground.network.Conference
 import io.ashdavies.playground.network.ConferencesQueries
@@ -30,10 +30,10 @@ internal val Graph<Context>.conferencesRepository: ConferencesRepository
 
 private val Graph<ConferencesQueries>.sourceOfTruth: ConferencesSourceOfTruth
     get() = SourceOfTruth.of(
-        writer = { k, i -> seed.writeAll(k, i) },
-        delete = { seed.deleteByName(it) },
+        writer = { _, it -> seed.writeAll(it) },
         deleteAll = { seed.deleteAll() },
-        reader = { seed.readByName(it) },
+        delete = { seed.deleteAll() },
+        reader = { seed.readAll() },
     )
 
 val Graph<Context>.conferencesStore: ConferencesStore
@@ -43,7 +43,7 @@ val Graph<Context>.conferencesStore: ConferencesStore
     ).build()
 
 internal typealias ConferencesSourceOfTruth =
-    ListingSourceOfTruth<String, Conference>
+    ListingSourceOfTruth<Unit, Conference>
 
 internal typealias ConferencesStore =
-    Store<String, List<Conference>>
+    Store<Unit, List<Conference>>

@@ -18,11 +18,13 @@ import io.ashdavies.playground.network.Conference
 internal fun ConferencesScreen(
     context: Context = ContextAmbient.current,
 ) {
-    val state: State<List<Conference>> = context.graph {
+    val conferencesRepository: ConferencesRepository =
+        context.graph { conferencesRepository }
+
+    val state: State<List<Conference>> =
         conferencesRepository
             .getAll()
             .collectAsState(emptyList())
-    }
 
     ConferencesList(state.value)
 }

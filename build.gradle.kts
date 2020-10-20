@@ -7,6 +7,7 @@ buildscript {
     }
 
     dependencies {
+        classpath(BuildPlugins.Batik)
         classpath(BuildPlugins.Gradle)
         classpath(BuildPlugins.KotlinGradlePlugin)
         classpath(BuildPlugins.SqlDelight)
