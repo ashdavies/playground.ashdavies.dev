@@ -29,7 +29,7 @@ jobs:
           key: cache-gradle-wrapper
 
       - name: Decrypt Google Services config file
-        run: openssl aes-256-cbc -md sha256 -d -in mobile/google-services.aes -out mobile/google-services.json -k ${{ secrets.GOOGLE_SERVICES_PASSPHRASE }}
+        run: openssl aes-256-cbc -md sha256 -d -in androidApp/google-services.aes -out androidApp/google-services.json -k ${{ secrets.GOOGLE_SERVICES_PASSPHRASE }}
 
       - name: Run Gradle tasks
         run: ./gradlew build check
