@@ -3,7 +3,7 @@ package io.ashdavies.playground.network
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-public class GitHub {
+class GitHub {
 
     @Serializable
     data class Item(
@@ -16,6 +16,8 @@ public class GitHub {
         @SerialName("git_url") val gitUrl: String,
         @SerialName("download_url") val downloadUrl: String,
         @SerialName("type") val type: String,
+        @SerialName("content") val content: String?,
+        @SerialName("encoding") val encoding: String?,
         @SerialName("_links") val links: Links,
     ) {
 
