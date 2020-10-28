@@ -26,8 +26,8 @@ android {
     defaultConfig {
         applicationId = "io.ashdavies.playground"
 
-        setMinSdkVersion(21)
-        setTargetSdkVersion(29)
+        setMinSdkVersion(23)
+        setTargetSdkVersion(30)
 
         versionCode = 1
         versionName = "1.0"

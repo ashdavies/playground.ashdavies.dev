@@ -36,7 +36,7 @@ private val dateFormat: DateFormat = SimpleDateFormat("MMMM, yyyy")
 
 @Preview
 @Composable
-internal fun ConferencesList() {
+internal fun ConferencesPreview() {
     val conferenceFactory = ConferenceFactory { currentTimeMillis() }
     val conferenceList = List(10) { Item(conferenceFactory()) }
 
