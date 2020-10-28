@@ -2,6 +2,7 @@ package io.ashdavies.playground.conferences
 
 import io.ashdavies.playground.network.Conference
 import java.util.Calendar
+import java.util.Locale
 import java.util.Locale.getDefault
 
 internal class ConferencesNameParser : (List<Conference>) -> List<Conference> {
@@ -10,33 +11,42 @@ internal class ConferencesNameParser : (List<Conference>) -> List<Conference> {
         it.map { it.enrichFromName() }
 
     private fun Conference.enrichFromName(): Conference {
-        val split: List<String> = name
-            .substringBefore(".md")
-            .split("-", "_", ".")
+        val splitName: List<String> =
+            name
+                .substringBefore(".md")
+                .split("-", "_", ".")
 
-        val year: Long = split
-            .last()
-            .toIntOrNull()
-            ?.let(::startOfYear)
-            ?: 0
+        val parsedYear: Int =
+            splitName
+                .last()
+                .toIntOrNull()
+                ?: return copy(
+                    name = splitName.joinToCapitalizedString()
+                )
 
-        val name = split
-            .subList(0, split.size - 2)
-            .joinToString(" ") {
-                it.capitalize(getDefault())
-            }
+        val truncatedName: String =
+            splitName
+                .subList(0, splitName.size - 2)
+                .joinToCapitalizedString()
 
         return copy(
-            dateStart = year,
-            name = name,
+            dateStart = startOfYear(parsedYear),
+            name = truncatedName,
         )
     }
+}
 
-    private fun startOfYear(year: Int): Long {
-        val calendar = Calendar.getInstance()
-        calendar.clear()
+private fun startOfYear(year: Int): Long {
+    val calendar = Calendar.getInstance()
+    calendar.clear()
 
-        calendar.set(Calendar.YEAR, year)
-        return calendar.timeInMillis
-    }
+    calendar.set(Calendar.YEAR, year)
+    return calendar.timeInMillis
+}
+
+private fun Iterable<String>.joinToCapitalizedString(
+    separator: String = " ",
+    locale: Locale = getDefault()
+): String = joinToString(separator) {
+    it.capitalize(locale)
 }
