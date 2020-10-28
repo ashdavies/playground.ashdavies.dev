@@ -23,12 +23,6 @@ fun MainScreen() {
         Column {
             TopAppBar(
                 title = { Text(stringResource(R.string.application)) },
-                navigationIcon = {
-                    IconButton(onClick = { /* do something here */ }) {
-                        Image(asset = vectorResource(R.drawable.ic_baseline_menu_24))
-                    }
-                },
-
                 actions = {
                     IconButton(onClick = { /* do something here */ }) {
                         Image(asset = vectorResource(R.drawable.ic_baseline_search_24))
