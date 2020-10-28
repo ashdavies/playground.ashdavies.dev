@@ -25,9 +25,6 @@ private val Graph<Context>.conferencesQueries: ConferencesQueries
         .let { PlaygroundDatabase(it) }
         .conferencesQueries
 
-internal val Graph<Context>.conferencesRepository: ConferencesRepository
-    get() = ConferencesRepository(conferencesStore)
-
 private val Graph<ConferencesQueries>.sourceOfTruth: ConferencesSourceOfTruth
     get() = SourceOfTruth.of(
         writer = { _, it -> seed.writeAll(it) },

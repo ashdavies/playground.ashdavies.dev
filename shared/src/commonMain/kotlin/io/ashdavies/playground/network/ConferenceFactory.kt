@@ -7,6 +7,8 @@ class ConferenceFactory(
     private val timeMillis: () -> Long,
 ) {
 
+    operator fun invoke(): Conference = invoke(random())
+
     operator fun invoke(name: String) = Conference(
         name = name,
         website = ASG_CONFERENCES,
@@ -17,4 +19,11 @@ class ConferenceFactory(
         cfpEnd = timeMillis(),
         cfpSite = ASG_CONFERENCES,
     )
+
+    private fun random(): String = listOf(
+        "Droidcon NYC",
+        "DevFest Berlin",
+        "Kotlin Everywhere Coimbra",
+        "KotlinKonf '19",
+    ).random()
 }
