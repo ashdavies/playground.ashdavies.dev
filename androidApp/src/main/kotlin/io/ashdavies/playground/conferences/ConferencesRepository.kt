@@ -9,7 +9,8 @@ internal class ConferencesRepository(
     private val conferencesStore: ConferencesStore,
 ) {
 
-    fun getAll(): Flow<List<Conference>> = conferencesStore
-        .stream(StoreRequest.fresh(Unit))
-        .map { it.dataOrNull() ?: emptyList() }
+    fun getAll(): Flow<List<Conference>> =
+        conferencesStore
+            .stream(StoreRequest.cached(Unit, refresh = true))
+            .map { it.dataOrNull() ?: emptyList() }
 }

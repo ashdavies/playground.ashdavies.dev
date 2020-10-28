@@ -43,7 +43,7 @@ val Graph<Context>.conferencesStore: ConferencesStore
     ).build()
 
 internal typealias ConferencesSourceOfTruth =
-    ListingSourceOfTruth<Unit, Conference>
+    ListingSourceOfTruth<Any, Conference>
 
 internal typealias ConferencesStore =
-    Store<Unit, List<Conference>>
+    Store<Any, List<Conference>>

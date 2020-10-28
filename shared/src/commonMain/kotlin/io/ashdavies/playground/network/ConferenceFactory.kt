@@ -3,7 +3,7 @@ package io.ashdavies.playground.network
 private const val ASG_CONFERENCES =
     "https://github.com/AndroidStudyGroup/conferences"
 
-internal class ConferenceFactory(
+class ConferenceFactory(
     private val timeMillis: () -> Long,
 ) {
 
