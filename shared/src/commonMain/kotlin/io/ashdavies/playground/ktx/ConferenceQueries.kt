@@ -11,6 +11,5 @@ fun ConferencesQueries.readAll(): Flow<List<Conference>> =
         .asFlow()
         .mapToList()
 
-suspend fun ConferencesQueries.writeAll(
-    conferences: Iterable<Conference>
-) = conferences.forEach(::insertOrReplace)
+fun ConferencesQueries.writeAll(conferences: Iterable<Conference>) =
+    conferences.forEach { insertOrReplace(it) }

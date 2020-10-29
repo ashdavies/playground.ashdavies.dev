@@ -1,28 +1,33 @@
-CREATE TABLE conference (
+CREATE TABLE conference(
   name TEXT NOT NULL UNIQUE PRIMARY KEY,
   website TEXT NOT NULL,
   location TEXT NOT NULL,
   dateStart INTEGER NOT NULL,
   dateEnd INTEGER NOT NULL,
-  cfpStart INTEGER NOT NULL,
-  cfpEnd INTEGER NOT NULL,
-  cfpSite TEXT NOT NULL
+  cfpStart INTEGER,
+  cfpEnd INTEGER,
+  cfpSite TEXT
 );
 
 CREATE INDEX conferenceName ON conference(name);
 
 selectAll:
-SELECT * FROM conference ORDER BY dateStart;
+    SELECT *
+    FROM conference
+    ORDER BY dateStart;
 
 selectByName:
-SELECT * FROM conference WHERE name = ?;
+    SELECT *
+    FROM conference
+    WHERE conference.name = ?;
 
 insertOrReplace:
-INSERT OR REPLACE INTO conference(name, website, location, dateStart, dateEnd, cfpStart, cfpEnd, cfpSite)
-VALUES ?;
+    INSERT OR REPLACE INTO conference(name, website, location, dateStart, dateEnd, cfpStart, cfpEnd, cfpSite)
+    VALUES ?;
 
 deleteAll:
-DELETE FROM conference;
+    DELETE FROM conference;
 
 deleteByName:
-DELETE FROM conference WHERE name = ?;
+    DELETE FROM conference
+    WHERE name = ?;

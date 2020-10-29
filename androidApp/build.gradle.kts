@@ -51,6 +51,10 @@ android {
     sourceSets.configureEach {
         java.srcDirs("src/$name/kotlin")
     }
+
+    packagingOptions {
+        exclude("META-INF/DEPENDENCIES")
+    }
 }
 
 configurations.all {
@@ -80,9 +84,13 @@ dependencies {
     implementation(ProjectDependencies.AndroidX.Navigation.navigationUiKtx)
     implementation(ProjectDependencies.AndroidX.Ui.uiTooling)
     implementation(ProjectDependencies.Dropbox.store4)
+    implementation(ProjectDependencies.Eclipse.orgEclipseJgit)
     implementation(ProjectDependencies.Google.Firebase.firebaseCommonKtx)
     implementation(ProjectDependencies.Google.Firebase.firebaseAnalytics)
     implementation(ProjectDependencies.Google.Android.material)
+    implementation(ProjectDependencies.Jackson.jacksonDatabind)
+    implementation(ProjectDependencies.Jackson.jacksonDataformatYaml)
+    implementation(ProjectDependencies.Jackson.jacksonModuleKotlin)
     implementation(ProjectDependencies.JetBrains.KotlinX.kotlinxCoroutinesAndroid)
     implementation(ProjectDependencies.JetBrains.KotlinX.kotlinxCoroutinesCore)
     implementation(ProjectDependencies.Ktor.ktorClientCore)
