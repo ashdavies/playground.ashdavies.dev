@@ -22,27 +22,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ContextAmbient
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.viewModel
-import androidx.ui.tooling.preview.Preview
 import io.ashdavies.playground.conferences.ConferencesViewModel.Companion.Factory
 import io.ashdavies.playground.conferences.ConferencesViewState.Section.Header
 import io.ashdavies.playground.conferences.ConferencesViewState.Section.Item
 import io.ashdavies.playground.network.Conference
-import io.ashdavies.playground.network.ConferenceFactory
-import io.ashdavies.playground.network.invoke
-import java.lang.System.currentTimeMillis
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 
 private val dateFormat: DateFormat = SimpleDateFormat("MMMM, yyyy")
-
-@Preview
-@Composable
-internal fun ConferencesPreview() {
-    val conferenceFactory = ConferenceFactory { currentTimeMillis() }
-    val conferenceList = List(10) { Item(conferenceFactory()) }
-
-    ConferencesList(ConferencesViewState.Success(conferenceList))
-}
 
 @Composable
 internal fun ConferencesScreen(context: Context = ContextAmbient.current) {

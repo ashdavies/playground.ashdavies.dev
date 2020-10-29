@@ -35,3 +35,9 @@ class GitHub {
         @SerialName("html") val html: String,
     )
 }
+
+fun GitHub.Item<*>.requireContent(): String =
+    when (this) {
+        is GitHub.ContentItem<*> -> content
+        else -> throw IllegalStateException()
+    }
