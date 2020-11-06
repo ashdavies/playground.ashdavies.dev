@@ -1,6 +1,7 @@
 package io.ashdavies.playground.conferences
 
 import io.ashdavies.playground.network.Conference
+import kotlinx.datetime.LocalDate
 
 internal sealed class ConferencesViewState {
 
@@ -14,7 +15,7 @@ internal sealed class ConferencesViewState {
 
     sealed class Section {
 
-        data class Header(val timeInMillis: Long) : Section()
+        data class Header(val date: LocalDate) : Section()
 
         data class Item(val data: Conference) : Section()
     }

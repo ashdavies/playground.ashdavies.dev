@@ -1,6 +1,7 @@
 buildscript {
     repositories {
         google()
+        maven("https://kotlin.bintray.com/kotlinx/")
         gradlePluginPortal()
         mavenCentral()
         jcenter()
@@ -24,6 +25,7 @@ allprojects {
         androidx("6834848")
 
         google()
+        maven("https://kotlin.bintray.com/kotlinx/")
         gradlePluginPortal()
         mavenCentral()
         jcenter()

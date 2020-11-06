@@ -26,10 +26,7 @@ import io.ashdavies.playground.conferences.ConferencesViewModel.Companion.Factor
 import io.ashdavies.playground.conferences.ConferencesViewState.Section.Header
 import io.ashdavies.playground.conferences.ConferencesViewState.Section.Item
 import io.ashdavies.playground.network.Conference
-import java.text.DateFormat
-import java.text.SimpleDateFormat
-
-private val dateFormat: DateFormat = SimpleDateFormat("MMMM, yyyy")
+import kotlinx.datetime.LocalDate
 
 @Composable
 internal fun ConferencesScreen(context: Context = ContextAmbient.current) {
@@ -63,16 +60,16 @@ internal fun ConferencesList(data: List<ConferencesViewState.Section>) {
 @Composable
 internal fun ConferenceSection(section: ConferencesViewState.Section) {
     when (section) {
-        is Header -> ConferenceHeader(timeInMillis = section.timeInMillis)
+        is Header -> ConferenceHeader(date = section.date)
         is Item -> ConferenceItem(data = section.data)
     }
 }
 
 @Composable
-internal fun ConferenceHeader(timeInMillis: Long) {
+internal fun ConferenceHeader(date: LocalDate) {
     Box(modifier = Modifier.padding(bottom = 12.dp)) {
         Text(
-            text = dateFormat.format(timeInMillis),
+            text = date.toString(),
             style = MaterialTheme.typography.h5,
         )
     }

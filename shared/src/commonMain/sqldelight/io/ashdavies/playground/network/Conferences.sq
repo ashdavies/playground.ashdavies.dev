@@ -1,12 +1,16 @@
+import kotlinx.datetime.LocalDate;
+
 CREATE TABLE conference(
-  name TEXT NOT NULL UNIQUE PRIMARY KEY,
-  website TEXT NOT NULL,
-  location TEXT NOT NULL,
-  dateStart INTEGER NOT NULL,
-  dateEnd INTEGER NOT NULL,
-  cfpStart INTEGER,
-  cfpEnd INTEGER,
-  cfpSite TEXT
+    name TEXT NOT NULL UNIQUE PRIMARY KEY,
+    website TEXT NOT NULL,
+    location TEXT NOT NULL,
+    status TEXT,
+    dateStart TEXT as LocalDate NOT NULL,
+    dateEnd TEXT as LocalDate NOT NULL,
+    cfpStart TEXT as LocalDate,
+    cfpEnd TEXT as LocalDate,
+    cfpSite TEXT,
+    online INTEGER as Boolean DEFAULT 0 NOT NULL
 );
 
 CREATE INDEX conferenceName ON conference(name);
@@ -22,7 +26,18 @@ selectByName:
     WHERE conference.name = ?;
 
 insertOrReplace:
-    INSERT OR REPLACE INTO conference(name, website, location, dateStart, dateEnd, cfpStart, cfpEnd, cfpSite)
+    INSERT OR REPLACE INTO conference(
+        name,
+        website,
+        location,
+        status,
+        dateStart,
+        dateEnd,
+        cfpStart,
+        cfpEnd,
+        cfpSite,
+        online
+    )
     VALUES ?;
 
 deleteAll:
@@ -30,4 +45,4 @@ deleteAll:
 
 deleteByName:
     DELETE FROM conference
-    WHERE name = ?;
+    WHERE name = :name;

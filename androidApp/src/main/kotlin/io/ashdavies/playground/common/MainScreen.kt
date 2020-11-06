@@ -18,8 +18,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.ui.tooling.preview.Preview
 import io.ashdavies.playground.R
+import io.ashdavies.playground.Route.Conferences
 import io.ashdavies.playground.conferences.ConferencesScreen
-import io.ashdavies.playground.navigation.ScreenDestination.Conferences
 
 @Preview
 @Composable

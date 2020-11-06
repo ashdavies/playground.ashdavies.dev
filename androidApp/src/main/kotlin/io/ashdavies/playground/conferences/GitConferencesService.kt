@@ -6,7 +6,6 @@ import io.ashdavies.playground.ktx.Git
 import io.ashdavies.playground.ktx.checkout
 import io.ashdavies.playground.ktx.emptyString
 import io.ashdavies.playground.ktx.pull
-import io.ashdavies.playground.network.Conference
 import io.ashdavies.playground.network.GitHub
 import org.eclipse.jgit.api.CreateBranchCommand.SetupUpstreamMode.TRACK
 import org.eclipse.jgit.api.Git
@@ -23,7 +22,7 @@ private const val CONFERENCES_PATH =
 
 internal class GitConferencesService(
     private val directory: File,
-) : GitHubService<String, Conference> {
+) : GitHubService<String, ConferenceYaml> {
 
     constructor(
         parent: File,
@@ -46,24 +45,24 @@ internal class GitConferencesService(
         git.pull { }
     }
 
-    override suspend fun getAll(): List<GitHub.Item<Conference>> =
+    override suspend fun getAll(): List<GitHub.Item<ConferenceYaml>> =
         File(directory, CONFERENCES_PATH)
             .run { list() as Array<String> }
             .map { get(it) }
 
-    override suspend fun get(key: String): GitHub.Item<Conference> =
+    override suspend fun get(key: String): GitHub.Item<ConferenceYaml> =
         File(directory, "$CONFERENCES_PATH/$key")
             .readText()
             .let { ContentItem(key, it) }
 
-    private fun ContentItem(key: String, content: String): GitHub.Item<Conference> {
+    private fun ContentItem(key: String, content: String): GitHub.Item<ConferenceYaml> {
         val links = GitHub.Links(
             html = emptyString(),
             self = emptyString(),
             git = emptyString(),
         )
 
-        val standard: GitHub.Item<Conference> = GitHub.StandardItem(
+        val standard: GitHub.Item<ConferenceYaml> = GitHub.StandardItem(
             downloadUrl = emptyString(),
             htmlUrl = emptyString(),
             gitUrl = emptyString(),

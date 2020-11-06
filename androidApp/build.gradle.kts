@@ -93,6 +93,7 @@ dependencies {
     implementation(ProjectDependencies.Jackson.jacksonModuleKotlin)
     implementation(ProjectDependencies.JetBrains.KotlinX.kotlinxCoroutinesAndroid)
     implementation(ProjectDependencies.JetBrains.KotlinX.kotlinxCoroutinesCore)
+    implementation(ProjectDependencies.JetBrains.KotlinX.kotlinxDatetime)
     implementation(ProjectDependencies.Ktor.ktorClientCore)
     implementation(ProjectDependencies.Square.SqlDelight.androidDriver)
     implementation(ProjectDependencies.Square.SqlDelight.coroutinesExtensions)
