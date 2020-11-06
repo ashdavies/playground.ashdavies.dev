@@ -9,7 +9,6 @@ import androidx.lifecycle.viewModelScope
 import com.dropbox.android.external.store4.Store
 import com.dropbox.android.external.store4.StoreRequest
 import com.dropbox.android.external.store4.StoreResponse
-import io.ashdavies.playground.conferences.ConferencesViewState.Section.Header
 import io.ashdavies.playground.conferences.ConferencesViewState.Section.Item
 import io.ashdavies.playground.conferences.ConferencesViewState.Uninitialised
 import io.ashdavies.playground.lifecycle.ViewModelFactory
@@ -41,8 +40,8 @@ internal class ConferencesViewModel(store: Store<Any, List<Conference>>) : ViewM
     private fun ConferencesViewState(data: List<Conference>): ConferencesViewState =
         data
             .map(::Item)
-            .groupBy { it.data.dateStart }
-            .flatMap { listOf(Header(it.key)) + it.value }
+            //.groupBy { it.data.dateStart }
+            //.flatMap { listOf(Header(it.key)) + it.value }
             .let(ConferencesViewState::Success)
 
     companion object {

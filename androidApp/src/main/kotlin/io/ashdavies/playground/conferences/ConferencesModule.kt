@@ -15,6 +15,9 @@ import io.ashdavies.playground.network.Conference
 import io.ashdavies.playground.network.ConferencesQueries
 import io.ashdavies.playground.network.LocalDateModule
 import io.ashdavies.playground.network.requireContent
+import kotlinx.datetime.Clock
+import kotlinx.datetime.TimeZone.Companion.UTC
+import kotlinx.datetime.toLocalDateTime
 
 private val Graph<*>.objectMapper: ObjectMapper
     get() = ObjectMapper(YAMLFactory()).apply {
@@ -36,9 +39,15 @@ private val Graph<Context>.conferenceMapper: (ConferenceYaml) -> Conference
 val Graph<Context>.conferencesStore: Store<Any, List<Conference>>
     get() = StoreBuilder.from(
         fetcher = Fetcher.of {
+            val currentYear: Int = Clock.System.now()
+                .toLocalDateTime(UTC)
+                .year - 1
+
             conferencesService
                 .getConferences(objectMapper)
                 .map { conferenceMapper(it) }
+                .filter { it.dateStart.year > currentYear }
+                .sortedByDescending { it.dateStart }
         },
         sourceOfTruth = ConferencesSourceOfTruth(conferencesQueries),
     ).build()

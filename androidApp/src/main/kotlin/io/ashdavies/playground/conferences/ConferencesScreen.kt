@@ -20,11 +20,14 @@ import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ContextAmbient
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.viewModel
+import io.ashdavies.playground.R
 import io.ashdavies.playground.conferences.ConferencesViewModel.Companion.Factory
 import io.ashdavies.playground.conferences.ConferencesViewState.Section.Header
 import io.ashdavies.playground.conferences.ConferencesViewState.Section.Item
+import io.ashdavies.playground.ktx.toCalendar
 import io.ashdavies.playground.network.Conference
 import kotlinx.datetime.LocalDate
 
@@ -69,8 +72,8 @@ internal fun ConferenceSection(section: ConferencesViewState.Section) {
 internal fun ConferenceHeader(date: LocalDate) {
     Box(modifier = Modifier.padding(bottom = 12.dp)) {
         Text(
-            text = date.toString(),
-            style = MaterialTheme.typography.h5,
+            text = stringResource(R.string.header, date.toCalendar()),
+            style = MaterialTheme.typography.subtitle1,
         )
     }
 }
@@ -80,7 +83,20 @@ internal fun ConferenceItem(data: Conference) {
     Box(modifier = Modifier.padding(bottom = 12.dp)) {
         Card(modifier = Modifier.fillMaxWidth()) {
             Column(modifier = Modifier.padding(16.dp, 12.dp)) {
-                Text(text = data.name)
+                Text(
+                    style = MaterialTheme.typography.body1,
+                    text = data.name,
+                )
+
+                Text(
+                    style = MaterialTheme.typography.body2,
+                    text = data.location,
+                )
+
+                Text(
+                    style = MaterialTheme.typography.caption,
+                    text = data.dateStart.toString(),
+                )
             }
         }
     }
