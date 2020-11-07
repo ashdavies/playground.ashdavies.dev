@@ -47,11 +47,6 @@ object ProjectDependencies {
         val store4 by artifact("$group.store", "4.0.0-beta01")
     }
 
-    object Eclipse : DependencyGroup("org.eclipse.jgit") {
-
-        val orgEclipseJgit = "$group:org.eclipse.jgit:4.9.0.201710071750-r"
-    }
-
     object Google : DependencyGroup("com.google") {
 
         object Firebase : DependencyGroup("$group.firebase") {
@@ -67,13 +62,6 @@ object ProjectDependencies {
         }
 
         val truth by artifact("$group.truth", "1.0.1")
-    }
-
-    object Jackson : DependencyGroup("com.fasterxml.jackson", "2.11.2") {
-
-        val jacksonDatabind by artifact("$group.core")
-        val jacksonModuleKotlin by artifact("$group.module")
-        val jacksonDataformatYaml by artifact("$group.dataformat")
     }
 
     object JetBrains : DependencyGroup("org.jetbrains") {
