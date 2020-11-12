@@ -12,13 +12,13 @@ private const val CONFERENCES_API =
 private const val CONFERENCES_QUERY =
     "pageSize=20&orderBy=dateStart%20desc"
 
-class ConferenceService(
-    private val httpClient: HttpClient,
-) : FirestoreService<Conference> {
+class ConferencesService(
+    private val httpClient: HttpClient
+) : FirestoreService<FirestoreConference> {
 
-    override suspend fun getAll(): FirestoreCollection<Conference> =
+    override suspend fun getAll(): FirestoreCollection<FirestoreConference> =
         httpClient.get("$CONFERENCES_API?$CONFERENCES_QUERY")
 
-    override suspend fun get(key: String): FirestoreDocument<Conference> =
+    override suspend fun get(key: String): FirestoreDocument<FirestoreConference> =
         httpClient.get("$CONFERENCES_API/$key?$CONFERENCES_QUERY")
 }

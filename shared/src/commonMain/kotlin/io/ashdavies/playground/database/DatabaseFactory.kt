@@ -1,7 +1,6 @@
 package io.ashdavies.playground.database
 
 import com.squareup.sqldelight.ColumnAdapter
-import io.ashdavies.playground.network.Conference
 import kotlinx.datetime.LocalDate
 
 class DatabaseFactory(private val driverFactory: DriverFactory) {

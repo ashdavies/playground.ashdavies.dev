@@ -66,6 +66,14 @@ object ProjectDependencies {
 
     object JetBrains : DependencyGroup("org.jetbrains") {
 
+        object Kotlin : DependencyGroup("$group.kotlin", "1.4.20-RC") {
+
+            val kotlinTest by artifact()
+            val kotlinTestCommon by artifact()
+            val kotlinTestJunit by artifact()
+            val kotlinTestAnnotationsCommon by artifact()
+        }
+
         object KotlinX : DependencyGroup("$group.kotlinx", "1.4.0-M1") {
 
             val kotlinxCoroutinesAndroid by artifact()

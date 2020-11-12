@@ -27,8 +27,8 @@ import io.ashdavies.playground.R
 import io.ashdavies.playground.conferences.ConferencesViewModel.Companion.Factory
 import io.ashdavies.playground.conferences.ConferencesViewState.Section.Header
 import io.ashdavies.playground.conferences.ConferencesViewState.Section.Item
+import io.ashdavies.playground.database.Conference
 import io.ashdavies.playground.ktx.toCalendar
-import io.ashdavies.playground.network.Conference
 import kotlinx.datetime.LocalDate
 
 @Composable
@@ -36,7 +36,7 @@ internal fun ConferencesScreen(context: Context = ContextAmbient.current) {
     val viewModel: ConferencesViewModel = viewModel(factory = Factory(context))
     val state: State<ConferencesViewState> = viewModel
         .viewState
-        .collectAsState()
+        .collectAsState(ConferencesViewState.Uninitialised)
 
     ConferencesList(state.value)
 }

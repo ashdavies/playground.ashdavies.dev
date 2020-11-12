@@ -35,8 +35,7 @@ kotlin {
     sourceSets {
         all {
             languageSettings.apply {
-                enableLanguageFeature("InlineClasses")
-                useExperimentalAnnotation("kotlinx.coroutines.ExperimentalCoroutinesApi")
+                useExperimentalAnnotation("kotlin.RequiresOptIn")
             }
         }
 
@@ -46,6 +45,13 @@ kotlin {
                 implementation(ProjectDependencies.JetBrains.KotlinX.kotlinxCoroutinesAndroid)
                 implementation(ProjectDependencies.Ktor.ktorClientAndroid)
                 implementation(ProjectDependencies.Square.SqlDelight.androidDriver)
+            }
+        }
+
+        val androidTest by getting {
+            dependencies {
+                implementation(ProjectDependencies.JetBrains.Kotlin.kotlinTest)
+                implementation(ProjectDependencies.JetBrains.Kotlin.kotlinTestJunit)
             }
         }
 
@@ -60,6 +66,13 @@ kotlin {
                 implementation(ProjectDependencies.Ktor.ktorClientSerialization)
                 implementation(ProjectDependencies.Square.SqlDelight.coroutinesExtensions)
                 implementation(ProjectDependencies.Square.SqlDelight.runtime)
+            }
+        }
+
+        val commonTest by getting {
+            dependencies {
+                implementation(ProjectDependencies.JetBrains.Kotlin.kotlinTestCommon)
+                implementation(ProjectDependencies.JetBrains.Kotlin.kotlinTestAnnotationsCommon)
             }
         }
 

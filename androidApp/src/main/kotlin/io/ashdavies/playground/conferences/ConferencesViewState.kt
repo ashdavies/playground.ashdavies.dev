@@ -1,6 +1,6 @@
 package io.ashdavies.playground.conferences
 
-import io.ashdavies.playground.network.Conference
+import io.ashdavies.playground.database.Conference
 import kotlinx.datetime.LocalDate
 
 internal sealed class ConferencesViewState {

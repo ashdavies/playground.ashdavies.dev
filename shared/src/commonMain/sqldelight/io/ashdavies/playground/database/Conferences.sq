@@ -10,7 +10,7 @@ CREATE TABLE conference(
     cfpStart TEXT as LocalDate,
     cfpEnd TEXT as LocalDate,
     cfpSite TEXT,
-    online INTEGER as Boolean DEFAULT 0 NOT NULL
+    online INTEGER as Boolean
 );
 
 CREATE INDEX conferenceName ON conference(name);
