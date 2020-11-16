@@ -18,10 +18,6 @@ fun RepositoryHandler.android(): MavenArtifactRepository = google {
     }
 }
 
-fun RepositoryHandler.androidx(build: String): MavenArtifactRepository {
-    return maven("https://androidx.dev/snapshots/builds/$build/artifacts/ui/repository/")
-}
-
 fun RepositoryHandler.jitpack(): MavenArtifactRepository = maven(JITPACK) {
     content {
         includeGroupByRegex("com\\.github\\.ashdavies.*")

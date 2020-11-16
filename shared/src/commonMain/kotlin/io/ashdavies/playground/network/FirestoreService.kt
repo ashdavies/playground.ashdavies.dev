@@ -1,5 +1,3 @@
-@file:Suppress("FunctionName")
-
 package io.ashdavies.playground.network
 
 interface FirestoreService<T> {

@@ -1,0 +1,11 @@
+language: node_js
+node_js:
+  - "0.10"
+before_install:
+  - git submodule update --init
+  - npm install -g grunt-cli mocha phantomjs
+  - npm install
+before_script:
+  - phantomjs --version
+script:
+  - npm test

@@ -1,5 +1,3 @@
-@file:Suppress("FunctionName")
-
 package io.ashdavies.playground.conferences
 
 import com.dropbox.android.external.store4.SourceOfTruth

@@ -3,7 +3,6 @@ interface PluginDescriptor {
     val version: String
 }
 
-@Suppress("FunctionName")
 fun PluginDescriptor(
     id: String,
     version: String

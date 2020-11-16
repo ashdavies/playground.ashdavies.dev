@@ -57,14 +57,6 @@ android {
     }
 }
 
-configurations.all {
-    resolutionStrategy.eachDependency {
-        if (requested.group == "androidx.compose.compiler") {
-            useTarget("androidx.compose:compose-compiler:${requested.version}")
-        }
-    }
-}
-
 dependencies {
     implementation(project(":shared"))
 
@@ -72,7 +64,6 @@ dependencies {
     implementation(ProjectDependencies.AndroidX.annotation)
     implementation(ProjectDependencies.AndroidX.Compose.foundation)
     implementation(ProjectDependencies.AndroidX.Compose.material)
-    implementation(ProjectDependencies.AndroidX.Compose.navigation)
     implementation(ProjectDependencies.AndroidX.Compose.runtime)
     implementation(ProjectDependencies.AndroidX.Compose.ui)
     implementation(ProjectDependencies.AndroidX.coreKtx)
@@ -80,7 +71,8 @@ dependencies {
     implementation(ProjectDependencies.AndroidX.Lifecycle.lifecycleLivedataKtx)
     implementation(ProjectDependencies.AndroidX.Lifecycle.lifecycleViewmodelKtx)
     implementation(ProjectDependencies.AndroidX.pagingRuntime)
-    implementation(ProjectDependencies.AndroidX.Navigation.navigationFragmentKtx)
+    implementation(ProjectDependencies.AndroidX.Navigation.navigationCompose)
+    implementation(ProjectDependencies.AndroidX.Navigation.navigationRuntimeKtx)
     implementation(ProjectDependencies.AndroidX.Navigation.navigationUiKtx)
     implementation(ProjectDependencies.AndroidX.Ui.uiTooling)
     implementation(ProjectDependencies.Dropbox.store4)
@@ -95,8 +87,8 @@ dependencies {
     implementation(ProjectDependencies.Square.SqlDelight.coroutinesExtensions)
     implementation(ProjectDependencies.Square.SqlDelight.runtime)
 
-    testImplementation(ProjectDependencies.Google.truth)
+    testImplementation(ProjectDependencies.JetBrains.Kotlin.kotlinTest)
+    testImplementation(ProjectDependencies.JetBrains.Kotlin.kotlinTestJunit)
     testImplementation(ProjectDependencies.JetBrains.KotlinX.kotlinxCoroutinesTest)
-    testImplementation(ProjectDependencies.jUnit)
     testImplementation(ProjectDependencies.Square.SqlDelight.sqliteDriver)
 }

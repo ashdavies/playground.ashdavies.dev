@@ -1,5 +1,3 @@
-@file:Suppress("FunctionName")
-
 package io.ashdavies.playground.conferences
 
 import android.content.Context

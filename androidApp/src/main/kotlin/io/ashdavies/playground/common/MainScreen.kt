@@ -9,13 +9,15 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.TopAppBar
-import androidx.compose.navigation.NavHost
-import androidx.compose.navigation.composable
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import androidx.ui.tooling.preview.Preview
 import io.ashdavies.playground.R
 import io.ashdavies.playground.Route.Conferences
@@ -24,6 +26,8 @@ import io.ashdavies.playground.conferences.ConferencesScreen
 @Preview
 @Composable
 fun MainScreen() {
+    val navController: NavHostController = rememberNavController()
+
     SystemUiAmbient
         .current
         .setStatusBarColor(MaterialTheme.colors.primaryVariant)
@@ -53,7 +57,7 @@ fun MainScreen() {
                 }
             }
         ) {
-            NavHost(startDestination = Conferences) {
+            NavHost(navController, startDestination = Conferences) {
                 composable(Conferences) { ConferencesScreen() }
             }
         }

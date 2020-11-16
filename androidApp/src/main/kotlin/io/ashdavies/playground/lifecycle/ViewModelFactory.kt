@@ -1,4 +1,4 @@
-@file:Suppress("FunctionName", "UNCHECKED_CAST")
+@file:Suppress("UNCHECKED_CAST")
 
 package io.ashdavies.playground.lifecycle
 

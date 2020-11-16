@@ -1,6 +1,6 @@
 package io.ashdavies.playground
 
-sealed class Route {
+object Route {
 
-    object Conferences : Route()
+    const val Conferences = "conferences"
 }

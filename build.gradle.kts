@@ -22,8 +22,6 @@ plugins {
 
 allprojects {
     repositories {
-        androidx("6834848")
-
         google()
         maven("https://kotlin.bintray.com/kotlinx/")
         gradlePluginPortal()

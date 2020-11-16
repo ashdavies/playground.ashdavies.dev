@@ -1,6 +1,6 @@
 plugins {
     kotlin("multiplatform")
-    kotlin("plugin.serialization") version "1.4.10"
+    kotlin("plugin.serialization") version ProjectDependencies.JetBrains.Kotlin.version
 
     id("com.android.library")
     id("com.squareup.sqldelight")
