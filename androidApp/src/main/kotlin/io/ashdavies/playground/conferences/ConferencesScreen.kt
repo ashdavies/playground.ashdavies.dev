@@ -25,6 +25,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.viewModel
 import io.ashdavies.playground.R
 import io.ashdavies.playground.conferences.ConferencesViewModel.Companion.Factory
+import io.ashdavies.playground.conferences.ConferencesViewState.Uninitialised
+import io.ashdavies.playground.conferences.ConferencesViewState.Loading
+import io.ashdavies.playground.conferences.ConferencesViewState.Success
+import io.ashdavies.playground.conferences.ConferencesViewState.Failure
 import io.ashdavies.playground.conferences.ConferencesViewState.Section.Header
 import io.ashdavies.playground.conferences.ConferencesViewState.Section.Item
 import io.ashdavies.playground.database.Conference
@@ -33,10 +37,14 @@ import kotlinx.datetime.LocalDate
 
 @Composable
 internal fun ConferencesScreen(context: Context = ContextAmbient.current) {
-    val viewModel: ConferencesViewModel = viewModel(factory = Factory(context))
+    ConferencesScreen(viewModel(factory = Factory(context)))
+}
+
+@Composable
+internal fun ConferencesScreen(viewModel: ConferencesViewModel) {
     val state: State<ConferencesViewState> = viewModel
         .viewState
-        .collectAsState(ConferencesViewState.Uninitialised)
+        .collectAsState(Uninitialised)
 
     ConferencesList(state.value)
 }
@@ -44,9 +52,9 @@ internal fun ConferencesScreen(context: Context = ContextAmbient.current) {
 @Composable
 internal fun ConferencesList(viewState: ConferencesViewState) {
     when (viewState) {
-        is ConferencesViewState.Loading -> ConferencesLoading()
-        is ConferencesViewState.Success -> ConferencesList(viewState.data)
-        is ConferencesViewState.Failure -> ConferencesFailure(viewState.message)
+        is Loading -> ConferencesLoading()
+        is Success -> ConferencesList(viewState.data)
+        is Failure -> ConferencesFailure(viewState.message)
         else -> Unit
     }
 }

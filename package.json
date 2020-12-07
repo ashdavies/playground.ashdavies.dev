@@ -1,8 +1,10 @@
 {
   "name": "playground",
   "dependencies": {
+    "axios": "^0.21.0",
     "firebase-admin": "^9.4.1",
     "firebase-functions": "^3.11.0",
-    "firestore": "^1.1.6"
+    "firestore": "^1.1.6",
+    "yaml": "^1.10.0"
   }
 }
