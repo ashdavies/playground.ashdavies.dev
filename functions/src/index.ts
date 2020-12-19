@@ -1,6 +1,7 @@
 "use strict"
 
 import axios, { AxiosResponse } from "axios"
+import { camelizeKeys } from "humps"
 import yaml, { Document } from "yaml"
 
 import * as admin from "firebase-admin"
@@ -9,11 +10,15 @@ import * as functions from "firebase-functions"
 import type {
   CollectionReference,
   DocumentData,
-  DocumentReference,
   QueryDocumentSnapshot,
   QuerySnapshot,
-  WriteResult,
 } from "@google-cloud/firestore"
+
+/**
+ * - GitHub API request will return summary of all conferences sorted by file name
+ * - Firebase collections API will return documents each incurring a read charge sorted by key
+ * - 
+ */
 
 admin.initializeApp()
 
@@ -35,88 +40,64 @@ export const conferences = functions
       return
     }
 
-    const items: Item[] = await fetchItems(startAt, perPage)
-
-    items.forEach(async element => {
+    const items: { [field: string]: any }[] = await fetchItems(startAt, perPage)
+    await Promise.all(items.map((element) => {
       if (element.sha in documents) {
-        return
+        return Promise.resolve()
       }
 
-      const entry: DocumentData | void = await fetchDocument<DocumentData>(element.download_url)
-        .then((document: DocumentData) => setDocument(document.sha, document))
+      return fetchDocument<DocumentData>(element.download_url)
+        .then(async (document: DocumentData) => {
+          documents[element.sha] = document
+          console.log(document.dateStart) // Unordered
+          
+          return await collection
+            .doc(element.sha)
+            .set(document)
+        })
         .catch((error) => console.log(error))
+    }))
 
-      if (entry === undefined) {
-        return
-      }
-
-      documents[entry.sha] = entry
-    })
-
-    response.send(documents)
+    response.send(Object.values(documents))
   })
 
-function getDocuments<T = DocumentData>(startAt: number, perPage: number): Promise<{ [key: string]: T }> {
-  return collection
+async function getDocuments<T extends DocumentData>(startAt: number, perPage: number): Promise<DocumentSet<T>> {
+  const snapshot: QuerySnapshot = await collection
     .orderBy("dateStart")
     .startAt(startAt)
     .limit(perPage)
     .get()
-    .then((snapshot: QuerySnapshot) => collate<T>(snapshot.docs))
+
+  return collate<T>(snapshot.docs)
 }
 
-function collate<T = DocumentData>(documents: QueryDocumentSnapshot[], into: { [key: string]: T } = {}): { [key: string]: T } {
-  documents.forEach((document: QueryDocumentSnapshot) => { into[document.id] = document.data() as T })
-  return into
+function collate<T extends DocumentData>(documents: QueryDocumentSnapshot[], output: DocumentSet<T> = {}): DocumentSet<T> {
+  documents.forEach((document: QueryDocumentSnapshot) => { output[document.id] = document.data() as T })
+  return output
 }
 
-// TODO: Generify response to remove Item type (use only sha and download_url)
-function fetchItems(startAt: number, perPage: number): Promise<Item[]> {
+function fetchItems(startAt: number, perPage: number): Promise<{ [field: string]: any }[]> {
   return axios
     .get("https://api.github.com/repos/AndroidStudyGroup/conferences/contents/_conferences")
-    .then(async (response: AxiosResponse<Item[]>) => response.data.slice(startAt, startAt + perPage))
+    .then(async (response: AxiosResponse<{ [field: string]: any }>) => response.data.slice(startAt, startAt + perPage))
 }
 
-function fetchDocument<T = DocumentData>(url: string): Promise<T> {
-  return axios
-    .get(url)
-    .then((response: AxiosResponse<string>) => parseDocument<T>(response.data))
+async function fetchDocument<T extends DocumentData>(url: string): Promise<T> {
+  const response = await axios.get(url)
+  return parseDocument(response.data)
 }
 
-// TODO Automatically convert snake case to lower camel case
-function parseDocument<T>(data: string): T {
+function parseDocument<T extends DocumentData>(data: string): T {
   const documents: Document.Parsed[] = yaml
     .parseAllDocuments(data)
     .filter((document) => document.contents != null)
 
-  if (documents.length != 0) {
-    throw new Error(`Parsing failed for ${JSON.stringify(data)}`)
+  if (documents.length != 1) {
+    throw new Error(`Found ${documents.length} documents, expected 1`)
   }
 
-  return documents[0].toJSON() as T
+  const json: object = documents[0].toJSON()
+  return camelizeKeys(json) as T
 }
 
-function toCamelCase<T>(data: T): T {
-
-}
-
-function toCamelCase(value: string): string {
-  return value
-    .split("_")
-}
-
-const snakeToCamel = (str) => str.replace(
-    /([-_][a-z])/g,
-    (group) => group.toUpperCase()
-                    .replace('-', '')
-                    .replace('_', '')
-);
-
-snakeToCamel('my-snake-string'); // mySnakeString
-
-function setDocument<T = DocumentData>(id: string, data: T): Promise<T> {
-  return collection
-    .doc(id)
-    .set(data)
-    .then((result: WriteResult) => data)
-}
+type DocumentSet<T extends DocumentData> = { [key: string]: T }

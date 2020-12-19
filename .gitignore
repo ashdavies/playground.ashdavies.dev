@@ -14,6 +14,7 @@ build
 
 # Firebase
 **/google-services.json
+**/*.log
 
 # MAC
 *.DS_Store
