@@ -1,7 +1,7 @@
 "use strict"
 
-import axios, { AxiosResponse } from "axios"
 import { camelizeKeys } from "humps"
+import { graphql } from "@octokit/graphql"
 import yaml, { Document } from "yaml"
 
 import * as admin from "firebase-admin"
@@ -14,11 +14,29 @@ import type {
   QuerySnapshot,
 } from "@google-cloud/firestore"
 
+
 /**
- * - GitHub API request will return summary of all conferences sorted by file name
  * - Firebase collections API will return documents each incurring a read charge sorted by key
- * - 
+ * - Pagination of GitHub response is not feasible as documents are returned unordered
  */
+
+const query: string = `query Conferences {
+  repository(owner: "AndroidStudyGroup", name: "conferences") {
+    conferences: object(expression: "HEAD:_conferences") {
+      ... on Tree {
+        entries {
+          oid
+          
+          data: object {
+            ... on Blob {
+              text
+            }
+          }
+        }
+      }
+    }
+  }
+}`
 
 admin.initializeApp()
 
@@ -34,28 +52,30 @@ export const conferences = functions
     const perPage: number = request.query.perPage !== undefined ? +request.query.perPage : 10
     const startAt: number = perPage * page
 
+    const token: string | undefined = request.query.token as string | undefined
+    if (token === undefined) {
+      response.sendStatus(400)
+      return
+    }
+
     const documents: { [key: string]: DocumentData } | void = await getDocuments(startAt, perPage)
     if (documents === undefined) {
       response.sendStatus(404)
       return
     }
 
-    const items: { [field: string]: any }[] = await fetchItems(startAt, perPage)
-    await Promise.all(items.map((element) => {
-      if (element.sha in documents) {
+    const items: { [field: string]: any }[] = await fetchItems(token, startAt, perPage)
+    await Promise.all<any>(items.map((element) => {
+      if (element.oid in documents) {
         return Promise.resolve()
       }
 
-      return fetchDocument<DocumentData>(element.download_url)
-        .then(async (document: DocumentData) => {
-          documents[element.sha] = document
-          console.log(document.dateStart) // Unordered
-          
-          return await collection
-            .doc(element.sha)
-            .set(document)
-        })
-        .catch((error) => console.log(error))
+      const document: DocumentData = parseDocument(element.data.text)
+      documents[element.oid] = document
+
+      return collection
+        .doc(element.oid)
+        .set(document)
     }))
 
     response.send(Object.values(documents))
@@ -76,15 +96,19 @@ function collate<T extends DocumentData>(documents: QueryDocumentSnapshot[], out
   return output
 }
 
-function fetchItems(startAt: number, perPage: number): Promise<{ [field: string]: any }[]> {
-  return axios
-    .get("https://api.github.com/repos/AndroidStudyGroup/conferences/contents/_conferences")
-    .then(async (response: AxiosResponse<{ [field: string]: any }>) => response.data.slice(startAt, startAt + perPage))
-}
+async function fetchItems<T>(token: string, startAt: number, perPage: number): Promise<T[]> {
+  const response: any = await graphql(query, {
+    headers: {
+      authorization: `token ${token}`
+    }
+  })
 
-async function fetchDocument<T extends DocumentData>(url: string): Promise<T> {
-  const response = await axios.get(url)
-  return parseDocument(response.data)
+  const conferences: T[] = response
+    .repository
+    .conferences
+    .entries
+
+  return conferences.slice(startAt, startAt + perPage)
 }
 
 function parseDocument<T extends DocumentData>(data: string): T {
