@@ -1,20 +1,23 @@
-interface GitHubObject {
+interface Blob extends GitObject {
     data: {
         text: string
     }
 }
 
+interface GitObject {
+    oid: string
+}
+
 interface Repository {
     repository: {
-        conferences: {
-            entries: Array<TreeEntry & GitHubObject>
+        conferences: GitObject & {
+            entries: Array<Blob & TreeEntry>
         }
     }
 }
 
-interface TreeEntry {
+interface TreeEntry extends GitObject {
     name: string
-    oid: string
 }
 
 interface Query<T> {

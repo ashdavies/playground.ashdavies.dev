@@ -24,13 +24,7 @@ android {
 kotlin {
     android()
 
-    ios {
-        binaries {
-            framework {
-                baseName = "conferences"
-            }
-        }
-    }
+    explicitApi()
 
     sourceSets {
         all {
@@ -73,13 +67,6 @@ kotlin {
             dependencies {
                 implementation(ProjectDependencies.JetBrains.Kotlin.kotlinTestCommon)
                 implementation(ProjectDependencies.JetBrains.Kotlin.kotlinTestAnnotationsCommon)
-            }
-        }
-
-        val iosMain by getting {
-            dependencies {
-                implementation(ProjectDependencies.Ktor.ktorClientIos)
-                implementation(ProjectDependencies.Square.SqlDelight.nativeDriver)
             }
         }
     }
