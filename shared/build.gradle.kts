@@ -9,6 +9,11 @@ plugins {
 android {
     compileSdkVersion(30)
 
+    configurations {
+        // https://youtrack.jetbrains.com/issue/KT-43944
+        create("testApi", "testDebugApi", "testReleaseApi")
+    }
+
     sourceSets.forEach { sourceSet ->
         sourceSet
             .manifest
@@ -24,7 +29,7 @@ android {
 kotlin {
     android()
 
-    explicitApi()
+    //explicitApi()
 
     sourceSets {
         all {
@@ -77,3 +82,6 @@ sqldelight {
         packageName = "io.ashdavies.playground.database"
     }
 }
+
+fun NamedDomainObjectContainer<*>.create(vararg names: String) =
+    names.forEach { create(it) }

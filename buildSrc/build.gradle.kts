@@ -15,5 +15,5 @@ tasks {
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.4.20-RC")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.4.21")
 }

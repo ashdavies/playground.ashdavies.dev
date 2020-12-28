@@ -1,52 +1,58 @@
 package io.ashdavies.playground.conferences
 
 import android.content.Context
-import androidx.compose.foundation.Box
-import androidx.compose.foundation.Text
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumnFor
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Card
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.ContextAmbient
+import androidx.compose.ui.platform.AmbientContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.viewinterop.viewModel
 import io.ashdavies.playground.R
-import io.ashdavies.playground.conferences.ConferencesViewModel.Companion.Factory
-import io.ashdavies.playground.conferences.ConferencesViewState.Uninitialised
-import io.ashdavies.playground.conferences.ConferencesViewState.Loading
-import io.ashdavies.playground.conferences.ConferencesViewState.Success
 import io.ashdavies.playground.conferences.ConferencesViewState.Failure
+import io.ashdavies.playground.conferences.ConferencesViewState.Loading
 import io.ashdavies.playground.conferences.ConferencesViewState.Section.Header
 import io.ashdavies.playground.conferences.ConferencesViewState.Section.Item
+import io.ashdavies.playground.conferences.ConferencesViewState.Success
+import io.ashdavies.playground.conferences.ConferencesViewState.Uninitialised
 import io.ashdavies.playground.database.Conference
 import io.ashdavies.playground.ktx.toCalendar
+import io.ashdavies.playground.lifecycle.graphViewModel
 import kotlinx.datetime.LocalDate
 
 @Composable
-internal fun ConferencesScreen(context: Context = ContextAmbient.current) {
-    ConferencesScreen(viewModel(factory = Factory(context)))
+internal fun ConferencesScreen(context: Context = AmbientContext.current) {
+    val viewModel: ConferencesViewModel = context.graphViewModel {
+        ConferencesViewModel(
+            conferencesService = conferencesService,
+            conferencesMapper = ConferencesMapper(),
+        )
+    }
+
+    ConferencesScreen(viewModel = viewModel)
 }
 
 @Composable
 internal fun ConferencesScreen(viewModel: ConferencesViewModel) {
-    val state: State<ConferencesViewState> = viewModel
+    val viewState: State<ConferencesViewState> = viewModel
         .viewState
         .collectAsState(Uninitialised)
 
-    ConferencesList(state.value)
+    ConferencesList(viewState.value)
 }
 
 @Composable
@@ -61,11 +67,12 @@ internal fun ConferencesList(viewState: ConferencesViewState) {
 
 @Composable
 internal fun ConferencesList(data: List<ConferencesViewState.Section>) {
-    LazyColumnFor(
-        contentPadding = PaddingValues(16.dp, 12.dp, 16.dp, 0.dp),
-        itemContent = { ConferenceSection(it) },
-        items = data,
-    )
+    LazyColumn(contentPadding = PaddingValues(16.dp, 12.dp, 16.dp, 0.dp)) {
+        items(
+            itemContent = { ConferenceSection(it) },
+            items = data,
+        )
+    }
 }
 
 @Composable

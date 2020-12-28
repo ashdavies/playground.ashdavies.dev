@@ -7,10 +7,11 @@
 build
 /reports
 
-# Gradle Android
+# Android
 /gradle.properties
 **/local.properties
 /captures
+*.hprof
 
 # Firebase
 **/google-services.json

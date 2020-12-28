@@ -2,19 +2,21 @@
 
 package io.ashdavies.playground.lifecycle
 
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.viewinterop.viewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider.Factory
 import io.ashdavies.playground.Graph
 import io.ashdavies.playground.graph
 
-internal fun <T, VM : ViewModel> ViewModelFactory(
-    input: T,
-    block: Graph<T>.() -> VM,
-): Factory = object : Factory {
+@Composable
+internal inline fun <T, reified VM : ViewModel> T.graphViewModel(
+    crossinline factory: Graph<T>.() -> VM,
+): VM = viewModel(factory = object : Factory {
 
-    override fun <VM : ViewModel?> create(
-        modelClass: Class<VM>
-    ): VM = input
+    override fun <T : ViewModel> create(
+        modelClass: Class<T>
+    ): T = this@graphViewModel
         .graph
-        .block() as VM
-}
+        .factory() as T
+})

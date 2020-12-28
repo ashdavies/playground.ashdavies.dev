@@ -52,9 +52,9 @@ android {
         java.srcDirs("src/$name/kotlin")
     }
 
-    packagingOptions {
+    /*packagingOptions {
         exclude("META-INF/DEPENDENCIES")
-    }
+    }*/
 }
 
 dependencies {
@@ -66,6 +66,7 @@ dependencies {
     implementation(ProjectDependencies.AndroidX.Compose.material)
     implementation(ProjectDependencies.AndroidX.Compose.runtime)
     implementation(ProjectDependencies.AndroidX.Compose.ui)
+    implementation(ProjectDependencies.AndroidX.Compose.uiTooling)
     implementation(ProjectDependencies.AndroidX.coreKtx)
     implementation(ProjectDependencies.AndroidX.fragmentKtx)
     implementation(ProjectDependencies.AndroidX.Lifecycle.lifecycleLivedataKtx)
@@ -74,7 +75,6 @@ dependencies {
     implementation(ProjectDependencies.AndroidX.Navigation.navigationCompose)
     implementation(ProjectDependencies.AndroidX.Navigation.navigationRuntimeKtx)
     implementation(ProjectDependencies.AndroidX.Navigation.navigationUiKtx)
-    implementation(ProjectDependencies.AndroidX.Ui.uiTooling)
     implementation(ProjectDependencies.Dropbox.store4)
     implementation(ProjectDependencies.Google.Firebase.firebaseCommonKtx)
     implementation(ProjectDependencies.Google.Firebase.firebaseAnalytics)
