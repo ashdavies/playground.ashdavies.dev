@@ -13,6 +13,11 @@ jobs:
   gradle:
     runs-on: ubuntu-latest
     steps:
+      - name: set up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+
       - name: Checkout Repo
         uses: actions/checkout@v2
 
