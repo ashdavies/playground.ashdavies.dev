@@ -62,6 +62,7 @@ object ProjectDependencies {
 
             val kotlinTest by artifact()
             val kotlinTestCommon by artifact()
+            val kotlinTestJs by artifact()
             val kotlinTestJunit by artifact()
             val kotlinTestAnnotationsCommon by artifact()
         }

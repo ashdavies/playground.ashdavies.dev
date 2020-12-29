@@ -1,4 +1,7 @@
-rootProject.name = ("playground")
+rootProject.name = "playground"
 
-include(":androidApp")
-include(":shared")
+include(
+    ":androidApp",
+    ":functions",
+    ":shared"
+)
