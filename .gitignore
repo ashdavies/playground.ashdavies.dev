@@ -2,11 +2,6 @@
 *.iml
 /.idea
 
-# Gradle
-.gradle
-build
-/reports
-
 # Android
 /gradle.properties
 **/local.properties
@@ -17,8 +12,21 @@ build
 **/google-services.json
 **/*.log
 
-# MAC
-*.DS_Store
+# Gradle
+.gradle
+build
+/reports
+
+# JavaScript files
+node_modules/
+**/*.js
+**/*.js.map
 
 # Linux
 *~
+
+# MAC
+*.DS_Store
+
+# Node.js dependency directory
+node_modules/

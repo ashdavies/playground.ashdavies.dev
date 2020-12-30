@@ -28,7 +28,7 @@ import io.ashdavies.playground.conferences.ConferencesScreen
 fun MainScreen() {
     val navController: NavHostController = rememberNavController()
 
-    SystemUiAmbient
+    AmbientSystemUi
         .current
         .setStatusBarColor(MaterialTheme.colors.primaryVariant)
 

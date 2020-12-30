@@ -1,7 +1,4 @@
 <resources>
     <string name="application">Playground</string>
-    <string name="conferences">Conferences</string>
     <string name="header">%1$tM %1$tY</string>
-
-    <string name="error">An error has occurred</string>
 </resources>

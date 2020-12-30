@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="UnusedResources">
 
     <dimen name="horizontal_spacing">16dp</dimen>
     <dimen name="vertical_spacing">12dp</dimen>

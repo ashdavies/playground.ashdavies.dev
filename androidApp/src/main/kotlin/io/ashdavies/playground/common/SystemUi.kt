@@ -32,6 +32,6 @@ internal class SystemUi(private val window: Window) {
     }
 }
 
-internal val SystemUiAmbient = staticAmbientOf<SystemUi> {
+internal val AmbientSystemUi = staticAmbientOf<SystemUi> {
     error("No SystemUiController provided")
 }

@@ -1,5 +1,10 @@
 import BuildPlugins.KotlinGradlePlugin
-import ProjectDependencies.AndroidX.Compose.version as ComposeVersion
+import ProjectDependencies.AndroidX
+import ProjectDependencies.Dropbox
+import ProjectDependencies.Google
+import ProjectDependencies.JetBrains
+import ProjectDependencies.Ktor
+import ProjectDependencies.Square
 
 plugins {
     id("com.android.application")
@@ -19,8 +24,8 @@ android {
     }
 
     composeOptions {
+        kotlinCompilerExtensionVersion = AndroidX.Compose.version
         kotlinCompilerVersion = KotlinGradlePlugin.version
-        kotlinCompilerExtensionVersion = ComposeVersion
     }
 
     defaultConfig {
@@ -60,35 +65,35 @@ android {
 dependencies {
     implementation(project(":shared"))
 
-    implementation(ProjectDependencies.AndroidX.activityKtx)
-    implementation(ProjectDependencies.AndroidX.annotation)
-    implementation(ProjectDependencies.AndroidX.Compose.foundation)
-    implementation(ProjectDependencies.AndroidX.Compose.material)
-    implementation(ProjectDependencies.AndroidX.Compose.runtime)
-    implementation(ProjectDependencies.AndroidX.Compose.ui)
-    implementation(ProjectDependencies.AndroidX.Compose.uiTooling)
-    implementation(ProjectDependencies.AndroidX.coreKtx)
-    implementation(ProjectDependencies.AndroidX.fragmentKtx)
-    implementation(ProjectDependencies.AndroidX.Lifecycle.lifecycleLivedataKtx)
-    implementation(ProjectDependencies.AndroidX.Lifecycle.lifecycleViewmodelKtx)
-    implementation(ProjectDependencies.AndroidX.pagingRuntime)
-    implementation(ProjectDependencies.AndroidX.Navigation.navigationCompose)
-    implementation(ProjectDependencies.AndroidX.Navigation.navigationRuntimeKtx)
-    implementation(ProjectDependencies.AndroidX.Navigation.navigationUiKtx)
-    implementation(ProjectDependencies.Dropbox.store4)
-    implementation(ProjectDependencies.Google.Firebase.firebaseCommonKtx)
-    implementation(ProjectDependencies.Google.Firebase.firebaseAnalytics)
-    implementation(ProjectDependencies.Google.Android.material)
-    implementation(ProjectDependencies.JetBrains.KotlinX.kotlinxCoroutinesAndroid)
-    implementation(ProjectDependencies.JetBrains.KotlinX.kotlinxCoroutinesCore)
-    implementation(ProjectDependencies.JetBrains.KotlinX.kotlinxDatetime)
-    implementation(ProjectDependencies.Ktor.ktorClientCore)
-    implementation(ProjectDependencies.Square.SqlDelight.androidDriver)
-    implementation(ProjectDependencies.Square.SqlDelight.coroutinesExtensions)
-    implementation(ProjectDependencies.Square.SqlDelight.runtime)
+    implementation(AndroidX.activityKtx)
+    implementation(AndroidX.annotation)
+    implementation(AndroidX.Compose.foundation)
+    implementation(AndroidX.Compose.material)
+    implementation(AndroidX.Compose.runtime)
+    implementation(AndroidX.Compose.ui)
+    implementation(AndroidX.Compose.uiTooling)
+    implementation(AndroidX.coreKtx)
+    implementation(AndroidX.fragmentKtx)
+    implementation(AndroidX.Lifecycle.lifecycleLivedataKtx)
+    implementation(AndroidX.Lifecycle.lifecycleViewmodelKtx)
+    implementation(AndroidX.pagingRuntime)
+    implementation(AndroidX.Navigation.navigationCompose)
+    implementation(AndroidX.Navigation.navigationRuntimeKtx)
+    implementation(AndroidX.Navigation.navigationUiKtx)
+    implementation(Dropbox.store4)
+    implementation(Google.Firebase.firebaseCommonKtx)
+    implementation(Google.Firebase.firebaseAnalytics)
+    implementation(Google.Android.material)
+    implementation(JetBrains.KotlinX.kotlinxCoroutinesAndroid)
+    implementation(JetBrains.KotlinX.kotlinxCoroutinesCore)
+    implementation(JetBrains.KotlinX.kotlinxDatetime)
+    implementation(Ktor.ktorClientCore)
+    implementation(Square.SqlDelight.androidDriver)
+    implementation(Square.SqlDelight.coroutinesExtensions)
+    implementation(Square.SqlDelight.runtime)
 
-    testImplementation(ProjectDependencies.JetBrains.Kotlin.kotlinTest)
-    testImplementation(ProjectDependencies.JetBrains.Kotlin.kotlinTestJunit)
-    testImplementation(ProjectDependencies.JetBrains.KotlinX.kotlinxCoroutinesTest)
-    testImplementation(ProjectDependencies.Square.SqlDelight.sqliteDriver)
+    testImplementation(JetBrains.Kotlin.kotlinTest)
+    testImplementation(JetBrains.Kotlin.kotlinTestJunit)
+    testImplementation(JetBrains.KotlinX.kotlinxCoroutinesTest)
+    testImplementation(Square.SqlDelight.sqliteDriver)
 }

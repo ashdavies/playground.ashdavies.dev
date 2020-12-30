@@ -16,7 +16,7 @@ internal abstract class ComposeActivity(
         setContent {
             val systemUi = remember { SystemUi(window) }
 
-            Providers(SystemUiAmbient provides systemUi) {
+            Providers(AmbientSystemUi provides systemUi) {
                 content()
             }
         }
