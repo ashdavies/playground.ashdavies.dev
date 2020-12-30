@@ -1,7 +1,6 @@
 # Android Playground
 
-![.github/workflows/android.yml](https://github.com/ashdavies/playground/workflows/.github/workflows/android.yml/badge.svg)
-[![](https://img.shields.io/codacy/coverage/03ae86d9ce934421879bc407aa157732.svg)](https://app.codacy.com/project/ash.davies/playground/dashboard)
+![.github/workflows/pre-merge.yml](https://github.com/ashdavies/playground/workflows/.github/workflows/pre-merge.yml/badge.svg)
 ![](https://img.shields.io/github/license/ashdavies/playground.svg)
 
 [![](https://api.codacy.com/project/badge/Grade/82402de64cf942cbada71dfb8695bbe4)](https://app.codacy.com/app/ash.davies/playground)
