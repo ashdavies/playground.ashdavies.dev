@@ -62,6 +62,7 @@ object ProjectDependencies {
 
             val kotlinTest by artifact()
             val kotlinTestCommon by artifact()
+            val kotlinTestJs by artifact()
             val kotlinTestJunit by artifact()
             val kotlinTestAnnotationsCommon by artifact()
         }
@@ -72,6 +73,7 @@ object ProjectDependencies {
             val kotlinxCoroutinesCore by artifact()
             val kotlinxCoroutinesTest by artifact()
             val kotlinxDatetime by artifact(version = "0.1.1")
+            val kotlinxNodejs by artifact(version = "0.0.7")
             val kotlinxSerializationJson by artifact(version = "1.0.1")
         }
     }

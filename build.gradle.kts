@@ -1,12 +1,4 @@
 buildscript {
-    repositories {
-        google()
-        maven("https://kotlin.bintray.com/kotlinx/")
-        gradlePluginPortal()
-        mavenCentral()
-        jcenter()
-    }
-
     dependencies {
         classpath(BuildPlugins.Batik)
         classpath(BuildPlugins.Gradle)
