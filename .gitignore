@@ -21,6 +21,7 @@ build
 node_modules/
 **/*.js
 **/*.js.map
+**/*.kjsm
 
 # Linux
 *~
