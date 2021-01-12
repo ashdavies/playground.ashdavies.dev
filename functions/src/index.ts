@@ -29,6 +29,13 @@ admin.initializeApp()
 /**
  * TODO Use function global variables to reuse objects for expensive object caching
  * https://cloud.google.com/functions/docs/bestpractices/tips#use_global_variables_to_reuse_objects_in_future_invocations
+ *
+ * TODO
+ *  - Store index of conference elements with tree SHA
+ *  - Retrieve all documents via GraphQL API endpoint
+ *  - Perform diff against conference index
+ *  - Update Firestore database from diff
+ *  - Respond with paginated request
  */
 const region: FunctionBuilder = functions.region("europe-west1")
 
