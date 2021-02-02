@@ -68,10 +68,9 @@ internal fun ConferencesList(viewState: ConferencesViewState) {
 @Composable
 internal fun ConferencesList(data: List<ConferencesViewState.Section>) {
     LazyColumn(contentPadding = PaddingValues(16.dp, 12.dp, 16.dp, 0.dp)) {
-        items(
-            itemContent = { ConferenceSection(it) },
-            items = data,
-        )
+        items(data.size) {
+            ConferenceSection(data[it])
+        }
     }
 }
 

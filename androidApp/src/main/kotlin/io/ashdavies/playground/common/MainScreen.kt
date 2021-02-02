@@ -39,7 +39,10 @@ fun MainScreen() {
                     title = { Text(stringResource(R.string.application)) },
                     actions = {
                         IconButton(onClick = { TODO() }) {
-                            Image(imageVector = vectorResource(R.drawable.ic_baseline_search_24))
+                            Image(
+                                imageVector = vectorResource(R.drawable.ic_baseline_search_24),
+                                contentDescription = stringResource(R.string.search),
+                            )
                         }
                     },
                 )
@@ -51,7 +54,10 @@ fun MainScreen() {
                             modifier = Modifier.align(CenterHorizontally),
                             onClick = { TODO() },
                         ) {
-                            Image(imageVector = vectorResource(R.drawable.ic_baseline_code_24))
+                            Image(
+                                imageVector = vectorResource(R.drawable.ic_baseline_code_24),
+                                contentDescription = null,
+                            )
                         }
                     }
                 }
