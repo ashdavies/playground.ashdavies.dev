@@ -1,5 +1,5 @@
 import ProjectDependencies.JetBrains
-import org.jetbrains.kotlin.gradle.dsl.KotlinJsCompile
+import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpack
 
 plugins {
     id("org.jetbrains.kotlin.js")
@@ -7,28 +7,22 @@ plugins {
 
 kotlin {
     js {
-        nodejs {
-            binaries.executable()
-            useCommonJs()
+        browser {
+            distribution {
+                directory = File("$projectDir/lib")
+            }
         }
+
+        binaries.executable()
     }
 }
 
 dependencies {
     implementation(JetBrains.KotlinX.kotlinxDatetime)
     implementation(JetBrains.KotlinX.kotlinxNodejs)
-
-    testImplementation(JetBrains.Kotlin.kotlinTestJs)
 }
 
-tasks.withType<KotlinJsCompile> {
-    doLast {
-        val output = File("$rootDir/build/js/packages/${rootProject.name}-${project.name}/kotlin")
-        if (!output.exists()) throw IllegalStateException("Could not find output directory $output")
-
-        copy {
-            from(output)
-            into("$projectDir/lib")
-        }
-    }
+tasks.withType<KotlinWebpack> {
+    output.libraryTarget = "commonjs2"
+    outputFileName = "index.js"
 }
