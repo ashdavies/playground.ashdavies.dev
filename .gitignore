@@ -23,6 +23,9 @@ node_modules/
 **/*.js.map
 **/*.kjsm
 
+# Unignore webpack configurations
+!**/webpack.config.d/*
+
 # Linux
 *~
 
