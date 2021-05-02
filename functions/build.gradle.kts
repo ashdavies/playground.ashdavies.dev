@@ -19,6 +19,7 @@ kotlin {
 }
 
 dependencies {
+    implementation(JetBrains.KotlinX.kotlinxCoroutinesCore)
     implementation(JetBrains.KotlinX.kotlinxDatetime)
     implementation(JetBrains.KotlinX.kotlinxNodejs)
 

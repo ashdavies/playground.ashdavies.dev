@@ -16,8 +16,19 @@ fun main() {
 
     val functions = Express()
 
-    functions.get("/hello") { _: Request, response: Response<String> ->
-        response.send("Hello World")
+    functions.get("/hello") { _: Request, res: Response<String> ->
+        res.send("Hello World")
+    }
+
+    functions.get("/conferences") { _: Request, res: Response<String> ->
+        val snapshot = Admin
+            .firestore()
+            .collection("conferences")
+            .orderBy("dateStart", "desc")
+            .limit(10)
+            .get()
+
+        res.send("OK")
     }
 
     val https: Https = Functions

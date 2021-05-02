@@ -4,16 +4,16 @@ import io.ashdavies.playground.express.Express
 
 @JsNonModule
 @JsModule("firebase-functions")
-external object Functions {
+internal external object Functions {
     fun region(vararg regions: String): FunctionBuilder
 }
 
-external interface FunctionBuilder {
+internal external interface FunctionBuilder {
     val https: Https
 }
 
-external interface Https {
+internal external interface Https {
     fun onRequest(express: Express): HttpsFunction
 }
 
-external interface HttpsFunction
+internal external interface HttpsFunction

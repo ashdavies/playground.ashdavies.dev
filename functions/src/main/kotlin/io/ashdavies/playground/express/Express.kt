@@ -2,12 +2,17 @@ package io.ashdavies.playground.express
 
 @JsNonModule
 @JsModule("express")
-external class Express {
+internal external class Express {
     fun <T> get(route: String, callback: (req: Request, res: Response<T>) -> Unit)
 }
 
-external class Request
+internal external interface Request {
+    val query: dynamic
+}
 
-external class Response<T> {
+internal external interface Response<T> {
+    fun status(code: StatusCode): Response<T>
     fun send(data: T): Response<T>
 }
+
+internal typealias StatusCode = Int

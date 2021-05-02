@@ -2,6 +2,7 @@ package io.ashdavies.playground.firebase
 
 @JsNonModule
 @JsModule("firebase-admin")
-external object Admin {
+internal external object Admin {
     fun initializeApp()
+    fun firestore(): Firestore
 }
