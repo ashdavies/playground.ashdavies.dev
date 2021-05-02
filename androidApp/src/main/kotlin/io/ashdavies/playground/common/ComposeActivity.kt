@@ -1,11 +1,11 @@
 package io.ashdavies.playground.common
 
 import android.os.Bundle
+import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Providers
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
-import androidx.compose.ui.platform.setContent
 
 internal abstract class ComposeActivity(
     private val content: @Composable () -> Unit
@@ -15,8 +15,7 @@ internal abstract class ComposeActivity(
         super.onCreate(savedInstanceState)
         setContent {
             val systemUi = remember { SystemUi(window) }
-
-            Providers(AmbientSystemUi provides systemUi) {
+            CompositionLocalProvider(LocalSystemUi provides systemUi) {
                 content()
             }
         }

@@ -2,7 +2,7 @@ package io.ashdavies.playground.common
 
 import android.view.View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
 import android.view.Window
-import androidx.compose.runtime.staticAmbientOf
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.graphics.luminance
@@ -32,6 +32,6 @@ internal class SystemUi(private val window: Window) {
     }
 }
 
-internal val AmbientSystemUi = staticAmbientOf<SystemUi> {
+internal val LocalSystemUi = staticCompositionLocalOf<SystemUi> {
     error("No SystemUiController provided")
 }

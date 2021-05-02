@@ -32,7 +32,7 @@ android {
         applicationId = "io.ashdavies.playground"
 
         setMinSdkVersion(23)
-        setTargetSdkVersion(30)
+        //setTargetSdkVersion(30)
 
         versionCode = 1
         versionName = "1.0"
@@ -51,7 +51,7 @@ android {
         useIR = true
     }
 
-    setCompileSdkVersion(29)
+    compileSdkVersion(29)
 
     sourceSets.configureEach {
         java.srcDirs("src/$name/kotlin")

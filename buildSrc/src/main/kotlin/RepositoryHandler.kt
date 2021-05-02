@@ -30,13 +30,13 @@ fun RepositoryHandler.kotlin(): MavenArtifactRepository = maven(KOTLIN_EAP) {
     }
 }
 
-fun RepositoryHandler.tensorflow(): MavenArtifactRepository = jcenter {
+fun RepositoryHandler.tensorflow(): MavenArtifactRepository = mavenCentral {
     content {
         includeModule("org.tensorflow", "tensorflow-lite-support")
     }
 }
 
-fun RepositoryHandler.trove4j(): MavenArtifactRepository = jcenter {
+fun RepositoryHandler.trove4j(): MavenArtifactRepository = mavenCentral {
     content {
         includeModule("org.jetbrains.trove4j", "trove4j")
     }

@@ -3,17 +3,12 @@ package io.ashdavies.playground.common
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.BottomAppBar
-import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -28,7 +23,7 @@ import io.ashdavies.playground.conferences.ConferencesScreen
 fun MainScreen() {
     val navController: NavHostController = rememberNavController()
 
-    AmbientSystemUi
+    LocalSystemUi
         .current
         .setStatusBarColor(MaterialTheme.colors.primaryVariant)
 
@@ -40,7 +35,7 @@ fun MainScreen() {
                     actions = {
                         IconButton(onClick = { TODO() }) {
                             Image(
-                                imageVector = vectorResource(R.drawable.ic_baseline_search_24),
+                                painter = painterResource(R.drawable.ic_baseline_search_24),
                                 contentDescription = stringResource(R.string.search),
                             )
                         }
@@ -55,7 +50,7 @@ fun MainScreen() {
                             onClick = { TODO() },
                         ) {
                             Image(
-                                imageVector = vectorResource(R.drawable.ic_baseline_code_24),
+                                painter = painterResource(R.drawable.ic_baseline_code_24),
                                 contentDescription = null,
                             )
                         }

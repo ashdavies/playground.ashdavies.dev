@@ -18,6 +18,5 @@ allprojects {
         maven("https://kotlin.bintray.com/kotlinx/")
         gradlePluginPortal()
         mavenCentral()
-        jcenter()
     }
 }

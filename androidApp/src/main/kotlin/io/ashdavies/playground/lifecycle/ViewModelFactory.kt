@@ -3,9 +3,9 @@
 package io.ashdavies.playground.lifecycle
 
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.viewinterop.viewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider.Factory
+import androidx.lifecycle.viewmodel.compose.viewModel
 import io.ashdavies.playground.Graph
 import io.ashdavies.playground.graph
 

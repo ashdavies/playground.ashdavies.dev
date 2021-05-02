@@ -42,10 +42,13 @@ internal class ConferencesViewModel(
             else -> Uninitialised
         }
 
-    private fun Success(data: List<Conference>): ConferencesViewState =
+    private fun Success(data: List<Conference>): Success =
         data
             .map(::Item)
             //.groupBy { it.data.dateStart }
             //.flatMap { listOf(Header(it.key)) + it.value }
             .let(ConferencesViewState::Success)
+
 }
+
+private typealias Success = ConferencesViewState
