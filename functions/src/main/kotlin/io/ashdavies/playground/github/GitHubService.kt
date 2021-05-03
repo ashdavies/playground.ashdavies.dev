@@ -5,89 +5,25 @@ import io.ashdavies.playground.graphql.graphql
 import io.ashdavies.playground.humps.Humps
 import io.ashdavies.playground.yaml.Yaml
 import kotlinx.coroutines.await
-import kotlin.js.Date
-
-private val GraphQlQuery = """
-query Conferences {
-  repository(owner: "AndroidStudyGroup", name: "conferences") {
-    conferences: object(expression: "HEAD:_conferences") {
-      ... on Tree {
-        oid
-        entries {
-          oid
-          name
-          data: object {
-            ... on Blob {
-              oid
-              text
-            }
-          }
-        }
-      }
-    }
-  }
-}
-""".trimMargin()
 
 internal class GitHubService(private val token: String) {
 
-    suspend fun conferences(): List<Any?> {
-        fun conference(value: BlobEnvelope): Conference {
+    suspend fun conferences(): Map<String, dynamic> {
+        fun conference(value: String): dynamic {
             val yaml: dynamic = Yaml
-                .parseAllDocuments(value.data.text)[0]
+                .parseAllDocuments(value)
+                .first()
                 .toJSON()
 
-            return Humps
-                .camelizeKeys(yaml)
-                .unsafeCast<Conference>()
+            return Humps.camelizeKeys(yaml)
         }
 
-        val envelope: RepositoryEnvelope = GraphQl
-            .graphql<RepositoryEnvelope>(GraphQlQuery, token = token)
+        val entries: List<GitHubRepository.Entry> = GraphQl
+            .graphql<GitHubRepository>(GitHubQuery, token = token)
             .await()
-
-        val entries: Array<BlobEnvelope> = envelope
-            .repository
-            .conferences
             .entries
 
-        return entries.map(::conference)
+        return entries.associate { it.oid to conference(it.text) }
     }
 }
 
-internal data class Conference(
-    val name: String,
-    val location: String,
-    val website: String,
-    val dateStart: String,
-    val dateEnd: String,
-    val online: Boolean,
-    val status: String,
-    val cfp: Cfp,
-)
-
-internal data class Cfp(
-    val start: Date,
-    val end: Date,
-    val site: String,
-)
-
-internal interface RepositoryEnvelope {
-    val repository: Repository
-}
-
-internal interface Repository {
-    val conferences: ConferencesEnvelope
-}
-
-internal interface ConferencesEnvelope {
-    val entries: Array<BlobEnvelope>
-}
-
-internal interface BlobEnvelope {
-    val data: Blob
-}
-
-internal interface Blob {
-    val text: String
-}
