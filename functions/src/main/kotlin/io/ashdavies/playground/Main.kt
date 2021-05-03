@@ -1,39 +1,14 @@
 package io.ashdavies.playground
 
-import io.ashdavies.playground.express.Express
-import io.ashdavies.playground.express.Request
-import io.ashdavies.playground.express.Response
-import io.ashdavies.playground.firebase.Admin
-import io.ashdavies.playground.firebase.Functions
-import io.ashdavies.playground.firebase.Https
+import io.ashdavies.playground.firebase.functions
+import io.ashdavies.playground.service.HelloWorldService
+import io.ashdavies.playground.service.SyncConferencesService
 
 external val exports: dynamic
 
-private const val EUROPE_WEST = "europe-west1"
-
 fun main() {
-    Admin.initializeApp()
-
-    val functions = Express()
-
-    functions.get("/hello") { _: Request, res: Response<String> ->
-        res.send("Hello World")
+    exports.v1 = functions(region = "europe-west1") {
+        get("/hello", HelloWorldService)
+        get("/sync", SyncConferencesService)
     }
-
-    functions.get("/conferences") { _: Request, res: Response<String> ->
-        val snapshot = Admin
-            .firestore()
-            .collection("conferences")
-            .orderBy("dateStart", "desc")
-            .limit(10)
-            .get()
-
-        res.send("OK")
-    }
-
-    val https: Https = Functions
-        .region(EUROPE_WEST)
-        .https
-
-    exports.v1 = https.onRequest(functions)
 }
