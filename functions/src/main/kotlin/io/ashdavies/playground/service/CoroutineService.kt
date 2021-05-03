@@ -1,4 +1,3 @@
-/** Copyright © 2020 Robert Bosch GmbH. All rights reserved. */
 package io.ashdavies.playground.service
 
 import io.ashdavies.playground.express.Request

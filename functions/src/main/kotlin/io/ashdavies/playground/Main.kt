@@ -1,14 +1,16 @@
 package io.ashdavies.playground
 
 import io.ashdavies.playground.firebase.functions
+import io.ashdavies.playground.service.ConferencesService
 import io.ashdavies.playground.service.HelloWorldService
-import io.ashdavies.playground.service.SyncConferencesService
+
+private const val EUROPE_WEST = "europe-west1"
 
 external val exports: dynamic
 
 fun main() {
-    exports.v1 = functions(region = "europe-west1") {
+    exports.v1 = functions(region = EUROPE_WEST) {
         get("/hello", HelloWorldService)
-        get("/sync", SyncConferencesService)
+        get("/sync", ConferencesService)
     }
 }

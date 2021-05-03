@@ -8,5 +8,5 @@ internal external object Admin {
 }
 
 internal interface App {
-    fun functions(): Functions
+    fun firestore(): Firestore
 }
