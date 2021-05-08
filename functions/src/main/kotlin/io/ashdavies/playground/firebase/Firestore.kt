@@ -2,36 +2,35 @@ package io.ashdavies.playground.firebase
 
 import kotlin.js.Promise
 
-@JsNonModule
-@JsModule("firebase-firestore")
-internal external class Firestore {
-    fun collection(path: String): CollectionReference<DocumentData>
+internal external interface Firestore {
+    fun collection(path: String): CollectionReference
 }
 
-internal interface CollectionReference<T : DocumentData> : Query<T> {
-    fun doc(documentPath: String): DocumentReference<T>
+internal interface CollectionReference : Query {
+    @JsName("doc") fun doc(documentPath: String): DocumentReference
 }
 
-internal interface Query<T : DocumentData> {
-    fun orderBy(field: String, direction: OrderByDirection): Query<T>
-    fun limit(limit: Int): Query<T>
-    fun get(): Promise<QuerySnapshot<T>>
+internal interface Query {
+    fun orderBy(field: String, direction: OrderByDirection): Query
+    fun limit(limit: Int): Query
+    fun get(): Promise<QuerySnapshot>
 }
 
-internal interface QuerySnapshot<T : DocumentData> {
-    val docs: Array<QueryDocumentSnapshot<T>>
+internal interface QuerySnapshot {
+    val docs: Array<QueryDocumentSnapshot>
 }
 
-internal interface QueryDocumentSnapshot<T : DocumentData> : DocumentSnapshot<T> {
-    fun data(): T
+internal interface QueryDocumentSnapshot : DocumentSnapshot {
+    fun data(): DocumentData
 }
 
-internal interface DocumentSnapshot<T> {
+internal interface DocumentSnapshot {
     val id: String
 }
 
-internal interface DocumentReference<T> {
-    fun set(data: T): Promise<WriteResult>
+internal interface DocumentReference {
+    fun get(): Promise<QueryDocumentSnapshot>
+    @JsName("set") fun set(data: DocumentData): Promise<WriteResult>
     fun delete(): Promise<WriteResult>
 }
 

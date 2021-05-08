@@ -18,7 +18,6 @@ internal external interface Https {
 
 internal external interface HttpsFunction
 
-
 internal fun functions(region: String, block: Express.() -> Unit): HttpsFunction {
     val app: App = Admin.initializeApp()
     val https: Https = Functions
