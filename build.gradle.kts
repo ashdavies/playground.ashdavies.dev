@@ -28,6 +28,7 @@ subprojects {
         kotlinOptions.freeCompilerArgs += listOf(
             "-Xopt-in=kotlin.RequiresOptIn",
             "-Xallow-result-return-type",
+            "-XXLanguage:+InlineClasses",
         )
     }
 }

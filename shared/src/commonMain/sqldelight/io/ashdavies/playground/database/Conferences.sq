@@ -1,48 +1,24 @@
+import io.ashdavies.playground.conferences.CfpId;
+import io.ashdavies.playground.conferences.ConferenceId;
 import kotlinx.datetime.LocalDate;
 
 CREATE TABLE conference(
-    name TEXT NOT NULL UNIQUE PRIMARY KEY,
+    id INTEGER AS ConferenceId NOT NULL UNIQUE PRIMARY KEY,
+
+    name TEXT NOT NULL,
     website TEXT NOT NULL,
     location TEXT NOT NULL,
     status TEXT,
-    dateStart TEXT as LocalDate NOT NULL,
-    dateEnd TEXT as LocalDate NOT NULL,
-    cfpStart TEXT as LocalDate,
-    cfpEnd TEXT as LocalDate,
-    cfpSite TEXT,
-    online INTEGER as Boolean
+    dateStart TEXT AS LocalDate NOT NULL,
+    dateEnd TEXT AS LocalDate NOT NULL,
+    cfpId INTEGER AS CfpId,
+    online INTEGER AS Boolean
 );
 
-CREATE INDEX conferenceName ON conference(name);
+CREATE TABLE cfp(
+    id INTEGER AS CfpId NOT NULL UNIQUE PRIMARY KEY,
 
-selectAll:
-    SELECT *
-    FROM conference
-    ORDER BY dateStart;
-
-selectByName:
-    SELECT *
-    FROM conference
-    WHERE conference.name = ?;
-
-insertOrReplace:
-    INSERT OR REPLACE INTO conference(
-        name,
-        website,
-        location,
-        status,
-        dateStart,
-        dateEnd,
-        cfpStart,
-        cfpEnd,
-        cfpSite,
-        online
-    )
-    VALUES ?;
-
-deleteAll:
-    DELETE FROM conference;
-
-deleteByName:
-    DELETE FROM conference
-    WHERE name = :name;
+    start TEXT AS LocalDate NOT NULL,
+    end TEXT AS LocalDate NOT NULL,
+    site TEXT NOT NULL
+);

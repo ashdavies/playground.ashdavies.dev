@@ -1,3 +1,8 @@
+import ProjectDependencies.AndroidX
+import ProjectDependencies.JetBrains
+import ProjectDependencies.Ktor
+import ProjectDependencies.Square
+
 plugins {
     `android-library`
     `kotlin-multiplatform`
@@ -27,49 +32,41 @@ android {
 kotlin {
     android()
 
-    //explicitApi()
-
     sourceSets {
-        all {
-            languageSettings.apply {
-                useExperimentalAnnotation("kotlin.RequiresOptIn")
-            }
-        }
-
         val androidMain by getting {
             dependencies {
-                implementation(ProjectDependencies.AndroidX.coreKtx)
-                implementation(ProjectDependencies.JetBrains.KotlinX.kotlinxCoroutinesAndroid)
-                implementation(ProjectDependencies.Ktor.ktorClientAndroid)
-                implementation(ProjectDependencies.Square.SqlDelight.androidDriver)
+                implementation(AndroidX.coreKtx)
+                implementation(JetBrains.KotlinX.kotlinxCoroutinesAndroid)
+                implementation(Ktor.ktorClientAndroid)
+                implementation(Square.SqlDelight.androidDriver)
             }
         }
 
         val androidTest by getting {
             dependencies {
-                implementation(ProjectDependencies.JetBrains.Kotlin.kotlinTest)
-                implementation(ProjectDependencies.JetBrains.Kotlin.kotlinTestJunit)
+                implementation(JetBrains.Kotlin.kotlinTest)
+                implementation(JetBrains.Kotlin.kotlinTestJunit)
             }
         }
 
         val commonMain by getting {
             dependencies {
-                implementation(ProjectDependencies.JetBrains.KotlinX.kotlinxDatetime)
-                implementation(ProjectDependencies.JetBrains.KotlinX.kotlinxCoroutinesCore)
-                implementation(ProjectDependencies.JetBrains.KotlinX.kotlinxSerializationJson)
-                implementation(ProjectDependencies.Ktor.ktorClientCore)
-                implementation(ProjectDependencies.Ktor.ktorClientJson)
-                implementation(ProjectDependencies.Ktor.ktorClientLogging)
-                implementation(ProjectDependencies.Ktor.ktorClientSerialization)
-                implementation(ProjectDependencies.Square.SqlDelight.coroutinesExtensions)
-                implementation(ProjectDependencies.Square.SqlDelight.runtime)
+                implementation(JetBrains.KotlinX.kotlinxDatetime)
+                implementation(JetBrains.KotlinX.kotlinxCoroutinesCore)
+                implementation(JetBrains.KotlinX.kotlinxSerializationJson)
+                implementation(Ktor.ktorClientCore)
+                implementation(Ktor.ktorClientJson)
+                implementation(Ktor.ktorClientLogging)
+                implementation(Ktor.ktorClientSerialization)
+                implementation(Square.SqlDelight.coroutinesExtensions)
+                implementation(Square.SqlDelight.runtime)
             }
         }
 
         val commonTest by getting {
             dependencies {
-                implementation(ProjectDependencies.JetBrains.Kotlin.kotlinTestCommon)
-                implementation(ProjectDependencies.JetBrains.Kotlin.kotlinTestAnnotationsCommon)
+                implementation(JetBrains.Kotlin.kotlinTestCommon)
+                implementation(JetBrains.Kotlin.kotlinTestAnnotationsCommon)
             }
         }
     }
@@ -81,5 +78,6 @@ sqldelight {
     }
 }
 
-fun NamedDomainObjectContainer<*>.create(vararg names: String) =
+fun NamedDomainObjectContainer<*>.create(vararg names: String) {
     names.forEach { create(it) }
+}

@@ -96,7 +96,7 @@ object ProjectDependencies {
 
     object Square : DependencyGroup("com.squareup") {
 
-        object SqlDelight : DependencyGroup("$group.sqldelight", "1.4.4") {
+        object SqlDelight : DependencyGroup("$group.sqldelight", "1.5.0") {
 
             val androidDriver by artifact()
             val coroutinesExtensions by artifact()
