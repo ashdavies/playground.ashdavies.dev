@@ -30,36 +30,21 @@ android {
 
     defaultConfig {
         applicationId = "io.ashdavies.playground"
-
-        setMinSdkVersion(23)
-        //setTargetSdkVersion(30)
+        compileSdk = 30
+        minSdk = 23
 
         versionCode = 1
         versionName = "1.0"
-
-        vectorDrawables.useSupportLibrary = true
     }
 
     kotlinOptions {
-        freeCompilerArgs += listOf(
-            "-Xallow-result-return-type",
-            "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
-            "-Xopt-in=kotlinx.coroutines.FlowPreview"
-        )
-
         jvmTarget = "1.8"
         useIR = true
     }
 
-    compileSdkVersion(29)
-
     sourceSets.configureEach {
         java.srcDirs("src/$name/kotlin")
     }
-
-    /*packagingOptions {
-        exclude("META-INF/DEPENDENCIES")
-    }*/
 }
 
 dependencies {

@@ -1,14 +1,15 @@
+
 import ProjectDependencies.JetBrains
 
 plugins {
     id("org.jetbrains.kotlin.js")
+    kotlin("plugin.serialization") version ProjectDependencies.JetBrains.Kotlin.version
 }
 
 kotlin {
     js {
-        nodejs()
-
         binaries.executable()
+        nodejs()
     }
 }
 
@@ -16,6 +17,7 @@ dependencies {
     implementation(JetBrains.KotlinX.kotlinxCoroutinesCore)
     implementation(JetBrains.KotlinX.kotlinxDatetime)
     implementation(JetBrains.KotlinX.kotlinxNodejs)
+    implementation(JetBrains.KotlinX.kotlinxSerializationJson)
 
     implementation(npm("@octokit/graphql", "4.5.8"))
     implementation(npm("firebase", "8.2.5"))

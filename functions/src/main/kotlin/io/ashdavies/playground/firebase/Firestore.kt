@@ -1,16 +1,16 @@
 package io.ashdavies.playground.firebase
 
+import kotlinx.coroutines.await
 import kotlin.js.Promise
 
 internal external interface Firestore {
     fun collection(path: String): CollectionReference
 }
 
-internal interface CollectionReference : Query {
-    @JsName("doc") fun doc(documentPath: String): DocumentReference
-}
+internal interface CollectionReference : Query
 
 internal interface Query {
+    @JsName("doc") fun doc(documentPath: String): DocumentReference
     fun orderBy(field: String, direction: OrderByDirection): Query
     fun limit(limit: Int): Query
     fun get(): Promise<QuerySnapshot>
@@ -39,3 +39,13 @@ internal interface WriteResult
 internal interface DocumentData
 
 internal typealias OrderByDirection = String
+
+internal suspend fun Query.set(documentPath: String, data: DocumentData): WriteResult =
+    doc(documentPath)
+        .set(data)
+        .await()
+
+internal suspend fun Query.delete(documentPath: String): WriteResult =
+    doc(documentPath)
+        .delete()
+        .await()

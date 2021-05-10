@@ -11,6 +11,6 @@ external val exports: dynamic
 fun main() {
     exports.v1 = functions(region = EUROPE_WEST) {
         get("/hello", HelloWorldService)
-        get("/sync", ConferencesService)
+        get("/conferences", ConferencesService)
     }
 }
