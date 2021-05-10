@@ -3,40 +3,40 @@ package io.ashdavies.playground.firebase
 import kotlinx.coroutines.await
 import kotlin.js.Promise
 
-internal external interface Firestore {
+external interface Firestore {
     fun collection(path: String): CollectionReference
 }
 
-internal interface CollectionReference : Query
+external interface CollectionReference : Query
 
-internal interface Query {
-    @JsName("doc") fun doc(documentPath: String): DocumentReference
+external interface Query {
+    fun doc(documentPath: String): DocumentReference
     fun orderBy(field: String, direction: OrderByDirection): Query
     fun limit(limit: Int): Query
     fun get(): Promise<QuerySnapshot>
 }
 
-internal interface QuerySnapshot {
+external interface QuerySnapshot {
     val docs: Array<QueryDocumentSnapshot>
 }
 
-internal interface QueryDocumentSnapshot : DocumentSnapshot {
+external interface QueryDocumentSnapshot : DocumentSnapshot {
     fun data(): DocumentData
 }
 
-internal interface DocumentSnapshot {
+external interface DocumentSnapshot {
     val id: String
 }
 
-internal interface DocumentReference {
+external interface DocumentReference {
     fun get(): Promise<QueryDocumentSnapshot>
-    @JsName("set") fun set(data: DocumentData): Promise<WriteResult>
+    fun set(data: DocumentData): Promise<WriteResult>
     fun delete(): Promise<WriteResult>
 }
 
-internal interface WriteResult
+external interface WriteResult
 
-internal interface DocumentData
+external interface DocumentData
 
 internal typealias OrderByDirection = String
 

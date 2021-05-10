@@ -4,7 +4,7 @@ import kotlin.js.Promise
 
 @JsNonModule
 @JsModule("@octokit/graphql")
-internal external object GraphQl {
+external object GraphQl {
     fun <T> graphql(query: Query, parameters: RequestParameters): Promise<T>
 }
 
@@ -13,10 +13,10 @@ internal fun <T> GraphQl.graphql(query: Query, token: String): Promise<T> =
 
 internal typealias Query = String
 
-internal data class RequestParameters(
+data class RequestParameters(
     val headers: RequestHeaders?
 )
 
-internal data class RequestHeaders(
+data class RequestHeaders(
     val authorization: String
 )
