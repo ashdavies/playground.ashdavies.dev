@@ -1,9 +1,10 @@
 package io.ashdavies.playground.service
 
 import io.ashdavies.playground.conferences.ConferencesStore
+import io.ashdavies.playground.database.Conference
 import io.ashdavies.playground.express.Request
 import io.ashdavies.playground.express.Response
-import io.ashdavies.playground.express.send
+import io.ashdavies.playground.express.error
 import io.ashdavies.playground.firebase.Admin
 import io.ashdavies.playground.firebase.CollectionReference
 import io.ashdavies.playground.store.Options
@@ -16,18 +17,18 @@ import kotlinx.serialization.json.decodeFromDynamic
 
 private const val CONFERENCES = "conferences"
 
-private val Admin.conferences: CollectionReference
+private val Admin.conferences: CollectionReference<Conference>
     get() = firestore().collection(CONFERENCES)
 
 @OptIn(ExperimentalSerializationApi::class)
-internal val ConferencesService: (Request, Response<dynamic>) -> Unit =
+internal val ConferencesService: (Request, Response<List<Conference>>) -> Unit =
     coroutineService { req, res ->
         val arguments = Json.decodeFromDynamic(Arguments.serializer(), req.query)
         val store = ConferencesStore(Admin.conferences, arguments.token)
 
         store(Unit, arguments.toOptions()).fold(
-            onSuccess = { res.send(it) },
-            onFailure = { res.send(500, it.message) }
+            onFailure = { res.error(500, it.message) },
+            onSuccess = { res.send(it) }
         )
     }
 

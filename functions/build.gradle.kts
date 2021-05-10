@@ -13,6 +13,8 @@ kotlin {
 }
 
 dependencies {
+    //implementation(project(":shared"))
+
     implementation(JetBrains.KotlinX.kotlinxCoroutinesCore)
     implementation(JetBrains.KotlinX.kotlinxDatetime)
     implementation(JetBrains.KotlinX.kotlinxNodejs)

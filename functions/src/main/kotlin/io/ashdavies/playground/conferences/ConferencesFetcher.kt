@@ -1,5 +1,6 @@
 package io.ashdavies.playground.conferences
 
+import io.ashdavies.playground.database.Conference
 import io.ashdavies.playground.github.GitHubQuery
 import io.ashdavies.playground.github.GitHubRepository
 import io.ashdavies.playground.github.entries
@@ -12,7 +13,7 @@ import kotlinx.coroutines.await
 
 internal suspend fun ConferencesFetcher(token: String): ConferencesFetcher = Fetcher {
 
-    fun conference(entry: GitHubRepository.Entry): dynamic {
+    fun conference(entry: GitHubRepository.Entry): Conference {
         val yaml: dynamic = Yaml
             .parseAllDocuments(entry.text)
             .first()
@@ -29,4 +30,4 @@ internal suspend fun ConferencesFetcher(token: String): ConferencesFetcher = Fet
         .map(::conference)
 }
 
-internal typealias ConferencesFetcher = Fetcher<Unit, List<dynamic>>
+internal typealias ConferencesFetcher = Fetcher<Unit, List<Conference>>

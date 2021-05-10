@@ -4,33 +4,33 @@ import kotlinx.coroutines.await
 import kotlin.js.Promise
 
 external interface Firestore {
-    fun collection(path: String): CollectionReference
+    fun <T : DocumentData> collection(path: String): CollectionReference<T>
 }
 
-external interface CollectionReference : Query
+external interface CollectionReference<T : DocumentData> : Query<T>
 
-external interface Query {
-    fun doc(documentPath: String): DocumentReference
-    fun orderBy(field: String, direction: OrderByDirection): Query
-    fun startAt(value: String): Query
-    fun limit(limit: Int): Query
-    fun get(): Promise<QuerySnapshot>
+external interface Query<T : DocumentData> {
+    fun doc(documentPath: String): DocumentReference<T>
+    fun orderBy(field: String, direction: OrderByDirection): Query<T>
+    fun startAt(value: String): Query<T>
+    fun limit(limit: Int): Query<T>
+    fun get(): Promise<QuerySnapshot<T>>
 }
 
-external interface QuerySnapshot {
-    val docs: Array<QueryDocumentSnapshot>
+external interface QuerySnapshot<T : DocumentData> {
+    val docs: Array<QueryDocumentSnapshot<T>>
 }
 
-external interface QueryDocumentSnapshot : DocumentSnapshot {
-    fun data(): DocumentData
+external interface QueryDocumentSnapshot<T : DocumentData> : DocumentSnapshot {
+    fun data(): T
 }
 
 external interface DocumentSnapshot {
     val id: String
 }
 
-external interface DocumentReference {
-    fun get(): Promise<QueryDocumentSnapshot>
+external interface DocumentReference<T : DocumentData> {
+    fun get(): Promise<QueryDocumentSnapshot<T>>
     fun set(data: DocumentData): Promise<WriteResult>
     fun delete(): Promise<WriteResult>
 }
@@ -41,12 +41,12 @@ external interface DocumentData
 
 internal typealias OrderByDirection = String
 
-internal suspend fun Query.set(documentPath: String, data: DocumentData): WriteResult =
+internal suspend fun <T : DocumentData> Query<T>.set(documentPath: String, data: T): WriteResult =
     doc(documentPath)
         .set(data)
         .await()
 
-internal suspend fun Query.delete(documentPath: String): WriteResult =
+internal suspend fun <T : DocumentData> Query<T>.delete(documentPath: String): WriteResult =
     doc(documentPath)
         .delete()
         .await()

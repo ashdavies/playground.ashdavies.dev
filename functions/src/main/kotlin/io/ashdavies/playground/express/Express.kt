@@ -17,7 +17,7 @@ external interface Response<T> {
 
 internal typealias StatusCode = Int
 
-internal fun <T> Response<T>.send(
+internal fun <T> Response<T>.error(
     code: StatusCode,
-    data: T,
-): Response<T> = status(code).send(data)
+    message: String?,
+): Response<T> = status(code).send(message.unsafeCast<T>())

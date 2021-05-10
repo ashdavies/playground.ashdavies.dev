@@ -3,24 +3,24 @@ package io.ashdavies.playground.collection
 import io.ashdavies.playground.firebase.CollectionReference
 import io.ashdavies.playground.firebase.DocumentData
 
-internal class CollectionWriter(
-    private val collection: CollectionReference,
-    private val selector: (DocumentData) -> String,
-) : CacheWriter {
+internal class CollectionWriter<T : DocumentData>(
+    private val collection: CollectionReference<T>,
+    private val identifier: (T) -> String,
+) : CacheWriter<T> {
 
     override suspend fun calculate(
-        oldItems: Collection<DocumentData>,
-        newItems: Collection<DocumentData>
+        oldItems: Collection<T>,
+        newItems: Collection<T>
     ) {
-        (newItems - oldItems).forEach { collection.write(selector(it), it) }
-        (oldItems - newItems).forEach { collection.delete(selector(it)) }
+        for (item in newItems - oldItems) collection.write(identifier(item), item)
+        for (item in oldItems - newItems) collection.delete(identifier(item))
     }
 }
 
-internal interface CacheWriter {
+internal interface CacheWriter<T : DocumentData> {
 
     suspend fun calculate(
-        oldItems: Collection<DocumentData>,
-        newItems: Collection<DocumentData>,
+        oldItems: Collection<T>,
+        newItems: Collection<T>,
     )
 }

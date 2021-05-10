@@ -5,21 +5,21 @@ import io.ashdavies.playground.firebase.DocumentData
 import io.ashdavies.playground.firebase.WriteResult
 import kotlinx.coroutines.await
 
-internal suspend fun CollectionReference.read(
+internal suspend fun <T : DocumentData> CollectionReference<T>.read(
     documentPath: String
-): DocumentData = doc(documentPath)
+): T = doc(documentPath)
     .get()
     .await()
     .data()
 
-internal suspend fun CollectionReference.write(
+internal suspend fun <T : DocumentData> CollectionReference<T>.write(
     documentPath: String,
-    data: DocumentData,
+    data: T,
 ): WriteResult = doc(documentPath)
     .set(data)
     .await()
 
-internal suspend fun CollectionReference.delete(
+internal suspend fun <T : DocumentData> CollectionReference<T>.delete(
     documentPath: String,
 ): WriteResult = doc(documentPath)
     .delete()
