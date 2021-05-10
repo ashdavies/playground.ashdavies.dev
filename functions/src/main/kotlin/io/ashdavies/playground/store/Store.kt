@@ -1,5 +1,9 @@
 package io.ashdavies.playground.store
 
+/**
+ * Provided as a temporary alternative for dropbox/Store
+ * https://github.com/dropbox/Store/issues/247
+ */
 internal interface Store<Key : Any, Value : Any> {
 
     suspend operator fun invoke(key: Key, options: Options): Result<Value>
@@ -20,11 +24,9 @@ private class StoreImpl<Key : Any, Value : Any>(
             return Result.success(cached)
         }
 
-        return Result.failure(StoreError(404, "Not Found"))
+        return Result.failure(Error("Not Found"))
     }
 }
-
-internal class StoreError(val code: Int, message: String) : Error(message)
 
 internal fun <Key : Any, Value : Any> Store(
     fetcher: Fetcher<Key, Value>,

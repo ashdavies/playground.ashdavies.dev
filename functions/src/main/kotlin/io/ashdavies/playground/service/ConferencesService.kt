@@ -3,12 +3,12 @@ package io.ashdavies.playground.service
 import io.ashdavies.playground.conferences.ConferencesStore
 import io.ashdavies.playground.express.Request
 import io.ashdavies.playground.express.Response
+import io.ashdavies.playground.express.send
 import io.ashdavies.playground.firebase.Admin
 import io.ashdavies.playground.firebase.CollectionReference
 import io.ashdavies.playground.store.Options
 import io.ashdavies.playground.store.Options.Limit.Companion.Default
 import io.ashdavies.playground.store.Options.Limit.Limited
-import io.ashdavies.playground.store.StoreError
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
@@ -23,19 +23,11 @@ private val Admin.conferences: CollectionReference
 internal val ConferencesService: (Request, Response<dynamic>) -> Unit =
     coroutineService { req, res ->
         val arguments = Json.decodeFromDynamic(Arguments.serializer(), req.query)
-        val collection: CollectionReference = Admin.conferences
-        val store = ConferencesStore(collection, arguments.token)
+        val store = ConferencesStore(Admin.conferences, arguments.token)
 
         store(Unit, arguments.toOptions()).fold(
             onSuccess = { res.send(it) },
-            onFailure = {
-                if (it is StoreError) {
-                    res.status(it.code)
-                }
-
-                res.send(it.message)
-
-            }
+            onFailure = { res.send(500, it.message) }
         )
     }
 
