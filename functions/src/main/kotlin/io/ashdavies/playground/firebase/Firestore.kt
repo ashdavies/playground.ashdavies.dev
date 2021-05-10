@@ -12,6 +12,7 @@ external interface CollectionReference : Query
 external interface Query {
     fun doc(documentPath: String): DocumentReference
     fun orderBy(field: String, direction: OrderByDirection): Query
+    fun startAt(value: String): Query
     fun limit(limit: Int): Query
     fun get(): Promise<QuerySnapshot>
 }

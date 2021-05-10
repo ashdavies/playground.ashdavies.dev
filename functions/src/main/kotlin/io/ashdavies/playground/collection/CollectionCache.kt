@@ -5,6 +5,7 @@ import io.ashdavies.playground.firebase.DocumentData
 import io.ashdavies.playground.firebase.Query
 import io.ashdavies.playground.store.Cache
 import io.ashdavies.playground.store.Options
+import io.ashdavies.playground.store.Options.Limit.Limited
 import io.ashdavies.playground.store.Options.Limit.Unlimited
 import kotlinx.coroutines.await
 
@@ -14,6 +15,8 @@ internal class CollectionCache(
 
     override suspend fun read(key: Unit, options: Options): List<DocumentData> {
         return collection
+            .orderBy("dateEnd", "desc")
+            .startAt(options.startAt)
             .limit(options.limit)
             .get()
             .await()
@@ -26,7 +29,7 @@ internal class CollectionCache(
             it.asDynamic().id as String
         }
 
-        val options = Options(false, Unlimited)
+        val options = Options(false, null, Unlimited)
         writer.calculate(read(key, options), value)
     }
 
@@ -39,9 +42,10 @@ internal class CollectionCache(
     }
 }
 
-private fun CollectionReference.limit(limit: Options.Limit): Query {
-    return when (limit) {
-        is Options.Limit.Limited -> limit(limit.value)
-        else -> this
-    }
+private fun Query.startAt(value: String?): Query {
+    return if (value != null) startAt(value) else this
+}
+
+private fun Query.limit(limit: Options.Limit): Query {
+    return if (limit is Limited) limit(limit.value) else this
 }

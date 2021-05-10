@@ -4,6 +4,7 @@ import io.ashdavies.playground.store.Options.Limit
 
 internal interface Options {
     val refresh: Boolean
+    val startAt: String?
     val limit: Limit
 
     sealed class Limit {
@@ -18,13 +19,16 @@ internal interface Options {
 
 private data class OptionsImpl(
     override val refresh: Boolean,
+    override val startAt: String?,
     override val limit: Limit,
 ) : Options
 
 internal fun Options(
     refresh: Boolean,
+    startAt: String?,
     limit: Limit,
 ): Options = OptionsImpl(
     refresh = refresh,
+    startAt = startAt,
     limit = limit,
 )
