@@ -2,16 +2,16 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
 
 buildscript {
     dependencies {
-        classpath(BuildPlugins.Batik)
-        classpath(BuildPlugins.Gradle)
-        classpath(BuildPlugins.KotlinGradlePlugin)
-        classpath(BuildPlugins.SqlDelight)
+        classpath(`batik-ext`)
+        classpath(`kotlin-gradle-plugin`)
+        classpath(gradle)
+        classpath(sqldelight)
     }
 }
 
 plugins {
-    id("com.github.ben-manes.versions") version BuildPlugins.GradleVersionsPlugin.version
-    id("org.jlleitschuh.gradle.ktlint") version BuildPlugins.KtlintGradle.version
+    ktlint
+    versions
 }
 
 allprojects {

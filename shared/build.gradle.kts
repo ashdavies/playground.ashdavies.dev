@@ -1,14 +1,11 @@
 plugins {
-    kotlin("multiplatform")
-    kotlin("plugin.serialization") version ProjectDependencies.JetBrains.Kotlin.version
-
-    id("com.android.library")
-    id("com.squareup.sqldelight")
+    `android-library`
+    `kotlin-multiplatform`
+    serialization
+    sqldelight
 }
 
 android {
-    compileSdkVersion(30)
-
     configurations {
         // https://youtrack.jetbrains.com/issue/KT-43944
         create("testApi", "testDebugApi", "testReleaseApi")
@@ -21,8 +18,9 @@ android {
     }
 
     defaultConfig {
-        minSdkVersion(21)
-        targetSdkVersion(30)
+        compileSdk = 30
+        minSdk = 21
+        targetSdk = 30
     }
 }
 

@@ -1,9 +1,8 @@
-
 import ProjectDependencies.JetBrains
 
 plugins {
-    id("org.jetbrains.kotlin.js")
-    kotlin("plugin.serialization") version ProjectDependencies.JetBrains.Kotlin.version
+    `kotlin-js`
+    serialization
 }
 
 kotlin {

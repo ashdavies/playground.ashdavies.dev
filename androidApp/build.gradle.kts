@@ -1,4 +1,3 @@
-import BuildPlugins.KotlinGradlePlugin
 import ProjectDependencies.AndroidX
 import ProjectDependencies.Dropbox
 import ProjectDependencies.Google
@@ -7,10 +6,9 @@ import ProjectDependencies.Ktor
 import ProjectDependencies.Square
 
 plugins {
-    id("com.android.application")
-    id("com.squareup.sqldelight")
-
-    kotlin("android")
+    `android-application`
+    `kotlin-android`
+    sqldelight
 }
 
 android {
@@ -25,7 +23,7 @@ android {
 
     composeOptions {
         kotlinCompilerExtensionVersion = AndroidX.Compose.version
-        kotlinCompilerVersion = KotlinGradlePlugin.version
+        kotlinCompilerVersion = JetBrains.Kotlin.version
     }
 
     defaultConfig {

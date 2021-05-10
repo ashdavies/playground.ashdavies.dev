@@ -58,7 +58,7 @@ object ProjectDependencies {
 
     object JetBrains : DependencyGroup("org.jetbrains") {
 
-        object Kotlin : DependencyGroup("$group.kotlin", BuildPlugins.KotlinGradlePlugin.version) {
+        object Kotlin : DependencyGroup("$group.kotlin", "1.4.32") {
 
             val kotlinTest by artifact()
             val kotlinTestCommon by artifact()
