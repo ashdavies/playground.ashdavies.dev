@@ -100,7 +100,7 @@ object ProjectDependencies {
 
             val androidDriver by artifact()
             val coroutinesExtensions by artifact()
-            val nativeDriver by artifact()
+            val sqljsDriver by artifact()
             val sqliteDriver by artifact()
             val runtime by artifact()
         }

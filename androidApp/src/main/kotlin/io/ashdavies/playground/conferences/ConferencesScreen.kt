@@ -1,7 +1,13 @@
 package io.ashdavies.playground.conferences
 
 import android.content.Context
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Card
 import androidx.compose.material.CircularProgressIndicator
@@ -18,9 +24,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.ashdavies.playground.R
-import io.ashdavies.playground.conferences.ConferencesViewState.*
+import io.ashdavies.playground.conferences.ConferencesViewState.Failure
+import io.ashdavies.playground.conferences.ConferencesViewState.Loading
+import io.ashdavies.playground.conferences.ConferencesViewState.Section
 import io.ashdavies.playground.conferences.ConferencesViewState.Section.Header
 import io.ashdavies.playground.conferences.ConferencesViewState.Section.Item
+import io.ashdavies.playground.conferences.ConferencesViewState.Success
+import io.ashdavies.playground.conferences.ConferencesViewState.Uninitialised
 import io.ashdavies.playground.database.Conference
 import io.ashdavies.playground.ktx.toCalendar
 import io.ashdavies.playground.lifecycle.graphViewModel
@@ -30,10 +40,7 @@ import kotlinx.datetime.LocalDate
 @Composable
 internal fun ConferencesScreen(context: Context = LocalContext.current) {
     val viewModel: ConferencesViewModel = context.graphViewModel {
-        ConferencesViewModel(
-            conferencesService = conferencesService,
-            conferencesMapper = ConferencesMapper(),
-        )
+        ConferencesViewModel(conferencesService)
     }
 
     ConferencesScreen(viewModel = viewModel)

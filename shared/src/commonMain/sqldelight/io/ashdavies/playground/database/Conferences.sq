@@ -12,7 +12,9 @@ CREATE TABLE conference(
     dateStart TEXT AS LocalDate NOT NULL,
     dateEnd TEXT AS LocalDate NOT NULL,
     cfpId INTEGER AS CfpId,
-    online INTEGER AS Boolean
+    online INTEGER AS Boolean,
+
+    FOREIGN KEY(cfpId) REFERENCES cfp(id) ON DELETE CASCADE
 );
 
 CREATE TABLE cfp(
@@ -22,3 +24,44 @@ CREATE TABLE cfp(
     end TEXT AS LocalDate NOT NULL,
     site TEXT NOT NULL
 );
+
+selectAllConferences:
+    SELECT *
+    FROM conference
+    LEFT JOIN cfp ON conference.cfpId = cfp.id
+    ORDER BY dateStart;
+
+selectConferenceById:
+    SELECT *
+    FROM conference
+    LEFT JOIN cfp ON conference.cfpId = cfp.id
+    WHERE conference.id = ?;
+
+insertOrReplaceConference:
+    INSERT OR REPLACE INTO conference(
+        id,
+        name,
+        website,
+        location,
+        status,
+        dateStart,
+        dateEnd,
+        cfpId,
+        online
+    )
+    VALUES ?;
+
+insertOrReplaceCfp:
+    INSERT OR REPLACE INTO cfp(
+        id,
+        start,
+        end,
+        site
+    )
+    VALUES ?;
+
+deleteAllConferences:
+    DELETE FROM conference;
+
+deleteConferenceById:
+    DELETE FROM conference WHERE id = :id;

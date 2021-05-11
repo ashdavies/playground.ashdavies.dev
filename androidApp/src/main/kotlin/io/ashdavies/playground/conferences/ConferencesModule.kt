@@ -14,14 +14,14 @@ import io.ashdavies.playground.network.httpClient
 val Graph<Context>.conferencesService: ConferencesService
     get() = ConferencesService(httpClient)
 
-private val Graph<Context>.conferencesQueries: ConferencesQueries
-    get() = DriverFactory(seed.applicationContext)
+private suspend fun Graph<Context>.conferencesQueries(): ConferencesQueries =
+    DriverFactory(seed.applicationContext)
         .let(::DatabaseFactory)
         .create()
         .conferencesQueries
 
-val Graph<Context>.conferencesStore: Store<Any, List<Conference>>
-    get() = StoreBuilder.from(
-        sourceOfTruth = ConferencesSourceOfTruth(conferencesQueries),
-        fetcher = ConferencesFetcher(conferencesService, ConferencesMapper()),
+suspend fun Graph<Context>.conferencesStore(): Store<Any, List<Conference>> =
+    StoreBuilder.from(
+        sourceOfTruth = ConferencesSourceOfTruth(conferencesQueries()),
+        fetcher = ConferencesFetcher("", conferencesService),
     ).build()

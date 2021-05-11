@@ -32,6 +32,10 @@ android {
 kotlin {
     android()
 
+    js {
+        nodejs()
+    }
+
     sourceSets {
         val androidMain by getting {
             dependencies {
@@ -67,6 +71,12 @@ kotlin {
             dependencies {
                 implementation(JetBrains.Kotlin.kotlinTestCommon)
                 implementation(JetBrains.Kotlin.kotlinTestAnnotationsCommon)
+            }
+        }
+
+        val jsMain by getting {
+            dependencies {
+                implementation(Square.SqlDelight.sqljsDriver)
             }
         }
     }

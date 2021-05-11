@@ -5,11 +5,8 @@ import io.ashdavies.playground.database.Conference
 import io.ashdavies.playground.network.ConferencesService
 
 internal fun ConferencesFetcher(
+    githubToken: String,
     conferencesService: ConferencesService,
-    conferencesMapper: ConferencesMapper,
 ): Fetcher<Any, List<Conference>> = Fetcher.of {
-    conferencesService
-        .getAll()
-        .documents
-        .map { conferencesMapper(it.content) }
+    conferencesService.get(githubToken)
 }

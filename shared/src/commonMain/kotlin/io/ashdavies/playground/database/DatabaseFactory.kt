@@ -6,7 +6,7 @@ import kotlinx.datetime.LocalDate
 
 class DatabaseFactory(private val driverFactory: DriverFactory) {
 
-    fun create() = PlaygroundDatabase(
+    suspend fun create() = PlaygroundDatabase(
         driver = driverFactory.create(),
         conferenceAdapter = Conference.Adapter(
             idAdapter = ConferenceId.Adapter,
