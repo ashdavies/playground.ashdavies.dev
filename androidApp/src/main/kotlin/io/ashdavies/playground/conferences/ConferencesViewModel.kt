@@ -9,7 +9,6 @@ import io.ashdavies.playground.database.Conference
 import io.ashdavies.playground.emptyString
 import io.ashdavies.playground.network.ConferencesService
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 
 private val StoreResponse<*>.errorMessage: String
     get() = errorMessageOrNull() ?: throw IllegalStateException()
@@ -29,7 +28,7 @@ internal class ConferencesViewModel(
 
     private fun ConferencesViewState(result: Result<List<Conference>>): ConferencesViewState =
         result.fold(
-            onFailure = { Failure(it.message) },
+            onFailure = { Failure(it.message ?: emptyString()) },
             onSuccess = { Success(it) }
 
         )

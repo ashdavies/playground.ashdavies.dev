@@ -3,41 +3,31 @@ import io.ashdavies.playground.conferences.ConferenceId;
 import kotlinx.datetime.LocalDate;
 
 CREATE TABLE conference(
-    id INTEGER AS ConferenceId NOT NULL UNIQUE PRIMARY KEY,
+    id TEXT AS ConferenceId NOT NULL UNIQUE PRIMARY KEY,
 
     name TEXT NOT NULL,
     website TEXT NOT NULL,
     location TEXT NOT NULL,
     status TEXT,
+    online INTEGER AS Boolean,
     dateStart TEXT AS LocalDate NOT NULL,
     dateEnd TEXT AS LocalDate NOT NULL,
-    cfpId INTEGER AS CfpId,
-    online INTEGER AS Boolean,
-
-    FOREIGN KEY(cfpId) REFERENCES cfp(id) ON DELETE CASCADE
+    cfpStart TEXT AS LocalDate,
+    cfpEnd TEXT AS LocalDate,
+    cfpSite TEXT
 );
 
-CREATE TABLE cfp(
-    id INTEGER AS CfpId NOT NULL UNIQUE PRIMARY KEY,
-
-    start TEXT AS LocalDate NOT NULL,
-    end TEXT AS LocalDate NOT NULL,
-    site TEXT NOT NULL
-);
-
-selectAllConferences:
+selectAll:
     SELECT *
     FROM conference
-    LEFT JOIN cfp ON conference.cfpId = cfp.id
     ORDER BY dateStart;
 
-selectConferenceById:
+selectById:
     SELECT *
     FROM conference
-    LEFT JOIN cfp ON conference.cfpId = cfp.id
     WHERE conference.id = ?;
 
-insertOrReplaceConference:
+insertOrReplace:
     INSERT OR REPLACE INTO conference(
         id,
         name,
@@ -46,22 +36,15 @@ insertOrReplaceConference:
         status,
         dateStart,
         dateEnd,
-        cfpId,
-        online
+        online,
+        cfpStart,
+        cfpEnd,
+        cfpSite
     )
     VALUES ?;
 
-insertOrReplaceCfp:
-    INSERT OR REPLACE INTO cfp(
-        id,
-        start,
-        end,
-        site
-    )
-    VALUES ?;
-
-deleteAllConferences:
+deleteAll:
     DELETE FROM conference;
 
-deleteConferenceById:
+deleteById:
     DELETE FROM conference WHERE id = :id;

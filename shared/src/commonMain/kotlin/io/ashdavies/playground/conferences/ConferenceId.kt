@@ -2,7 +2,7 @@ package io.ashdavies.playground.conferences
 
 import io.ashdavies.playground.database.ColumnAdapter
 
-inline class ConferenceId(val value: Long) {
+inline class ConferenceId(val value: String) {
 
     companion object {
 
