@@ -74,6 +74,7 @@ object ProjectDependencies {
             val kotlinxCoroutinesTest by artifact()
             val kotlinxDatetime by artifact(version = "0.1.1")
             val kotlinxNodejs by artifact(version = "0.0.7")
+            val kotlinxSerializationCore by artifact(version = "1.1.0")
             val kotlinxSerializationJson by artifact(version = "1.1.0")
         }
     }
@@ -104,5 +105,10 @@ object ProjectDependencies {
             val sqliteDriver by artifact()
             val runtime by artifact()
         }
+    }
+
+    object YamlKt : DependencyGroup("net.mamoe.yamlkt") {
+
+        val yamlkt by artifact(version = "0.9.0")
     }
 }
