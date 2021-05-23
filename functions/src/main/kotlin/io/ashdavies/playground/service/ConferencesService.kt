@@ -35,6 +35,7 @@ internal val ConferencesService: (Request, Response<List<Conference>>) -> Unit =
 @Serializable
 private data class Arguments(
     val refresh: String? = null,
+    val orderBy: String? = null,
     val startAt: String? = null,
     val limit: String? = null,
     val token: String,
@@ -43,5 +44,6 @@ private data class Arguments(
 private fun Arguments.toOptions() = Options(
     limit = if (limit != null) Limited(limit.toInt()) else Default,
     refresh = refresh.toBoolean(),
+    orderBy = orderBy,
     startAt = startAt,
 )

@@ -1,11 +1,12 @@
 package io.ashdavies.playground.store
 
+import io.ashdavies.playground.kotlin.requireNotNull
+
 /**
  * Provided as a temporary alternative for dropbox/Store
  * https://github.com/dropbox/Store/issues/247
  */
 internal interface Store<Key : Any, Value : Any> {
-
     suspend operator fun invoke(key: Key, options: Options): Result<Value>
 }
 
@@ -15,16 +16,15 @@ private class StoreImpl<Key : Any, Value : Any>(
 ) : Store<Key, Value> {
 
     override suspend fun invoke(key: Key, options: Options): Result<Value> {
-        if (options.refresh) {
-            fetcher(key).onSuccess { cache.write(key, it) }
-        }
-
         val cached: Value? = cache.read(key, options)
-        if (cached != null) {
-            return Result.success(cached)
+        if (cached == null || options.refresh) {
+            return fetcher(key)
+                .onSuccess { cache.write(key, it) }
+                .map { cache.read(key, options) }
+                .requireNotNull { "Cache failure" }
         }
 
-        return Result.failure(Error("Not Found"))
+        return Result.success(cached)
     }
 }
 

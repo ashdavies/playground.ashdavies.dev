@@ -5,6 +5,7 @@ import io.ashdavies.playground.store.Options.Limit.Companion.Default
 
 internal interface Options {
     val refresh: Boolean
+    val orderBy: String?
     val startAt: String?
     val limit: Limit
 
@@ -16,24 +17,23 @@ internal interface Options {
             val Default: Limit get() = Limited(50)
         }
     }
-
-    companion object {
-        val Default: Options = Options()
-    }
 }
 
 private data class OptionsImpl(
     override val refresh: Boolean,
+    override val orderBy: String?,
     override val startAt: String?,
     override val limit: Limit,
 ) : Options
 
 internal fun Options(
     refresh: Boolean = false,
+    orderBy: String? = null,
     startAt: String? = null,
     limit: Limit = Default,
 ): Options = OptionsImpl(
     refresh = refresh,
+    orderBy = orderBy,
     startAt = startAt,
     limit = limit,
 )
