@@ -1,17 +1,14 @@
 package io.ashdavies.playground.conferences
 
 import io.ashdavies.playground.database.Conference
-import io.ashdavies.playground.github.GitHubQuery
 import io.ashdavies.playground.github.GitHubRepository
-import io.ashdavies.playground.github.entries
-import io.ashdavies.playground.graphql.GraphQl
-import io.ashdavies.playground.graphql.graphql
+import io.ashdavies.playground.github.GitHubService
 import io.ashdavies.playground.humps.Humps
 import io.ashdavies.playground.store.Fetcher
 import io.ashdavies.playground.yaml.Yaml
-import kotlinx.coroutines.await
+import io.ashdavies.playground.github.entries
 
-internal suspend fun ConferencesFetcher(token: String): ConferencesFetcher = Fetcher {
+internal suspend fun ConferencesFetcher(service: GitHubService): ConferencesFetcher = Fetcher {
 
     fun conference(entry: GitHubRepository.Entry): Conference {
         val yaml: dynamic = Yaml
@@ -23,9 +20,8 @@ internal suspend fun ConferencesFetcher(token: String): ConferencesFetcher = Fet
         return Humps.camelizeKeys(yaml)
     }
 
-    GraphQl
-        .graphql<GitHubRepository>(GitHubQuery, token = token)
-        .await()
+    service
+        .getRepository()
         .entries
         .map(::conference)
 }

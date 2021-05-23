@@ -1,17 +1,15 @@
 package io.ashdavies.playground.collection
 
-import io.ashdavies.playground.database.id
 import io.ashdavies.playground.firebase.CollectionReference
-import io.ashdavies.playground.firebase.DocumentData
 import io.ashdavies.playground.firebase.Query
 import io.ashdavies.playground.store.Cache
 import io.ashdavies.playground.store.Options
-import io.ashdavies.playground.store.Options.Limit.Limited
-import io.ashdavies.playground.store.Options.Limit.Unlimited
+import io.ashdavies.playground.store.Options.Limit
 import kotlinx.coroutines.await
 
-internal class CollectionCache<T : DocumentData>(
-    private val collection: CollectionReference<T>
+internal class CollectionCache<T>(
+    private val collection: CollectionReference<T>,
+    private val identifier: (T) -> String,
 ) : Cache<Unit, List<T>> {
 
     override suspend fun read(key: Unit, options: Options): List<T> {
@@ -26,8 +24,8 @@ internal class CollectionCache<T : DocumentData>(
     }
 
     override suspend fun write(key: Unit, value: List<T>) {
-        val writer = CollectionWriter(collection) { it.id }
-        val options = Options(false, null, Unlimited)
+        val writer = CollectionWriter(collection, identifier)
+        val options = Options(limit = Limit.Unlimited)
         writer.calculate(read(key, options), value)
     }
 
@@ -40,10 +38,10 @@ internal class CollectionCache<T : DocumentData>(
     }
 }
 
-private fun <T : DocumentData> Query<T>.startAt(value: String?): Query<T> {
+private fun <T> Query<T>.startAt(value: String?): Query<T> {
     return if (value != null) startAt(value) else this
 }
 
-private fun <T : DocumentData> Query<T>.limit(limit: Options.Limit): Query<T> {
-    return if (limit is Limited) limit(limit.value) else this
+private fun <T> Query<T>.limit(limit: Limit): Query<T> {
+    return if (limit is Limit.Limited) limit(limit.value) else this
 }

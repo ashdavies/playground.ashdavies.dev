@@ -6,6 +6,16 @@ internal interface Cache<Key : Any, Value : Any> {
     suspend fun write(key: Key, value: Value)
     suspend fun delete(key: Key)
     suspend fun clear()
+
+    companion object {
+
+        fun <Key : Any, Value : Any> Empty(): Cache<Key, Value> = Cache(
+            read = { _, _ -> null },
+            write = { _, _ -> },
+            delete = { },
+            clear = { }
+        )
+    }
 }
 
 internal fun <Key : Any, Value : Any> Cache(

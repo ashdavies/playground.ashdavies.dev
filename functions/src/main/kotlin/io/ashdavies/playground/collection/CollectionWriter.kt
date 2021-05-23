@@ -1,9 +1,8 @@
 package io.ashdavies.playground.collection
 
 import io.ashdavies.playground.firebase.CollectionReference
-import io.ashdavies.playground.firebase.DocumentData
 
-internal class CollectionWriter<T : DocumentData>(
+internal class CollectionWriter<T>(
     private val collection: CollectionReference<T>,
     private val identifier: (T) -> String,
 ) : CacheWriter<T> {
@@ -17,7 +16,7 @@ internal class CollectionWriter<T : DocumentData>(
     }
 }
 
-internal interface CacheWriter<T : DocumentData> {
+internal interface CacheWriter<T> {
 
     suspend fun calculate(
         oldItems: Collection<T>,

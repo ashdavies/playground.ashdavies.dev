@@ -1,6 +1,7 @@
 package io.ashdavies.playground.store
 
 import io.ashdavies.playground.store.Options.Limit
+import io.ashdavies.playground.store.Options.Limit.Companion.Default
 
 internal interface Options {
     val refresh: Boolean
@@ -15,6 +16,10 @@ internal interface Options {
             val Default: Limit get() = Limited(50)
         }
     }
+
+    companion object {
+        val Default: Options = Options()
+    }
 }
 
 private data class OptionsImpl(
@@ -24,9 +29,9 @@ private data class OptionsImpl(
 ) : Options
 
 internal fun Options(
-    refresh: Boolean,
-    startAt: String?,
-    limit: Limit,
+    refresh: Boolean = false,
+    startAt: String? = null,
+    limit: Limit = Default,
 ): Options = OptionsImpl(
     refresh = refresh,
     startAt = startAt,
