@@ -7,6 +7,8 @@ import io.ashdavies.playground.express.Response
 import io.ashdavies.playground.express.error
 import io.ashdavies.playground.firebase.Admin
 import io.ashdavies.playground.firebase.CollectionReference
+import io.ashdavies.playground.firebase.Config
+import io.ashdavies.playground.firebase.Functions
 import io.ashdavies.playground.store.Options
 import io.ashdavies.playground.store.Options.Limit.Companion.Default
 import io.ashdavies.playground.store.Options.Limit.Limited
@@ -23,8 +25,9 @@ private val Admin.conferences: CollectionReference<Conference>
 @OptIn(ExperimentalSerializationApi::class)
 internal val ConferencesService: (Request, Response<List<Conference>>) -> Unit =
     coroutineService { req, res ->
+        val config: Config = Functions.config()
         val arguments = Json.decodeFromDynamic(Arguments.serializer(), req.query)
-        val store = ConferencesStore(Admin.conferences, arguments.token)
+        val store = ConferencesStore(Admin.conferences, config.github.key)
 
         store(Unit, arguments.toOptions()).fold(
             onFailure = { res.error(500, it.message) },
@@ -38,7 +41,6 @@ private data class Arguments(
     val orderBy: String? = null,
     val startAt: String? = null,
     val limit: String? = null,
-    val token: String,
 )
 
 private fun Arguments.toOptions() = Options(

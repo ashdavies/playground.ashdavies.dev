@@ -10,7 +10,7 @@ external val exports: dynamic
 
 fun main() {
     exports.v1 = functions(region = EUROPE_WEST) {
-        get("/hello", HelloWorldService)
         get("/conferences", ConferencesService)
+        get("/hello", HelloWorldService)
     }
 }
