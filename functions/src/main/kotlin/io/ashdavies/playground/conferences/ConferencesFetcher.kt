@@ -8,15 +8,16 @@ import io.ashdavies.playground.store.Fetcher
 import io.ashdavies.playground.yaml.Yaml
 
 internal suspend fun ConferencesFetcher(service: GitHubService): ConferencesFetcher = Fetcher {
-    val documents: List<GitHubRepository.Entry> = service
+    service
         .getRepository()
         .entries
+        .map(::parse)
+}
 
-    documents.map {
-        Yaml
-            .decodeFromString(ConferenceYaml.serializer(), it.text)
-            .toConference(it.oid)
-    }
+private fun parse(entry: GitHubRepository.Entry): Conference {
+    return Yaml
+        .decodeFromString(ConferenceYaml.serializer(), entry.text)
+        .toConference(entry.oid)
 }
 
 internal typealias ConferencesFetcher = Fetcher<Unit, List<Conference>>

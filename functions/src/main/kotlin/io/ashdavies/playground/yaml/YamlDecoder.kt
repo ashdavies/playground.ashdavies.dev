@@ -7,6 +7,7 @@ import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.modules.SerializersModule
 
 private const val TOKEN_COLON = ":"
+private const val TOKEN_COMMENT = "#"
 private const val TOKEN_DOCUMENT = "---"
 private const val TOKEN_QUOTE = "\""
 
@@ -31,6 +32,7 @@ internal class YamlDecoder(
 
     override fun decodeString(): String =
         takeString(true)
+            .substringBefore(TOKEN_COMMENT)
             .split(TOKEN_COLON, limit = 2)[1]
             .trim()
             .removeSurrounding(TOKEN_QUOTE)

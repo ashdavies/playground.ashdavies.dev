@@ -1,7 +1,6 @@
 package io.ashdavies.playground.conferences
 
 import io.ashdavies.playground.database.Conference
-import kotlinx.datetime.toLocalDate
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -21,20 +20,20 @@ internal data class ConferenceYaml(
     data class Cfp(
         @SerialName("start") val start: String,
         @SerialName("end") val end: String,
-        @SerialName("site") val site: String,
+        @SerialName("site") val site: String? = null,
     )
 }
 
 internal fun ConferenceYaml.toConference(id: String) = Conference(
-    id = ConferenceId(id),
-    name = name,
-    website = website,
+    cfpSite = cfp?.site ?: website,
+    cfpStart = cfp?.start,
+    dateStart = dateStart,
     location = location,
+    cfpEnd = cfp?.end,
+    dateEnd = dateEnd,
+    website = website,
     online = online,
     status = status,
-    dateStart = dateStart.toLocalDate(),
-    dateEnd = dateEnd.toLocalDate(),
-    cfpStart = cfp?.start?.toLocalDate(),
-    cfpEnd = cfp?.end?.toLocalDate(),
-    cfpSite = cfp?.site,
+    name = name,
+    id = id,
 )

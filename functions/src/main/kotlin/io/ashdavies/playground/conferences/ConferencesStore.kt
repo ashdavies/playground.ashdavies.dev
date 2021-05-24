@@ -10,7 +10,7 @@ internal suspend fun ConferencesStore(
     collection: CollectionReference<Conference>,
     token: String,
 ): ConferencesStore = Store(
-    cache = CollectionCache(collection) { it.id.unsafeCast<String>() },
+    cache = CollectionCache(collection) { it.id },
     fetcher = ConferencesFetcher(GitHubService(token)),
 )
 

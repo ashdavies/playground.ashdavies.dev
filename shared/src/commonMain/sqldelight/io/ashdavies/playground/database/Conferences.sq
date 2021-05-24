@@ -1,19 +1,15 @@
-import io.ashdavies.playground.conferences.CfpId;
-import io.ashdavies.playground.conferences.ConferenceId;
-import kotlinx.datetime.LocalDate;
-
 CREATE TABLE conference(
-    id TEXT AS ConferenceId NOT NULL UNIQUE PRIMARY KEY,
+    id TEXT NOT NULL UNIQUE PRIMARY KEY,
 
     name TEXT NOT NULL,
     website TEXT NOT NULL,
     location TEXT NOT NULL,
     status TEXT,
     online INTEGER AS Boolean,
-    dateStart TEXT AS LocalDate NOT NULL,
-    dateEnd TEXT AS LocalDate NOT NULL,
-    cfpStart TEXT AS LocalDate,
-    cfpEnd TEXT AS LocalDate,
+    dateStart TEXT NOT NULL,
+    dateEnd TEXT NOT NULL,
+    cfpStart TEXT,
+    cfpEnd TEXT,
     cfpSite TEXT
 );
 
