@@ -1,30 +1,29 @@
 package io.ashdavies.playground.conferences
 
-import io.ashdavies.playground.yaml.Yaml
-import kotlin.test.Ignore
+import io.ashdavies.playground.CoroutineTest
+import io.ashdavies.playground.database.Conference
+import io.ashdavies.playground.github.GitHubRepository
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-internal class ConferencesFetcherTest {
+internal class ConferencesFetcherTest : CoroutineTest() {
 
     @Test
-    fun thingsShouldWork() {
-        val conference = Yaml
-            .decodeFromString(ConferenceYaml.serializer(), DroidconBerlin)
-            .toConference("1234")
+    fun thingsShouldWork() = runBlockingTest {
+        val service = GitHubService(DroidconBerlin())
+        val fetcher = ConferencesFetcher(service)
 
-        print(conference)
+        val conference: Conference = fetcher(Unit)
+            .getOrThrow()
+            .first()
+
         assertEquals(conference.name, "Droidcon")
-    }
-
-    @Test
-    @Ignore
-    fun thingsShouldBreak() {
-        assertEquals(listOf(1, 2, 3).reversed(), listOf(1, 2, 3))
     }
 }
 
-private val DroidconBerlin = """
+private data class DroidconBerlin(
+    override val oid: String = "9361834b3e310ffd8992c1020eb868ebb56c564a",
+    override val text: String = """
 ---
 name: "Droidcon"
 website: https://berlin.droidcon.com/
@@ -39,3 +38,4 @@ cfp:
   site:   https://sessionize.com/droidcon-berlin-2021/
 ---
 """.trimIndent()
+) : GitHubRepository.Entry
