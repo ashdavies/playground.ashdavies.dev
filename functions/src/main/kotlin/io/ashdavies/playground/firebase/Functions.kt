@@ -5,12 +5,12 @@ import io.ashdavies.playground.express.Express
 @JsNonModule
 @JsModule("firebase-functions")
 external object Functions {
-    fun config(): Config
+    fun config(): EnvironmentConfig
     fun firebaseConfig(): FirebaseConfig
     fun region(vararg regions: String): FunctionBuilder
 }
 
-external interface Config {
+external interface EnvironmentConfig {
     val github: GitHub
 
     interface GitHub {

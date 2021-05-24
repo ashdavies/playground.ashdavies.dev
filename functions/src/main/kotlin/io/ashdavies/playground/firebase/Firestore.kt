@@ -30,7 +30,7 @@ external interface DocumentSnapshot {
 
 external interface DocumentReference<T> {
     fun get(): Promise<QueryDocumentSnapshot<T>>
-    fun set(data: DocumentData): Promise<WriteResult>
+    fun set(data: T): Promise<WriteResult>
     fun delete(): Promise<WriteResult>
 }
 

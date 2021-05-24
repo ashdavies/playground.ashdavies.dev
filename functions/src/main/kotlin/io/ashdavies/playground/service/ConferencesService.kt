@@ -7,7 +7,7 @@ import io.ashdavies.playground.express.Response
 import io.ashdavies.playground.express.error
 import io.ashdavies.playground.firebase.Admin
 import io.ashdavies.playground.firebase.CollectionReference
-import io.ashdavies.playground.firebase.Config
+import io.ashdavies.playground.firebase.EnvironmentConfig
 import io.ashdavies.playground.firebase.Functions
 import io.ashdavies.playground.store.Options
 import io.ashdavies.playground.store.Options.Limit.Companion.Default
@@ -18,6 +18,7 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.decodeFromDynamic
 
 private const val CONFERENCES = "conferences"
+private const val DATE_START = "dateStart"
 
 private val Admin.conferences: CollectionReference<Conference>
     get() = firestore().collection(CONFERENCES)
@@ -25,9 +26,9 @@ private val Admin.conferences: CollectionReference<Conference>
 @OptIn(ExperimentalSerializationApi::class)
 internal val ConferencesService: (Request, Response<List<Conference>>) -> Unit =
     coroutineService { req, res ->
-        val config: Config = Functions.config()
+        val environment: EnvironmentConfig = Functions.config()
         val arguments = Json.decodeFromDynamic(Arguments.serializer(), req.query)
-        val store = ConferencesStore(Admin.conferences, config.github.key)
+        val store = ConferencesStore(Admin.conferences, environment.github.key)
 
         store(Unit, arguments.toOptions()).fold(
             onFailure = { res.error(500, it.message) },
@@ -45,7 +46,7 @@ private data class Arguments(
 
 private fun Arguments.toOptions() = Options(
     limit = if (limit != null) Limited(limit.toInt()) else Default,
+    orderBy = orderBy ?: DATE_START,
     refresh = refresh.toBoolean(),
-    orderBy = orderBy,
     startAt = startAt,
 )

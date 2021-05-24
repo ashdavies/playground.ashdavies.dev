@@ -10,21 +10,21 @@ internal class ConferencesFetcherTest : CoroutineTest() {
 
     @Test
     fun shouldParseConferenceName() = runBlockingTest {
-        val conference: Conference = fetch(DroidconBerlin)
+        val conference: Conference = fetch(DroidconBerlinEntry)
 
         assertEquals(conference.name, "Droidcon")
     }
 
     @Test
     fun shouldParseWithYamlComment() = runBlockingTest {
-        val conference: Conference = fetch(AppDevCon)
+        val conference: Conference = fetch(AppDevConEntry)
 
         assertEquals(conference.cfpStart, "2016-11-26")
     }
 
     @Test
     fun shouldParseOptionalCfpSite() = runBlockingTest {
-        val conference: Conference = fetch(AnDevCon)
+        val conference: Conference = fetch(AnDevConEntry)
 
         assertEquals(conference.cfpSite, conference.website)
     }
@@ -36,7 +36,7 @@ internal class ConferencesFetcherTest : CoroutineTest() {
     }
 }
 
-private val DroidconBerlin = ConferenceEntry(
+private val DroidconBerlinEntry = ConferenceEntry(
     oid = "9361834b3e310ffd8992c1020eb868ebb56c564a",
     text = """
         ---
@@ -55,7 +55,7 @@ private val DroidconBerlin = ConferenceEntry(
 """.trimIndent()
 )
 
-private val AppDevCon = ConferenceEntry(
+private val AppDevConEntry = ConferenceEntry(
     oid = "f225a030810250f2f6cb8d6f97ade9ae9c9b405f",
     text = """
         ---
@@ -74,7 +74,7 @@ private val AppDevCon = ConferenceEntry(
     """.trimIndent()
 )
 
-private val AnDevCon = ConferenceEntry(
+private val AnDevConEntry = ConferenceEntry(
     oid = "3d63bc9d12803c859d35deb27083cce7c38dcb58",
     text = """
         ---
