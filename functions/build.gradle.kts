@@ -7,8 +7,26 @@ plugins {
 
 kotlin {
     js {
+        browser {
+            distribution {
+                directory = projectDir
+            }
+
+            testTask {
+                enabled = false
+
+                useKarma {
+                    useFirefoxDeveloperHeadless()
+                }
+            }
+
+            webpackTask {
+                outputFileName = "index.js"
+                output.libraryTarget = "commonjs2"
+            }
+        }
+
         binaries.executable()
-        nodejs()
     }
 }
 
@@ -21,11 +39,11 @@ dependencies {
     implementation(JetBrains.KotlinX.kotlinxSerializationCore)
     implementation(JetBrains.KotlinX.kotlinxSerializationJson)
 
-    implementation(npm("@octokit/graphql", "4.5.8"))
-    implementation(npm("firebase", "8.2.5"))
-    implementation(npm("firebase-admin", "9.4.1"))
-    implementation(npm("firebase-functions", "3.11.0"))
-    implementation(npm("firestore", "1.1.6"))
+    implementation(npm("@google-cloud/firestore", "4.12.0"))
+    implementation(npm("@octokit/graphql", "4.6.2"))
+    implementation(npm("firebase", "8.6.2"))
+    implementation(npm("firebase-admin", "9.8.0"))
+    implementation(npm("firebase-functions", "3.14.1"))
 
     testImplementation(kotlin("test-js"))
 }

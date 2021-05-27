@@ -5,12 +5,15 @@ import io.ashdavies.playground.express.Express
 @JsNonModule
 @JsModule("firebase-functions")
 external object Functions {
-    fun config(): EnvironmentConfig
-    fun firebaseConfig(): FirebaseConfig
+    val logger: Logger
+
+    fun <T : Config> config(): T
     fun region(vararg regions: String): FunctionBuilder
 }
 
-external interface EnvironmentConfig {
+external interface Config
+
+external interface EnvironmentConfig : Config {
     val github: GitHub
 
     interface GitHub {
@@ -18,10 +21,9 @@ external interface EnvironmentConfig {
     }
 }
 
-external interface FirebaseConfig {
-    val storageBucket: String
-    val databaseURL: String
-    val projectId: String
+external interface Logger {
+    fun info(vararg args: Any)
+    fun error(vararg args: Any)
 }
 
 external interface FunctionBuilder {
@@ -34,9 +36,8 @@ external interface Https {
 
 external interface HttpsFunction
 
+@Suppress("UNUSED_VARIABLE")
 internal fun functions(region: String, block: Express.() -> Unit): HttpsFunction {
-    @Suppress("UNUSED_VARIABLE")
-    val app: App = Admin.initializeApp()
     val https: Https = Functions
         .region(region)
         .https

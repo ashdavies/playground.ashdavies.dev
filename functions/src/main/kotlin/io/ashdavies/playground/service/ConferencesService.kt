@@ -24,17 +24,18 @@ private val Admin.conferences: CollectionReference<Conference>
     get() = firestore().collection(CONFERENCES)
 
 @OptIn(ExperimentalSerializationApi::class)
-internal val ConferencesService: (Request, Response<List<Conference>>) -> Unit =
-    coroutineService { req, res ->
-        val environment: EnvironmentConfig = Functions.config()
-        val arguments = Json.decodeFromDynamic(Arguments.serializer(), req.query)
-        val store = ConferencesStore(Admin.conferences, environment.github.key)
+internal fun ConferencesService(): ConferencesService = coroutineService { req, res ->
+    val environment: EnvironmentConfig = Functions.config()
+    val arguments = Json.decodeFromDynamic(Arguments.serializer(), req.query)
+    val store = ConferencesStore(Admin.conferences, environment.github.key)
 
-        store(Unit, arguments.toOptions()).fold(
-            onFailure = { res.error(500, it.message) },
-            onSuccess = { res.send(it) }
-        )
-    }
+    store(Unit, arguments.toOptions()).fold(
+        onFailure = { res.error(500, it.message) },
+        onSuccess = { res.send(it) }
+    )
+}
+
+internal typealias ConferencesService = (Request, Response<List<Conference>>) -> Unit
 
 @Serializable
 private data class Arguments(

@@ -1,8 +1,8 @@
 {
   "functions": {
-    "predeploy": "./gradlew functions:build",
-    "source": "build/js/packages/playground-functions",
-    "runtime": "nodejs12"
+    "predeploy": "./gradlew -p \"$RESOURCE_DIR\" build",
+    "runtime": "nodejs12",
+    "source": "functions"
   },
   "firestore": {
     "rules": "firestore.rules",

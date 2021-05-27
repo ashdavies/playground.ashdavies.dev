@@ -7,7 +7,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 internal fun <T> coroutineService(
-    block: suspend CoroutineScope.(request: Request, response: Response<T>) -> Unit
+    block: suspend CoroutineScope.(req: Request, res: Response<T>) -> Unit
 ): (Request, Response<T>) -> Unit = { req, res ->
     GlobalScope.launch {
         block(req, res)
