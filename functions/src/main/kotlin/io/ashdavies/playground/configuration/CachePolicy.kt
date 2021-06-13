@@ -1,7 +1,6 @@
-package io.ashdavies.playground.service
+package io.ashdavies.playground.configuration
 
 import io.ashdavies.playground.store.Cache
-import io.ashdavies.playground.store.Options
 import kotlinx.datetime.Clock
 import kotlinx.datetime.DateTimePeriod
 import kotlinx.datetime.Instant
@@ -27,7 +26,7 @@ private class ConfigurationCachePolicy(
 
     private suspend fun getUpdatedAt(): Instant? {
         return cache
-            .read(Configuration.Type, Options())
+            .getOrNull()
             ?.updatedAt
             ?.let { Instant.parse(it) }
     }
@@ -44,6 +43,10 @@ private class ConfigurationCachePolicy(
 
     override suspend fun isUpToDate(value: Boolean) {
         val updatedAt: Instant = if (value) now else Instant.DISTANT_PAST
-        cache.write(Configuration.Type, Configuration(updatedAt.toString()))
+        val configuration: Configuration = cache
+            .getOrDefault()
+            .copy(updatedAt = updatedAt.toString())
+
+        cache.put(configuration)
     }
 }

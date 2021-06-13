@@ -1,10 +1,11 @@
 package io.ashdavies.playground.collection
 
+import io.ashdavies.playground.configuration.CachePolicy
 import io.ashdavies.playground.firebase.CollectionReference
 import io.ashdavies.playground.firebase.OrderByDirection
 import io.ashdavies.playground.firebase.Query
 import io.ashdavies.playground.firebase.QueryDocumentSnapshot
-import io.ashdavies.playground.service.CachePolicy
+import io.ashdavies.playground.firebase.WhereFilterOp
 import io.ashdavies.playground.store.Cache
 import io.ashdavies.playground.store.Options
 import io.ashdavies.playground.store.Options.Limit
@@ -22,6 +23,7 @@ internal class CollectionListCache<T>(
         }
 
         val documents: Array<QueryDocumentSnapshot<T>> = collection
+            .where(options.orderBy, ">", options.startAt)
             .orderBy(options.orderBy, "asc")
             .startAt(options.startAt)
             .limit(options.limit)
@@ -54,6 +56,10 @@ internal class CollectionListCache<T>(
     override suspend fun clear() {
         throw UnsupportedOperationException()
     }
+}
+
+private fun <T> Query<T>.where(fieldPath: String?, opStr: WhereFilterOp, value: Any?): Query<T> {
+    return if (fieldPath != null && value != null) where(fieldPath, opStr, value) else this
 }
 
 private fun <T> Query<T>.orderBy(value: String?, direction: OrderByDirection): Query<T> {

@@ -2,23 +2,18 @@ package io.ashdavies.playground.firebase
 
 import io.ashdavies.playground.express.Express
 
+/**
+ * Something here is going wrong, revert to compare changes!
+ * Requests are timing out after 60 seconds
+ *
+ * Errors came after introducing interface for FunctionBiulder
+ */
 @JsNonModule
 @JsModule("firebase-functions")
-external object Functions {
+external val functions: Functions
+
+external interface Functions : FunctionBuilder {
     val logger: Logger
-
-    fun <T : Config> config(): T
-    fun region(vararg regions: String): FunctionBuilder
-}
-
-external interface Config
-
-external interface EnvironmentConfig : Config {
-    val github: GitHub
-
-    interface GitHub {
-        val key: String
-    }
 }
 
 external interface Logger {
@@ -28,6 +23,9 @@ external interface Logger {
 
 external interface FunctionBuilder {
     val https: Https
+
+    fun region(vararg regions: String): FunctionBuilder
+    fun runWith(runtimeOptions: RuntimeOptions): FunctionBuilder
 }
 
 external interface Https {
@@ -36,9 +34,13 @@ external interface Https {
 
 external interface HttpsFunction
 
-@Suppress("UNUSED_VARIABLE")
+data class RuntimeOptions(val timeoutSeconds: Number? = null)
+
 internal fun functions(region: String, block: Express.() -> Unit): HttpsFunction {
-    val https: Https = Functions
+    admin.appOrNull() ?: admin.initializeApp()
+
+    val https: Https = functions
+        //.runWith(RuntimeOptions(timeoutSeconds = 30))
         .region(region)
         .https
 
