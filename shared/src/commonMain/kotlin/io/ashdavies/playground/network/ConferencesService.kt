@@ -5,10 +5,12 @@ import io.ktor.client.HttpClient
 import io.ktor.client.request.get
 
 private const val CONFERENCES_API =
-    "http://localhost:5001/playground-1a136/europe-west1/v1/conferences"
+    "https://europe-west1-playground-1a136.cloudfunctions.net/v1/conferences"
 
-class ConferencesService(private val httpClient: HttpClient) {
+interface ConferencesService {
+    suspend fun get(): List<Conference>
+}
 
-    suspend fun get(token: String): List<Conference> =
-        httpClient.get("$CONFERENCES_API?token=$token")
+fun ConferencesService(httpClient: HttpClient) = object : ConferencesService {
+    override suspend fun get(): List<Conference> = httpClient.get(CONFERENCES_API)
 }

@@ -48,7 +48,7 @@ val PluginDependenciesSpec.`kotlin-multiplatform`: PluginDependencySpec
     get() = kotlin("multiplatform")
 
 val PluginDependenciesSpec.ktlint: PluginDependencySpec
-    get() = id("org.jlleitschuh.gradle.ktlint") version "10.0.0"
+    get() = id("org.jlleitschuh.gradle.ktlint") version "10.1.0"
 
 val PluginDependenciesSpec.serialization: PluginDependencySpec
     get() = kotlin("plugin.serialization") version KotlinVersion
@@ -57,4 +57,4 @@ val PluginDependenciesSpec.sqldelight: PluginDependencySpec
     get() = id("com.squareup.sqldelight")
 
 val PluginDependenciesSpec.versions: PluginDependencySpec
-    get() = id ("com.github.ben-manes.versions") version "0.38.0"
+    get() = id ("com.github.ben-manes.versions") version "0.39.0"

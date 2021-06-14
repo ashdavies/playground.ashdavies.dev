@@ -2,6 +2,7 @@ import ProjectDependencies.AndroidX
 import ProjectDependencies.JetBrains
 import ProjectDependencies.Ktor
 import ProjectDependencies.Square
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     `android-library`
@@ -11,6 +12,11 @@ plugins {
 }
 
 android {
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
     configurations {
         // https://youtrack.jetbrains.com/issue/KT-43944
         create("testApi", "testDebugApi", "testReleaseApi")
@@ -90,4 +96,8 @@ sqldelight {
 
 fun NamedDomainObjectContainer<*>.create(vararg names: String) {
     names.forEach { create(it) }
+}
+
+tasks.withType<KotlinCompile> {
+    kotlinOptions.jvmTarget = "1.8"
 }

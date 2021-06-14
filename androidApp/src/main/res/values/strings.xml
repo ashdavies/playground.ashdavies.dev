@@ -1,5 +1,6 @@
 <resources>
     <string name="application">Playground</string>
-    <string name="header">%1$tM %1$tY</string>
+    <string name="header">%1$tB \'%1$ty</string>
     <string name="search">Search</string>
+    <string name="close">Close</string>
 </resources>

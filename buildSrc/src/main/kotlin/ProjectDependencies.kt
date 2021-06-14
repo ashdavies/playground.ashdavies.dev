@@ -2,10 +2,10 @@ object ProjectDependencies {
 
     object AndroidX : DependencyGroup("androidx") {
 
-        val activityKtx by artifact("$group.activity", "1.3.0-alpha06")
+        val activityKtx by artifact("$group.activity", "1.3.0-beta01")
         val annotation by artifact("$group.annotation", "1.3.0-alpha01")
 
-        object Compose : DependencyGroup("androidx.compose", "1.0.0-beta04") {
+        object Compose : DependencyGroup("androidx.compose", "1.0.0-beta08") {
 
             val foundation by artifact("$group.foundation")
             val material by artifact("$group.material")
@@ -15,9 +15,9 @@ object ProjectDependencies {
             val uiTooling by artifact("$group.ui")
         }
 
-        val coreKtx by artifact("$group.core", "1.6.0-alpha02")
+        val coreKtx by artifact("$group.core", "1.6.0-beta02")
         val datastoreCore by artifact("$group.datastore", "1.0.0")
-        val fragmentKtx by artifact("$group.fragment", "1.3.2")
+        val fragmentKtx by artifact("$group.fragment", "1.4.0-alpha02")
 
         object Lifecycle : DependencyGroup("androidx.lifecycle", "2.4.0-alpha01") {
 
@@ -26,39 +26,45 @@ object ProjectDependencies {
             val lifecycleViewmodelKtx by artifact()
         }
 
-        object Navigation : DependencyGroup("androidx.navigation", "2.3.5") {
+        object Navigation : DependencyGroup("androidx.navigation", "2.4.0-alpha02") {
 
-            val navigationCompose by artifact(version = "1.0.0-alpha10")
+            val navigationCompose by artifact()
             val navigationRuntimeKtx by artifact()
             val navigationUiKtx by artifact()
         }
 
-        val pagingRuntime by artifact("$group.paging", "3.0.0-beta03")
+        val pagingRuntime by artifact("$group.paging", "3.1.0-alpha01")
     }
 
     object Dropbox : DependencyGroup("com.dropbox.mobile") {
 
-        val store4 by artifact("$group.store", "4.0.0")
+        val store4 by artifact("$group.store", "4.0.2-KT15")
     }
 
     object Google : DependencyGroup("com.google") {
 
+        object Accompanist : DependencyGroup("$group.accompanist") {
+
+            val accompanistInsets by artifact(version = "0.11.1")
+            val accompanistInsetsUi by artifact(version = "0.11.1")
+            val accompanistSystemuicontroller by artifact(version = "0.11.1")
+        }
+
         object Firebase : DependencyGroup("$group.firebase") {
 
-            val firebaseCommonKtx by artifact(version = "19.5.0")
-            val firebaseAnalytics by artifact(version = "18.0.3")
+            val firebaseCommonKtx by artifact(version = "20.0.0")
+            val firebaseAnalytics by artifact(version = "19.0.0")
         }
 
         object Android : DependencyGroup("$group.android") {
 
-            val material by artifact("$group.material", "1.4.0-alpha02")
-            val playServicesOssLicenses by artifact("$group.gms", "17.0.0")
+            val material by artifact("$group.material", "1.4.0-rc01")
         }
     }
 
     object JetBrains : DependencyGroup("org.jetbrains") {
 
-        object Kotlin : DependencyGroup("$group.kotlin", "1.4.32") {
+        object Kotlin : DependencyGroup("$group.kotlin", "1.5.10") {
 
             val kotlinTest by artifact()
             val kotlinTestCommon by artifact()
@@ -67,19 +73,19 @@ object ProjectDependencies {
             val kotlinTestAnnotationsCommon by artifact()
         }
 
-        object KotlinX : DependencyGroup("$group.kotlinx", "1.4.3") {
+        object KotlinX : DependencyGroup("$group.kotlinx", "1.5.0") {
 
             val kotlinxCoroutinesAndroid by artifact()
             val kotlinxCoroutinesCore by artifact()
             val kotlinxCoroutinesTest by artifact()
-            val kotlinxDatetime by artifact(version = "0.1.1")
+            val kotlinxDatetime by artifact(version = "0.2.1")
             val kotlinxNodejs by artifact(version = "0.0.7")
-            val kotlinxSerializationCore by artifact(version = "1.1.0")
-            val kotlinxSerializationJson by artifact(version = "1.1.0")
+            val kotlinxSerializationCore by artifact(version = "1.2.1")
+            val kotlinxSerializationJson by artifact(version = "1.2.1")
         }
     }
 
-    object Ktor : DependencyGroup("io.ktor", "1.5.3") {
+    object Ktor : DependencyGroup("io.ktor", "1.6.0") {
 
         val ktorClientAndroid by artifact()
         val ktorClientCore by artifact()

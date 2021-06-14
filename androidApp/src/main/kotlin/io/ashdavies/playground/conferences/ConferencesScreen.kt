@@ -34,13 +34,17 @@ import io.ashdavies.playground.conferences.ConferencesViewState.Uninitialised
 import io.ashdavies.playground.database.Conference
 import io.ashdavies.playground.ktx.toCalendar
 import io.ashdavies.playground.lifecycle.graphViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import kotlinx.datetime.LocalDate
 
 @Preview
 @Composable
+@FlowPreview
+@ExperimentalCoroutinesApi
 internal fun ConferencesScreen(context: Context = LocalContext.current) {
     val viewModel: ConferencesViewModel = context.graphViewModel {
-        ConferencesViewModel(conferencesService)
+        ConferencesViewModel(ConferencesStore())
     }
 
     ConferencesScreen(viewModel = viewModel)

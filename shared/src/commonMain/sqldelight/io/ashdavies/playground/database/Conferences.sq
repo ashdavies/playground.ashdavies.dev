@@ -4,13 +4,13 @@ CREATE TABLE conference(
     name TEXT NOT NULL,
     website TEXT NOT NULL,
     location TEXT NOT NULL,
-    status TEXT,
+    status TEXT DEFAULT NULL,
     online INTEGER AS Boolean,
     dateStart TEXT NOT NULL,
     dateEnd TEXT NOT NULL,
-    cfpStart TEXT,
-    cfpEnd TEXT,
-    cfpSite TEXT
+    cfpStart TEXT DEFAULT NULL,
+    cfpEnd TEXT DEFAULT NULL,
+    cfpSite TEXT DEFAULT NULL
 );
 
 selectAll:

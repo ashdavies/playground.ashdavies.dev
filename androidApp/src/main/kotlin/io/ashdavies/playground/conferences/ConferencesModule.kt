@@ -13,20 +13,24 @@ import io.ashdavies.playground.network.ConferencesService
 import io.ashdavies.playground.network.httpClient
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.runBlocking
 
-val Graph<Context>.conferencesService: ConferencesService
+private val Graph<Context>.conferencesService: ConferencesService
     get() = ConferencesService(httpClient)
 
-private suspend fun Graph<Context>.conferencesQueries(): ConferencesQueries =
+private fun Graph<Context>.ConferencesQueries(): ConferencesQueries = runBlocking {
     DriverFactory(seed.applicationContext)
         .let(::DatabaseFactory)
         .create()
         .conferencesQueries
+}
 
 @FlowPreview
 @ExperimentalCoroutinesApi
-suspend fun Graph<Context>.conferencesStore(token: String): Store<Unit, List<Conference>> =
+internal fun Graph<Context>.ConferencesStore(): ConferencesStore =
     StoreBuilder.from(
-        sourceOfTruth = ConferencesSourceOfTruth(conferencesQueries()),
-        fetcher = Fetcher.of { conferencesService.get(token) },
+        sourceOfTruth = ConferencesSourceOfTruth(ConferencesQueries()),
+        fetcher = Fetcher.of { conferencesService.get() },
     ).build()
+
+internal typealias ConferencesStore = Store<Unit, List<Conference>>

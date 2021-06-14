@@ -4,8 +4,7 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.remember
+import androidx.core.view.WindowCompat.setDecorFitsSystemWindows
 
 internal abstract class ComposeActivity(
     private val content: @Composable () -> Unit
@@ -13,11 +12,8 @@ internal abstract class ComposeActivity(
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent {
-            val systemUi = remember { SystemUi(window) }
-            CompositionLocalProvider(LocalSystemUi provides systemUi) {
-                content()
-            }
-        }
+
+        setDecorFitsSystemWindows(window, false)
+        setContent { content() }
     }
 }
