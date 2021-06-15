@@ -26,7 +26,7 @@ private fun Graph<Context>.ConferencesQueries(): ConferencesQueries = runBlockin
 }
 
 @FlowPreview
-@ExperimentalCoroutinesApi
+@OptIn(ExperimentalCoroutinesApi::class)
 internal fun Graph<Context>.ConferencesStore(): ConferencesStore =
     StoreBuilder.from(
         sourceOfTruth = ConferencesSourceOfTruth(ConferencesQueries()),

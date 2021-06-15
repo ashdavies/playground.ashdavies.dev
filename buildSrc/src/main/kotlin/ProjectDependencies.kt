@@ -43,11 +43,12 @@ object ProjectDependencies {
 
     object Google : DependencyGroup("com.google") {
 
-        object Accompanist : DependencyGroup("$group.accompanist") {
+        object Accompanist : DependencyGroup("$group.accompanist", "0.11.1") {
 
-            val accompanistInsets by artifact(version = "0.11.1")
-            val accompanistInsetsUi by artifact(version = "0.11.1")
-            val accompanistSystemuicontroller by artifact(version = "0.11.1")
+            val accompanistCoil by artifact()
+            val accompanistInsets by artifact()
+            val accompanistInsetsUi by artifact()
+            val accompanistSystemuicontroller by artifact()
         }
 
         object Firebase : DependencyGroup("$group.firebase") {

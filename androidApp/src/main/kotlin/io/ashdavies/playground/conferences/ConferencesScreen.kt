@@ -3,15 +3,16 @@ package io.ashdavies.playground.conferences
 import android.content.Context
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.Card
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
@@ -23,6 +24,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.google.accompanist.insets.ui.LocalScaffoldPadding
 import io.ashdavies.playground.R
 import io.ashdavies.playground.conferences.ConferencesViewState.Failure
 import io.ashdavies.playground.conferences.ConferencesViewState.Loading
@@ -71,10 +73,11 @@ internal fun ConferencesList(viewState: ConferencesViewState) {
 
 @Composable
 internal fun ConferencesList(data: List<Section>) {
-    LazyColumn(contentPadding = PaddingValues(16.dp, 12.dp, 16.dp, 0.dp)) {
-        items(data.size) {
-            ConferenceSection(data[it])
-        }
+    LazyColumn(
+        contentPadding = LocalScaffoldPadding.current,
+        modifier = Modifier.fillMaxSize().padding(top = 12.dp),
+    ) {
+        items(data) { ConferenceSection(it) }
     }
 }
 
@@ -89,17 +92,19 @@ internal fun ConferenceSection(section: Section) {
 @Composable
 internal fun ConferenceHeader(date: LocalDate) {
     Box(modifier = Modifier.padding(bottom = 12.dp)) {
-        Text(
-            text = stringResource(R.string.header, date.toCalendar()),
-            style = MaterialTheme.typography.subtitle1,
-        )
+        Column(modifier = Modifier.padding(horizontal = 16.dp)) {
+            Text(
+                text = stringResource(R.string.header, date.toCalendar()),
+                style = MaterialTheme.typography.h5,
+            )
+        }
     }
 }
 
 @Composable
 internal fun ConferenceItem(data: Conference) {
-    Box(modifier = Modifier.padding(bottom = 12.dp)) {
-        Card(modifier = Modifier.fillMaxWidth()) {
+    Box(modifier = Modifier.padding(start = 8.dp, end = 8.dp, bottom = 12.dp)) {
+        Surface(elevation = 1.dp, modifier = Modifier.fillMaxWidth()) {
             Column(modifier = Modifier.padding(16.dp, 12.dp)) {
                 Text(
                     style = MaterialTheme.typography.body1,
@@ -113,7 +118,7 @@ internal fun ConferenceItem(data: Conference) {
 
                 Text(
                     style = MaterialTheme.typography.caption,
-                    text = data.dateStart.toString(),
+                    text = data.dateStart,
                 )
             }
         }
