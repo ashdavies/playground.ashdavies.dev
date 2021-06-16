@@ -36,6 +36,11 @@ object ProjectDependencies {
         val pagingRuntime by artifact("$group.paging", "3.1.0-alpha01")
     }
 
+    object ApolloGraphQl : DependencyGroup("com.apollographql.apollo") {
+
+        val apolloRuntime by artifact(version = "2.4.0")
+    }
+
     object Dropbox : DependencyGroup("com.dropbox.mobile") {
 
         val store4 by artifact("$group.store", "4.0.2-KT15")
@@ -53,8 +58,14 @@ object ProjectDependencies {
             val accompanistSystemuicontroller by artifact()
         }
 
+        object CloudFunctions : DependencyGroup("$group.cloud.functions") {
+
+            val functionsFrameworkApi by artifact(version = "1.0.3")
+        }
+
         object Firebase : DependencyGroup("$group.firebase") {
 
+            val firebaseAdmin by artifact(version = "7.1.0")
             val firebaseCommonKtx by artifact(version = "20.0.0")
             val firebaseAnalytics by artifact(version = "19.0.0")
         }
@@ -110,7 +121,6 @@ object ProjectDependencies {
 
             val androidDriver by artifact()
             val coroutinesExtensions by artifact()
-            val sqljsDriver by artifact()
             val sqliteDriver by artifact()
             val runtime by artifact()
         }

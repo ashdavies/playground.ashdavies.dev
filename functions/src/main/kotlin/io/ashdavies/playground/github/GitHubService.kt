@@ -2,7 +2,6 @@ package io.ashdavies.playground.github
 
 import io.ashdavies.playground.graphql.GraphQl
 import io.ashdavies.playground.graphql.graphql
-import kotlinx.coroutines.await
 
 internal interface GitHubService {
 
@@ -14,8 +13,8 @@ internal fun GitHubService(token: String): GitHubService =
 
 private class GitHubServiceImpl(private val token: String) : GitHubService {
 
-    override suspend fun getRepository(): GitHubRepository =
-        GraphQl
-            .graphql<GitHubRepository>(GitHubQuery, token = token)
-            .await()
+    override suspend fun getRepository(): GitHubRepository = GraphQl.graphql(
+        query = GitHubQuery,
+        token = token,
+    )
 }

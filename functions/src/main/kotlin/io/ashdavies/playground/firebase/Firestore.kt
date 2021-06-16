@@ -1,51 +1,51 @@
 package io.ashdavies.playground.firebase
 
-import kotlin.js.Promise
+import com.google.api.core.ApiFuture
 
-external interface Firestore {
+internal interface Firestore {
     fun <T> collection(path: String): CollectionReference<T>
 }
 
-external interface CollectionReference<T> : Query<T>
+internal interface CollectionReference<T> : Query<T>
 
-external interface Query<T> {
+internal interface Query<T> {
     fun doc(documentPath: String): DocumentReference<T>
     fun where(fieldPath: String, opStr: WhereFilterOp, value: Any): Query<T>
     fun orderBy(field: String, direction: OrderByDirection): Query<T>
     fun startAt(value: String): Query<T>
     fun limit(limit: Int): Query<T>
-    fun get(): Promise<QuerySnapshot<T>>
+    fun get(): ApiFuture<QuerySnapshot<T>>
 }
 
-external interface QuerySnapshot<T> {
+internal interface QuerySnapshot<T> {
     val docs: Array<QueryDocumentSnapshot<T>>
 }
 
-external interface QueryDocumentSnapshot<T> : DocumentSnapshot {
+internal interface QueryDocumentSnapshot<T> : DocumentSnapshot {
     fun data(): T
 }
 
-external interface DocumentSnapshot {
+internal interface DocumentSnapshot {
     val id: String
 }
 
-external interface DocumentReference<T> {
+internal interface DocumentReference<T> {
     fun withConverter(converter: FirestoreDataConverter<T>): DocumentReference<T>
 
-    fun get(): Promise<QueryDocumentSnapshot<T>>
-    fun set(data: T): Promise<WriteResult>
-    fun delete(): Promise<WriteResult>
+    fun get(): ApiFuture<QueryDocumentSnapshot<T>>
+    fun set(data: T): ApiFuture<WriteResult>
+    fun delete(): ApiFuture<WriteResult>
 }
 
-external interface FirestoreDataConverter<T> {
+internal interface FirestoreDataConverter<T> {
     fun fromFirestore(snapshot: QueryDocumentSnapshot<T>, options: SnapshotOptions): T
 }
 
-external interface SnapshotOptions {
+internal interface SnapshotOptions {
     val serverTimestamps: String?
 }
 
-external interface WriteResult
+internal interface WriteResult
 
 typealias OrderByDirection = String
 

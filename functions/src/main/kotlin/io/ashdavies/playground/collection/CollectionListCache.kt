@@ -6,10 +6,10 @@ import io.ashdavies.playground.firebase.OrderByDirection
 import io.ashdavies.playground.firebase.Query
 import io.ashdavies.playground.firebase.QueryDocumentSnapshot
 import io.ashdavies.playground.firebase.WhereFilterOp
+import io.ashdavies.playground.google.await
 import io.ashdavies.playground.store.Cache
 import io.ashdavies.playground.store.Options
 import io.ashdavies.playground.store.Options.Limit
-import kotlinx.coroutines.await
 
 internal class CollectionListCache<T>(
     private val collection: CollectionReference<T>,

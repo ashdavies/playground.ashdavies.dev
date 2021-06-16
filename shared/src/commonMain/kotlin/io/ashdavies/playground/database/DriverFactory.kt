@@ -4,5 +4,5 @@ import com.squareup.sqldelight.db.SqlDriver
 
 expect class DriverFactory {
 
-    suspend fun create(): SqlDriver
+    fun create(): SqlDriver
 }

@@ -6,7 +6,7 @@ import com.squareup.sqldelight.db.SqlDriver
 
 actual class DriverFactory(private val context: Context) {
 
-    actual suspend fun create(): SqlDriver = AndroidSqliteDriver(
+    actual fun create(): SqlDriver = AndroidSqliteDriver(
         schema = PlaygroundDatabase.Schema,
         name = "PlaygroundDatabase",
         context = context,

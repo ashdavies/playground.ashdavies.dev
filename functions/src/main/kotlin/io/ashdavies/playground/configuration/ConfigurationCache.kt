@@ -12,7 +12,6 @@ import io.ashdavies.playground.store.Options
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.decodeFromDynamic
 import kotlin.LazyThreadSafetyMode.NONE
 
 private const val CONFIGURATION = "configuration"
@@ -56,6 +55,6 @@ private class SerializationDataConverter<T>(
 ) : FirestoreDataConverter<T> {
 
     override fun fromFirestore(snapshot: QueryDocumentSnapshot<T>, options: SnapshotOptions): T {
-        return Json.decodeFromDynamic(deserializer, snapshot.data().asDynamic())
+        return Json.decodeFromString(deserializer, snapshot.data() as String)
     }
 }

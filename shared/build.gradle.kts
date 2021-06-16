@@ -49,10 +49,6 @@ kotlin {
         }
     }
 
-    js {
-        nodejs()
-    }
-
     sourceSets {
         val commonMain by getting {
             dependencies {
@@ -72,14 +68,6 @@ kotlin {
             dependencies {
                 implementation(JetBrains.Kotlin.kotlinTestCommon)
                 implementation(JetBrains.Kotlin.kotlinTestAnnotationsCommon)
-            }
-        }
-
-        val jsMain by getting {
-            dependsOn(commonMain)
-
-            dependencies {
-                implementation(Square.SqlDelight.sqljsDriver)
             }
         }
 

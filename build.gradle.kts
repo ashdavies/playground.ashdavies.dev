@@ -6,6 +6,7 @@ buildscript {
         classpath(`kotlin-gradle-plugin`)
         classpath(gradle)
         classpath(sqldelight)
+        classpath(apollo)
     }
 }
 
@@ -32,6 +33,7 @@ subprojects {
             "-Xopt-in=kotlinx.serialization.ExperimentalSerializationApi",
             "-Xallow-result-return-type",
             "-XXLanguage:+InlineClasses",
+            "-Xmulti-platform"
         )
     }
 }

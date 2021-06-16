@@ -20,6 +20,9 @@ private val SqlDelightVersion: String?
         .SqlDelight
         .version
 
+val DependencyHandler.apollo: ExternalModuleDependency
+    get() = create("com.apollographql.apollo", "apollo-gradle-plugin", "2.4.0")
+
 val DependencyHandler.`batik-ext`: ExternalModuleDependency
     get() = create("org.apache.xmlgraphics", "batik-ext", "1.14")
 
@@ -38,11 +41,14 @@ val PluginDependenciesSpec.`android-application`: PluginDependencySpec
 val PluginDependenciesSpec.`android-library`: PluginDependencySpec
     get() = id("com.android.library")
 
+val PluginDependenciesSpec.apollo: PluginDependencySpec
+    get() = id("com.apollographql.apollo")
+
 val PluginDependenciesSpec.`kotlin-android`: PluginDependencySpec
     get() = kotlin("android")
 
-val PluginDependenciesSpec.`kotlin-js`: PluginDependencySpec
-    get() = id("org.jetbrains.kotlin.js")
+val PluginDependenciesSpec.`kotlin-jvm`: PluginDependencySpec
+    get() = kotlin("jvm")
 
 val PluginDependenciesSpec.`kotlin-multiplatform`: PluginDependencySpec
     get() = kotlin("multiplatform")
