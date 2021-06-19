@@ -11,7 +11,8 @@ import kotlin.coroutines.Continuation
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
-internal suspend fun <T> ApiFuture<T>.await(): T {
+@Suppress("BlockingMethodInNonBlockingContext")
+suspend fun <T> ApiFuture<T>.await(): T {
     try {
         if (isDone) return get() as T
     } catch (exception: ExecutionException) {
