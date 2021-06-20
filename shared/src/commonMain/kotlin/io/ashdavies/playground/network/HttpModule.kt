@@ -2,6 +2,7 @@ package io.ashdavies.playground.network
 
 import io.ashdavies.playground.Graph
 import io.ashdavies.playground.database.EventsSerializer
+import io.ashdavies.playground.profile.RandomUser
 import io.ktor.client.HttpClient
 import io.ktor.client.features.json.JsonFeature
 import io.ktor.client.features.json.serializer.KotlinxSerializer
@@ -12,15 +13,17 @@ import io.ktor.client.features.logging.Logging
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.modules.serializersModuleOf
+import kotlinx.serialization.modules.SerializersModule
+import kotlinx.serialization.modules.contextual
 
 @OptIn(ExperimentalSerializationApi::class)
 val Graph<*>.httpClient: HttpClient
     get() = HttpClient {
         val json = Json {
-            serializersModule = serializersModuleOf(
-                serializer = ListSerializer(EventsSerializer)
-            )
+            serializersModule = SerializersModule {
+                contextual(Envelope.serializer(RandomUser.serializer()))
+                contextual(ListSerializer(EventsSerializer))
+            }
         }
 
         install(JsonFeature) {

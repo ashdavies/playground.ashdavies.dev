@@ -1,10 +1,9 @@
 package io.ashdavies.playground.kotlin
 
-import com.google.accompanist.imageloading.ImageLoadState
+val <T> Result<T>.isLoading: Boolean
+    get() = exceptionOrNull() is LoadingException
 
-val <T> Result<T>.isLoading: Boolean get() = getOrNull() is ImageLoadState.Loading
-
-internal inline fun <R, T> Result<T>.fold(
+inline fun <R, T> Result<T>.fold(
     onSuccess: (value: T) -> R,
     onLoading: () -> R,
     onFailure: (exception: Throwable) -> R,
@@ -13,6 +12,7 @@ internal inline fun <R, T> Result<T>.fold(
     onSuccess = onSuccess,
 )
 
-internal fun <T> Result.Companion.loading(): Result<T> = failure<T>(LoadingException())
+fun <T> Result.Companion.loading(): Result<T> =
+    failure(LoadingException())
 
 private class LoadingException : Exception()

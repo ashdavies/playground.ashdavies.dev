@@ -24,7 +24,6 @@ android {
 
     composeOptions {
         kotlinCompilerExtensionVersion = AndroidX.Compose.version
-        kotlinCompilerVersion = JetBrains.Kotlin.version
     }
 
     defaultConfig {
@@ -38,7 +37,6 @@ android {
 
     kotlinOptions {
         jvmTarget = "1.8"
-        useIR = true
     }
 
     sourceSets.configureEach {
@@ -78,6 +76,8 @@ dependencies {
     implementation(JetBrains.KotlinX.kotlinxDatetime)
     implementation(JetBrains.KotlinX.kotlinxSerializationJson)
     implementation(Ktor.ktorClientCore)
+    implementation(Ktor.ktorClientJson)
+    implementation(Ktor.ktorClientSerialization)
     implementation(Square.SqlDelight.androidDriver)
     implementation(Square.SqlDelight.coroutinesExtensions)
     implementation(Square.SqlDelight.runtime)

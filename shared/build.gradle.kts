@@ -2,7 +2,6 @@ import ProjectDependencies.AndroidX
 import ProjectDependencies.JetBrains
 import ProjectDependencies.Ktor
 import ProjectDependencies.Square
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     `android-library`
@@ -38,27 +37,23 @@ android {
 kotlin {
     android()
 
+    jvm {
+        val main by compilations.getting {
+            kotlinOptions {
+                java {
+                    sourceCompatibility = JavaVersion.VERSION_1_8
+                    targetCompatibility = JavaVersion.VERSION_1_8
+                    jvmTarget = "1.8"
+                }
+            }
+        }
+    }
+
     js {
         nodejs()
     }
 
     sourceSets {
-        val androidMain by getting {
-            dependencies {
-                implementation(AndroidX.coreKtx)
-                implementation(JetBrains.KotlinX.kotlinxCoroutinesAndroid)
-                implementation(Ktor.ktorClientAndroid)
-                implementation(Square.SqlDelight.androidDriver)
-            }
-        }
-
-        val androidTest by getting {
-            dependencies {
-                implementation(JetBrains.Kotlin.kotlinTest)
-                implementation(JetBrains.Kotlin.kotlinTestJunit)
-            }
-        }
-
         val commonMain by getting {
             dependencies {
                 implementation(JetBrains.KotlinX.kotlinxDatetime)
@@ -81,8 +76,40 @@ kotlin {
         }
 
         val jsMain by getting {
+            dependsOn(commonMain)
+
             dependencies {
                 implementation(Square.SqlDelight.sqljsDriver)
+            }
+        }
+
+        val commonJvmMain by creating {
+            dependsOn(commonMain)
+        }
+
+        val jvmMain by getting {
+            dependsOn(commonJvmMain)
+
+            dependencies {
+                implementation(Square.SqlDelight.sqliteDriver)
+            }
+        }
+
+        val androidMain by getting {
+            dependsOn(commonJvmMain)
+
+            dependencies {
+                implementation(AndroidX.coreKtx)
+                implementation(JetBrains.KotlinX.kotlinxCoroutinesAndroid)
+                implementation(Ktor.ktorClientAndroid)
+                implementation(Square.SqlDelight.androidDriver)
+            }
+        }
+
+        val androidTest by getting {
+            dependencies {
+                implementation(JetBrains.Kotlin.kotlinTest)
+                implementation(JetBrains.Kotlin.kotlinTestJunit)
             }
         }
     }
@@ -96,8 +123,4 @@ sqldelight {
 
 fun NamedDomainObjectContainer<*>.create(vararg names: String) {
     names.forEach { create(it) }
-}
-
-tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = "1.8"
 }

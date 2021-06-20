@@ -24,6 +24,9 @@ import com.google.accompanist.placeholder.PlaceholderHighlight
 import com.google.accompanist.placeholder.material.placeholder
 import com.google.accompanist.placeholder.material.shimmer
 import io.ashdavies.playground.R
+import io.ashdavies.playground.database.Event
+import io.ashdavies.playground.datetime.toCalendar
+import io.ashdavies.playground.emptyString
 import io.ashdavies.playground.events.EventsViewState.Failure
 import io.ashdavies.playground.events.EventsViewState.Loading
 import io.ashdavies.playground.events.EventsViewState.Section
@@ -31,9 +34,6 @@ import io.ashdavies.playground.events.EventsViewState.Section.Header
 import io.ashdavies.playground.events.EventsViewState.Section.Item
 import io.ashdavies.playground.events.EventsViewState.Success
 import io.ashdavies.playground.events.EventsViewState.Uninitialised
-import io.ashdavies.playground.database.Event
-import io.ashdavies.playground.datetime.toCalendar
-import io.ashdavies.playground.emptyString
 import io.ashdavies.playground.lifecycle.graphViewModel
 import kotlinx.coroutines.FlowPreview
 import kotlinx.datetime.LocalDate

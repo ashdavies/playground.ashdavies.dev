@@ -1,6 +1,7 @@
 package io.ashdavies.playground.profile
 
 import androidx.compose.foundation.Image
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -12,6 +13,7 @@ import com.google.accompanist.placeholder.material.shimmer
 import io.ashdavies.playground.compose.isLoading
 import io.ashdavies.playground.compose.produceState
 import io.ashdavies.playground.compose.rememberEmptyPainter
+import io.ashdavies.playground.emptyString
 import io.ashdavies.playground.graph
 
 @Composable
@@ -29,6 +31,14 @@ internal fun ProfileScreen() = graph(Unit) {
         modifier = Modifier.placeholder(
             highlight = PlaceholderHighlight.shimmer(),
             visible = painter.isLoading
+        )
+    )
+
+    Text(
+        text = profile.fold({ it.name }, { emptyString() }),
+        modifier = Modifier.placeholder(
+            highlight = PlaceholderHighlight.shimmer(),
+            visible = !profile.isSuccess
         )
     )
 }
