@@ -5,8 +5,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 internal data class RandomUser(
     val name: Name,
-    val city: String,
-    val country: String,
+    val location: Location,
     val login: Login,
     val picture: Picture,
 ) {
@@ -15,6 +14,12 @@ internal data class RandomUser(
     data class Name(
         val first: String,
         val last: String,
+    )
+
+    @Serializable
+    data class Location(
+        val city: String,
+        val country: String,
     )
 
     @Serializable

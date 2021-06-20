@@ -1,6 +1,7 @@
 package io.ashdavies.playground.common
 
 import androidx.annotation.StringRes
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
@@ -15,7 +16,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.insets.LocalWindowInsets
@@ -54,54 +57,74 @@ internal fun MainScreen() {
             val currentRoute by navController.routeAsState(Events)
 
             Scaffold(
-                topBar = {
-                    TopAppBar(
-                        title = { Text(stringResource(currentRoute.title)) },
-                        backgroundColor = MaterialTheme.colors.surface.copy(alpha = 0.95f),
-                        contentPadding = rememberInsetsPaddingValues(
-                            LocalWindowInsets.current.statusBars,
-                            applyBottom = false,
-                        ),
-                    )
-                },
-
-                bottomBar = {
-                    var selected by remember { mutableStateOf(0) }
-
-                    BottomNavigation(
-                        backgroundColor = MaterialTheme.colors.surface.copy(alpha = 0.95f),
-                        contentPadding = rememberInsetsPaddingValues(
-                            LocalWindowInsets.current.navigationBars
-                        )
-                    ) {
-                        BottomNavigationItem(
-                            icon = { Icon(Icons.Default.Home, "Home") },
-                            selected = selected == 0,
-                            onClick = {
-                                navController.navigate(Events)
-                                selected = 0
-                            }
-                        )
-                        BottomNavigationItem(
-                            icon = { Icon(Icons.Default.Person, "Profile") },
-                            selected = selected == 1,
-                            onClick = {
-                                navController.navigate(Profile)
-                                selected = 1
-                            }
-                        )
-                    }
-                },
-            ) {
-                NavHost(
-                    navController = navController,
-                    startDestination = Events,
-                ) {
-                    composable(Events) { EventsScreen() }
-                    composable(Profile) { ProfileScreen() }
-                }
-            }
+                topBar = { PlaygroundTopBar(currentRoute) },
+                bottomBar = { PlaygroundBottomBar(navController, currentRoute) },
+            ) { PlaygroundNavHost(navController) }
         }
+    }
+}
+
+@Composable
+private fun PlaygroundTopBar(currentRoute: Route) {
+    TopAppBar(
+        title = { Text(stringResource(currentRoute.title)) },
+        backgroundColor = MaterialTheme.colors.surface.copy(alpha = 0.95f),
+        contentPadding = rememberInsetsPaddingValues(
+            LocalWindowInsets.current.statusBars,
+            applyBottom = false,
+        ),
+    )
+}
+
+@Composable
+private fun PlaygroundBottomBar(navController: NavController, currentRoute: Route) {
+    var selected: Int by remember { mutableStateOf(0) }
+
+    BottomNavigation(
+        backgroundColor = MaterialTheme.colors.surface.copy(alpha = 0.95f),
+        contentPadding = rememberInsetsPaddingValues(
+            insets = LocalWindowInsets.current.navigationBars
+        )
+    ) {
+        BottomNavigationItem(
+            isSelected = { it == currentRoute },
+            onClick = { navController.navigate(it) },
+            icon = Icons.Default.Home,
+            route = Events,
+        )
+
+        BottomNavigationItem(
+            isSelected = { it == currentRoute },
+            onClick = { navController.navigate(it) },
+            icon = Icons.Default.Person,
+            route = Profile,
+        )
+    }
+}
+
+@Composable
+private fun RowScope.BottomNavigationItem(
+    isSelected: (Route) -> Boolean,
+    onClick: (Route) -> Unit,
+    icon: ImageVector,
+    route: Route,
+) {
+    BottomNavigationItem(
+        icon = { Icon(icon, route.name) },
+        label = { Text(route.name) },
+        onClick = { onClick(route) },
+        selected = isSelected(route),
+    )
+}
+
+@Composable
+private fun PlaygroundNavHost(navController: NavHostController) {
+    NavHost(
+        navController = navController,
+        startDestination = Events,
+    ) {
+        composable(Events) { EventsScreen() }
+        composable(Profile) { ProfileScreen() }
     }
 }
 
