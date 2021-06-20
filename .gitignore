@@ -10,6 +10,7 @@
 
 # Firebase
 **/google-services.json
+**/service-account.json
 **/.runtimeconfig.json
 **/*.log
 

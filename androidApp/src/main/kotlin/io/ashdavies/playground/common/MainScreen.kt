@@ -1,7 +1,6 @@
 package io.ashdavies.playground.common
 
-import android.content.Context
-import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.annotation.StringRes
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
@@ -11,11 +10,13 @@ import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.insets.LocalWindowInsets
 import com.google.accompanist.insets.ProvideWindowInsets
@@ -25,16 +26,20 @@ import com.google.accompanist.insets.ui.Scaffold
 import com.google.accompanist.insets.ui.TopAppBar
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import io.ashdavies.playground.R
+import io.ashdavies.playground.Route
 import io.ashdavies.playground.Route.Conferences
+import io.ashdavies.playground.Route.Profile
+import io.ashdavies.playground.compose.NavHost
+import io.ashdavies.playground.compose.composable
+import io.ashdavies.playground.compose.navigate
+import io.ashdavies.playground.compose.routeAsState
 import io.ashdavies.playground.conferences.ConferencesScreen
-import kotlinx.coroutines.FlowPreview
+import io.ashdavies.playground.profile.ProfileScreen
 
 @Composable
-@FlowPreview
-@OptIn(ExperimentalFoundationApi::class)
-internal fun MainScreen(context: Context = LocalContext.current) {
+internal fun MainScreen() {
     val systemUiController = rememberSystemUiController()
-    val useDarkIcons = MaterialTheme.colors.isLight
+    val useDarkIcons = !MaterialTheme.colors.isLight
 
     SideEffect {
         systemUiController.setSystemBarsColor(
@@ -45,10 +50,13 @@ internal fun MainScreen(context: Context = LocalContext.current) {
 
     PlaygroundTheme {
         ProvideWindowInsets {
+            val navController: NavHostController = rememberNavController()
+            val currentRoute by navController.routeAsState(Conferences)
+
             Scaffold(
                 topBar = {
                     TopAppBar(
-                        title = { Text(stringResource(R.string.upcoming)) },
+                        title = { Text(stringResource(currentRoute.title)) },
                         backgroundColor = MaterialTheme.colors.surface.copy(alpha = 0.95f),
                         contentPadding = rememberInsetsPaddingValues(
                             LocalWindowInsets.current.statusBars,
@@ -58,6 +66,8 @@ internal fun MainScreen(context: Context = LocalContext.current) {
                 },
 
                 bottomBar = {
+                    var selected by remember { mutableStateOf(0) }
+
                     BottomNavigation(
                         backgroundColor = MaterialTheme.colors.surface.copy(alpha = 0.95f),
                         contentPadding = rememberInsetsPaddingValues(
@@ -65,25 +75,38 @@ internal fun MainScreen(context: Context = LocalContext.current) {
                         )
                     ) {
                         BottomNavigationItem(
-                            selected = false,
-                            onClick = { TODO() },
-                            icon = { Icon(Icons.Default.Home, "Home") }
+                            icon = { Icon(Icons.Default.Home, "Home") },
+                            selected = selected == 0,
+                            onClick = {
+                                navController.navigate(Conferences)
+                                selected = 0
+                            }
                         )
                         BottomNavigationItem(
-                            selected = false,
-                            onClick = { TODO() },
-                            icon = { Icon(Icons.Default.Person, "Profile") }
+                            icon = { Icon(Icons.Default.Person, "Profile") },
+                            selected = selected == 1,
+                            onClick = {
+                                navController.navigate(Profile)
+                                selected = 1
+                            }
                         )
                     }
                 },
             ) {
                 NavHost(
-                    navController = rememberNavController(),
+                    navController = navController,
                     startDestination = Conferences,
                 ) {
                     composable(Conferences) { ConferencesScreen() }
+                    composable(Profile) { ProfileScreen() }
                 }
             }
         }
     }
 }
+
+private val Route.title: Int
+    @StringRes get() = when (this) {
+        is Conferences -> R.string.upcoming
+        is Profile -> R.string.profile
+    }

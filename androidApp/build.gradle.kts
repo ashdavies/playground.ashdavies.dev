@@ -8,6 +8,7 @@ import ProjectDependencies.Square
 plugins {
     `android-application`
     `kotlin-android`
+    serialization
     sqldelight
 }
 
@@ -67,6 +68,7 @@ dependencies {
     implementation(Google.Accompanist.accompanistCoil)
     implementation(Google.Accompanist.accompanistInsets)
     implementation(Google.Accompanist.accompanistInsetsUi)
+    implementation(Google.Accompanist.accompanistPlaceholderMaterial)
     implementation(Google.Accompanist.accompanistSystemuicontroller)
     implementation(Google.Firebase.firebaseCommonKtx)
     implementation(Google.Firebase.firebaseAnalytics)
@@ -74,6 +76,7 @@ dependencies {
     implementation(JetBrains.KotlinX.kotlinxCoroutinesAndroid)
     implementation(JetBrains.KotlinX.kotlinxCoroutinesCore)
     implementation(JetBrains.KotlinX.kotlinxDatetime)
+    implementation(JetBrains.KotlinX.kotlinxSerializationJson)
     implementation(Ktor.ktorClientCore)
     implementation(Square.SqlDelight.androidDriver)
     implementation(Square.SqlDelight.coroutinesExtensions)

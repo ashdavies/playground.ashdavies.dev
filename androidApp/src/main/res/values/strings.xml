@@ -1,6 +1,7 @@
 <resources>
     <string name="application">Playground</string>
     <string name="upcoming">Upcoming</string>
+    <string name="profile">Profile</string>
     <string name="header">%1$tB \'%1$ty</string>
     <string name="search">Search</string>
     <string name="close">Close</string>

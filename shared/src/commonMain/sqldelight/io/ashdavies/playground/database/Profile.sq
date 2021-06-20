@@ -1,0 +1,12 @@
+CREATE TABLE profile(
+    id TEXT NOT NULL UNIQUE PRIMARY KEY,
+
+    name TEXT NOT NULL,
+    location TEXT,
+    picture TEXT,
+    position TEXT
+);
+
+selectAll:
+    SELECT *
+    FROM profile;

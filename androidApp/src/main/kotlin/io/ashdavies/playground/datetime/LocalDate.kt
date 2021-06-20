@@ -1,4 +1,4 @@
-package io.ashdavies.playground.ktx
+package io.ashdavies.playground.datetime
 
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.number

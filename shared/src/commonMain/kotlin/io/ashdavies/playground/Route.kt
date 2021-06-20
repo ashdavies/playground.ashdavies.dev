@@ -1,6 +1,11 @@
 package io.ashdavies.playground
 
-object Route {
+sealed class Route(val name: String) {
 
-    const val Conferences = "conferences"
+    object Conferences : Route("conferences")
+    object Profile : Route("profile")
+
+    companion object {
+        val routes get() = listOf(Conferences, Profile)
+    }
 }
