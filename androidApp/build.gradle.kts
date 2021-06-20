@@ -39,6 +39,10 @@ android {
         jvmTarget = "1.8"
     }
 
+    lint {
+        disable("DialogFragmentCallbacksDetector")
+    }
+
     sourceSets.configureEach {
         java.srcDirs("src/$name/kotlin")
     }

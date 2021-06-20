@@ -11,23 +11,17 @@ import io.ashdavies.playground.database.Event
 import io.ashdavies.playground.database.EventsQueries
 import io.ashdavies.playground.network.EventsService
 import io.ashdavies.playground.network.httpClient
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.runBlocking
 
 private val Graph<Context>.eventsService: EventsService
     get() = EventsService(httpClient)
 
-private fun Graph<Context>.EventsQueries(): EventsQueries = runBlocking {
+private suspend fun Graph<Context>.EventsQueries(): EventsQueries =
     DriverFactory(seed.applicationContext)
         .let(::DatabaseFactory)
         .create()
         .eventsQueries
-}
 
-@FlowPreview
-@OptIn(ExperimentalCoroutinesApi::class)
-internal fun Graph<Context>.EventsStore(): EventsStore =
+internal suspend fun Graph<Context>.EventsStore(): EventsStore =
     StoreBuilder.from(
         sourceOfTruth = EventsSourceOfTruth(EventsQueries()),
         fetcher = Fetcher.of { eventsService.get() },

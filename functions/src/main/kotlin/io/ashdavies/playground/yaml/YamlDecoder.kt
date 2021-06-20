@@ -1,6 +1,5 @@
 package io.ashdavies.playground.yaml
 
-import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.AbstractDecoder
 import kotlinx.serialization.encoding.CompositeDecoder
@@ -11,7 +10,6 @@ private const val TOKEN_COMMENT = "#"
 private const val TOKEN_DOCUMENT = "---"
 private const val TOKEN_QUOTE = "\""
 
-@OptIn(ExperimentalSerializationApi::class)
 internal class YamlDecoder(
     override val serializersModule: SerializersModule,
     string: String,

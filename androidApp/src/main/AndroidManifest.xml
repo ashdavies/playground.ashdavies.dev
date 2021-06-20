@@ -12,6 +12,7 @@
 
         <activity
             android:name="io.ashdavies.playground.common.MainActivity"
+            android:exported="true"
             android:label="@string/application">
 
             <intent-filter>

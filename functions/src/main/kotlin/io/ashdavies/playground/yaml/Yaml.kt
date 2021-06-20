@@ -1,12 +1,10 @@
 package io.ashdavies.playground.yaml
 
 import kotlinx.serialization.DeserializationStrategy
-import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerializationStrategy
 import kotlinx.serialization.StringFormat
 import kotlinx.serialization.modules.SerializersModule
 
-@OptIn(ExperimentalSerializationApi::class)
 internal sealed class Yaml(private val configuration: YamlConfig) : StringFormat {
 
     override val serializersModule: SerializersModule

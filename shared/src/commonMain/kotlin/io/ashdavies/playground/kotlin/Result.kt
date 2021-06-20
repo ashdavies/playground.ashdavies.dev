@@ -9,10 +9,11 @@ inline fun <R, T> Result<T>.fold(
     onFailure: (exception: Throwable) -> R,
 ): R = fold(
     onFailure = { if (it is LoadingException) onLoading() else onFailure(it) },
-    onSuccess = onSuccess,
+    onSuccess = { onSuccess(it) },
 )
 
 fun <T> Result.Companion.loading(): Result<T> =
     failure(LoadingException())
 
-private class LoadingException : Exception()
+@PublishedApi
+internal class LoadingException : Exception()

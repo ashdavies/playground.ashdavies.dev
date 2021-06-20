@@ -10,7 +10,6 @@ import io.ashdavies.playground.firebase.admin
 import io.ashdavies.playground.store.Cache
 import io.ashdavies.playground.store.Options
 import kotlinx.serialization.DeserializationStrategy
-import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.decodeFromDynamic
@@ -56,7 +55,6 @@ private class SerializationDataConverter<T>(
     private val deserializer: DeserializationStrategy<T>,
 ) : FirestoreDataConverter<T> {
 
-    @ExperimentalSerializationApi
     override fun fromFirestore(snapshot: QueryDocumentSnapshot<T>, options: SnapshotOptions): T {
         return Json.decodeFromDynamic(deserializer, snapshot.data().asDynamic())
     }

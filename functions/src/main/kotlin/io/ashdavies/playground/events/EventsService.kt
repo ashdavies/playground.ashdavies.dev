@@ -16,7 +16,6 @@ import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
-import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.decodeFromDynamic
@@ -30,7 +29,6 @@ private val Admin.events: CollectionReference<Event>
 private val environment: Environment
     get() = Environment()
 
-@OptIn(ExperimentalSerializationApi::class)
 internal fun EventsService(): EventsService = coroutineService { req, res ->
     val arguments = Json.decodeFromDynamic(Arguments.serializer(), req.query)
     val store = EventsStore(admin.events, environment.getGithubToken())

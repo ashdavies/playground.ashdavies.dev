@@ -15,6 +15,8 @@ import io.ashdavies.playground.compose.produceState
 import io.ashdavies.playground.compose.rememberEmptyPainter
 import io.ashdavies.playground.emptyString
 import io.ashdavies.playground.graph
+import io.ashdavies.playground.kotlin.fold
+import io.ashdavies.playground.kotlin.isLoading
 
 @Composable
 internal fun ProfileScreen() = graph(Unit) {
@@ -22,6 +24,7 @@ internal fun ProfileScreen() = graph(Unit) {
 
     val painter: LoadPainter<Any> = profile.fold(
         onSuccess = { rememberCoilPainter(it.picture) },
+        onLoading = { rememberEmptyPainter() },
         onFailure = { rememberEmptyPainter() },
     )
 
@@ -30,7 +33,7 @@ internal fun ProfileScreen() = graph(Unit) {
         contentDescription = null,
         modifier = Modifier.placeholder(
             highlight = PlaceholderHighlight.shimmer(),
-            visible = painter.isLoading
+            visible = profile.isLoading || painter.isLoading,
         )
     )
 
@@ -38,7 +41,7 @@ internal fun ProfileScreen() = graph(Unit) {
         text = profile.fold({ it.name }, { emptyString() }),
         modifier = Modifier.placeholder(
             highlight = PlaceholderHighlight.shimmer(),
-            visible = !profile.isSuccess
+            visible = profile.isLoading,
         )
     )
 }

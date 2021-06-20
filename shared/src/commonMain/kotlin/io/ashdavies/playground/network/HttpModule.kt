@@ -10,16 +10,15 @@ import io.ktor.client.features.logging.DEFAULT
 import io.ktor.client.features.logging.LogLevel
 import io.ktor.client.features.logging.Logger
 import io.ktor.client.features.logging.Logging
-import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.contextual
 
-@OptIn(ExperimentalSerializationApi::class)
 val Graph<*>.httpClient: HttpClient
     get() = HttpClient {
         val json = Json {
+            ignoreUnknownKeys = true
             serializersModule = SerializersModule {
                 contextual(Envelope.serializer(RandomUser.serializer()))
                 contextual(ListSerializer(EventsSerializer))

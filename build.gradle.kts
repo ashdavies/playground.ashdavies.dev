@@ -27,6 +27,9 @@ subprojects {
     tasks.withType<KotlinCompile<*>> {
         kotlinOptions.freeCompilerArgs += listOf(
             "-Xopt-in=kotlin.RequiresOptIn",
+            "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
+            "-Xopt-in=kotlinx.coroutines.FlowPreview",
+            "-Xopt-in=kotlinx.serialization.ExperimentalSerializationApi",
             "-Xallow-result-return-type",
             "-XXLanguage:+InlineClasses",
         )
