@@ -1,18 +1,18 @@
-package io.ashdavies.playground.conferences
+package io.ashdavies.playground.events
 
 import io.ashdavies.playground.collection.CollectionListCache
 import io.ashdavies.playground.configuration.CachePolicy
-import io.ashdavies.playground.database.Conference
+import io.ashdavies.playground.database.Event
 import io.ashdavies.playground.firebase.CollectionReference
 import io.ashdavies.playground.github.GitHubService
 import io.ashdavies.playground.store.Store
 
-internal suspend fun ConferencesStore(
-    collection: CollectionReference<Conference>,
+internal suspend fun EventsStore(
+    collection: CollectionReference<Event>,
     token: String,
-): ConferencesStore = Store(
+): EventsStore = Store(
     cache = CollectionListCache(collection, CachePolicy()) { it.id },
-    fetcher = ConferencesFetcher(GitHubService(token)),
+    fetcher = EventsFetcher(GitHubService(token)),
 )
 
-internal typealias ConferencesStore = Store<Unit, List<Conference>>
+internal typealias EventsStore = Store<Unit, List<Event>>

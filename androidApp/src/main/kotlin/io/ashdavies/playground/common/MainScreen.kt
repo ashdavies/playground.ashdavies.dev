@@ -27,13 +27,13 @@ import com.google.accompanist.insets.ui.TopAppBar
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import io.ashdavies.playground.R
 import io.ashdavies.playground.Route
-import io.ashdavies.playground.Route.Conferences
+import io.ashdavies.playground.Route.Events
 import io.ashdavies.playground.Route.Profile
 import io.ashdavies.playground.compose.NavHost
 import io.ashdavies.playground.compose.composable
 import io.ashdavies.playground.compose.navigate
 import io.ashdavies.playground.compose.routeAsState
-import io.ashdavies.playground.conferences.ConferencesScreen
+import io.ashdavies.playground.events.EventsScreen
 import io.ashdavies.playground.profile.ProfileScreen
 
 @Composable
@@ -51,7 +51,7 @@ internal fun MainScreen() {
     PlaygroundTheme {
         ProvideWindowInsets {
             val navController: NavHostController = rememberNavController()
-            val currentRoute by navController.routeAsState(Conferences)
+            val currentRoute by navController.routeAsState(Events)
 
             Scaffold(
                 topBar = {
@@ -78,7 +78,7 @@ internal fun MainScreen() {
                             icon = { Icon(Icons.Default.Home, "Home") },
                             selected = selected == 0,
                             onClick = {
-                                navController.navigate(Conferences)
+                                navController.navigate(Events)
                                 selected = 0
                             }
                         )
@@ -95,9 +95,9 @@ internal fun MainScreen() {
             ) {
                 NavHost(
                     navController = navController,
-                    startDestination = Conferences,
+                    startDestination = Events,
                 ) {
-                    composable(Conferences) { ConferencesScreen() }
+                    composable(Events) { EventsScreen() }
                     composable(Profile) { ProfileScreen() }
                 }
             }
@@ -107,6 +107,6 @@ internal fun MainScreen() {
 
 private val Route.title: Int
     @StringRes get() = when (this) {
-        is Conferences -> R.string.upcoming
+        is Events -> R.string.upcoming
         is Profile -> R.string.profile
     }

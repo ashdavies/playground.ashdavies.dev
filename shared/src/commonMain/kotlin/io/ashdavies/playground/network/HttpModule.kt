@@ -1,7 +1,7 @@
 package io.ashdavies.playground.network
 
 import io.ashdavies.playground.Graph
-import io.ashdavies.playground.database.ConferenceSerializer
+import io.ashdavies.playground.database.EventsSerializer
 import io.ktor.client.HttpClient
 import io.ktor.client.features.json.JsonFeature
 import io.ktor.client.features.json.serializer.KotlinxSerializer
@@ -19,7 +19,7 @@ val Graph<*>.httpClient: HttpClient
     get() = HttpClient {
         val json = Json {
             serializersModule = serializersModuleOf(
-                serializer = ListSerializer(ConferenceSerializer)
+                serializer = ListSerializer(EventsSerializer)
             )
         }
 

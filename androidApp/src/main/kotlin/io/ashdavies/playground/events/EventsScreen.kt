@@ -1,4 +1,4 @@
-package io.ashdavies.playground.conferences
+package io.ashdavies.playground.events
 
 import android.content.Context
 import androidx.compose.foundation.layout.Box
@@ -24,14 +24,14 @@ import com.google.accompanist.placeholder.PlaceholderHighlight
 import com.google.accompanist.placeholder.material.placeholder
 import com.google.accompanist.placeholder.material.shimmer
 import io.ashdavies.playground.R
-import io.ashdavies.playground.conferences.ConferencesViewState.Failure
-import io.ashdavies.playground.conferences.ConferencesViewState.Loading
-import io.ashdavies.playground.conferences.ConferencesViewState.Section
-import io.ashdavies.playground.conferences.ConferencesViewState.Section.Header
-import io.ashdavies.playground.conferences.ConferencesViewState.Section.Item
-import io.ashdavies.playground.conferences.ConferencesViewState.Success
-import io.ashdavies.playground.conferences.ConferencesViewState.Uninitialised
-import io.ashdavies.playground.database.Conference
+import io.ashdavies.playground.events.EventsViewState.Failure
+import io.ashdavies.playground.events.EventsViewState.Loading
+import io.ashdavies.playground.events.EventsViewState.Section
+import io.ashdavies.playground.events.EventsViewState.Section.Header
+import io.ashdavies.playground.events.EventsViewState.Section.Item
+import io.ashdavies.playground.events.EventsViewState.Success
+import io.ashdavies.playground.events.EventsViewState.Uninitialised
+import io.ashdavies.playground.database.Event
 import io.ashdavies.playground.datetime.toCalendar
 import io.ashdavies.playground.emptyString
 import io.ashdavies.playground.lifecycle.graphViewModel
@@ -42,59 +42,59 @@ import kotlin.random.Random
 @Preview
 @Composable
 @OptIn(FlowPreview::class)
-internal fun ConferencesScreen(context: Context = LocalContext.current) {
-    val viewModel: ConferencesViewModel = context.graphViewModel {
-        ConferencesViewModel(ConferencesStore())
+internal fun EventsScreen(context: Context = LocalContext.current) {
+    val viewModel: EventsViewModel = context.graphViewModel {
+        EventsViewModel(EventsStore())
     }
 
-    ConferencesScreen(viewModel = viewModel)
+    EventsScreen(viewModel = viewModel)
 }
 
 @Composable
-internal fun ConferencesScreen(viewModel: ConferencesViewModel) {
-    val viewState: ConferencesViewState by viewModel
+internal fun EventsScreen(viewModel: EventsViewModel) {
+    val viewState: EventsViewState by viewModel
         .viewState
         .collectAsState(Uninitialised)
 
-    ConferencesList(viewState)
+    EventsList(viewState)
 }
 
 @Composable
-internal fun ConferencesList(viewState: ConferencesViewState) {
+internal fun EventsList(viewState: EventsViewState) {
     when (viewState) {
-        is Loading -> ConferencesList(List(10) { null })
-        is Success -> ConferencesList(viewState.data)
-        is Failure -> ConferencesFailure(viewState.message)
+        is Loading -> EventsList(List(10) { null })
+        is Success -> EventsList(viewState.data)
+        is Failure -> EventFailure(viewState.message)
         else -> Unit
     }
 }
 
 @Composable
-internal fun ConferencesList(data: List<Section?>) {
+internal fun EventsList(data: List<Section?>) {
     LazyColumn(
         contentPadding = LocalScaffoldPadding.current,
         modifier = Modifier
             .fillMaxSize()
             .padding(top = 12.dp),
     ) {
-        items(data) { ConferenceSection(it) }
+        items(data) { EventSection(it) }
     }
 }
 
 @Composable
-internal fun ConferenceSection(section: Section?) {
+internal fun EventSection(section: Section?) {
     when (section) {
-        is Header -> ConferenceHeader(date = section.date)
-        is Item -> ConferenceItem(data = section.data)
+        is Header -> EventHeader(date = section.date)
+        is Item -> EventItem(data = section.data)
         null -> when (Random.nextBoolean()) {
-            true -> ConferenceHeader(date = null)
-            false -> ConferenceItem(data = null)
+            true -> EventHeader(date = null)
+            false -> EventItem(data = null)
         }
     }
 }
 
 @Composable
-internal fun ConferenceHeader(date: LocalDate?) {
+internal fun EventHeader(date: LocalDate?) {
     Box(modifier = Modifier.padding(bottom = 12.dp)) {
         Column(modifier = Modifier.padding(horizontal = 16.dp)) {
             Text(
@@ -113,7 +113,7 @@ internal fun ConferenceHeader(date: LocalDate?) {
 }
 
 @Composable
-internal fun ConferenceItem(data: Conference?) {
+internal fun EventItem(data: Event?) {
     Box(modifier = Modifier.padding(start = 8.dp, end = 8.dp, bottom = 12.dp)) {
         Surface(elevation = 1.dp, modifier = Modifier.fillMaxWidth()) {
             Column(modifier = Modifier.padding(16.dp, 12.dp)) {
@@ -149,7 +149,7 @@ internal fun ConferenceItem(data: Conference?) {
 }
 
 @Composable
-internal fun ConferencesFailure(message: String) {
+internal fun EventFailure(message: String) {
     Text(
         modifier = Modifier.padding(16.dp, 12.dp),
         text = message,

@@ -1,4 +1,4 @@
-package io.ashdavies.playground.conferences
+package io.ashdavies.playground.events
 
 import io.ashdavies.playground.github.GitHubRepository
 import io.ashdavies.playground.github.GitHubService

@@ -1,11 +1,11 @@
-package io.ashdavies.playground.conferences
+package io.ashdavies.playground.events
 
-import io.ashdavies.playground.database.Conference
+import io.ashdavies.playground.database.Event
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-internal data class ConferenceYaml(
+internal data class EventYaml(
     @SerialName("name") val name: String,
     @SerialName("website") val website: String,
     @SerialName("location") val location: String,
@@ -24,7 +24,7 @@ internal data class ConferenceYaml(
     )
 }
 
-internal fun ConferenceYaml.toConference(id: String) = Conference(
+internal fun EventYaml.toEvent(id: String) = Event(
     cfpSite = cfp?.site ?: website,
     cfpStart = cfp?.start,
     dateStart = dateStart,

@@ -1,8 +1,8 @@
-package io.ashdavies.playground.conferences
+package io.ashdavies.playground.events
 
 import io.ashdavies.playground.configuration.Environment
 import io.ashdavies.playground.core.coroutineService
-import io.ashdavies.playground.database.Conference
+import io.ashdavies.playground.database.Event
 import io.ashdavies.playground.express.Request
 import io.ashdavies.playground.express.Response
 import io.ashdavies.playground.firebase.Admin
@@ -24,22 +24,22 @@ import kotlinx.serialization.json.decodeFromDynamic
 private const val CONFERENCES = "conferences"
 private const val DATE_START = "dateStart"
 
-private val Admin.conferences: CollectionReference<Conference>
+private val Admin.events: CollectionReference<Event>
     get() = firestore().collection(CONFERENCES)
 
 private val environment: Environment
     get() = Environment()
 
 @OptIn(ExperimentalSerializationApi::class)
-internal fun ConferencesService(): ConferencesService = coroutineService { req, res ->
+internal fun EventsService(): EventsService = coroutineService { req, res ->
     val arguments = Json.decodeFromDynamic(Arguments.serializer(), req.query)
-    val store = ConferencesStore(admin.conferences, environment.getGithubToken())
-    val result: Result<List<Conference>> = store(Unit, arguments.toOptions())
+    val store = EventsStore(admin.events, environment.getGithubToken())
+    val result: Result<List<Event>> = store(Unit, arguments.toOptions())
 
     res.send(result.getOrThrow())
 }
 
-internal typealias ConferencesService = (Request, Response<List<Conference>>) -> Unit
+internal typealias EventsService = (Request, Response<List<Event>>) -> Unit
 
 @Serializable
 private data class Arguments(

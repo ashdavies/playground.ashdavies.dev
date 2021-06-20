@@ -1,42 +1,42 @@
-package io.ashdavies.playground.conferences
+package io.ashdavies.playground.events
 
 import io.ashdavies.playground.CoroutineTest
-import io.ashdavies.playground.database.Conference
+import io.ashdavies.playground.database.Event
 import io.ashdavies.playground.github.GitHubRepository
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-internal class ConferencesFetcherTest : CoroutineTest() {
+internal class EventsFetcherTest : CoroutineTest() {
 
     @Test
-    fun shouldParseConferenceName() = runBlockingTest {
-        val conference: Conference = fetch(DroidconBerlinEntry)
+    fun shouldParseEventName() = runBlockingTest {
+        val event: Event = fetch(DroidconBerlinEntry)
 
-        assertEquals(conference.name, "Droidcon")
+        assertEquals(event.name, "Droidcon")
     }
 
     @Test
     fun shouldParseWithYamlComment() = runBlockingTest {
-        val conference: Conference = fetch(AppDevConEntry)
+        val event: Event = fetch(AppDevConEntry)
 
-        assertEquals(conference.cfpStart, "2016-11-26")
+        assertEquals(event.cfpStart, "2016-11-26")
     }
 
     @Test
     fun shouldParseOptionalCfpSite() = runBlockingTest {
-        val conference: Conference = fetch(AnDevConEntry)
+        val event: Event = fetch(AnDevConEntry)
 
-        assertEquals(conference.cfpSite, conference.website)
+        assertEquals(event.cfpSite, event.website)
     }
 
-    private suspend fun fetch(entry: GitHubRepository.Entry): Conference {
-        return ConferencesFetcher(GitHubService(entry))(Unit)
+    private suspend fun fetch(entry: GitHubRepository.Entry): Event {
+        return EventsFetcher(GitHubService(entry))(Unit)
             .getOrThrow()
             .first()
     }
 }
 
-private val DroidconBerlinEntry = ConferenceEntry(
+private val DroidconBerlinEntry = EventEntry(
     oid = "9361834b3e310ffd8992c1020eb868ebb56c564a",
     text = """
         ---
@@ -55,7 +55,7 @@ private val DroidconBerlinEntry = ConferenceEntry(
 """.trimIndent()
 )
 
-private val AppDevConEntry = ConferenceEntry(
+private val AppDevConEntry = EventEntry(
     oid = "f225a030810250f2f6cb8d6f97ade9ae9c9b405f",
     text = """
         ---
@@ -74,7 +74,7 @@ private val AppDevConEntry = ConferenceEntry(
     """.trimIndent()
 )
 
-private val AnDevConEntry = ConferenceEntry(
+private val AnDevConEntry = EventEntry(
     oid = "3d63bc9d12803c859d35deb27083cce7c38dcb58",
     text = """
         ---
@@ -92,7 +92,7 @@ private val AnDevConEntry = ConferenceEntry(
     """.trimIndent()
 )
 
-private data class ConferenceEntry(
+private data class EventEntry(
     override val oid: String,
     override val text: String,
 ) : GitHubRepository.Entry

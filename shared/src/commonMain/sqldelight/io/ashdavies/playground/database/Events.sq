@@ -1,4 +1,4 @@
-CREATE TABLE conference(
+CREATE TABLE event(
     id TEXT NOT NULL UNIQUE PRIMARY KEY,
 
     name TEXT NOT NULL,
@@ -15,16 +15,16 @@ CREATE TABLE conference(
 
 selectAll:
     SELECT *
-    FROM conference
+    FROM event
     ORDER BY dateStart;
 
 selectById:
     SELECT *
-    FROM conference
-    WHERE conference.id = ?;
+    FROM event
+    WHERE event.id = ?;
 
 insertOrReplace:
-    INSERT OR REPLACE INTO conference(
+    INSERT OR REPLACE INTO event(
         id,
         name,
         website,
@@ -40,7 +40,7 @@ insertOrReplace:
     VALUES ?;
 
 deleteAll:
-    DELETE FROM conference;
+    DELETE FROM event;
 
 deleteById:
-    DELETE FROM conference WHERE id = :id;
+    DELETE FROM event WHERE id = :id;
