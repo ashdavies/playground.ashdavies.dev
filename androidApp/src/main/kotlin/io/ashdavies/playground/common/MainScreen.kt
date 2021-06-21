@@ -110,8 +110,8 @@ private fun RowScope.BottomNavigationItem(
     route: Route,
 ) {
     BottomNavigationItem(
-        icon = { Icon(icon, route.name) },
-        label = { Text(route.name) },
+        icon = { Icon(icon, stringResource(route.title)) },
+        label = { Text(stringResource(route.title)) },
         onClick = { onClick(route) },
         selected = isSelected(route),
     )
@@ -121,7 +121,7 @@ private fun RowScope.BottomNavigationItem(
 private fun PlaygroundNavHost(navController: NavHostController) {
     NavHost(
         navController = navController,
-        startDestination = Events,
+        startDestination = Profile,
     ) {
         composable(Events) { EventsScreen() }
         composable(Profile) { ProfileScreen() }

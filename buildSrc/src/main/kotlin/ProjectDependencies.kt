@@ -46,6 +46,7 @@ object ProjectDependencies {
         object Accompanist : DependencyGroup("$group.accompanist", "0.12.0") {
 
             val accompanistCoil by artifact()
+            val accompanistFlowlayout by artifact()
             val accompanistInsets by artifact()
             val accompanistInsetsUi by artifact()
             val accompanistPlaceholderMaterial by artifact()

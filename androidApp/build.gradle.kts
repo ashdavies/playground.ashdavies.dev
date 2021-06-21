@@ -68,6 +68,7 @@ dependencies {
     implementation(AndroidX.Navigation.navigationUiKtx)
     implementation(Dropbox.store4)
     implementation(Google.Accompanist.accompanistCoil)
+    implementation(Google.Accompanist.accompanistFlowlayout)
     implementation(Google.Accompanist.accompanistInsets)
     implementation(Google.Accompanist.accompanistInsetsUi)
     implementation(Google.Accompanist.accompanistPlaceholderMaterial)

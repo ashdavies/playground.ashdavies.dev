@@ -25,6 +25,7 @@ internal data class RandomUser(
     @Serializable
     data class Login(
         val uuid: String,
+        val username: String,
     )
 
     @Serializable

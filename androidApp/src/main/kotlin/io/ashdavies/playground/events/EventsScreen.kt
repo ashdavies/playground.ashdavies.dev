@@ -3,6 +3,7 @@ package io.ashdavies.playground.events
 import android.content.Context
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -19,12 +20,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.insets.ui.LocalScaffoldPadding
-import com.google.accompanist.placeholder.PlaceholderHighlight
-import com.google.accompanist.placeholder.material.placeholder
-import com.google.accompanist.placeholder.material.shimmer
 import io.ashdavies.playground.R
+import io.ashdavies.playground.compose.fade
 import io.ashdavies.playground.database.Event
 import io.ashdavies.playground.datetime.toCalendar
 import io.ashdavies.playground.emptyString
@@ -114,12 +114,12 @@ internal fun EventItem(data: Event?) {
 @Composable
 private fun PlaceholderText(text: String?, style: TextStyle = LocalTextStyle.current) {
     Text(
-        modifier = Modifier.placeholder(
-            highlight = PlaceholderHighlight.shimmer(),
-            visible = text == null,
-        ),
-        text = text ?: emptyString(),
         style = style,
+        text = text ?: emptyString(),
+        modifier = Modifier
+            .defaultMinSize(minWidth = Dp(style.fontSize.value * 12))
+            .padding(bottom = 2.dp)
+            .fade(text == null),
     )
 }
 
