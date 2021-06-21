@@ -1,6 +1,6 @@
-query Conferences {
+query Events {
   repository(owner: "AndroidStudyGroup", name: "conferences") {
-    conferences: object(expression: "HEAD:_conferences") {
+    events: object(expression: "HEAD:_conferences") {
       ... on Tree {
         entries {
           data: object {

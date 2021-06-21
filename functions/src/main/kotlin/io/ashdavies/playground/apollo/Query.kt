@@ -6,8 +6,8 @@ import io.ashdavies.playground.kotlin.requireNotNull
 
 internal val Response<EventsQuery.Data>.entries: List<EventsQuery.Entry>
     get() = data
+        ?.repository
         ?.events
-        ?.conferences
         ?.asTree
         ?.entries
         ?.requireNoNulls()
