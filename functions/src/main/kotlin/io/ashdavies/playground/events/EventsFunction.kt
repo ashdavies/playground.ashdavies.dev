@@ -6,6 +6,7 @@ import com.dropbox.android.external.store4.StoreBuilder
 import com.dropbox.android.external.store4.get
 import com.google.cloud.functions.HttpRequest
 import io.ashdavies.playground.Graph
+import io.ashdavies.playground.database.Event
 import io.ashdavies.playground.google.FirebaseFunction
 import io.ashdavies.playground.google.firstIntQueryParameterOrDefault
 import io.ashdavies.playground.google.firstStringQueryParameterOrDefault
@@ -21,8 +22,6 @@ import kotlinx.serialization.json.Json
 
 private const val DEFAULT_LIMIT = 50
 
-@FlowPreview
-@ExperimentalCoroutinesApi
 class EventsFunction : FirebaseFunction() {
     override suspend fun service(request: HttpRequest): String {
         val startAt: String by request.firstStringQueryParameterOrDefault { today() }

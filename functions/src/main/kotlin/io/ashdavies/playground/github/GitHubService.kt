@@ -6,7 +6,7 @@ import io.ashdavies.playground.apollo.asBlobs
 import io.ashdavies.playground.apollo.entries
 import io.ashdavies.playground.apollo.requireOid
 import io.ashdavies.playground.apollo.requireText
-import io.ashdavies.playground.events.Event
+import io.ashdavies.playground.database.Event
 import io.ashdavies.playground.yaml.Yaml
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -17,8 +17,8 @@ internal interface GitHubService {
 
 internal fun GitHubService(client: ApolloClient, yaml: Yaml) = object : GitHubService {
     override suspend fun getEvents(): List<Event> {
-        val entries: List<ConferencesQuery.AsBlob> = client
-            .query(ConferencesQuery())
+        val entries: List<EventsQuery.AsBlob> = client
+            .query(EventsQuery())
             .await()
             .entries
             .asBlobs()

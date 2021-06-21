@@ -1,6 +1,7 @@
 package io.ashdavies.playground.events
 
 import com.google.cloud.firestore.CollectionReference
+import io.ashdavies.playground.database.Event
 import io.ashdavies.playground.google.readAll
 
 internal class EventsSourceOfTruth(
