@@ -1,8 +1,9 @@
 @file:Suppress("ObjectPropertyName")
 
-import org.gradle.api.artifacts.ExternalModuleDependency
-import org.gradle.api.artifacts.dsl.DependencyHandler
-import org.gradle.kotlin.dsl.create
+import ProjectDependencies.AnvilVersion
+import ProjectDependencies.BenManesVersions
+import ProjectDependencies.KotlinVersion
+import ProjectDependencies.Ktlint
 import org.gradle.kotlin.dsl.kotlin
 import org.gradle.kotlin.dsl.version
 import org.gradle.plugin.use.PluginDependenciesSpec
@@ -20,26 +21,14 @@ private val SqlDelightVersion: String?
         .SqlDelight
         .version
 
-val DependencyHandler.apollo: ExternalModuleDependency
-    get() = create("com.apollographql.apollo", "apollo-gradle-plugin", "2.4.0")
-
-val DependencyHandler.`batik-ext`: ExternalModuleDependency
-    get() = create("org.apache.xmlgraphics", "batik-ext", "1.14")
-
-val DependencyHandler.gradle: ExternalModuleDependency
-    get() = create("com.android.tools.build", "gradle", "7.1.0-alpha02")
-
-val DependencyHandler.`kotlin-gradle-plugin`: ExternalModuleDependency
-    get() = create("org.jetbrains.kotlin", "kotlin-gradle-plugin", KotlinVersion)
-
-val DependencyHandler.sqldelight: ExternalModuleDependency
-    get() = create("com.squareup.sqldelight", "gradle-plugin", SqlDelightVersion)
-
 val PluginDependenciesSpec.`android-application`: PluginDependencySpec
     get() = id("com.android.application")
 
 val PluginDependenciesSpec.`android-library`: PluginDependencySpec
     get() = id("com.android.library")
+
+val PluginDependenciesSpec.anvil: PluginDependencySpec
+    get() = id("com.squareup.anvil") version AnvilVersion
 
 val PluginDependenciesSpec.apollo: PluginDependencySpec
     get() = id("com.apollographql.apollo")
@@ -54,7 +43,7 @@ val PluginDependenciesSpec.`kotlin-multiplatform`: PluginDependencySpec
     get() = kotlin("multiplatform")
 
 val PluginDependenciesSpec.ktlint: PluginDependencySpec
-    get() = id("org.jlleitschuh.gradle.ktlint") version "10.1.0"
+    get() = id("org.jlleitschuh.gradle.ktlint") version Ktlint
 
 val PluginDependenciesSpec.serialization: PluginDependencySpec
     get() = kotlin("plugin.serialization") version KotlinVersion
@@ -63,4 +52,4 @@ val PluginDependenciesSpec.sqldelight: PluginDependencySpec
     get() = id("com.squareup.sqldelight")
 
 val PluginDependenciesSpec.versions: PluginDependencySpec
-    get() = id ("com.github.ben-manes.versions") version "0.39.0"
+    get() = id("com.github.ben-manes.versions") version BenManesVersions

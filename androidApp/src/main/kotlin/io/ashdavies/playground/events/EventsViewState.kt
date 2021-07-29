@@ -1,9 +1,10 @@
 package io.ashdavies.playground.events
 
+import io.ashdavies.playground.arch.ViewState
 import io.ashdavies.playground.database.Event
 import kotlinx.datetime.LocalDate
 
-internal sealed class EventsViewState {
+internal sealed class EventsViewState : ViewState {
 
     object Uninitialised : EventsViewState()
     object Loading : EventsViewState()

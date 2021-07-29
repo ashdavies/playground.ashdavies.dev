@@ -40,7 +40,7 @@ android {
     }
 
     lint {
-        disable("DialogFragmentCallbacksDetector")
+        disable += "DialogFragmentCallbacksDetector"
     }
 
     sourceSets.configureEach {

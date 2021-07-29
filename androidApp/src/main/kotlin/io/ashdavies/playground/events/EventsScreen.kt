@@ -12,9 +12,7 @@ import androidx.compose.material.LocalTextStyle
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -24,6 +22,9 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.insets.ui.LocalScaffoldPadding
 import io.ashdavies.playground.R
+import io.ashdavies.playground.arch.collectViewState
+import io.ashdavies.playground.arch.getViewStateStore
+import io.ashdavies.playground.arch.viewModel
 import io.ashdavies.playground.compose.fade
 import io.ashdavies.playground.database.Event
 import io.ashdavies.playground.datetime.toCalendar
@@ -42,10 +43,10 @@ import kotlin.random.Random
 @Preview
 @Composable
 internal fun EventsScreen(context: Context = LocalContext.current) = graph(context) {
-    val viewModel: EventsViewModel = remember { EventsViewModel { EventsStore() } }
+    val viewModel: EventsViewModel = viewModel { EventsViewModel { EventsStore() } }
     val viewState: EventsViewState by viewModel
-        .viewState
-        .collectAsState(Uninitialised)
+        .getViewStateStore { Uninitialised }
+        .collectViewState()
 
     when (val it: EventsViewState = viewState) {
         is Loading -> EventsList(List(10) { null })

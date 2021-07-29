@@ -2,6 +2,7 @@ import ProjectDependencies.AndroidX
 import ProjectDependencies.JetBrains
 import ProjectDependencies.Ktor
 import ProjectDependencies.Square
+import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
 
 plugins {
     `android-library`
@@ -109,6 +110,13 @@ sqldelight {
     }
 }
 
+val KotlinSourceSet.commonJvmMain: String
+    get() = "src/commonJvmMain/kotlin"
+
 fun NamedDomainObjectContainer<*>.create(vararg names: String) {
     names.forEach { create(it) }
+}
+
+fun KotlinSourceSet.dependsOn(srcPath: String) {
+    kotlin.srcDir(srcPath)
 }

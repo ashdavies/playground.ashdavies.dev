@@ -11,15 +11,16 @@ buildscript {
 }
 
 plugins {
+    anvil
     ktlint
     versions
 }
 
 allprojects {
     repositories {
-        google()
-        maven("https://kotlin.bintray.com/kotlinx/")
         gradlePluginPortal()
+        google()
+        kotlinx()
         mavenCentral()
     }
 }
