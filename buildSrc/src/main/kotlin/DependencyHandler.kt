@@ -12,7 +12,7 @@ val DependencyHandler.`batik-ext`: ExternalModuleDependency
     get() = create("org.apache.xmlgraphics", "batik-ext", "1.14")
 
 val DependencyHandler.gradle: ExternalModuleDependency
-    get() = create("com.android.tools.build", "gradle", "7.1.0-alpha05")
+    get() = create("com.android.tools.build", "gradle", "7.1.0-alpha06")
 
 val DependencyHandler.`kotlin-gradle-plugin`: ExternalModuleDependency
     get() = create("org.jetbrains.kotlin", "kotlin-gradle-plugin", KotlinVersion)

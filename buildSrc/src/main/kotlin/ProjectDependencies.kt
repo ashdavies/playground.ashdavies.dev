@@ -23,10 +23,10 @@ object ProjectDependencies {
 
     object AndroidX : DependencyGroup("androidx") {
 
-        val activityKtx by artifact("$group.activity", "1.3.0")
+        val activityKtx by artifact("$group.activity", "1.3.1")
         val annotation by artifact("$group.annotation", "1.3.0-alpha01")
 
-        object Compose : DependencyGroup("androidx.compose", "1.0.0") {
+        object Compose : DependencyGroup("androidx.compose", "1.0.0-alpha01") {
 
             val foundation by artifact("$group.foundation")
             val material by artifact("$group.material")
@@ -38,16 +38,16 @@ object ProjectDependencies {
 
         val coreKtx by artifact("$group.core", "1.7.0-alpha01")
         val datastoreCore by artifact("$group.datastore", "1.0.0")
-        val fragmentKtx by artifact("$group.fragment", "1.4.0-alpha05")
+        val fragmentKtx by artifact("$group.fragment", "1.4.0-alpha06")
 
-        object Lifecycle : DependencyGroup("androidx.lifecycle", "2.4.0-alpha02") {
+        object Lifecycle : DependencyGroup("androidx.lifecycle", "2.4.0-alpha03") {
 
             val lifecycleCommonJava8 by artifact()
             val lifecycleLivedataKtx by artifact()
             val lifecycleViewmodelKtx by artifact()
         }
 
-        object Navigation : DependencyGroup("androidx.navigation", "2.4.0-alpha05") {
+        object Navigation : DependencyGroup("androidx.navigation", "2.4.0-alpha06") {
 
             val navigationCompose by artifact()
             val navigationRuntimeKtx by artifact()
@@ -70,7 +70,7 @@ object ProjectDependencies {
 
     object Google : DependencyGroup("com.google") {
 
-        object Accompanist : DependencyGroup("$group.accompanist", "0.15.0") {
+        object Accompanist : DependencyGroup("$group.accompanist", "0.16.0") {
 
             val accompanistCoil by artifact()
             val accompanistFlowlayout by artifact()
