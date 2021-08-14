@@ -1,49 +1,56 @@
+import ProjectDependencies.ApolloGraphQl
+import ProjectDependencies.Dropbox
+import ProjectDependencies.Google
 import ProjectDependencies.JetBrains
 
 plugins {
-    `kotlin-js`
+    `kotlin-jvm`
     serialization
+    apollo
 }
 
-kotlin {
-    js {
-        browser {
-            distribution {
-                directory = projectDir
-            }
-
-            testTask {
-                enabled = false
-
-                useKarma {
-                    useFirefoxDeveloperHeadless()
-                }
-            }
-
-            webpackTask {
-                outputFileName = "index.js"
-                output.libraryTarget = "commonjs2"
-            }
-        }
-
-        binaries.executable()
-    }
+apollo {
+    generateKotlinModels.set(true)
 }
+
+configurations.create("invoker")
 
 dependencies {
     implementation(project(":shared"))
 
+    implementation(ApolloGraphQl.apolloRuntime)
+    implementation(ApolloGraphQl.apolloCoroutinesSupport)
+    implementation(Dropbox.store4)
+    implementation(Google.CloudFunctions.functionsFrameworkApi)
+    implementation(Google.Firebase.firebaseAdmin)
     implementation(JetBrains.KotlinX.kotlinxCoroutinesCore)
     implementation(JetBrains.KotlinX.kotlinxDatetime)
-    implementation(JetBrains.KotlinX.kotlinxNodejs)
     implementation(JetBrains.KotlinX.kotlinxSerializationCore)
     implementation(JetBrains.KotlinX.kotlinxSerializationJson)
 
-    implementation(npm("@google-cloud/firestore", "4.12.0"))
-    implementation(npm("@octokit/graphql", "4.6.2"))
-    implementation(npm("firebase", "8.6.2"))
-    implementation(npm("firebase-admin", "9.8.0"))
-    implementation(npm("firebase-functions", "3.14.1"))
+    add("invoker", Google.CloudFunctions.javaFunctionInvoker)
 
-    testImplementation(kotlin("test-js"))
+    testImplementation(kotlin("test"))
+}
+
+tasks.register("runEventsFunction", JavaExec::class) {
+    description = "Run events cloud functions"
+    dependsOn("compileKotlin")
+    group = "run"
+
+    classpath(configurations.getByName("invoker"))
+    mainClass.set("com.google.cloud.functions.invoker.runner.Invoker")
+
+    sourceSets.main.configure {
+        inputs.files(configurations.runtimeClasspath, output)
+    }
+
+    args("--target", "io.ashdavies.playground.events.EventsFunction")
+    args("--port", 8080)
+
+    doFirst {
+        sourceSets.main.configure {
+            args("--classpath", files(configurations.runtimeClasspath, output).asPath)
+        }
+    }
 }

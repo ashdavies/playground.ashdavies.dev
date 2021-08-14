@@ -2,6 +2,7 @@ import ProjectDependencies.AndroidX
 import ProjectDependencies.JetBrains
 import ProjectDependencies.Ktor
 import ProjectDependencies.Square
+import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
 
 plugins {
     `android-library`
@@ -49,10 +50,6 @@ kotlin {
         }
     }
 
-    js {
-        nodejs()
-    }
-
     sourceSets {
         val commonMain by getting {
             dependencies {
@@ -72,14 +69,6 @@ kotlin {
             dependencies {
                 implementation(JetBrains.Kotlin.kotlinTestCommon)
                 implementation(JetBrains.Kotlin.kotlinTestAnnotationsCommon)
-            }
-        }
-
-        val jsMain by getting {
-            dependsOn(commonMain)
-
-            dependencies {
-                implementation(Square.SqlDelight.sqljsDriver)
             }
         }
 
@@ -121,6 +110,13 @@ sqldelight {
     }
 }
 
+val KotlinSourceSet.commonJvmMain: String
+    get() = "src/commonJvmMain/kotlin"
+
 fun NamedDomainObjectContainer<*>.create(vararg names: String) {
     names.forEach { create(it) }
+}
+
+fun KotlinSourceSet.dependsOn(srcPath: String) {
+    kotlin.srcDir(srcPath)
 }

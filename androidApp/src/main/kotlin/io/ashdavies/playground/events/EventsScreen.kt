@@ -8,13 +8,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.Button
 import androidx.compose.material.LocalTextStyle
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -24,6 +23,9 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.insets.ui.LocalScaffoldPadding
 import io.ashdavies.playground.R
+import io.ashdavies.playground.arch.collectViewState
+import io.ashdavies.playground.arch.getViewStateStore
+import io.ashdavies.playground.arch.viewModel
 import io.ashdavies.playground.compose.fade
 import io.ashdavies.playground.database.Event
 import io.ashdavies.playground.datetime.toCalendar
@@ -42,39 +44,41 @@ import kotlin.random.Random
 @Preview
 @Composable
 internal fun EventsScreen(context: Context = LocalContext.current) = graph(context) {
-    val viewModel: EventsViewModel = remember { EventsViewModel { EventsStore() } }
+    val viewModel: EventsViewModel = viewModel { EventsViewModel { EventsStore() } }
     val viewState: EventsViewState by viewModel
-        .viewState
-        .collectAsState(Uninitialised)
+        .getViewStateStore { Uninitialised }
+        .collectViewState()
 
     when (val it: EventsViewState = viewState) {
-        is Loading -> EventsList(List(10) { null })
+        is Loading -> EventsList(List(10) { null }) {}
         is Failure -> EventFailure(it.message)
-        is Success -> EventsList(it.data)
+        is Success -> EventsList(it.data) {
+            println("Clicked $it")
+        }
         else -> Unit
     }
 }
 
 @Composable
-internal fun EventsList(data: List<Section?>) {
+internal fun EventsList(data: List<Section?>, onClick: (Section) -> Unit) {
     LazyColumn(
         contentPadding = LocalScaffoldPadding.current,
         modifier = Modifier
             .fillMaxSize()
             .padding(top = 12.dp),
     ) {
-        items(data) { EventSection(it) }
+        items(data) { EventSection(it, onClick) }
     }
 }
 
 @Composable
-internal fun EventSection(section: Section?) {
+internal fun EventSection(section: Section?, onClick: (Section) -> Unit) {
     when (section) {
         is Header -> EventHeader(date = section.date)
-        is Item -> EventItem(data = section.data)
+        is Item -> EventItem(data = section.data) { onClick(section) }
         null -> when (Random.nextBoolean()) {
             true -> EventHeader(date = null)
-            false -> EventItem(data = null)
+            false -> EventItem(data = null) {}
         }
     }
 }
@@ -92,22 +96,24 @@ internal fun EventHeader(date: LocalDate?) {
 }
 
 @Composable
-internal fun EventItem(data: Event?) {
+internal fun EventItem(data: Event?, onClick: () -> Unit) {
     Column(modifier = Modifier.padding(horizontal = 32.dp, vertical = 12.dp)) {
-        PlaceholderText(
-            style = MaterialTheme.typography.body1,
-            text = data?.name,
-        )
+        Button(onClick = onClick) {
+            PlaceholderText(
+                style = MaterialTheme.typography.body1,
+                text = data?.name,
+            )
 
-        PlaceholderText(
-            style = MaterialTheme.typography.body2,
-            text = data?.location,
-        )
+            PlaceholderText(
+                style = MaterialTheme.typography.body2,
+                text = data?.location,
+            )
 
-        PlaceholderText(
-            style = MaterialTheme.typography.caption,
-            text = data?.dateStart,
-        )
+            PlaceholderText(
+                style = MaterialTheme.typography.caption,
+                text = data?.dateStart,
+            )
+        }
     }
 }
 

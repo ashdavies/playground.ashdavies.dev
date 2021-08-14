@@ -6,20 +6,21 @@ buildscript {
         classpath(`kotlin-gradle-plugin`)
         classpath(gradle)
         classpath(sqldelight)
+        classpath(apollo)
     }
 }
 
 plugins {
+    anvil
     ktlint
     versions
 }
 
 allprojects {
     repositories {
-        google()
-        maven("https://kotlin.bintray.com/kotlinx/")
         gradlePluginPortal()
         mavenCentral()
+        google()
     }
 }
 
@@ -32,6 +33,7 @@ subprojects {
             "-Xopt-in=kotlinx.serialization.ExperimentalSerializationApi",
             "-Xallow-result-return-type",
             "-XXLanguage:+InlineClasses",
+            "-Xmulti-platform"
         )
     }
 }
