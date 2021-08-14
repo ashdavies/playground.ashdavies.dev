@@ -78,8 +78,6 @@ private fun PlaygroundTopBar(currentRoute: Route) {
 
 @Composable
 private fun PlaygroundBottomBar(navController: NavController, currentRoute: Route) {
-    var selected: Int by remember { mutableStateOf(0) }
-
     BottomNavigation(
         backgroundColor = MaterialTheme.colors.surface.copy(alpha = 0.95f),
         contentPadding = rememberInsetsPaddingValues(

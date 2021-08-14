@@ -21,13 +21,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.google.accompanist.coil.rememberCoilPainter
+import coil.compose.ImagePainter
+import coil.compose.rememberImagePainter
 import com.google.accompanist.flowlayout.FlowRow
 import com.google.accompanist.insets.ui.LocalScaffoldPadding
 import io.ashdavies.playground.R
-import io.ashdavies.playground.compose.isLoading
-import io.ashdavies.playground.compose.rememberEmptyPainter
+import io.ashdavies.playground.compose.EmptyPainter
 import io.ashdavies.playground.compose.fade
+import io.ashdavies.playground.compose.isLoading
 import io.ashdavies.playground.graph
 import kotlin.random.Random.Default.nextInt
 
@@ -38,7 +39,7 @@ internal fun ProfileScreen() = graph(Unit) {
         value = profileService.getProfile()
     }
 
-    val coilPainter = rememberCoilPainter(viewState.picture)
+    val coilPainter: ImagePainter = rememberImagePainter(viewState.picture)
 
     Box(modifier = Modifier.padding(LocalScaffoldPadding.current)) {
         Column(modifier = Modifier.padding(16.dp)) {
@@ -90,7 +91,7 @@ internal fun ProfileScreen() = graph(Unit) {
                 repeat(nextInt(30)) {
                     Box(modifier = Modifier.padding(4.dp)) {
                         Image(
-                            painter = rememberEmptyPainter(),
+                            painter = EmptyPainter,
                             contentDescription = null,
                             modifier = Modifier
                                 .fade(true)

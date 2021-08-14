@@ -19,9 +19,8 @@ plugins {
 allprojects {
     repositories {
         gradlePluginPortal()
-        google()
-        kotlinx()
         mavenCentral()
+        google()
     }
 }
 

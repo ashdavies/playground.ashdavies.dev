@@ -22,8 +22,7 @@ import kotlinx.datetime.minus
 private val StoreResponse<*>.errorMessage: String
     get() = errorMessageOrNull() ?: throw IllegalStateException()
 
-internal class EventsViewModel(private val provider: suspend () -> Store<Unit, List<Event>>) :
-    ViewModel() {
+internal class EventsViewModel(private val provider: suspend () -> Store<Unit, List<Event>>) : ViewModel() {
 
     init {
         flow { emit(provider()) }

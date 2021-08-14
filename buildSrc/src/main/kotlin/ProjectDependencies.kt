@@ -26,7 +26,7 @@ object ProjectDependencies {
         val activityKtx by artifact("$group.activity", "1.3.1")
         val annotation by artifact("$group.annotation", "1.3.0-alpha01")
 
-        object Compose : DependencyGroup("androidx.compose", "1.0.0-alpha01") {
+        object Compose : DependencyGroup("androidx.compose", "1.1.0-alpha01") {
 
             val foundation by artifact("$group.foundation")
             val material by artifact("$group.material")
@@ -70,9 +70,9 @@ object ProjectDependencies {
 
     object Google : DependencyGroup("com.google") {
 
-        object Accompanist : DependencyGroup("$group.accompanist", "0.16.0") {
+        object Accompanist : DependencyGroup("$group.accompanist", "0.16.1") {
 
-            val accompanistCoil by artifact()
+            val accompanistCoil by artifact(version = "0.15.0")
             val accompanistFlowlayout by artifact()
             val accompanistInsets by artifact()
             val accompanistInsetsUi by artifact()
@@ -88,20 +88,20 @@ object ProjectDependencies {
 
         object Firebase : DependencyGroup("$group.firebase") {
 
-            val firebaseAdmin by artifact(version = "8.0.0")
+            val firebaseAdmin by artifact(version = "8.0.1")
             val firebaseCommonKtx by artifact(version = "20.0.0")
             val firebaseAnalytics by artifact(version = "19.0.0")
         }
 
         object Android : DependencyGroup("$group.android") {
 
-            val material by artifact("$group.material", "1.5.0-alpha01")
+            val material by artifact("$group.material", "1.5.0-alpha02")
         }
     }
 
     object JetBrains : DependencyGroup("org.jetbrains") {
 
-        object Kotlin : DependencyGroup("$group.kotlin", "1.5.10") {
+        object Kotlin : DependencyGroup("$group.kotlin", "1.5.21") {
 
             val kotlinTest by artifact()
             val kotlinTestCommon by artifact()

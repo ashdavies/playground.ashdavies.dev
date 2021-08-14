@@ -14,7 +14,7 @@ internal interface ViewEventStore<T : ViewEvent> {
     infix fun post(viewEvent: T)
 }
 
-private class ViewEventStoreImpl<T : ViewEvent> : ViewEventStore<T> {
+internal fun <T : ViewEvent> ViewEventStore(): ViewEventStore<T> = object : ViewEventStore<T> {
 
     private val _viewEvents = Channel<T>(CONFLATED)
     override val viewEvents: Flow<T> =
@@ -24,6 +24,3 @@ private class ViewEventStoreImpl<T : ViewEvent> : ViewEventStore<T> {
         _viewEvents.trySend(viewEvent)
     }
 }
-
-internal fun <T : ViewEvent> ViewEventStore(): ViewEventStore<T> =
-    ViewEventStoreImpl()

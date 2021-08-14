@@ -1,4 +1,4 @@
 package androidx.lifecycle
 
-fun <T> ViewModel.getOrDefault(key: String, default: () -> T): T =
+internal fun <T> ViewModel.setOrDefault(key: String, default: () -> T): T =
     getTag(key) ?: setTagIfAbsent(key, default())

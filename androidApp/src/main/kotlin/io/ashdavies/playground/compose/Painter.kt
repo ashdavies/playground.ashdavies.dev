@@ -1,17 +1,16 @@
 package io.ashdavies.playground.compose
 
-import androidx.compose.runtime.Composable
-import com.google.accompanist.imageloading.ImageLoadState
-import com.google.accompanist.imageloading.LoadPainter
-import com.google.accompanist.imageloading.rememberLoadPainter
-import kotlinx.coroutines.flow.flowOf
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.drawscope.DrawScope
+import androidx.compose.ui.graphics.painter.Painter
+import coil.annotation.ExperimentalCoilApi
+import coil.compose.ImagePainter
 
-internal val LoadPainter<*>.isLoading: Boolean
-    get() = loadState is ImageLoadState.Loading
+@ExperimentalCoilApi
+internal val ImagePainter.isLoading: Boolean
+    get() = state is ImagePainter.State.Loading
 
-@Composable
-internal fun rememberEmptyPainter(): LoadPainter<Any> = rememberLoadPainter(
-    loader = { _, _ -> flowOf(ImageLoadState.Empty) },
-    shouldRefetchOnSizeChange = { _, _ -> false },
-    request = null,
-)
+internal object EmptyPainter : Painter() {
+    override val intrinsicSize: Size get() = Size.Unspecified
+    override fun DrawScope.onDraw() = Unit
+}

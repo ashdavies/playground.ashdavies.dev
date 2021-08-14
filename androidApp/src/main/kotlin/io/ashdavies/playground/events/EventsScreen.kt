@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.Button
 import androidx.compose.material.LocalTextStyle
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -49,33 +50,35 @@ internal fun EventsScreen(context: Context = LocalContext.current) = graph(conte
         .collectViewState()
 
     when (val it: EventsViewState = viewState) {
-        is Loading -> EventsList(List(10) { null })
+        is Loading -> EventsList(List(10) { null }) {}
         is Failure -> EventFailure(it.message)
-        is Success -> EventsList(it.data)
+        is Success -> EventsList(it.data) {
+            println("Clicked $it")
+        }
         else -> Unit
     }
 }
 
 @Composable
-internal fun EventsList(data: List<Section?>) {
+internal fun EventsList(data: List<Section?>, onClick: (Section) -> Unit) {
     LazyColumn(
         contentPadding = LocalScaffoldPadding.current,
         modifier = Modifier
             .fillMaxSize()
             .padding(top = 12.dp),
     ) {
-        items(data) { EventSection(it) }
+        items(data) { EventSection(it, onClick) }
     }
 }
 
 @Composable
-internal fun EventSection(section: Section?) {
+internal fun EventSection(section: Section?, onClick: (Section) -> Unit) {
     when (section) {
         is Header -> EventHeader(date = section.date)
-        is Item -> EventItem(data = section.data)
+        is Item -> EventItem(data = section.data) { onClick(section) }
         null -> when (Random.nextBoolean()) {
             true -> EventHeader(date = null)
-            false -> EventItem(data = null)
+            false -> EventItem(data = null) {}
         }
     }
 }
@@ -93,22 +96,24 @@ internal fun EventHeader(date: LocalDate?) {
 }
 
 @Composable
-internal fun EventItem(data: Event?) {
+internal fun EventItem(data: Event?, onClick: () -> Unit) {
     Column(modifier = Modifier.padding(horizontal = 32.dp, vertical = 12.dp)) {
-        PlaceholderText(
-            style = MaterialTheme.typography.body1,
-            text = data?.name,
-        )
+        Button(onClick = onClick) {
+            PlaceholderText(
+                style = MaterialTheme.typography.body1,
+                text = data?.name,
+            )
 
-        PlaceholderText(
-            style = MaterialTheme.typography.body2,
-            text = data?.location,
-        )
+            PlaceholderText(
+                style = MaterialTheme.typography.body2,
+                text = data?.location,
+            )
 
-        PlaceholderText(
-            style = MaterialTheme.typography.caption,
-            text = data?.dateStart,
-        )
+            PlaceholderText(
+                style = MaterialTheme.typography.caption,
+                text = data?.dateStart,
+            )
+        }
     }
 }
 

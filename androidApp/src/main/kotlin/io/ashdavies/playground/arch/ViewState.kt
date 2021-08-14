@@ -15,19 +15,17 @@ internal interface ViewStateStore<T : ViewState> {
     infix fun post(viewState: T)
 }
 
-private class ViewStateStoreImpl<T : ViewState>(initial: T) : ViewStateStore<T> {
-
-    private val _viewState = MutableStateFlow(initial)
-    override val viewState: StateFlow<T>
-        get() = _viewState
-
-    override fun post(viewState: T) {
-        _viewState.value = viewState
-    }
-}
-
 internal fun <T : ViewState> ViewStateStore(initial: T): ViewStateStore<T> =
-    ViewStateStoreImpl(initial)
+    object : ViewStateStore<T> {
+
+        private val _viewState = MutableStateFlow(initial)
+        override val viewState: StateFlow<T>
+            get() = _viewState
+
+        override fun post(viewState: T) {
+            _viewState.value = viewState
+        }
+    }
 
 @Composable
 internal fun <T : ViewState> ViewStateStore<T>.collectViewState(): State<T> =
