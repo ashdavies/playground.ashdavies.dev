@@ -77,6 +77,7 @@ object ProjectDependencies {
             val accompanistInsets by artifact()
             val accompanistInsetsUi by artifact()
             val accompanistPlaceholderMaterial by artifact()
+            val accompanistSwiperefresh by artifact()
             val accompanistSystemuicontroller by artifact()
         }
 

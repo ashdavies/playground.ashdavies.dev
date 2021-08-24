@@ -1,8 +1,10 @@
 package io.ashdavies.playground.events
 
 import android.content.Context
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -129,11 +131,14 @@ private fun PlaceholderText(text: String?, style: TextStyle = LocalTextStyle.cur
     )
 }
 
-
 @Composable
 internal fun EventFailure(message: String) {
-    Text(
-        modifier = Modifier.padding(16.dp, 12.dp),
-        text = message,
-    )
+    Column(verticalArrangement = Arrangement.Center) {
+        Row(horizontalArrangement = Arrangement.Center) {
+            Text(
+                modifier = Modifier.padding(16.dp, 12.dp),
+                text = message,
+            )
+        }
+    }
 }

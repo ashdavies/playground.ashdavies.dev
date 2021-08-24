@@ -119,7 +119,7 @@ private fun RowScope.BottomNavigationItem(
 private fun PlaygroundNavHost(navController: NavHostController) {
     NavHost(
         navController = navController,
-        startDestination = Profile,
+        startDestination = Events,
     ) {
         composable(Events) { EventsScreen() }
         composable(Profile) { ProfileScreen() }

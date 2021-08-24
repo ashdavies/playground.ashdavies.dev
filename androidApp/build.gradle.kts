@@ -72,6 +72,7 @@ dependencies {
     implementation(Google.Accompanist.accompanistInsets)
     implementation(Google.Accompanist.accompanistInsetsUi)
     implementation(Google.Accompanist.accompanistPlaceholderMaterial)
+    implementation(Google.Accompanist.accompanistSwiperefresh)
     implementation(Google.Accompanist.accompanistSystemuicontroller)
     implementation(Google.Firebase.firebaseCommonKtx)
     implementation(Google.Firebase.firebaseAnalytics)
