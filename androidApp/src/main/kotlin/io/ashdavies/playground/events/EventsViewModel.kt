@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.dropbox.android.external.store4.Store
 import com.dropbox.android.external.store4.StoreRequest
 import com.dropbox.android.external.store4.StoreResponse
-import io.ashdavies.playground.arch.post
+import io.ashdavies.playground.arch.update
 import io.ashdavies.playground.database.Event
 import io.ashdavies.playground.events.EventsViewState.Failure
 import io.ashdavies.playground.events.EventsViewState.Section.Header
@@ -22,12 +22,13 @@ import kotlinx.datetime.minus
 private val StoreResponse<*>.errorMessage: String
     get() = errorMessageOrNull() ?: throw IllegalStateException()
 
-internal class EventsViewModel(private val provider: suspend () -> Store<Unit, List<Event>>) : ViewModel() {
+internal class EventsViewModel(private val provider: suspend () -> Store<Unit, List<Event>>) :
+    ViewModel() {
 
     init {
         flow { emit(provider()) }
             .flatMapLatest { it.stream(StoreRequest.cached(Unit, true)) }
-            .onEach { post(EventsViewState(it)) }
+            .onEach { update<EventsViewState> { _ -> EventsViewState(it) } }
             .launchIn(viewModelScope)
     }
 

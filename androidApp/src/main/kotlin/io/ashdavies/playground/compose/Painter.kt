@@ -6,7 +6,7 @@ import androidx.compose.ui.graphics.painter.Painter
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.ImagePainter
 
-@ExperimentalCoilApi
+@OptIn(ExperimentalCoilApi::class)
 internal val ImagePainter.isLoading: Boolean
     get() = state is ImagePainter.State.Loading
 

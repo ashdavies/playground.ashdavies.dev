@@ -28,7 +28,7 @@ android {
 
     defaultConfig {
         applicationId = "io.ashdavies.playground"
-        compileSdk = 30
+        compileSdk = 31
         minSdk = 23
 
         versionCode = 1

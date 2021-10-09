@@ -5,6 +5,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 
 internal interface ViewState
 
@@ -12,7 +13,7 @@ internal interface ViewStateStore<T : ViewState> {
 
     val viewState: StateFlow<T>
 
-    infix fun post(viewState: T)
+    fun update(transform: (T) -> T)
 }
 
 internal fun <T : ViewState> ViewStateStore(initial: T): ViewStateStore<T> =
@@ -22,11 +23,14 @@ internal fun <T : ViewState> ViewStateStore(initial: T): ViewStateStore<T> =
         override val viewState: StateFlow<T>
             get() = _viewState
 
-        override fun post(viewState: T) {
-            _viewState.value = viewState
+        override fun update(transform: (T) -> T) {
+            _viewState.update(transform)
         }
     }
 
 @Composable
 internal fun <T : ViewState> ViewStateStore<T>.collectViewState(): State<T> =
     viewState.collectAsState()
+
+internal infix fun <T : ViewState> ViewStateStore<T>.post(value: T) =
+    update { value }

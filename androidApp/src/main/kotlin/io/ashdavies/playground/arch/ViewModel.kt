@@ -6,20 +6,34 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.setOrDefault
 import androidx.lifecycle.viewmodel.compose.viewModel
 
-private const val VIEW_EVENT_STORE = "viewEventStore"
-private const val VIEW_STATE_STORE = "viewStateStore"
+private fun <T : ViewState> defaultViewStateStore(): () -> T =
+    error("ViewStateStore not initialised")
 
-internal fun <T : ViewEvent> ViewModel.getViewEventStore(): ViewEventStore<T> =
-    setOrDefault(VIEW_EVENT_STORE) { ViewEventStore() }
+internal inline fun <reified T : ViewEvent> ViewModel.getViewEventStore(): ViewEventStore<T> =
+    getViewEventStore(T::class.java.simpleName)
 
-internal fun <T : ViewState> ViewModel.getViewStateStore(initial: () -> T): ViewStateStore<T> =
-    setOrDefault(VIEW_STATE_STORE) { ViewStateStore(initial()) }
+@PublishedApi
+internal fun <T : ViewEvent> ViewModel.getViewEventStore(key: String): ViewEventStore<T> =
+    setOrDefault(key) { ViewEventStore() }
 
-internal infix fun <T : ViewEvent> ViewModel.post(viewEvent: T) =
+internal inline fun <reified T : ViewState> ViewModel.getViewStateStore(
+    noinline initial: () -> T = defaultViewStateStore(),
+): ViewStateStore<T> = getViewStateStore(T::class.java.simpleName, initial)
+
+@PublishedApi
+internal fun <T : ViewState> ViewModel.getViewStateStore(
+    key: String,
+    initial: () -> T,
+): ViewStateStore<T> = setOrDefault(key) { ViewStateStore(initial()) }
+
+internal inline infix fun <reified T : ViewEvent> ViewModel.post(viewEvent: T) =
     getViewEventStore<T>() post viewEvent
 
-internal infix fun <T : ViewState> ViewModel.post(viewState: T) =
-    getViewStateStore { viewState } post viewState
+internal inline infix fun <reified T : ViewState> ViewModel.post(viewState: T) =
+    getViewStateStore<T>() post viewState
+
+internal inline fun <reified T : ViewState> ViewModel.update(noinline transform: (T) -> T) =
+    getViewStateStore<T>().update(transform)
 
 @Suppress("UNCHECKED_CAST")
 internal fun <T : ViewModel> Factory(create: () -> T) = object : ViewModelProvider.Factory {
