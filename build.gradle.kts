@@ -1,19 +1,25 @@
 import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
 
 buildscript {
+    repositories {
+        google()
+        gradlePluginPortal()
+        mavenCentral()
+    }
+
     dependencies {
-        classpath(`batik-ext`)
-        classpath(`kotlin-gradle-plugin`)
-        classpath(gradle)
-        classpath(sqldelight)
-        classpath(apollo)
+        classpath(libs.android.gradlePlugin)
+        classpath(libs.apache.batikExt)
+        classpath(libs.apolloGraphQl.apolloGradlePlugin)
+        classpath(libs.jetbrains.kotlin.gradlePlugin)
+        classpath(libs.sqlDelight.kotlinGradlePlugin)
     }
 }
 
 plugins {
-    anvil
-    ktlint
-    versions
+    alias(libs.plugins.anvil)
+    alias(libs.plugins.ktlint)
+    alias(libs.plugins.versions)
 }
 
 allprojects {
@@ -28,9 +34,6 @@ subprojects {
     tasks.withType<KotlinCompile<*>> {
         kotlinOptions.freeCompilerArgs += listOf(
             "-Xopt-in=kotlin.RequiresOptIn",
-            "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
-            "-Xopt-in=kotlinx.coroutines.FlowPreview",
-            "-Xopt-in=kotlinx.serialization.ExperimentalSerializationApi",
             "-Xallow-result-return-type",
             "-XXLanguage:+InlineClasses",
             "-Xmulti-platform"

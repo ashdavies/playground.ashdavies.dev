@@ -1,15 +1,9 @@
-import ProjectDependencies.AndroidX
-import ProjectDependencies.Dropbox
-import ProjectDependencies.Google
-import ProjectDependencies.JetBrains
-import ProjectDependencies.Ktor
-import ProjectDependencies.Square
-
 plugins {
-    `android-application`
-    `kotlin-android`
-    serialization
-    sqldelight
+    id(libs.plugins.android.application)
+    id(libs.plugins.kotlin.android)
+    id(libs.plugins.sqldelight)
+
+    alias(libs.plugins.serialization)
 }
 
 android {
@@ -17,13 +11,8 @@ android {
         compose = true
     }
 
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-
     composeOptions {
-        kotlinCompilerExtensionVersion = AndroidX.Compose.version
+        kotlinCompilerExtensionVersion = libs.versions.compose.get()
     }
 
     defaultConfig {
@@ -35,14 +24,6 @@ android {
         versionName = "1.0"
     }
 
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
-
-    lint {
-        disable += "DialogFragmentCallbacksDetector"
-    }
-
     sourceSets.configureEach {
         java.srcDirs("src/$name/kotlin")
     }
@@ -51,45 +32,44 @@ android {
 dependencies {
     implementation(project(":shared"))
 
-    implementation(AndroidX.activityKtx)
-    implementation(AndroidX.annotation)
-    implementation(AndroidX.Compose.foundation)
-    implementation(AndroidX.Compose.material)
-    implementation(AndroidX.Compose.runtime)
-    implementation(AndroidX.Compose.ui)
-    implementation(AndroidX.Compose.uiTooling)
-    implementation(AndroidX.coreKtx)
-    implementation(AndroidX.fragmentKtx)
-    implementation(AndroidX.Lifecycle.lifecycleLivedataKtx)
-    implementation(AndroidX.Lifecycle.lifecycleViewmodelKtx)
-    implementation(AndroidX.pagingRuntime)
-    implementation(AndroidX.Navigation.navigationCompose)
-    implementation(AndroidX.Navigation.navigationRuntimeKtx)
-    implementation(AndroidX.Navigation.navigationUiKtx)
-    implementation(Dropbox.store4)
-    implementation(Google.Accompanist.accompanistCoil)
-    implementation(Google.Accompanist.accompanistFlowlayout)
-    implementation(Google.Accompanist.accompanistInsets)
-    implementation(Google.Accompanist.accompanistInsetsUi)
-    implementation(Google.Accompanist.accompanistPlaceholderMaterial)
-    implementation(Google.Accompanist.accompanistSwiperefresh)
-    implementation(Google.Accompanist.accompanistSystemuicontroller)
-    implementation(Google.Firebase.firebaseCommonKtx)
-    implementation(Google.Firebase.firebaseAnalytics)
-    implementation(Google.Android.material)
-    implementation(JetBrains.KotlinX.kotlinxCoroutinesAndroid)
-    implementation(JetBrains.KotlinX.kotlinxCoroutinesCore)
-    implementation(JetBrains.KotlinX.kotlinxDatetime)
-    implementation(JetBrains.KotlinX.kotlinxSerializationJson)
-    implementation(Ktor.ktorClientCore)
-    implementation(Ktor.ktorClientJson)
-    implementation(Ktor.ktorClientSerialization)
-    implementation(Square.SqlDelight.androidDriver)
-    implementation(Square.SqlDelight.coroutinesExtensions)
-    implementation(Square.SqlDelight.runtime)
+    implementation(libs.androidx.activityKtx)
+    implementation(libs.androidx.annotation)
+    implementation(libs.androidx.compose.foundation)
+    implementation(libs.androidx.compose.material)
+    implementation(libs.androidx.compose.runtime)
+    implementation(libs.androidx.compose.ui)
+    implementation(libs.androidx.compose.uiTooling)
+    implementation(libs.androidx.coreKtx)
+    implementation(libs.androidx.fragmentKtx)
+    implementation(libs.androidx.pagingRuntime)
+    implementation(libs.androidx.lifecycle.viewModelKtx)
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.navigation.runtimeKtx)
+    implementation(libs.androidx.navigation.uiKtx)
+    implementation(libs.dropbox.mobile.store)
+    implementation(libs.google.accompanist.coil)
+    implementation(libs.google.accompanist.flowlayout)
+    implementation(libs.google.accompanist.insets)
+    implementation(libs.google.accompanist.insetsUi)
+    implementation(libs.google.accompanist.placeholderMaterial)
+    implementation(libs.google.accompanist.swiperefresh)
+    implementation(libs.google.accompanist.systemuicontroller)
+    implementation(libs.google.firebase.analytics)
+    implementation(libs.google.firebase.commonKtx)
+    implementation(libs.google.android.material)
+    implementation(libs.jetbrains.kotlinx.coroutinesAndroid)
+    implementation(libs.jetbrains.kotlinx.coroutinesCore)
+    implementation(libs.jetbrains.kotlinx.datetime)
+    implementation(libs.jetbrains.kotlinx.serializationJson)
+    implementation(libs.ktor.client.core)
+    implementation(libs.ktor.client.json)
+    implementation(libs.ktor.client.serialization)
+    implementation(libs.sqlDelight.androidDriver)
+    implementation(libs.sqlDelight.coroutinesExtensions)
+    implementation(libs.sqlDelight.runtime)
 
-    testImplementation(JetBrains.Kotlin.kotlinTest)
-    testImplementation(JetBrains.Kotlin.kotlinTestJunit)
-    testImplementation(JetBrains.KotlinX.kotlinxCoroutinesTest)
-    testImplementation(Square.SqlDelight.sqliteDriver)
+    testImplementation(libs.jetbrains.kotlin.test)
+    testImplementation(libs.jetbrains.kotlin.testJunit)
+    testImplementation(libs.jetbrains.kotlinx.coroutinesTest)
+    testImplementation(libs.sqlDelight.sqliteDriver)
 }

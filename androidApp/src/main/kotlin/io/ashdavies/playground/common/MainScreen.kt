@@ -15,6 +15,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
@@ -65,7 +66,7 @@ internal fun MainScreen() {
 }
 
 @Composable
-private fun PlaygroundTopBar(currentRoute: Route) {
+private fun PlaygroundTopBar(currentRoute: Route, modifier: Modifier = Modifier) {
     TopAppBar(
         title = { Text(stringResource(currentRoute.title)) },
         backgroundColor = MaterialTheme.colors.surface.copy(alpha = 0.95f),
@@ -73,16 +74,22 @@ private fun PlaygroundTopBar(currentRoute: Route) {
             LocalWindowInsets.current.statusBars,
             applyBottom = false,
         ),
+        modifier = modifier,
     )
 }
 
 @Composable
-private fun PlaygroundBottomBar(navController: NavController, currentRoute: Route) {
+private fun PlaygroundBottomBar(
+    navController: NavController,
+    currentRoute: Route,
+    modifier: Modifier = Modifier,
+) {
     BottomNavigation(
         backgroundColor = MaterialTheme.colors.surface.copy(alpha = 0.95f),
         contentPadding = rememberInsetsPaddingValues(
             insets = LocalWindowInsets.current.navigationBars
-        )
+        ),
+        modifier = modifier,
     ) {
         BottomNavigationItem(
             isSelected = { it == currentRoute },
@@ -106,12 +113,14 @@ private fun RowScope.BottomNavigationItem(
     onClick: (Route) -> Unit,
     icon: ImageVector,
     route: Route,
+    modifier: Modifier = Modifier,
 ) {
     BottomNavigationItem(
         icon = { Icon(icon, stringResource(route.title)) },
         label = { Text(stringResource(route.title)) },
         onClick = { onClick(route) },
         selected = isSelected(route),
+        modifier = modifier,
     )
 }
 

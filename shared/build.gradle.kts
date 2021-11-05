@@ -1,22 +1,14 @@
-import ProjectDependencies.AndroidX
-import ProjectDependencies.JetBrains
-import ProjectDependencies.Ktor
-import ProjectDependencies.Square
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
 
 plugins {
-    `android-library`
-    `kotlin-multiplatform`
-    serialization
-    sqldelight
+    id(libs.plugins.android.library)
+    id(libs.plugins.kotlin.multiplatform)
+    id(libs.plugins.sqldelight)
+
+    alias(libs.plugins.serialization)
 }
 
 android {
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-
     configurations {
         // https://youtrack.jetbrains.com/issue/KT-43944
         create("testApi", "testDebugApi", "testReleaseApi")
@@ -37,68 +29,51 @@ android {
 
 kotlin {
     android()
-
-    jvm {
-        val main by compilations.getting {
-            kotlinOptions {
-                java {
-                    sourceCompatibility = JavaVersion.VERSION_1_8
-                    targetCompatibility = JavaVersion.VERSION_1_8
-                    jvmTarget = "1.8"
-                }
-            }
-        }
-    }
+    jvm()
 
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation(JetBrains.KotlinX.kotlinxDatetime)
-                implementation(JetBrains.KotlinX.kotlinxCoroutinesCore)
-                implementation(JetBrains.KotlinX.kotlinxSerializationJson)
-                implementation(Ktor.ktorClientCore)
-                implementation(Ktor.ktorClientJson)
-                implementation(Ktor.ktorClientLogging)
-                implementation(Ktor.ktorClientSerialization)
-                implementation(Square.SqlDelight.coroutinesExtensions)
-                implementation(Square.SqlDelight.runtime)
+                implementation(libs.jetbrains.kotlinx.coroutinesCore)
+                implementation(libs.jetbrains.kotlinx.datetime)
+                implementation(libs.jetbrains.kotlinx.serializationJson)
+                implementation(libs.ktor.client.core)
+                implementation(libs.ktor.client.json)
+                implementation(libs.ktor.client.logging)
+                implementation(libs.ktor.client.serialization)
+                implementation(libs.sqlDelight.coroutinesExtensions)
+                implementation(libs.sqlDelight.runtime)
             }
         }
 
         val commonTest by getting {
             dependencies {
-                implementation(JetBrains.Kotlin.kotlinTestCommon)
-                implementation(JetBrains.Kotlin.kotlinTestAnnotationsCommon)
+                implementation(libs.jetbrains.kotlin.testAnnotations)
+                implementation(libs.jetbrains.kotlin.testCommon)
             }
         }
 
-        val commonJvmMain by creating {
-            dependsOn(commonMain)
-        }
-
         val jvmMain by getting {
-            dependsOn(commonJvmMain)
-
             dependencies {
-                implementation(Square.SqlDelight.sqliteDriver)
+                implementation(libs.sqlDelight.sqliteDriver)
             }
         }
 
         val androidMain by getting {
-            dependsOn(commonJvmMain)
+            dependsOn(jvmMain)
 
             dependencies {
-                implementation(AndroidX.coreKtx)
-                implementation(JetBrains.KotlinX.kotlinxCoroutinesAndroid)
-                implementation(Ktor.ktorClientAndroid)
-                implementation(Square.SqlDelight.androidDriver)
+                implementation(libs.androidx.coreKtx)
+                implementation(libs.jetbrains.kotlinx.coroutinesAndroid)
+                implementation(libs.ktor.client.android)
+                implementation(libs.sqlDelight.androidDriver)
             }
         }
 
         val androidTest by getting {
             dependencies {
-                implementation(JetBrains.Kotlin.kotlinTest)
-                implementation(JetBrains.Kotlin.kotlinTestJunit)
+                implementation(libs.jetbrains.kotlin.test)
+                implementation(libs.jetbrains.kotlin.testJunit)
             }
         }
     }
@@ -109,9 +84,6 @@ sqldelight {
         packageName = "io.ashdavies.playground.database"
     }
 }
-
-val KotlinSourceSet.commonJvmMain: String
-    get() = "src/commonJvmMain/kotlin"
 
 fun NamedDomainObjectContainer<*>.create(vararg names: String) {
     names.forEach { create(it) }

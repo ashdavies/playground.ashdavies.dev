@@ -1,3 +1,7 @@
+dependencyResolutionManagement {
+    //repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+}
+
 pluginManagement {
     repositories {
         google()
@@ -11,5 +15,8 @@ rootProject.name = "playground"
 include(
     ":androidApp",
     ":functions",
-    ":shared"
+    ":shared",
+    "versionCatalog"
 )
+
+enableFeaturePreview("VERSION_CATALOGS")

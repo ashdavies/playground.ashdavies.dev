@@ -1,12 +1,8 @@
-import ProjectDependencies.ApolloGraphQl
-import ProjectDependencies.Dropbox
-import ProjectDependencies.Google
-import ProjectDependencies.JetBrains
-
 plugins {
-    `kotlin-jvm`
-    serialization
-    apollo
+    id(libs.plugins.apollo)
+    id(libs.plugins.kotlin.jvm)
+
+    alias(libs.plugins.serialization)
 }
 
 apollo {
@@ -18,17 +14,17 @@ configurations.create("invoker")
 dependencies {
     implementation(project(":shared"))
 
-    implementation(ApolloGraphQl.apolloRuntime)
-    implementation(ApolloGraphQl.apolloCoroutinesSupport)
-    implementation(Dropbox.store4)
-    implementation(Google.CloudFunctions.functionsFrameworkApi)
-    implementation(Google.Firebase.firebaseAdmin)
-    implementation(JetBrains.KotlinX.kotlinxCoroutinesCore)
-    implementation(JetBrains.KotlinX.kotlinxDatetime)
-    implementation(JetBrains.KotlinX.kotlinxSerializationCore)
-    implementation(JetBrains.KotlinX.kotlinxSerializationJson)
+    implementation(libs.apolloGraphQl.apolloRuntime)
+    implementation(libs.apolloGraphQl.apolloCoroutinesSupport)
+    implementation(libs.dropbox.mobile.store)
+    implementation(libs.google.cloud.functionsFrameworkApi)
+    implementation(libs.google.firebase.admin)
+    implementation(libs.jetbrains.kotlinx.coroutinesCore)
+    implementation(libs.jetbrains.kotlinx.datetime)
+    implementation(libs.jetbrains.kotlinx.serializationCore)
+    implementation(libs.jetbrains.kotlinx.serializationJson)
 
-    add("invoker", Google.CloudFunctions.javaFunctionInvoker)
+    add("invoker", libs.google.cloud.javaFunctionInvoker)
 
     testImplementation(kotlin("test"))
 }

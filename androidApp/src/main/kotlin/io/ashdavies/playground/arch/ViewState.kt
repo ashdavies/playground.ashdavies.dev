@@ -20,8 +20,7 @@ internal fun <T : ViewState> ViewStateStore(initial: T): ViewStateStore<T> =
     object : ViewStateStore<T> {
 
         private val _viewState = MutableStateFlow(initial)
-        override val viewState: StateFlow<T>
-            get() = _viewState
+        override val viewState: StateFlow<T> by ::_viewState
 
         override fun update(transform: (T) -> T) {
             _viewState.update(transform)
