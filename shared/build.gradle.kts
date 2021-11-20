@@ -1,4 +1,7 @@
-import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
+// https://youtrack.jetbrains.com/issue/KTIJ-19369
+@file:Suppress("DSL_SCOPE_VIOLATION")
+
+import com.android.build.api.dsl.AndroidSourceSet
 
 plugins {
     id(libs.plugins.android.library)
@@ -11,13 +14,11 @@ plugins {
 android {
     configurations {
         // https://youtrack.jetbrains.com/issue/KT-43944
-        create("testApi", "testDebugApi", "testReleaseApi")
+        //create("testApi", "testDebugApi", "testReleaseApi")
     }
 
     sourceSets.forEach { sourceSet ->
-        sourceSet
-            .manifest
-            .srcFile("src/androidMain/AndroidManifest.xml")
+        sourceSet.manifest("src/androidMain/AndroidManifest.xml")
     }
 
     defaultConfig {
@@ -55,13 +56,11 @@ kotlin {
 
         val jvmMain by getting {
             dependencies {
-                implementation(libs.sqlDelight.sqliteDriver)
+                //implementation(libs.sqlDelight.sqliteDriver)
             }
         }
 
         val androidMain by getting {
-            dependsOn(jvmMain)
-
             dependencies {
                 implementation(libs.androidx.coreKtx)
                 implementation(libs.jetbrains.kotlinx.coroutinesAndroid)
@@ -89,6 +88,6 @@ fun NamedDomainObjectContainer<*>.create(vararg names: String) {
     names.forEach { create(it) }
 }
 
-fun KotlinSourceSet.dependsOn(srcPath: String) {
-    kotlin.srcDir(srcPath)
+fun AndroidSourceSet.manifest(srcPath: String) {
+    manifest.srcFile(srcPath)
 }

@@ -1,3 +1,6 @@
+// https://youtrack.jetbrains.com/issue/KTIJ-19369
+@file:Suppress("DSL_SCOPE_VIOLATION")
+
 plugins {
     id(libs.plugins.android.application)
     id(libs.plugins.kotlin.android)

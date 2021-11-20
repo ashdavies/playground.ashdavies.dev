@@ -14,9 +14,13 @@ rootProject.name = "playground"
 
 include(
     ":androidApp",
+    ":consoleApp",
     ":functions",
+    ":notionClient",
     ":shared",
-    "versionCatalog"
+    ":sqlDriver",
+    ":uuidRegistry",
+    ":versionCatalog"
 )
 
 enableFeaturePreview("VERSION_CATALOGS")

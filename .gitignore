@@ -8,6 +8,9 @@
 /captures
 *.hprof
 
+# Database files
+*.db
+
 # Firebase
 **/google-services.json
 **/service-account.json
