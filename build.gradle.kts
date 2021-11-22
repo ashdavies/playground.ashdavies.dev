@@ -21,6 +21,7 @@ buildscript {
 
 plugins {
     alias(libs.plugins.anvil)
+    alias(libs.plugins.gradle.doctor)
     alias(libs.plugins.ktlint)
     alias(libs.plugins.versions)
 }
@@ -42,4 +43,8 @@ subprojects {
             "-Xmulti-platform"
         )
     }
+}
+
+doctor {
+    disallowCleanTaskDependencies.set(false)
 }
