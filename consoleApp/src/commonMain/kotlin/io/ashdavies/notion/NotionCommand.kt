@@ -1,5 +1,6 @@
 package io.ashdavies.notion
 
+import io.ashdavies.playground.DatabaseFactory
 import kotlinx.cli.ArgParser
 import kotlinx.cli.ExperimentalCli
 

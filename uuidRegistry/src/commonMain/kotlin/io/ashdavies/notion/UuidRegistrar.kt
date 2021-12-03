@@ -1,5 +1,7 @@
 package io.ashdavies.notion
 
+import io.ashdavies.playground.DatabaseFactory
+
 interface UuidRegistrar {
     suspend fun lookup(short: String): UuidValue
     suspend fun register(uuid: UuidValue)

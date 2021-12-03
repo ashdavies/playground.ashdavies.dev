@@ -10,7 +10,6 @@ import kotlinx.coroutines.launch
 private const val APPLICATION_JSON = "application/json"
 
 @OptIn(DelicateCoroutinesApi::class)
-@Suppress("BlockingMethodInNonBlockingContext")
 abstract class CoroutineFunction : HttpFunction {
     final override fun service(request: HttpRequest, response: HttpResponse) {
         GlobalScope.launch {

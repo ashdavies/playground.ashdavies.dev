@@ -28,23 +28,25 @@ plugins {
 
 allprojects {
     repositories {
+        google()
         gradlePluginPortal()
         mavenCentral()
-        google()
     }
-}
 
-subprojects {
     tasks.withType<KotlinCompile<*>> {
         kotlinOptions.freeCompilerArgs += listOf(
-            "-Xopt-in=kotlin.RequiresOptIn",
             "-Xallow-result-return-type",
+            "-Xmulti-platform",
+            "-Xopt-in=kotlin.RequiresOptIn",
             "-XXLanguage:+InlineClasses",
-            "-Xmulti-platform"
         )
     }
 }
 
 doctor {
     disallowCleanTaskDependencies.set(false)
+
+    javaHome {
+        failOnError.set(false)
+    }
 }

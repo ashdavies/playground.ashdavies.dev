@@ -14,11 +14,11 @@ plugins {
 android {
     configurations {
         // https://youtrack.jetbrains.com/issue/KT-43944
-        //create("testApi", "testDebugApi", "testReleaseApi")
+        create("testApi", "testDebugApi", "testReleaseApi")
     }
 
     sourceSets.forEach { sourceSet ->
-        sourceSet.manifest("src/androidMain/AndroidManifest.xml")
+        sourceSet.manifest.srcFile("src/androidMain/AndroidManifest.xml")
     }
 
     defaultConfig {
@@ -35,6 +35,8 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
+                implementation(project(":sqlDriver"))
+
                 implementation(libs.jetbrains.kotlinx.coroutinesCore)
                 implementation(libs.jetbrains.kotlinx.datetime)
                 implementation(libs.jetbrains.kotlinx.serializationJson)
@@ -54,12 +56,6 @@ kotlin {
             }
         }
 
-        val jvmMain by getting {
-            dependencies {
-                //implementation(libs.sqlDelight.sqliteDriver)
-            }
-        }
-
         val androidMain by getting {
             dependencies {
                 implementation(libs.androidx.coreKtx)
@@ -75,6 +71,12 @@ kotlin {
                 implementation(libs.jetbrains.kotlin.testJunit)
             }
         }
+
+        val jvmMain by getting {
+            dependencies {
+                implementation(libs.sqlDelight.sqliteDriver)
+            }
+        }
     }
 }
 
@@ -82,12 +84,4 @@ sqldelight {
     database("PlaygroundDatabase") {
         packageName = "io.ashdavies.playground.database"
     }
-}
-
-fun NamedDomainObjectContainer<*>.create(vararg names: String) {
-    names.forEach { create(it) }
-}
-
-fun AndroidSourceSet.manifest(srcPath: String) {
-    manifest.srcFile(srcPath)
 }

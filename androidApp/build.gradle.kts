@@ -34,6 +34,7 @@ android {
 
 dependencies {
     implementation(project(":shared"))
+    implementation(project(":sqlDriver"))
 
     implementation(libs.androidx.activityKtx)
     implementation(libs.androidx.annotation)
