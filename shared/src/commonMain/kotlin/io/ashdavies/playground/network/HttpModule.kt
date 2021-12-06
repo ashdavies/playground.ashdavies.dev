@@ -21,6 +21,7 @@ val Graph<*>.json: Json
         serializersModule = SerializersModule {
             contextual(Envelope.serializer(RandomUser.serializer()))
             contextual(ListSerializer(EventsSerializer))
+            contextual(EventsSerializer)
         }
         ignoreUnknownKeys = true
     }

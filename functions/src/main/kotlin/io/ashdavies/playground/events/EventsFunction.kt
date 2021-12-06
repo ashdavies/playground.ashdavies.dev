@@ -3,7 +3,6 @@ package io.ashdavies.playground.events
 import com.google.cloud.firestore.CollectionReference
 import com.google.cloud.functions.HttpRequest
 import io.ashdavies.playground.database.Event
-import io.ashdavies.playground.github.GitHubService
 import io.ashdavies.playground.google.FirebaseFunction
 import io.ashdavies.playground.graph
 import io.ashdavies.playground.network.json
@@ -20,8 +19,8 @@ class EventsFunction : FirebaseFunction() {
         val eventsReader = EventsReader(collectionReference, eventsQuery)
         val oldValue: Collection<Event> = eventsReader()
 
-        val gitHubService: GitHubService = graph.gitHubService
-        val eventsWriter = CollectionWriter(collectionReference, Event::id)
+        //val gitHubService: GitHubService = graph.gitHubService
+        //val eventsWriter = CollectionWriter(collectionReference, Event::id)
         //val newValue: Collection<Event> = gitHubService.getEvents()
 
         //eventsWriter(oldValue, newValue)

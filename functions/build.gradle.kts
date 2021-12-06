@@ -28,6 +28,8 @@ dependencies {
     implementation(libs.jetbrains.kotlinx.datetime)
     implementation(libs.jetbrains.kotlinx.serializationCore)
     implementation(libs.jetbrains.kotlinx.serializationJson)
+    implementation(libs.jetbrains.kotlinx.serializationProperties)
+
 
     add("invoker", libs.google.cloud.javaFunctionInvoker)
 

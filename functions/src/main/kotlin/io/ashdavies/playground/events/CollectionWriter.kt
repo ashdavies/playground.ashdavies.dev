@@ -2,9 +2,8 @@ package io.ashdavies.playground.events
 
 import com.google.cloud.firestore.CollectionReference
 import io.ashdavies.playground.google.await
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 internal fun interface CollectionWriter<T : Any> {
     suspend operator fun invoke(oldValue: Collection<T>, newValue: Collection<T>)
@@ -12,11 +11,14 @@ internal fun interface CollectionWriter<T : Any> {
 
 internal fun <T : Any> CollectionWriter(reference: CollectionReference, identifier: (T) -> String) =
     CollectionWriter<T> { oldValue, newValue ->
-        coroutineScope {
-            for (operation in OperationQueue(oldValue.associateBy(identifier), newValue.associateBy(identifier))) {
-                launch(Dispatchers.IO) {
-                    operation(reference)
-                }.join()
+        val queue = OperationQueue(
+            oldValue = oldValue.associateBy(identifier),
+            newValue = newValue.associateBy(identifier)
+        )
+
+        runBlocking {
+            for (operation in queue) {
+                launch { operation(reference) }.join()
             }
         }
     }
@@ -36,6 +38,7 @@ private fun interface CollectionOperation<T> {
     suspend operator fun invoke(reference: CollectionReference)
 }
 
+// TODO Ignore nulls
 private fun <T : Any> WriteOperation(childPath: String, value: T) = CollectionOperation<T> { reference ->
     reference
         .document(childPath)
