@@ -11,23 +11,21 @@ import io.ashdavies.playground.yaml.Yaml
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-internal interface GitHubService {
+internal fun interface GitHubService {
     suspend fun getEvents(): List<Event>
 }
 
-internal fun GitHubService(client: ApolloClient, yaml: Yaml) = object : GitHubService {
-    override suspend fun getEvents(): List<Event> {
-        val entries: List<EventsQuery.AsBlob> = client
-            .query(EventsQuery())
-            .await()
-            .entries
-            .asBlobs()
+internal fun GitHubService(client: ApolloClient, yaml: Yaml) = GitHubService {
+    val entries: List<EventsQuery.AsBlob> = client
+        .query(EventsQuery())
+        .await()
+        .entries
+        .asBlobs()
 
-        return entries.map {
-            yaml
-                .decodeFromString(GitHubConference.serializer(), it.requireText())
-                .toEvent(it.requireOid())
-        }
+    entries.map {
+        yaml
+            .decodeFromString(GitHubConference.serializer(), it.requireText())
+            .toEvent(it.requireOid())
     }
 }
 

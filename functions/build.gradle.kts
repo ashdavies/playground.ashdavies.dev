@@ -19,7 +19,6 @@ dependencies {
 
     implementation(libs.apolloGraphQl.apolloRuntime)
     implementation(libs.apolloGraphQl.apolloCoroutinesSupport)
-    implementation(libs.dropbox.mobile.store)
     implementation(libs.google.cloud.functionsFrameworkApi)
     implementation(libs.google.firebase.admin)
     implementation(libs.jetbrains.kotlinx.coroutinesCore)

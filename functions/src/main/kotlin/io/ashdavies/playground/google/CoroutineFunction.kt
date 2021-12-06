@@ -6,18 +6,20 @@ import com.google.cloud.functions.HttpResponse
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.net.HttpURLConnection.HTTP_INTERNAL_ERROR
+import java.net.HttpURLConnection.HTTP_OK
+import kotlin.coroutines.CoroutineContext
 
 private const val APPLICATION_JSON = "application/json"
 
 @OptIn(DelicateCoroutinesApi::class)
-abstract class CoroutineFunction(private val coroutineScope: CoroutineScope = GlobalScope) : HttpFunction {
+abstract class CoroutineFunction(override val coroutineContext: CoroutineContext) : CoroutineScope, HttpFunction {
     final override fun service(request: HttpRequest, response: HttpResponse) {
-        coroutineScope.launch {
+        launch {
             runCatching { response.respond(service(request)) }.onFailure {
-                response.setStatusCode(500, it.message)
+                response.setStatusCode(HTTP_INTERNAL_ERROR, it.message)
             }
         }
     }
@@ -27,5 +29,6 @@ abstract class CoroutineFunction(private val coroutineScope: CoroutineScope = Gl
 
 private suspend fun HttpResponse.respond(json: String) = withContext(Dispatchers.IO) {
     setContentType(APPLICATION_JSON)
+    setStatusCode(HTTP_OK)
     writer.write(json)
 }
