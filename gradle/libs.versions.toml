@@ -51,7 +51,7 @@ google-accompanist-swiperefresh = { module = "com.google.accompanist:accompanist
 google-accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanist" }
 
 google-cloud-functionsFrameworkApi = { module = "com.google.cloud.functions:functions-framework-api", version = "1.0.4" }
-google-cloud-javaFunctionInvoker = { module = "com.google.cloud.functions:java-function-invoker", version = "1.0.3" }
+google-cloud-javaFunctionInvoker = { module = "com.google.cloud.functions.invoker:java-function-invoker", version = "1.1.0" }
 
 google-firebase-admin = { module = "com.google.firebase:firebase-admin", version = "8.1.0" }
 google-firebase-analytics = { module = "com.google.firebase:firebase-analytics", version = "19.0.2" }

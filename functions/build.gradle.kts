@@ -39,34 +39,15 @@ tasks.named<ShadowJar>("shadowJar") {
     mergeServiceFiles()
 }
 
-tasks.register<Exec>("deployEventsReadFunction") {
-    description = "Publish GCP events read function"
+tasks.register<Exec>("deployEventsFunction") {
+    description = "Publish GCP events function"
     dependsOn(tasks.named("shadowJar"))
     workingDir = project.buildDir
     group = "deploy"
 
     commandLine = listOf(
-        "gcloud", "functions", "deploy", "events-read",
-        "--entry-point=io.ashdavies.playground.events.EventsReadFunction",
-        "--project=playground-1a136",
-        "--allow-unauthenticated",
-        "--region=europe-west1",
-        "--source=playground",
-        "--runtime=java11",
-        "--memory=256MB",
-        "--trigger-http"
-    )
-}
-
-tasks.register<Exec>("deployEventsWriteFunction") {
-    description = "Publish GCP events write function"
-    dependsOn(tasks.named("shadowJar"))
-    workingDir = project.buildDir
-    group = "deploy"
-
-    commandLine = listOf(
-        "gcloud", "functions", "deploy", "events-write",
-        "--entry-point=io.ashdavies.playground.events.EventsWriteFunction",
+        "gcloud", "functions", "deploy", "events",
+        "--entry-point=io.ashdavies.playground.events.EventsFunction",
         "--project=playground-1a136",
         "--allow-unauthenticated",
         "--region=europe-west1",
@@ -78,7 +59,7 @@ tasks.register<Exec>("deployEventsWriteFunction") {
 }
 
 tasks.register("runEventsFunction", JavaExec::class) {
-    dependsOn(tasks.named("shadowJar"))
+    dependsOn(tasks.named("compileKotlin"))
     description = "Run events cloud functions"
     group = "run"
 
@@ -89,7 +70,7 @@ tasks.register("runEventsFunction", JavaExec::class) {
         inputs.files(configurations.runtimeClasspath, output)
     }
 
-    args("--target", "io.ashdavies.playground.events.EventsReadFunction")
+    args("--target", "io.ashdavies.playground.events.EventsFunction")
     args("--port", 8080)
 
     doFirst {

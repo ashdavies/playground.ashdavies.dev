@@ -8,9 +8,11 @@ import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 
+private const val DEFAULT_ORDER_BY = "dateStart"
 private const val DEFAULT_LIMIT = 50
 
-internal class EventsRequest(request: HttpRequest) {
+internal class EventsQuery(request: HttpRequest) {
+    val orderBy: String by request.firstStringQueryParameterOrDefault { DEFAULT_ORDER_BY }
     val startAt: String by request.firstStringQueryParameterOrDefault { today() }
     val limit: Int by request.firstIntQueryParameterOrDefault { DEFAULT_LIMIT }
 }

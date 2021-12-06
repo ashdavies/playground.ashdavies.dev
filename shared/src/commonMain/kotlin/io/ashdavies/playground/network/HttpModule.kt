@@ -12,8 +12,18 @@ import io.ktor.client.features.logging.Logger
 import io.ktor.client.features.logging.Logging
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonNull.serializer
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.contextual
+
+val Graph<*>.json: Json
+    get() = Json {
+        serializersModule = SerializersModule {
+            contextual(Envelope.serializer(RandomUser.serializer()))
+            contextual(ListSerializer(EventsSerializer))
+        }
+        ignoreUnknownKeys = true
+    }
 
 val Graph<*>.httpClient: HttpClient
     get() = HttpClient {
