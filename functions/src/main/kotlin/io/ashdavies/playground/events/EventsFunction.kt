@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package io.ashdavies.playground.events
 
 import com.google.cloud.functions.HttpRequest
@@ -18,11 +20,11 @@ class EventsWriteFunction : FirebaseFunction() {
         val reader = EventsReader(graph.collectionReference, EventsRequest(request))
         val writer = CollectionWriter(graph.collectionReference, Event::id)
         writer(reader(), newValue)
-        return "OK"
+        return OK
     }
 }
 
-object EventsReadFunction : FirebaseFunction() {
+class EventsReadFunction : FirebaseFunction() {
     override suspend fun service(request: HttpRequest): String {
         val reader = EventsReader(graph.collectionReference, EventsRequest(request))
         return Json.encodeToString(reader())
