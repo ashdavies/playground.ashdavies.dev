@@ -1,4 +1,4 @@
-package io.ashdavies.playground.events
+package io.ashdavies.playground.aggregator
 
 import com.google.cloud.firestore.CollectionReference
 import io.ashdavies.playground.google.await

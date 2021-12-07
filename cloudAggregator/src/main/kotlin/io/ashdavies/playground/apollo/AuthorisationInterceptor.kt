@@ -15,8 +15,9 @@ internal class AuthorisationInterceptor(private val token: String) : Interceptor
 
 private fun Interceptor.Chain.proceed(
     block: Request.Builder.() -> Unit
-): Response = request()
-    .newBuilder()
-    .apply(block)
-    .build()
-    .let(::proceed)
+): Response =
+    request()
+        .newBuilder()
+        .apply(block)
+        .build()
+        .let(::proceed)

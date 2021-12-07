@@ -7,11 +7,11 @@ import io.ashdavies.playground.database.EventsSerializer
 import io.ashdavies.playground.google.await
 import kotlinx.serialization.properties.Properties.Default.decodeFromMap
 
-internal fun interface EventsReader {
+fun interface EventsReader {
     suspend operator fun invoke(): Collection<Event>
 }
 
-internal fun EventsReader(reference: CollectionReference, request: EventsQuery) = EventsReader {
+fun EventsReader(reference: CollectionReference, request: EventsQuery) = EventsReader {
     val snapshot: QuerySnapshot = reference
         .orderBy(request.orderBy)
         .startAt(request.startAt)

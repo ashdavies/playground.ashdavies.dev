@@ -14,8 +14,9 @@ rootProject.name = "playground"
 
 include(
     ":androidApp",
+    ":cloudAggregator",
+    ":cloudFunctions",
     ":consoleApp",
-    ":functions",
     ":notionClient",
     ":shared",
     ":sqlDriver",

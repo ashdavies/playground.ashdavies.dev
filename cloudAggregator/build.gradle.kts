@@ -18,6 +18,7 @@ apollo {
 configurations.create("invoker")
 
 dependencies {
+    implementation(project(":cloudFunctions"))
     implementation(project(":shared"))
 
     implementation(libs.apolloGraphQl.apolloRuntime)
@@ -41,26 +42,25 @@ tasks.named<ShadowJar>("shadowJar") {
     mergeServiceFiles()
 }
 
-tasks.register<Exec>("deployEventsFunction") {
-    description = "Publish GCP events function"
+tasks.register<Exec>("deployAggregatorFunction") {
     dependsOn(tasks.named("shadowJar"))
+
+    description = "Deploy aggregator function to Google Cloud"
     workingDir = project.buildDir
     group = "deploy"
 
     commandLine = listOf(
         "gcloud", "functions", "deploy", "events",
-        "--entry-point=io.ashdavies.playground.events.EventsFunction",
+        "--entry-point=io.ashdavies.playground.aggregator.AggregatorFunction",
         "--project=playground-1a136",
-        "--allow-unauthenticated",
         "--region=europe-west1",
         "--source=playground",
         "--runtime=java11",
-        "--memory=256MB",
         "--trigger-http"
     )
 }
 
-tasks.register("runEventsFunction", JavaExec::class) {
+tasks.register("runAggregatorFunction", JavaExec::class) {
     dependsOn(tasks.named("compileKotlin"))
     description = "Run events cloud functions"
     group = "run"
@@ -72,7 +72,7 @@ tasks.register("runEventsFunction", JavaExec::class) {
         inputs.files(configurations.runtimeClasspath, output)
     }
 
-    args("--target", "io.ashdavies.playground.events.EventsFunction")
+    args("--target", "io.ashdavies.playground.aggregator.AggregatorFunction")
     args("--port", 8080)
 
     doFirst {
