@@ -1,6 +1,6 @@
 package io.ashdavies.notion
 
-import io.ashdavies.playground.DatabaseFactory
+import androidx.compose.runtime.Composable
 import kotlinx.cli.ArgParser
 import kotlinx.cli.ExperimentalCli
 
@@ -10,19 +10,23 @@ private val AuthHistory.accessToken: String?
         .executeAsOneOrNull()
         ?.accessToken
 
+@Composable
+internal fun NotionCommand(args: Array<String>) {
+
+}
+
 @OptIn(ExperimentalCli::class)
-internal class NotionCommand(private val args: Array<String>) : ArgParser("notion") {
+internal class NotionCommand2(private val args: Array<String>) : ArgParser("notion") {
 
     init {
         runBlocking {
-            val authorisationAdapter = Authorisation.Adapter(AuthResponseOwnerAdapter)
+            val authorisationAdapter = Authorisation.Adapter(ColumnAdapter())
             val databaseFactory = DatabaseFactory()
 
             val authHistory = databaseFactory.create(AuthHistory.Schema) {
                 AuthHistory(it, authorisationAdapter)
             }
 
-            val uuidRegistrar = UuidRegistrar(databaseFactory)
             val notionClient: NotionClient = authHistory
                 .accessToken
                 ?.let { NotionClient(it) }
@@ -34,17 +38,14 @@ internal class NotionCommand(private val args: Array<String>) : ArgParser("notio
             )
 
             val block = BlockCommand(
-                registrar = uuidRegistrar,
                 client = notionClient,
             )
 
             val page = PageCommand(
-                registrar = uuidRegistrar,
                 client = notionClient,
             )
 
             val search = SearchCommand(
-                registrar = uuidRegistrar,
                 client = notionClient,
             )
 

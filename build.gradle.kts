@@ -7,6 +7,7 @@ buildscript {
     repositories {
         google()
         gradlePluginPortal()
+        jetbrainsCompose()
         mavenCentral()
     }
 
@@ -14,6 +15,8 @@ buildscript {
         classpath(libs.android.gradlePlugin)
         classpath(libs.apache.batikExt)
         classpath(libs.apolloGraphQl.apolloGradlePlugin)
+        classpath(libs.cash.molecule)
+        classpath(libs.jetbrains.compose.gradlePlugin)
         classpath(libs.jetbrains.kotlin.gradlePlugin)
         classpath(libs.sqlDelight.kotlinGradlePlugin)
     }
@@ -30,6 +33,7 @@ allprojects {
     repositories {
         google()
         gradlePluginPortal()
+        jetbrainsCompose()
         mavenCentral()
     }
 

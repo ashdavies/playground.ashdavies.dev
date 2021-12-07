@@ -21,7 +21,6 @@ private const val PAGE_SIZE_DESCRIPTION =
 @ExperimentalCli
 internal class BlockCommand(
     client: NotionClient,
-    registrar: UuidRegistrar,
     printer: Printer = Printer(),
 ) : CloseableSubcommand(
     actionDescription = BLOCK_ACTION_DESCRIPTION,
@@ -32,7 +31,6 @@ internal class BlockCommand(
     init {
         val children = BlockChildrenCommand(
             client = client,
-            registrar = registrar,
             printer = printer,
         )
 
@@ -45,7 +43,6 @@ internal class BlockCommand(
 @ExperimentalCli
 private class BlockChildrenCommand(
     private val client: NotionClient,
-    private val registrar: UuidRegistrar,
     private val printer: Printer,
 ) : CloseableSubcommand(
     actionDescription = BLOCK_CHILDREN_DESCRIPTION,

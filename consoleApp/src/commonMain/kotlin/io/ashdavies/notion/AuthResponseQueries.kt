@@ -2,12 +2,12 @@ package io.ashdavies.notion
 
 internal fun AuthResponseQueries.insert(accessToken: String) =
     insert(
+        owner = AuthResponse.Owner(true),
         accessToken = accessToken,
-        workspaceId = UuidString(),
+        workspaceId = randomUuid(),
+        botId = randomUuid(),
         workspaceName = null,
         workspaceIcon = null,
-        botId = UuidString(),
-        owner = Owner(),
     )
 
 internal fun AuthResponseQueries.insert(response: AuthResponse) =
@@ -19,12 +19,3 @@ internal fun AuthResponseQueries.insert(response: AuthResponse) =
         botId = response.botId,
         owner = response.owner,
     )
-
-private fun UuidString(): String =
-    UuidValue
-        .randomUuid()
-        .toString()
-
-private fun Owner() =
-    AuthResponse
-        .Owner(true)

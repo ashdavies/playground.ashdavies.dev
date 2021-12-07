@@ -15,7 +15,6 @@ private const val PAGE_ID_DESCRIPTION =
 @ExperimentalCli
 internal class PageCommand(
     client: NotionClient,
-    registrar: UuidRegistrar,
     printer: Printer = Printer(),
 ) : CloseableSubcommand(
     actionDescription = PAGE_ACTION_DESCRIPTION,
@@ -24,7 +23,6 @@ internal class PageCommand(
 ) {
     init {
         val retrieve = PageViewCommand(
-            registrar = registrar,
             printer = printer,
             client = client,
         )
@@ -38,7 +36,6 @@ internal class PageCommand(
 @ExperimentalCli
 private class PageViewCommand(
     private val client: NotionClient,
-    private val registrar: UuidRegistrar,
     private val printer: Printer,
 ) : CloseableSubcommand(
     actionDescription = PAGE_VIEW_DESCRIPTION,
@@ -57,13 +54,8 @@ private class PageViewCommand(
             .view(pageId)
             .results
 
-        val uuid: List<UuidValue> = results
-            .map { UuidValue.fromString(it.id) }
-            .onEach { registrar.register(it) }
-
         printer {
-            results.forEachIndexed { index, it ->
-                green { uuid[index].short }
+            results.forEachIndexed { _, it ->
                 print { it.title[0].plainText }
             }
         }

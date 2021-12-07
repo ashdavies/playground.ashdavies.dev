@@ -33,7 +33,6 @@ private const val PAGE_SIZE_DESCRIPTION =
 @ExperimentalCli
 internal class SearchCommand(
     private val client: NotionClient,
-    private val registrar: UuidRegistrar,
     private val printer: Printer = Printer(),
 ) : CloseableSubcommand(
     actionDescription = SEARCH_ACTION_DESCRIPTION,
@@ -94,16 +93,12 @@ internal class SearchCommand(
 
         val page: NotionPage<NotionObject> = client.search(search)
         val results: List<NotionObject> = page.results
-        val uuid: List<UuidValue> = results
-            .map { UuidValue.fromString(it.id) }
-            .onEach { registrar.register(it) }
 
         printer {
             val total = if (page.hasMore) "many" else "${results.size}"
             print { "Showing ${results.size} databases of $total\n\n" }
 
-            results.forEachIndexed { index, it ->
-                green { uuid[index].short }
+            results.forEachIndexed { _, it ->
                 print { " ${it.title[0].plainText}\n" }
             }
         }

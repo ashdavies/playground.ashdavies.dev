@@ -20,7 +20,6 @@ include(
     ":notionClient",
     ":shared",
     ":sqlDriver",
-    ":uuidRegistry",
     ":versionCatalog"
 )
 

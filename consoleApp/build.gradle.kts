@@ -10,6 +10,7 @@ plugins {
 
     application
     alias(libs.plugins.serialization)
+    group(libs.jetbrains.compose.gradlePlugin)
 }
 
 kotlin {
@@ -20,7 +21,10 @@ kotlin {
             dependencies {
                 implementation(project(":notionClient"))
                 implementation(project(":sqlDriver"))
-                implementation(project(":uuidRegistry"))
+
+                implementation(compose.runtime)
+                implementation(compose.foundation)
+                implementation(compose.material)
 
                 implementation(libs.qos.logbackClassic)
                 implementation(libs.sqlDelight.coroutinesExtensions)
@@ -34,6 +38,8 @@ kotlin {
 
         val jvmMain by getting {
             dependencies {
+                implementation(compose.desktop.currentOs)
+
                 implementation(libs.sqlDelight.sqliteDriver)
                 implementation(libs.jetbrains.kotlinx.coroutinesJdk)
             }

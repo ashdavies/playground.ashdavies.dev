@@ -4,7 +4,7 @@ android = "7.0.1"
 anvil = "2.3.5"
 apollo = "2.5.9"
 benManes = "0.39.0"
-compose = "1.1.0-alpha05"
+compose = "1.0.0"
 kotlin = "1.5.31"
 kotlinX = "1.5.2"
 ktlint = "10.2.0"
@@ -40,6 +40,7 @@ apolloGraphQl-apolloCoroutinesSupport = { module = "com.apollographql.apollo:apo
 apolloGraphQl-apolloGradlePlugin = { module = "com.apollographql.apollo:apollo-gradle-plugin", version.ref = "apollo" }
 apolloGraphQl-apolloRuntime = { module = "com.apollographql.apollo:apollo-runtime", version.ref = "apollo" }
 
+cash-molecule = { module = "app.cash.molecule:molecule-gradle-plugin", version = "0.1.0" }
 dropbox-mobile-store = { module = "com.dropbox.mobile.store:store4", version = "4.0.2-KT15" }
 
 google-android-material = { module = "com.google.android.material:material", version = "1.5.0-alpha04" }
@@ -58,7 +59,10 @@ google-firebase-admin = { module = "com.google.firebase:firebase-admin", version
 google-firebase-analytics = { module = "com.google.firebase:firebase-analytics", version = "19.0.2" }
 google-firebase-commonKtx = { module = "com.google.firebase:firebase-common-ktx", version = "20.0.0" }
 
-jetbrains-kotlin-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin" }
+jakeWharton-mosaic = { module = "com.jakewharton.mosaic:mosaic-gradle-plugin", version = "0.1.0" }
+
+jetbrains-compose-gradlePlugin = { module = "org.jetbrains.compose:compose-gradle-plugin", version.ref = "compose" }
+jetbrains-kotlin-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 jetbrains-kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 jetbrains-kotlin-testAnnotations = { module = "org.jetbrains.kotlin:kotlin-test-annotations-common", version.ref = "kotlin" }
 jetbrains-kotlin-testCommon = { module = "org.jetbrains.kotlin:kotlin-test-common", version.ref = "kotlin" }
