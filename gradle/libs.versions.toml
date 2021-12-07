@@ -25,7 +25,7 @@ androidx-compose-runtime = { module = "androidx.compose.runtime:runtime", versio
 androidx-compose-ui = { module = "androidx.compose.ui:ui", version.ref = "compose" }
 androidx-compose-uiTest = { module = "androidx.compose.ui:ui-test", version.ref = "compose" }
 androidx-compose-uiTooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose" }
-androidx-coreKtx = { module = "androidx.core:core-ktx", version = "1.7.0-beta02" }
+androidx-coreKtx = { module = "androidx.core:core-ktx", version = "1.7.0" }
 androidx-datastoreCore = { module = "androidx.datastore:datastore-core", version = "1.0.0" }
 androidx-fragmentKtx = { module = "androidx.fragment:fragment-ktx", version = "1.4.0-alpha10" }
 androidx-lifecycle-viewModelKtx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version = "2.4.0" }

@@ -13,40 +13,43 @@ private val AuthHistory.accessToken: String?
 @OptIn(ExperimentalCli::class)
 internal class NotionCommand(private val args: Array<String>) : ArgParser("notion") {
 
-    private val authorisationAdapter = Authorisation.Adapter(AuthResponseOwnerAdapter)
-    private val authHistory = DatabaseFactory.create(AuthHistory.Schema) {
-        AuthHistory(it, authorisationAdapter)
-    }
-
-    private val uuidRegistrar = UuidRegistrar()
-    private val notionClient: NotionClient =
-        authHistory
-            .accessToken
-            ?.let { NotionClient(it) }
-            ?: NotionClient()
-
     init {
-        val auth = AuthCommand(
-            queries = authHistory.authResponseQueries,
-            client = notionClient,
-        )
+        runBlocking {
+            val authorisationAdapter = Authorisation.Adapter(AuthResponseOwnerAdapter)
+            val databaseFactory = DatabaseFactory()
 
-        val block = BlockCommand(
-            registrar = uuidRegistrar,
-            client = notionClient,
-        )
+            val authHistory = databaseFactory.create(AuthHistory.Schema) {
+                AuthHistory(it, authorisationAdapter)
+            }
 
-        val page = PageCommand(
-            registrar = uuidRegistrar,
-            client = notionClient,
-        )
+            val uuidRegistrar = UuidRegistrar(databaseFactory)
+            val notionClient: NotionClient = authHistory
+                .accessToken
+                ?.let { NotionClient(it) }
+                ?: NotionClient()
 
-        val search = SearchCommand(
-            registrar = uuidRegistrar,
-            client = notionClient,
-        )
+            val auth = AuthCommand(
+                queries = authHistory.authResponseQueries,
+                client = notionClient,
+            )
 
-        subcommands(auth, block, page, search)
-        parse(args)
+            val block = BlockCommand(
+                registrar = uuidRegistrar,
+                client = notionClient,
+            )
+
+            val page = PageCommand(
+                registrar = uuidRegistrar,
+                client = notionClient,
+            )
+
+            val search = SearchCommand(
+                registrar = uuidRegistrar,
+                client = notionClient,
+            )
+
+            subcommands(auth, block, page, search)
+            parse(args)
+        }
     }
 }

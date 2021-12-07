@@ -58,7 +58,6 @@ kotlin {
 
         val androidMain by getting {
             dependencies {
-                implementation(libs.androidx.coreKtx)
                 implementation(libs.jetbrains.kotlinx.coroutinesAndroid)
                 implementation(libs.ktor.client.android)
                 implementation(libs.sqlDelight.androidDriver)

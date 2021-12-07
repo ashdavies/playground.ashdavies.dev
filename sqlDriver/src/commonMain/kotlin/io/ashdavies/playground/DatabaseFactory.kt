@@ -1,5 +1,3 @@
-@file:JvmName("DatabaseFactoryKtMultiplatform")
-
 package io.ashdavies.playground
 
 import com.squareup.sqldelight.Transacter

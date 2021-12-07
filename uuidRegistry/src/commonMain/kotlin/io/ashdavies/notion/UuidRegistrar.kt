@@ -7,8 +7,8 @@ interface UuidRegistrar {
     suspend fun register(uuid: UuidValue)
 }
 
-fun UuidRegistrar(): UuidRegistrar {
-    val database: UuidRegistry = DatabaseFactory.create(
+suspend fun UuidRegistrar(factory: DatabaseFactory): UuidRegistrar {
+    val database: UuidRegistry = factory.create(
         block = UuidRegistry.Companion::invoke,
         schema = UuidRegistry.Schema,
     )
