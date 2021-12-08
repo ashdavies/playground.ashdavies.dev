@@ -17,7 +17,7 @@ include(
     ":cloudAggregator",
     ":cloudFunctions",
     ":consoleApp",
-    ":notionClient",
+    ":notionConsole",
     ":shared",
     ":sqlDriver",
     ":versionCatalog"
