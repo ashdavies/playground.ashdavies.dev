@@ -38,7 +38,6 @@ private fun interface CollectionOperation<T> {
     suspend operator fun invoke(provider: DocumentProvider)
 }
 
-// TODO Ignore nulls
 private fun <T : Any> WriteOperation(childPath: String, value: T) = CollectionOperation<T> { reference ->
     reference
         .document(childPath)

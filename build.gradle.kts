@@ -1,6 +1,7 @@
 // https://youtrack.jetbrains.com/issue/KTIJ-19369
 @file:Suppress("DSL_SCOPE_VIOLATION")
 
+import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
 
 buildscript {
@@ -55,4 +56,17 @@ doctor {
     javaHome {
         failOnError.set(false)
     }
+}
+
+fun isUnstable(version: String): Boolean {
+    val unstableKeywords = listOf("ALPHA", "BETA", "RC")
+    val upperVersion = version.toUpperCase()
+
+    return unstableKeywords.any {
+        upperVersion.contains(it)
+    }
+}
+
+tasks.withType<DependencyUpdatesTask> {
+    rejectVersionIf { isUnstable(candidate.version) }
 }

@@ -10,6 +10,5 @@ internal class AggregatorFunctionTest {
     @Test(expected = IllegalStateException::class)
     fun test() = runBlocking<Unit> {
         function.firebaseApp
-        TODO("Not yet implemented")
     }
 }
