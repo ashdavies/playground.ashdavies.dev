@@ -36,7 +36,9 @@ allprojects {
         jetbrainsCompose()
         mavenCentral()
     }
+}
 
+subprojects {
     tasks.withType<KotlinCompile<*>> {
         kotlinOptions.freeCompilerArgs += listOf(
             "-Xallow-result-return-type",

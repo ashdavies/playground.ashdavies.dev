@@ -1,6 +1,6 @@
 package io.ashdavies.playground.aggregator
 
-import com.google.cloud.firestore.CollectionReference
+import io.ashdavies.playground.events.DocumentProvider
 import io.ashdavies.playground.google.await
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -9,7 +9,7 @@ internal fun interface CollectionWriter<T : Any> {
     suspend operator fun invoke(oldValue: Collection<T>, newValue: Collection<T>)
 }
 
-internal fun <T : Any> CollectionWriter(reference: CollectionReference, identifier: (T) -> String) =
+internal fun <T : Any> CollectionWriter(provider: DocumentProvider, identifier: (T) -> String) =
     CollectionWriter<T> { oldValue, newValue ->
         val queue = OperationQueue(
             oldValue = oldValue.associateBy(identifier),
@@ -18,7 +18,7 @@ internal fun <T : Any> CollectionWriter(reference: CollectionReference, identifi
 
         runBlocking {
             for (operation in queue) {
-                launch { operation(reference) }.join()
+                launch { operation(provider) }.join()
             }
         }
     }
@@ -35,7 +35,7 @@ private fun <T : Any> OperationQueue(oldValue: Map<String, T>, newValue: Map<Str
 }
 
 private fun interface CollectionOperation<T> {
-    suspend operator fun invoke(reference: CollectionReference)
+    suspend operator fun invoke(provider: DocumentProvider)
 }
 
 // TODO Ignore nulls
