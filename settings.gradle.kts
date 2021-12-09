@@ -16,7 +16,6 @@ include(
     ":androidApp",
     ":cloudAggregator",
     ":cloudFunctions",
-    ":consoleApp",
     ":notionConsole",
     ":shared",
     ":sqlDriver",
