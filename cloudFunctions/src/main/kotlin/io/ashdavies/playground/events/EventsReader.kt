@@ -14,9 +14,9 @@ fun interface EventsReader {
 @OptIn(ExperimentalSerializationApi::class)
 fun EventsReader(provider: DocumentProvider, request: EventsQuery) = EventsReader {
     val snapshot: QuerySnapshot = provider {
-        orderBy(request.orderBy)
-        startAt(request.startAt)
-        limit(request.limit)
+        orderBy = request.orderBy
+        startAt = request.startAt
+        limit = request.limit
     }.await()
 
     snapshot.map {
