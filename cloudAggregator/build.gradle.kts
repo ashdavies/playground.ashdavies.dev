@@ -23,6 +23,7 @@ dependencies {
 
     implementation(libs.apolloGraphQl.apolloRuntime)
     implementation(libs.apolloGraphQl.apolloCoroutinesSupport)
+    implementation(libs.coroutineDispatcherCore)
     implementation(libs.google.cloud.functionsFrameworkApi)
     implementation(libs.google.firebase.admin)
     implementation(libs.jetbrains.kotlinx.coroutinesCore)
@@ -30,7 +31,6 @@ dependencies {
     implementation(libs.jetbrains.kotlinx.serializationCore)
     implementation(libs.jetbrains.kotlinx.serializationJson)
     implementation(libs.jetbrains.kotlinx.serializationProperties)
-
 
     add("invoker", libs.google.cloud.javaFunctionInvoker)
 
@@ -80,4 +80,6 @@ tasks.register("runAggregatorFunction", JavaExec::class) {
             args("--classpath", files(configurations.runtimeClasspath, output).asPath)
         }
     }
+
+    // TODO Make curl request against localhost and return results, then kill server
 }

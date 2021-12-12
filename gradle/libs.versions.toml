@@ -41,6 +41,7 @@ apolloGraphQl-apolloGradlePlugin = { module = "com.apollographql.apollo:apollo-g
 apolloGraphQl-apolloRuntime = { module = "com.apollographql.apollo:apollo-runtime", version.ref = "apollo" }
 
 cash-molecule = { module = "app.cash.molecule:molecule-gradle-plugin", version = "0.1.0" }
+coroutineDispatcherCore = { module = "com.rickbusarow.dispatch:dispatch-core", version = "1.0.0-beta10" }
 dropbox-mobile-store = { module = "com.dropbox.mobile.store:store4", version = "4.0.4-KT15" }
 
 google-android-material = { module = "com.google.android.material:material", version = "1.5.0-alpha04" }

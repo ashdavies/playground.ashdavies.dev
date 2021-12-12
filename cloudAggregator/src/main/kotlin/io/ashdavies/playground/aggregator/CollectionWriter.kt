@@ -1,35 +1,37 @@
 package io.ashdavies.playground.aggregator
 
+import dispatch.core.launchIO
 import io.ashdavies.playground.events.DocumentProvider
 import io.ashdavies.playground.google.await
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.coroutineScope
 
 internal fun interface CollectionWriter<T : Any> {
     suspend operator fun invoke(oldValue: Collection<T>, newValue: Collection<T>)
 }
 
-internal fun <T : Any> CollectionWriter(provider: DocumentProvider, identifier: (T) -> String) =
+internal suspend fun <T : Any> CollectionWriter(provider: DocumentProvider, identifier: (T) -> String) =
     CollectionWriter<T> { oldValue, newValue ->
         val queue = OperationQueue(
             oldValue = oldValue.associateBy(identifier),
             newValue = newValue.associateBy(identifier)
         )
 
-        runBlocking {
+        coroutineScope {
             for (operation in queue) {
-                launch { operation(provider) }.join()
+                launchIO { operation(provider) }.join()
             }
         }
     }
 
 @OptIn(ExperimentalStdlibApi::class)
 private fun <T : Any> OperationQueue(oldValue: Map<String, T>, newValue: Map<String, T>) = buildList {
-    for ((childPath: String, value: T) in newValue - oldValue.keys) {
+    val newEntries: Map<String, T> = log(newValue - oldValue.keys) { "Writing ${it.size} new entries..." }
+    for ((childPath: String, value: T) in newEntries) {
         add(WriteOperation(childPath, value))
     }
 
-    for ((childPath: String, _: T) in oldValue - newValue.keys) {
+    val oldEntries: Map<String, T> = log(oldValue - newValue.keys) { "Deleting ${it.size} entries..." }
+    for ((childPath: String, _: T) in oldEntries) {
         add(DeleteOperation(childPath))
     }
 }
@@ -51,3 +53,5 @@ private fun <T : Any> DeleteOperation(childPath: String) = CollectionOperation<T
         .delete()
         .await()
 }
+
+private fun <T> log(value: T, message: (T) -> String): T = value.also { println(message(it)) }

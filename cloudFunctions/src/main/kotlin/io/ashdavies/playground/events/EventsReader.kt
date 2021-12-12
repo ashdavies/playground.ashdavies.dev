@@ -15,8 +15,14 @@ fun interface EventsReader {
 fun EventsReader(provider: DocumentProvider, request: EventsQuery) = EventsReader {
     val snapshot: QuerySnapshot = provider {
         orderBy = request.orderBy
-        startAt = request.startAt
-        limit = request.limit
+
+        if (request.limit > 0) {
+            limit = request.limit
+        }
+
+        request.startAt?.let {
+            startAt = it
+        }
     }.await()
 
     snapshot.map {

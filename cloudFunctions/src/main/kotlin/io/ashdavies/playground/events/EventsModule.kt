@@ -4,6 +4,7 @@ import com.google.api.core.ApiFuture
 import com.google.cloud.firestore.CollectionReference
 import com.google.cloud.firestore.DocumentReference
 import com.google.cloud.firestore.Query
+import com.google.cloud.firestore.Query.Direction.DESCENDING
 import com.google.cloud.firestore.QuerySnapshot
 import io.ashdavies.playground.google.FirebaseScope
 import io.ashdavies.playground.google.firestore
@@ -28,14 +29,14 @@ fun DocumentProvider(block: () -> CollectionReference) = object : DocumentProvid
         .get()
 }
 
-private class QueryBuilderImpl(private var query: Query) : QueryBuilder {
-    override var orderBy: String by setValue(query::orderBy)
-    override var startAt: Any by setValue(query::startAt)
-    override var limit: Int by setValue(query::limit)
+private data class QueryBuilderImpl(private var query: Query) : QueryBuilder {
+    override var orderBy: String by setValue { query = query.orderBy(it, DESCENDING) }
+    override var startAt: Any by setValue { query = query.startAt(it) }
+    override var limit: Int by setValue { query = query.limit(it) }
     fun get(): ApiFuture<QuerySnapshot> = query.get()
 }
 
-private inline fun <T> setValue(crossinline block: (T) -> Any?) = WriteOnlyProperty<Any?, T> { _, _, value ->
+private inline fun <T> setValue(crossinline block: (T) -> Unit) = WriteOnlyProperty<Any?, T> { _, _, value ->
     block(value)
 }
 

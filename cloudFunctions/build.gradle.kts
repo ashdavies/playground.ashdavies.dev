@@ -15,6 +15,7 @@ configurations.create("invoker")
 dependencies {
     implementation(project(":shared"))
 
+    implementation(libs.coroutineDispatcherCore)
     implementation(libs.google.cloud.functionsFrameworkApi)
     implementation(libs.google.firebase.admin)
     implementation(libs.jetbrains.kotlinx.coroutinesCore)
