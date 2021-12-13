@@ -26,13 +26,15 @@ internal fun NavHost(
     builder = builder,
 )
 
-internal fun NavController.navigate(route: Route) =
-    navigate(route.name)
+internal fun NavController.navigate(route: Route) = navigate(route.name)
 
 internal fun NavGraphBuilder.composable(
     route: Route,
     content: @Composable (NavBackStackEntry) -> Unit,
-) = composable(route.name, content = content)
+) = composable(
+    route = route.name,
+    content = content,
+)
 
 private fun NavDestination.getRouteOrNull(): Route? {
     val routes: Map<String, Route> = Route.routes.associateBy { it.name }

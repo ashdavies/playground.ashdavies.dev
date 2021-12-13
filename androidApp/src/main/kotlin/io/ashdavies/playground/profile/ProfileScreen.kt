@@ -30,17 +30,18 @@ import io.ashdavies.playground.R
 import io.ashdavies.playground.compose.EmptyPainter
 import io.ashdavies.playground.compose.fade
 import io.ashdavies.playground.compose.isLoading
+import io.ashdavies.playground.database.Profile
 import io.ashdavies.playground.graph
 import kotlin.random.Random.Default.nextInt
 
 @Preview
 @Composable
+@OptIn(ExperimentalCoilApi::class)
 internal fun ProfileScreen() = graph(Unit) {
-    val viewState by produceState(ProfileService.MaxMustermann) {
+    val viewState: Profile by produceState(ProfileService.MaxMustermann) {
         value = profileService.getProfile()
     }
 
-    @OptIn(ExperimentalCoilApi::class)
     val coilPainter: ImagePainter = rememberImagePainter(viewState.picture)
 
     Box(modifier = Modifier.padding(LocalScaffoldPadding.current)) {
@@ -91,17 +92,16 @@ internal fun ProfileScreen() = graph(Unit) {
 
             FlowRow {
                 repeat(nextInt(30)) {
-                    Box(modifier = Modifier.padding(4.dp)) {
-                        Image(
-                            painter = EmptyPainter,
-                            contentDescription = null,
-                            modifier = Modifier
-                                .fade(true)
-                                .border(1.dp, Color.LightGray, CircleShape)
-                                .size(64.dp, 64.dp)
-                                .clip(CircleShape),
-                        )
-                    }
+                    Image(
+                        painter = EmptyPainter,
+                        contentDescription = null,
+                        modifier = Modifier
+                            .border(1.dp, Color.LightGray, CircleShape)
+                            .size(64.dp, 64.dp)
+                            .clip(CircleShape)
+                            .fade(true)
+                            .padding(4.dp),
+                    )
                 }
             }
         }

@@ -1,4 +1,4 @@
-package io.ashdavies.playground.common
+package io.ashdavies.playground.compose
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity

@@ -1,55 +1,35 @@
 package io.ashdavies.playground.events
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.dropbox.android.external.store4.Store
 import com.dropbox.android.external.store4.StoreRequest
 import com.dropbox.android.external.store4.StoreResponse
-import io.ashdavies.playground.arch.update
 import io.ashdavies.playground.database.Event
 import io.ashdavies.playground.events.EventsViewState.Failure
-import io.ashdavies.playground.events.EventsViewState.Section.Header
-import io.ashdavies.playground.events.EventsViewState.Section.Item
 import io.ashdavies.playground.events.EventsViewState.Uninitialised
-import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
-import kotlinx.datetime.DatePeriod
-import kotlinx.datetime.LocalDate
-import kotlinx.datetime.minus
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 private val StoreResponse<*>.errorMessage: String
     get() = errorMessageOrNull() ?: throw IllegalStateException()
 
-internal class EventsViewModel(private val provider: suspend () -> Store<Unit, List<Event>>) :
-    ViewModel() {
+@OptIn(ExperimentalCoroutinesApi::class)
+internal class EventsViewModel(store: Store<Unit, List<Event>>) : ViewModel() {
 
-    init {
-        flow { emit(provider()) }
-            .flatMapLatest { it.stream(StoreRequest.cached(Unit, true)) }
-            .onEach { update<EventsViewState> { _ -> EventsViewState(it) } }
-            .launchIn(viewModelScope)
+    val viewState: Flow<EventsViewState> = store
+        .stream(StoreRequest.cached(Unit, true))
+        .map { EventsViewState(it) }
+
+    private fun EventsViewState(response: StoreResponse<List<Event>>): EventsViewState = when (response) {
+        is StoreResponse.Loading -> EventsViewState.Loading
+        is StoreResponse.Error -> Failure(response.errorMessage)
+        is StoreResponse.Data -> Success(response.value)
+        else -> Uninitialised
     }
 
-    private fun EventsViewState(response: StoreResponse<List<Event>>): EventsViewState =
-        when (response) {
-            is StoreResponse.Loading -> EventsViewState.Loading
-            is StoreResponse.Error -> Failure(response.errorMessage)
-            is StoreResponse.Data -> Success(response.value)
-            else -> Uninitialised
-        }
-
     private fun Success(data: List<Event>): EventsViewState.Success = data
-        .map(::Item)
-        .groupBy { it.data.dateStart.firstDayOfTheMonth() }
-        .flatMap { listOf(Header(it.key)) + it.value }
+        .map { EventsViewState.Section(it.name, it.location, it.dateStart) }
+        .sortedByDescending { it.date }
         .let(EventsViewState::Success)
-
-    private fun String.firstDayOfTheMonth() = LocalDate
-        .parse(this)
-        .firstDayOfTheMonth()
-
-    private fun LocalDate.firstDayOfTheMonth(): LocalDate =
-        minus(DatePeriod(days = dayOfMonth))
 }

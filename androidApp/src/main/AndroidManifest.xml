@@ -8,7 +8,8 @@
         android:allowBackup="true"
         android:fullBackupOnly="true"
         android:icon="@mipmap/ic_launcher"
-        android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar">
+        android:name=".common.MainApplication"
+        android:theme="@style/Theme.Material3.DayNight.NoActionBar">
 
         <activity
             android:name="io.ashdavies.playground.common.MainActivity"

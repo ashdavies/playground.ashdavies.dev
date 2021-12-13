@@ -50,7 +50,7 @@ tasks.register<Exec>("deployAggregatorFunction") {
     group = "deploy"
 
     commandLine = listOf(
-        "gcloud", "functions", "deploy", "events",
+        "gcloud", "functions", "deploy", "aggregator",
         "--entry-point=io.ashdavies.playground.aggregator.AggregatorFunction",
         "--project=playground-1a136",
         "--region=europe-west1",
