@@ -7,7 +7,6 @@ plugins {
     id(libs.plugins.kotlin.multiplatform)
     id(libs.plugins.sqldelight)
 
-
     application
     alias(libs.plugins.serialization)
     group(libs.jetbrains.compose.gradlePlugin)
@@ -23,7 +22,6 @@ kotlin {
 
                 implementation(compose.runtime)
                 implementation(compose.foundation)
-                implementation(compose.material)
 
                 implementation(libs.jetbrains.kotlinx.cli)
                 implementation(libs.jetbrains.kotlinx.datetime)

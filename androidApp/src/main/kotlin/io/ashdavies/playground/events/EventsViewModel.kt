@@ -44,6 +44,5 @@ internal class EventsViewModel(private val store: Store<Unit, List<Event>>) : Vi
 
     private fun Success(data: List<Event>): EventsViewState.Success = data
         .map { EventsViewState.Section(it.name, it.location, it.dateStart) }
-        .sortedByDescending { it.date }
         .let(EventsViewState::Success)
 }

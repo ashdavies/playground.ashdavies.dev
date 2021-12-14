@@ -1,6 +1,5 @@
 package io.ashdavies.playground.events
 
-import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -25,30 +24,34 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.dropbox.android.external.store4.Store
 import com.google.accompanist.insets.ui.LocalScaffoldPadding
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import io.ashdavies.playground.common.viewModel
 import io.ashdavies.playground.compose.fade
+import io.ashdavies.playground.database.Event
 import io.ashdavies.playground.emptyString
 import io.ashdavies.playground.events.EventsViewState.Failure
 import io.ashdavies.playground.events.EventsViewState.Loading
 import io.ashdavies.playground.events.EventsViewState.Section
 import io.ashdavies.playground.events.EventsViewState.Success
 import io.ashdavies.playground.events.EventsViewState.Uninitialised
-import io.ashdavies.playground.graph
-import kotlinx.coroutines.runBlocking
+import io.ashdavies.playground.network.EventsService
+import io.ashdavies.playground.network.LocalHttpClient
+import kotlinx.coroutines.FlowPreview
 
 @Preview
 @Composable
-internal fun EventsScreen(context: Context = LocalContext.current) = graph(context) {
-    val viewModel: EventsViewModel = viewModel { EventsViewModel(runBlocking { EventsStore() }) }
+@OptIn(FlowPreview::class)
+internal fun EventsScreen() {
+    val eventsStore: Store<Unit, List<Event>> = LocalEventsStore.current
+    val viewModel: EventsViewModel = viewModel { EventsViewModel(eventsStore) }
     val viewState: EventsViewState by viewModel
         .viewState
         .collectAsState(Uninitialised)

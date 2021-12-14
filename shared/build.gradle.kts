@@ -2,6 +2,7 @@
 @file:Suppress("DSL_SCOPE_VIOLATION")
 
 import com.android.build.api.dsl.AndroidSourceSet
+import org.jetbrains.compose.compose
 
 plugins {
     id(libs.plugins.android.library)
@@ -9,6 +10,7 @@ plugins {
     id(libs.plugins.sqldelight)
 
     alias(libs.plugins.serialization)
+    group(libs.jetbrains.compose.gradlePlugin)
 }
 
 android {
@@ -40,6 +42,9 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation(project(":sqlDriver"))
+
+                implementation(compose.runtime)
+                implementation(compose.foundation)
 
                 implementation(libs.jetbrains.kotlinx.coroutinesCore)
                 implementation(libs.jetbrains.kotlinx.datetime)
