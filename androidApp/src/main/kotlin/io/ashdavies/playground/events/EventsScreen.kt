@@ -1,7 +1,6 @@
 package io.ashdavies.playground.events
 
 import android.content.Context
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -26,13 +25,15 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.insets.ui.LocalScaffoldPadding
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import io.ashdavies.playground.common.viewModel
 import io.ashdavies.playground.compose.fade
 import io.ashdavies.playground.emptyString
@@ -52,21 +53,27 @@ internal fun EventsScreen(context: Context = LocalContext.current) = graph(conte
         .viewState
         .collectAsState(Uninitialised)
 
-    when (val it: EventsViewState = viewState) {
-        is Loading -> EventsList(List(10) { null }) {}
-        is Failure -> EventFailure(it.message)
-        is Success -> EventsList(it.data) {
-            println("Clicked $it")
+    SwipeRefresh(
+        state = rememberSwipeRefreshState(viewState is Loading),
+        modifier = Modifier.fillMaxSize(),
+        onRefresh = viewModel::onRefresh,
+    ) {
+        when (val it: EventsViewState = viewState) {
+            is Loading -> EventsList(List(10) { null }) {}
+            is Failure -> EventFailure(it.message)
+            is Success -> EventsList(it.data) {
+                println("Clicked $it")
+            }
+            else -> Unit
         }
-        else -> Unit
     }
 }
 
 @Composable
-internal fun EventsList(data: List<Section?>, onClick: () -> Unit) {
+internal fun EventsList(data: List<Section?>, modifier: Modifier = Modifier, onClick: () -> Unit) {
     LazyColumn(
         contentPadding = LocalScaffoldPadding.current,
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .padding(top = 12.dp),
     ) {
@@ -95,9 +102,9 @@ internal fun EventSection(section: Section?, onClick: () -> Unit) {
                         .fillMaxWidth()
                         .padding(start = 12.dp)
                 ) {
-                    PlaceholderText(section?.name, MaterialTheme.typography.h6)
-                    PlaceholderText(section?.location, MaterialTheme.typography.body1)
-                    PlaceholderText(section?.date, MaterialTheme.typography.body2)
+                    PlaceholderText(section?.name, style = MaterialTheme.typography.h6)
+                    PlaceholderText(section?.location, style = MaterialTheme.typography.body1)
+                    PlaceholderText(section?.date, style = MaterialTheme.typography.body2)
                 }
 
             }
@@ -106,11 +113,17 @@ internal fun EventSection(section: Section?, onClick: () -> Unit) {
 }
 
 @Composable
-private fun ColumnScope.PlaceholderText(text: String?, style: TextStyle = LocalTextStyle.current) {
+private fun ColumnScope.PlaceholderText(
+    text: String?,
+    modifier: Modifier = Modifier,
+    style: TextStyle = LocalTextStyle.current,
+) {
     Text(
-        style = style,
+        overflow = TextOverflow.Ellipsis,
         text = text ?: emptyString(),
-        modifier = Modifier
+        style = style,
+        maxLines = 1,
+        modifier = modifier
             .defaultMinSize(minWidth = Dp(style.fontSize.value * 12))
             .align(Alignment.Start)
             .padding(bottom = 2.dp)
@@ -119,11 +132,11 @@ private fun ColumnScope.PlaceholderText(text: String?, style: TextStyle = LocalT
 }
 
 @Composable
-internal fun EventFailure(message: String) {
+internal fun EventFailure(message: String, modifier: Modifier = Modifier) {
     Column(verticalArrangement = Arrangement.Center) {
         Row(horizontalArrangement = Arrangement.Center) {
             Text(
-                modifier = Modifier.padding(16.dp, 12.dp),
+                modifier = modifier.padding(16.dp, 12.dp),
                 text = message,
             )
         }

@@ -4,7 +4,7 @@ import com.google.api.core.ApiFuture
 import com.google.cloud.firestore.CollectionReference
 import com.google.cloud.firestore.DocumentReference
 import com.google.cloud.firestore.Query
-import com.google.cloud.firestore.Query.Direction.DESCENDING
+import com.google.cloud.firestore.Query.Direction.ASCENDING
 import com.google.cloud.firestore.QuerySnapshot
 import io.ashdavies.playground.google.FirebaseScope
 import io.ashdavies.playground.google.firestore
@@ -30,7 +30,7 @@ fun DocumentProvider(block: () -> CollectionReference) = object : DocumentProvid
 }
 
 private data class QueryBuilderImpl(private var query: Query) : QueryBuilder {
-    override var orderBy: String by setValue { query = query.orderBy(it, DESCENDING) }
+    override var orderBy: String by setValue { query = query.orderBy(it, ASCENDING) }
     override var startAt: Any by setValue { query = query.startAt(it) }
     override var limit: Int by setValue { query = query.limit(it) }
     fun get(): ApiFuture<QuerySnapshot> = query.get()

@@ -32,20 +32,17 @@ private val notionClientSecret: String
 internal class AuthCommand(
     client: NotionClient.OAuth,
     queries: AuthResponseQueries,
-    printer: Printer = Printer(),
 ) : CloseableSubcommand(
     actionDescription = AUTH_ACTION_DESCRIPTION,
     name = "auth",
 ) {
     init {
         val login = AuthLoginCommand(
-            printer = printer,
             queries = queries,
             client = client,
         )
 
         val logout = AuthLogoutCommand(
-            printer = printer,
             queries = queries,
         )
 
@@ -59,7 +56,6 @@ internal class AuthCommand(
 private class AuthLoginCommand(
     private val client: NotionClient.OAuth,
     private val queries: AuthResponseQueries,
-    private val printer: Printer,
 ) : CloseableSubcommand(
     actionDescription = AUTH_LOGIN_DESCRIPTION,
     name = "login",
@@ -128,14 +124,13 @@ private class AuthLoginCommand(
 @ExperimentalCli
 private class AuthLogoutCommand(
     private val queries: AuthResponseQueries,
-    private val printer: Printer,
 ) : CloseableSubcommand(
     actionDescription = AUTH_LOGOUT_DESCRIPTION,
     name = "logout",
 ) {
 
     override suspend fun run() {
+        println("Removing authentication")
         queries.deleteAll()
-        printer.println { "Authentication removed" }
     }
 }

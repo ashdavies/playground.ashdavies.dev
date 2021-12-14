@@ -26,7 +26,6 @@ private const val START_CURSOR_DESCRIPTION =
 @ExperimentalCli
 internal class SearchCommand(
     private val client: NotionClient.Search,
-    private val printer: Printer = Printer(),
 ) : CloseableSubcommand(
     actionDescription = SEARCH_ACTION_DESCRIPTION,
     closeable = Closeable { },

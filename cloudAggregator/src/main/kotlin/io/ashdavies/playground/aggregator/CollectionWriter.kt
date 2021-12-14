@@ -54,4 +54,6 @@ private fun <T : Any> DeleteOperation(childPath: String) = CollectionOperation<T
         .await()
 }
 
-private fun <T> log(value: T, message: (T) -> String): T = value.also { println(message(it)) }
+private fun <T> log(value: T, message: (T) -> String): T {
+    return value.also { println(message(it)) }
+}
