@@ -60,6 +60,7 @@ tasks.register<Exec>("deployAggregatorFunction") {
     )
 }
 
+// TODO Make curl request against localhost and return results, then kill server
 tasks.register("runAggregatorFunction", JavaExec::class) {
     dependsOn(tasks.named("compileKotlin"))
     description = "Run events cloud functions"
@@ -80,6 +81,4 @@ tasks.register("runAggregatorFunction", JavaExec::class) {
             args("--classpath", files(configurations.runtimeClasspath, output).asPath)
         }
     }
-
-    // TODO Make curl request against localhost and return results, then kill server
 }

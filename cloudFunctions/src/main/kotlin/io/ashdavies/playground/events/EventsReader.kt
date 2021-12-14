@@ -8,7 +8,7 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.properties.Properties.Default.decodeFromMap
 
 fun interface EventsReader {
-    suspend operator fun invoke(): Collection<Event>
+    suspend operator fun invoke(): List<Event>
 }
 
 @OptIn(ExperimentalSerializationApi::class)
