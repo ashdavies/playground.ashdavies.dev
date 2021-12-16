@@ -1,4 +1,4 @@
-package io.ashdavies.playground.common
+package io.ashdavies.playground.playground
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme

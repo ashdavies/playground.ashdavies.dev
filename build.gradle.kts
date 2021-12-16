@@ -35,6 +35,7 @@ allprojects {
         google()
         gradlePluginPortal()
         jetbrainsCompose()
+        jitpack("requery")
         mavenCentral()
     }
 }

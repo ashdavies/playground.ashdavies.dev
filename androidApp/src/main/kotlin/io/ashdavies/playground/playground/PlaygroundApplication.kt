@@ -1,9 +1,9 @@
-package io.ashdavies.playground.common
+package io.ashdavies.playground.playground
 
 import android.app.Application
 import com.google.android.material.color.DynamicColors.applyToActivitiesIfAvailable
 
-internal class MainApplication : Application() {
+internal class PlaygroundApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()

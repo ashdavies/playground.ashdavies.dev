@@ -1,6 +1,7 @@
-package io.ashdavies.playground.common
+package io.ashdavies.playground.playground
 
 import androidx.annotation.StringRes
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
@@ -12,9 +13,6 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -43,7 +41,7 @@ import io.ashdavies.playground.profile.ProfileScreen
 @Composable
 internal fun MainScreen() {
     val systemUiController = rememberSystemUiController()
-    val useDarkIcons = !MaterialTheme.colors.isLight
+    val useDarkIcons = !isSystemInDarkTheme()
 
     SideEffect {
         systemUiController.setSystemBarsColor(

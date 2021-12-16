@@ -24,9 +24,9 @@ android {
     }
 
     defaultConfig {
-        compileSdk = 30
-        minSdk = 21
-        targetSdk = 30
+        compileSdk = 31
+        targetSdk = 31
+        minSdk = 23
     }
 }
 
@@ -69,6 +69,7 @@ kotlin {
             dependencies {
                 implementation(libs.jetbrains.kotlinx.coroutinesAndroid)
                 implementation(libs.ktor.client.android)
+                implementation(libs.requery.sqliteAndroid)
                 implementation(libs.sqlDelight.androidDriver)
             }
         }
@@ -91,5 +92,6 @@ kotlin {
 sqldelight {
     database("PlaygroundDatabase") {
         packageName = "io.ashdavies.playground.database"
+        dialect = "sqlite:3.25"
     }
 }

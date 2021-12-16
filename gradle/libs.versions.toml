@@ -32,6 +32,7 @@ androidx-lifecycle-viewModelKtx = { module = "androidx.lifecycle:lifecycle-viewm
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigation" }
 androidx-navigation-runtimeKtx = { module = "androidx.navigation:navigation-runtime-ktx", version.ref = "navigation" }
 androidx-navigation-uiKtx = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigation" }
+androidx-pagingCompose = { module = "androidx.paging:paging-compose", version = "1.0.0-alpha14" }
 androidx-pagingRuntime = { module = "androidx.paging:paging-runtime", version = "3.1.0" }
 
 apache-batikExt = { module = "org.apache.xmlgraphics:batik-ext", version = "1.14" }
@@ -42,7 +43,6 @@ apolloGraphQl-apolloRuntime = { module = "com.apollographql.apollo:apollo-runtim
 
 cash-molecule = { module = "app.cash.molecule:molecule-gradle-plugin", version = "0.1.0" }
 coroutineDispatcherCore = { module = "com.rickbusarow.dispatch:dispatch-core", version = "1.0.0-beta10" }
-dropbox-mobile-store = { module = "com.dropbox.mobile.store:store4", version = "4.0.4-KT15" }
 
 google-android-material = { module = "com.google.android.material:material", version = "1.5.0-alpha04" }
 google-accompanist-coil = { module = "com.google.accompanist:accompanist-coil", version = "0.15.0" }
@@ -94,10 +94,13 @@ ktor-client-serialization = { module = "io.ktor:ktor-client-serialization", vers
 ktor-server-cio = { module = "io.ktor:ktor-server-cio", version.ref = "ktor" }
 ktor-server-core = { module = "io.ktor:ktor-server-core", version.ref = "ktor" }
 
+kuuuurt-multiplatformPaging = { module = "io.github.kuuuurt:multiplatform-paging", version = "0.4.6" }
 pinterest-ktlint = { module = "com.pinterest:ktlint", version = "0.40.0" }
+requery-sqliteAndroid = { module = "com.github.requery:sqlite-android", version = "3.36.0" }
 slf4j = { module = "org.slf4j:slf4j-simple", version = "1.7.21" }
 
 sqlDelight-androidDriver = { module = "com.squareup.sqldelight:android-driver", version.ref = "sqlDelight" }
+sqlDelight-androidPaging = { module = "com.squareup.sqldelight:android-paging3-extensions", version.ref = "sqlDelight" }
 sqlDelight-coroutinesExtensions = { module = "com.squareup.sqldelight:coroutines-extensions", version.ref = "sqlDelight" }
 sqlDelight-kotlinGradlePlugin = { module = "com.squareup.sqldelight:gradle-plugin", version.ref = "sqlDelight" }
 sqlDelight-sqliteDriver = { module = "com.squareup.sqldelight:sqlite-driver", version.ref = "sqlDelight" }

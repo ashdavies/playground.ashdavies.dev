@@ -7,8 +7,5 @@ import com.google.accompanist.placeholder.material.fade
 import com.google.accompanist.placeholder.material.placeholder
 
 internal fun Modifier.fade(visible: Boolean): Modifier = composed {
-    placeholder(
-        highlight = PlaceholderHighlight.fade(),
-        visible = visible,
-    )
+    placeholder(visible, highlight = PlaceholderHighlight.fade())
 }
