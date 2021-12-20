@@ -75,8 +75,8 @@ internal fun EventsScreen() {
         .collectAsLazyPagingItems()
 
     SwipeRefresh(
-        modifier = Modifier.padding(LocalScaffoldPadding.current),
         state = rememberSwipeRefreshState(pagingItems.loadState.refresh is LoadState.Loading),
+        indicatorPadding = LocalScaffoldPadding.current,
         onRefresh = pagingItems::refresh,
     ) {
         val loadState = pagingItems.loadState.append
@@ -85,6 +85,7 @@ internal fun EventsScreen() {
         }
 
         LazyColumn(
+            contentPadding = LocalScaffoldPadding.current,
             modifier = Modifier
                 .fillMaxSize()
                 .padding(top = 12.dp),
