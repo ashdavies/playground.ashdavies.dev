@@ -7,5 +7,5 @@ import io.ashdavies.playground.kotlin.loading
 
 @Composable
 fun <T : Any> produceState(block: suspend () -> T): State<Result<T>> = produceState(Result.loading()) {
-    runCatching { block() }
+    value = runCatching { block() }
 }

@@ -5,11 +5,13 @@ anvil = "2.3.5"
 apollo = "2.5.11"
 benManes = "0.39.0"
 compose = "1.0.5"
+gitlive = "1.4.3"
 kotlin = "1.5.31"
 kotlinX = "1.5.2"
 ktlint = "10.2.0"
 ktor = "1.6.7"
 lifecycle = "2.4.0-rc01"
+molecule = "0.1.0"
 navigation = "2.4.0-beta02"
 serialization = "1.3.1"
 sqlDelight = "1.5.3"
@@ -41,8 +43,9 @@ apolloGraphQl-apolloCoroutinesSupport = { module = "com.apollographql.apollo:apo
 apolloGraphQl-apolloGradlePlugin = { module = "com.apollographql.apollo:apollo-gradle-plugin", version.ref = "apollo" }
 apolloGraphQl-apolloRuntime = { module = "com.apollographql.apollo:apollo-runtime", version.ref = "apollo" }
 
-cash-molecule = { module = "app.cash.molecule:molecule-gradle-plugin", version = "0.1.0" }
+cash-molecule = { module = "app.cash.molecule:molecule-gradle-plugin", version.ref = "molecule" }
 coroutineDispatcherCore = { module = "com.rickbusarow.dispatch:dispatch-core", version = "1.0.0-beta10" }
+gitlive-firebaseAuth = { module = "dev.gitlive:firebase-auth", version.ref = "gitlive" }
 
 google-android-material = { module = "com.google.android.material:material", version = "1.5.0-alpha04" }
 google-accompanist-coil = { module = "com.google.accompanist:accompanist-coil", version = "0.15.0" }
@@ -113,6 +116,7 @@ android-application = { id = "com.android.application", version.ref = "android" 
 android-library = { id = "com.android.library", version.ref = "android" }
 anvil = { id = "com.squareup.anvil", version.ref = "anvil" }
 apollo = { id = "com.apollographql.apollo", version.ref = "apollo" }
+cash-molecule = { id = "app.cash.molecule", version.ref = "molecule" }
 gradle-doctor = { id = "com.osacky.doctor", version = "0.7.3" }
 johnRengelman-shadow = { id = "com.github.johnrengelman.shadow", version = "7.1.0" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }

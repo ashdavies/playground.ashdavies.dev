@@ -3,6 +3,7 @@
 
 plugins {
     id(libs.plugins.android.application)
+    id(libs.plugins.cash.molecule)
     id(libs.plugins.kotlin.android)
     id(libs.plugins.sqldelight)
 

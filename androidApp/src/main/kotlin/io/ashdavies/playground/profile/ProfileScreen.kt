@@ -36,13 +36,15 @@ import io.ashdavies.playground.profile.ProfileViewState.LoggedIn
 import io.ashdavies.playground.profile.ProfileViewState.LoggedOut
 import kotlin.random.Random.Default.nextInt
 
+private const val IDENTITY_ENDPOINT = "https://identitytoolkit.googleapis.com/v1/accounts"
+
 private val Painter.isLoading: Boolean
     get() = if (this is ImagePainter) isLoading else false
 
 @Preview
 @Composable
 internal fun ProfileScreen() {
-    val profileService = ProfileService(LocalHttpClient.current)
+    val profileService = profileService(LocalHttpClient.current, IDENTITY_ENDPOINT, "")
     val viewModel = ProfileViewModel(profileService)
     val viewState: ProfileViewState? by viewModel
         .viewState

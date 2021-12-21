@@ -1,41 +1,22 @@
 package io.ashdavies.playground.profile
 
-import io.ashdavies.playground.database.Profile
-import io.ashdavies.playground.network.Envelope
+import io.ashdavies.playground.network.Service
+import io.ashdavies.playground.network.ServiceOperator
+import io.ashdavies.playground.network.serviceOperator
 import io.ktor.client.HttpClient
-import io.ktor.client.request.get
-import kotlinx.coroutines.flow.Flow
+import io.ktor.http.content.OutgoingContent.NoContent
 
-private const val RANDOM_USER = "https://randomuser.me/api/"
-
-private val MaxMustermann = Profile(
-    id = "1234-5678-9123-4567",
-    name = "Max Mustermann",
-    location = null,
-    position = null,
-    picture = null,
-)
-
-interface ProfileService {
-    suspend fun authenticate(): Boolean
-    suspend fun getProfile(): Flow<Profile?>
+interface ProfileService : Service {
+    val createAuthUri: ServiceOperator<NoContent, String>
+    val lookup: ServiceOperator<Lookup.Request, Lookup.Response>
 }
 
-fun ProfileService(httpClient: HttpClient) = object : ProfileService {
-    override suspend fun authenticate(): Boolean = false
-
-    override suspend fun getProfile(): Flow<Profile?> = httpClient
-            .get<Envelope<RandomUser>>(RANDOM_USER)
-            .results
-            .first()
-            .toProfile()
-    }
+fun profileService(httpClient: HttpClient, endpoint: String, apiKey: String) = object : ProfileService {
+    override val createAuthUri by serviceOperator<NoContent, String>(httpClient) { "$endpoint/$it?key=$apiKey" }
+    override val lookup by serviceOperator<Lookup.Request, Lookup.Response>(httpClient) { "$endpoint/$it?key=$apiKey" }
 }
 
-private fun RandomUser.toProfile() = Profile(
-    name = "${name.first} ${name.last}",
-    location = "${location.city}, ${location.country}",
-    position = login.username,
-    picture = picture.large,
-    id = login.uuid,
-)
+sealed class Lookup {
+    data class Request(val lookupId: String) : Lookup()
+    data class Response(val email: String) : Lookup()
+}

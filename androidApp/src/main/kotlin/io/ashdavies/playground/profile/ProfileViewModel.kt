@@ -3,6 +3,7 @@ package io.ashdavies.playground.profile
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import io.ashdavies.playground.database.Profile
+import io.ashdavies.playground.network.invoke
 import io.ashdavies.playground.profile.ProfileViewState.LoggedIn
 import io.ashdavies.playground.profile.ProfileViewState.LoggedOut
 import kotlinx.coroutines.flow.SharingStarted.Companion.Eagerly
@@ -13,13 +14,13 @@ import kotlinx.coroutines.launch
 
 internal class ProfileViewModel(private val profileService: ProfileService) : ViewModel() {
 
-    val viewState = flow<Profile?> { profileService.getProfile() }
+    val viewState = flow<Profile?> { profileService.lookup(Lookup.Request("")) }
         .map { if (it == null) LoggedOut else LoggedIn(it) }
         .stateIn(viewModelScope, Eagerly, LoggedOut)
 
     fun onLogin() {
         viewModelScope.launch {
-            profileService.authenticate()
+            println("Navigate to `${profileService.createAuthUri()}`")
         }
     }
 }

@@ -46,6 +46,7 @@ kotlin {
                 implementation(compose.runtime)
                 implementation(compose.foundation)
 
+                //implementation(libs.gitlive.firebaseAuth)
                 implementation(libs.jetbrains.kotlinx.coroutinesCore)
                 implementation(libs.jetbrains.kotlinx.datetime)
                 implementation(libs.jetbrains.kotlinx.serializationJson)
