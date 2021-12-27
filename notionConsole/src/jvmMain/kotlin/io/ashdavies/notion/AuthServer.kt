@@ -11,29 +11,34 @@ import io.ktor.routing.routing
 import io.ktor.server.cio.CIO
 import io.ktor.server.engine.embeddedServer
 import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.withTimeout
+import kotlin.time.Duration
+import kotlin.time.ExperimentalTime
 
-private suspend fun ApplicationCall.respondHtml(text: String) = respondText(
-    contentType = ContentType.Text.Html,
-    status = HttpStatusCode.OK,
-    text = text,
-)
-
+@ExperimentalTime
 actual class AuthServer actual constructor(host: String, path: String, port: Int) {
 
-    private val redirectUri = CompletableDeferred<String>()
+    private val deferredRedirectUri = CompletableDeferred<String>()
     private val server = embeddedServer(CIO, port, host) {
         routing {
             get("/$path") {
-                redirectUri.complete(call.request.uri)
+                deferredRedirectUri.complete(call.request.uri)
                 call.respondHtml(AuthSuccess)
                 stop()
             }
         }
     }.start()
 
-    actual suspend fun awaitRedirectUri(): String = redirectUri.await()
+    @Suppress("HttpUrlsUsage")
+    private val redirectUri: String = "http://$host:$port/$path"
+    actual fun getRedirectUri(): String = redirectUri
 
-    private fun stop() {
-        server.stop(500L, 500L)
-    }
+    actual suspend fun awaitRedirectUri(duration: Duration): String =
+        withTimeout(duration) { deferredRedirectUri.await() }
+
+    private fun stop(gracePeriodMillis: Long = 500L, timeoutMillis: Long = 500L): Unit =
+        server.stop(gracePeriodMillis, timeoutMillis)
+
+    private suspend fun ApplicationCall.respondHtml(text: String) =
+        respondText(text, ContentType.Text.Html, HttpStatusCode.OK)
 }

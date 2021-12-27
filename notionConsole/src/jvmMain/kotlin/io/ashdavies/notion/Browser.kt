@@ -3,16 +3,20 @@ package io.ashdavies.notion
 import java.awt.Desktop
 import java.net.URI
 
-private val desktop: Desktop
-    get() = Desktop.getDesktop()
-
-private val Desktop.isBrowseSupported: Boolean
-    get() = isSupported(Desktop.Action.BROWSE)
-
 actual object Browser {
-    actual fun launch(uriString: String) {
-        if (Desktop.isDesktopSupported() && desktop.isBrowseSupported) {
-            desktop.browse(URI(uriString))
+
+    private val desktop by lazy { Desktop.getDesktop() }
+
+    actual fun launch(uriString: String): Boolean {
+        if (!Desktop.isDesktopSupported()) {
+            return false
         }
+
+        if (!desktop.isSupported(Desktop.Action.BROWSE)) {
+            return false
+        }
+
+        desktop.browse(URI(uriString))
+        return true
     }
 }

@@ -1,5 +1,15 @@
 package io.ashdavies.notion
 
-expect class AuthServer(host: String, path: String, port: Int) {
-    suspend fun awaitRedirectUri(): String
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.minutes
+import kotlin.time.ExperimentalTime
+
+private const val DEFAULT_HOST = "localhost"
+private const val DEFAULT_PATH = "callback"
+private const val DEFAULT_PORT = 8080
+
+@ExperimentalTime
+expect class AuthServer(host: String = DEFAULT_HOST, path: String = DEFAULT_PATH, port: Int = DEFAULT_PORT) {
+    suspend fun awaitRedirectUri(duration: Duration = minutes(2)): String
+    fun getRedirectUri(): String
 }

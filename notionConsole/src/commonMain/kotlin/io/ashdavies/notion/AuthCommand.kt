@@ -1,38 +1,25 @@
 package io.ashdavies.notion
 
 import kotlinx.cli.ExperimentalCli
+import kotlinx.cli.Subcommand
 import org.jraf.klibnotion.client.NotionClient
 import org.jraf.klibnotion.model.oauth.OAuthCodeAndState
 import org.jraf.klibnotion.model.oauth.OAuthCredentials
 import org.jraf.klibnotion.model.oauth.OAuthGetAccessTokenResult
+import kotlin.time.ExperimentalTime
 
-private const val AUTH_ACTION_DESCRIPTION =
-    "Run notion auth login to authenticate with your Notion account."
-
-private const val AUTH_LOGIN_DESCRIPTION =
-    "Run notion auth login to authenticate with your Notion account."
-
-private const val AUTH_LOGOUT_DESCRIPTION =
-    "Run notion auth logout to remove authentication with your Notion account."
-
-private const val API_NOTION_V1 =
-    "https://api.notion.com/v1"
-
-private const val AUTH_SERVER_LOCALHOST = "localhost"
-private const val AUTH_SERVER_CALLBACK = "callback"
-private const val AUTH_SERVER_PORT = 8080
+private const val AUTH_ACTION_DESCRIPTION = "Run notion auth login to authenticate with your Notion account."
+private const val AUTH_LOGIN_DESCRIPTION = "Run notion auth login to authenticate with your Notion account."
+private const val AUTH_LOGOUT_DESCRIPTION = "Run notion auth logout to remove authentication with your Notion account."
 
 private val notionClientId: String
-    get() = Environment["NOTION_CLIENT_ID"]
+    get() = System.getenv("NOTION_CLIENT_ID")
 
 private val notionClientSecret: String
-    get() = Environment["NOTION_CLIENT_SECRET"]
+    get() = System.getenv("NOTION_CLIENT_SECRET")
 
 @ExperimentalCli
-internal class AuthCommand(
-    client: NotionClient.OAuth,
-    queries: AuthResponseQueries,
-) : CloseableSubcommand(
+internal class AuthCommand(client: NotionClient.OAuth, queries: AuthResponseQueries) : Subcommand(
     actionDescription = AUTH_ACTION_DESCRIPTION,
     name = "auth",
 ) {
@@ -49,58 +36,50 @@ internal class AuthCommand(
         subcommands(login, logout/*, refresh, status*/)
     }
 
-    override suspend fun run() = Unit
+    override fun execute() = Unit
 }
 
 @ExperimentalCli
+@OptIn(ExperimentalTime::class)
 private class AuthLoginCommand(
     private val client: NotionClient.OAuth,
     private val queries: AuthResponseQueries,
-) : CloseableSubcommand(
+) : Subcommand(
     actionDescription = AUTH_LOGIN_DESCRIPTION,
     name = "login",
 ) {
-    override suspend fun run() {
+    override fun execute() = runBlocking {
         val queryToken: Authorisation? = queries
             .select()
             .executeAsOneOrNull()
 
         if (queryToken != null) {
             println("Authenticated with session token")
-            return
+            return@runBlocking
         }
 
-        val redirectUri: String = StringBuilder("$API_NOTION_V1/oauth/authorize?")
-            .append("client_id=$notionClientId&")
-            .append("redirect_uri=$notionClientSecret&")
-            .append("response_type=code")
-            .toString()
-
+        val authServer = AuthServer()
         val authCredentials = OAuthCredentials(
+            redirectUri = authServer.getRedirectUri(),
             clientSecret = notionClientSecret,
             clientId = notionClientId,
-            redirectUri = redirectUri,
         )
 
         val uniqueState = randomUuid()
-        val uriString = client.getUserPromptUri(
+        val userPromptUri = client.getUserPromptUri(
             oAuthCredentials = authCredentials,
             uniqueState = uniqueState,
         )
 
-        val authServer = AuthServer(
-            host = AUTH_SERVER_LOCALHOST,
-            path = AUTH_SERVER_CALLBACK,
-            port = AUTH_SERVER_PORT,
-        )
-
-        Browser.launch(uriString)
+        if (!Browser.launch(userPromptUri)) {
+            println("Navigate to $userPromptUri to continue")
+        }
 
         val authResponse: OAuthCodeAndState? = client.extractCodeAndStateFromRedirectUri(
             redirectUri = authServer.awaitRedirectUri()
         )
 
-        if (authResponse == null || authResponse.code != uniqueState) {
+        if (authResponse == null || authResponse.state != uniqueState) {
             throw IllegalStateException("Invalid auth response")
         }
 
@@ -122,14 +101,12 @@ private class AuthLoginCommand(
 }
 
 @ExperimentalCli
-private class AuthLogoutCommand(
-    private val queries: AuthResponseQueries,
-) : CloseableSubcommand(
+private class AuthLogoutCommand(private val queries: AuthResponseQueries) : Subcommand(
     actionDescription = AUTH_LOGOUT_DESCRIPTION,
     name = "logout",
 ) {
 
-    override suspend fun run() {
+    override fun execute() = runBlocking {
         println("Removing authentication")
         queries.deleteAll()
     }

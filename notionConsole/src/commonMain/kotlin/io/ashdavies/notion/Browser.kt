@@ -1,5 +1,5 @@
 package io.ashdavies.notion
 
 expect object Browser {
-    fun launch(uriString: String)
+    fun launch(uriString: String): Boolean
 }

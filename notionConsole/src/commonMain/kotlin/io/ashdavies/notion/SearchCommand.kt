@@ -2,8 +2,11 @@ package io.ashdavies.notion
 
 import kotlinx.cli.ArgType
 import kotlinx.cli.ExperimentalCli
+import kotlinx.cli.Subcommand
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import org.jraf.klibnotion.client.NotionClient
-import org.jraf.klibnotion.model.page.Page
+import org.jraf.klibnotion.model.database.Database
 import org.jraf.klibnotion.model.pagination.Pagination
 import org.jraf.klibnotion.model.pagination.ResultPage
 import org.jraf.klibnotion.model.property.sort.PropertySort
@@ -24,11 +27,8 @@ private const val START_CURSOR_DESCRIPTION =
     "If supplied, this endpoint will return a page of results starting after the cursor provided."
 
 @ExperimentalCli
-internal class SearchCommand(
-    private val client: NotionClient.Search,
-) : CloseableSubcommand(
+internal class SearchCommand(private val client: NotionClient.Search) : Subcommand(
     actionDescription = SEARCH_ACTION_DESCRIPTION,
-    closeable = Closeable { },
     name = "search",
 ) {
 
@@ -56,8 +56,8 @@ internal class SearchCommand(
         type = ArgType.String,
     )
 
-    override suspend fun run() {
-        val page: ResultPage<Page> = client.searchPages(
+    override fun execute() = runBlocking {
+        val page: ResultPage<Database> = client.searchDatabases(
             sort = sort(sortTimestamp, sortDirection),
             pagination = Pagination(startCursor),
             query = query,
@@ -65,7 +65,7 @@ internal class SearchCommand(
 
         val total = if (page.nextPagination != null) "many" else "${page.results.size}"
         println("Showing ${page.results.size} databases of $total\n\n")
-        page.results.forEach { println(" ${it.url}\n") }
+        page.results.forEach { println(" $it\n") }
     }
 
     private fun sort(timestamp: SortTimestamp?, direction: SortDirection?): PropertySort? = timestamp?.let {
