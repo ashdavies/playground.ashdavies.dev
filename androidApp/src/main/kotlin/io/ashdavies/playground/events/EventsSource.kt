@@ -4,8 +4,8 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.squareup.sqldelight.Query
 import io.ashdavies.playground.common.findRefreshKey
-import io.ashdavies.playground.database.Event
-import io.ashdavies.playground.database.EventsQueries
+import io.ashdavies.playground.Event
+import io.ashdavies.playground.EventsQueries
 import io.ashdavies.playground.network.todayAsString
 import kotlin.properties.Delegates.observable
 

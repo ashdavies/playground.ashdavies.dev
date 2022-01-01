@@ -6,8 +6,8 @@ import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import io.ashdavies.playground.common.findRefreshKey
 import io.ashdavies.playground.common.lastItemOrNull
-import io.ashdavies.playground.database.Event
-import io.ashdavies.playground.database.EventsQueries
+import io.ashdavies.playground.Event
+import io.ashdavies.playground.EventsQueries
 import io.ashdavies.playground.network.EventsService
 import io.ashdavies.playground.network.todayAsString
 import io.ktor.client.features.ResponseException

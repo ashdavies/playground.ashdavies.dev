@@ -2,7 +2,7 @@ package io.ashdavies.playground.profile
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import io.ashdavies.playground.database.Profile
+import io.ashdavies.playground.Profile
 import io.ashdavies.playground.network.invoke
 import io.ashdavies.playground.profile.ProfileViewState.LoggedIn
 import io.ashdavies.playground.profile.ProfileViewState.LoggedOut

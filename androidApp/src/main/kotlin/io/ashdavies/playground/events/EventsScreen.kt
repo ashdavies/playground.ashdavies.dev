@@ -38,11 +38,11 @@ import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.squareup.sqldelight.android.AndroidSqliteDriver
 import io.ashdavies.playground.DatabaseFactory
+import io.ashdavies.playground.Event
+import io.ashdavies.playground.EventsQueries
+import io.ashdavies.playground.PlaygroundDatabase
 import io.ashdavies.playground.common.viewModel
 import io.ashdavies.playground.compose.fade
-import io.ashdavies.playground.database.Event
-import io.ashdavies.playground.database.EventsQueries
-import io.ashdavies.playground.database.PlaygroundDatabase
 import io.ashdavies.playground.emptyString
 import io.ashdavies.playground.network.EventsService
 import io.ashdavies.playground.network.LocalHttpClient

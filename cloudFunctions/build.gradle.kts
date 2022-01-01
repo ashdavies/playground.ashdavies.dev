@@ -13,6 +13,7 @@ plugins {
 configurations.create("invoker")
 
 dependencies {
+    implementation(project(":localStorage"))
     implementation(project(":shared"))
 
     implementation(libs.coroutineDispatcherCore)

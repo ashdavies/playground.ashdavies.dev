@@ -18,7 +18,7 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation(project(":sqlDriver"))
+                implementation(project(":localStorage"))
 
                 implementation(compose.runtime)
                 implementation(compose.foundation)

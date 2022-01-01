@@ -48,18 +48,12 @@ kotlin {
 
         val commonMain by getting {
             dependencies {
-                implementation(project(":localStorage"))
-
                 implementation(compose.runtime)
                 implementation(compose.foundation)
 
                 implementation(libs.jetbrains.kotlinx.coroutinesCore)
                 implementation(libs.jetbrains.kotlinx.datetime)
                 implementation(libs.jetbrains.kotlinx.serializationJson)
-                implementation(libs.ktor.client.core)
-                implementation(libs.ktor.client.json)
-                implementation(libs.ktor.client.logging)
-                implementation(libs.ktor.client.serialization)
                 implementation(libs.sqlDelight.coroutinesExtensions)
                 implementation(libs.sqlDelight.runtime)
             }
@@ -75,16 +69,8 @@ kotlin {
         val androidMain by getting {
             dependencies {
                 implementation(libs.jetbrains.kotlinx.coroutinesAndroid)
-                implementation(libs.ktor.client.android)
                 implementation(libs.requery.sqliteAndroid)
                 implementation(libs.sqlDelight.androidDriver)
-            }
-        }
-
-        val androidTest by getting {
-            dependencies {
-                implementation(libs.jetbrains.kotlin.test)
-                implementation(libs.jetbrains.kotlin.testJunit)
             }
         }
 
@@ -93,5 +79,12 @@ kotlin {
                 implementation(libs.sqlDelight.sqliteDriver)
             }
         }
+    }
+}
+
+sqldelight {
+    database("PlaygroundDatabase") {
+        packageName = "io.ashdavies.playground"
+        dialect = "sqlite:3.25"
     }
 }

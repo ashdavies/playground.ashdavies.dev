@@ -1,7 +1,7 @@
 package io.ashdavies.playground.events
 
 import com.google.cloud.functions.HttpRequest
-import io.ashdavies.playground.database.EventsSerializer
+import io.ashdavies.playground.EventsSerializer
 import io.ashdavies.playground.google.FirebaseFunction
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.json.Json

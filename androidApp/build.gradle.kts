@@ -40,13 +40,11 @@ android {
 }
 
 fun ApplicationDefaultConfig.buildConfigField(type: String = "String"): ReadOnlyProperty<VariantDimension?, Unit> =
-    CaseProperty {
-        buildConfigField(type, it, System.getenv(it))
-    }
+    CaseProperty { buildConfigField(type, it, System.getenv(it)) }
 
 dependencies {
+    implementation(project(":localStorage"))
     implementation(project(":shared"))
-    implementation(project(":sqlDriver"))
 
     implementation(libs.androidx.activityKtx)
     implementation(libs.androidx.annotation)

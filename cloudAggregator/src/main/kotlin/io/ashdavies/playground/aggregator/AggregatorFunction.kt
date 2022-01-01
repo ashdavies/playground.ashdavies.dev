@@ -1,7 +1,7 @@
 package io.ashdavies.playground.aggregator
 
 import com.google.cloud.functions.HttpRequest
-import io.ashdavies.playground.database.Event
+import io.ashdavies.playground.Event
 import io.ashdavies.playground.events.DocumentProvider
 import io.ashdavies.playground.events.EventsQuery
 import io.ashdavies.playground.events.EventsReader

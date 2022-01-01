@@ -1,6 +1,6 @@
 package io.ashdavies.playground.network
 
-import io.ashdavies.playground.database.Event
+import io.ashdavies.playground.Event
 import io.ktor.client.HttpClient
 import io.ktor.client.request.get
 

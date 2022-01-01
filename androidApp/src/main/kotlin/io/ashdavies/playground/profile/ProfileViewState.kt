@@ -1,6 +1,6 @@
 package io.ashdavies.playground.profile
 
-import io.ashdavies.playground.database.Profile
+import io.ashdavies.playground.Profile
 
 internal sealed class ProfileViewState {
 
