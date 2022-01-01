@@ -1,6 +1,10 @@
 // https://youtrack.jetbrains.com/issue/KTIJ-19369
 @file:Suppress("DSL_SCOPE_VIOLATION")
 
+import com.android.build.api.dsl.ApplicationDefaultConfig
+import com.android.build.api.dsl.VariantDimension
+import kotlin.properties.ReadOnlyProperty
+
 plugins {
     id(libs.plugins.android.application)
     id(libs.plugins.cash.molecule)
@@ -26,12 +30,19 @@ android {
 
         versionCode = 1
         versionName = "1.0"
+
+        val playgroundApiKey by buildConfigField()
     }
 
     sourceSets.configureEach {
         java.srcDirs("src/$name/kotlin")
     }
 }
+
+fun ApplicationDefaultConfig.buildConfigField(type: String = "String"): ReadOnlyProperty<VariantDimension?, Unit> =
+    CaseProperty {
+        buildConfigField(type, it, System.getenv(it))
+    }
 
 dependencies {
     implementation(project(":shared"))

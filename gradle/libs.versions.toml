@@ -45,7 +45,6 @@ apolloGraphQl-apolloRuntime = { module = "com.apollographql.apollo:apollo-runtim
 
 cash-molecule = { module = "app.cash.molecule:molecule-gradle-plugin", version.ref = "molecule" }
 coroutineDispatcherCore = { module = "com.rickbusarow.dispatch:dispatch-core", version = "1.0.0-beta10" }
-gitlive-firebaseAuth = { module = "dev.gitlive:firebase-auth", version.ref = "gitlive" }
 
 google-android-material = { module = "com.google.android.material:material", version = "1.5.0-alpha04" }
 google-accompanist-coil = { module = "com.google.accompanist:accompanist-coil", version = "0.15.0" }
