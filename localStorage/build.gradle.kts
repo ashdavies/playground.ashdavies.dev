@@ -28,8 +28,6 @@ android {
 
     defaultConfig {
         compileSdk = 31
-        targetSdk = 31
-        minSdk = 23
     }
 
     sourceSets.forEach { sourceSet ->
@@ -42,12 +40,10 @@ kotlin {
     jvm()
 
     sourceSets {
-        all {
-            languageSettings.optIn("kotlin.RequiresOptIn")
-        }
-
         val commonMain by getting {
             dependencies {
+                api(project(":composeLocal"))
+
                 implementation(compose.runtime)
                 implementation(compose.foundation)
 
@@ -56,13 +52,6 @@ kotlin {
                 implementation(libs.jetbrains.kotlinx.serializationJson)
                 implementation(libs.sqlDelight.coroutinesExtensions)
                 implementation(libs.sqlDelight.runtime)
-            }
-        }
-
-        val commonTest by getting {
-            dependencies {
-                implementation(libs.jetbrains.kotlin.testAnnotations)
-                implementation(libs.jetbrains.kotlin.testCommon)
             }
         }
 

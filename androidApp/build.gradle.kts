@@ -9,7 +9,6 @@ plugins {
     id(libs.plugins.android.application)
     id(libs.plugins.cash.molecule)
     id(libs.plugins.kotlin.android)
-    id(libs.plugins.sqldelight)
 
     alias(libs.plugins.serialization)
 }
@@ -78,13 +77,8 @@ dependencies {
     implementation(libs.ktor.client.core)
     implementation(libs.ktor.client.json)
     implementation(libs.ktor.client.serialization)
-    implementation(libs.sqlDelight.androidDriver)
-    implementation(libs.sqlDelight.androidPaging)
-    implementation(libs.sqlDelight.coroutinesExtensions)
-    implementation(libs.sqlDelight.runtime)
 
     testImplementation(libs.jetbrains.kotlin.test)
     testImplementation(libs.jetbrains.kotlin.testJunit)
     testImplementation(libs.jetbrains.kotlinx.coroutinesTest)
-    testImplementation(libs.sqlDelight.sqliteDriver)
 }

@@ -1,5 +1,7 @@
 package io.ashdavies.notion
 
+import io.ashdavies.playground.Token
+import io.ashdavies.playground.TokenQueries
 import kotlinx.cli.ExperimentalCli
 import kotlinx.cli.Subcommand
 import org.jraf.klibnotion.client.NotionClient
@@ -19,7 +21,7 @@ private val notionClientSecret: String
     get() = System.getenv("NOTION_CLIENT_SECRET")
 
 @ExperimentalCli
-internal class AuthCommand(client: NotionClient.OAuth, queries: AuthResponseQueries) : Subcommand(
+internal class AuthCommand(client: NotionClient.OAuth, queries: TokenQueries) : Subcommand(
     actionDescription = AUTH_ACTION_DESCRIPTION,
     name = "auth",
 ) {
@@ -43,13 +45,13 @@ internal class AuthCommand(client: NotionClient.OAuth, queries: AuthResponseQuer
 @OptIn(ExperimentalTime::class)
 private class AuthLoginCommand(
     private val client: NotionClient.OAuth,
-    private val queries: AuthResponseQueries,
+    private val queries: TokenQueries,
 ) : Subcommand(
     actionDescription = AUTH_LOGIN_DESCRIPTION,
     name = "login",
 ) {
     override fun execute() = runBlocking {
-        val queryToken: Authorisation? = queries
+        val queryToken: Token? = queries
             .select()
             .executeAsOneOrNull()
 
@@ -88,7 +90,7 @@ private class AuthLoginCommand(
             code = authResponse.code,
         )
 
-        queries.insert(
+        val token = Token(
             accessToken = authResult.accessToken,
             workspaceId = authResult.workspaceId,
             workspaceName = authResult.workspaceName,
@@ -96,12 +98,13 @@ private class AuthLoginCommand(
             botId = authResult.botId,
         )
 
+        queries.insert(token)
         println("Authentication complete")
     }
 }
 
 @ExperimentalCli
-private class AuthLogoutCommand(private val queries: AuthResponseQueries) : Subcommand(
+private class AuthLogoutCommand(private val queries: TokenQueries) : Subcommand(
     actionDescription = AUTH_LOGOUT_DESCRIPTION,
     name = "logout",
 ) {

@@ -5,9 +5,8 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinJvmCompilation
 
 plugins {
     id(libs.plugins.kotlin.multiplatform)
-    id(libs.plugins.sqldelight)
-
     application
+
     alias(libs.plugins.serialization)
     group(libs.jetbrains.compose.gradlePlugin)
 }
@@ -16,6 +15,10 @@ kotlin {
     val jvmTarget = jvm()
 
     sourceSets {
+        all {
+            languageSettings.optIn("kotlin.RequiresOptIn")
+        }
+
         val commonMain by getting {
             dependencies {
                 implementation(project(":localStorage"))
@@ -30,8 +33,6 @@ kotlin {
                 implementation(libs.jraf.klibnotion)
                 implementation(libs.ktor.server.core)
                 implementation(libs.qos.logbackClassic)
-                implementation(libs.sqlDelight.coroutinesExtensions)
-                implementation(libs.sqlDelight.runtime)
             }
         }
 
@@ -41,7 +42,6 @@ kotlin {
 
                 implementation(libs.jetbrains.kotlinx.coroutinesJdk)
                 implementation(libs.ktor.server.cio)
-                implementation(libs.sqlDelight.sqliteDriver)
             }
         }
     }
@@ -66,11 +66,4 @@ application {
 
 tasks.test {
     useJUnit()
-}
-
-sqldelight {
-    database("AuthHistory") {
-        packageName = "io.ashdavies.notion"
-        dialect = "mysql"
-    }
 }

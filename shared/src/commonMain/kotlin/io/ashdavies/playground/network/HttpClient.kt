@@ -1,8 +1,8 @@
 package io.ashdavies.playground.network
 
 import androidx.compose.runtime.staticCompositionLocalOf
-import io.ashdavies.playground.compose.staticComposableCompositionLocalOf
 import io.ashdavies.playground.EventsSerializer
+import io.ashdavies.playground.composableCompositionLocalOf
 import io.ashdavies.playground.profile.RandomUser
 import io.ktor.client.HttpClient
 import io.ktor.client.features.json.JsonFeature
@@ -16,7 +16,7 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.contextual
 
-val LocalHttpClient = staticComposableCompositionLocalOf {
+val LocalHttpClient = composableCompositionLocalOf {
     val json: Json = LocalJson.current
 
     HttpClient {

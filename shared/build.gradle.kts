@@ -48,6 +48,7 @@ kotlin {
 
         val commonMain by getting {
             dependencies {
+                implementation(project(":composeLocal"))
                 implementation(project(":localStorage"))
 
                 implementation(compose.runtime)

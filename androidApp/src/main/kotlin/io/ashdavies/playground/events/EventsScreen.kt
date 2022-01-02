@@ -1,6 +1,5 @@
 package io.ashdavies.playground.events
 
-import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -23,7 +22,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -36,18 +34,14 @@ import androidx.paging.compose.items
 import com.google.accompanist.insets.ui.LocalScaffoldPadding
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
-import com.squareup.sqldelight.android.AndroidSqliteDriver
-import io.ashdavies.playground.DatabaseFactory
 import io.ashdavies.playground.Event
-import io.ashdavies.playground.EventsQueries
-import io.ashdavies.playground.PlaygroundDatabase
+import io.ashdavies.playground.LocalPlaygroundDatabase
 import io.ashdavies.playground.common.viewModel
 import io.ashdavies.playground.compose.fade
 import io.ashdavies.playground.emptyString
 import io.ashdavies.playground.network.EventsService
 import io.ashdavies.playground.network.LocalHttpClient
 import io.ktor.client.HttpClient
-import kotlinx.coroutines.runBlocking
 
 @Preview
 @Composable
@@ -57,14 +51,8 @@ internal fun EventsScreen() {
         EventsService(httpClient)
     }
 
-    val context: Context = LocalContext.current
-    val eventsQueries: EventsQueries = remember {
-        runBlocking {
-            DatabaseFactory { AndroidSqliteDriver(it, context) }
-                .create(PlaygroundDatabase.Schema) { PlaygroundDatabase(it) }
-                .eventsQueries
-        }
-    }
+    val playgroundDatabase = LocalPlaygroundDatabase.current
+    val eventsQueries = playgroundDatabase.eventsQueries
 
     val viewModel: EventsViewModel = viewModel {
         EventsViewModel(eventsQueries, eventsService)
