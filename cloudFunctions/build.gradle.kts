@@ -14,7 +14,6 @@ configurations.create("invoker")
 
 dependencies {
     implementation(project(":localStorage"))
-    implementation(project(":shared"))
 
     implementation(libs.coroutineDispatcherCore)
     implementation(libs.google.cloud.functionsFrameworkApi)

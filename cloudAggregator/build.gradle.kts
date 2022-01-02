@@ -20,7 +20,6 @@ configurations.create("invoker")
 dependencies {
     implementation(project(":cloudFunctions"))
     implementation(project(":localStorage"))
-    implementation(project(":shared"))
 
     implementation(libs.apolloGraphQl.apolloRuntime)
     implementation(libs.apolloGraphQl.apolloCoroutinesSupport)
