@@ -23,4 +23,6 @@ include(
     ":versionCatalog"
 )
 
+includeBuild("buildPlugins")
+
 enableFeaturePreview("VERSION_CATALOGS")

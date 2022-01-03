@@ -4,11 +4,10 @@
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinJvmCompilation
 
 plugins {
-    id(libs.plugins.kotlin.multiplatform)
+    id("compose-multiplatform")
     application
 
     alias(libs.plugins.serialization)
-    group(libs.jetbrains.compose.gradlePlugin)
 }
 
 kotlin {
@@ -22,9 +21,6 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation(project(":localStorage"))
-
-                implementation(compose.runtime)
-                implementation(compose.foundation)
 
                 implementation(libs.jetbrains.kotlinx.cli)
                 implementation(libs.jetbrains.kotlinx.datetime)

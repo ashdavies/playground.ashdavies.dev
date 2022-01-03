@@ -1,15 +1,12 @@
 // https://youtrack.jetbrains.com/issue/KTIJ-19369
 @file:Suppress("DSL_SCOPE_VIOLATION")
 
-import org.jetbrains.compose.compose
-
 plugins {
+    id("compose-multiplatform")
     id(libs.plugins.android.library)
-    id(libs.plugins.kotlin.multiplatform)
-    id(libs.plugins.sqldelight)
 
+    id(libs.plugins.sqldelight)
     alias(libs.plugins.serialization)
-    group(libs.jetbrains.compose.gradlePlugin)
 }
 
 android {
@@ -50,9 +47,6 @@ kotlin {
             dependencies {
                 implementation(project(":composeLocal"))
                 implementation(project(":localStorage"))
-
-                implementation(compose.runtime)
-                implementation(compose.foundation)
 
                 implementation(libs.jetbrains.kotlinx.coroutinesCore)
                 implementation(libs.jetbrains.kotlinx.datetime)

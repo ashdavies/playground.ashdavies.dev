@@ -1,13 +1,9 @@
 // https://youtrack.jetbrains.com/issue/KTIJ-19369
 @file:Suppress("DSL_SCOPE_VIOLATION")
 
-import org.jetbrains.compose.compose
-
 plugins {
+    id("compose-multiplatform")
     id(libs.plugins.android.library)
-    id(libs.plugins.kotlin.multiplatform)
-
-    group(libs.jetbrains.compose.gradlePlugin)
 }
 
 android {
@@ -36,12 +32,4 @@ android {
 kotlin {
     android()
     jvm()
-
-    sourceSets {
-        val commonMain by getting {
-            dependencies {
-                implementation(compose.runtime)
-            }
-        }
-    }
 }
