@@ -16,10 +16,10 @@ include(
     ":androidApp",
     ":cloudAggregator",
     ":cloudFunctions",
+    ":commonApp",
     ":composeLocal",
     ":localStorage",
     ":notionConsole",
-    ":shared",
     ":versionCatalog"
 )
 

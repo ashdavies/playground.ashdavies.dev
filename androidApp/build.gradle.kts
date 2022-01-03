@@ -42,8 +42,8 @@ fun ApplicationDefaultConfig.buildConfigField(type: String = "String"): ReadOnly
     CaseProperty { buildConfigField(type, it, System.getenv(it)) }
 
 dependencies {
+    implementation(project(":commonApp"))
     implementation(project(":localStorage"))
-    implementation(project(":shared"))
 
     implementation(libs.androidx.activityKtx)
     implementation(libs.androidx.annotation)
