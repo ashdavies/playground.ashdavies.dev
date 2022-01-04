@@ -1,5 +1,5 @@
 package io.ashdavies.notion
 
-expect object System {
-    fun getenv(name: String): String
+public expect object System {
+    public fun getenv(name: String): String
 }

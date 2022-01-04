@@ -1,3 +1,3 @@
 package io.ashdavies.notion
 
-expect fun randomUuid(): String
+public expect fun randomUuid(): String

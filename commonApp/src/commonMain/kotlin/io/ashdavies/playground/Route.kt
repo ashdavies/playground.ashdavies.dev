@@ -1,11 +1,11 @@
 package io.ashdavies.playground
 
-sealed class Route(val name: String) {
+public sealed class Route(public val name: String) {
 
-    object Events : Route("events")
-    object Profile : Route("profile")
+    public object Events : Route("events")
+    public object Profile : Route("profile")
 
-    companion object {
-        val routes get() = listOf(Events, Profile)
+    public companion object {
+        public val routes: List<Route> get() = listOf(Events, Profile)
     }
 }

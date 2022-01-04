@@ -2,6 +2,7 @@
 
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
+import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.getValue
 import org.gradle.kotlin.dsl.getting
 import org.gradle.kotlin.dsl.hasPlugin
@@ -19,11 +20,19 @@ internal class ComposeMultiplatform : ProjectCommon() {
         }
 
         extensions.configure<KotlinMultiplatformExtension> {
+            jvm()
+
             sourceSets {
                 val commonMain by getting {
                     dependencies {
                         implementation(compose.runtime)
                         implementation(compose.foundation)
+                    }
+                }
+
+                val jvmMain by getting {
+                    dependencies {
+                        implementation(compose.desktop.currentOs)
                     }
                 }
             }

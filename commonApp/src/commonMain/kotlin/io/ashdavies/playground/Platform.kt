@@ -1,5 +1,5 @@
 package io.ashdavies.playground
 
-expect object Platform {
-    val platform: String
+public expect object Platform {
+    public val platform: String
 }

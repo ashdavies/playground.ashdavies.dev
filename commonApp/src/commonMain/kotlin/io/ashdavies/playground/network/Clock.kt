@@ -4,6 +4,6 @@ import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone.Companion.currentSystemDefault
 import kotlinx.datetime.todayAt
 
-fun todayAsString() = Clock.System
+public fun todayAsString(): String = Clock.System
     .todayAt(currentSystemDefault())
     .toString()

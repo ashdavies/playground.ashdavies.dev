@@ -11,13 +11,7 @@ plugins {
 }
 
 kotlin {
-    val jvmTarget = jvm()
-
     sourceSets {
-        all {
-            languageSettings.optIn("kotlin.RequiresOptIn")
-        }
-
         val commonMain by getting {
             dependencies {
                 implementation(project(":localStorage"))
@@ -34,8 +28,6 @@ kotlin {
 
         val jvmMain by getting {
             dependencies {
-                implementation(compose.desktop.currentOs)
-
                 implementation(libs.jetbrains.kotlinx.coroutinesJdk)
                 implementation(libs.ktor.server.cio)
             }
@@ -43,7 +35,7 @@ kotlin {
     }
 
     tasks.withType<JavaExec> {
-        val compilation: KotlinJvmCompilation = jvmTarget
+        val compilation: KotlinJvmCompilation = jvm()
             .compilations
             .getByName("main")
 

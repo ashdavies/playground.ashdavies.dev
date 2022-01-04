@@ -23,6 +23,7 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.annotation.ExperimentalCoilApi
 import coil.compose.ImagePainter
 import coil.compose.rememberImagePainter
 import com.google.accompanist.flowlayout.FlowRow
@@ -43,6 +44,7 @@ private val Painter.isLoading: Boolean
 
 @Preview
 @Composable
+@OptIn(ExperimentalCoilApi::class)
 internal fun ProfileScreen() {
     val profileService = profileService(LocalHttpClient.current, IDENTITY_ENDPOINT, "")
     val viewModel = ProfileViewModel(profileService)
@@ -50,10 +52,9 @@ internal fun ProfileScreen() {
         .viewState
         .collectAsState()
 
-    val coilPainter: Painter = when (val viewState = viewState) {
-        is LoggedIn -> rememberImagePainter(viewState.picture)
-        else -> EmptyPainter
-    }
+    val coilPainter: Painter = (viewState as? LoggedIn)
+        ?.run { rememberImagePainter(picture) }
+        ?: EmptyPainter
 
     Box(modifier = Modifier.padding(LocalScaffoldPadding.current)) {
         Column(modifier = Modifier.padding(16.dp)) {

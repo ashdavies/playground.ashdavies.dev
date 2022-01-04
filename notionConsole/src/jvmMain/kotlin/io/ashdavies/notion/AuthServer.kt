@@ -16,7 +16,7 @@ import kotlin.time.Duration
 import kotlin.time.ExperimentalTime
 
 @ExperimentalTime
-actual class AuthServer actual constructor(host: String, path: String, port: Int) {
+public actual class AuthServer actual constructor(host: String, path: String, port: Int) {
 
     private val deferredRedirectUri = CompletableDeferred<String>()
     private val server = embeddedServer(CIO, port, host) {
@@ -31,9 +31,9 @@ actual class AuthServer actual constructor(host: String, path: String, port: Int
 
     @Suppress("HttpUrlsUsage")
     private val redirectUri: String = "http://$host:$port/$path"
-    actual fun getRedirectUri(): String = redirectUri
+    public actual fun getRedirectUri(): String = redirectUri
 
-    actual suspend fun awaitRedirectUri(duration: Duration): String =
+    public actual suspend fun awaitRedirectUri(duration: Duration): String =
         withTimeout(duration) { deferredRedirectUri.await() }
 
     private fun stop(gracePeriodMillis: Long = 500L, timeoutMillis: Long = 500L): Unit =

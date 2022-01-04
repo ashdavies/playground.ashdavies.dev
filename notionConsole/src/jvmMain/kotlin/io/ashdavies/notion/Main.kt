@@ -2,6 +2,6 @@ package io.ashdavies.notion
 
 import androidx.compose.ui.window.application
 
-fun main(args: Array<String>) = application {
+public fun main(args: Array<String>): Unit = application {
     NotionConsole(args)
 }

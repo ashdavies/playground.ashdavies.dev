@@ -1,6 +1,8 @@
 package io.ashdavies.playground.network
 
+import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.staticCompositionLocalOf
+import io.ashdavies.playground.ComposableCompositionLocal
 import io.ashdavies.playground.EventsSerializer
 import io.ashdavies.playground.composableCompositionLocalOf
 import io.ashdavies.playground.profile.RandomUser
@@ -16,7 +18,7 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.contextual
 
-val LocalHttpClient = composableCompositionLocalOf {
+public val LocalHttpClient: ComposableCompositionLocal<HttpClient> = composableCompositionLocalOf {
     val json: Json = LocalJson.current
 
     HttpClient {
@@ -31,7 +33,7 @@ val LocalHttpClient = composableCompositionLocalOf {
     }
 }
 
-val LocalJson = staticCompositionLocalOf {
+public val LocalJson: ProvidableCompositionLocal<Json> = staticCompositionLocalOf {
     Json {
         serializersModule = SerializersModule {
             contextual(Envelope.serializer(RandomUser.serializer()))
