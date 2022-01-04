@@ -1,5 +1,10 @@
 import org.gradle.accessors.dm.LibrariesForLibs
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.getByName
 
-// https://github.com/gradle/gradle/issues/15383
-val Project.libs: LibrariesForLibs get() = extensions.getByName("libs") as LibrariesForLibs
+/*
+ * Make version catalogs accessible from precompiled script plugins
+ * https://github.com/gradle/gradle/issues/15383
+ */
+val Project.libs: LibrariesForLibs
+    get() = extensions.getByName<LibrariesForLibs>("libs")

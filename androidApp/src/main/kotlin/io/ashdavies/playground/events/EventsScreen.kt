@@ -38,7 +38,6 @@ import io.ashdavies.playground.Event
 import io.ashdavies.playground.LocalPlaygroundDatabase
 import io.ashdavies.playground.common.viewModel
 import io.ashdavies.playground.compose.fade
-import io.ashdavies.playground.emptyString
 import io.ashdavies.playground.network.EventsService
 import io.ashdavies.playground.network.LocalHttpClient
 import io.ktor.client.HttpClient
@@ -148,3 +147,6 @@ internal fun EventFailure(message: String?, modifier: Modifier = Modifier) {
         }
     }
 }
+
+@Suppress("NOTHING_TO_INLINE")
+private inline fun emptyString(): String = ""

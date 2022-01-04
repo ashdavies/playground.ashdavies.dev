@@ -1,7 +1,6 @@
 package io.ashdavies.playground.events
 
 import com.google.cloud.functions.HttpRequest
-import io.ashdavies.playground.emptyString
 import java.io.BufferedReader
 import java.io.InputStream
 import java.io.StringReader
@@ -70,3 +69,6 @@ internal class FakeHttpRequest(builder: Builder) : HttpRequest {
             .build()
     }
 }
+
+@Suppress("NOTHING_TO_INLINE")
+private inline fun emptyString(): String = ""

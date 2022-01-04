@@ -4,7 +4,7 @@
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinJvmCompilation
 
 plugins {
-    id("compose-multiplatform")
+    id("playground-compose-multiplatform")
     application
 
     alias(libs.plugins.serialization)
