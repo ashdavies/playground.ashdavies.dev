@@ -15,8 +15,8 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation(project(":composeLocal"))
-                implementation(project(":localStorage"))
+                implementation(project(":compose-local"))
+                implementation(project(":local-storage"))
 
                 implementation(libs.jetbrains.kotlinx.coroutinesCore)
                 implementation(libs.jetbrains.kotlinx.datetime)

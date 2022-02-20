@@ -4,25 +4,17 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 
 plugins {
-    id(libs.plugins.apollo)
     id(libs.plugins.kotlin.jvm)
 
     alias(libs.plugins.johnRengelman.shadow)
     alias(libs.plugins.serialization)
 }
 
-apollo {
-    generateKotlinModels.set(true)
-}
-
 configurations.create("invoker")
 
 dependencies {
-    implementation(project(":cloudFunctions"))
-    implementation(project(":localStorage"))
 
-    implementation(libs.apolloGraphQl.apolloRuntime)
-    implementation(libs.apolloGraphQl.apolloCoroutinesSupport)
+    implementation(project(":local-storage"))
     implementation(libs.coroutineDispatcherCore)
     implementation(libs.google.cloud.functionsFrameworkApi)
     implementation(libs.google.firebase.admin)
@@ -42,17 +34,18 @@ tasks.named<ShadowJar>("shadowJar") {
     mergeServiceFiles()
 }
 
-tasks.register<Exec>("deployAggregatorFunction") {
+tasks.register<Exec>("deployEventsFunction") {
     dependsOn(tasks.named("shadowJar"))
 
-    description = "Deploy aggregator function to Google Cloud"
+    description = "Deploy events function to Google Cloud"
     workingDir = project.buildDir
     group = "deploy"
 
     commandLine = listOf(
-        "gcloud", "functions", "deploy", "aggregator",
-        "--entry-point=io.ashdavies.playground.aggregator.AggregatorFunction",
+        "gcloud", "functions", "deploy", "events",
+        "--entry-point=io.ashdavies.playground.events.EventsFunction",
         "--project=playground-1a136",
+        "--allow-unauthenticated",
         "--region=europe-west1",
         "--source=playground",
         "--runtime=java11",
@@ -60,8 +53,7 @@ tasks.register<Exec>("deployAggregatorFunction") {
     )
 }
 
-// TODO Make curl request against localhost and return results, then kill server
-tasks.register("runAggregatorFunction", JavaExec::class) {
+tasks.register("runEventsFunction", JavaExec::class) {
     dependsOn(tasks.named("compileKotlin"))
     description = "Run events cloud functions"
     group = "run"
@@ -73,7 +65,7 @@ tasks.register("runAggregatorFunction", JavaExec::class) {
         inputs.files(configurations.runtimeClasspath, output)
     }
 
-    args("--target", "io.ashdavies.playground.aggregator.AggregatorFunction")
+    args("--target", "io.ashdavies.playground.events.EventsFunction")
     args("--port", 8080)
 
     doFirst {

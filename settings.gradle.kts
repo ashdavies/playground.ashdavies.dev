@@ -13,16 +13,16 @@ pluginManagement {
 rootProject.name = "playground"
 
 include(
-    ":androidApp",
-    ":cloudAggregator",
-    ":cloudFunctions",
-    ":commonApp",
-    ":composeLocal",
-    ":localStorage",
-    ":notionConsole",
-    ":versionCatalog"
+    ":android",
+    ":cloud-aggregator",
+    ":cloud-functions",
+    ":common-app",
+    ":compose-local",
+    ":local-storage",
+    ":notion-console",
+    ":version-catalog"
 )
 
-includeBuild("buildPlugins")
+includeBuild("build-plugins")
 
 enableFeaturePreview("VERSION_CATALOGS")

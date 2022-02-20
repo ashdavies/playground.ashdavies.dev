@@ -29,8 +29,8 @@ fun ApplicationDefaultConfig.buildConfigField(type: String = "String"): ReadOnly
 }
 
 dependencies {
-    implementation(project(":commonApp"))
-    implementation(project(":localStorage"))
+    implementation(project(":common-app"))
+    implementation(project(":local-storage"))
 
     implementation(libs.androidx.activityKtx)
     implementation(libs.androidx.annotation)

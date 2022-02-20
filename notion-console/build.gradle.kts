@@ -14,7 +14,7 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation(project(":localStorage"))
+                implementation(project(":local-storage"))
 
                 implementation(libs.jetbrains.kotlinx.cli)
                 implementation(libs.jetbrains.kotlinx.datetime)

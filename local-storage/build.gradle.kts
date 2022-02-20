@@ -15,7 +15,7 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                api(project(":composeLocal"))
+                api(project(":compose-local"))
 
                 implementation(libs.jetbrains.kotlinx.datetime)
                 implementation(libs.jetbrains.kotlinx.serializationJson)
