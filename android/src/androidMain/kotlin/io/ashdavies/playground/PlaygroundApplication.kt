@@ -1,4 +1,4 @@
-package io.ashdavies.playground.playground
+package io.ashdavies.playground
 
 import android.app.Application
 import com.google.android.material.color.DynamicColors.applyToActivitiesIfAvailable

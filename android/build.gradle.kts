@@ -3,6 +3,7 @@
 
 import com.android.build.api.dsl.ApplicationDefaultConfig
 import com.android.build.api.dsl.VariantDimension
+import org.jetbrains.compose.compose
 import kotlin.properties.ReadOnlyProperty
 
 plugins {
@@ -38,12 +39,26 @@ android {
 
 kotlin {
     android()
+    jvm()
 
     sourceSets {
         val commonMain by getting {
             dependencies {
                 implementation(project(":compose-local"))
                 implementation(project(":local-storage"))
+
+                with(compose) {
+                    implementation(foundation)
+                    implementation(material)
+                    implementation(runtime)
+                    implementation(uiTooling)
+                    implementation(ui)
+                }
+
+                with(libs.arkivanov) {
+                    implementation(decompose.extensions)
+                    implementation(decompose)
+                }
 
                 with(libs.jetbrains.kotlinx) {
                     implementation(coroutinesCore)
@@ -52,11 +67,14 @@ kotlin {
                 }
 
                 with(libs.ktor.client) {
-                    implementation(libs.ktor.client.core)
-                    implementation(libs.ktor.client.json)
-                    implementation(libs.ktor.client.logging)
-                    implementation(libs.ktor.client.serialization)
+                    implementation(contentNegotiation)
+                    implementation(core)
+                    implementation(json)
+                    implementation(logging)
                 }
+
+                implementation(libs.ktor.serialization.json)
+                implementation(libs.kuuuurt.multiplatformPaging)
             }
         }
 
@@ -73,23 +91,18 @@ kotlin {
         val androidMain by getting {
             dependencies {
                 with(libs.androidx) {
+                    implementation(activityCompose)
                     implementation(activityKtx)
                     implementation(annotation)
                     implementation(coreKtx)
-                    implementation(lifecycle.viewModelKtx)
                     implementation(pagingCompose)
                     implementation(pagingRuntime)
                 }
 
-                with(libs.androidx.compose) {
-                    implementation(foundation)
-                    implementation(material)
-                    implementation(runtime)
-                    implementation(ui)
-                    implementation(uiTooling)
+                with(libs.androidx.lifecycle) {
+                    implementation(viewModelCompose)
+                    implementation(viewModelKtx)
                 }
-
-                implementation(libs.arkivanov.decompose.extensions)
 
                 with(libs.google.accompanist) {
                     implementation(coil)
@@ -108,9 +121,14 @@ kotlin {
                     implementation(commonKtx)
                 }
 
-                with(libs.jetbrains.kotlinx) {
-                    implementation(coroutinesAndroid)
-                }
+                implementation(libs.jetbrains.kotlinx.coroutinesAndroid)
+            }
+        }
+
+        val jvmMain by getting {
+            dependencies {
+                implementation(libs.jetbrains.kotlinx.coroutinesJdk)
+                implementation(compose.desktop.currentOs)
             }
         }
     }

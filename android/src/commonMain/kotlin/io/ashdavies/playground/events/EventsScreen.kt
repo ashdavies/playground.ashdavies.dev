@@ -36,6 +36,7 @@ import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import io.ashdavies.playground.Event
 import io.ashdavies.playground.LocalPlaygroundDatabase
+import io.ashdavies.playground.PlaygroundRoot
 import io.ashdavies.playground.common.viewModel
 import io.ashdavies.playground.compose.fade
 import io.ashdavies.playground.network.EventsService
@@ -44,8 +45,8 @@ import io.ktor.client.HttpClient
 
 @Preview
 @Composable
-internal fun EventsScreen() {
-    val httpClient: HttpClient = LocalHttpClient.current
+internal fun EventsScreen(child: PlaygroundRoot.Child.Events) {
+    val httpClient: HttpClient = LocalHttpClient.currents
     val eventsService: EventsService = remember {
         EventsService(httpClient)
     }

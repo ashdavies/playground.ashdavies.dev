@@ -8,11 +8,11 @@
         android:allowBackup="true"
         android:fullBackupOnly="true"
         android:icon="@mipmap/ic_launcher"
-        android:name=".playground.PlaygroundApplication"
+        android:name=".PlaygroundApplication"
         android:theme="@style/Theme.Material3.DayNight.NoActionBar">
 
         <activity
-            android:name="io.ashdavies.playground.playground.PlaygroundActivity"
+            android:name="io.ashdavies.playground.PlaygroundActivity"
             android:exported="true"
             android:label="@string/application">
 

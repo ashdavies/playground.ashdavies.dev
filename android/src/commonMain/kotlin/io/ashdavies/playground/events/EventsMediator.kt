@@ -11,6 +11,7 @@ import io.ashdavies.playground.EventsQueries
 import io.ashdavies.playground.network.EventsService
 import io.ashdavies.playground.network.todayAsString
 import io.ktor.client.features.ResponseException
+import io.ktor.client.plugins.ResponseException
 
 @ExperimentalPagingApi
 internal class EventsMediator(

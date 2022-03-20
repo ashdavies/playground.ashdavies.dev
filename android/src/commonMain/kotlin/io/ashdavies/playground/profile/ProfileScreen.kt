@@ -28,6 +28,7 @@ import coil.compose.ImagePainter
 import coil.compose.rememberImagePainter
 import com.google.accompanist.flowlayout.FlowRow
 import com.google.accompanist.insets.ui.LocalScaffoldPadding
+import io.ashdavies.playground.PlaygroundRoot
 import io.ashdavies.playground.R
 import io.ashdavies.playground.compose.EmptyPainter
 import io.ashdavies.playground.compose.fade
@@ -45,7 +46,7 @@ private val Painter.isLoading: Boolean
 @Preview
 @Composable
 @OptIn(ExperimentalCoilApi::class)
-internal fun ProfileScreen() {
+internal fun ProfileScreen(child: PlaygroundRoot.Child.Profile) {
     val profileService = profileService(LocalHttpClient.current, IDENTITY_ENDPOINT, "")
     val viewModel = ProfileViewModel(profileService)
     val viewState: ProfileViewState? by viewModel
