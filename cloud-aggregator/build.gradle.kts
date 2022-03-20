@@ -6,9 +6,9 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 plugins {
     id(libs.plugins.apollo)
     id(libs.plugins.kotlin.jvm)
+    id(libs.plugins.serialization)
 
     alias(libs.plugins.johnRengelman.shadow)
-    alias(libs.plugins.serialization)
 }
 
 apollo {

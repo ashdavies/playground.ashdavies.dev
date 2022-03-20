@@ -13,6 +13,9 @@ buildscript {
     }
 
     dependencies {
+        classpath(kotlin("gradle-plugin", version = libs.versions.kotlin.get()))
+        classpath(kotlin("serialization", version = libs.versions.kotlin.get()))
+
         classpath(libs.android.gradlePlugin)
         classpath(libs.apache.batikExt)
         classpath(libs.apolloGraphQl.apolloGradlePlugin)
@@ -43,10 +46,9 @@ allprojects {
 subprojects {
     tasks.withType<KotlinCompile<*>> {
         kotlinOptions.freeCompilerArgs += listOf(
+            "-XXLanguage:+InlineClasses",
             "-Xallow-result-return-type",
             "-Xmulti-platform",
-            "-Xopt-in=kotlin.RequiresOptIn",
-            "-XXLanguage:+InlineClasses",
         )
     }
 }

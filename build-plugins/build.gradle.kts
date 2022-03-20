@@ -20,21 +20,9 @@ dependencies {
 
 gradlePlugin {
     plugins {
-        // create<AndroidApplication>()
-
-        create("playground-android-application") {
-            implementationClass = "AndroidApplication"
-            id = "playground-android-application"
-        }
-
-        create("playground-android-library") {
-            implementationClass = "AndroidLibrary"
-            id = "playground-android-library"
-        }
-
-        create("playground-compose-multiplatform") {
-            implementationClass = "ComposeMultiplatform"
-            id = "playground-compose-multiplatform"
+        create("multiplatform-library") {
+            implementationClass = "MultiplatformLibrary"
+            id = "multiplatform-library"
         }
     }
 }

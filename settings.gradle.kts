@@ -16,7 +16,6 @@ include(
     ":android",
     ":cloud-aggregator",
     ":cloud-functions",
-    ":common-app",
     ":compose-local",
     ":local-storage",
     ":notion-console",

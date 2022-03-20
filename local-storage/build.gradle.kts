@@ -2,11 +2,8 @@
 @file:Suppress("DSL_SCOPE_VIOLATION")
 
 plugins {
-    id("playground-android-library")
-    id("playground-compose-multiplatform")
-
+    `multiplatform-library`
     id(libs.plugins.sqldelight)
-    alias(libs.plugins.serialization)
 }
 
 kotlin {
@@ -17,8 +14,6 @@ kotlin {
             dependencies {
                 api(project(":compose-local"))
 
-                implementation(libs.jetbrains.kotlinx.datetime)
-                implementation(libs.jetbrains.kotlinx.serializationJson)
                 implementation(libs.sqlDelight.coroutinesExtensions)
                 implementation(libs.sqlDelight.runtime)
             }

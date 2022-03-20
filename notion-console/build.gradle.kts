@@ -4,22 +4,19 @@
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinJvmCompilation
 
 plugins {
-    id("playground-compose-multiplatform")
+    kotlin("multiplatform")
     application
-
-    alias(libs.plugins.serialization)
 }
 
 kotlin {
+    jvm()
+
     sourceSets {
         val commonMain by getting {
             dependencies {
                 implementation(project(":local-storage"))
 
                 implementation(libs.jetbrains.kotlinx.cli)
-                implementation(libs.jetbrains.kotlinx.datetime)
-                implementation(libs.jetbrains.kotlinx.coroutinesCore)
-                implementation(libs.jetbrains.kotlinx.serializationJson)
                 implementation(libs.jraf.klibnotion)
                 implementation(libs.ktor.server.core)
                 implementation(libs.qos.logbackClassic)
@@ -28,7 +25,6 @@ kotlin {
 
         val jvmMain by getting {
             dependencies {
-                implementation(libs.jetbrains.kotlinx.coroutinesJdk)
                 implementation(libs.ktor.server.cio)
             }
         }
