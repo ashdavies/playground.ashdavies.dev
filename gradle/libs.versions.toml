@@ -74,7 +74,7 @@ jetbrains-kotlin-testJs = { module = "org.jetbrains.kotlin:kotlin-test-js", vers
 jetbrains-kotlin-testJunit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
 jetbrains-kotlinx-coroutinesAndroid = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
 jetbrains-kotlinx-coroutinesCore = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
-jetbrains-kotlinx-coroutinesJdk = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-jdk8", version.ref = "coroutines" }
+jetbrains-kotlinx-coroutinesSwing = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-swing", version.ref = "coroutines" }
 jetbrains-kotlinx-coroutinesTest = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
 jetbrains-kotlinx-cli = { module = "org.jetbrains.kotlinx:kotlinx-cli", version = "0.3.4" }
 jetbrains-kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version = "0.3.2" }

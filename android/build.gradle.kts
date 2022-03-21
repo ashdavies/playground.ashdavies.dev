@@ -137,7 +137,7 @@ kotlin {
                     implementation(pagingRuntime)
                 }
 
-                implementation(libs.jetbrains.kotlinx.coroutinesJdk)
+                implementation(libs.jetbrains.kotlinx.coroutinesSwing)
                 implementation(libs.ktor.client.cio)
                 implementation(libs.slf4j)
             }

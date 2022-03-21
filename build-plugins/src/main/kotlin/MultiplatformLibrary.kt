@@ -69,15 +69,13 @@ private fun KotlinMultiplatformExtension.configure(target: Project) {
 
         val androidMain by getting {
             dependencies {
-                with(target.libs.jetbrains.kotlinx) {
-                    implementation(coroutinesAndroid)
-                }
+                implementation(target.libs.jetbrains.kotlinx.coroutinesAndroid)
             }
         }
 
         val jvmMain by getting {
             dependencies {
-                implementation(target.libs.jetbrains.kotlinx.coroutinesJdk)
+                implementation(target.libs.jetbrains.kotlinx.coroutinesSwing)
                 implementation(compose.desktop.currentOs)
             }
         }

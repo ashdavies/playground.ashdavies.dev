@@ -1,5 +1,5 @@
 package io.ashdavies.playground
 
-val LocalPlaygroundDatabase = composableCompositionLocalOf {
+public val LocalPlaygroundDatabase: ComposableCompositionLocal<PlaygroundDatabase> = composableCompositionLocalOf {
     DatabaseFactory(PlaygroundDatabase.Schema) { PlaygroundDatabase(it) }
 }
