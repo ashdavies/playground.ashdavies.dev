@@ -31,7 +31,6 @@ internal class PlaygroundRootComponent(
 }
 
 sealed class ChildConfiguration : Parcelable {
-
     @Parcelize object Events : ChildConfiguration()
     @Parcelize object Profile : ChildConfiguration()
 }

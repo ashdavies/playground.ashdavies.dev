@@ -17,6 +17,8 @@ serialization = "1.3.2"
 sqlDelight = "1.5.3"
 
 [libraries]
+alialbaali-kamel = { module = "com.alialbaali.kamel:kamel-image", version = "0.2.2"}
+
 android-gradlePlugin = { module = "com.android.tools.build:gradle", version.ref = "android" }
 androidx-activityCompose = { module = "androidx.activity:activity-compose", version = "1.4.0" }
 androidx-activityKtx = { module = "androidx.activity:activity-ktx", version = "1.4.0" }
@@ -31,8 +33,8 @@ androidx-coreKtx = { module = "androidx.core:core-ktx", version = "1.7.0" }
 androidx-datastoreCore = { module = "androidx.datastore:datastore-core", version = "1.0.0" }
 androidx-lifecycle-viewModelCompose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycle" }
 androidx-lifecycle-viewModelKtx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
-androidx-pagingCompose = { module = "androidx.paging:paging-compose", version = "1.0.0-alpha14" }
 androidx-pagingRuntime = { module = "androidx.paging:paging-runtime", version = "3.1.1" }
+androidx-pagingCompose = { module = "androidx.paging:paging-compose", version = "1.0.0-alpha14" }
 
 apache-batikExt = { module = "org.apache.xmlgraphics:batik-ext", version = "1.14" }
 
@@ -47,7 +49,6 @@ cash-molecule = { module = "app.cash.molecule:molecule-gradle-plugin", version.r
 coroutineDispatcherCore = { module = "com.rickbusarow.dispatch:dispatch-core", version = "1.0.0-beta10" }
 
 google-android-material = { module = "com.google.android.material:material", version = "1.5.0-alpha04" }
-google-accompanist-coil = { module = "com.google.accompanist:accompanist-coil", version = "0.15.0" }
 google-accompanist-flowlayout = { module = "com.google.accompanist:accompanist-flowlayout", version.ref = "accompanist" }
 google-accompanist-insets = { module = "com.google.accompanist:accompanist-insets", version.ref = "accompanist" }
 google-accompanist-insetsUi = { module = "com.google.accompanist:accompanist-insets-ui", version.ref = "accompanist" }
@@ -84,9 +85,9 @@ jetbrains-kotlinx-serializationProperties = { module = "org.jetbrains.kotlinx:ko
 
 jraf-klibnotion =  { module = "org.jraf:klibnotion", version = "1.11.0" }
 
-ktor-client-android = { module = "io.ktor:ktor-client-android", version.ref = "ktor" }
 ktor-client-auth = { module = "io.ktor:ktor-client-auth", version.ref = "ktor" }
 ktor-client-contentNegotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
+ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor" }
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
 ktor-client-curl = { module = "io.ktor:ktor-client-curl", version.ref = "ktor" }
 ktor-client-ios = { module = "io.ktor:ktor-client-ios", version.ref = "ktor" }
@@ -97,13 +98,12 @@ ktor-serialization-json = { module = "io.ktor:ktor-serialization-kotlinx-json", 
 ktor-server-cio = { module = "io.ktor:ktor-server-cio", version.ref = "ktor" }
 ktor-server-core = { module = "io.ktor:ktor-server-core", version.ref = "ktor" }
 
-kuuuurt-multiplatformPaging = { module = "io.github.kuuuurt:multiplatform-paging", version = "0.4.6" }
+kuuuurt-multiplatformPaging = { module = "io.github.kuuuurt:multiplatform-paging", version = "0.4.7" }
 pinterest-ktlint = { module = "com.pinterest:ktlint", version = "0.40.0" }
 requery-sqliteAndroid = { module = "com.github.requery:sqlite-android", version = "3.36.0" }
 slf4j = { module = "org.slf4j:slf4j-simple", version = "1.7.21" }
 
 sqlDelight-androidDriver = { module = "com.squareup.sqldelight:android-driver", version.ref = "sqlDelight" }
-sqlDelight-androidPaging = { module = "com.squareup.sqldelight:android-paging3-extensions", version.ref = "sqlDelight" }
 sqlDelight-coroutinesExtensions = { module = "com.squareup.sqldelight:coroutines-extensions", version.ref = "sqlDelight" }
 sqlDelight-kotlinGradlePlugin = { module = "com.squareup.sqldelight:gradle-plugin", version.ref = "sqlDelight" }
 sqlDelight-sqliteDriver = { module = "com.squareup.sqldelight:sqlite-driver", version.ref = "sqlDelight" }

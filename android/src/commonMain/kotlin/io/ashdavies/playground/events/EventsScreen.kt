@@ -24,29 +24,28 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.paging.LoadState
-import androidx.paging.compose.LazyPagingItems
-import androidx.paging.compose.collectAsLazyPagingItems
-import androidx.paging.compose.items
-import com.google.accompanist.insets.ui.LocalScaffoldPadding
-import com.google.accompanist.swiperefresh.SwipeRefresh
-import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import io.ashdavies.playground.Event
 import io.ashdavies.playground.LocalPlaygroundDatabase
+import io.ashdavies.playground.PlatformScaffold
+import io.ashdavies.playground.PlatformSwipeRefresh
+import io.ashdavies.playground.PlatformTopAppBar
 import io.ashdavies.playground.PlaygroundRoot
-import io.ashdavies.playground.common.viewModel
-import io.ashdavies.playground.compose.fade
-import io.ashdavies.playground.network.EventsService
+import io.ashdavies.playground.android.LazyPagingItems
+import io.ashdavies.playground.android.collectAsLazyPagingItems
+import io.ashdavies.playground.android.errorMessage
+import io.ashdavies.playground.android.fade
+import io.ashdavies.playground.android.isRefreshing
+import io.ashdavies.playground.android.items
+import io.ashdavies.playground.android.refresh
+import io.ashdavies.playground.android.viewModel
 import io.ashdavies.playground.network.LocalHttpClient
 import io.ktor.client.HttpClient
 
-@Preview
 @Composable
 internal fun EventsScreen(child: PlaygroundRoot.Child.Events) {
-    val httpClient: HttpClient = LocalHttpClient.currents
+    val httpClient: HttpClient = LocalHttpClient.current
     val eventsService: EventsService = remember {
         EventsService(httpClient)
     }
@@ -62,25 +61,25 @@ internal fun EventsScreen(child: PlaygroundRoot.Child.Events) {
         .pagingData
         .collectAsLazyPagingItems()
 
-    SwipeRefresh(
-        state = rememberSwipeRefreshState(pagingItems.loadState.refresh is LoadState.Loading),
-        indicatorPadding = LocalScaffoldPadding.current,
-        onRefresh = pagingItems::refresh,
-    ) {
-        val loadState = pagingItems.loadState.append
-        if (loadState is LoadState.Error) {
-            EventFailure(loadState.error.message)
-        }
-
-        LazyColumn(
-            contentPadding = LocalScaffoldPadding.current,
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(top = 12.dp),
+    PlatformScaffold(topBar = { EventsTopAppABar("Events") }) { contentPadding ->
+        PlatformSwipeRefresh(
+            isRefreshing = pagingItems.isRefreshing,
+            onRefresh = pagingItems::refresh,
         ) {
-            items(pagingItems) {
-                EventSection(it) {
-                    println("Clicked ${it?.name}")
+            if (pagingItems.errorMessage != null) {
+                EventFailure(pagingItems.errorMessage)
+            }
+
+            LazyColumn(
+                contentPadding = contentPadding,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(top = 12.dp),
+            ) {
+                items(pagingItems) {
+                    EventSection(it) {
+                        println("Clicked ${it?.name}")
+                    }
                 }
             }
         }
@@ -88,7 +87,15 @@ internal fun EventsScreen(child: PlaygroundRoot.Child.Events) {
 }
 
 @Composable
-internal fun EventSection(event: Event?, onClick: () -> Unit) {
+private fun EventsTopAppABar(title: String, modifier: Modifier = Modifier) {
+    PlatformTopAppBar(
+        title = { Text(title) },
+        modifier = modifier,
+    )
+}
+
+@Composable
+private fun EventSection(event: Event?, onClick: () -> Unit) {
     Box(Modifier.padding(horizontal = 16.dp, vertical = 8.dp)) {
         Button(
             modifier = Modifier.fillMaxWidth(),
@@ -138,7 +145,7 @@ private fun ColumnScope.PlaceholderText(
 }
 
 @Composable
-internal fun EventFailure(message: String?, modifier: Modifier = Modifier) {
+private fun EventFailure(message: String?, modifier: Modifier = Modifier) {
     Column(verticalArrangement = Arrangement.Center) {
         Row(horizontalArrangement = Arrangement.Center) {
             Text(

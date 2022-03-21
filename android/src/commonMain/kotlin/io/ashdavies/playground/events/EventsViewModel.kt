@@ -1,26 +1,57 @@
 package io.ashdavies.playground.events
 
-import androidx.lifecycle.ViewModel
-import androidx.paging.ExperimentalPagingApi
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.PagingData
+import com.kuuurt.paging.multiplatform.Pager
+import com.kuuurt.paging.multiplatform.PagingConfig
+import com.kuuurt.paging.multiplatform.PagingData
+import com.kuuurt.paging.multiplatform.PagingResult
+import com.kuuurt.paging.multiplatform.helpers.cachedIn
 import io.ashdavies.playground.Event
 import io.ashdavies.playground.EventsQueries
-import io.ashdavies.playground.network.EventsService
-import kotlinx.coroutines.flow.Flow
+import io.ashdavies.playground.android.ViewModel
+import io.ashdavies.playground.android.viewModelScope
+import io.ashdavies.playground.kotlin.CloseableFlow
+import io.ashdavies.playground.kotlin.asCloseableFlow
+import io.ashdavies.playground.network.todayAsString
 
 private const val NETWORK_PAGE_SIZE = 10
 
-/*
- * TODO https://developer.android.com/codelabs/android-paging#6
- */
-@OptIn(ExperimentalPagingApi::class)
-internal class EventsViewModel(private val queries: EventsQueries, service: EventsService) : ViewModel() {
+internal class EventsViewModel(private val queries: EventsQueries, private val service: EventsService) : ViewModel() {
 
-    val pagingData: Flow<PagingData<Event>> = Pager(
-        remoteMediator = EventsMediator(queries, service),
-        pagingSourceFactory = { EventsSource(queries) },
+    private val pager = Pager(
         config = PagingConfig(NETWORK_PAGE_SIZE),
-    ).flow
+        clientScope = viewModelScope,
+        initialKey = todayAsString(),
+        getItems = ::getItems,
+    )
+
+    val pagingData: CloseableFlow<PagingData<Event>>
+        get() = pager.pagingData
+            .cachedIn(viewModelScope)
+            .asCloseableFlow()
+
+    private suspend fun getItems(currentKey: String, pageSize: Int): PagingResult<String, Event> {
+        suspend fun fetchItems(currentKey: String, pageSize: Int): List<Event> {
+            val items: List<Event> = service.events(currentKey, pageSize)
+            queries.transaction { items.forEach(queries::insertOrReplace) }
+            return items
+        }
+
+        val items: List<Event> = queries
+            .selectAll(currentKey, pageSize.toLong())
+            .executeAsList()
+            .takeUnless { it.isEmpty() }
+            ?: fetchItems(currentKey, pageSize)
+
+        val nextKey = items
+            .takeIf { it.size >= pageSize }
+            ?.lastOrNull()
+            ?.dateStart
+
+        return PagingResult(
+            currentKey = currentKey,
+            nextKey = { nextKey },
+            prevKey = { null },
+            items = items,
+        )
+    }
 }

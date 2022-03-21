@@ -55,6 +55,8 @@ kotlin {
                     implementation(ui)
                 }
 
+                implementation(libs.alialbaali.kamel)
+
                 with(libs.arkivanov) {
                     implementation(decompose.extensions)
                     implementation(decompose)
@@ -105,7 +107,6 @@ kotlin {
                 }
 
                 with(libs.google.accompanist) {
-                    implementation(coil)
                     implementation(flowlayout)
                     implementation(insets)
                     implementation(insetsUi)
@@ -122,13 +123,23 @@ kotlin {
                 }
 
                 implementation(libs.jetbrains.kotlinx.coroutinesAndroid)
+                implementation(libs.ktor.client.cio)
+                implementation(libs.slf4j)
             }
         }
 
         val jvmMain by getting {
             dependencies {
-                implementation(libs.jetbrains.kotlinx.coroutinesJdk)
                 implementation(compose.desktop.currentOs)
+
+                with(libs.androidx) {
+                    implementation(pagingCompose)
+                    implementation(pagingRuntime)
+                }
+
+                implementation(libs.jetbrains.kotlinx.coroutinesJdk)
+                implementation(libs.ktor.client.cio)
+                implementation(libs.slf4j)
             }
         }
     }
