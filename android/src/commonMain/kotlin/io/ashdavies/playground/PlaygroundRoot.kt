@@ -28,7 +28,15 @@ internal interface PlaygroundRoot {
 
     sealed class Child {
 
-        object Events : Child()
-        object Profile : Child()
+        abstract val navigation: Navigation
+
+        data class Events(override val navigation: Navigation) : Child()
+        data class Profile(override val navigation: Navigation) : Child()
+    }
+
+    interface Navigation {
+
+        fun navigateToEvents()
+        fun navigateToProfile()
     }
 }

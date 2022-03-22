@@ -3,6 +3,7 @@ package io.ashdavies.playground
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.Router
 import com.arkivanov.decompose.router.RouterState
+import com.arkivanov.decompose.router.push
 import com.arkivanov.decompose.router.router
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.parcelable.Parcelable
@@ -25,9 +26,24 @@ internal class PlaygroundRootComponent(
         configuration: ChildConfiguration,
         componentContext: ComponentContext,
     ): PlaygroundRoot.Child = when (configuration) {
-        is ChildConfiguration.Events -> PlaygroundRoot.Child.Events
-        is ChildConfiguration.Profile -> PlaygroundRoot.Child.Profile
+        is ChildConfiguration.Events -> PlaygroundRoot.Child.Events(createNavigation(componentContext))
+        is ChildConfiguration.Profile -> PlaygroundRoot.Child.Profile(createNavigation(componentContext))
     }
+
+    private fun createNavigation(componentContext: ComponentContext): PlaygroundRoot.Navigation = NavigationComponent(
+        navigateToProfile = { router.push(ChildConfiguration.Profile) },
+        navigateToEvents = { router.push(ChildConfiguration.Events) },
+        componentContext = componentContext,
+    )
+}
+
+private class NavigationComponent(
+    componentContext: ComponentContext,
+    private val navigateToEvents: () -> Unit,
+    private val navigateToProfile: () -> Unit
+) : PlaygroundRoot.Navigation, ComponentContext by componentContext {
+    override fun navigateToEvents() = navigateToEvents.invoke()
+    override fun navigateToProfile() = navigateToProfile.invoke()
 }
 
 sealed class ChildConfiguration : Parcelable {
