@@ -5,6 +5,7 @@ import io.ashdavies.playground.network.ServiceOperator
 import io.ashdavies.playground.network.serviceOperator
 import io.ktor.client.HttpClient
 import io.ktor.http.content.OutgoingContent.NoContent
+import kotlinx.serialization.Serializable
 
 public interface ProfileService : Service {
     val createAuthUri: ServiceOperator<NoContent, String>
@@ -17,6 +18,6 @@ public fun profileService(httpClient: HttpClient, endpoint: String, apiKey: Stri
 }
 
 public sealed class Lookup {
-    data class Request(val lookupId: String) : Lookup()
-    data class Response(val email: String) : Lookup()
+    @Serializable data class Request(val lookupId: String) : Lookup()
+    @Serializable data class Response(val email: String) : Lookup()
 }

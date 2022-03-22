@@ -23,6 +23,7 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.dp
 import io.ashdavies.playground.PlatformScaffold
 import io.ashdavies.playground.PlatformTopAppBar
+import io.ashdavies.playground.PlaygroundBottomBar
 import io.ashdavies.playground.PlaygroundRoot
 import io.ashdavies.playground.android.FlowRow
 import io.ashdavies.playground.android.fade
@@ -52,7 +53,7 @@ internal fun ProfileScreen(child: PlaygroundRoot.Child.Profile) {
 
     PlatformScaffold(
         topBar = { PlatformTopAppBar("Profile") },
-        bottomBar = { Text("Bottom") }
+        bottomBar = { PlaygroundBottomBar(child) }
     ) { contentPadding ->
         Box(modifier = Modifier.padding(contentPadding)) {
             Column(modifier = Modifier.padding(16.dp)) {
