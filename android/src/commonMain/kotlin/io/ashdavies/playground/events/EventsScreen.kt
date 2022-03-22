@@ -31,6 +31,7 @@ import io.ashdavies.playground.LocalPlaygroundDatabase
 import io.ashdavies.playground.PlatformScaffold
 import io.ashdavies.playground.PlatformSwipeRefresh
 import io.ashdavies.playground.PlatformTopAppBar
+import io.ashdavies.playground.PlaygroundBottomBar
 import io.ashdavies.playground.PlaygroundRoot
 import io.ashdavies.playground.android.LazyPagingItems
 import io.ashdavies.playground.android.collectAsLazyPagingItems
@@ -61,7 +62,10 @@ internal fun EventsScreen(child: PlaygroundRoot.Child.Events) {
         .pagingData
         .collectAsLazyPagingItems()
 
-    PlatformScaffold(topBar = { PlatformTopAppBar("Events") }) { contentPadding ->
+    PlatformScaffold(
+        topBar = { PlatformTopAppBar("Events") },
+        bottomBar = { PlaygroundBottomBar(child) }
+    ) { contentPadding ->
         PlatformSwipeRefresh(
             isRefreshing = pagingItems.isRefreshing,
             onRefresh = pagingItems::refresh,

@@ -50,7 +50,10 @@ internal fun ProfileScreen(child: PlaygroundRoot.Child.Profile) {
         ?.let { lazyPainterResource(it) }
         ?: Resource.Success(EmptyPainter)
 
-    PlatformScaffold(topBar = { PlatformTopAppBar("Profile") }) { contentPadding ->
+    PlatformScaffold(
+        topBar = { PlatformTopAppBar("Profile") },
+        bottomBar = { Text("Bottom") }
+    ) { contentPadding ->
         Box(modifier = Modifier.padding(contentPadding)) {
             Column(modifier = Modifier.padding(16.dp)) {
                 if (viewState is LoggedOut) {
