@@ -12,7 +12,6 @@ import androidx.compose.material.Button
 import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -23,6 +22,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.dp
 import io.ashdavies.playground.PlatformScaffold
+import io.ashdavies.playground.PlatformTopAppBar
 import io.ashdavies.playground.PlaygroundRoot
 import io.ashdavies.playground.android.FlowRow
 import io.ashdavies.playground.android.fade
@@ -50,7 +50,7 @@ internal fun ProfileScreen(child: PlaygroundRoot.Child.Profile) {
         ?.let { lazyPainterResource(it) }
         ?: Resource.Success(EmptyPainter)
 
-    PlatformScaffold(topBar = { TopAppBar { Text("Profile") } }) { contentPadding ->
+    PlatformScaffold(topBar = { PlatformTopAppBar("Profile") }) { contentPadding ->
         Box(modifier = Modifier.padding(contentPadding)) {
             Column(modifier = Modifier.padding(16.dp)) {
                 if (viewState is LoggedOut) {

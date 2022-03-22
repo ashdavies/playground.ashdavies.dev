@@ -1,3 +1,5 @@
+@file:JvmName("PlatformTopAppBarJvm")
+
 package io.ashdavies.playground
 
 import androidx.compose.material.TopAppBar

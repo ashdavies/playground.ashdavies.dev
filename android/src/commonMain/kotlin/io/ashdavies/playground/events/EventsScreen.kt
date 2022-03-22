@@ -61,7 +61,7 @@ internal fun EventsScreen(child: PlaygroundRoot.Child.Events) {
         .pagingData
         .collectAsLazyPagingItems()
 
-    PlatformScaffold(topBar = { EventsTopAppABar("Events") }) { contentPadding ->
+    PlatformScaffold(topBar = { PlatformTopAppBar("Events") }) { contentPadding ->
         PlatformSwipeRefresh(
             isRefreshing = pagingItems.isRefreshing,
             onRefresh = pagingItems::refresh,
@@ -84,14 +84,6 @@ internal fun EventsScreen(child: PlaygroundRoot.Child.Events) {
             }
         }
     }
-}
-
-@Composable
-private fun EventsTopAppABar(title: String, modifier: Modifier = Modifier) {
-    PlatformTopAppBar(
-        title = { Text(title) },
-        modifier = modifier,
-    )
 }
 
 @Composable

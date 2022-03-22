@@ -1,3 +1,5 @@
+@file:JvmName("PlatformTopAppBarAndroid")
+
 package io.ashdavies.playground
 
 import androidx.compose.runtime.Composable
