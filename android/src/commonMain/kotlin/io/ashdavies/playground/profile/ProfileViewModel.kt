@@ -1,6 +1,6 @@
 package io.ashdavies.playground.profile
 
-import io.ashdavies.playground.Profile
+import io.ashdavies.playground.Oauth
 import io.ashdavies.playground.android.ViewModel
 import io.ashdavies.playground.android.viewModelScope
 import io.ashdavies.playground.network.invoke
@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 
 internal class ProfileViewModel(private val profileService: ProfileService) : ViewModel() {
 
-    val viewState = flow<Profile?> { profileService.lookup(Lookup.Request("")) }
+    val viewState = flow<Oauth?> { profileService.lookup(Lookup.Request("")) }
         .map { if (it == null) LoggedOut else LoggedIn(it) }
         .stateIn(viewModelScope, Eagerly, LoggedOut)
 
@@ -24,3 +24,9 @@ internal class ProfileViewModel(private val profileService: ProfileService) : Vi
         }
     }
 }
+
+private fun LoggedIn(value: Oauth) = LoggedIn(
+    picture = value.photoUrl,
+    name = value.fullName,
+    email = value.email,
+)

@@ -86,24 +86,6 @@ internal fun ProfileScreen(child: PlaygroundRoot.Child.Profile) {
                                 style = MaterialTheme.typography.h4,
                                 text = viewState.name
                             )
-
-                            viewState.position?.also {
-                                Text(
-                                    style = MaterialTheme.typography.h5,
-                                    modifier = Modifier.padding(4.dp),
-                                    text = it,
-                                )
-                            }
-
-                            viewState.location?.also {
-                                Text(
-                                    style = MaterialTheme.typography.subtitle1,
-                                    text = it,
-                                    modifier = Modifier
-                                        .padding(bottom = 12.dp)
-                                        .padding(4.dp),
-                                )
-                            }
                         }
                     }
 

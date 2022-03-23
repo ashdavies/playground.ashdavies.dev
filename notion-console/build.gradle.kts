@@ -1,10 +1,12 @@
 // https://youtrack.jetbrains.com/issue/KTIJ-19369
 @file:Suppress("DSL_SCOPE_VIOLATION")
 
+import org.jetbrains.compose.compose
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinJvmCompilation
 
 plugins {
     kotlin("multiplatform")
+    id("org.jetbrains.compose")
     application
 }
 
@@ -15,6 +17,7 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation(project(":local-storage"))
+                implementation(compose.runtime)
 
                 implementation(libs.jetbrains.kotlinx.cli)
                 implementation(libs.jraf.klibnotion)

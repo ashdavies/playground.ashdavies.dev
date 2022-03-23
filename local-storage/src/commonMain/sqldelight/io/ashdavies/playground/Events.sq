@@ -23,23 +23,10 @@ selectAll:
 selectById:
     SELECT *
     FROM event
-    WHERE event.id = ?;
+    WHERE event.id = :id;
 
 insertOrReplace:
-    INSERT OR REPLACE INTO event(
-        id,
-        name,
-        website,
-        location,
-        status,
-        dateStart,
-        dateEnd,
-        online,
-        cfpStart,
-        cfpEnd,
-        cfpSite
-    )
-    VALUES ?;
+    INSERT OR REPLACE INTO event VALUES ?;
 
 deleteAll:
     DELETE FROM event;
