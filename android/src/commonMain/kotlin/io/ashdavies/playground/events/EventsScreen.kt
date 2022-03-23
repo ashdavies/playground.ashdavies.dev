@@ -28,10 +28,10 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import io.ashdavies.playground.Event
 import io.ashdavies.playground.LocalPlaygroundDatabase
-import io.ashdavies.playground.PlatformScaffold
-import io.ashdavies.playground.PlatformSwipeRefresh
-import io.ashdavies.playground.PlatformTopAppBar
-import io.ashdavies.playground.PlaygroundBottomBar
+import io.ashdavies.playground.platform.PlatformScaffold
+import io.ashdavies.playground.platform.PlatformSwipeRefresh
+import io.ashdavies.playground.platform.PlatformTopAppBar
+import io.ashdavies.playground.platform.PlaygroundBottomBar
 import io.ashdavies.playground.PlaygroundRoot
 import io.ashdavies.playground.android.LazyPagingItems
 import io.ashdavies.playground.android.collectAsLazyPagingItems

@@ -1,4 +1,4 @@
-package io.ashdavies.playground
+package io.ashdavies.playground.platform
 
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable

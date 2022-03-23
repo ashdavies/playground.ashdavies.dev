@@ -21,9 +21,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.dp
-import io.ashdavies.playground.PlatformScaffold
-import io.ashdavies.playground.PlatformTopAppBar
-import io.ashdavies.playground.PlaygroundBottomBar
+import io.ashdavies.playground.platform.PlatformScaffold
+import io.ashdavies.playground.platform.PlatformTopAppBar
+import io.ashdavies.playground.platform.PlaygroundBottomBar
 import io.ashdavies.playground.PlaygroundRoot
 import io.ashdavies.playground.android.FlowRow
 import io.ashdavies.playground.android.fade

@@ -1,4 +1,4 @@
-package io.ashdavies.playground
+package io.ashdavies.playground.platform
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.RowScope
@@ -10,6 +10,7 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import io.ashdavies.playground.PlaygroundRoot
 
 @Composable
 public expect fun PlatformBottomNavigation(

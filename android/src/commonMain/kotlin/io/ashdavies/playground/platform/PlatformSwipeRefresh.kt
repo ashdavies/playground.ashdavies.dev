@@ -1,4 +1,4 @@
-package io.ashdavies.playground
+package io.ashdavies.playground.platform
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier

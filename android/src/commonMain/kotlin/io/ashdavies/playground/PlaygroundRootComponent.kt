@@ -14,7 +14,7 @@ internal class PlaygroundRootComponent(
 ) : PlaygroundRoot, ComponentContext by componentContext {
 
     private val router: Router<ChildConfiguration, PlaygroundRoot.Child> = router(
-        initialConfiguration = ChildConfiguration.Profile,
+        initialConfiguration = ChildConfiguration.Events,
         childFactory = ::createChild,
         handleBackButton = true,
     )
