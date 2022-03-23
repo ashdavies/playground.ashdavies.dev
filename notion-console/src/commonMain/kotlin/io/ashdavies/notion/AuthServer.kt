@@ -10,6 +10,6 @@ private const val DEFAULT_PORT = 8080
 
 @ExperimentalTime
 public expect class AuthServer(host: String = DEFAULT_HOST, path: String = DEFAULT_PATH, port: Int = DEFAULT_PORT) {
-    public suspend fun awaitRedirectUri(duration: Duration = minutes(2)): String
+    public suspend fun awaitRedirectUri(duration: Duration = 2.minutes): String
     public fun getRedirectUri(): String
 }

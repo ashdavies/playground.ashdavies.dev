@@ -3,8 +3,6 @@ package io.ashdavies.notion
 import kotlinx.cli.ArgType
 import kotlinx.cli.ExperimentalCli
 import kotlinx.cli.Subcommand
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 import org.jraf.klibnotion.client.NotionClient
 import org.jraf.klibnotion.model.database.Database
 import org.jraf.klibnotion.model.pagination.Pagination
