@@ -11,6 +11,9 @@ import io.ktor.http.content.OutgoingContent.NoContent
 import io.ktor.http.contentType
 import kotlin.properties.ReadOnlyProperty
 
+/**
+ * TODO Include HttpService in interface implementation
+ */
 interface Service
 
 public interface ServiceOperator<T, R> {

@@ -1,9 +1,9 @@
 // https://youtrack.jetbrains.com/issue/KTIJ-19369
 @file:Suppress("DSL_SCOPE_VIOLATION")
 
-import com.android.build.api.dsl.ApplicationDefaultConfig
 import com.android.build.api.dsl.VariantDimension
 import org.jetbrains.compose.compose
+import kotlin.properties.PropertyDelegateProvider
 import kotlin.properties.ReadOnlyProperty
 
 plugins {
@@ -28,6 +28,7 @@ android {
         versionCode = 1
         versionName = "1.0"
 
+        val serverClientId by buildConfigField()
         val playgroundApiKey by buildConfigField()
     }
 
@@ -77,6 +78,7 @@ kotlin {
 
                 implementation(libs.ktor.serialization.json)
                 implementation(libs.kuuuurt.multiplatformPaging)
+                implementation(libs.sqlDelight.coroutinesExtensions)
             }
         }
 
@@ -145,5 +147,6 @@ kotlin {
     }
 }
 
-fun VariantDimension.buildConfigField(type: String = "String"): ReadOnlyProperty<VariantDimension?, Unit> =
-    CaseProperty { buildConfigField(type, it, System.getenv(it)) }
+fun VariantDimension.buildConfigField(): PropertyDelegateProvider<Any?, ReadOnlyProperty<Any?, String>> {
+    return SystemProperty { name, value -> buildConfigField("String", name, "\"$value\"") }
+}
