@@ -24,5 +24,10 @@ gradlePlugin {
             implementationClass = "MultiplatformLibrary"
             id = "multiplatform-library"
         }
+
+        create("multiplatform-sql") {
+            implementationClass = "MultiplatformSql"
+            id = "multiplatform-sql"
+        }
     }
 }

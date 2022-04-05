@@ -1,5 +1,4 @@
 import com.android.build.gradle.LibraryExtension
-import org.gradle.api.Incubating
 import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -13,17 +12,14 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 internal class MultiplatformLibrary : Plugin<Project> {
-
     override fun apply(target: Project): Unit = target.run {
         plugins.apply("com.android.library")
         plugins.apply("org.jetbrains.compose")
         plugins.apply("org.jetbrains.kotlin.multiplatform")
         plugins.apply("org.jetbrains.kotlin.plugin.serialization")
 
-        pluginManager.withPlugin("org.jetbrains.kotlin.multiplatform") {
-            extensions.configure<KotlinMultiplatformExtension> { configure(target) }
-            extensions.configure(LibraryExtension::configure)
-        }
+        extensions.configure<KotlinMultiplatformExtension> { configure(target) }
+        extensions.configure(LibraryExtension::configure)
 
         tasks.withType(KotlinCompile::configure)
     }

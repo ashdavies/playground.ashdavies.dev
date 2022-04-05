@@ -3,7 +3,7 @@ package io.ashdavies.playground
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.Router
 import com.arkivanov.decompose.router.RouterState
-import com.arkivanov.decompose.router.push
+import com.arkivanov.decompose.router.bringToFront
 import com.arkivanov.decompose.router.router
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.parcelable.Parcelable
@@ -31,8 +31,8 @@ internal class PlaygroundRootComponent(
     }
 
     private fun createNavigation(componentContext: ComponentContext): PlaygroundRoot.Navigation = NavigationComponent(
-        navigateToProfile = { router.push(ChildConfiguration.Profile) },
-        navigateToEvents = { router.push(ChildConfiguration.Events) },
+        navigateToProfile = { router.bringToFront(ChildConfiguration.Profile) },
+        navigateToEvents = { router.bringToFront(ChildConfiguration.Events) },
         componentContext = componentContext,
     )
 }

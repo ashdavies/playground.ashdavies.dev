@@ -8,6 +8,9 @@ import org.gradle.plugin.use.PluginDependencySpec
 val PluginDependenciesSpec.`multiplatform-library`: PluginDependencySpec
     get() = id("multiplatform-library")
 
+val PluginDependenciesSpec.`multiplatform-sql`: PluginDependencySpec
+    get() = id("multiplatform-sql")
+
 @Deprecated("Use build plugins")
 @Suppress("DeprecatedCallableAddReplaceWith")
 fun PluginDependenciesSpec.id(dependency: Provider<PluginDependency>) =
