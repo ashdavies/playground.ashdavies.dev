@@ -14,6 +14,7 @@ rootProject.name = "playground"
 
 include(
     ":android",
+    ":authentication",
     ":cloud-aggregator",
     ":cloud-functions",
     ":compose-local",

@@ -46,11 +46,7 @@ import io.ktor.client.HttpClient
 
 @Composable
 internal fun EventsScreen(child: PlaygroundRoot.Child.Events) {
-    val httpClient: HttpClient = LocalHttpClient.current
-    val eventsService: EventsService = remember {
-        EventsService(httpClient)
-    }
-
+    val eventsService = rememberEventsService()
     val playgroundDatabase = LocalPlaygroundDatabase.current
     val eventsQueries = playgroundDatabase.eventsQueries
 

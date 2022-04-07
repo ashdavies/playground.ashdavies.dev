@@ -28,7 +28,7 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        val serverClientId by buildConfigField()
+        val googleClientId by buildConfigField()
         val playgroundApiKey by buildConfigField()
     }
 
@@ -67,6 +67,7 @@ kotlin {
                     implementation(coroutinesCore)
                     implementation(datetime)
                     implementation(serializationJson)
+                    implementation(serializationProperties)
                 }
 
                 with(libs.ktor.client) {
