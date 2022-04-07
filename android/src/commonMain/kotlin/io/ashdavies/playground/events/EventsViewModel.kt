@@ -1,5 +1,6 @@
 package io.ashdavies.playground.events
 
+import androidx.compose.runtime.Composable
 import com.kuuurt.paging.multiplatform.Pager
 import com.kuuurt.paging.multiplatform.PagingConfig
 import com.kuuurt.paging.multiplatform.PagingData
@@ -7,7 +8,9 @@ import com.kuuurt.paging.multiplatform.PagingResult
 import com.kuuurt.paging.multiplatform.helpers.cachedIn
 import io.ashdavies.playground.Event
 import io.ashdavies.playground.EventsQueries
+import io.ashdavies.playground.LocalPlaygroundDatabase
 import io.ashdavies.playground.android.ViewModel
+import io.ashdavies.playground.android.viewModel
 import io.ashdavies.playground.android.viewModelScope
 import io.ashdavies.playground.kotlin.CloseableFlow
 import io.ashdavies.playground.kotlin.asCloseableFlow
@@ -15,7 +18,16 @@ import io.ashdavies.playground.network.todayAsString
 
 private const val NETWORK_PAGE_SIZE = 10
 
-internal class EventsViewModel(private val queries: EventsQueries, private val service: EventsService) : ViewModel() {
+@Composable
+internal fun rememberEventsViewModel(
+    queries: EventsQueries = LocalPlaygroundDatabase.current.eventsQueries,
+    service: EventsService = rememberEventsService(),
+) = viewModel { EventsViewModel(queries, service) }
+
+internal class EventsViewModel(
+    private val queries: EventsQueries,
+    private val service: EventsService,
+) : ViewModel() {
 
     private val pager = Pager(
         config = PagingConfig(NETWORK_PAGE_SIZE),

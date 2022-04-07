@@ -1,7 +1,5 @@
 package io.ashdavies.playground.profile
 
-import io.ktor.http.Url
-
 internal sealed class ProfileViewState {
 
     data class LogIn(val uriString: String) : ProfileViewState()

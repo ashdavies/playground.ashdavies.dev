@@ -19,7 +19,6 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
@@ -27,11 +26,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import io.ashdavies.playground.Event
-import io.ashdavies.playground.LocalPlaygroundDatabase
-import io.ashdavies.playground.platform.PlatformScaffold
-import io.ashdavies.playground.platform.PlatformSwipeRefresh
-import io.ashdavies.playground.platform.PlatformTopAppBar
-import io.ashdavies.playground.platform.PlaygroundBottomBar
 import io.ashdavies.playground.PlaygroundRoot
 import io.ashdavies.playground.android.LazyPagingItems
 import io.ashdavies.playground.android.collectAsLazyPagingItems
@@ -40,20 +34,14 @@ import io.ashdavies.playground.android.fade
 import io.ashdavies.playground.android.isRefreshing
 import io.ashdavies.playground.android.items
 import io.ashdavies.playground.android.refresh
-import io.ashdavies.playground.android.viewModel
-import io.ashdavies.playground.network.LocalHttpClient
-import io.ktor.client.HttpClient
+import io.ashdavies.playground.platform.PlatformScaffold
+import io.ashdavies.playground.platform.PlatformSwipeRefresh
+import io.ashdavies.playground.platform.PlatformTopAppBar
+import io.ashdavies.playground.platform.PlaygroundBottomBar
 
 @Composable
 internal fun EventsScreen(child: PlaygroundRoot.Child.Events) {
-    val eventsService = rememberEventsService()
-    val playgroundDatabase = LocalPlaygroundDatabase.current
-    val eventsQueries = playgroundDatabase.eventsQueries
-
-    val viewModel: EventsViewModel = viewModel {
-        EventsViewModel(eventsQueries, eventsService)
-    }
-
+    val viewModel: EventsViewModel = rememberEventsViewModel()
     val pagingItems: LazyPagingItems<Event> = viewModel
         .pagingData
         .collectAsLazyPagingItems()

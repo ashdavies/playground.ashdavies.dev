@@ -45,6 +45,7 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
+                implementation(project(":auth-oauth"))
                 implementation(project(":compose-local"))
                 implementation(project(":local-storage"))
 

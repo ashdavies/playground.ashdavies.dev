@@ -6,6 +6,7 @@ import kotlinx.serialization.Serializable
 internal data class RandomUser(
     val name: Name,
     val location: Location,
+    val email: String,
     val login: Login,
     val picture: Picture,
 ) {
