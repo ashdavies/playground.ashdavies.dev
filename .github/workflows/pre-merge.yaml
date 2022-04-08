@@ -33,6 +33,9 @@ jobs:
           path: ~/.gradle/wrapper/
           key: cache-gradle-wrapper
 
+#      - name: Encrypt Google Services config file
+#        run:  openssl aes-256-cbc -md sha256 -salt -in android/google-services.json -out android/google-services.aes -k ${{ secrets.GOOGLE_SERVICES_PASSPHRASE }}
+
       - name: Decrypt Google Services config file
         run: openssl aes-256-cbc -md sha256 -d -in android/google-services.aes -out android/google-services.json -k ${{ secrets.GOOGLE_SERVICES_PASSPHRASE }}
 
