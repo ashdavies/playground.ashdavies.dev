@@ -24,7 +24,7 @@ internal fun NotionConsole(args: Array<String>) {
     val clientConfiguration = ClientConfiguration(authentication)
     val notionClient = NotionClient.newInstance(clientConfiguration)
 
-    val auth = AuthCommand(notionClient.oAuth, tokenQueries)
+    val auth = AuthCommand(tokenQueries)
     val search = SearchCommand(notionClient.search)
 
     argParser.subcommands(auth, search)

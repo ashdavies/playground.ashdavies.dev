@@ -1,39 +1,30 @@
 package io.ashdavies.notion
 
+import io.ashdavies.playground.AccessToken
+import io.ashdavies.playground.OAuthProvider
 import io.ashdavies.playground.Token
 import io.ashdavies.playground.TokenQueries
+import io.ashdavies.playground.beginAuthFlow
 import kotlinx.cli.ExperimentalCli
 import kotlinx.cli.Subcommand
-import org.jraf.klibnotion.client.NotionClient
-import org.jraf.klibnotion.model.oauth.OAuthCodeAndState
-import org.jraf.klibnotion.model.oauth.OAuthCredentials
-import org.jraf.klibnotion.model.oauth.OAuthGetAccessTokenResult
-import kotlin.time.ExperimentalTime
+import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.onStart
 
 private const val AUTH_ACTION_DESCRIPTION = "Run notion auth login to authenticate with your Notion account."
 private const val AUTH_LOGIN_DESCRIPTION = "Run notion auth login to authenticate with your Notion account."
 private const val AUTH_LOGOUT_DESCRIPTION = "Run notion auth logout to remove authentication with your Notion account."
 
-private val notionClientId: String
-    get() = System.getenv("NOTION_CLIENT_ID")
-
-private val notionClientSecret: String
-    get() = System.getenv("NOTION_CLIENT_SECRET")
-
 @ExperimentalCli
-internal class AuthCommand(client: NotionClient.OAuth, queries: TokenQueries) : Subcommand(
+internal class AuthCommand(queries: TokenQueries) : Subcommand(
     actionDescription = AUTH_ACTION_DESCRIPTION,
     name = "auth",
 ) {
     init {
-        val login = AuthLoginCommand(
-            queries = queries,
-            client = client,
-        )
-
-        val logout = AuthLogoutCommand(
-            queries = queries,
-        )
+        val login = AuthLoginCommand(queries)
+        val logout = AuthLogoutCommand(queries)
 
         subcommands(login, logout/*, refresh, status*/)
     }
@@ -42,11 +33,7 @@ internal class AuthCommand(client: NotionClient.OAuth, queries: TokenQueries) : 
 }
 
 @ExperimentalCli
-@OptIn(ExperimentalTime::class)
-private class AuthLoginCommand(
-    private val client: NotionClient.OAuth,
-    private val queries: TokenQueries,
-) : Subcommand(
+private class AuthLoginCommand(private val queries: TokenQueries) : Subcommand(
     actionDescription = AUTH_LOGIN_DESCRIPTION,
     name = "login",
 ) {
@@ -60,42 +47,28 @@ private class AuthLoginCommand(
             return@runBlocking
         }
 
-        val authServer = AuthServer()
-        val authCredentials = OAuthCredentials(
-            redirectUri = authServer.getRedirectUri(),
-            clientSecret = notionClientSecret,
-            clientId = notionClientId,
-        )
+        val deferredAuthResult = CompletableDeferred<AccessToken>()
+        val userPromptUri = "http://localhost:8080/callback"
 
-        val uniqueState = randomUuid()
-        val userPromptUri = client.getUserPromptUri(
-            oAuthCredentials = authCredentials,
-            uniqueState = uniqueState,
-        )
+        beginAuthFlow(OAuthProvider.Notion)
+            .onEach { deferredAuthResult.complete(it) }
+            .launchIn(this)
+
+        // Await server startup
+        delay(500)
 
         if (!Browser.launch(userPromptUri)) {
             println("Navigate to $userPromptUri to continue")
         }
 
-        val authResponse: OAuthCodeAndState? = client.extractCodeAndStateFromRedirectUri(
-            redirectUri = authServer.awaitRedirectUri()
-        )
-
-        if (authResponse == null || authResponse.state != uniqueState) {
-            throw IllegalStateException("Invalid auth response")
-        }
-
-        val authResult: OAuthGetAccessTokenResult = client.getAccessToken(
-            oAuthCredentials = authCredentials,
-            code = authResponse.code,
-        )
+        val authResult = deferredAuthResult.await()
 
         val token = Token(
             accessToken = authResult.accessToken,
-            workspaceId = authResult.workspaceId,
-            workspaceName = authResult.workspaceName,
-            workspaceIcon = authResult.workspaceIcon,
-            botId = authResult.botId,
+            workspaceIcon = "",
+            workspaceName = "",
+            workspaceId = "",
+            botId = "",
         )
 
         queries.insert(token)

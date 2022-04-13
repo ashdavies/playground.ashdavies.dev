@@ -2,13 +2,15 @@ package io.ashdavies.playground.profile
 
 import androidx.compose.runtime.Composable
 import io.ashdavies.playground.LocalPlaygroundDatabase
+import io.ashdavies.playground.OAuthProvider
 import io.ashdavies.playground.OAuthQueries
 import io.ashdavies.playground.Oauth
-import io.ashdavies.playground.accessToken
 import io.ashdavies.playground.android.ViewModel
 import io.ashdavies.playground.android.viewModel
 import io.ashdavies.playground.android.viewModelScope
+import io.ashdavies.playground.beginAuthFlow
 import io.ashdavies.playground.kotlin.mapToOneOrNull
+import io.ashdavies.playground.network.invoke
 import io.ashdavies.playground.profile.ProfileViewState.LoggedIn
 import io.ashdavies.playground.profile.ProfileViewState.LoggedOut
 import kotlinx.coroutines.channels.Channel
@@ -16,7 +18,6 @@ import kotlinx.coroutines.channels.Channel.Factory.CONFLATED
 import kotlinx.coroutines.flow.SharingStarted.Companion.Eagerly
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
-import io.ashdavies.playground.network.invoke
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
@@ -35,7 +36,7 @@ internal class ProfileViewModel(
         .stateIn(viewModelScope, Eagerly, LoggedOut)
 
     fun onLogin() {
-        accessToken
+        beginAuthFlow(OAuthProvider.Google)
             .map { profileService.lookup().results }
             .onEach { _viewState.send(LoggedIn(it.first())) }
             .launchIn(viewModelScope)

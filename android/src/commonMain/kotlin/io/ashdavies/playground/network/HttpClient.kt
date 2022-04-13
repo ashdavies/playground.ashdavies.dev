@@ -12,6 +12,7 @@ import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.request.header
 import io.ktor.http.HttpHeaders
 import io.ktor.http.URLProtocol
+import io.ktor.http.takeFrom
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.json.Json
@@ -36,10 +37,10 @@ public val LocalHttpClient: ComposableCompositionLocal<HttpClient> = composableC
         }
 
         install(DefaultRequest) {
-            url {
+            url(DEFAULT_HOST) {
                 header(HttpHeaders.UserAgent, DEFAULT_USER_AGENT)
                 protocol = URLProtocol.HTTPS
-                host = DEFAULT_HOST
+                takeFrom(DEFAULT_HOST)
             }
         }
 

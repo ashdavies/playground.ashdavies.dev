@@ -16,9 +16,7 @@ public interface EventsService : Service {
 }
 
 @Composable
-public fun rememberEventsService(
-    client: HttpClient = LocalHttpClient.current,
-): EventsService = remember(client) {
+public fun rememberEventsService(client: HttpClient = LocalHttpClient.current): EventsService = remember(client) {
     object : EventsService, Service by Service(client) {
         override val events by getting<NoContent, List<Event>>()
     }

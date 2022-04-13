@@ -31,14 +31,6 @@ public interface Service {
 
         @PublishedApi
         internal inline fun <reified Request : Any, reified Response : Any> Operator(
-            crossinline urlString: (String) -> String,
-            crossinline configure: HttpRequestBuilder.(Request) -> Unit
-        ): ReadOnlyProperty<Service, Operator<Request, Response>> = ReadOnlyProperty { thisRef, property ->
-            Operator(thisRef.client, { urlString(property.name) }, configure)
-        }
-
-        @PublishedApi
-        internal inline fun <reified Request : Any, reified Response : Any> Operator(
             client: HttpClient,
             crossinline urlString: () -> String,
             crossinline configure: HttpRequestBuilder.(Request) -> Unit
@@ -64,6 +56,14 @@ public interface Service {
 
 public fun Service(client: HttpClient): Service = object : Service {
     override val client: HttpClient = client
+}
+
+@PublishedApi
+internal inline fun <reified Request : Any, reified Response : Any> Service.Companion.Operator(
+    crossinline urlString: (String) -> String,
+    crossinline configure: HttpRequestBuilder.(Request) -> Unit
+): ReadOnlyProperty<Service, Service.Operator<Request, Response>> = ReadOnlyProperty { thisRef, property ->
+    Operator(thisRef.client, { urlString(property.name) }, configure)
 }
 
 public inline fun <reified Request : Any, reified Response : Any> Service.getting(

@@ -2,7 +2,10 @@ package io.ashdavies.playground
 
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.ContentNegotiation
+import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logging
+import io.ktor.http.HttpHeaders
+import io.ktor.http.HttpStatusCode
 import io.ktor.serialization.kotlinx.json.json
 import io.ktor.server.application.call
 import io.ktor.server.application.install
@@ -14,7 +17,7 @@ import io.ktor.server.auth.principal
 import io.ktor.server.cio.CIOApplicationEngine
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.plugins.CallLogging
-import io.ktor.server.response.respondText
+import io.ktor.server.response.respond
 import io.ktor.server.routing.get
 import io.ktor.server.routing.routing
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -27,22 +30,21 @@ import io.ktor.server.cio.CIO as ServerCIO
 private const val GRACE_PERIOD_MILLIS = 1000L
 private const val TIMEOUT_MILLIS = 5000L
 
-public actual val accessToken: Flow<AccessToken>
-    get() = authenticationServer()
-
 @OptIn(ExperimentalCoroutinesApi::class)
-private fun authenticationServer(): Flow<AccessToken> = channelFlow {
+public actual fun beginAuthFlow(provider: OAuthProvider): Flow<AccessToken> = channelFlow {
     val server: CIOApplicationEngine = embeddedServer(ServerCIO, port = 8080) {
         install(Authentication) {
             oauth("auth-oauth-google") {
-                providerLookup = { OAuthSettings(OAuthProvider.Google) }
                 urlProvider = { "http://localhost:8080/callback" }
+                providerLookup = { OAuthSettings(provider) }
                 client = HttpClient(ClientCIO) {
                     install(ContentNegotiation) {
                         json()
                     }
 
-                    install(Logging)
+                    install(Logging) {
+                        level = LogLevel.ALL
+                    }
                 }
             }
         }
@@ -51,11 +53,18 @@ private fun authenticationServer(): Flow<AccessToken> = channelFlow {
 
         routing {
             authenticate("auth-oauth-google") {
+                get("/login") {
+                    // Redirects to "authorizeUrl" automatically
+                }
+
                 get("/callback") {
                     val principal: OAuthAccessTokenResponse.OAuth2? = call.principal()
                     if (principal != null) send(AccessToken(principal))
-                    call.respondText("Success!")
-                    cancel()
+                    println("principal = $principal")
+
+                    call.response.headers.append(HttpHeaders.Connection, "close")
+                    call.respond(HttpStatusCode.NoContent)
+                    this@channelFlow.cancel()
                 }
             }
         }
