@@ -2,16 +2,6 @@ dependencyResolutionManagement {
     //repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
 }
 
-pluginManagement {
-    repositories {
-        google()
-        gradlePluginPortal()
-        mavenCentral()
-    }
-}
-
-rootProject.name = "playground"
-
 include(
     ":android",
     ":auth-oauth",
@@ -25,4 +15,24 @@ include(
 
 includeBuild("build-plugins")
 
-enableFeaturePreview("VERSION_CATALOGS")
+gradleEnterprise {
+    buildScan {
+        termsOfServiceUrl = "https://gradle.com/terms-of-service"
+        termsOfServiceAgree = "yes"
+        publishAlways()
+    }
+}
+
+pluginManagement {
+    repositories {
+        google()
+        gradlePluginPortal()
+    }
+}
+
+plugins {
+    id("com.gradle.enterprise") version "3.9"
+}
+
+
+rootProject.name = "playground"

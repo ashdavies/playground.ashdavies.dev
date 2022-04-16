@@ -20,6 +20,7 @@ import io.ktor.server.plugins.CallLogging
 import io.ktor.server.response.respond
 import io.ktor.server.routing.get
 import io.ktor.server.routing.routing
+import io.ktor.util.toMap
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.Flow
@@ -78,6 +79,7 @@ public actual fun beginAuthFlow(provider: OAuthProvider): Flow<AccessToken> = ch
 }
 
 private fun AccessToken(principal: OAuthAccessTokenResponse.OAuth2) = AccessToken(
+    extraParameters = principal.extraParameters.toMap(),
     refreshToken = principal.refreshToken,
     accessToken = principal.accessToken,
     tokenType = principal.tokenType,

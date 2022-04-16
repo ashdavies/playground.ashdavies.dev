@@ -8,6 +8,7 @@ import io.ashdavies.playground.beginAuthFlow
 import kotlinx.cli.ExperimentalCli
 import kotlinx.cli.Subcommand
 import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -47,33 +48,39 @@ private class AuthLoginCommand(private val queries: TokenQueries) : Subcommand(
             return@runBlocking
         }
 
-        val deferredAuthResult = CompletableDeferred<AccessToken>()
-        val userPromptUri = "http://localhost:8080/callback"
-
-        beginAuthFlow(OAuthProvider.Notion)
-            .onEach { deferredAuthResult.complete(it) }
-            .launchIn(this)
-
-        // Await server startup
-        delay(500)
-
-        if (!Browser.launch(userPromptUri)) {
-            println("Navigate to $userPromptUri to continue")
-        }
-
-        val authResult = deferredAuthResult.await()
-
-        val token = Token(
-            accessToken = authResult.accessToken,
-            workspaceIcon = "",
-            workspaceName = "",
-            workspaceId = "",
-            botId = "",
-        )
-
-        queries.insert(token)
+        queries.insert(authenticate())
         println("Authentication complete")
     }
+}
+
+private suspend fun CoroutineScope.authenticate(): Token {
+    val deferredAuthResult = CompletableDeferred<AccessToken>()
+    val userPromptUri = "http://localhost:8080/callback"
+
+    beginAuthFlow(OAuthProvider.Notion)
+        .onEach { deferredAuthResult.complete(it) }
+        .launchIn(this)
+
+    // Await server startup
+    delay(500)
+
+    if (!Browser.launch(userPromptUri)) {
+        println("Navigate to $userPromptUri to continue")
+    }
+
+    val authResult = deferredAuthResult.await()
+
+    return Token(
+        accessToken = authResult.accessToken,
+        workspaceIcon = "",
+        workspaceName = "",
+        workspaceId = "",
+        botId = "",
+    )
+}
+
+private suspend fun awaitToken(token: OAuthProvider.Notion, value: AccessToken) {
+
 }
 
 @ExperimentalCli
