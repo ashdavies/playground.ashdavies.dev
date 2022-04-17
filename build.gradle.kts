@@ -13,8 +13,10 @@ buildscript {
     }
 
     dependencies {
-        classpath(kotlin("gradle-plugin", version = libs.versions.kotlin.get()))
-        classpath(kotlin("serialization", version = libs.versions.kotlin.get()))
+        with(libs.versions.kotlin) {
+            classpath(kotlin("gradle-plugin", version = get()))
+            classpath(kotlin("serialization", version = get()))
+        }
 
         classpath(libs.android.gradlePlugin)
         classpath(libs.apache.batikExt)
@@ -27,10 +29,10 @@ buildscript {
 }
 
 plugins {
-    alias(libs.plugins.anvil)
     alias(libs.plugins.gradle.doctor)
     alias(libs.plugins.ktlint)
     alias(libs.plugins.versions)
+    alias(libs.plugins.versionCatalogUpdate)
 }
 
 allprojects {

@@ -1,42 +1,32 @@
 [versions]
 accompanist = "0.23.1"
-android = "7.0.4"
-anvil = "2.4.0-M2"
+android = "7.1.3"
+androidx-activity = "1.4.0"
 apollo = "2.5.11"
-benManes = "0.39.0"
-compose = "1.1.1"
-coroutines = "1.6.0"
-decompose = "0.5.2"
-gitlive = "1.4.3"
+coroutines = "1.6.1"
+decompose = "0.6.0"
 kotlin = "1.5.31"
 ktlint = "10.2.1"
-ktor = "2.0.0-beta-1"
+ktor = "2.0.0"
 lifecycle = "2.4.1"
 molecule = "0.2.0"
 serialization = "1.3.2"
 sqlDelight = "1.5.3"
 
 [libraries]
-alialbaali-kamel = { module = "com.alialbaali.kamel:kamel-image", version = "0.2.2"}
+alialbaali-kamel = "com.alialbaali.kamel:kamel-image:0.3.0"
 
 android-gradlePlugin = { module = "com.android.tools.build:gradle", version.ref = "android" }
-androidx-activityCompose = { module = "androidx.activity:activity-compose", version = "1.4.0" }
-androidx-activityKtx = { module = "androidx.activity:activity-ktx", version = "1.4.0" }
-androidx-annotation = { module = "androidx.annotation:annotation", version = "1.3.0" }
-androidx-compose-foundation = { module = "androidx.compose.foundation:foundation", version.ref = "compose" }
-androidx-compose-material = { module = "androidx.compose.material:material", version.ref = "compose" }
-androidx-compose-runtime = { module = "androidx.compose.runtime:runtime", version.ref = "compose" }
-androidx-compose-ui = { module = "androidx.compose.ui:ui", version.ref = "compose" }
-androidx-compose-uiTest = { module = "androidx.compose.ui:ui-test", version.ref = "compose" }
-androidx-compose-uiTooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose" }
-androidx-coreKtx = { module = "androidx.core:core-ktx", version = "1.7.0" }
-androidx-datastoreCore = { module = "androidx.datastore:datastore-core", version = "1.0.0" }
+androidx-activityCompose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity" }
+androidx-activityKtx = { module = "androidx.activity:activity-ktx", version.ref = "androidx-activity" }
+androidx-annotation = "androidx.annotation:annotation:1.3.0"
+androidx-coreKtx = "androidx.core:core-ktx:1.7.0"
 androidx-lifecycle-viewModelCompose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycle" }
 androidx-lifecycle-viewModelKtx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
-androidx-pagingRuntime = { module = "androidx.paging:paging-runtime", version = "3.1.1" }
-androidx-pagingCompose = { module = "androidx.paging:paging-compose", version = "1.0.0-alpha14" }
+androidx-pagingCompose = "androidx.paging:paging-compose:1.0.0-alpha14"
+androidx-pagingRuntime = "androidx.paging:paging-runtime:3.1.1"
 
-apache-batikExt = { module = "org.apache.xmlgraphics:batik-ext", version = "1.14" }
+apache-batikExt = "org.apache.xmlgraphics:batik-ext:1.14"
 
 apolloGraphQl-apolloCoroutinesSupport = { module = "com.apollographql.apollo:apollo-coroutines-support", version.ref = "apollo" }
 apolloGraphQl-apolloGradlePlugin = { module = "com.apollographql.apollo:apollo-gradle-plugin", version.ref = "apollo" }
@@ -46,49 +36,44 @@ arkivanov-decompose = { module = "com.arkivanov.decompose:decompose", version.re
 arkivanov-decompose-extensions = { module = "com.arkivanov.decompose:extensions-compose-jetbrains", version.ref = "decompose" }
 
 cash-molecule = { module = "app.cash.molecule:molecule-gradle-plugin", version.ref = "molecule" }
-coroutineDispatcherCore = { module = "com.rickbusarow.dispatch:dispatch-core", version = "1.0.0-beta10" }
+coroutineDispatcherCore = "com.rickbusarow.dispatch:dispatch-core:1.0.0-beta10"
 
-google-android-material = { module = "com.google.android.material:material", version = "1.5.0-alpha04" }
 google-accompanist-flowlayout = { module = "com.google.accompanist:accompanist-flowlayout", version.ref = "accompanist" }
 google-accompanist-insets = { module = "com.google.accompanist:accompanist-insets", version.ref = "accompanist" }
 google-accompanist-insetsUi = { module = "com.google.accompanist:accompanist-insets-ui", version.ref = "accompanist" }
 google-accompanist-placeholderMaterial = { module = "com.google.accompanist:accompanist-placeholder-material", version.ref = "accompanist" }
 google-accompanist-swiperefresh = { module = "com.google.accompanist:accompanist-swiperefresh", version.ref = "accompanist" }
 google-accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanist" }
+google-android-material = "com.google.android.material:material:1.5.0"
 
-google-cloud-functionsFrameworkApi = { module = "com.google.cloud.functions:functions-framework-api", version = "1.0.4" }
-google-cloud-javaFunctionInvoker = { module = "com.google.cloud.functions.invoker:java-function-invoker", version = "1.1.0" }
+google-cloud-functionsFrameworkApi = "com.google.cloud.functions:functions-framework-api:1.0.4"
+google-cloud-javaFunctionInvoker = "com.google.cloud.functions.invoker:java-function-invoker:1.1.0"
 
-google-firebase-admin = { module = "com.google.firebase:firebase-admin", version = "8.1.0" }
-google-firebase-analytics = { module = "com.google.firebase:firebase-analytics", version = "20.1.1" }
-google-firebase-commonKtx = { module = "com.google.firebase:firebase-common-ktx", version = "20.1.0" }
+google-firebase-admin = "com.google.firebase:firebase-admin:8.1.0"
+google-firebase-analytics = "com.google.firebase:firebase-analytics:20.1.2"
+google-firebase-commonKtx = "com.google.firebase:firebase-common-ktx:20.1.0"
 
-jakeWharton-mosaic = { module = "com.jakewharton.mosaic:mosaic-gradle-plugin", version = "0.1.0" }
-
-jetbrains-compose-gradlePlugin = { module = "org.jetbrains.compose:compose-gradle-plugin", version = "1.1.1" }
+jetbrains-compose-gradlePlugin = "org.jetbrains.compose:compose-gradle-plugin:1.1.1"
 jetbrains-kotlin-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 jetbrains-kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 jetbrains-kotlin-testAnnotations = { module = "org.jetbrains.kotlin:kotlin-test-annotations-common", version.ref = "kotlin" }
 jetbrains-kotlin-testCommon = { module = "org.jetbrains.kotlin:kotlin-test-common", version.ref = "kotlin" }
-jetbrains-kotlin-testJs = { module = "org.jetbrains.kotlin:kotlin-test-js", version.ref = "kotlin" }
 jetbrains-kotlin-testJunit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
+jetbrains-kotlinx-cli = "org.jetbrains.kotlinx:kotlinx-cli:0.3.4"
 jetbrains-kotlinx-coroutinesAndroid = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
 jetbrains-kotlinx-coroutinesCore = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
 jetbrains-kotlinx-coroutinesSwing = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-swing", version.ref = "coroutines" }
 jetbrains-kotlinx-coroutinesTest = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
-jetbrains-kotlinx-cli = { module = "org.jetbrains.kotlinx:kotlinx-cli", version = "0.3.4" }
-jetbrains-kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version = "0.3.2" }
-jetbrains-kotlinx-nodejs = { module = "org.jetbrains.kotlinx:kotlinx-nodejs", version = "0.0.7" }
+jetbrains-kotlinx-datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.3.2"
 jetbrains-kotlinx-serializationCore = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version.ref = "serialization" }
 jetbrains-kotlinx-serializationJson = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization" }
 jetbrains-kotlinx-serializationProperties = { module = "org.jetbrains.kotlinx:kotlinx-serialization-properties", version.ref = "serialization" }
 
-jraf-klibnotion =  { module = "org.jraf:klibnotion", version = "1.11.0" }
+jraf-klibnotion = "org.jraf:klibnotion:1.11.0"
 
-ktor-client-contentNegotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
 ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor" }
+ktor-client-contentNegotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
-ktor-client-ios = { module = "io.ktor:ktor-client-ios", version.ref = "ktor" }
 ktor-client-json = { module = "io.ktor:ktor-client-json", version.ref = "ktor" }
 ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
 ktor-serialization-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
@@ -98,33 +83,31 @@ ktor-server-callLogging = { module = "io.ktor:ktor-server-call-logging", version
 ktor-server-cio = { module = "io.ktor:ktor-server-cio", version.ref = "ktor" }
 ktor-server-core = { module = "io.ktor:ktor-server-core", version.ref = "ktor" }
 ktor-server-htmlBuilder = { module = "io.ktor:ktor-server-html-builder", version.ref = "ktor" }
-ktor-server-sessions = { module = "io.ktor:ktor-server-sessions", version.ref = "ktor" }
 
-kuuuurt-multiplatformPaging = { module = "io.github.kuuuurt:multiplatform-paging", version = "0.4.7" }
-pinterest-ktlint = { module = "com.pinterest:ktlint", version = "0.40.0" }
-requery-sqliteAndroid = { module = "com.github.requery:sqlite-android", version = "3.36.0" }
-slf4j = { module = "org.slf4j:slf4j-simple", version = "1.7.21" }
+kuuuurt-multiplatformPaging = "io.github.kuuuurt:multiplatform-paging:0.4.7"
+pinterest-ktlint = "com.pinterest:ktlint:0.45.2"
+qos-logbackClassic = "ch.qos.logback:logback-classic:1.2.11"
+requery-sqliteAndroid = "com.github.requery:sqlite-android:3.36.0"
+slf4j = "org.slf4j:slf4j-simple:1.7.36"
 
 sqlDelight-androidDriver = { module = "com.squareup.sqldelight:android-driver", version.ref = "sqlDelight" }
 sqlDelight-coroutinesExtensions = { module = "com.squareup.sqldelight:coroutines-extensions", version.ref = "sqlDelight" }
 sqlDelight-kotlinGradlePlugin = { module = "com.squareup.sqldelight:gradle-plugin", version.ref = "sqlDelight" }
-sqlDelight-sqliteDriver = { module = "com.squareup.sqldelight:sqlite-driver", version.ref = "sqlDelight" }
 sqlDelight-runtime = { module = "com.squareup.sqldelight:runtime", version.ref = "sqlDelight" }
-
-qos-logbackClassic = { module = "ch.qos.logback:logback-classic", version = "1.2.11" }
+sqlDelight-sqliteDriver = { module = "com.squareup.sqldelight:sqlite-driver", version.ref = "sqlDelight" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android" }
 android-library = { id = "com.android.library", version.ref = "android" }
-anvil = { id = "com.squareup.anvil", version.ref = "anvil" }
 apollo = { id = "com.apollographql.apollo", version.ref = "apollo" }
 cash-molecule = { id = "app.cash.molecule", version.ref = "molecule" }
-gradle-doctor = { id = "com.osacky.doctor", version = "0.7.3" }
-johnRengelman-shadow = { id = "com.github.johnrengelman.shadow", version = "7.1.0" }
+gradle-doctor = "com.osacky.doctor:0.8.0"
+johnRengelman-shadow = "com.github.johnrengelman.shadow:7.1.2"
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
 serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 sqldelight = { id = "com.squareup.sqldelight", version.ref = "sqlDelight" }
-versions = { id = "com.github.ben-manes.versions", version = "0.42.0" }
+versionCatalogUpdate = "nl.littlerobots.version-catalog-update:0.3.1"
+versions = "com.github.ben-manes.versions:0.42.0"

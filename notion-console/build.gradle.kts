@@ -11,7 +11,7 @@ plugins {
 }
 
 kotlin {
-    jvm()
+    val jvm = jvm()
 
     sourceSets {
         val commonMain by getting {
@@ -40,7 +40,7 @@ kotlin {
     }
 
     tasks.withType<JavaExec> {
-        val compilation: KotlinJvmCompilation = jvm()
+        val compilation: KotlinJvmCompilation = jvm
             .compilations
             .getByName("main")
 
@@ -55,8 +55,4 @@ kotlin {
 
 application {
     mainClass.set("io.ashdavies.notion.MainKt")
-}
-
-tasks.test {
-    useJUnit()
 }
