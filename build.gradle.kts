@@ -75,3 +75,7 @@ fun isUnstable(version: String): Boolean {
 tasks.withType<DependencyUpdatesTask> {
     rejectVersionIf { isUnstable(candidate.version) }
 }
+
+versionCatalogUpdate {
+    pin { libraries.add(libs.android.gradlePlugin) }
+}

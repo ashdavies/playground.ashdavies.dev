@@ -81,6 +81,7 @@ kotlin {
                 implementation(libs.ktor.serialization.json)
                 implementation(libs.kuuuurt.multiplatformPaging)
                 implementation(libs.sqlDelight.coroutinesExtensions)
+                implementation(libs.oolong)
             }
         }
 
