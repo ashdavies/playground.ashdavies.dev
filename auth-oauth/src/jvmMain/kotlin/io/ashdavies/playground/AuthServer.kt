@@ -1,7 +1,7 @@
 package io.ashdavies.playground
 
 import io.ktor.client.HttpClient
-import io.ktor.client.plugins.ContentNegotiation
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.http.HttpHeaders
@@ -16,7 +16,7 @@ import io.ktor.server.auth.oauth
 import io.ktor.server.auth.principal
 import io.ktor.server.cio.CIOApplicationEngine
 import io.ktor.server.engine.embeddedServer
-import io.ktor.server.plugins.CallLogging
+import io.ktor.server.plugins.callloging.CallLogging
 import io.ktor.server.response.respond
 import io.ktor.server.routing.get
 import io.ktor.server.routing.routing
