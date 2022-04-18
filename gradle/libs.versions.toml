@@ -36,6 +36,7 @@ arkivanov-decompose = { module = "com.arkivanov.decompose:decompose", version.re
 arkivanov-decompose-extensions = { module = "com.arkivanov.decompose:extensions-compose-jetbrains", version.ref = "decompose" }
 
 coroutineDispatcherCore = "com.rickbusarow.dispatch:dispatch-core:1.0.0-beta10"
+fuseSource-jansi = "org.fusesource.jansi:jansi:2.0.1"
 
 google-accompanist-flowlayout = { module = "com.google.accompanist:accompanist-flowlayout", version.ref = "accompanist" }
 google-accompanist-insets = { module = "com.google.accompanist:accompanist-insets", version.ref = "accompanist" }
@@ -51,6 +52,8 @@ google-cloud-javaFunctionInvoker = "com.google.cloud.functions.invoker:java-func
 google-firebase-admin = "com.google.firebase:firebase-admin:8.1.0"
 google-firebase-analytics = "com.google.firebase:firebase-analytics:20.1.2"
 google-firebase-commonKtx = "com.google.firebase:firebase-common-ktx:20.1.0"
+
+jakeWharton-mosaic = "com.jakewharton.mosaic:mosaic-runtime:0.1.0"
 
 jetbrains-compose-gradlePlugin = "org.jetbrains.compose:compose-gradle-plugin:1.1.1"
 jetbrains-kotlin-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }

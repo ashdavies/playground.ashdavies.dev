@@ -11,7 +11,6 @@ include(
     ":dominion",
     ":local-storage",
     ":notion-console",
-    ":notion-console-jvm",
     ":version-catalog"
 )
 
