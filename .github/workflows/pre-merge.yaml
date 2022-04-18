@@ -9,6 +9,10 @@ on:
     branches:
       - '*'
 
+env:
+  GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+  PLAYGROUND_API_KEY: ${{ secrets.PLAYGROUND_API_KEY }}
+
 jobs:
   gradle:
     runs-on: ubuntu-latest

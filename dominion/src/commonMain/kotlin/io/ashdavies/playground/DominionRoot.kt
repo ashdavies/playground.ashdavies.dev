@@ -8,37 +8,35 @@ import com.arkivanov.decompose.extensions.compose.jetbrains.animation.child.chil
 import com.arkivanov.decompose.extensions.compose.jetbrains.animation.child.slide
 import com.arkivanov.decompose.router.RouterState
 import com.arkivanov.decompose.value.Value
-import io.ashdavies.playground.events.EventsScreen
-import io.ashdavies.playground.profile.ProfileScreen
 
 @Composable
 @OptIn(ExperimentalDecomposeApi::class)
-internal fun PlaygroundRoot(root: PlaygroundRoot, modifier: Modifier = Modifier) {
-    PlaygroundTheme {
+internal fun DominionRoot(root: DominionRoot, modifier: Modifier = Modifier) {
+    DominionTheme {
         Children(root.routerState, modifier, childAnimation(slide())) {
-            when (val child: PlaygroundRoot.Child = it.instance) {
-                is PlaygroundRoot.Child.Events -> EventsScreen(child)
-                is PlaygroundRoot.Child.Profile -> ProfileScreen(child)
+            when (val child: DominionRoot.Child = it.instance) {
+                is DominionRoot.Child.List -> TODO()
+                is DominionRoot.Child.Details -> TODO()
             }
         }
     }
 }
 
-internal interface PlaygroundRoot {
+internal interface DominionRoot {
 
     val routerState: Value<RouterState<*, Child>>
 
-    sealed interface Child {
+    sealed class Child {
 
-        val navigation: Navigation
+        abstract val navigation: Navigation
 
-        data class Events(override val navigation: Navigation) : Child
-        data class Profile(override val navigation: Navigation) : Child
+        data class List(override val navigation: Navigation) : Child()
+        data class Details(override val navigation: Navigation) : Child()
     }
 
     interface Navigation {
 
-        fun navigateToEvents()
-        fun navigateToProfile()
+        fun navigateToList()
+        fun navigateToDetails()
     }
 }

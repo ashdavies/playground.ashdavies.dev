@@ -1,5 +1,7 @@
+import org.gradle.api.artifacts.MinimalExternalModuleDependency
 import org.gradle.api.artifacts.dsl.RepositoryHandler
 import org.gradle.api.artifacts.repositories.MavenArtifactRepository
+import org.gradle.api.provider.Provider
 import org.gradle.kotlin.dsl.maven
 
 fun RepositoryHandler.jetbrainsCompose(): MavenArtifactRepository =
@@ -10,6 +12,9 @@ fun RepositoryHandler.jitpack(group: String): MavenArtifactRepository =
 
 fun RepositoryHandler.kotlinEap(): MavenArtifactRepository =
     maven("https://dl.bintray.com/kotlin/kotlin-eap")
+
+fun RepositoryHandler.snapshots(provider: Provider<MinimalExternalModuleDependency>): MavenArtifactRepository =
+    snapshots(provider.get().module.group)
 
 fun RepositoryHandler.snapshots(group: String): MavenArtifactRepository =
     maven("https://oss.sonatype.org/content/repositories/snapshots", group)

@@ -5,7 +5,7 @@ androidx-activity = "1.4.0"
 apollo = "2.5.11"
 coroutines = "1.6.1"
 decompose = "0.6.0"
-kotlin = "1.5.31"
+kotlin = "1.6.10"
 ktlint = "10.2.1"
 ktor = "2.0.0"
 lifecycle = "2.4.1"
@@ -35,7 +35,6 @@ apolloGraphQl-apolloRuntime = { module = "com.apollographql.apollo:apollo-runtim
 arkivanov-decompose = { module = "com.arkivanov.decompose:decompose", version.ref = "decompose" }
 arkivanov-decompose-extensions = { module = "com.arkivanov.decompose:extensions-compose-jetbrains", version.ref = "decompose" }
 
-cash-molecule = { module = "app.cash.molecule:molecule-gradle-plugin", version.ref = "molecule" }
 coroutineDispatcherCore = "com.rickbusarow.dispatch:dispatch-core:1.0.0-beta10"
 
 google-accompanist-flowlayout = { module = "com.google.accompanist:accompanist-flowlayout", version.ref = "accompanist" }
@@ -89,7 +88,6 @@ oolong = "org.oolong-kt:oolong:2.0.4"
 pinterest-ktlint = "com.pinterest:ktlint:0.45.2"
 qos-logbackClassic = "ch.qos.logback:logback-classic:1.2.11"
 requery-sqliteAndroid = "com.github.requery:sqlite-android:3.36.0"
-slf4j = "org.slf4j:slf4j-simple:1.7.36"
 
 sqlDelight-androidDriver = { module = "com.squareup.sqldelight:android-driver", version.ref = "sqlDelight" }
 sqlDelight-coroutinesExtensions = { module = "com.squareup.sqldelight:coroutines-extensions", version.ref = "sqlDelight" }
@@ -101,7 +99,6 @@ sqlDelight-sqliteDriver = { module = "com.squareup.sqldelight:sqlite-driver", ve
 android-application = { id = "com.android.application", version.ref = "android" }
 android-library = { id = "com.android.library", version.ref = "android" }
 apollo = { id = "com.apollographql.apollo", version.ref = "apollo" }
-cash-molecule = { id = "app.cash.molecule", version.ref = "molecule" }
 gradle-doctor = "com.osacky.doctor:0.8.0"
 johnRengelman-shadow = "com.github.johnrengelman.shadow:7.1.2"
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }

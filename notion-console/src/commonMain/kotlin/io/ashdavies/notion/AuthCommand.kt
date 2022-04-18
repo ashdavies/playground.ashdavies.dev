@@ -12,7 +12,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.onStart
 
 private const val AUTH_ACTION_DESCRIPTION = "Run notion auth login to authenticate with your Notion account."
 private const val AUTH_LOGIN_DESCRIPTION = "Run notion auth login to authenticate with your Notion account."
@@ -77,10 +76,6 @@ private suspend fun CoroutineScope.authenticate(): Token {
         workspaceId = "",
         botId = "",
     )
-}
-
-private suspend fun awaitToken(token: OAuthProvider.Notion, value: AccessToken) {
-
 }
 
 @ExperimentalCli

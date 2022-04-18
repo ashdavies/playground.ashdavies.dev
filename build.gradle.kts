@@ -21,7 +21,6 @@ buildscript {
         classpath(libs.android.gradlePlugin)
         classpath(libs.apache.batikExt)
         classpath(libs.apolloGraphQl.apolloGradlePlugin)
-        classpath(libs.cash.molecule)
         classpath(libs.jetbrains.compose.gradlePlugin)
         classpath(libs.jetbrains.kotlin.gradlePlugin)
         classpath(libs.sqlDelight.kotlinGradlePlugin)
@@ -48,7 +47,6 @@ allprojects {
 subprojects {
     tasks.withType<KotlinCompile<*>> {
         kotlinOptions.freeCompilerArgs += listOf(
-            "-XXLanguage:+InlineClasses",
             "-Xallow-result-return-type",
             "-Xmulti-platform",
         )
@@ -56,6 +54,7 @@ subprojects {
 }
 
 doctor {
+    allowBuildingAllAndroidAppsSimultaneously.set(true)
     disallowCleanTaskDependencies.set(false)
 
     javaHome {

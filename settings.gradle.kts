@@ -8,6 +8,7 @@ include(
     ":cloud-aggregator",
     ":cloud-functions",
     ":compose-local",
+    ":dominion",
     ":local-storage",
     ":notion-console",
     ":version-catalog"

@@ -5,6 +5,9 @@ import org.gradle.plugin.use.PluginDependenciesSpec
 import org.gradle.plugin.use.PluginDependency
 import org.gradle.plugin.use.PluginDependencySpec
 
+val PluginDependenciesSpec.`multiplatform-application`: PluginDependencySpec
+    get() = id("multiplatform-application")
+
 val PluginDependenciesSpec.`multiplatform-library`: PluginDependencySpec
     get() = id("multiplatform-library")
 

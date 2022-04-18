@@ -2,6 +2,7 @@
 @file:Suppress("DSL_SCOPE_VIOLATION")
 
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     id(libs.plugins.kotlin.jvm)
@@ -13,8 +14,8 @@ plugins {
 configurations.create("invoker")
 
 dependencies {
-
     implementation(project(":local-storage"))
+
     implementation(libs.coroutineDispatcherCore)
     implementation(libs.google.cloud.functionsFrameworkApi)
     implementation(libs.google.firebase.admin)
@@ -73,4 +74,8 @@ tasks.register("runEventsFunction", JavaExec::class) {
             args("--classpath", files(configurations.runtimeClasspath, output).asPath)
         }
     }
+}
+
+tasks.withType<KotlinCompile>().configureEach {
+    kotlinOptions.freeCompilerArgs += "-opt-in=kotlin.RequiresOptIn"
 }

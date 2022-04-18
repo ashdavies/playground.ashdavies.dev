@@ -5,9 +5,9 @@ import io.ashdavies.playground.EventsSerializer
 import io.ashdavies.playground.composableCompositionLocalOf
 import io.ashdavies.playground.profile.RandomUser
 import io.ktor.client.HttpClient
-import io.ktor.client.plugins.ContentNegotiation
 import io.ktor.client.plugins.DefaultRequest
 import io.ktor.client.plugins.cache.HttpCache
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.request.header
 import io.ktor.http.HttpHeaders

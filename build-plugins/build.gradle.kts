@@ -20,6 +20,11 @@ dependencies {
 
 gradlePlugin {
     plugins {
+        create("multiplatform-application") {
+            implementationClass = "MultiplatformApplication"
+            id = "multiplatform-application"
+        }
+
         create("multiplatform-library") {
             implementationClass = "MultiplatformLibrary"
             id = "multiplatform-library"

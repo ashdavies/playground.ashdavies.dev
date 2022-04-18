@@ -1,18 +1,10 @@
-// https://youtrack.jetbrains.com/issue/KTIJ-19369
-@file:Suppress("DSL_SCOPE_VIOLATION")
-
 import org.jetbrains.compose.compose
-import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinJvmCompilation
 
 plugins {
-    kotlin("multiplatform")
-    id("org.jetbrains.compose")
-    application
+    `multiplatform-library`
 }
 
 kotlin {
-    val jvm = jvm()
-
     sourceSets {
         val commonMain by getting {
             dependencies {
@@ -38,21 +30,4 @@ kotlin {
             }
         }
     }
-
-    tasks.withType<JavaExec> {
-        val compilation: KotlinJvmCompilation = jvm
-            .compilations
-            .getByName("main")
-
-        val classes: ConfigurableFileCollection = files(
-            compilation.runtimeDependencyFiles,
-            compilation.output.allOutputs
-        )
-
-        classpath(classes)
-    }
-}
-
-application {
-    mainClass.set("io.ashdavies.notion.MainKt")
 }
