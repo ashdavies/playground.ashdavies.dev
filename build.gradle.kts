@@ -13,7 +13,7 @@ buildscript {
     }
 
     dependencies {
-        with(libs.versions.kotlin) {
+        with(libs.versions.jetbrains.kotlin) {
             classpath(kotlin("gradle-plugin", version = get()))
             classpath(kotlin("serialization", version = get()))
         }
@@ -29,7 +29,7 @@ buildscript {
 
 plugins {
     alias(libs.plugins.gradle.doctor)
-    alias(libs.plugins.ktlint)
+    alias(libs.plugins.gradle.ktlint)
     alias(libs.plugins.versions)
     alias(libs.plugins.versionCatalogUpdate)
 }

@@ -1,49 +1,47 @@
 [versions]
-accompanist = "0.23.1"
-android = "7.0.4"
 androidx-activity = "1.4.0"
-apollo = "2.5.11"
-coroutines = "1.6.1"
-decompose = "0.6.0"
-kotlin = "1.6.10"
-ktlint = "10.2.1"
+androidx-lifecycle = "2.4.1"
+apollo-graphql = "2.5.11"
+arkivanov-decompose = "0.6.0"
+google-accompanist = "0.23.1"
+google-android = "7.0.4"
+jetbrains-kotlin = "1.6.10"
+kotlinx-coroutines = "1.6.1"
+kotlinx-serialization = "1.3.2"
 ktor = "2.0.0"
-lifecycle = "2.4.1"
-molecule = "0.2.0"
-serialization = "1.3.2"
-sqlDelight = "1.5.3"
+squareUp-sqlDelight = "1.5.3"
 
 [libraries]
 alialbaali-kamel = "com.alialbaali.kamel:kamel-image:0.3.0"
 
-android-gradlePlugin = { module = "com.android.tools.build:gradle", version.ref = "android" }
+android-gradlePlugin = { module = "com.android.tools.build:gradle", version.ref = "google.android" }
 androidx-activityCompose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity" }
 androidx-activityKtx = { module = "androidx.activity:activity-ktx", version.ref = "androidx-activity" }
 androidx-annotation = "androidx.annotation:annotation:1.3.0"
 androidx-coreKtx = "androidx.core:core-ktx:1.7.0"
-androidx-lifecycle-viewModelCompose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycle" }
-androidx-lifecycle-viewModelKtx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
+androidx-lifecycle-viewModelCompose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "androidx-lifecycle" }
+androidx-lifecycle-viewModelKtx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "androidx-lifecycle" }
 androidx-pagingCompose = "androidx.paging:paging-compose:1.0.0-alpha14"
 androidx-pagingRuntime = "androidx.paging:paging-runtime:3.1.1"
 
 apache-batikExt = "org.apache.xmlgraphics:batik-ext:1.14"
 
-apolloGraphQl-apolloCoroutinesSupport = { module = "com.apollographql.apollo:apollo-coroutines-support", version.ref = "apollo" }
-apolloGraphQl-apolloGradlePlugin = { module = "com.apollographql.apollo:apollo-gradle-plugin", version.ref = "apollo" }
-apolloGraphQl-apolloRuntime = { module = "com.apollographql.apollo:apollo-runtime", version.ref = "apollo" }
+apolloGraphQl-apolloCoroutinesSupport = { module = "com.apollographql.apollo:apollo-coroutines-support", version.ref = "apollo-graphql" }
+apolloGraphQl-apolloGradlePlugin = { module = "com.apollographql.apollo:apollo-gradle-plugin", version.ref = "apollo-graphql" }
+apolloGraphQl-apolloRuntime = { module = "com.apollographql.apollo:apollo-runtime", version.ref = "apollo-graphql" }
 
-arkivanov-decompose = { module = "com.arkivanov.decompose:decompose", version.ref = "decompose" }
-arkivanov-decompose-extensions = { module = "com.arkivanov.decompose:extensions-compose-jetbrains", version.ref = "decompose" }
+arkivanov-decompose = { module = "com.arkivanov.decompose:decompose", version.ref = "arkivanov-decompose" }
+arkivanov-decompose-extensions = { module = "com.arkivanov.decompose:extensions-compose-jetbrains", version.ref = "arkivanov-decompose" }
 
 coroutineDispatcherCore = "com.rickbusarow.dispatch:dispatch-core:1.0.0-beta10"
 fuseSource-jansi = "org.fusesource.jansi:jansi:2.0.1"
 
-google-accompanist-flowlayout = { module = "com.google.accompanist:accompanist-flowlayout", version.ref = "accompanist" }
-google-accompanist-insets = { module = "com.google.accompanist:accompanist-insets", version.ref = "accompanist" }
-google-accompanist-insetsUi = { module = "com.google.accompanist:accompanist-insets-ui", version.ref = "accompanist" }
-google-accompanist-placeholderMaterial = { module = "com.google.accompanist:accompanist-placeholder-material", version.ref = "accompanist" }
-google-accompanist-swiperefresh = { module = "com.google.accompanist:accompanist-swiperefresh", version.ref = "accompanist" }
-google-accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanist" }
+google-accompanist-flowlayout = { module = "com.google.accompanist:accompanist-flowlayout", version.ref = "google-accompanist" }
+google-accompanist-insets = { module = "com.google.accompanist:accompanist-insets", version.ref = "google-accompanist" }
+google-accompanist-insetsUi = { module = "com.google.accompanist:accompanist-insets-ui", version.ref = "google-accompanist" }
+google-accompanist-placeholderMaterial = { module = "com.google.accompanist:accompanist-placeholder-material", version.ref = "google-accompanist" }
+google-accompanist-swiperefresh = { module = "com.google.accompanist:accompanist-swiperefresh", version.ref = "google-accompanist" }
+google-accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "google-accompanist" }
 google-android-material = "com.google.android.material:material:1.5.0"
 
 google-cloud-functionsFrameworkApi = "com.google.cloud.functions:functions-framework-api:1.0.4"
@@ -56,20 +54,20 @@ google-firebase-commonKtx = "com.google.firebase:firebase-common-ktx:20.1.0"
 jakeWharton-mosaic = "com.jakewharton.mosaic:mosaic-runtime:0.1.0"
 
 jetbrains-compose-gradlePlugin = "org.jetbrains.compose:compose-gradle-plugin:1.1.1"
-jetbrains-kotlin-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
-jetbrains-kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
-jetbrains-kotlin-testAnnotations = { module = "org.jetbrains.kotlin:kotlin-test-annotations-common", version.ref = "kotlin" }
-jetbrains-kotlin-testCommon = { module = "org.jetbrains.kotlin:kotlin-test-common", version.ref = "kotlin" }
-jetbrains-kotlin-testJunit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
+jetbrains-kotlin-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "jetbrains-kotlin" }
+jetbrains-kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "jetbrains-kotlin" }
+jetbrains-kotlin-testAnnotations = { module = "org.jetbrains.kotlin:kotlin-test-annotations-common", version.ref = "jetbrains-kotlin" }
+jetbrains-kotlin-testCommon = { module = "org.jetbrains.kotlin:kotlin-test-common", version.ref = "jetbrains-kotlin" }
+jetbrains-kotlin-testJunit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "jetbrains-kotlin" }
 jetbrains-kotlinx-cli = "org.jetbrains.kotlinx:kotlinx-cli:0.3.4"
-jetbrains-kotlinx-coroutinesAndroid = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
-jetbrains-kotlinx-coroutinesCore = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
-jetbrains-kotlinx-coroutinesSwing = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-swing", version.ref = "coroutines" }
-jetbrains-kotlinx-coroutinesTest = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
+jetbrains-kotlinx-coroutinesAndroid = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinx-coroutines" }
+jetbrains-kotlinx-coroutinesCore = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
+jetbrains-kotlinx-coroutinesSwing = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-swing", version.ref = "kotlinx-coroutines" }
+jetbrains-kotlinx-coroutinesTest = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinx-coroutines" }
 jetbrains-kotlinx-datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.3.2"
-jetbrains-kotlinx-serializationCore = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version.ref = "serialization" }
-jetbrains-kotlinx-serializationJson = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization" }
-jetbrains-kotlinx-serializationProperties = { module = "org.jetbrains.kotlinx:kotlinx-serialization-properties", version.ref = "serialization" }
+jetbrains-kotlinx-serializationCore = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version.ref = "kotlinx-serialization" }
+jetbrains-kotlinx-serializationJson = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
+jetbrains-kotlinx-serializationProperties = { module = "org.jetbrains.kotlinx:kotlinx-serialization-properties", version.ref = "kotlinx-serialization" }
 
 jraf-klibnotion = "org.jraf:klibnotion:1.11.0"
 
@@ -92,23 +90,23 @@ pinterest-ktlint = "com.pinterest:ktlint:0.45.2"
 qos-logbackClassic = "ch.qos.logback:logback-classic:1.2.11"
 requery-sqliteAndroid = "com.github.requery:sqlite-android:3.36.0"
 
-sqlDelight-androidDriver = { module = "com.squareup.sqldelight:android-driver", version.ref = "sqlDelight" }
-sqlDelight-coroutinesExtensions = { module = "com.squareup.sqldelight:coroutines-extensions", version.ref = "sqlDelight" }
-sqlDelight-kotlinGradlePlugin = { module = "com.squareup.sqldelight:gradle-plugin", version.ref = "sqlDelight" }
-sqlDelight-runtime = { module = "com.squareup.sqldelight:runtime", version.ref = "sqlDelight" }
-sqlDelight-sqliteDriver = { module = "com.squareup.sqldelight:sqlite-driver", version.ref = "sqlDelight" }
+sqlDelight-androidDriver = { module = "com.squareup.sqldelight:android-driver", version.ref = "squareUp-sqlDelight" }
+sqlDelight-coroutinesExtensions = { module = "com.squareup.sqldelight:coroutines-extensions", version.ref = "squareUp-sqlDelight" }
+sqlDelight-kotlinGradlePlugin = { module = "com.squareup.sqldelight:gradle-plugin", version.ref = "squareUp-sqlDelight" }
+sqlDelight-runtime = { module = "com.squareup.sqldelight:runtime", version.ref = "squareUp-sqlDelight" }
+sqlDelight-sqliteDriver = { module = "com.squareup.sqldelight:sqlite-driver", version.ref = "squareUp-sqlDelight" }
 
 [plugins]
-android-application = { id = "com.android.application", version.ref = "android" }
-android-library = { id = "com.android.library", version.ref = "android" }
-apollo = { id = "com.apollographql.apollo", version.ref = "apollo" }
+android-application = { id = "com.android.application", version.ref = "google.android" }
+android-library = { id = "com.android.library", version.ref = "google.android" }
+apollo = { id = "com.apollographql.apollo", version.ref = "apollo-graphql" }
 gradle-doctor = "com.osacky.doctor:0.8.0"
+gradle-ktlint = "org.jlleitschuh.gradle.ktlint:10.2.1"
 johnRengelman-shadow = "com.github.johnrengelman.shadow:7.1.2"
-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
-kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
-ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
-sqldelight = { id = "com.squareup.sqldelight", version.ref = "sqlDelight" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "jetbrains-kotlin" }
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrains-kotlin" }
+kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "jetbrains-kotlin" }
+serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "jetbrains-kotlin" }
+sqldelight = { id = "com.squareup.sqldelight", version.ref = "squareUp-sqlDelight" }
 versionCatalogUpdate = "nl.littlerobots.version-catalog-update:0.3.1"
 versions = "com.github.ben-manes.versions:0.42.0"
