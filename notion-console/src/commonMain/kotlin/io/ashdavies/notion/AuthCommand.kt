@@ -1,52 +1,36 @@
 package io.ashdavies.notion
 
+import androidx.compose.runtime.Composable
 import io.ashdavies.playground.AccessToken
 import io.ashdavies.playground.OAuthProvider
 import io.ashdavies.playground.Token
 import io.ashdavies.playground.TokenQueries
 import io.ashdavies.playground.beginAuthFlow
 import kotlinx.cli.ExperimentalCli
-import kotlinx.cli.Subcommand
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
-private const val AUTH_ACTION_DESCRIPTION = "Run notion auth login to authenticate with your Notion account."
 private const val AUTH_LOGIN_DESCRIPTION = "Run notion auth login to authenticate with your Notion account."
 private const val AUTH_LOGOUT_DESCRIPTION = "Run notion auth logout to remove authentication with your Notion account."
 
+@Composable
 @ExperimentalCli
-internal class AuthCommand(queries: TokenQueries) : Subcommand(
-    actionDescription = AUTH_ACTION_DESCRIPTION,
-    name = "auth",
-) {
-    init {
-        val login = AuthLoginCommand(queries)
-        val logout = AuthLogoutCommand(queries)
-
-        subcommands(login, logout/*, refresh, status*/)
+internal fun AuthCommand(queries: TokenQueries = rememberTokenQueries()) {
+    ArgParser("auth", "Run notion auth login to authenticate with your Notion account.") {
+        authLoginCommand(queries)
+        authLogoutCommand(queries)
     }
-
-    override fun execute() = Unit
 }
 
+@Composable
 @ExperimentalCli
-private class AuthLoginCommand(private val queries: TokenQueries) : Subcommand(
-    actionDescription = AUTH_LOGIN_DESCRIPTION,
-    name = "login",
-) {
-    override fun execute() = runBlocking {
-        val queryToken: Token? = queries
-            .select()
-            .executeAsOneOrNull()
-
-        if (queryToken != null) {
-            println("Authenticated with session token")
-            return@runBlocking
-        }
-
+private fun authLoginCommand(queries: TokenQueries) = rememberSubcommand("login", AUTH_LOGIN_DESCRIPTION) {
+    val queryToken: Token? = queries.select().executeAsOneOrNull()
+    if (queryToken != null) println("Authenticated with session token")
+    else {
         queries.insert(authenticate())
         println("Authentication complete")
     }
@@ -78,14 +62,9 @@ private suspend fun CoroutineScope.authenticate(): Token {
     )
 }
 
+@Composable
 @ExperimentalCli
-private class AuthLogoutCommand(private val queries: TokenQueries) : Subcommand(
-    actionDescription = AUTH_LOGOUT_DESCRIPTION,
-    name = "logout",
-) {
-
-    override fun execute() = runBlocking {
-        println("Removing authentication")
-        queries.deleteAll()
-    }
+private fun authLogoutCommand(queries: TokenQueries) = rememberSubcommand("logout", AUTH_LOGOUT_DESCRIPTION) {
+    println("Removing authentication")
+    queries.deleteAll()
 }

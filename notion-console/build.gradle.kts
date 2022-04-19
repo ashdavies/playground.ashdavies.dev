@@ -11,6 +11,10 @@ kotlin {
     val jvm = jvm()
 
     sourceSets {
+        all {
+            languageSettings.optIn("kotlin.RequiresOptIn")
+        }
+
         val commonMain by getting {
             dependencies {
                 implementation(project(":auth-oauth"))
