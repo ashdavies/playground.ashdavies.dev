@@ -1,9 +1,10 @@
 package io.ashdavies.playground
 
 import androidx.compose.runtime.Composable
-import com.arkivanov.decompose.defaultComponentContext
-import io.ashdavies.playground.compose.ComposeActivity
+import com.arkivanov.decompose.ComponentContext
 
-internal class PlaygroundActivity : ComposeActivity() {
-    override val content = @Composable { PlaygroundScreen(defaultComponentContext()) }
+internal class PlaygroundActivity : DecomposeActivity() {
+    override val root: @Composable (ComponentContext) -> Unit = {
+        EventsRoot(EventsRootComponent(it))
+    }
 }

@@ -1,8 +1,10 @@
 package io.ashdavies.playground
 
 import androidx.compose.runtime.Composable
-import com.arkivanov.decompose.defaultComponentContext
+import com.arkivanov.decompose.ComponentContext
 
-internal class DominionActivity : ComposeActivity() {
-    override val content = @Composable { DominionScreen(defaultComponentContext()) }
+internal class DominionActivity : DecomposeActivity() {
+    override val root: @Composable (ComponentContext) -> Unit = {
+        DominionRoot(DominionRootComponent(it))
+    }
 }
