@@ -14,39 +14,27 @@ internal class EventsRootComponent(componentContext: ComponentContext) :
     EventsRoot {
 
     private val router: Router<ChildConfiguration, EventsRoot.Child> = router(
+        childFactory = { configuration, _ -> createChild(configuration) },
         initialConfiguration = ChildConfiguration.Events,
-        childFactory = ::createChild,
         handleBackButton = true,
     )
 
     override val routerState: Value<RouterState<*, EventsRoot.Child>>
         get() = router.state
 
-    private fun createChild(
-        configuration: ChildConfiguration,
-        componentContext: ComponentContext,
-    ): EventsRoot.Child = when (configuration) {
-        is ChildConfiguration.Events -> EventsRoot.Child.Events(createNavigation(componentContext))
-        is ChildConfiguration.Profile -> EventsRoot.Child.Profile(createNavigation(componentContext))
+    private fun createChild(configuration: ChildConfiguration): EventsRoot.Child = when (configuration) {
+        is ChildConfiguration.Events -> EventsRoot.Child.Events(createNavigation(router))
+        is ChildConfiguration.Profile -> EventsRoot.Child.Profile(createNavigation(router))
     }
-
-    private fun createNavigation(componentContext: ComponentContext): EventsRoot.Navigation = NavigationComponent(
-        navigateToProfile = { router.bringToFront(ChildConfiguration.Profile) },
-        navigateToEvents = { router.bringToFront(ChildConfiguration.Events) },
-        componentContext = componentContext,
-    )
 }
 
-private class NavigationComponent(
-    componentContext: ComponentContext,
-    private val navigateToEvents: () -> Unit,
-    private val navigateToProfile: () -> Unit,
-) : ComponentContext by componentContext, EventsRoot.Navigation {
-    override fun navigateToEvents() = navigateToEvents.invoke()
-    override fun navigateToProfile() = navigateToProfile.invoke()
-}
 
 internal sealed class ChildConfiguration : Parcelable {
     @Parcelize object Events : ChildConfiguration()
     @Parcelize object Profile : ChildConfiguration()
+}
+
+private fun createNavigation(router: Router<ChildConfiguration, EventsRoot.Child>) = object : EventsRoot.Navigation {
+    override fun navigateToEvents() = router.bringToFront(ChildConfiguration.Events)
+    override fun navigateToProfile() = router.bringToFront(ChildConfiguration.Profile)
 }

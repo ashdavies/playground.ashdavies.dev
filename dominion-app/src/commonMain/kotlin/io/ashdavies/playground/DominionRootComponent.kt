@@ -9,44 +9,31 @@ import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.parcelable.Parcelable
 import com.arkivanov.essenty.parcelable.Parcelize
 
-internal class DominionRootComponent(
-    componentContext: ComponentContext
-) : DominionRoot, ComponentContext by componentContext {
+internal class DominionRootComponent(componentContext: ComponentContext) :
+    ComponentContext by componentContext,
+    DominionRoot {
 
     private val router: Router<ChildConfiguration, DominionRoot.Child> = router(
-        initialConfiguration = ChildConfiguration.Events,
-        childFactory = ::createChild,
+        childFactory = { configuration, _ -> createChild(configuration) },
+        initialConfiguration = ChildConfiguration.Listings,
         handleBackButton = true,
     )
 
     override val routerState: Value<RouterState<*, DominionRoot.Child>>
         get() = router.state
 
-    private fun createChild(
-        configuration: ChildConfiguration,
-        componentContext: ComponentContext,
-    ): DominionRoot.Child = when (configuration) {
-        is ChildConfiguration.Events -> DominionRoot.Child.List(createNavigation(componentContext))
-        is ChildConfiguration.Profile -> DominionRoot.Child.Details(createNavigation(componentContext))
+    private fun createChild(configuration: ChildConfiguration): DominionRoot.Child = when (configuration) {
+        is ChildConfiguration.Listings -> DominionRoot.Child.List(createNavigation(router))
+        is ChildConfiguration.Details -> DominionRoot.Child.Details(createNavigation(router))
     }
-
-    private fun createNavigation(componentContext: ComponentContext): DominionRoot.Navigation = NavigationComponent(
-        navigateToDetails = { router.bringToFront(ChildConfiguration.Profile) },
-        navigateToList = { router.bringToFront(ChildConfiguration.Events) },
-        componentContext = componentContext,
-    )
 }
 
-private class NavigationComponent(
-    componentContext: ComponentContext,
-    private val navigateToList: () -> Unit,
-    private val navigateToDetails: () -> Unit
-) : DominionRoot.Navigation, ComponentContext by componentContext {
-    override fun navigateToList() = navigateToList.invoke()
-    override fun navigateToDetails() = navigateToDetails.invoke()
+private fun createNavigation(router: Router<ChildConfiguration, DominionRoot.Child>) = object : DominionRoot.Navigation {
+    override fun navigateToDetails() = router.bringToFront(ChildConfiguration.Details)
+    override fun navigateToList() = router.bringToFront(ChildConfiguration.Listings)
 }
 
 internal sealed class ChildConfiguration : Parcelable {
-    @Parcelize object Events : ChildConfiguration()
-    @Parcelize object Profile : ChildConfiguration()
+    @Parcelize object Listings : ChildConfiguration()
+    @Parcelize object Details : ChildConfiguration()
 }
