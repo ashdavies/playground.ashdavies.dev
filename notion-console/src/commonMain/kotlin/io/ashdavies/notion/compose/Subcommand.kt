@@ -1,4 +1,4 @@
-package io.ashdavies.notion.cli
+package io.ashdavies.notion.compose
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -6,6 +6,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.staticCompositionLocalOf
+import io.ashdavies.notion.kotlin.NotionScopeMarker
 import kotlinx.cli.ArgParser
 import kotlinx.cli.ExperimentalCli
 import kotlinx.cli.Subcommand
@@ -20,6 +21,7 @@ internal val LocalArgParser = staticCompositionLocalOf {
 
 @Composable
 @ExperimentalCli
+@NotionScopeMarker
 internal fun Subcommand(
     name: String,
     actionDescription: String = name.replaceFirstChar { it.titlecase() },

@@ -7,3 +7,7 @@ public data class AccessToken(
     val tokenType: String,
     val expiresIn: Long,
 )
+
+public fun AccessToken.firstOrThrow(name: String): String = extraParameters
+    .getValue(name)
+    .first()

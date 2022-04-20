@@ -1,27 +1,28 @@
 package io.ashdavies.notion
 
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import com.jakewharton.mosaic.Text
 import com.jakewharton.mosaic.runMosaic
 import kotlinx.coroutines.delay
 
 public fun main(args: Array<String>): Unit = runMosaic {
-    setContent {
-        var elapsed by remember { mutableStateOf(0) }
+    var state by mutableStateOf<NotionState>(NotionState.Initialising)
+    var elapsed by mutableStateOf(0)
 
-        LaunchedEffect(Unit) {
-            while (true) {
-                delay(1_000)
-                elapsed++
-            }
+    setContent {
+        Text("Time: $elapsed")
+
+        (state as? AuthState.Awaiting)?.also {
+            Text("Navigate to ${it.userPromptUri} to continue")
         }
 
-        NotionConsole(args)
+        NotionConsole(args) { state = it }
+    }
 
-        Text("Time: $elapsed")
+    while (state !is AuthState.Authenticated && state !is SearchState.Complete) {
+        delay(1_000)
+        elapsed++
     }
 }
