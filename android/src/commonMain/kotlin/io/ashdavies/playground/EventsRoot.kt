@@ -6,38 +6,27 @@ import com.arkivanov.decompose.ExperimentalDecomposeApi
 import com.arkivanov.decompose.extensions.compose.jetbrains.Children
 import com.arkivanov.decompose.extensions.compose.jetbrains.animation.child.childAnimation
 import com.arkivanov.decompose.extensions.compose.jetbrains.animation.child.slide
-import com.arkivanov.decompose.router.RouterState
-import com.arkivanov.decompose.value.Value
 import io.ashdavies.playground.events.EventsScreen
 import io.ashdavies.playground.profile.ProfileScreen
 
 @Composable
 @OptIn(ExperimentalDecomposeApi::class)
-internal fun PlaygroundRoot(root: PlaygroundRoot, modifier: Modifier = Modifier) {
-    PlaygroundTheme {
-        Children(root.routerState, modifier, childAnimation(slide())) {
-            when (val child: PlaygroundRoot.Child = it.instance) {
-                is PlaygroundRoot.Child.Events -> EventsScreen(child)
-                is PlaygroundRoot.Child.Profile -> ProfileScreen(child)
-            }
+internal fun EventsRoot(root: EventsRoot, modifier: Modifier = Modifier) {
+    Children(root.routerState, modifier, childAnimation(slide())) {
+        when (val child: EventsRoot.Child = it.instance) {
+            is EventsRoot.Child.Events -> EventsScreen(child)
+            is EventsRoot.Child.Profile -> ProfileScreen(child)
         }
     }
 }
 
-internal interface PlaygroundRoot {
-
-    val routerState: Value<RouterState<*, Child>>
-
-    sealed interface Child {
-
-        val navigation: Navigation
-
+internal interface EventsRoot : NavigationRoot<EventsRoot.Navigation, EventsRoot.Child> {
+    sealed interface Child : NavigationRoot.Child<Navigation> {
         data class Events(override val navigation: Navigation) : Child
         data class Profile(override val navigation: Navigation) : Child
     }
 
-    interface Navigation {
-
+    interface Navigation : NavigationRoot.Navigation {
         fun navigateToEvents()
         fun navigateToProfile()
     }

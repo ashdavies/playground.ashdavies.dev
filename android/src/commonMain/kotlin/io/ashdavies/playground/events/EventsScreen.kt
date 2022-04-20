@@ -26,7 +26,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import io.ashdavies.playground.Event
-import io.ashdavies.playground.PlaygroundRoot
+import io.ashdavies.playground.EventsRoot
 import io.ashdavies.playground.android.LazyPagingItems
 import io.ashdavies.playground.android.collectAsLazyPagingItems
 import io.ashdavies.playground.android.errorMessage
@@ -40,7 +40,7 @@ import io.ashdavies.playground.platform.PlatformTopAppBar
 import io.ashdavies.playground.platform.PlaygroundBottomBar
 
 @Composable
-internal fun EventsScreen(child: PlaygroundRoot.Child.Events) {
+internal fun EventsScreen(child: EventsRoot.Child.Events) {
     val viewModel: EventsViewModel = rememberEventsViewModel()
     val pagingItems: LazyPagingItems<Event> = viewModel
         .pagingData

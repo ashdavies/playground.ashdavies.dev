@@ -7,6 +7,9 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation(project(":compose-local"))
+
+                implementation(libs.ktor.client.core)
+                implementation(libs.kuuuurt.multiplatformPaging)
             }
         }
 

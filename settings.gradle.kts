@@ -7,11 +7,11 @@ include(
     ":auth-oauth",
     ":cloud-aggregator",
     ":cloud-functions",
-    ":compose-app",
     ":compose-local",
     ":dominion-app",
     ":local-storage",
     ":notion-console",
+    ":playground-app",
     ":version-catalog"
 )
 

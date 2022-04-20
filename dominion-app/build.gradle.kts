@@ -6,7 +6,8 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation(project(":compose-app"))
+                implementation(project(":compose-local"))
+                implementation(project(":playground-app"))
 
                 implementation(libs.kuuuurt.multiplatformPaging)
             }
@@ -20,11 +21,8 @@ kotlin {
                 }
 
                 with(libs.google.accompanist) {
-                    implementation(insets)
-                    implementation(insetsUi)
                     implementation(placeholderMaterial)
                     implementation(swiperefresh)
-                    implementation(systemuicontroller)
                 }
 
                 with(libs.google.firebase) {

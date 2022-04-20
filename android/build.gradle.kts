@@ -18,9 +18,9 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation(project(":auth-oauth"))
-                implementation(project(":compose-app"))
                 implementation(project(":compose-local"))
                 implementation(project(":local-storage"))
+                implementation(project(":playground-app"))
 
                 implementation(libs.alialbaali.kamel)
 
@@ -58,11 +58,8 @@ kotlin {
 
                 with(libs.google.accompanist) {
                     implementation(flowlayout)
-                    implementation(insets)
-                    implementation(insetsUi)
                     implementation(placeholderMaterial)
                     implementation(swiperefresh)
-                    implementation(systemuicontroller)
                 }
 
                 with(libs.google.firebase) {

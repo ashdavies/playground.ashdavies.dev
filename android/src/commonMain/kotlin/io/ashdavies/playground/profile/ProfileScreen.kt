@@ -20,7 +20,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.dp
-import io.ashdavies.playground.PlaygroundRoot
+import io.ashdavies.playground.EventsRoot
 import io.ashdavies.playground.android.FlowRow
 import io.ashdavies.playground.android.fade
 import io.ashdavies.playground.compose.EmptyPainter
@@ -39,7 +39,7 @@ import io.kamel.image.lazyPainterResource
 import kotlin.random.Random.Default.nextInt
 
 @Composable
-internal fun ProfileScreen(child: PlaygroundRoot.Child.Profile) {
+internal fun ProfileScreen(child: EventsRoot.Child.Profile) {
     val viewModel: ProfileViewModel = rememberProfileViewModel()
     val viewState: ProfileViewState by rememberState(viewModel.viewState)
 

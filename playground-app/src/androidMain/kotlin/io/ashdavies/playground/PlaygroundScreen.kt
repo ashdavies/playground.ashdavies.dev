@@ -19,7 +19,9 @@ public fun PlaygroundScreen(content: @Composable () -> Unit) {
         )
     }
 
-    ProvideWindowInsets {
-        content()
+    PlaygroundTheme {
+        ProvideWindowInsets {
+            content()
+        }
     }
 }
