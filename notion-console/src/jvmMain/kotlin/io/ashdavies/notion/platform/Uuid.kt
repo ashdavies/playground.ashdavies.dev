@@ -1,4 +1,4 @@
-package io.ashdavies.notion
+package io.ashdavies.notion.platform
 
 import java.util.UUID
 

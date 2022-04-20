@@ -21,18 +21,16 @@ import io.ktor.server.response.respond
 import io.ktor.server.routing.get
 import io.ktor.server.routing.routing
 import io.ktor.util.toMap
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.channelFlow
+import kotlinx.coroutines.CompletableDeferred
 import io.ktor.client.engine.cio.CIO as ClientCIO
 import io.ktor.server.cio.CIO as ServerCIO
 
 private const val GRACE_PERIOD_MILLIS = 1000L
 private const val TIMEOUT_MILLIS = 5000L
 
-@OptIn(ExperimentalCoroutinesApi::class)
-public actual fun beginAuthFlow(provider: OAuthProvider): Flow<AccessToken> = channelFlow {
+public actual suspend fun getAccessToken(provider: OAuthProvider): AccessToken {
+    val response = CompletableDeferred<AccessToken>()
+
     val server: CIOApplicationEngine = embeddedServer(ServerCIO, port = 8080) {
         install(Authentication) {
             oauth("auth-oauth-google") {
@@ -60,22 +58,18 @@ public actual fun beginAuthFlow(provider: OAuthProvider): Flow<AccessToken> = ch
 
                 get("/callback") {
                     val principal: OAuthAccessTokenResponse.OAuth2? = call.principal()
-                    if (principal != null) send(AccessToken(principal))
-                    println("principal = $principal")
-
-                    call.response.headers.append(HttpHeaders.Connection, "close")
-                    call.respond(HttpStatusCode.NoContent)
-                    this@channelFlow.cancel()
+                    if (principal != null) {
+                        call.response.headers.append(HttpHeaders.Connection, "close")
+                        call.respond(HttpStatusCode.NoContent)
+                        response.complete(AccessToken(principal))
+                    }
                 }
             }
         }
     }
 
-    invokeOnClose {
-        server.stop(GRACE_PERIOD_MILLIS, TIMEOUT_MILLIS)
-    }
-
     server.start(wait = false)
+    return response.await()
 }
 
 private fun AccessToken(principal: OAuthAccessTokenResponse.OAuth2) = AccessToken(

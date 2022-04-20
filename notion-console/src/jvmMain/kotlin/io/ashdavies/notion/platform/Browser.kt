@@ -1,4 +1,4 @@
-package io.ashdavies.notion
+package io.ashdavies.notion.platform
 
 import java.awt.Desktop
 import java.net.URI

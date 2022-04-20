@@ -1,5 +1,3 @@
 package io.ashdavies.playground
 
-import kotlinx.coroutines.flow.Flow
-
-public expect fun beginAuthFlow(provider: OAuthProvider = OAuthProvider.Google): Flow<AccessToken>
+public expect suspend fun getAccessToken(provider: OAuthProvider = OAuthProvider.Google): AccessToken

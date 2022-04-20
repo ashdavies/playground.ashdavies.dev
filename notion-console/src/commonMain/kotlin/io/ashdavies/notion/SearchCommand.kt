@@ -1,7 +1,9 @@
 package io.ashdavies.notion
 
 import androidx.compose.runtime.Composable
-import kotlinx.cli.ArgParser
+import io.ashdavies.notion.cli.Subcommand
+import io.ashdavies.notion.compose.LocalNotionClient
+import kotlinx.cli.ArgType
 import kotlinx.cli.ExperimentalCli
 import org.jraf.klibnotion.client.NotionClient
 import org.jraf.klibnotion.model.database.Database
@@ -17,21 +19,42 @@ private const val START_CURSOR_DESCRIPTION = "Returns the results starting after
 
 @Composable
 @ExperimentalCli
-internal fun SearchCommand(client: NotionClient) = rememberSubcommand("search", SEARCH_ACTION_DESCRIPTION) {
-    val sortTimestamp by it.choice<SortTimestamp>("sort_timestamp", SORT_TIMESTAMP_DESCRIPTION)
-    val sortDirection by it.choice<SortDirection>("sort_direction", SORT_DIRECTION_DESCRIPTION)
-    val startCursor by it.string("start_cursor", START_CURSOR_DESCRIPTION)
-    val query by it.string("query", SEARCH_QUERY_DESCRIPTION)
+internal fun SearchCommand(client: NotionClient = LocalNotionClient.current) {
+    Subcommand("search", SEARCH_ACTION_DESCRIPTION, onExecute = {
+        val sortTimestamp: SortTimestamp? by it.option(
+            shortName = SORT_TIMESTAMP_DESCRIPTION,
+            fullName = "sort_timestamp",
+            type = ArgType.Choice(),
+        )
 
-    val page: ResultPage<Database> = client.search.searchDatabases(
-        sort = sort(sortTimestamp, sortDirection),
-        pagination = Pagination(startCursor),
-        query = query,
-    )
+        val sortDirection: SortDirection? by it.option(
+            shortName = SORT_DIRECTION_DESCRIPTION,
+            fullName = "sort_direction",
+            type = ArgType.Choice(),
+        )
 
-    val total = if (page.nextPagination != null) "many" else "${page.results.size}"
-    println("Showing ${page.results.size} databases of $total\n\n")
-    page.results.forEach { println(" $it\n") }
+        val startCursor: String? by it.option(
+            shortName = START_CURSOR_DESCRIPTION,
+            fullName = "start_cursor",
+            type = ArgType.String,
+        )
+
+        val query: String? by it.option(
+            shortName = SEARCH_QUERY_DESCRIPTION,
+            type = ArgType.String,
+            fullName = "query",
+        )
+
+        val page: ResultPage<Database> = client.search.searchDatabases(
+            sort = sort(sortTimestamp, sortDirection),
+            pagination = Pagination(startCursor),
+            query = query,
+        )
+
+        val total = if (page.nextPagination != null) "many" else "${page.results.size}"
+        println("Showing ${page.results.size} databases of $total\n\n")
+        page.results.forEach { println(" $it\n") }
+    })
 }
 
 private fun sort(timestamp: SortTimestamp?, direction: SortDirection?): PropertySort? = timestamp?.let {
