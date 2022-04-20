@@ -18,6 +18,7 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation(project(":auth-oauth"))
+                implementation(project(":compose-app"))
                 implementation(project(":compose-local"))
                 implementation(project(":local-storage"))
 

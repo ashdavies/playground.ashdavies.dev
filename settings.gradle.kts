@@ -7,8 +7,9 @@ include(
     ":auth-oauth",
     ":cloud-aggregator",
     ":cloud-functions",
+    ":compose-app",
     ":compose-local",
-    ":dominion",
+    ":dominion-app",
     ":local-storage",
     ":notion-console",
     ":version-catalog"
@@ -26,8 +27,8 @@ gradleEnterprise {
 
 pluginManagement {
     repositories {
-        google()
         gradlePluginPortal()
+        google()
     }
 }
 

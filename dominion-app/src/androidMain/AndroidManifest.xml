@@ -7,7 +7,7 @@
     <application
         android:allowBackup="true"
         android:fullBackupOnly="true"
-        android:name=".DominionApplication"
+        android:name=".DynamicColorsApplication"
         android:theme="@style/Theme.Material3.DayNight.NoActionBar">
 
         <activity

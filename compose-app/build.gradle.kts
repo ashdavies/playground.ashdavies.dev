@@ -1,12 +1,12 @@
 plugins {
-    `multiplatform-application`
+    `multiplatform-library`
 }
 
 kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation(libs.kuuuurt.multiplatformPaging)
+                implementation(project(":compose-local"))
             }
         }
 
@@ -29,14 +29,6 @@ kotlin {
                     implementation(analytics)
                     implementation(commonKtx)
                 }
-
-                implementation(libs.ktor.client.cio)
-            }
-        }
-
-        val jvmMain by getting {
-            dependencies {
-                implementation(libs.ktor.client.cio)
             }
         }
     }
