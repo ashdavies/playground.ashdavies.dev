@@ -48,6 +48,7 @@ private fun LoggedIn(value: RandomUser) = LoggedIn(
     picture = value.picture.large,
     email = value.email,
 )
+
 private fun LoggedIn(value: Oauth) = LoggedIn(
     picture = value.photoUrl,
     name = value.fullName,

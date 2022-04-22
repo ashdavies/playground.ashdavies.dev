@@ -7,8 +7,16 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation(project(":compose-local"))
+                implementation(project(":local-storage"))
 
-                implementation(libs.ktor.client.core)
+                with(libs.ktor.client) {
+                    implementation(contentNegotiation)
+                    implementation(core)
+                    implementation(json)
+                    implementation(logging)
+                }
+
+                implementation(libs.ktor.serialization.json)
                 implementation(libs.kuuuurt.multiplatformPaging)
             }
         }
@@ -32,6 +40,8 @@ kotlin {
                     implementation(analytics)
                     implementation(commonKtx)
                 }
+
+                implementation(libs.ktor.client.cio)
             }
         }
     }

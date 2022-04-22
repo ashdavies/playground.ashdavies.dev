@@ -1,10 +1,11 @@
-package io.ashdavies.playground.network
+package io.ashdavies.playground
 
-import io.ashdavies.playground.ComposableCompositionLocal
-import io.ashdavies.playground.EventsSerializer
-import io.ashdavies.playground.composableCompositionLocalOf
-import io.ashdavies.playground.profile.RandomUser
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.ProvidableCompositionLocal
+import androidx.compose.runtime.staticCompositionLocalOf
 import io.ktor.client.HttpClient
+import io.ktor.client.HttpClientConfig
 import io.ktor.client.plugins.DefaultRequest
 import io.ktor.client.plugins.cache.HttpCache
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
@@ -14,20 +15,21 @@ import io.ktor.http.HttpHeaders
 import io.ktor.http.URLProtocol
 import io.ktor.http.takeFrom
 import io.ktor.serialization.kotlinx.json.json
+import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.contextual
 
 private const val DEFAULT_HOST = "https://europe-west1-playground-1a136.cloudfunctions.net/"
-private const val DEFAULT_USER_AGENT = "Ktor/2.0.0-beta-1 (Android; S3B1.220218.006)"
+private const val DEFAULT_USER_AGENT = "Ktor/2.0.0 (Android; S3B1.220218.006)"
 
-public val LocalHttpClient: ComposableCompositionLocal<HttpClient> = composableCompositionLocalOf {
+public val LocalHttpClient: ProvidableCompositionLocal<HttpClient> = staticCompositionLocalOf {
     HttpClient {
         install(ContentNegotiation) {
             json(Json {
                 serializersModule = SerializersModule {
-                    contextual(Envelope.serializer(RandomUser.serializer()))
+                    // contextual(Envelope.serializer(RandomUser.serializer()))
                     contextual(ListSerializer(EventsSerializer))
                     contextual(EventsSerializer)
                 }
@@ -37,10 +39,10 @@ public val LocalHttpClient: ComposableCompositionLocal<HttpClient> = composableC
         }
 
         install(DefaultRequest) {
-            url(DEFAULT_HOST) {
+            url {
                 header(HttpHeaders.UserAgent, DEFAULT_USER_AGENT)
                 protocol = URLProtocol.HTTPS
-                takeFrom(DEFAULT_HOST)
+                // takeFrom(DEFAULT_HOST)
             }
         }
 
@@ -48,3 +50,23 @@ public val LocalHttpClient: ComposableCompositionLocal<HttpClient> = composableC
         install(Logging)
     }
 }
+
+@Composable
+public fun ProvideHttpClient(
+    client: HttpClient = LocalHttpClient.current,
+    block: HttpClientConfig<*>.() -> Unit = { },
+    content: @Composable () -> Unit,
+) {
+    val copy = HttpClient {
+        install(client)
+        block()
+    }
+
+    CompositionLocalProvider(
+        LocalHttpClient provides copy,
+        content = content
+    )
+}
+
+@Serializable
+public data class Envelope<T>(val results: List<T>)

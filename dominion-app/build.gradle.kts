@@ -1,5 +1,10 @@
+// https://youtrack.jetbrains.com/issue/KTIJ-19369
+@file:Suppress("DSL_SCOPE_VIOLATION")
+
 plugins {
     `multiplatform-application`
+
+    alias(libs.plugins.molecule)
 }
 
 kotlin {
@@ -9,6 +14,7 @@ kotlin {
                 implementation(project(":compose-local"))
                 implementation(project(":playground-app"))
 
+                implementation(libs.ktor.client.core)
                 implementation(libs.kuuuurt.multiplatformPaging)
             }
         }
@@ -31,6 +37,12 @@ kotlin {
                 }
 
                 implementation(libs.ktor.client.cio)
+            }
+        }
+
+        val androidTest by getting {
+            dependencies {
+                implementation(libs.molecule.testing)
             }
         }
 

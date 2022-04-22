@@ -5,8 +5,8 @@ import androidx.compose.runtime.remember
 import io.ashdavies.playground.Oauth
 import io.ashdavies.playground.PlaygroundService
 import io.ashdavies.playground.getting
-import io.ashdavies.playground.network.Envelope
-import io.ashdavies.playground.network.LocalHttpClient
+import io.ashdavies.playground.Envelope
+import io.ashdavies.playground.LocalHttpClient
 import io.ashdavies.playground.platform.PlatformCredentials
 import io.ashdavies.playground.posting
 import io.ktor.client.HttpClient

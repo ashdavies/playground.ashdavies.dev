@@ -29,14 +29,6 @@ kotlin {
                     implementation(decompose)
                 }
 
-                with(libs.ktor.client) {
-                    implementation(contentNegotiation)
-                    implementation(core)
-                    implementation(json)
-                    implementation(logging)
-                }
-
-                implementation(libs.ktor.serialization.json)
                 implementation(libs.kuuuurt.multiplatformPaging)
                 implementation(libs.sqlDelight.coroutinesExtensions)
             }
@@ -67,8 +59,6 @@ kotlin {
                     implementation(analytics)
                     implementation(commonKtx)
                 }
-
-                implementation(libs.ktor.client.cio)
             }
         }
 
