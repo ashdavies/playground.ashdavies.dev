@@ -18,12 +18,11 @@ buildscript {
             classpath(kotlin("serialization", version = get()))
         }
 
-        classpath(libs.android.gradlePlugin)
+        classpath(libs.android.tools.build.gradle)
         classpath(libs.apache.batikExt)
-        classpath(libs.apolloGraphQl.apolloGradlePlugin)
-        classpath(libs.jetbrains.compose.gradlePlugin)
-        classpath(libs.jetbrains.kotlin.gradlePlugin)
-        classpath(libs.sqlDelight.kotlinGradlePlugin)
+        classpath(libs.apollographql.apollo.gradle.plugin)
+        classpath(libs.jetbrains.compose.gradle.plugin)
+        classpath(libs.jetbrains.kotlin.gradle.plugin)
     }
 }
 
@@ -31,7 +30,7 @@ plugins {
     alias(libs.plugins.gradle.doctor)
     alias(libs.plugins.gradle.ktlint)
     alias(libs.plugins.versions)
-    alias(libs.plugins.versionCatalogUpdate)
+    alias(libs.plugins.version.catalog.update)
 }
 
 allprojects {
@@ -41,15 +40,6 @@ allprojects {
         jetbrainsCompose()
         jitpack("requery")
         mavenCentral()
-    }
-}
-
-subprojects {
-    tasks.withType<KotlinCompile<*>> {
-        kotlinOptions.freeCompilerArgs += listOf(
-            "-Xallow-result-return-type",
-            "-Xmulti-platform",
-        )
     }
 }
 
@@ -76,5 +66,5 @@ tasks.withType<DependencyUpdatesTask> {
 }
 
 versionCatalogUpdate {
-    pin { libraries.add(libs.android.gradlePlugin) }
+    pin { libraries.addAll(libs.android.tools.build.gradle, libs.jetbrains.kotlin.gradle.plugin) }
 }

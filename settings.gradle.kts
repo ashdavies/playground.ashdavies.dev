@@ -7,7 +7,6 @@ include(
     ":auth-oauth",
     ":cloud-aggregator",
     ":cloud-functions",
-    ":compose-local",
     ":dominion-app",
     ":local-storage",
     ":notion-console",
@@ -28,6 +27,7 @@ gradleEnterprise {
 pluginManagement {
     repositories {
         gradlePluginPortal()
+        mavenCentral()
         google()
     }
 }

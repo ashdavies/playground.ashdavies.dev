@@ -11,31 +11,23 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation(project(":compose-local"))
                 implementation(project(":playground-app"))
 
                 implementation(libs.ktor.client.core)
-                implementation(libs.kuuuurt.multiplatformPaging)
+                implementation(libs.kuuuurt.multiplatform.paging)
             }
         }
 
         val androidMain by getting {
             dependencies {
-                with(libs.androidx) {
-                    implementation(activityCompose)
-                    implementation(activityKtx)
-                }
+                implementation(libs.bundles.androidx.activity)
 
                 with(libs.google.accompanist) {
                     implementation(placeholderMaterial)
                     implementation(swiperefresh)
                 }
 
-                with(libs.google.firebase) {
-                    implementation(analytics)
-                    implementation(commonKtx)
-                }
-
+                implementation(libs.bundles.google.firebase)
                 implementation(libs.ktor.client.cio)
             }
         }

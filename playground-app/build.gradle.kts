@@ -6,27 +6,16 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation(project(":compose-local"))
                 implementation(project(":local-storage"))
 
-                with(libs.ktor.client) {
-                    implementation(contentNegotiation)
-                    implementation(core)
-                    implementation(json)
-                    implementation(logging)
-                }
-
-                implementation(libs.ktor.serialization.json)
-                implementation(libs.kuuuurt.multiplatformPaging)
+                implementation(libs.bundles.ktor.client)
+                implementation(libs.kuuuurt.multiplatform.paging)
             }
         }
 
         val androidMain by getting {
             dependencies {
-                with(libs.androidx) {
-                    implementation(activityCompose)
-                    implementation(activityKtx)
-                }
+                implementation(libs.bundles.androidx.activity)
 
                 with(libs.google.accompanist) {
                     implementation(insets)
@@ -36,11 +25,7 @@ kotlin {
                     implementation(systemuicontroller)
                 }
 
-                with(libs.google.firebase) {
-                    implementation(analytics)
-                    implementation(commonKtx)
-                }
-
+                implementation(libs.bundles.google.firebase)
                 implementation(libs.ktor.client.cio)
             }
         }

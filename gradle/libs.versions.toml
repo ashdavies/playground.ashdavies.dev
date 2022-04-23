@@ -3,39 +3,39 @@ androidx-activity = "1.4.0"
 androidx-lifecycle = "2.4.1"
 apollo-graphql = "2.5.11"
 arkivanov-decompose = "0.6.0"
+cash-molecule = "0.2.0"
 google-accompanist = "0.23.1"
 google-android = "7.0.4"
 jetbrains-kotlin = "1.6.10"
 kotlinx-coroutines = "1.6.1"
 kotlinx-serialization = "1.3.2"
 ktor = "2.0.0"
-molecule = "0.2.0"
-squareUp-sqlDelight = "1.5.3"
+squareup-sqldelight = "1.5.3"
 
 [libraries]
 alialbaali-kamel = "com.alialbaali.kamel:kamel-image:0.3.0"
 
-android-gradlePlugin = { module = "com.android.tools.build:gradle", version.ref = "google.android" }
-androidx-activityCompose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity" }
-androidx-activityKtx = { module = "androidx.activity:activity-ktx", version.ref = "androidx-activity" }
+android-tools-build-gradle = { module = "com.android.tools.build:gradle", version.ref = "google.android" }
+androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity" }
+androidx-activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "androidx-activity" }
 androidx-annotation = "androidx.annotation:annotation:1.3.0"
-androidx-coreKtx = "androidx.core:core-ktx:1.7.0"
-androidx-lifecycle-viewModelCompose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "androidx-lifecycle" }
-androidx-lifecycle-viewModelKtx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "androidx-lifecycle" }
-androidx-pagingCompose = "androidx.paging:paging-compose:1.0.0-alpha14"
-androidx-pagingRuntime = "androidx.paging:paging-runtime:3.1.1"
+androidx-core-ktx = "androidx.core:core-ktx:1.7.0"
+androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "androidx-lifecycle" }
+androidx-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "androidx-lifecycle" }
+androidx-paging-compose = "androidx.paging:paging-compose:1.0.0-alpha14"
+androidx-paging-runtime = "androidx.paging:paging-runtime:3.1.1"
 
 apache-batikExt = "org.apache.xmlgraphics:batik-ext:1.14"
 
-apolloGraphQl-apolloCoroutinesSupport = { module = "com.apollographql.apollo:apollo-coroutines-support", version.ref = "apollo-graphql" }
-apolloGraphQl-apolloGradlePlugin = { module = "com.apollographql.apollo:apollo-gradle-plugin", version.ref = "apollo-graphql" }
-apolloGraphQl-apolloRuntime = { module = "com.apollographql.apollo:apollo-runtime", version.ref = "apollo-graphql" }
+apollographql-apollo-coroutines-support = { module = "com.apollographql.apollo:apollo-coroutines-support", version.ref = "apollo-graphql" }
+apollographql-apollo-gradle-plugin = { module = "com.apollographql.apollo:apollo-gradle-plugin", version.ref = "apollo-graphql" }
+apollographql-apollo-runtime = { module = "com.apollographql.apollo:apollo-runtime", version.ref = "apollo-graphql" }
 
 arkivanov-decompose = { module = "com.arkivanov.decompose:decompose", version.ref = "arkivanov-decompose" }
 arkivanov-decompose-extensions = { module = "com.arkivanov.decompose:extensions-compose-jetbrains", version.ref = "arkivanov-decompose" }
 
-coroutineDispatcherCore = "com.rickbusarow.dispatch:dispatch-core:1.0.0-beta10"
-fuseSource-jansi = "org.fusesource.jansi:jansi:2.0.1"
+coroutine-dispatcher-core = "com.rickbusarow.dispatch:dispatch-core:1.0.0-beta10"
+fusesource-jansi = "org.fusesource.jansi:jansi:2.0.1"
 
 google-accompanist-flowlayout = { module = "com.google.accompanist:accompanist-flowlayout", version.ref = "google-accompanist" }
 google-accompanist-insets = { module = "com.google.accompanist:accompanist-insets", version.ref = "google-accompanist" }
@@ -50,53 +50,64 @@ google-cloud-javaFunctionInvoker = "com.google.cloud.functions.invoker:java-func
 
 google-firebase-admin = "com.google.firebase:firebase-admin:8.1.0"
 google-firebase-analytics = "com.google.firebase:firebase-analytics:20.1.2"
-google-firebase-commonKtx = "com.google.firebase:firebase-common-ktx:20.1.0"
+google-firebase-common-ktx = "com.google.firebase:firebase-common-ktx:20.1.0"
 
 jakeWharton-mosaic = "com.jakewharton.mosaic:mosaic-runtime:0.1.0"
 
-jetbrains-compose-gradlePlugin = "org.jetbrains.compose:compose-gradle-plugin:1.1.1"
-jetbrains-kotlin-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "jetbrains-kotlin" }
+jetbrains-compose-gradle-plugin = "org.jetbrains.compose:compose-gradle-plugin:1.1.1"
+jetbrains-kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "jetbrains-kotlin" }
 jetbrains-kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "jetbrains-kotlin" }
-jetbrains-kotlin-testAnnotations = { module = "org.jetbrains.kotlin:kotlin-test-annotations-common", version.ref = "jetbrains-kotlin" }
-jetbrains-kotlin-testCommon = { module = "org.jetbrains.kotlin:kotlin-test-common", version.ref = "jetbrains-kotlin" }
-jetbrains-kotlin-testJunit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "jetbrains-kotlin" }
+jetbrains-kotlin-serialization-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-serialization", version.ref = "jetbrains-kotlin" }
+jetbrains-kotlin-test-annotations = { module = "org.jetbrains.kotlin:kotlin-test-annotations-common", version.ref = "jetbrains-kotlin" }
+jetbrains-kotlin-test-common = { module = "org.jetbrains.kotlin:kotlin-test-common", version.ref = "jetbrains-kotlin" }
+jetbrains-kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "jetbrains-kotlin" }
 jetbrains-kotlinx-cli = "org.jetbrains.kotlinx:kotlinx-cli:0.3.4"
-jetbrains-kotlinx-coroutinesAndroid = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinx-coroutines" }
-jetbrains-kotlinx-coroutinesCore = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
-jetbrains-kotlinx-coroutinesSwing = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-swing", version.ref = "kotlinx-coroutines" }
-jetbrains-kotlinx-coroutinesTest = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinx-coroutines" }
+jetbrains-kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinx-coroutines" }
+jetbrains-kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
+jetbrains-kotlinx-coroutines-swing = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-swing", version.ref = "kotlinx-coroutines" }
+jetbrains-kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinx-coroutines" }
 jetbrains-kotlinx-datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.3.2"
-jetbrains-kotlinx-serializationCore = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version.ref = "kotlinx-serialization" }
-jetbrains-kotlinx-serializationJson = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
-jetbrains-kotlinx-serializationProperties = { module = "org.jetbrains.kotlinx:kotlinx-serialization-properties", version.ref = "kotlinx-serialization" }
-
+jetbrains-kotlinx-serialization-core = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version.ref = "kotlinx-serialization" }
+jetbrains-kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
+jetbrains-kotlinx-serialization-properties = { module = "org.jetbrains.kotlinx:kotlinx-serialization-properties", version.ref = "kotlinx-serialization" }
 jraf-klibnotion = "org.jraf:klibnotion:1.11.0"
 
 ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor" }
-ktor-client-contentNegotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
+ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
 ktor-client-json = { module = "io.ktor:ktor-client-json", version.ref = "ktor" }
 ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
 ktor-serialization-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
 ktor-serialization-kotlinx = { module = "io.ktor:ktor-serialization-kotlinx", version.ref = "ktor" }
 ktor-server-auth = { module = "io.ktor:ktor-server-auth", version.ref = "ktor" }
-ktor-server-callLogging = { module = "io.ktor:ktor-server-call-logging", version.ref = "ktor" }
+ktor-server-call-logging = { module = "io.ktor:ktor-server-call-logging", version.ref = "ktor" }
 ktor-server-cio = { module = "io.ktor:ktor-server-cio", version.ref = "ktor" }
 ktor-server-core = { module = "io.ktor:ktor-server-core", version.ref = "ktor" }
-ktor-server-htmlBuilder = { module = "io.ktor:ktor-server-html-builder", version.ref = "ktor" }
+ktor-server-html-builder = { module = "io.ktor:ktor-server-html-builder", version.ref = "ktor" }
 
-kuuuurt-multiplatformPaging = "io.github.kuuuurt:multiplatform-paging:0.4.7"
-molecule-testing = { module = "app.cash.molecule:molecule-testing", version.ref = "molecule" }
+kuuuurt-multiplatform-paging = "io.github.kuuuurt:multiplatform-paging:0.4.7"
+molecule-testing = { module = "app.cash.molecule:molecule-testing", version.ref = "cash-molecule" }
 oolong = "org.oolong-kt:oolong:2.0.4"
 pinterest-ktlint = "com.pinterest:ktlint:0.45.2"
 qos-logbackClassic = "ch.qos.logback:logback-classic:1.2.11"
-requery-sqliteAndroid = "com.github.requery:sqlite-android:3.36.0"
+requery-sqlite-android = "com.github.requery:sqlite-android:3.36.0"
 
-sqlDelight-androidDriver = { module = "com.squareup.sqldelight:android-driver", version.ref = "squareUp-sqlDelight" }
-sqlDelight-coroutinesExtensions = { module = "com.squareup.sqldelight:coroutines-extensions", version.ref = "squareUp-sqlDelight" }
-sqlDelight-kotlinGradlePlugin = { module = "com.squareup.sqldelight:gradle-plugin", version.ref = "squareUp-sqlDelight" }
-sqlDelight-runtime = { module = "com.squareup.sqldelight:runtime", version.ref = "squareUp-sqlDelight" }
-sqlDelight-sqliteDriver = { module = "com.squareup.sqldelight:sqlite-driver", version.ref = "squareUp-sqlDelight" }
+sqldelight-android-driver = { module = "com.squareup.sqldelight:android-driver", version.ref = "squareup-sqldelight" }
+sqldelight-coroutines-extensions = { module = "com.squareup.sqldelight:coroutines-extensions", version.ref = "squareup-sqldelight" }
+sqldelight-kotlin-gradle-plugin = { module = "com.squareup.sqldelight:gradle-plugin", version.ref = "squareup-sqldelight" }
+sqldelight-runtime = { module = "com.squareup.sqldelight:runtime", version.ref = "squareup-sqldelight" }
+sqldelight-sqlite-driver = { module = "com.squareup.sqldelight:sqlite-driver", version.ref = "squareup-sqldelight" }
+
+[bundles]
+androidx-activity = ["androidx-activity-compose", "androidx-activity-ktx"]
+androidx-paging = ["androidx-paging-compose", "androidx-paging-runtime"]
+androidx-viewmodel = ["androidx-lifecycle-viewmodel-compose", "androidx-lifecycle-viewmodel-ktx"]
+arkivanov-decompose = ["arkivanov-decompose", "arkivanov-decompose-extensions"]
+google-firebase = ["google-firebase-analytics", "google-firebase-common-ktx"]
+jetbrains-kotlinx = ["jetbrains-kotlinx-coroutines-core", "jetbrains-kotlinx-datetime", "jetbrains-kotlinx-serialization-core", "jetbrains-kotlinx-serialization-json", "jetbrains-kotlinx-serialization-properties"]
+jetbrains-kotlin-test = ["jetbrains-kotlin-test", "jetbrains-kotlin-test-annotations", "jetbrains-kotlin-test-common", "jetbrains-kotlin-test-junit", "jetbrains-kotlinx-coroutines-test"]
+ktor-client = ["ktor-client-cio", "ktor-client-content-negotiation", "ktor-client-core", "ktor-client-json", "ktor-client-logging", "ktor-serialization-json", "ktor-serialization-kotlinx"]
+ktor-server = ["ktor-serialization-json", "ktor-serialization-kotlinx", "ktor-server-auth", "ktor-server-call-logging", "ktor-server-cio", "ktor-server-core", "ktor-server-html-builder"]
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "google.android" }
@@ -108,8 +119,8 @@ johnRengelman-shadow = "com.github.johnrengelman.shadow:7.1.2"
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "jetbrains-kotlin" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrains-kotlin" }
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "jetbrains-kotlin" }
-molecule = { id = "app.cash.molecule", version.ref = "molecule" }
+molecule = { id = "app.cash.molecule", version.ref = "cash-molecule" }
 serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "jetbrains-kotlin" }
-sqldelight = { id = "com.squareup.sqldelight", version.ref = "squareUp-sqlDelight" }
-versionCatalogUpdate = "nl.littlerobots.version-catalog-update:0.3.1"
+sqldelight = { id = "com.squareup.sqldelight", version.ref = "squareup-sqldelight" }
+version-catalog-update = "nl.littlerobots.version-catalog-update:0.3.1"
 versions = "com.github.ben-manes.versions:0.42.0"

@@ -16,14 +16,14 @@ configurations.create("invoker")
 dependencies {
     implementation(project(":local-storage"))
 
-    implementation(libs.coroutineDispatcherCore)
+    implementation(libs.coroutine.dispatcher.core)
     implementation(libs.google.cloud.functionsFrameworkApi)
     implementation(libs.google.firebase.admin)
-    implementation(libs.jetbrains.kotlinx.coroutinesCore)
+    implementation(libs.jetbrains.kotlinx.coroutines.core)
     implementation(libs.jetbrains.kotlinx.datetime)
-    implementation(libs.jetbrains.kotlinx.serializationCore)
-    implementation(libs.jetbrains.kotlinx.serializationJson)
-    implementation(libs.jetbrains.kotlinx.serializationProperties)
+    implementation(libs.jetbrains.kotlinx.serialization.core)
+    implementation(libs.jetbrains.kotlinx.serialization.json)
+    implementation(libs.jetbrains.kotlinx.serialization.properties)
 
     add("invoker", libs.google.cloud.javaFunctionInvoker)
 
@@ -74,8 +74,4 @@ tasks.register("runEventsFunction", JavaExec::class) {
             args("--classpath", files(configurations.runtimeClasspath, output).asPath)
         }
     }
-}
-
-tasks.withType<KotlinCompile>().configureEach {
-    kotlinOptions.freeCompilerArgs += "-opt-in=kotlin.RequiresOptIn"
 }

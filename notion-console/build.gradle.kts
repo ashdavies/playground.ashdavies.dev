@@ -23,8 +23,8 @@ kotlin {
                 implementation(compose.runtime)
 
                 implementation(libs.jetbrains.kotlinx.cli)
-                implementation(libs.jetbrains.kotlinx.coroutinesCore)
-                implementation(libs.jetbrains.kotlinx.serializationJson)
+                implementation(libs.jetbrains.kotlinx.coroutines.core)
+                implementation(libs.jetbrains.kotlinx.serialization.json)
                 implementation(libs.jraf.klibnotion)
                 implementation(libs.ktor.server.core)
                 implementation(libs.qos.logbackClassic)
@@ -39,7 +39,7 @@ kotlin {
                     exclude("com.jakewharton.mosaic", "compose-runtime")
                 }
 
-                implementation(libs.jetbrains.kotlinx.coroutinesCore)
+                implementation(libs.jetbrains.kotlinx.coroutines.core)
                 implementation(libs.ktor.server.cio)
                 implementation(libs.ktor.server.core)
             }
@@ -62,7 +62,7 @@ kotlin {
 
 configurations.all {
     resolutionStrategy {
-        force(libs.fuseSource.jansi)
+        force(libs.fusesource.jansi)
     }
 }
 

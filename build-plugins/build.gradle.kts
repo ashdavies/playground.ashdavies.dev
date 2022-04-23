@@ -1,38 +1,19 @@
-@file:Suppress("UnstableApiUsage")
-
 plugins {
-    `java-library`
     `kotlin-dsl`
 }
 
 repositories {
-    google()
     gradlePluginPortal()
+    mavenCentral()
+    google()
 }
 
 dependencies {
     implementation(files(libs.javaClass.superclass.protectionDomain.codeSource.location))
 
-    implementation(libs.android.gradlePlugin)
-    implementation(libs.jetbrains.compose.gradlePlugin)
-    implementation(libs.jetbrains.kotlin.gradlePlugin)
-}
-
-gradlePlugin {
-    plugins {
-        create("multiplatform-application") {
-            implementationClass = "MultiplatformApplication"
-            id = "multiplatform-application"
-        }
-
-        create("multiplatform-library") {
-            implementationClass = "MultiplatformLibrary"
-            id = "multiplatform-library"
-        }
-
-        create("multiplatform-sql") {
-            implementationClass = "MultiplatformSql"
-            id = "multiplatform-sql"
-        }
-    }
+    implementation(libs.android.tools.build.gradle)
+    implementation(libs.jetbrains.compose.gradle.plugin)
+    implementation(libs.jetbrains.kotlin.gradle.plugin)
+    implementation(libs.jetbrains.kotlin.serialization.gradlePlugin)
+    implementation(libs.sqldelight.kotlin.gradle.plugin)
 }

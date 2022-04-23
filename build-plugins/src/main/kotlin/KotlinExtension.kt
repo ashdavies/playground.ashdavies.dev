@@ -1,16 +1,28 @@
 import com.android.build.api.dsl.CommonExtension
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
-import org.gradle.kotlin.dsl.getValue
-import org.gradle.kotlin.dsl.getting
-import org.gradle.kotlin.dsl.invoke
 import org.jetbrains.compose.compose
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.kotlin.gradle.plugin.KotlinDependencyHandler
 
-internal fun KotlinCompile.configureKotlin() {
-    kotlinOptions {
-        jvmTarget = "11"
+internal object Playground {
+
+    const val jvmTarget = "11"
+
+    val freeCompilerArgs = listOf(
+        "-opt-in=kotlin.RequiresOptIn",
+        "-Xallow-result-return-type",
+        "-Xmulti-platform"
+    )
+
+    object Dependencies {
+        fun KotlinDependencyHandler.compose() {
+            implementation(compose.foundation)
+            implementation(compose.material)
+            implementation(compose.runtime)
+            implementation(compose.uiTooling)
+            implementation(compose.ui)
+        }
     }
 }
 
@@ -35,66 +47,51 @@ internal fun CommonExtension<*, *, *, *>.configureCommon() {
     }
 }
 
+@Suppress("UNUSED_VARIABLE")
 internal fun KotlinMultiplatformExtension.configureKotlinMultiplatform(target: Project) = target.run {
     explicitApiWarning()
     android()
     jvm()
 
-    sourceSets {
-        all {
-            languageSettings.optIn("kotlin.RequiresOptIn")
-        }
+    sourceSets.all {
+        languageSettings.optIn("kotlin.RequiresOptIn")
+    }
 
-        val commonMain by getting {
-            dependencies {
-                implementation(compose.foundation)
-                implementation(compose.material)
-                implementation(compose.runtime)
-                implementation(compose.uiTooling)
-                implementation(compose.ui)
+    commonMain {
+        with(Playground.Dependencies) { compose() }
+        implementation(libs.bundles.arkivanov.decompose)
+        implementation(libs.bundles.jetbrains.kotlinx)
+        implementation(libs.oolong)
+    }
 
-                with(libs.arkivanov) {
-                    implementation(decompose.extensions)
-                    implementation(decompose)
-                }
+    commonTest {
+        implementation(libs.bundles.jetbrains.kotlin.test)
+    }
 
-                with(libs.jetbrains.kotlinx) {
-                    implementation(coroutinesCore)
-                    implementation(datetime)
-                    implementation(serializationJson)
-                    implementation(serializationProperties)
-                }
+    androidMain {
+        implementation(libs.androidx.annotation)
+        implementation(libs.androidx.core.ktx)
+        implementation(libs.google.android.material)
+        implementation(libs.jetbrains.kotlinx.coroutines.android)
+    }
 
-                implementation(libs.oolong)
-            }
-        }
-
-        val commonTest by getting {
-            dependencies {
-                with(libs.jetbrains) {
-                    implementation(kotlin.test)
-                    implementation(kotlin.testAnnotations)
-                    implementation(kotlin.testCommon)
-                    implementation(kotlin.testJunit)
-                    implementation(kotlinx.coroutinesTest)
-                }
-            }
-        }
-
-        val androidMain by getting {
-            dependencies {
-                implementation(libs.androidx.annotation)
-                implementation(libs.androidx.coreKtx)
-                implementation(libs.google.android.material)
-                implementation(libs.jetbrains.kotlinx.coroutinesAndroid)
-            }
-        }
-
-        val jvmMain by getting {
-            dependencies {
-                implementation(compose.desktop.currentOs)
-                implementation(libs.jetbrains.kotlinx.coroutinesSwing)
-            }
-        }
+    jvmMain {
+        implementation(compose.desktop.currentOs)
+        implementation(libs.jetbrains.kotlinx.coroutines.swing)
     }
 }
+
+internal fun KotlinMultiplatformExtension.commonMain(block: KotlinDependencyHandler.() -> Unit) =
+    dependencies("commonMain", block)
+
+internal fun KotlinMultiplatformExtension.commonTest(block: KotlinDependencyHandler.() -> Unit) =
+    dependencies("commonTest", block)
+
+internal fun KotlinMultiplatformExtension.androidMain(block: KotlinDependencyHandler.() -> Unit) =
+    dependencies("androidMain", block)
+
+internal fun KotlinMultiplatformExtension.jvmMain(block: KotlinDependencyHandler.() -> Unit) =
+    dependencies("jvmMain", block)
+
+private fun KotlinMultiplatformExtension.dependencies(name: String, block: KotlinDependencyHandler.() -> Unit) =
+    sourceSets.getByName(name).dependencies(block)

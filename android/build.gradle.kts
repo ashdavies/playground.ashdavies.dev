@@ -18,35 +18,21 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation(project(":auth-oauth"))
-                implementation(project(":compose-local"))
                 implementation(project(":local-storage"))
                 implementation(project(":playground-app"))
 
                 implementation(libs.alialbaali.kamel)
-
-                with(libs.arkivanov) {
-                    implementation(decompose.extensions)
-                    implementation(decompose)
-                }
-
-                implementation(libs.kuuuurt.multiplatformPaging)
-                implementation(libs.sqlDelight.coroutinesExtensions)
+                implementation(libs.bundles.arkivanov.decompose)
+                implementation(libs.kuuuurt.multiplatform.paging)
+                implementation(libs.sqldelight.coroutines.extensions)
             }
         }
 
         val androidMain by getting {
             dependencies {
-                with(libs.androidx) {
-                    implementation(activityCompose)
-                    implementation(activityKtx)
-                    implementation(pagingCompose)
-                    implementation(pagingRuntime)
-                }
-
-                with(libs.androidx.lifecycle) {
-                    implementation(viewModelCompose)
-                    implementation(viewModelKtx)
-                }
+                implementation(libs.bundles.androidx.activity)
+                implementation(libs.bundles.androidx.paging)
+                implementation(libs.bundles.androidx.viewmodel)
 
                 with(libs.google.accompanist) {
                     implementation(flowlayout)
@@ -55,19 +41,13 @@ kotlin {
                     implementation(swiperefresh)
                 }
 
-                with(libs.google.firebase) {
-                    implementation(analytics)
-                    implementation(commonKtx)
-                }
+                implementation(libs.bundles.google.firebase)
             }
         }
 
         val jvmMain by getting {
             dependencies {
-                with(libs.androidx) {
-                    implementation(pagingCompose)
-                    implementation(pagingRuntime)
-                }
+                implementation(libs.bundles.androidx.paging)
             }
         }
     }
