@@ -7,6 +7,11 @@ plugins {
     alias(libs.plugins.molecule)
 }
 
+android {
+    // This is bad, don't do it, your mother will never forgive you
+    testOptions.unitTests { isReturnDefaultValues = true }
+}
+
 kotlin {
     sourceSets {
         val commonMain by getting {
