@@ -77,6 +77,7 @@ ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negoti
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
 ktor-client-json = { module = "io.ktor:ktor-client-json", version.ref = "ktor" }
 ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
+ktor-client-okhttp3 = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
 ktor-serialization-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
 ktor-serialization-kotlinx = { module = "io.ktor:ktor-serialization-kotlinx", version.ref = "ktor" }
 ktor-server-auth = { module = "io.ktor:ktor-server-auth", version.ref = "ktor" }
@@ -91,6 +92,7 @@ oolong = "org.oolong-kt:oolong:2.0.4"
 pinterest-ktlint = "com.pinterest:ktlint:0.45.2"
 qos-logbackClassic = "ch.qos.logback:logback-classic:1.2.11"
 requery-sqlite-android = "com.github.requery:sqlite-android:3.36.0"
+slf4j-simple = "org.slf4j:slf4j-simple:1.7.21"
 
 sqldelight-android-driver = { module = "com.squareup.sqldelight:android-driver", version.ref = "squareup-sqldelight" }
 sqldelight-coroutines-extensions = { module = "com.squareup.sqldelight:coroutines-extensions", version.ref = "squareup-sqldelight" }
@@ -106,7 +108,7 @@ arkivanov-decompose = ["arkivanov-decompose", "arkivanov-decompose-extensions"]
 google-firebase = ["google-firebase-analytics", "google-firebase-common-ktx"]
 jetbrains-kotlinx = ["jetbrains-kotlinx-coroutines-core", "jetbrains-kotlinx-datetime", "jetbrains-kotlinx-serialization-core", "jetbrains-kotlinx-serialization-json", "jetbrains-kotlinx-serialization-properties"]
 jetbrains-kotlin-test = ["jetbrains-kotlin-test", "jetbrains-kotlin-test-annotations", "jetbrains-kotlin-test-common", "jetbrains-kotlin-test-junit", "jetbrains-kotlinx-coroutines-test"]
-ktor-client = ["ktor-client-cio", "ktor-client-content-negotiation", "ktor-client-core", "ktor-client-json", "ktor-client-logging", "ktor-serialization-json", "ktor-serialization-kotlinx"]
+ktor-client = ["ktor-client-okhttp3", "ktor-client-content-negotiation", "ktor-client-core", "ktor-client-json", "ktor-client-logging", "ktor-serialization-json", "ktor-serialization-kotlinx", "slf4j-simple"]
 ktor-server = ["ktor-serialization-json", "ktor-serialization-kotlinx", "ktor-server-auth", "ktor-server-call-logging", "ktor-server-cio", "ktor-server-core", "ktor-server-html-builder"]
 
 [plugins]

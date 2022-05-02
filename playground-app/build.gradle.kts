@@ -26,7 +26,6 @@ kotlin {
                 }
 
                 implementation(libs.bundles.google.firebase)
-                implementation(libs.ktor.client.cio)
             }
         }
     }
