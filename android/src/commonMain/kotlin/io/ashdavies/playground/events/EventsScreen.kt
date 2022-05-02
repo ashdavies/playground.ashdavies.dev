@@ -28,6 +28,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import io.ashdavies.playground.Event
+import io.ashdavies.playground.EventsBottomBar
 import io.ashdavies.playground.EventsRoot
 import io.ashdavies.playground.TopAppBar
 import io.ashdavies.playground.android.LazyPagingItems
@@ -38,7 +39,6 @@ import io.ashdavies.playground.android.isRefreshing
 import io.ashdavies.playground.android.items
 import io.ashdavies.playground.android.refresh
 import io.ashdavies.playground.platform.PlatformSwipeRefresh
-import io.ashdavies.playground.platform.PlaygroundBottomBar
 import io.ashdavies.playground.rememberInsetsPaddingValues
 
 @Composable
@@ -51,7 +51,7 @@ internal fun EventsScreen(child: EventsRoot.Child.Events) {
 
     Scaffold(
         topBar = { EventsTopAppBar() },
-        bottomBar = { PlaygroundBottomBar(child) }
+        bottomBar = { EventsBottomBar(child) }
     ) { contentPadding ->
         PlatformSwipeRefresh(
             isRefreshing = pagingItems.isRefreshing,

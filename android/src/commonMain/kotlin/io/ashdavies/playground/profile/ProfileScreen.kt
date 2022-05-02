@@ -22,6 +22,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.dp
+import io.ashdavies.playground.EventsBottomBar
 import io.ashdavies.playground.EventsRoot
 import io.ashdavies.playground.TopAppBar
 import io.ashdavies.playground.android.FlowRow
@@ -29,7 +30,6 @@ import io.ashdavies.playground.android.fade
 import io.ashdavies.playground.compose.EmptyPainter
 import io.ashdavies.playground.compose.rememberState
 import io.ashdavies.playground.network.OpenUri
-import io.ashdavies.playground.platform.PlaygroundBottomBar
 import io.ashdavies.playground.profile.ProfileViewState.LogIn
 import io.ashdavies.playground.profile.ProfileViewState.LoggedIn
 import io.ashdavies.playground.profile.ProfileViewState.LoggedOut
@@ -48,7 +48,7 @@ internal fun ProfileScreen(child: EventsRoot.Child.Profile) {
 
     Scaffold(
         topBar = { ProfileTopAppBar() },
-        bottomBar = { PlaygroundBottomBar(child) }
+        bottomBar = { EventsBottomBar(child) }
     ) { contentPadding ->
         ProfileScreen(
             modifier = Modifier.padding(contentPadding),
