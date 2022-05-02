@@ -8,10 +8,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.Button
 import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
@@ -21,17 +23,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.dp
 import io.ashdavies.playground.EventsRoot
+import io.ashdavies.playground.TopAppBar
 import io.ashdavies.playground.android.FlowRow
 import io.ashdavies.playground.android.fade
 import io.ashdavies.playground.compose.EmptyPainter
 import io.ashdavies.playground.compose.rememberState
 import io.ashdavies.playground.network.OpenUri
-import io.ashdavies.playground.platform.PlatformScaffold
-import io.ashdavies.playground.platform.PlatformTopAppBar
 import io.ashdavies.playground.platform.PlaygroundBottomBar
 import io.ashdavies.playground.profile.ProfileViewState.LogIn
 import io.ashdavies.playground.profile.ProfileViewState.LoggedIn
 import io.ashdavies.playground.profile.ProfileViewState.LoggedOut
+import io.ashdavies.playground.rememberInsetsPaddingValues
 import io.kamel.core.Resource
 import io.kamel.core.getOrElse
 import io.kamel.core.isLoading
@@ -39,12 +41,13 @@ import io.kamel.image.lazyPainterResource
 import kotlin.random.Random.Default.nextInt
 
 @Composable
+@OptIn(ExperimentalMaterial3Api::class)
 internal fun ProfileScreen(child: EventsRoot.Child.Profile) {
     val viewModel: ProfileViewModel = rememberProfileViewModel()
     val viewState: ProfileViewState by rememberState(viewModel.viewState)
 
-    PlatformScaffold(
-        topBar = { PlatformTopAppBar("Profile") },
+    Scaffold(
+        topBar = { ProfileTopAppBar() },
         bottomBar = { PlaygroundBottomBar(child) }
     ) { contentPadding ->
         ProfileScreen(
@@ -53,6 +56,14 @@ internal fun ProfileScreen(child: EventsRoot.Child.Profile) {
             viewState = viewState,
         )
     }
+}
+
+@Composable
+private fun ProfileTopAppBar() {
+    TopAppBar(
+        contentPadding = rememberInsetsPaddingValues(applyBottom = false),
+        title = { Text("Profile") }
+    )
 }
 
 @Composable
@@ -91,7 +102,7 @@ private fun ProfileHeader(resourcePainter: Resource<Painter>, viewState: LoggedI
                 modifier = Modifier
                     .padding(4.dp, 64.dp, 4.dp, 4.dp)
                     .fade(resourcePainter.isLoading),
-                style = MaterialTheme.typography.h4,
+                style = MaterialTheme.typography.headlineSmall,
                 text = viewState.name
             )
         }
@@ -99,7 +110,7 @@ private fun ProfileHeader(resourcePainter: Resource<Painter>, viewState: LoggedI
 
     Text(
         modifier = Modifier.padding(bottom = 4.dp),
-        style = MaterialTheme.typography.h4,
+        style = MaterialTheme.typography.headlineSmall,
         text = "Events",
     )
 }

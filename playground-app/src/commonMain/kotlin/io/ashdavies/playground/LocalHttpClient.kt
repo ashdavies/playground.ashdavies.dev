@@ -7,13 +7,13 @@ import androidx.compose.runtime.staticCompositionLocalOf
 import io.ktor.client.HttpClient
 import io.ktor.client.HttpClientConfig
 import io.ktor.client.plugins.DefaultRequest
+import io.ktor.client.plugins.HttpTimeout
+import io.ktor.client.plugins.HttpTimeout.Plugin.INFINITE_TIMEOUT_MS
 import io.ktor.client.plugins.cache.HttpCache
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.request.header
 import io.ktor.http.HttpHeaders
-import io.ktor.http.URLProtocol
-import io.ktor.http.takeFrom
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.ListSerializer
@@ -25,7 +25,7 @@ private const val DEFAULT_HOST = "https://europe-west1-playground-1a136.cloudfun
 private const val DEFAULT_USER_AGENT = "Ktor/2.0.0 (Android; S3B1.220218.006)"
 
 public val LocalHttpClient: ProvidableCompositionLocal<HttpClient> = staticCompositionLocalOf {
-    HttpClient {
+    HttpClient() {
         install(ContentNegotiation) {
             json(Json {
                 serializersModule = SerializersModule {
@@ -35,18 +35,20 @@ public val LocalHttpClient: ProvidableCompositionLocal<HttpClient> = staticCompo
                 }
 
                 ignoreUnknownKeys = true
+                encodeDefaults = true
             })
         }
 
         install(DefaultRequest) {
             url {
                 header(HttpHeaders.UserAgent, DEFAULT_USER_AGENT)
-                protocol = URLProtocol.HTTPS
+                // protocol = URLProtocol.HTTPS
                 // takeFrom(DEFAULT_HOST)
             }
         }
 
         install(HttpCache)
+        install(HttpTimeout) { connectTimeoutMillis = INFINITE_TIMEOUT_MS }
         install(Logging)
     }
 }

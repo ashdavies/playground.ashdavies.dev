@@ -15,7 +15,7 @@ internal class DominionRootComponent(componentContext: ComponentContext) :
 
     private val router: Router<ChildConfiguration, DominionRoot.Child> = router(
         childFactory = { configuration, _ -> createChild(configuration) },
-        initialConfiguration = ChildConfiguration.Listings,
+        initialConfiguration = ChildConfiguration.Expansion,
         handleBackButton = true,
     )
 
@@ -23,17 +23,30 @@ internal class DominionRootComponent(componentContext: ComponentContext) :
         get() = router.state
 
     private fun createChild(configuration: ChildConfiguration): DominionRoot.Child = when (configuration) {
-        is ChildConfiguration.Listings -> DominionRoot.Child.List(createNavigation(router))
-        is ChildConfiguration.Details -> DominionRoot.Child.Details(createNavigation(router))
+        is ChildConfiguration.Expansion -> DominionRoot.Child.Expansion(createNavigation())
+        is ChildConfiguration.Kingdom -> DominionRoot.Child.Kingdom(
+            expansion = configuration.expansion,
+            navigation = createNavigation(),
+        )
+        is ChildConfiguration.Card -> DominionRoot.Child.Card(createNavigation())
+    }
+
+    private fun createNavigation() = object : DominionRoot.Navigation {
+        override fun navigateToExpansion() = router.bringToFront(ChildConfiguration.Expansion)
+        override fun navigateToKingdom(expansion: DominionExpansion) {
+            router.bringToFront(ChildConfiguration.Kingdom(expansion))
+        }
     }
 }
 
-private fun createNavigation(router: Router<ChildConfiguration, DominionRoot.Child>) = object : DominionRoot.Navigation {
-    override fun navigateToDetails() = router.bringToFront(ChildConfiguration.Details)
-    override fun navigateToList() = router.bringToFront(ChildConfiguration.Listings)
-}
-
 internal sealed class ChildConfiguration : Parcelable {
-    @Parcelize object Listings : ChildConfiguration()
-    @Parcelize object Details : ChildConfiguration()
+
+    @Parcelize
+    object Expansion : ChildConfiguration()
+
+    @Parcelize
+    data class Kingdom(val expansion: DominionExpansion) : ChildConfiguration()
+
+    @Parcelize
+    object Card : ChildConfiguration()
 }

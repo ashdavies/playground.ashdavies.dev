@@ -5,6 +5,6 @@ import com.arkivanov.decompose.ComponentContext
 
 internal class DominionActivity : DecomposeActivity() {
     override val root: @Composable (ComponentContext) -> Unit = {
-        DominionRoot(DominionRootComponent(it))
+        PlaygroundScreen { DominionRoot(DominionRootComponent(it)) }
     }
 }

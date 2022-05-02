@@ -18,7 +18,7 @@ kotlin {
             dependencies {
                 implementation(project(":playground-app"))
 
-                implementation(libs.ktor.client.core)
+                implementation(libs.bundles.ktor.client)
                 implementation(libs.kuuuurt.multiplatform.paging)
             }
         }
@@ -33,19 +33,12 @@ kotlin {
                 }
 
                 implementation(libs.bundles.google.firebase)
-                implementation(libs.ktor.client.cio)
             }
         }
 
         val androidTest by getting {
             dependencies {
                 implementation(libs.molecule.testing)
-            }
-        }
-
-        val jvmMain by getting {
-            dependencies {
-                implementation(libs.ktor.client.cio)
             }
         }
     }

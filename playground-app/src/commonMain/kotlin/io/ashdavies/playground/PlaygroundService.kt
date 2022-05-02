@@ -102,5 +102,8 @@ internal inline fun <reified T> HttpRequestBuilder.parameters(value: T) {
 
 @PublishedApi
 internal fun HttpRequestBuilder.parameters(values: Map<String, Any?>) {
-    values.forEach { (key, value) -> parameter(key, value) }
+    values.forEach { (key, value) ->
+        // TODO Figure out parameter encoding properly
+        if (key != "type" && key.startsWith("value")) parameter(key.substringAfter("value."), value)
+    }
 }

@@ -1,6 +1,7 @@
 import com.android.build.api.dsl.CommonExtension
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
+import org.jetbrains.compose.ExperimentalComposeLibrary
 import org.jetbrains.compose.compose
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.plugin.KotlinDependencyHandler
@@ -16,9 +17,12 @@ internal object Playground {
     )
 
     object Dependencies {
+
+        @OptIn(ExperimentalComposeLibrary::class)
         fun KotlinDependencyHandler.compose() {
             implementation(compose.foundation)
             implementation(compose.material)
+            implementation(compose.material3)
             implementation(compose.runtime)
             implementation(compose.uiTooling)
             implementation(compose.ui)

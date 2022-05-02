@@ -11,13 +11,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.Button
-import androidx.compose.material.Icon
-import androidx.compose.material.LocalTextStyle
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalTextStyle
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -27,6 +29,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import io.ashdavies.playground.Event
 import io.ashdavies.playground.EventsRoot
+import io.ashdavies.playground.TopAppBar
 import io.ashdavies.playground.android.LazyPagingItems
 import io.ashdavies.playground.android.collectAsLazyPagingItems
 import io.ashdavies.playground.android.errorMessage
@@ -34,20 +37,20 @@ import io.ashdavies.playground.android.fade
 import io.ashdavies.playground.android.isRefreshing
 import io.ashdavies.playground.android.items
 import io.ashdavies.playground.android.refresh
-import io.ashdavies.playground.platform.PlatformScaffold
 import io.ashdavies.playground.platform.PlatformSwipeRefresh
-import io.ashdavies.playground.platform.PlatformTopAppBar
 import io.ashdavies.playground.platform.PlaygroundBottomBar
+import io.ashdavies.playground.rememberInsetsPaddingValues
 
 @Composable
+@OptIn(ExperimentalMaterial3Api::class)
 internal fun EventsScreen(child: EventsRoot.Child.Events) {
     val viewModel: EventsViewModel = rememberEventsViewModel()
     val pagingItems: LazyPagingItems<Event> = viewModel
         .pagingData
         .collectAsLazyPagingItems()
 
-    PlatformScaffold(
-        topBar = { PlatformTopAppBar("Events") },
+    Scaffold(
+        topBar = { EventsTopAppBar() },
         bottomBar = { PlaygroundBottomBar(child) }
     ) { contentPadding ->
         PlatformSwipeRefresh(
@@ -75,6 +78,14 @@ internal fun EventsScreen(child: EventsRoot.Child.Events) {
 }
 
 @Composable
+private fun EventsTopAppBar() {
+    TopAppBar(
+        contentPadding = rememberInsetsPaddingValues(applyBottom = false),
+        title = { Text("Events") }
+    )
+}
+
+@Composable
 private fun EventSection(event: Event?, onClick: () -> Unit) {
     Box(Modifier.padding(horizontal = 16.dp, vertical = 8.dp)) {
         Button(
@@ -95,9 +106,9 @@ private fun EventSection(event: Event?, onClick: () -> Unit) {
                         .fillMaxWidth()
                         .padding(start = 12.dp)
                 ) {
-                    PlaceholderText(event?.name, style = MaterialTheme.typography.h6)
-                    PlaceholderText(event?.location, style = MaterialTheme.typography.body1)
-                    PlaceholderText(event?.dateStart, style = MaterialTheme.typography.body2)
+                    PlaceholderText(event?.name, style = MaterialTheme.typography.labelLarge)
+                    PlaceholderText(event?.location, style = MaterialTheme.typography.labelMedium)
+                    PlaceholderText(event?.dateStart, style = MaterialTheme.typography.labelSmall)
                 }
 
             }

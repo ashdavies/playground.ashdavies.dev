@@ -3,19 +3,57 @@ package io.ashdavies.playground
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import io.ktor.client.HttpClient
-import io.ktor.http.content.OutgoingContent.NoContent
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.JsonObject
 
-// https://wiki.dominionstrategy.com/api.php?action=query&titles=Expansions&pllimit=max&format=json[&prop=links]
-// https://wiki.dominionstrategy.com/api.php?action=parse&format=json&page=Dominion_(Base_Set)&prop=sections
-// https://wiki.dominionstrategy.com/api.php?action=parse&format=json&page=Dominion_(Base_Set)&section=9
+// http://wiki.dominionstrategy.com/api.php?action=query&titles=Expansions&pllimit=max&format=json&prop=links
+// http://wiki.dominionstrategy.com/api.php?action=query&titles=File:Intrigue2.jpg&prop=imageinfo&iiprop=url&format=json
+
+// http://wiki.dominionstrategy.com/api.php?action=parse&format=json&page=Dominion_(Base_Set)&prop=sections
+// http://wiki.dominionstrategy.com/api.php?action=parse&format=json&page=Dominion_(Base_Set)&section=9
+
+private const val DOMINION_STRATEGY = "http://wiki.dominionstrategy.com"
 
 internal interface DominionService : PlaygroundService {
-    val api: PlaygroundService.Operator<NoContent, String>
+    val api: PlaygroundService.Operator<DominionRequest, JsonObject>
 }
 
 @Composable
 internal fun rememberDominionService(client: HttpClient = LocalHttpClient.current): DominionService = remember(client) {
     object : DominionService, PlaygroundService by PlaygroundService(client) {
-        override val api by getting<NoContent, String> { "$it.php?action=query&format=json&pllimit=max&titles=Expansions" }
+        override val api by getting<DominionRequest, JsonObject> { "$DOMINION_STRATEGY/$it.php" }
+    }
+}
+
+@Serializable
+internal sealed class DominionRequest(val format: String = "json") {
+
+    @Serializable
+    sealed class Query(val action: String = "query") : DominionRequest() {
+
+        @Serializable
+        data class Expansions(
+            val titles: String = "Expansions",
+            val pllimit: String = "max",
+            val prop: String = "links",
+        ) : Query()
+
+        @Serializable
+        data class Images(
+            val titles: String,
+            val prop: String = "imageinfo",
+            val iiprop: String = "url"
+        ) : Query()
+    }
+
+    @Serializable
+    sealed class Parse(val action: String = "parse") : DominionRequest() {
+
+        @Serializable
+        data class Page(
+            val section: String? = null,
+            val prop: String? = null,
+            val page: String,
+        )
     }
 }
