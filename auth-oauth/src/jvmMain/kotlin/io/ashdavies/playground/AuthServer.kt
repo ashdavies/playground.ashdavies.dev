@@ -22,8 +22,7 @@ import io.ktor.server.routing.get
 import io.ktor.server.routing.routing
 import io.ktor.util.toMap
 import kotlinx.coroutines.CompletableDeferred
-import io.ktor.client.engine.cio.CIO as ClientCIO
-import io.ktor.server.cio.CIO as ServerCIO
+import io.ktor.server.cio.CIO
 
 private const val GRACE_PERIOD_MILLIS = 1000L
 private const val TIMEOUT_MILLIS = 5000L
@@ -31,12 +30,12 @@ private const val TIMEOUT_MILLIS = 5000L
 public actual suspend fun getAccessToken(provider: OAuthProvider): AccessToken {
     val response = CompletableDeferred<AccessToken>()
 
-    val server: CIOApplicationEngine = embeddedServer(ServerCIO, port = 8080) {
+    val server: CIOApplicationEngine = embeddedServer(CIO, port = 8080) {
         install(Authentication) {
             oauth("auth-oauth-google") {
                 urlProvider = { "http://localhost:8080/callback" }
                 providerLookup = { OAuthSettings(provider) }
-                client = HttpClient(ClientCIO) {
+                client = HttpClient {
                     install(ContentNegotiation) {
                         json()
                     }
