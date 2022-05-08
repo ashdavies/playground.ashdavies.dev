@@ -25,14 +25,18 @@ internal class DominionRootComponent(componentContext: ComponentContext) :
     private fun createChild(configuration: ChildConfiguration): DominionRoot.Child = when (configuration) {
         is ChildConfiguration.Expansion -> DominionRoot.Child.Expansion(createNavigation())
         is ChildConfiguration.Kingdom -> DominionRoot.Child.Kingdom(
-            expansion = configuration.expansion,
+            expansion = configuration.value,
             navigation = createNavigation(),
         )
-        is ChildConfiguration.Card -> DominionRoot.Child.Card(createNavigation())
+        is ChildConfiguration.Card -> DominionRoot.Child.Card(
+            navigation = createNavigation(),
+            card = configuration.value,
+        )
     }
 
     private fun createNavigation() = object : DominionRoot.Navigation {
         override fun navigateToExpansion() = router.bringToFront(ChildConfiguration.Expansion)
+        override fun navigateToCard(card: DominionCard) = router.bringToFront(ChildConfiguration.Card(card))
         override fun navigateToKingdom(expansion: DominionExpansion) {
             router.bringToFront(ChildConfiguration.Kingdom(expansion))
         }
@@ -45,8 +49,8 @@ internal sealed class ChildConfiguration : Parcelable {
     object Expansion : ChildConfiguration()
 
     @Parcelize
-    data class Kingdom(val expansion: DominionExpansion) : ChildConfiguration()
+    data class Kingdom(val value: DominionExpansion) : ChildConfiguration()
 
     @Parcelize
-    object Card : ChildConfiguration()
+    data class Card(val value: DominionCard) : ChildConfiguration()
 }

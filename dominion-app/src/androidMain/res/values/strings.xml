@@ -1,6 +1,3 @@
 <resources>
-    <string name="application">Playground</string>
-    <string name="upcoming">Upcoming</string>
-    <string name="profile">Profile</string>
-    <string name="events">Events</string>
+    <string name="application">Dominion</string>
 </resources>

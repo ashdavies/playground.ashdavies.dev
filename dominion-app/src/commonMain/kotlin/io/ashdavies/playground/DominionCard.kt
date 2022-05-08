@@ -1,3 +1,11 @@
 package io.ashdavies.playground
 
-internal data class DominionCard(val name: String)
+import com.arkivanov.essenty.parcelable.Parcelable
+import com.arkivanov.essenty.parcelable.Parcelize
+
+@Parcelize
+internal data class DominionCard(
+    val expansion: DominionExpansion,
+    val name: String,
+    val image: String? = null,
+) : Parcelable

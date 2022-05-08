@@ -46,14 +46,21 @@ internal sealed class DominionRequest(val format: String = "json") {
         ) : Query()
     }
 
+    // http://wiki.dominionstrategy.com/api.php?action=parse&format=json&page=Dominion_(Base_Set)&section=3&prop=links
     @Serializable
     sealed class Parse(val action: String = "parse") : DominionRequest() {
 
         @Serializable
-        data class Page(
-            val section: String? = null,
-            val prop: String? = null,
+        data class Sections(
             val page: String,
-        )
+            val prop: String = "sections"
+        ) : Parse()
+
+        @Serializable
+        data class Section(
+            val page: String,
+            val section: String,
+            val prop: String = "links"
+        ) : Parse()
     }
 }

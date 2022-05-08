@@ -2,9 +2,10 @@ package io.ashdavies.playground
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -15,7 +16,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.ContentScale.Companion.FillWidth
+import androidx.compose.ui.unit.dp
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.onDownload
@@ -44,7 +47,7 @@ internal class ImageLoader(private val client: HttpClient) : (Url) -> Flow<Resou
 }
 
 @Composable
-public fun imagePainter(urlString: String): Resource<Painter> = imagePainter(url = Url(urlString))
+public fun imagePainter(urlString: String): Resource<Painter> = imagePainter(HttpClient(), Url(urlString))
 
 @Composable
 public fun imagePainter(client: HttpClient = LocalHttpClient.current, url: Url): Resource<Painter> {
@@ -72,12 +75,19 @@ internal inline fun <T : Any, R : Any> Resource<T>.map(transform: (T) -> R): Res
     }
 }
 
+/**
+ * TODO Create event listener for image loading logging
+ */
 @Composable
 public fun RemoteImage(urlString: String, modifier: Modifier = Modifier, contentDescription: String? = null) {
     when (val resource: Resource<Painter> = imagePainter(urlString)) {
+        is Resource.Loading -> Box { CircularProgressIndicator(resource.progress, modifier.padding(48.dp)) }
         is Resource.Success -> Image(resource.value, contentDescription, modifier, contentScale = FillWidth)
-        is Resource.Loading -> Box { CircularProgressIndicator(resource.progress, modifier.fillMaxSize()) }
-        is Resource.Failure -> Text(resource.exception.message ?: "An error occurred", modifier)
+        is Resource.Failure -> Image(
+            painter = rememberVectorPainter(Icons.Filled.Close),
+            contentDescription = resource.exception.message,
+            modifier = modifier.padding(48.dp),
+        )
     }
 }
 

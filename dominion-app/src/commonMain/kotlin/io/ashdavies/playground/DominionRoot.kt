@@ -6,6 +6,7 @@ import com.arkivanov.decompose.ExperimentalDecomposeApi
 import com.arkivanov.decompose.extensions.compose.jetbrains.Children
 import com.arkivanov.decompose.extensions.compose.jetbrains.animation.child.childAnimation
 import com.arkivanov.decompose.extensions.compose.jetbrains.animation.child.slide
+import io.ashdavies.playground.card.CardScreen
 import io.ashdavies.playground.expansion.ExpansionScreen
 import io.ashdavies.playground.kingdom.KingdomScreen
 
@@ -16,7 +17,7 @@ internal fun DominionRoot(root: DominionRoot, modifier: Modifier = Modifier) {
         when (val child: DominionRoot.Child = it.instance) {
             is DominionRoot.Child.Expansion -> ExpansionScreen(child)
             is DominionRoot.Child.Kingdom -> KingdomScreen(child)
-            is DominionRoot.Child.Card -> TODO()
+            is DominionRoot.Child.Card -> CardScreen(child)
         }
     }
 }
@@ -34,11 +35,13 @@ internal interface DominionRoot : NavigationRoot<DominionRoot.Navigation, Domini
 
         data class Card(
             override val navigation: Navigation,
+            val card: DominionCard,
         ) : Child, Navigation by navigation
     }
 
     interface Navigation : NavigationRoot.Navigation {
-        fun navigateToExpansion()
         fun navigateToKingdom(expansion: DominionExpansion)
+        fun navigateToCard(card: DominionCard)
+        fun navigateToExpansion()
     }
 }

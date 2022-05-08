@@ -13,6 +13,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Card
 import androidx.compose.material.LinearProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -23,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.ashdavies.playground.DominionExpansion
 import io.ashdavies.playground.DominionRoot
+import io.ashdavies.playground.DominionViewState
 import io.ashdavies.playground.RemoteImage
 import io.ashdavies.playground.TopAppBar
 import io.ashdavies.playground.rememberInsetsPaddingValues
@@ -31,17 +33,16 @@ import io.ashdavies.playground.rememberInsetsPaddingValues
 @OptIn(ExperimentalMaterial3Api::class)
 internal fun ExpansionScreen(child: DominionRoot.Child.Expansion) {
     val viewModel: ExpansionViewModel = rememberExpansionViewModel()
-    val _state: ExpansionViewState by viewModel.state.collectAsState()
-    val state: ExpansionViewState = _state
 
+    val _state: DominionViewState<DominionExpansion> by viewModel.state.collectAsState()
     LaunchedEffect(Unit) { viewModel.produceEvent() }
 
     Scaffold(topBar = { ExpansionTopAppBar() }) { contentPadding ->
-        when (state) {
-            is ExpansionViewState.Success -> ExpansionScreen(
+        when (val state = _state) {
+            is DominionViewState.Success -> ExpansionScreen(
                 onClick = { child.navigateToKingdom(it) },
                 contentPadding = contentPadding,
-                expansions = state.expansions,
+                expansions = state.value,
             )
             else -> LinearProgressIndicator(
                 modifier = Modifier
@@ -53,11 +54,19 @@ internal fun ExpansionScreen(child: DominionRoot.Child.Expansion) {
 }
 
 @Composable
+private fun ExpansionTopAppBar() {
+    TopAppBar(
+        title = { Text("Dominion", color = MaterialTheme.colorScheme.onPrimary) },
+        contentPadding = rememberInsetsPaddingValues(applyBottom = false)
+    )
+}
+
+@Composable
 @OptIn(ExperimentalFoundationApi::class)
 private fun ExpansionScreen(
     expansions: List<DominionExpansion>,
-    onClick: (DominionExpansion) -> Unit = { },
     contentPadding: PaddingValues,
+    onClick: (DominionExpansion) -> Unit = { },
     modifier: Modifier = Modifier,
 ) {
     LazyVerticalGrid(
@@ -69,14 +78,6 @@ private fun ExpansionScreen(
             ExpansionCard(it) { onClick(it) }
         }
     }
-}
-
-@Composable
-private fun ExpansionTopAppBar() {
-    TopAppBar(
-        contentPadding = rememberInsetsPaddingValues(applyBottom = false),
-        title = { Text("Dominion") }
-    )
 }
 
 @Composable
