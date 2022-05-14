@@ -114,14 +114,14 @@ ktor-server = ["ktor-serialization-json", "ktor-serialization-kotlinx", "ktor-se
 android-application = { id = "com.android.application", version.ref = "google.android" }
 android-library = { id = "com.android.library", version.ref = "google.android" }
 apollo = { id = "com.apollographql.apollo", version.ref = "apollo-graphql" }
+cash-molecule = { id = "app.cash.molecule", version.ref = "cash-molecule" }
 gradle-doctor = "com.osacky.doctor:0.8.0"
 gradle-ktlint = "org.jlleitschuh.gradle.ktlint:10.2.1"
+jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "jetbrains-kotlin" }
+jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrains-kotlin" }
+jetbrains-kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "jetbrains-kotlin" }
+jetbrains-kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "jetbrains-kotlin" }
 johnRengelman-shadow = "com.github.johnrengelman.shadow:7.1.2"
-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "jetbrains-kotlin" }
-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrains-kotlin" }
-kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "jetbrains-kotlin" }
-molecule = { id = "app.cash.molecule", version.ref = "cash-molecule" }
-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "jetbrains-kotlin" }
 sqldelight = { id = "com.squareup.sqldelight", version.ref = "squareup-sqldelight" }
 version-catalog-update = "nl.littlerobots.version-catalog-update:0.3.1"
 versions = "com.github.ben-manes.versions:0.42.0"

@@ -4,7 +4,7 @@
 plugins {
     `multiplatform-application`
 
-    alias(libs.plugins.molecule)
+    alias(libs.plugins.cash.molecule)
 }
 
 android {

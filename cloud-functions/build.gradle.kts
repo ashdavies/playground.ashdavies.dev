@@ -5,8 +5,8 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    id(libs.plugins.kotlin.jvm)
-    id(libs.plugins.serialization)
+    id(libs.plugins.jetbrains.kotlin.jvm)
+    id(libs.plugins.jetbrains.kotlin.serialization)
 
     alias(libs.plugins.johnRengelman.shadow)
 }
