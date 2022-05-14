@@ -117,6 +117,7 @@ apollo = { id = "com.apollographql.apollo", version.ref = "apollo-graphql" }
 cash-molecule = { id = "app.cash.molecule", version.ref = "cash-molecule" }
 gradle-doctor = "com.osacky.doctor:0.8.0"
 gradle-ktlint = "org.jlleitschuh.gradle.ktlint:10.2.1"
+jetbrains-kotlinx-kover = { id = "org.jetbrains.kotlinx.kover", version = "0.5.0" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "jetbrains-kotlin" }
 jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrains-kotlin" }
 jetbrains-kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "jetbrains-kotlin" }

@@ -1,5 +1,5 @@
 // https://youtrack.jetbrains.com/issue/KTIJ-19369
-@file:Suppress("DSL_SCOPE_VIOLATION")
+@file:Suppress("DSL_SCOPE_VIOLATION", "UnstableApiUsage")
 
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
@@ -27,6 +27,7 @@ buildscript {
 }
 
 plugins {
+    alias(libs.plugins.jetbrains.kotlinx.kover)
     alias(libs.plugins.gradle.doctor)
     alias(libs.plugins.gradle.ktlint)
     alias(libs.plugins.versions)

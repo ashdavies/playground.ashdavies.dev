@@ -1,5 +1,7 @@
 name: Pre Merge Checks
 
+
+
 on:
   push:
     branches:
@@ -48,6 +50,9 @@ jobs:
 
       - name: Run Gradle tasks
         run: ./gradlew build check
+
+      - name: TestForest Dashboard
+        uses: test-summary/action@v1.0
 
       - name: Display dependency updates
         run: ./gradlew dependencyUpdates
