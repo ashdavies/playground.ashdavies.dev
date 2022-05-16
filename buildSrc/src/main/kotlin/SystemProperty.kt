@@ -4,6 +4,10 @@ import kotlin.properties.ReadOnlyProperty
 
 typealias SystemDelegateProvider = PropertyDelegateProvider<Any?, ReadOnlyProperty<Any?, String>>
 
+fun <T> T.SystemProperty(block: T.(type: String, name: String, value: String) -> Unit) = SystemProperty { name, value ->
+    block("String", name, "\"$value\"")
+}
+
 fun <T> T.SystemProperty(block: T.(name: String, value: String) -> Unit) = SystemDelegateProvider { _, property ->
     val name = CaseFormat.LowerCamel(property.name).toUpperSnake()
     val value = System.getenv(name)
