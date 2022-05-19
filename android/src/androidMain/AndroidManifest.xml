@@ -11,7 +11,7 @@
         android:theme="@style/Theme.Playground.DynamicColors.NoActionBar">
 
         <activity
-            android:name="io.ashdavies.playground.PlaygroundActivity"
+            android:name="io.ashdavies.playground.EventsActivity"
             android:exported="true"
             android:label="@string/application">
 
