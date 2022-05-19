@@ -2,16 +2,8 @@
 @file:Suppress("DSL_SCOPE_VIOLATION", "UnstableApiUsage")
 
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
-import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
 
 buildscript {
-    repositories {
-        google()
-        gradlePluginPortal()
-        jetbrainsCompose()
-        mavenCentral()
-    }
-
     dependencies {
         with(libs.versions.jetbrains.kotlin) {
             classpath(kotlin("gradle-plugin", version = get()))
@@ -32,16 +24,6 @@ plugins {
     alias(libs.plugins.gradle.ktlint)
     alias(libs.plugins.versions)
     alias(libs.plugins.version.catalog.update)
-}
-
-allprojects {
-    repositories {
-        google()
-        gradlePluginPortal()
-        jetbrainsCompose()
-        jitpack("requery")
-        mavenCentral()
-    }
 }
 
 doctor {

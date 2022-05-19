@@ -1,6 +1,4 @@
-dependencyResolutionManagement {
-    //repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
-}
+apply(from = "repositories.gradle.kts")
 
 include(
     ":android",
@@ -11,7 +9,7 @@ include(
     ":local-storage",
     ":notion-console",
     ":playground-app",
-    ":version-catalog"
+    ":version-catalog",
 )
 
 includeBuild("build-plugins")
@@ -21,14 +19,6 @@ gradleEnterprise {
         termsOfServiceUrl = "https://gradle.com/terms-of-service"
         termsOfServiceAgree = "yes"
         publishAlways()
-    }
-}
-
-pluginManagement {
-    repositories {
-        gradlePluginPortal()
-        mavenCentral()
-        google()
     }
 }
 
