@@ -20,6 +20,7 @@ androidx-activity-compose = { module = "androidx.activity:activity-compose", ver
 androidx-activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "androidx-activity" }
 androidx-annotation = "androidx.annotation:annotation:1.3.0"
 androidx-core-ktx = "androidx.core:core-ktx:1.7.0"
+androidx-compose-foundation = "androidx.compose.foundation:foundation:1.2.0-beta02"
 androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "androidx-lifecycle" }
 androidx-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "androidx-lifecycle" }
 androidx-paging-compose = "androidx.paging:paging-compose:1.0.0-alpha14"
@@ -38,8 +39,6 @@ coroutine-dispatcher-core = "com.rickbusarow.dispatch:dispatch-core:1.0.0-beta10
 fusesource-jansi = "org.fusesource.jansi:jansi:2.0.1"
 
 google-accompanist-flowlayout = { module = "com.google.accompanist:accompanist-flowlayout", version.ref = "google-accompanist" }
-google-accompanist-insets = { module = "com.google.accompanist:accompanist-insets", version.ref = "google-accompanist" }
-google-accompanist-insetsUi = { module = "com.google.accompanist:accompanist-insets-ui", version.ref = "google-accompanist" }
 google-accompanist-placeholderMaterial = { module = "com.google.accompanist:accompanist-placeholder-material", version.ref = "google-accompanist" }
 google-accompanist-swiperefresh = { module = "com.google.accompanist:accompanist-swiperefresh", version.ref = "google-accompanist" }
 google-accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "google-accompanist" }
@@ -54,7 +53,8 @@ google-firebase-common-ktx = "com.google.firebase:firebase-common-ktx:20.1.0"
 
 jakeWharton-mosaic = "com.jakewharton.mosaic:mosaic-runtime:0.1.0"
 
-jetbrains-compose-gradle-plugin = "org.jetbrains.compose:compose-gradle-plugin:1.1.1"
+# Unstable until 1.2.0-alpha01-dev686 (ClassNotFoundException: CallUtilKt)
+jetbrains-compose-gradle-plugin = "org.jetbrains.compose:compose-gradle-plugin:1.2.0-alpha01-dev667"
 jetbrains-kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "jetbrains-kotlin" }
 jetbrains-kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "jetbrains-kotlin" }
 jetbrains-kotlin-serialization-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-serialization", version.ref = "jetbrains-kotlin" }

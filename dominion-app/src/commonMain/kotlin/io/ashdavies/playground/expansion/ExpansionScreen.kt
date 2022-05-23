@@ -27,7 +27,6 @@ import io.ashdavies.playground.DominionRoot
 import io.ashdavies.playground.DominionViewState
 import io.ashdavies.playground.RemoteImage
 import io.ashdavies.playground.TopAppBar
-import io.ashdavies.playground.rememberInsetsPaddingValues
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
@@ -55,10 +54,7 @@ internal fun ExpansionScreen(child: DominionRoot.Child.Expansion) {
 
 @Composable
 private fun ExpansionTopAppBar() {
-    TopAppBar(
-        title = { Text("Dominion", color = MaterialTheme.colorScheme.onPrimary) },
-        contentPadding = rememberInsetsPaddingValues(applyBottom = false)
-    )
+    TopAppBar(title = { Text("Dominion", color = MaterialTheme.colorScheme.onPrimary) })
 }
 
 @Composable

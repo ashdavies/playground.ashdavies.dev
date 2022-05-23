@@ -42,7 +42,7 @@ import io.ashdavies.playground.DominionRoot
 import io.ashdavies.playground.DominionViewState
 import io.ashdavies.playground.LargeTopAppBar
 import io.ashdavies.playground.RemoteImage
-import io.ashdavies.playground.rememberInsetsPaddingValues
+import io.ashdavies.playground.windowInsetsPadding
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
@@ -76,14 +76,11 @@ internal fun KingdomScreen(child: DominionRoot.Child.Kingdom) {
 private fun KingdomTopBar(
     expansion: DominionExpansion,
     scrollBehavior: TopAppBarScrollBehavior,
-    contentPadding: PaddingValues = rememberInsetsPaddingValues(applyBottom = false),
-    modifier: Modifier = Modifier,
     onBack: () -> Unit = { }
 ) {
     Surface(
         tonalElevation = AppBarDefaults.TopAppBarElevation,
         color = MaterialTheme.colorScheme.surface,
-        modifier = modifier,
     ) {
         LargeTopAppBar(
             title = { Text(expansion.name) },
@@ -96,9 +93,9 @@ private fun KingdomTopBar(
                 BackIconButton(onBack)
             },
             scrollBehavior = scrollBehavior,
-            modifier = modifier
+            modifier = Modifier
                 .nestedScroll(scrollBehavior.nestedScrollConnection)
-                .padding(contentPadding)
+                .windowInsetsPadding()
         )
     }
 }

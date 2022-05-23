@@ -10,13 +10,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.core.view.WindowCompat.setDecorFitsSystemWindows
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.defaultComponentContext
-import com.google.accompanist.insets.ProvideWindowInsets
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
-abstract class ComposeActivity(
-    private val decorFitsSystemWindows: Boolean = false,
-    private val content: @Composable (ComponentContext) -> Unit
-) : ComponentActivity() {
+abstract class ComposeActivity(private val decorFitsSystemWindows: Boolean = false) : ComponentActivity() {
+
+    protected abstract val content: @Composable (ComponentContext) -> Unit
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,9 +36,5 @@ private fun ComposeScreen(content: @Composable () -> Unit) {
         )
     }
 
-    PlaygroundTheme {
-        ProvideWindowInsets {
-            content()
-        }
-    }
+    PlaygroundTheme(content = content)
 }

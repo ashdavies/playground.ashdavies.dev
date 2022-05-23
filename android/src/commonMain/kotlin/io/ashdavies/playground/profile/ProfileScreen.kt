@@ -33,7 +33,6 @@ import io.ashdavies.playground.network.OpenUri
 import io.ashdavies.playground.profile.ProfileViewState.LogIn
 import io.ashdavies.playground.profile.ProfileViewState.LoggedIn
 import io.ashdavies.playground.profile.ProfileViewState.LoggedOut
-import io.ashdavies.playground.rememberInsetsPaddingValues
 import io.kamel.core.Resource
 import io.kamel.core.getOrElse
 import io.kamel.core.isLoading
@@ -60,10 +59,7 @@ internal fun ProfileScreen(child: EventsRoot.Child.Profile) {
 
 @Composable
 private fun ProfileTopAppBar() {
-    TopAppBar(
-        contentPadding = rememberInsetsPaddingValues(applyBottom = false),
-        title = { Text("Profile") }
-    )
+    TopAppBar(title = { Text("Profile") })
 }
 
 @Composable

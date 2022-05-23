@@ -39,7 +39,6 @@ import io.ashdavies.playground.android.isRefreshing
 import io.ashdavies.playground.android.items
 import io.ashdavies.playground.android.refresh
 import io.ashdavies.playground.platform.PlatformSwipeRefresh
-import io.ashdavies.playground.rememberInsetsPaddingValues
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
@@ -79,10 +78,7 @@ internal fun EventsScreen(child: EventsRoot.Child.Events) {
 
 @Composable
 private fun EventsTopAppBar() {
-    TopAppBar(
-        contentPadding = rememberInsetsPaddingValues(applyBottom = false),
-        title = { Text("Events") }
-    )
+    TopAppBar(title = { Text("Events") })
 }
 
 @Composable

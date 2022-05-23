@@ -35,7 +35,6 @@ kotlin {
 
             with(libs.google.accompanist) {
                 implementation(flowlayout)
-                implementation(insetsUi)
                 implementation(placeholderMaterial)
                 implementation(swiperefresh)
             }

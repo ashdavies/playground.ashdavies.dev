@@ -1,7 +1,6 @@
 package io.ashdavies.playground.card
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.AppBarDefaults
@@ -19,7 +18,6 @@ import io.ashdavies.playground.DominionCard
 import io.ashdavies.playground.DominionRoot
 import io.ashdavies.playground.RemoteImage
 import io.ashdavies.playground.TopAppBar
-import io.ashdavies.playground.rememberInsetsPaddingValues
 
 @Composable
 internal fun CardScreen(child: DominionRoot.Child.Card) {
@@ -29,20 +27,13 @@ internal fun CardScreen(child: DominionRoot.Child.Card) {
 }
 
 @Composable
-private fun CardTopBar(
-    card: DominionCard,
-    contentPadding: PaddingValues = rememberInsetsPaddingValues(applyBottom = false),
-    modifier: Modifier = Modifier,
-    onBack: () -> Unit = { }
-) {
+private fun CardTopBar(card: DominionCard, onBack: () -> Unit = { }) {
     Surface(
         tonalElevation = AppBarDefaults.TopAppBarElevation,
         color = MaterialTheme.colorScheme.surface,
-        modifier = modifier,
     ) {
         TopAppBar(
             navigationIcon = { BackIconButton(onBack) },
-            modifier = modifier.padding(contentPadding),
             title = { Text(card.name) },
         )
     }

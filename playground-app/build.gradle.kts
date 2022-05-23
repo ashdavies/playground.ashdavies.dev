@@ -1,3 +1,4 @@
+
 plugins {
     `multiplatform-library`
 }
@@ -15,11 +16,10 @@ kotlin {
 
         val androidMain by getting {
             dependencies {
+                //implementation(libs.androidx.compose.foundation)
                 implementation(libs.bundles.androidx.activity)
 
                 with(libs.google.accompanist) {
-                    implementation(insets)
-                    implementation(insetsUi)
                     implementation(placeholderMaterial)
                     implementation(swiperefresh)
                     implementation(systemuicontroller)
