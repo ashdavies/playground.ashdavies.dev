@@ -1,8 +1,6 @@
 package io.ashdavies.playground.kingdom
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -10,9 +8,9 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.GridCells
-import androidx.compose.foundation.lazy.LazyVerticalGrid
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.AppBarDefaults
 import androidx.compose.material.Card
 import androidx.compose.material.LinearProgressIndicator
@@ -111,7 +109,6 @@ private fun BackIconButton(onClick: () -> Unit) {
 }
 
 @Composable
-@OptIn(ExperimentalFoundationApi::class)
 private fun KingdomScreen(
     kingdom: List<DominionCard>,
     contentPadding: PaddingValues,
@@ -119,8 +116,8 @@ private fun KingdomScreen(
     modifier: Modifier = Modifier,
 ) {
     LazyVerticalGrid(
+        columns = GridCells.Fixed(3),
         modifier = modifier.padding(4.dp),
-        cells = GridCells.Fixed(3),
         contentPadding = contentPadding,
     ) {
         items(kingdom) {

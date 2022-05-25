@@ -1,16 +1,14 @@
 package io.ashdavies.playground
 
-// import androidx.compose.foundation.layout.WindowInsets
-// import androidx.compose.foundation.layout.WindowInsetsSides.Companion.Horizontal
-// import androidx.compose.foundation.layout.WindowInsetsSides.Companion.Top
-// import androidx.compose.foundation.layout.only
-// import androidx.compose.foundation.layout.systemBars
-// import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides.Companion.Horizontal
+import androidx.compose.foundation.layout.WindowInsetsSides.Companion.Top
+import androidx.compose.foundation.layout.only
+import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.ui.Modifier
-// import androidx.compose.ui.composed
+import androidx.compose.ui.composed
 
-public actual fun Modifier.windowInsetsPadding(): Modifier = Modifier
-
-/* public actual fun Modifier.windowInsetsPadding(): Modifier = composed {
+public actual fun Modifier.windowInsetsPadding(): Modifier = composed {
     windowInsetsPadding(WindowInsets.systemBars.only(Horizontal + Top))
-} */
+}

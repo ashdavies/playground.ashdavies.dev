@@ -1,15 +1,14 @@
 package io.ashdavies.playground.expansion
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.GridCells
-import androidx.compose.foundation.lazy.LazyVerticalGrid
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.Card
 import androidx.compose.material.LinearProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -58,7 +57,6 @@ private fun ExpansionTopAppBar() {
 }
 
 @Composable
-@OptIn(ExperimentalFoundationApi::class)
 private fun ExpansionScreen(
     expansions: List<DominionExpansion>,
     contentPadding: PaddingValues,
@@ -66,8 +64,8 @@ private fun ExpansionScreen(
     modifier: Modifier = Modifier,
 ) {
     LazyVerticalGrid(
+        columns = GridCells.Fixed(3),
         modifier = modifier.padding(4.dp),
-        cells = GridCells.Fixed(3),
         contentPadding = contentPadding,
     ) {
         items(expansions) {
