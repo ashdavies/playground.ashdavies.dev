@@ -11,15 +11,11 @@ pluginManagement {
     fun RepositoryHandler.jitpack(group: String): MavenArtifactRepository =
         maven("https://jitpack.io", "com.github.$group")
 
-    fun RepositoryHandler.kotlinEap(): MavenArtifactRepository =
-        maven("https://dl.bintray.com/kotlin/kotlin-eap")
-
     fun RepositoryHandler.default() {
         gradlePluginPortal()
         jetbrainsCompose()
         jitpack("requery")
         mavenCentral()
-        kotlinEap()
         google()
     }
 

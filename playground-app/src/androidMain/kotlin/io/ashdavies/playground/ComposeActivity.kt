@@ -12,9 +12,10 @@ import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.defaultComponentContext
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
-abstract class ComposeActivity(private val decorFitsSystemWindows: Boolean = false) : ComponentActivity() {
-
-    protected abstract val content: @Composable (ComponentContext) -> Unit
+public abstract class ComposeActivity(
+    private val content: @Composable (ComponentContext) -> Unit,
+    private val decorFitsSystemWindows: Boolean = false,
+) : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
