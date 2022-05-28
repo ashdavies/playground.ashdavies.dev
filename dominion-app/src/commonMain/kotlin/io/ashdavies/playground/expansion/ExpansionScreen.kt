@@ -9,11 +9,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.material.Card
-import androidx.compose.material.LinearProgressIndicator
+import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SmallTopAppBar
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -25,17 +25,20 @@ import io.ashdavies.playground.DominionExpansion
 import io.ashdavies.playground.DominionRoot
 import io.ashdavies.playground.DominionViewState
 import io.ashdavies.playground.RemoteImage
-import io.ashdavies.playground.TopAppBar
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 internal fun ExpansionScreen(child: DominionRoot.Child.Expansion) {
     val viewModel: ExpansionViewModel = rememberExpansionViewModel()
+    val _state: DominionViewState<DominionExpansion> by viewModel
+        .state
+        .collectAsState()
 
-    val _state: DominionViewState<DominionExpansion> by viewModel.state.collectAsState()
     LaunchedEffect(Unit) { viewModel.produceEvent() }
 
-    Scaffold(topBar = { ExpansionTopAppBar() }) { contentPadding ->
+    Scaffold(
+        topBar = { SmallTopAppBar(title = { Text("Dominion") }) }
+    ) { contentPadding ->
         when (val state = _state) {
             is DominionViewState.Success -> ExpansionScreen(
                 onClick = { child.navigateToKingdom(it) },
@@ -53,10 +56,11 @@ internal fun ExpansionScreen(child: DominionRoot.Child.Expansion) {
 
 @Composable
 private fun ExpansionTopAppBar() {
-    TopAppBar(title = { Text("Dominion", color = MaterialTheme.colorScheme.onPrimary) })
+    SmallTopAppBar(title = { Text("Dominion") })
 }
 
 @Composable
+@ExperimentalMaterial3Api
 private fun ExpansionScreen(
     expansions: List<DominionExpansion>,
     contentPadding: PaddingValues,
@@ -75,6 +79,7 @@ private fun ExpansionScreen(
 }
 
 @Composable
+@ExperimentalMaterial3Api
 private fun ExpansionCard(
     value: DominionExpansion,
     modifier: Modifier = Modifier,

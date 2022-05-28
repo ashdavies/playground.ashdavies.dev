@@ -8,11 +8,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.Card
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SmallTopAppBar
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -24,7 +25,6 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.dp
 import io.ashdavies.playground.EventsBottomBar
 import io.ashdavies.playground.EventsRoot
-import io.ashdavies.playground.TopAppBar
 import io.ashdavies.playground.android.FlowRow
 import io.ashdavies.playground.android.fade
 import io.ashdavies.playground.compose.EmptyPainter
@@ -46,7 +46,7 @@ internal fun ProfileScreen(child: EventsRoot.Child.Profile) {
     val viewState: ProfileViewState by rememberState(viewModel.viewState)
 
     Scaffold(
-        topBar = { ProfileTopAppBar() },
+        topBar = { SmallTopAppBar(title = { Text("Profile") }) },
         bottomBar = { EventsBottomBar(child) }
     ) { contentPadding ->
         ProfileScreen(
@@ -58,11 +58,7 @@ internal fun ProfileScreen(child: EventsRoot.Child.Profile) {
 }
 
 @Composable
-private fun ProfileTopAppBar() {
-    TopAppBar(title = { Text("Profile") })
-}
-
-@Composable
+@ExperimentalMaterial3Api
 private fun ProfileScreen(viewState: ProfileViewState, modifier: Modifier = Modifier, onLogin: () -> Unit = { }) {
     val resourcePainter: Resource<Painter> = (viewState as? LoggedIn)?.picture
         ?.let { lazyPainterResource(it) }
@@ -79,11 +75,11 @@ private fun ProfileScreen(viewState: ProfileViewState, modifier: Modifier = Modi
                 }
             }
         }
-
     }
 }
 
 @Composable
+@ExperimentalMaterial3Api
 private fun ProfileHeader(resourcePainter: Resource<Painter>, viewState: LoggedIn) {
     Card(
         modifier = Modifier

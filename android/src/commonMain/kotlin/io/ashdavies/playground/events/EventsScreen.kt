@@ -19,6 +19,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SmallTopAppBar
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -30,7 +31,6 @@ import androidx.compose.ui.unit.dp
 import io.ashdavies.playground.Event
 import io.ashdavies.playground.EventsBottomBar
 import io.ashdavies.playground.EventsRoot
-import io.ashdavies.playground.TopAppBar
 import io.ashdavies.playground.android.LazyPagingItems
 import io.ashdavies.playground.android.collectAsLazyPagingItems
 import io.ashdavies.playground.android.errorMessage
@@ -49,7 +49,7 @@ internal fun EventsScreen(child: EventsRoot.Child.Events) {
         .collectAsLazyPagingItems()
 
     Scaffold(
-        topBar = { EventsTopAppBar() },
+        topBar = { SmallTopAppBar(title = { Text("Events") }) },
         bottomBar = { EventsBottomBar(child) }
     ) { contentPadding ->
         PlatformSwipeRefresh(
@@ -74,11 +74,6 @@ internal fun EventsScreen(child: EventsRoot.Child.Events) {
             }
         }
     }
-}
-
-@Composable
-private fun EventsTopAppBar() {
-    TopAppBar(title = { Text("Events") })
 }
 
 @Composable

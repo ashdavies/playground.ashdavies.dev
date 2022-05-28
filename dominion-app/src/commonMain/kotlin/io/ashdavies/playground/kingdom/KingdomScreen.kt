@@ -11,13 +11,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.material.AppBarDefaults
-import androidx.compose.material.Card
-import androidx.compose.material.LinearProgressIndicator
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LargeTopAppBar
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -38,7 +38,6 @@ import io.ashdavies.playground.DominionCard
 import io.ashdavies.playground.DominionExpansion
 import io.ashdavies.playground.DominionRoot
 import io.ashdavies.playground.DominionViewState
-import io.ashdavies.playground.LargeTopAppBar
 import io.ashdavies.playground.RemoteImage
 import io.ashdavies.playground.windowInsetsPadding
 
@@ -76,10 +75,7 @@ private fun KingdomTopBar(
     scrollBehavior: TopAppBarScrollBehavior,
     onBack: () -> Unit = { }
 ) {
-    Surface(
-        tonalElevation = AppBarDefaults.TopAppBarElevation,
-        color = MaterialTheme.colorScheme.surface,
-    ) {
+    Surface(color = MaterialTheme.colorScheme.surface) {
         LargeTopAppBar(
             title = { Text(expansion.name) },
             navigationIcon = {
@@ -109,6 +105,7 @@ private fun BackIconButton(onClick: () -> Unit) {
 }
 
 @Composable
+@ExperimentalMaterial3Api
 private fun KingdomScreen(
     kingdom: List<DominionCard>,
     contentPadding: PaddingValues,
@@ -127,6 +124,7 @@ private fun KingdomScreen(
 }
 
 @Composable
+@ExperimentalMaterial3Api
 private fun KingdomCard(
     value: DominionCard,
     modifier: Modifier = Modifier,

@@ -21,7 +21,6 @@ internal object Playground {
         @OptIn(ExperimentalComposeLibrary::class)
         fun KotlinDependencyHandler.compose() {
             implementation(compose.foundation)
-            implementation(compose.material)
             implementation(compose.material3)
             implementation(compose.runtime)
             implementation(compose.uiTooling)
