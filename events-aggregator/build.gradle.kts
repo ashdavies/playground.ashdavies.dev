@@ -9,11 +9,12 @@ dependencies {
 
 val deployEventsAggregatorFunction by tasks.registering(DeployFunctionTask::class) {
     entryPoint = "io.ashdavies.playground.aggregator.AggregatorFunction"
-    description = "Deploy aggregator function to Google Cloud"
+    description = "Deploy events aggregator function to Google Cloud"
+    function = "aggregate"
 }
 
 val runEventsAggregatorFunction by tasks.registering(RunFunctionTask::class) {
     target = "io.ashdavies.playground.aggregator.AggregatorFunction"
-    description = "Run events cloud functions"
+    description = "Run events aggregator cloud function"
 }
 

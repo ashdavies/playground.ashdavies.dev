@@ -35,9 +35,9 @@ dependencies {
     add("invoker", libs.google.cloud.javaFunctionInvoker)
 }
 
-/*kotlin {
+kotlin {
     configureKotlinProject(project)
-}*/
+}
 
 tasks.named<ShadowJar>("shadowJar") {
     destinationDirectory.set(file("$buildDir/playground"))
