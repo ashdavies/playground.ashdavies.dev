@@ -1,5 +1,6 @@
 package io.ashdavies.playground.check
 
+import io.ashdavies.playground.crypto.CryptoSigner
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json

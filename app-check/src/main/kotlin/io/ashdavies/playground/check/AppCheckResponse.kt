@@ -4,3 +4,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 internal data class VerifyAppCheckTokenResponse(val token: DecodedAppCheckToken)
+
+@Serializable
+internal class DecodedAppCheckToken

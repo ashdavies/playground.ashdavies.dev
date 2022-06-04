@@ -3,6 +3,7 @@ package io.ashdavies.playground.check
 import com.google.cloud.functions.HttpRequest
 import io.ashdavies.playground.cloud.HttpException
 import io.ashdavies.playground.firebase.FirebaseFunction
+import io.ashdavies.playground.firebase.appCheck
 
 private const val APP_CHECK_TOKEN_KEY = "APP_CHECK_TOKEN"
 
