@@ -9,30 +9,27 @@ plugins {
 }
 
 kotlin {
-    sourceSets {
-        val commonMain by getting {
-            dependencies {
-                with(libs.sqldelight) {
-                    implementation(coroutines.extensions)
-                    implementation(runtime)
-                }
-            }
-        }
-
-        val androidMain by getting {
-            dependencies {
-                with(libs) {
-                    implementation(requery.sqlite.android)
-                    implementation(sqldelight.android.driver)
-                }
-            }
-        }
-
-        val jvmMain by getting {
-            dependencies {
-                implementation(libs.sqldelight.sqlite.driver)
+    val commonMain by sourceSets.getting {
+        dependencies {
+            with(libs.sqldelight) {
+                implementation(coroutines.extensions)
+                implementation(runtime)
             }
         }
     }
 
+    val androidMain by sourceSets.getting {
+        dependencies {
+            with(libs) {
+                implementation(requery.sqlite.android)
+                implementation(sqldelight.android.driver)
+            }
+        }
+    }
+
+    val jvmMain by sourceSets.getting {
+        dependencies {
+            implementation(libs.sqldelight.sqlite.driver)
+        }
+    }
 }

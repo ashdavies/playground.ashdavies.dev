@@ -12,8 +12,12 @@ plugins {
     kotlin("plugin.serialization")
 }
 
-extensions.configure<KotlinMultiplatformExtension> { configureKotlinMultiplatform(project) }
 extensions.configure<BaseAppModuleExtension>(CommonExtension<*, *, *, *>::configureCommon)
+
+extensions.configure<KotlinMultiplatformExtension> {
+    configureKotlinMultiplatform(project)
+    configureKotlinProject(project)
+}
 
 tasks.withType<KotlinCompile> {
     kotlinOptions.freeCompilerArgs += Playground.freeCompilerArgs

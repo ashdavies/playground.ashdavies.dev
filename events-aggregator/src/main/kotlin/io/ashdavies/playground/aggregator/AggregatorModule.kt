@@ -7,7 +7,6 @@ import io.ashdavies.playground.yaml.Yaml
 import okhttp3.OkHttpClient
 import java.lang.System.getenv
 
-private const val COLLECTION_PATH = "events"
 private const val GITHUB_TOKEN_NAME = "GITHUB_TOKEN"
 private const val GRAPHQL_ENDPOINT = "https://api.github.com/graphql"
 
@@ -23,9 +22,7 @@ private fun ApolloClient() =
 internal fun GitHubService() =
     GitHubService(ApolloClient(), Yaml)
 
-private fun ApolloClient.Builder.okHttpClient(
-    block: OkHttpClient.Builder.() -> Unit
-): ApolloClient.Builder =
+private fun ApolloClient.Builder.okHttpClient(block: OkHttpClient.Builder.() -> Unit): ApolloClient.Builder =
     OkHttpClient.Builder()
         .apply(block)
         .build()

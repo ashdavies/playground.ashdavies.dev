@@ -1,10 +1,12 @@
 apply(from = "repositories.gradle.kts")
 
 include(
-    ":android",
+    ":app-check",
     ":auth-oauth",
-    ":cloud-aggregator",
     ":cloud-functions",
+    ":events-aggregator",
+    ":events-app",
+    ":events-function",
     ":dominion-app",
     ":local-storage",
     ":notion-console",
@@ -25,6 +27,5 @@ gradleEnterprise {
 plugins {
     id("com.gradle.enterprise") version "3.9"
 }
-
 
 rootProject.name = "playground"

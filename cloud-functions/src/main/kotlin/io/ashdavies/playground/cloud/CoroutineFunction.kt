@@ -1,9 +1,8 @@
-package io.ashdavies.playground.google
+package io.ashdavies.playground.cloud
 
 import com.google.cloud.functions.HttpFunction
 import com.google.cloud.functions.HttpRequest
 import com.google.cloud.functions.HttpResponse
-import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import java.net.HttpURLConnection.HTTP_INTERNAL_ERROR
 import java.net.HttpURLConnection.HTTP_OK
@@ -11,7 +10,6 @@ import java.net.HttpURLConnection.HTTP_OK
 private const val APPLICATION_JSON = "application/json"
 private const val UNKNOWN_ERROR = "Unknown error"
 
-@OptIn(DelicateCoroutinesApi::class)
 abstract class CoroutineFunction : HttpFunction {
     final override fun service(request: HttpRequest, response: HttpResponse) = runBlocking {
         try {

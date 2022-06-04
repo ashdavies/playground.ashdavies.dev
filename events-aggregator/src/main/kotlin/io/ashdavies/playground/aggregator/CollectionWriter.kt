@@ -1,7 +1,7 @@
 package io.ashdavies.playground.aggregator
 
 import dispatch.core.launchIO
-import io.ashdavies.playground.events.DocumentProvider
+import io.ashdavies.playground.google.DocumentProvider
 import io.ashdavies.playground.google.await
 import kotlinx.coroutines.coroutineScope
 
@@ -23,7 +23,6 @@ internal suspend fun <T : Any> CollectionWriter(provider: DocumentProvider, iden
         }
     }
 
-@OptIn(ExperimentalStdlibApi::class)
 private fun <T : Any> OperationQueue(oldValue: Map<String, T>, newValue: Map<String, T>) = buildList {
     val newEntries: Map<String, T> = log(newValue - oldValue.keys) { "Writing ${it.size} new entries..." }
     for ((childPath: String, value: T) in newEntries) {
