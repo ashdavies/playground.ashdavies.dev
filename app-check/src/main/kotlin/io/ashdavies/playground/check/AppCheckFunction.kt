@@ -7,6 +7,9 @@ import io.ashdavies.playground.firebase.appCheck
 
 private const val APP_CHECK_TOKEN_KEY = "APP_CHECK_TOKEN"
 
+/**
+ * @see [Implement a custom App Check provider](https://firebase.google.com/docs/app-check/custom-provider)
+ */
 internal class AppCheckFunction : FirebaseFunction() {
     override suspend fun service(request: HttpRequest): String {
         val authenticity = AppCheckRequest(request)

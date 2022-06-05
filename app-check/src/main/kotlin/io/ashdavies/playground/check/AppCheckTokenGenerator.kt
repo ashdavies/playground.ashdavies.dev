@@ -18,6 +18,9 @@ private const val FIREBASE_APP_CHECK_AUDIENCE =
 
 internal class AppCheckTokenGenerator(private val signer: CryptoSigner) {
 
+    /**
+     * @see [token-generator.ts](https://github.com/firebase/firebase-admin-node/blob/4e816f44a3f3a67fcf912b6013c5beccb2210f8b/src/app-check/token-generator.ts#L72)
+     */
     suspend fun createCustomToken(appId: String, options: AppCheckTokenOptions? = null): String {
         require(appId.isNotEmpty()) { throw InvalidArgumentError("`appId` must be a non-empty string") }
 
