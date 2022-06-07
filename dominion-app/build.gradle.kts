@@ -1,15 +1,9 @@
-// https://youtrack.jetbrains.com/issue/KTIJ-19369
-@file:Suppress("DSL_SCOPE_VIOLATION")
+@file:Suppress("DSL_SCOPE_VIOLATION", "UnstableApiUsage") // https://youtrack.jetbrains.com/issue/KTIJ-19369
 
 plugins {
     `multiplatform-application`
 
     alias(libs.plugins.cash.molecule)
-}
-
-android {
-    // This is bad, don't do it, your mother will never forgive you
-    testOptions.unitTests { isReturnDefaultValues = true }
 }
 
 kotlin {

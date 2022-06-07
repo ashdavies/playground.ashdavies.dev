@@ -32,10 +32,18 @@ public abstract class CoroutineFunction : HttpFunction {
     abstract suspend fun service(request: HttpRequest): String
 }
 
-public class HttpException(val code: Int, override val message: String) : Exception() {
+public class HttpException(val code: Int, override val message: String, cause: Throwable? = null) : Exception(cause) {
+
     companion object {
-        fun BadRequest(message: String) = HttpException(HTTP_BAD_REQUEST, message)
-        fun Forbidden() = HttpException(HTTP_FORBIDDEN, "Forbidden")
+
+        fun InvalidArgumentError(message: String, cause: Throwable? = null) =
+            BadRequest("InvalidArgument: $message", cause)
+
+        fun BadRequest(message: String, cause: Throwable? = null): HttpException =
+            HttpException(HTTP_BAD_REQUEST, message, cause)
+
+        fun Forbidden(cause: Throwable? = null): HttpException =
+            HttpException(HTTP_FORBIDDEN, "Forbidden", cause)
     }
 }
 

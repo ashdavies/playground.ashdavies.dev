@@ -16,18 +16,6 @@ internal object Playground {
         "-Xallow-result-return-type",
         "-Xmulti-platform"
     )
-
-    object Dependencies {
-
-        @OptIn(ExperimentalComposeLibrary::class)
-        fun KotlinDependencyHandler.compose() {
-            implementation(compose.foundation)
-            implementation(compose.material3)
-            implementation(compose.runtime)
-            implementation(compose.uiTooling)
-            implementation(compose.ui)
-        }
-    }
 }
 
 @Suppress("UnstableApiUsage")

@@ -14,6 +14,8 @@ import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.request.header
 import io.ktor.http.HttpHeaders
+import io.ktor.http.URLProtocol
+import io.ktor.http.takeFrom
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.ListSerializer
@@ -21,6 +23,7 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.contextual
 
+private const val DEFAULT_FUNCTIONS_HOST = "https://europe-west1-playground-1a136.cloudfunctions.net/"
 private const val DEFAULT_USER_AGENT = "Ktor/2.0.0 (Android; S3B1.220218.006)"
 
 public val LocalHttpClient: ProvidableCompositionLocal<HttpClient> = staticCompositionLocalOf {
@@ -41,8 +44,8 @@ public val LocalHttpClient: ProvidableCompositionLocal<HttpClient> = staticCompo
         install(DefaultRequest) {
             url {
                 header(HttpHeaders.UserAgent, DEFAULT_USER_AGENT)
-                // protocol = URLProtocol.HTTPS
-                // takeFrom(DEFAULT_HOST)
+                takeFrom(DEFAULT_FUNCTIONS_HOST)
+                protocol = URLProtocol.HTTPS
             }
         }
 
@@ -55,12 +58,12 @@ public val LocalHttpClient: ProvidableCompositionLocal<HttpClient> = staticCompo
 @Composable
 public fun ProvideHttpClient(
     client: HttpClient = LocalHttpClient.current,
-    block: HttpClientConfig<*>.() -> Unit = { },
+    configure: HttpClientConfig<*>.() -> Unit = { },
     content: @Composable () -> Unit,
 ) {
     val copy = HttpClient {
         install(client)
-        block()
+        configure()
     }
 
     CompositionLocalProvider(

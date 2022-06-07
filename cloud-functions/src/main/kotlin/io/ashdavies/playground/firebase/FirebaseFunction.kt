@@ -23,6 +23,5 @@ public abstract class FirebaseFunction : CoroutineFunction(), FirebaseScope {
 public val FirebaseScope.firestore: Firestore
     get() = FirestoreClient.getFirestore(firebaseApp)
 
-public fun FirebaseScope.DocumentProvider(path: String) = DocumentProvider {
-    firestore.collection(path)
-}
+public fun FirebaseScope.DocumentProvider(path: String): DocumentProvider =
+    DocumentProvider { firestore.collection(path) }

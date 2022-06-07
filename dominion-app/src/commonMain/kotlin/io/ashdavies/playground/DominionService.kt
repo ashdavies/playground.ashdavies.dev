@@ -10,20 +10,16 @@ import kotlinx.serialization.json.JsonObject
 // http://wiki.dominionstrategy.com/api.php?action=query&titles=File:Intrigue2.jpg&prop=imageinfo&iiprop=url&format=json
 
 // http://wiki.dominionstrategy.com/api.php?action=parse&format=json&page=Dominion_(Base_Set)&prop=sections
+// http://wiki.dominionstrategy.com/api.php?action=parse&format=json&page=Dominion_(Base_Set)&section=3&prop=links
 // http://wiki.dominionstrategy.com/api.php?action=parse&format=json&page=Dominion_(Base_Set)&section=9
 
-private const val DOMINION_STRATEGY = "http://wiki.dominionstrategy.com"
-
-internal interface DominionService : PlaygroundService {
-    val api: PlaygroundService.Operator<DominionRequest, JsonObject>
+internal class DominionService(client: HttpClient) : PlaygroundService by PlaygroundService(client) {
+    val api by getting<DominionRequest, JsonObject> { "$it.php" }
 }
 
 @Composable
-internal fun rememberDominionService(client: HttpClient = LocalHttpClient.current): DominionService = remember(client) {
-    object : DominionService, PlaygroundService by PlaygroundService(client) {
-        override val api by getting<DominionRequest, JsonObject> { "$DOMINION_STRATEGY/$it.php" }
-    }
-}
+internal fun rememberDominionService(client: HttpClient = LocalHttpClient.current): DominionService =
+    remember(client) { DominionService(client) }
 
 @Serializable
 internal sealed class DominionRequest(val format: String = "json") {
@@ -46,7 +42,6 @@ internal sealed class DominionRequest(val format: String = "json") {
         ) : Query()
     }
 
-    // http://wiki.dominionstrategy.com/api.php?action=parse&format=json&page=Dominion_(Base_Set)&section=3&prop=links
     @Serializable
     sealed class Parse(val action: String = "parse") : DominionRequest() {
 

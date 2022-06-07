@@ -22,11 +22,11 @@ kotlin {
 
                 implementation(compose.runtime)
 
+                implementation(libs.bundles.ktor.client)
                 implementation(libs.jetbrains.kotlinx.cli)
                 implementation(libs.jetbrains.kotlinx.coroutines.core)
                 implementation(libs.jetbrains.kotlinx.serialization.json)
                 implementation(libs.jraf.klibnotion)
-                implementation(libs.ktor.server.core)
                 implementation(libs.qos.logbackClassic)
             }
         }
@@ -40,8 +40,6 @@ kotlin {
                 }
 
                 implementation(libs.jetbrains.kotlinx.coroutines.core)
-                implementation(libs.ktor.server.cio)
-                implementation(libs.ktor.server.core)
             }
         }
 

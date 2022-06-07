@@ -1,20 +1,21 @@
 package io.ashdavies.playground.firebase
 
+import com.auth0.jwt.algorithms.Algorithm
+import com.google.auth.oauth2.GoogleCredentials
+import com.google.auth.oauth2.ServiceAccountCredentials
 import com.google.firebase.FirebaseApp
 import io.ashdavies.playground.check.AppCheck
 import io.ashdavies.playground.check.AppCheckClient
-import io.ashdavies.playground.check.AppCheckTokenGenerator
-import io.ashdavies.playground.credential.Credential
-import io.ashdavies.playground.crypto.CryptoSigner
+import io.ashdavies.playground.check.AppCheckConfig
+import io.ktor.client.HttpClient
+import java.security.interfaces.RSAPrivateKey
 
 internal fun FirebaseApp.appCheck(): AppCheck {
-    val credential = Credential.ServiceAccountCredential(
-        serviceAccountId = options.serviceAccountId,
-        clientEmail = "noreply@github.io",
-    )
+    val credentials = GoogleCredentials.getApplicationDefault() as ServiceAccountCredentials
+    val algorithm = Algorithm.RSA256(null, credentials.privateKey as RSAPrivateKey)
 
     return AppCheck(
-        generator = AppCheckTokenGenerator(CryptoSigner.IamSigner(credential)),
-        client = AppCheckClient()
+        config = AppCheckConfig(algorithm, options.serviceAccountId),
+        client = AppCheckClient(HttpClient(), options.projectId)
     )
 }

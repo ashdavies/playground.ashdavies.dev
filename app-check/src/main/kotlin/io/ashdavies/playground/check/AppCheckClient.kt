@@ -1,62 +1,35 @@
 package io.ashdavies.playground.check
 
-import io.ashdavies.playground.cloud.HttpException
+import io.ashdavies.playground.check.AppCheckToken.Type
+import io.ktor.client.HttpClient
+import io.ktor.client.call.body
+import io.ktor.client.request.headers
+import io.ktor.client.request.post
+import io.ktor.client.request.setBody
+import kotlinx.serialization.Serializable
 
-internal class AppCheckClient {
+private const val FIREBASE_APP_CHECK_V1_API_ENDPOINT = "https://firebaseappcheck.googleapis.com/v1beta/projects"
 
-    /**
-     * public exchangeToken(customToken: string, appId: string): Promise<AppCheckToken> {
-     *   if (!validator.isNonEmptyString(appId)) {
-     *     throw new FirebaseAppCheckError(
-     *       'invalid-argument',
-     *       '`appId` must be a non-empty string.'
-     *     );
-     *   }
-     *   if (!validator.isNonEmptyString(customToken)) {
-     *     throw new FirebaseAppCheckError(
-     *       'invalid-argument',
-     *       '`customToken` must be a non-empty string.'
-     *     );
-     *   }
-     *   return this.getUrl(appId)
-     *     .then((url) => {
-     *       const request: HttpRequestConfig = {
-     *         method: 'POST',
-     *         url,
-     *         headers: FIREBASE_APP_CHECK_CONFIG_HEADERS,
-     *         data: { customToken }
-     *       };
-     *       return this.httpClient.send(request);
-     *     })
-     *     .then((resp) => {
-     *       return this.toAppCheckToken(resp);
-     *     })
-     *     .catch((err) => {
-     *       throw this.toFirebaseError(err);
-     *     });
-     * }
-     *
-     * @see [app-check-api-client-internal.ts](https://github.com/firebase/firebase-admin-node/blob/4e816f44a3f3a67fcf912b6013c5beccb2210f8b/src/app-check/app-check-api-client-internal.ts#L62)
-     */
-    fun exchangeToken(customToken: String, appId: String): AppCheckToken = TODO()
+internal class AppCheckClient(private val httpClient: HttpClient, private val projectId: String) {
 
-    /**
-     * private getUrl(appId: string): Promise<string> {
-     *   return this.getProjectId()
-     *     .then((projectId) => {
-     *       const urlParams = {
-     *         projectId,
-     *         appId,
-     *       };
-     *
-     *       const baseUrl = utils.formatString(FIREBASE_APP_CHECK_V1_API_URL_FORMAT, urlParams);
-     *       return utils.formatString(baseUrl);
-     *     });
-     * }
-     *
-     * @see [app-check-api-client-internal.ts](https://github.com/firebase/firebase-admin-node/blob/4e816f44a3f3a67fcf912b6013c5beccb2210f8b/src/app-check/app-check-api-client-internal.ts#L91)
-     */
-    suspend fun getUrl(appId: String): String = TODO()
+    suspend fun exchangeToken(customToken: String, appId: String, type: Type = Type.Custom): AppCheckToken {
+        val urlString = "$FIREBASE_APP_CHECK_V1_API_ENDPOINT/$projectId/apps/$appId:exchange${type.name}Token"
+
+        val response: AppCheckClientResponse = httpClient.post(urlString) {
+            headers { append("X-Firebase-Client", "fire-admin-node/10.1.0") }
+            setBody(mapOf("customToken" to customToken))
+        }.body()
+
+        val ttlMillis = response.ttl
+            .substring(0, response.ttl.length - 1)
+            .toInt() * 1000
+
+        return AppCheckToken(
+            token = response.token,
+            ttlMillis = ttlMillis,
+        )
+    }
 }
 
-internal fun AppCheckError(message: String) = HttpException.BadRequest(message)
+@Serializable
+private data class AppCheckClientResponse(val token: String, val ttl: String)

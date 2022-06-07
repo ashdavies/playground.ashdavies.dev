@@ -2,6 +2,11 @@ plugins {
     `cloud-function`
 }
 
+dependencies {
+    implementation(libs.auth.java.jwt)
+    implementation(libs.bundles.ktor.client)
+}
+
 val deployAppCheckFunction by tasks.registering(DeployFunctionTask::class) {
     entryPoint = "io.ashdavies.playground.check.AppCheckFunction"
     description = "Deploy app check function to Google Cloud"

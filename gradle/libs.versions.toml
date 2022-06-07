@@ -35,6 +35,7 @@ apollographql-apollo-runtime = { module = "com.apollographql.apollo:apollo-runti
 arkivanov-decompose = { module = "com.arkivanov.decompose:decompose", version.ref = "arkivanov-decompose" }
 arkivanov-decompose-extensions = { module = "com.arkivanov.decompose:extensions-compose-jetbrains", version.ref = "arkivanov-decompose" }
 
+auth-java-jwt = "com.auth0:java-jwt:3.19.0"
 coroutine-dispatcher-core = "com.rickbusarow.dispatch:dispatch-core:1.0.0-beta10"
 fusesource-jansi = "org.fusesource.jansi:jansi:2.0.1"
 

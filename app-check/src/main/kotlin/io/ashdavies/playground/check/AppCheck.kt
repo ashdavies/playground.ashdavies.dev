@@ -1,21 +1,34 @@
 package io.ashdavies.playground.check
 
-internal class AppCheck(
-    private val client: AppCheckClient,
-    private val generator: AppCheckTokenGenerator,
-) : AppCheckInterface {
+import com.auth0.jwt.JWT
+import com.auth0.jwt.algorithms.Algorithm
+import com.auth0.jwt.exceptions.JWTVerificationException
+import com.auth0.jwt.interfaces.DecodedJWT
+import io.ashdavies.playground.cloud.HttpException.Companion.InvalidArgumentError
 
-    /**
-     * @see [app-check.ts](https://github.com/firebase/firebase-admin-node/blob/4e816f44a3/src/app-check/app-check.ts#L64)
-     */
-    override suspend fun createToken(appId: String, options: AppCheckTokenOptions?): AppCheckToken {
-        return client.exchangeToken(generator.createCustomToken(appId, options), appId)
+private const val APP_CHECK_ISSUER = "https://firebaseappcheck.googleapis.com/"
+
+internal class AppCheck(private val client: AppCheckClient, private val config: AppCheckConfig) : AppCheckInterface {
+
+    override suspend fun createToken(appId: String, options: AppCheckTokenOptions?): AppCheckToken = try {
+        val token = JWT.create()
+            .withIssuer(config.issuer)
+            .sign(config.algorithm)
+
+        client.exchangeToken(token, appId)
+    } catch (exception: JWTVerificationException) {
+        throw InvalidArgumentError(requireNotNull(exception.message), exception)
     }
 
-    /**
-     * @see [app-check.ts](https://github.com/firebase/firebase-admin-node/blob/4e816f44a3/src/app-check/app-check.ts#L79)
-     */
-    override suspend fun verifyToken(appCheckToken: String): VerifyAppCheckTokenResponse {
-        TODO("Not yet implemented")
+    override suspend fun verifyToken(appCheckToken: String): DecodedJWT = try {
+        val verifier = JWT.require(config.algorithm)
+            .withIssuer(APP_CHECK_ISSUER)
+            .build()
+
+        verifier.verify(appCheckToken)
+    } catch (exception: JWTVerificationException) {
+        throw InvalidArgumentError(requireNotNull(exception.message), exception)
     }
 }
+
+internal data class AppCheckConfig(val algorithm: Algorithm, val issuer: String)
