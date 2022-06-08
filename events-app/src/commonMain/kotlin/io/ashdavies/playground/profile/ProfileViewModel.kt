@@ -7,8 +7,8 @@ import io.ashdavies.playground.Oauth
 import io.ashdavies.playground.android.ViewModel
 import io.ashdavies.playground.android.viewModel
 import io.ashdavies.playground.android.viewModelScope
-import io.ashdavies.playground.kotlin.mapToOneOrNull
 import io.ashdavies.playground.invoke
+import io.ashdavies.playground.kotlin.mapToOneOrNull
 import io.ashdavies.playground.profile.ProfileViewState.LoggedIn
 import io.ashdavies.playground.profile.ProfileViewState.LoggedOut
 import kotlinx.coroutines.channels.Channel

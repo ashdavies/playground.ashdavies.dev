@@ -6,7 +6,7 @@ import io.ashdavies.playground.Event
 import io.ashdavies.playground.PlaygroundService
 import io.ashdavies.playground.getting
 import io.ashdavies.playground.invoke
-import io.ashdavies.playground.LocalHttpClient
+import io.ashdavies.http.LocalHttpClient
 import io.ktor.client.HttpClient
 import io.ktor.client.request.parameter
 import io.ktor.http.content.OutgoingContent.NoContent

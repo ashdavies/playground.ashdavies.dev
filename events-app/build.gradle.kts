@@ -17,6 +17,7 @@ kotlin {
     val commonMain by sourceSets.getting {
         dependencies {
             implementation(project(":auth-oauth"))
+            implementation(project(":local-remote"))
             implementation(project(":local-storage"))
             implementation(project(":playground-app"))
 

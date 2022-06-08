@@ -1,10 +1,10 @@
-package io.ashdavies.playground.check
+package io.ashdavies.check
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import com.auth0.jwt.exceptions.JWTVerificationException
 import com.auth0.jwt.interfaces.DecodedJWT
-import io.ashdavies.playground.cloud.HttpException.Companion.InvalidArgumentError
+import io.ashdavies.playground.cloud.HttpException.Companion.InvalidArgument
 
 private const val APP_CHECK_ISSUER = "https://firebaseappcheck.googleapis.com/"
 
@@ -17,7 +17,7 @@ internal class AppCheck(private val client: AppCheckClient, private val config: 
 
         client.exchangeToken(token, appId)
     } catch (exception: JWTVerificationException) {
-        throw InvalidArgumentError(requireNotNull(exception.message), exception)
+        throw InvalidArgument(requireNotNull(exception.message), exception)
     }
 
     override suspend fun verifyToken(appCheckToken: String): DecodedJWT = try {
@@ -27,7 +27,7 @@ internal class AppCheck(private val client: AppCheckClient, private val config: 
 
         verifier.verify(appCheckToken)
     } catch (exception: JWTVerificationException) {
-        throw InvalidArgumentError(requireNotNull(exception.message), exception)
+        throw InvalidArgument(requireNotNull(exception.message), exception)
     }
 }
 

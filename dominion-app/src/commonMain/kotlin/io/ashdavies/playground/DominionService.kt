@@ -2,6 +2,7 @@ package io.ashdavies.playground
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import io.ashdavies.http.LocalHttpClient
 import io.ktor.client.HttpClient
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonObject

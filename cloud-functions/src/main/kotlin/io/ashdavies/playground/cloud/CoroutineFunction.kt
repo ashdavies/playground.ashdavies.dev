@@ -36,14 +36,11 @@ public class HttpException(val code: Int, override val message: String, cause: T
 
     companion object {
 
-        fun InvalidArgumentError(message: String, cause: Throwable? = null) =
-            BadRequest("InvalidArgument: $message", cause)
+        fun InvalidArgument(message: String, cause: Throwable? = null) =
+            HttpException(HTTP_BAD_REQUEST, "InvalidArgument: $message", cause)
 
-        fun BadRequest(message: String, cause: Throwable? = null): HttpException =
-            HttpException(HTTP_BAD_REQUEST, message, cause)
-
-        fun Forbidden(cause: Throwable? = null): HttpException =
-            HttpException(HTTP_FORBIDDEN, "Forbidden", cause)
+        fun Forbidden(message: String, cause: Throwable? = null): HttpException =
+            HttpException(HTTP_FORBIDDEN, "Forbidden: $message", cause)
     }
 }
 

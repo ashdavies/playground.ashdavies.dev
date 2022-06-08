@@ -1,9 +1,9 @@
-package io.ashdavies.playground.check
+package io.ashdavies.check
 
 import com.google.cloud.functions.HttpRequest
 import io.ashdavies.playground.cloud.HttpException
 import io.ashdavies.playground.firebase.FirebaseFunction
-import io.ashdavies.playground.firebase.appCheck
+import io.ashdavies.firebase.appCheck
 
 private const val APP_CHECK_TOKEN_KEY = "APP_CHECK_TOKEN"
 
@@ -14,7 +14,7 @@ internal class AppCheckFunction : FirebaseFunction() {
     override suspend fun service(request: HttpRequest): String {
         val authenticity = AppCheckRequest(request)
         if (!authenticity.isValid()) {
-            throw HttpException.Forbidden()
+            throw HttpException.Forbidden("Bad authenticity")
         }
 
         //val expiresAt = currentTimeMillis() / 1000 + 3600

@@ -8,6 +8,7 @@ include(
     ":events-app",
     ":events-function",
     ":dominion-app",
+    ":local-remote",
     ":local-storage",
     ":notion-console",
     ":playground-app",

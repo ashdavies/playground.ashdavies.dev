@@ -1,9 +1,10 @@
-package io.ashdavies.playground
+package io.ashdavies.http
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.staticCompositionLocalOf
+import io.ashdavies.playground.EventsSerializer
 import io.ktor.client.HttpClient
 import io.ktor.client.HttpClientConfig
 import io.ktor.client.plugins.DefaultRequest
@@ -27,7 +28,7 @@ private const val DEFAULT_FUNCTIONS_HOST = "https://europe-west1-playground-1a13
 private const val DEFAULT_USER_AGENT = "Ktor/2.0.0 (Android; S3B1.220218.006)"
 
 public val LocalHttpClient: ProvidableCompositionLocal<HttpClient> = staticCompositionLocalOf {
-    HttpClient() {
+    HttpClient {
         install(ContentNegotiation) {
             json(Json {
                 serializersModule = SerializersModule {

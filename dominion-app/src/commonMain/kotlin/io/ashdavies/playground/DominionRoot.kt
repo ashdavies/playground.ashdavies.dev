@@ -15,6 +15,7 @@ import com.arkivanov.decompose.router.router
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.parcelable.Parcelable
 import com.arkivanov.essenty.parcelable.Parcelize
+import io.ashdavies.http.ProvideHttpClient
 import io.ashdavies.playground.card.CardScreen
 import io.ashdavies.playground.expansion.ExpansionScreen
 import io.ashdavies.playground.kingdom.KingdomScreen

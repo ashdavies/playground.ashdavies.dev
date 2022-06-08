@@ -1,4 +1,4 @@
-package io.ashdavies.playground.check
+package io.ashdavies.check
 
 import com.google.cloud.functions.HttpRequest
 import io.ashdavies.playground.cloud.firstQueryParameterAsString

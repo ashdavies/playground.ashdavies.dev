@@ -1,6 +1,6 @@
-package io.ashdavies.playground.check
+package io.ashdavies.check
 
-import io.ashdavies.playground.check.AppCheckToken.Type
+import io.ashdavies.check.AppCheckToken.Type
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.headers

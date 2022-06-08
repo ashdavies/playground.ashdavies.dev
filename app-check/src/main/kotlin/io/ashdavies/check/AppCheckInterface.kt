@@ -1,4 +1,4 @@
-package io.ashdavies.playground.check
+package io.ashdavies.check
 
 import com.auth0.jwt.interfaces.DecodedJWT
 
