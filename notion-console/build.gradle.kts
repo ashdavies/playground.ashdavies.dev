@@ -20,9 +20,11 @@ kotlin {
                 implementation(project(":auth-oauth"))
                 implementation(project(":local-storage"))
 
+                implementation(compose.foundation)
                 implementation(compose.runtime)
 
                 implementation(libs.bundles.ktor.client)
+                implementation(libs.jetbrains.compose.runtime)
                 implementation(libs.jetbrains.kotlinx.cli)
                 implementation(libs.jetbrains.kotlinx.coroutines.core)
                 implementation(libs.jetbrains.kotlinx.serialization.json)

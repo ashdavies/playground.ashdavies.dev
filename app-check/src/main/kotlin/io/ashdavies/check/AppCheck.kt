@@ -4,6 +4,7 @@ import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import com.auth0.jwt.exceptions.JWTVerificationException
 import com.auth0.jwt.interfaces.DecodedJWT
+import io.ashdavies.check.AppCheckToken.Type
 import io.ashdavies.playground.cloud.HttpException.Companion.InvalidArgument
 
 private const val APP_CHECK_ISSUER = "https://firebaseappcheck.googleapis.com/"
@@ -15,7 +16,7 @@ internal class AppCheck(private val client: AppCheckClient, private val config: 
             .withIssuer(config.issuer)
             .sign(config.algorithm)
 
-        client.exchangeToken(token, appId)
+        client.exchangeToken(token, appId, config.type)
     } catch (exception: JWTVerificationException) {
         throw InvalidArgument(requireNotNull(exception.message), exception)
     }
@@ -31,4 +32,8 @@ internal class AppCheck(private val client: AppCheckClient, private val config: 
     }
 }
 
-internal data class AppCheckConfig(val algorithm: Algorithm, val issuer: String)
+internal data class AppCheckConfig(
+    val algorithm: Algorithm = Algorithm.none(),
+    val issuer: String = APP_CHECK_ISSUER,
+    val type: Type = Type.Debug,
+)

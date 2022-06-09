@@ -6,6 +6,7 @@ arkivanov-decompose = "0.6.0"
 cash-molecule = "0.2.0"
 google-accompanist = "0.23.1"
 google-android = "7.0.4"
+jetbrains-compose = "1.2.0-alpha01-dev667" # Unstable until 1.2.0-alpha01-dev686 (ClassNotFoundException: CallUtilKt)
 jetbrains-kotlin = "1.6.10"
 kotlinx-coroutines = "1.6.1"
 kotlinx-serialization = "1.3.2"
@@ -54,8 +55,8 @@ google-firebase-common-ktx = "com.google.firebase:firebase-common-ktx:20.1.0"
 
 jakeWharton-mosaic = "com.jakewharton.mosaic:mosaic-runtime:0.1.0"
 
-# Unstable until 1.2.0-alpha01-dev686 (ClassNotFoundException: CallUtilKt)
-jetbrains-compose-gradle-plugin = "org.jetbrains.compose:compose-gradle-plugin:1.2.0-alpha01-dev667"
+jetbrains-compose-gradle-plugin = { module = "org.jetbrains.compose:compose-gradle-plugin", version.ref = "jetbrains-compose" }
+jetbrains-compose-runtime = { module = "org.jetbrains.compose.runtime:runtime", version.ref = "jetbrains-compose" }
 jetbrains-kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "jetbrains-kotlin" }
 jetbrains-kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "jetbrains-kotlin" }
 jetbrains-kotlin-serialization-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-serialization", version.ref = "jetbrains-kotlin" }

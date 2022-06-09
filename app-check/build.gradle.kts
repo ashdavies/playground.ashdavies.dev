@@ -1,10 +1,10 @@
+import org.jetbrains.compose.compose
+
 plugins {
     `cloud-function`
 }
 
 dependencies {
-    implementation(project(":local-remote"))
-
     implementation(libs.auth.java.jwt)
     implementation(libs.bundles.ktor.client)
 }
