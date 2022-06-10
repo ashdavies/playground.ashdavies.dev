@@ -1,9 +1,10 @@
 package io.ashdavies.playground.aggregator
 
-import dispatch.core.launchIO
 import io.ashdavies.playground.google.DocumentProvider
 import io.ashdavies.playground.google.await
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 
 internal fun interface CollectionWriter<T : Any> {
     suspend operator fun invoke(oldValue: Collection<T>, newValue: Collection<T>)
@@ -18,7 +19,9 @@ internal suspend fun <T : Any> CollectionWriter(provider: DocumentProvider, iden
 
         coroutineScope {
             for (operation in queue) {
-                launchIO { operation(provider) }.join()
+                launch(Dispatchers.IO) {
+                    operation(provider)
+                }.join()
             }
         }
     }

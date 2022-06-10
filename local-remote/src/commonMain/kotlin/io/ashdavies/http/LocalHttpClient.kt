@@ -12,6 +12,7 @@ import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.HttpTimeout.Plugin.INFINITE_TIMEOUT_MS
 import io.ktor.client.plugins.cache.HttpCache
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.request.header
 import io.ktor.http.HttpHeaders
@@ -52,7 +53,10 @@ public val LocalHttpClient: ProvidableCompositionLocal<HttpClient> = staticCompo
 
         install(HttpCache)
         install(HttpTimeout) { connectTimeoutMillis = INFINITE_TIMEOUT_MS }
-        install(Logging)
+
+        install(Logging) {
+            level = LogLevel.ALL
+        }
     }
 }
 

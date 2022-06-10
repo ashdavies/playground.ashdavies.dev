@@ -1,35 +1,26 @@
 package io.ashdavies.playground.aggregator
 
-import com.google.cloud.functions.HttpRequest
+import com.google.cloud.functions.HttpFunction
 import io.ashdavies.playground.Event
+import io.ashdavies.playground.cloud.HttpApplication
+import io.ashdavies.playground.cloud.HttpEffect
+import io.ashdavies.playground.cloud.LocalHttpRequest
+import io.ashdavies.playground.cloud.rememberDocumentProvider
 import io.ashdavies.playground.events.EventsQuery
 import io.ashdavies.playground.events.EventsReader
-import io.ashdavies.playground.firebase.DocumentProvider
-import io.ashdavies.playground.firebase.FirebaseFunction
 
 private const val COLLECTION_PATH = "events"
 private const val OK = "OK"
 
-internal class AggregatorFunction : FirebaseFunction() {
-    override suspend fun service(request: HttpRequest): String {
-        val documentProvider = DocumentProvider(COLLECTION_PATH)
-        val gitHubService = GitHubService()
+internal class AggregatorFunction : HttpFunction by HttpApplication({
+    val provider = rememberDocumentProvider(COLLECTION_PATH)
+    val request = LocalHttpRequest.current
+    val service = GitHubService()
 
-        val eventsReader = EventsReader(
-            request = EventsQuery(request),
-            provider = documentProvider,
-        )
-
-        val eventsWriter = CollectionWriter(
-            provider = documentProvider,
-            identifier = Event::id,
-        )
-
-        eventsWriter(
-            newValue = gitHubService.getEvents(),
-            oldValue = eventsReader(),
-        )
-
-        return OK
+    HttpEffect {
+        val reader = EventsReader(provider, EventsQuery(request))
+        val writer = CollectionWriter(provider, Event::id)
+        writer(reader(), service.getEvents())
+        OK
     }
-}
+})

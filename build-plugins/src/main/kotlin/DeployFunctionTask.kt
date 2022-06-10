@@ -21,8 +21,8 @@ public abstract class DeployFunctionTask : Exec() {
         }
     }
 
-    override fun getCommandLine(): MutableList<String> {
-        val commandLine = mutableListOf(
+    override fun exec() {
+        commandLine = mutableListOf(
             "gcloud", "functions", "deploy", function,
             "--entry-point=$entryPoint",
             "--project=$projectId",
@@ -36,6 +36,6 @@ public abstract class DeployFunctionTask : Exec() {
             commandLine.add("--allow-unauthenticated")
         }
 
-        return commandLine
+        super.exec()
     }
 }

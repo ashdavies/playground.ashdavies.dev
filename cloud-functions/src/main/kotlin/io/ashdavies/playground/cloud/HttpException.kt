@@ -9,5 +9,8 @@ public class HttpException(val code: Int, override val message: String, cause: T
 
         fun Forbidden(message: String, cause: Throwable? = null): HttpException =
             HttpException(HttpURLConnection.HTTP_FORBIDDEN, "Forbidden: $message", cause)
+
+        fun PermissionDenied(message: String, cause: Throwable? = null): HttpException =
+            HttpException(HttpURLConnection.HTTP_FORBIDDEN, "PermissionDenied: $message", cause)
     }
 }

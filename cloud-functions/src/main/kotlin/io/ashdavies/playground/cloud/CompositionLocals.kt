@@ -11,6 +11,9 @@ import com.google.firebase.FirebaseApp
 import com.google.firebase.cloud.FirestoreClient
 import io.ashdavies.playground.google.DocumentProvider
 
+public val LocalApplicationScope: ProvidableCompositionLocal<ApplicationScope> =
+    compositionLocalOf { noLocalProvidedFor("LocalApplicationScope") }
+
 public val LocalFirebaseApp: ProvidableCompositionLocal<FirebaseApp> =
     compositionLocalOf { FirebaseApp.initializeApp() }
 

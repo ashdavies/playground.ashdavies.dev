@@ -1,24 +1,23 @@
 package io.ashdavies.playground.events
 
-import com.google.cloud.functions.HttpRequest
+import com.google.cloud.functions.HttpFunction
 import io.ashdavies.playground.EventsSerializer
-import io.ashdavies.playground.firebase.DocumentProvider
-import io.ashdavies.playground.firebase.FirebaseFunction
+import io.ashdavies.playground.cloud.HttpApplication
+import io.ashdavies.playground.cloud.HttpEffect
+import io.ashdavies.playground.cloud.LocalHttpRequest
+import io.ashdavies.playground.cloud.rememberDocumentProvider
+import io.ashdavies.playground.google.DocumentProvider
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.json.Json
 
 private const val COLLECTION_PATH = "events"
 
-internal class EventsFunction : FirebaseFunction() {
-    override suspend fun service(request: HttpRequest): String {
-        val eventsReader = EventsReader(
-            provider = DocumentProvider(COLLECTION_PATH),
-            request = EventsQuery(request),
-        )
+internal class EventsFunction : HttpFunction by HttpApplication({
+    val provider: DocumentProvider = rememberDocumentProvider(COLLECTION_PATH)
+    val query = EventsQuery(LocalHttpRequest.current)
+    val reader = EventsReader(provider, query)
 
-        return Json.encodeToString(
-            serializer = ListSerializer(EventsSerializer),
-            value = eventsReader()
-        )
+    HttpEffect {
+        Json.encodeToString(ListSerializer(EventsSerializer), reader())
     }
-}
+})
