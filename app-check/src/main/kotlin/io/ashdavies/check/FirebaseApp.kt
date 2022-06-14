@@ -5,29 +5,53 @@ import androidx.compose.runtime.remember
 import com.auth0.jwt.algorithms.Algorithm
 import com.google.auth.oauth2.GoogleCredentials
 import com.google.auth.oauth2.ServiceAccountCredentials
+import com.google.firebase.FirebaseApp
+import com.google.firebase.FirebaseOptions
 import io.ashdavies.http.LocalHttpClient
+import io.ashdavies.playground.cloud.LocalFirebaseApp
 import io.ktor.client.HttpClient
 import java.security.interfaces.RSAPrivateKey
 
 @Composable
-internal fun rememberAppCheck(credentials: ServiceAccountCredentials = rememberServiceAccountCredentials()): AppCheck {
-    val client: AppCheckClient = rememberAppCheckClient(credentials.projectId)
-    val config: AppCheckConfig = rememberAppCheckConfig()
-    return remember(credentials) { AppCheck(client, config) }
+internal fun rememberAppCheck(
+    credentials: ServiceAccountCredentials = rememberGoogleCredentials(),
+    client: AppCheckClient = rememberAppCheckClient(credentials),
+    algorithm: Algorithm = rememberAlgorithm(credentials),
+): AppCheckInterface = remember(credentials) {
+    AppCheck(client, algorithm)
 }
 
 @Composable
-internal fun rememberAppCheckConfig(algorithm: Algorithm = rememberAlgorithm()): AppCheckConfig =
-    remember(algorithm) { println(algorithm); AppCheckConfig(algorithm) }
+internal fun rememberAlgorithm(
+    credentials: ServiceAccountCredentials = rememberGoogleCredentials()
+): Algorithm = remember(credentials) {
+    Algorithm.RSA256(null, (credentials.privateKey as RSAPrivateKey))
+}
 
 @Composable
-internal fun rememberAlgorithm(credentials: ServiceAccountCredentials = rememberServiceAccountCredentials()): Algorithm =
-    remember(credentials) { Algorithm.RSA256(null, credentials.privateKey as RSAPrivateKey) }
+internal fun rememberAppCheckClient(
+    credentials: ServiceAccountCredentials = rememberGoogleCredentials(),
+    algorithm: Algorithm = rememberAlgorithm(credentials),
+    httpClient: HttpClient = LocalHttpClient.current
+): AppCheckClient = remember(credentials) {
+    AppCheckClient(
+        httpClient = httpClient,
+        config = AppCheckClient.Config(
+            clientEmail = credentials.clientEmail,
+            projectId = credentials.projectId,
+            algorithm = algorithm,
+        ),
+    )
+}
 
 @Composable
-internal fun rememberAppCheckClient(projectNumber: String, client: HttpClient = LocalHttpClient.current): AppCheckClient =
-    remember(projectNumber) { AppCheckClient(client, projectNumber) }
+internal inline fun <reified T : GoogleCredentials> rememberGoogleCredentials(
+    firebaseApp: FirebaseApp = LocalFirebaseApp.current
+): T = remember(firebaseApp.name) {
+    firebaseApp.options<FirebaseOptions, T>("getCredentials")
+}
 
-@Composable
-internal fun rememberServiceAccountCredentials(): ServiceAccountCredentials =
-    remember { GoogleCredentials.getApplicationDefault() as ServiceAccountCredentials }
+private inline operator fun <reified T : Any, reified R : Any> T.invoke(name: String): R =
+    T::class.java.getDeclaredMethod(name)
+        .also { it.isAccessible = true }
+        .invoke(this) as R

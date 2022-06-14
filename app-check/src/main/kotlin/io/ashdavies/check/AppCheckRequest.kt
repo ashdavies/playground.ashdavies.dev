@@ -18,5 +18,5 @@ private fun AppCheckRequest(request: HttpRequest): AppCheckRequest = object : Ap
 
 @Composable
 internal fun rememberAppCheckRequest(request: HttpRequest = LocalHttpRequest.current): AppCheckRequest {
-    return remember(request) { println(request.uri); AppCheckRequest(request) }
+    return remember(request) { AppCheckRequest(request) }
 }
