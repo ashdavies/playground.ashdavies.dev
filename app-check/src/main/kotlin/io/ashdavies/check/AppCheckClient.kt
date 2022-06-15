@@ -1,13 +1,16 @@
 package io.ashdavies.check
 
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import com.auth0.jwt.algorithms.Algorithm
+import com.google.auth.oauth2.ServiceAccountCredentials
 import io.ashdavies.check.AppCheckConstants.APP_CHECK_V1_API
 import io.ashdavies.check.AppCheckConstants.FIREBASE_CLAIMS_SCOPES
 import io.ashdavies.check.AppCheckConstants.GOOGLE_TOKEN_ENDPOINT
+import io.ashdavies.http.LocalHttpClient
 import io.ashdavies.playground.cloud.HttpException
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
-import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.request.bearerAuth
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
@@ -15,20 +18,17 @@ import io.ktor.client.statement.HttpResponse
 import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
-import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 private val HttpStatusCode.isError: Boolean
     get() = value in (400 until 600)
 
-internal class AppCheckClient(private val config: Config) {
-
-    private val httpClient = HttpClient { install(ContentNegotiation) { json() } }
+internal class AppCheckClient(private val client: HttpClient, private val config: Config) {
 
     suspend fun exchangeToken(token: String, request: AppCheckRequest): AppCheckToken {
         val urlString = "$APP_CHECK_V1_API/${config.projectId}/apps/${request.appId}:exchangeCustomToken"
-        val response: HttpResponse = httpClient.post(urlString) {
+        val response: HttpResponse = client.post(urlString) {
             contentType(ContentType.Application.Json)
             setBody(mapOf("customToken" to token))
             bearerAuth(getBearerToken(request))
@@ -54,9 +54,10 @@ internal class AppCheckClient(private val config: Config) {
             appId = request.appId
         }
 
-        val response: HttpResponse = httpClient.post(GOOGLE_TOKEN_ENDPOINT) {
-            setBody("grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Ajwt-bearer&assertion=$jwt")
+        val response: HttpResponse = client.post(GOOGLE_TOKEN_ENDPOINT) {
             contentType(ContentType.Application.FormUrlEncoded)
+            grantType(JwtBearer)
+            assertion(jwt)
         }
 
         return response
@@ -85,4 +86,29 @@ internal class AppCheckClient(private val config: Config) {
     )
 }
 
-private suspend fun HttpException(response: HttpResponse) = HttpException(response.status.value, response.body())
+private suspend fun HttpException(response: HttpResponse): HttpException {
+    return HttpException(response.status.value, response.body())
+}
+
+@Composable
+internal fun rememberAppCheckClient(
+    config: AppCheckClient.Config = rememberAppCheckClientConfig(),
+    client: HttpClient = LocalHttpClient.current
+): AppCheckClient = remember(config) {
+    AppCheckClient(
+        config = config,
+        client = client,
+    )
+}
+
+@Composable
+private fun rememberAppCheckClientConfig(
+    credentials: ServiceAccountCredentials = rememberGoogleCredentials(),
+    algorithm: Algorithm = rememberAlgorithm(credentials),
+): AppCheckClient.Config = remember(credentials) {
+    AppCheckClient.Config(
+        clientEmail = credentials.clientEmail,
+        projectId = credentials.projectId,
+        algorithm = algorithm,
+    )
+}
