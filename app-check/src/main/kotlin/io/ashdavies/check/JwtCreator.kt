@@ -6,7 +6,7 @@ import com.auth0.jwt.JWTVerifier
 import com.auth0.jwt.algorithms.Algorithm
 import com.auth0.jwt.interfaces.DecodedJWT
 import io.ashdavies.check.AppCheckConstants.APP_CHECK_AUDIENCE
-import io.ashdavies.check.AppCheckConstants.APP_CHECK_ISSUER
+import io.ashdavies.check.AppCheckConstants.APP_CHECK_ENDPOINT
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import kotlinx.datetime.toJavaInstant
@@ -47,7 +47,7 @@ internal class JwtOptions(
     var audience: String = APP_CHECK_AUDIENCE,
     var issuedAt: Instant = Clock.System.now(),
     var expiresAt: Instant = issuedAt + 1.hours,
-    var issuer: String = APP_CHECK_ISSUER,
+    var issuer: String = APP_CHECK_ENDPOINT,
     var scope: List<String> = emptyList(),
 ) {
     lateinit var appId: String

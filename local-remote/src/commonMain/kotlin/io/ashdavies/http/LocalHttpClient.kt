@@ -18,6 +18,7 @@ import io.ktor.client.request.header
 import io.ktor.http.HttpHeaders
 import io.ktor.http.URLProtocol
 import io.ktor.http.takeFrom
+import io.ktor.http.userAgent
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.ListSerializer
@@ -32,12 +33,6 @@ public val LocalHttpClient: ProvidableCompositionLocal<HttpClient> = staticCompo
     HttpClient {
         install(ContentNegotiation) {
             json(Json {
-                serializersModule = SerializersModule {
-                    // contextual(Envelope.serializer(RandomUser.serializer()))
-                    contextual(ListSerializer(EventsSerializer))
-                    contextual(EventsSerializer)
-                }
-
                 ignoreUnknownKeys = true
                 encodeDefaults = true
             })
@@ -45,14 +40,16 @@ public val LocalHttpClient: ProvidableCompositionLocal<HttpClient> = staticCompo
 
         install(DefaultRequest) {
             url {
-                header(HttpHeaders.UserAgent, DEFAULT_USER_AGENT)
                 takeFrom(DEFAULT_FUNCTIONS_HOST)
-                protocol = URLProtocol.HTTPS
+                userAgent(DEFAULT_USER_AGENT)
             }
         }
 
-        install(HttpCache)
-        install(HttpTimeout) { connectTimeoutMillis = INFINITE_TIMEOUT_MS }
+        // install(HttpCache)
+
+        install(HttpTimeout) {
+            connectTimeoutMillis = INFINITE_TIMEOUT_MS
+        }
 
         install(Logging) {
             level = LogLevel.ALL
@@ -76,6 +73,3 @@ public fun ProvideHttpClient(
         content = content
     )
 }
-
-@Serializable
-public data class Envelope<T>(val results: List<T>)

@@ -2,7 +2,6 @@ package io.ashdavies.playground.profile
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import io.ashdavies.http.Envelope
 import io.ashdavies.http.LocalHttpClient
 import io.ashdavies.playground.Oauth
 import io.ashdavies.playground.PlaygroundService
@@ -41,3 +40,6 @@ internal sealed class SignInWithIdp {
         val returnIdpCredential: Boolean = false,
     ) : SignInWithIdp()
 }
+
+@Serializable
+internal data class Envelope<T>(val results: List<T>)

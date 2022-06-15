@@ -4,6 +4,8 @@ plugins {
 
 dependencies {
     implementation(libs.auth.java.jwt)
+    implementation(libs.auth.jwks.rsa)
+
     implementation(libs.bundles.ktor.client)
 }
 
