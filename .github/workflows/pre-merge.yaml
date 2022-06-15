@@ -1,7 +1,5 @@
 name: Pre Merge Checks
 
-
-
 on:
   push:
     branches:
@@ -43,10 +41,10 @@ jobs:
 #      - run: openssl rand -base64 32
 
 #      - name: Encrypt Google Services config file
-#        run: openssl aes-256-cbc -md sha256 -salt -in android/google-services.json -out android/google-services.aes -k ${{ secrets.GOOGLE_SERVICES_PASSPHRASE }}
+#        run: find . -type f -name "google-services.json" -exec sh -c 'openssl aes-256-cbc -md sha256 -salt -in "$0" -out "${0%.json*}.aes" -k "${GOOGLE_SERVICES_PASSPHRASE}"' {} \;
 
       - name: Decrypt Google Services config file
-        run: openssl aes-256-cbc -md sha256 -d -in android/google-services.aes -out android/google-services.json -k ${{ secrets.GOOGLE_SERVICES_PASSPHRASE }}
+        run: find . -type f -name "google-services.aes" -exec sh -c 'openssl aes-256-cbc -md sha256 -d -in "$0" -out "${0%.aes*}.json" -k "${GOOGLE_SERVICES_PASSPHRASE}"' {} \;
 
       - name: Run Gradle tasks
         run: ./gradlew build check
