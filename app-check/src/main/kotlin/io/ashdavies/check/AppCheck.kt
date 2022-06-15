@@ -8,7 +8,7 @@ import com.auth0.jwt.interfaces.DecodedJWT
 import io.ashdavies.playground.cloud.HttpException.Companion.InvalidArgument
 import kotlinx.serialization.Serializable
 
-internal class AppCheck(client: AppCheckClient, algorithm: Algorithm) :
+public class AppCheck internal constructor(client: AppCheckClient, algorithm: Algorithm) :
     AppCheckGenerator by AppCheckGenerator(client, algorithm),
     AppCheckVerifier by AppCheckVerifier(algorithm)
 
@@ -24,7 +24,12 @@ internal fun interface AppCheckVerifier {
 }
 
 private fun AppCheckGenerator(client: AppCheckClient, algorithm: Algorithm) = AppCheckGenerator { request, config ->
-    runCatching<AppCheckToken, JWTVerificationException>({ client.exchangeToken(Jwt.create(algorithm, config), request)}) {
+    runCatching<AppCheckToken, JWTVerificationException>({
+        client.exchangeToken(
+            Jwt.create(algorithm, config),
+            request
+        )
+    }) {
         throw InvalidArgument(requireNotNull(it.message), it)
     }
 }
@@ -44,6 +49,11 @@ private inline infix fun <R, reified T : Throwable> Result<R>.catch(transform: (
 }
 
 @Composable
-internal fun rememberAppCheck(client: AppCheckClient = rememberAppCheckClient(), algorithm: Algorithm = rememberAlgorithm()): AppCheck {
+public fun rememberAppCheck(algorithm: Algorithm = rememberAlgorithm()): AppCheck {
+    return rememberAppCheck(rememberAppCheckClient(), algorithm)
+}
+
+@Composable
+internal fun rememberAppCheck(client: AppCheckClient, algorithm: Algorithm = rememberAlgorithm()): AppCheck {
     return remember(client, algorithm) { AppCheck(client, algorithm) }
 }

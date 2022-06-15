@@ -13,7 +13,7 @@ val deployAppCheckFunction by tasks.registering(DeployFunctionTask::class) {
     entryPoint = "io.ashdavies.check.AppCheckFunction"
     description = "Deploy app check function to Google Cloud"
     allowUnauthenticated = true
-    function = "app-check"
+    function = "createToken"
 }
 
 val runAppCheckFunction by tasks.registering(RunFunctionTask::class) {

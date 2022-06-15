@@ -6,6 +6,7 @@ plugins {
 }
 
 dependencies {
+    implementation(project(":app-check"))
     implementation(project(":local-storage"))
 
     implementation(compose.foundation)

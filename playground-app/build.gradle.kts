@@ -7,6 +7,7 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
+                implementation(project(":app-check"))
                 implementation(project(":local-remote"))
                 implementation(project(":local-storage"))
 
@@ -19,6 +20,8 @@ kotlin {
             dependencies {
                 implementation(libs.androidx.compose.foundation)
                 implementation(libs.bundles.androidx.activity)
+                implementation(libs.bundles.google.firebase)
+                implementation(libs.jetbrains.kotlinx.coroutines.play)
 
                 with(libs.google.accompanist) {
                     implementation(placeholderMaterial)
@@ -26,7 +29,7 @@ kotlin {
                     implementation(systemuicontroller)
                 }
 
-                implementation(libs.bundles.google.firebase)
+                implementation(libs.google.firebase.appcheck)
             }
         }
     }

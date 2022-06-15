@@ -52,6 +52,7 @@ google-cloud-functionsFrameworkApi = "com.google.cloud.functions:functions-frame
 google-cloud-javaFunctionInvoker = "com.google.cloud.functions.invoker:java-function-invoker:1.1.0"
 
 google-firebase-admin = "com.google.firebase:firebase-admin:8.1.0"
+google-firebase-appcheck = "com.google.firebase:firebase-appcheck:16.0.0"
 google-firebase-analytics = "com.google.firebase:firebase-analytics:20.1.2"
 google-firebase-common-ktx = "com.google.firebase:firebase-common-ktx:20.1.0"
 
@@ -68,6 +69,7 @@ jetbrains-kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit
 jetbrains-kotlinx-cli = "org.jetbrains.kotlinx:kotlinx-cli:0.3.4"
 jetbrains-kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinx-coroutines" }
 jetbrains-kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
+jetbrains-kotlinx-coroutines-play = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services", version.ref = "kotlinx-coroutines" }
 jetbrains-kotlinx-coroutines-swing = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-swing", version.ref = "kotlinx-coroutines" }
 jetbrains-kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinx-coroutines" }
 jetbrains-kotlinx-datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.3.2"

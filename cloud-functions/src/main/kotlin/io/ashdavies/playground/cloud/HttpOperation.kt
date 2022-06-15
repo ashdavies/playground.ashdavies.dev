@@ -3,6 +3,7 @@ package io.ashdavies.playground.cloud
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import com.google.cloud.functions.HttpResponse
+import io.ashdavies.check.AppCheck
 import kotlinx.coroutines.CoroutineScope
 import java.net.HttpURLConnection
 
@@ -30,6 +31,11 @@ public fun HttpEffect(key: Any? = Unit, block: suspend CoroutineScope.() -> Stri
             scope.exitApplication()
         }
     }
+}
+
+@Composable
+public fun VerifiedHttpEffect(key: Any = Unit, block: suspend CoroutineScope.() -> String) {
+    AppCheck(verify = true) { HttpEffect(key, block) }
 }
 
 private fun HttpResponse.write(content: String) = writer.write(content)
