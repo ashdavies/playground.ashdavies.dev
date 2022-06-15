@@ -15,14 +15,30 @@ import com.arkivanov.decompose.router.router
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.parcelable.Parcelable
 import com.arkivanov.essenty.parcelable.Parcelize
+import io.ashdavies.http.ProvideHttpClient
 import io.ashdavies.playground.card.CardScreen
 import io.ashdavies.playground.expansion.ExpansionScreen
 import io.ashdavies.playground.kingdom.KingdomScreen
+import io.ktor.client.plugins.DefaultRequest
+import io.ktor.http.takeFrom
+
+/**
+ * Dominion Strategy uses legacy wiki API without SSL with an API surface that is difficult to navigate.
+ * Move necessary requests to Firebase Firestore and Cloud Functions.
+ */
+@Deprecated("dominionstrategy.com is deprecated")
+private const val DOMINION_STRATEGY_HOST = "http://wiki.dominionstrategy.com/"
 
 @Composable
 @OptIn(ExperimentalDecomposeApi::class)
 internal fun DominionRoot(componentContext: ComponentContext, modifier: Modifier = Modifier) {
-    DominionRoot(rememberDominionRoot(componentContext), modifier)
+    ProvideHttpClient(configure = {
+        install(DefaultRequest) {
+            url { takeFrom(DOMINION_STRATEGY_HOST) }
+        }
+    }) {
+        DominionRoot(rememberDominionRoot(componentContext), modifier)
+    }
 }
 
 @Composable

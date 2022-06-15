@@ -4,6 +4,7 @@ import org.gradle.api.Project
 import org.jetbrains.compose.ExperimentalComposeLibrary
 import org.jetbrains.compose.compose
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
+import org.jetbrains.kotlin.gradle.dsl.KotlinProjectExtension
 import org.jetbrains.kotlin.gradle.plugin.KotlinDependencyHandler
 
 internal object Playground {
@@ -15,18 +16,6 @@ internal object Playground {
         "-Xallow-result-return-type",
         "-Xmulti-platform"
     )
-
-    object Dependencies {
-
-        @OptIn(ExperimentalComposeLibrary::class)
-        fun KotlinDependencyHandler.compose() {
-            implementation(compose.foundation)
-            implementation(compose.material3)
-            implementation(compose.runtime)
-            implementation(compose.uiTooling)
-            implementation(compose.ui)
-        }
-    }
 }
 
 @Suppress("UnstableApiUsage")
@@ -50,18 +39,24 @@ internal fun CommonExtension<*, *, *, *>.configureCommon() {
     }
 }
 
-@Suppress("UNUSED_VARIABLE")
-internal fun KotlinMultiplatformExtension.configureKotlinMultiplatform(target: Project) = target.run {
+internal fun KotlinProjectExtension.configureKotlinProject(target: Project) = target.run {
+    sourceSets.all { languageSettings.optIn("kotlin.RequiresOptIn") }
     explicitApiWarning()
+}
+
+@Suppress("UNUSED_VARIABLE")
+@OptIn(ExperimentalComposeLibrary::class)
+internal fun KotlinMultiplatformExtension.configureKotlinMultiplatform(target: Project) = target.run {
     android()
     jvm()
 
-    sourceSets.all {
-        languageSettings.optIn("kotlin.RequiresOptIn")
-    }
-
     commonMain {
-        with(Playground.Dependencies) { compose() }
+        implementation(compose.foundation)
+        implementation(compose.material3)
+        implementation(compose.runtime)
+        implementation(compose.uiTooling)
+        implementation(compose.ui)
+
         implementation(libs.bundles.arkivanov.decompose)
         implementation(libs.bundles.jetbrains.kotlinx)
         implementation(libs.oolong)

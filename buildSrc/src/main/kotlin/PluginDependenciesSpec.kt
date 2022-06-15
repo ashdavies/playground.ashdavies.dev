@@ -5,6 +5,12 @@ import org.gradle.plugin.use.PluginDependenciesSpec
 import org.gradle.plugin.use.PluginDependency
 import org.gradle.plugin.use.PluginDependencySpec
 
+val PluginDependenciesSpec.`apollo-graphql`: PluginDependencySpec
+    get() = id("apollo.graphql")
+
+val PluginDependenciesSpec.`cloud-function`: PluginDependencySpec
+    get() = id("cloud.function")
+
 val PluginDependenciesSpec.`multiplatform-application`: PluginDependencySpec
     get() = multiplatform("application")
 

@@ -6,6 +6,7 @@ arkivanov-decompose = "0.6.0"
 cash-molecule = "0.2.0"
 google-accompanist = "0.23.1"
 google-android = "7.0.4"
+jetbrains-compose = "1.2.0-alpha01-dev667" # Unstable until 1.2.0-alpha01-dev686 (ClassNotFoundException: CallUtilKt)
 jetbrains-kotlin = "1.6.10"
 kotlinx-coroutines = "1.6.1"
 kotlinx-serialization = "1.3.2"
@@ -35,6 +36,9 @@ apollographql-apollo-runtime = { module = "com.apollographql.apollo:apollo-runti
 arkivanov-decompose = { module = "com.arkivanov.decompose:decompose", version.ref = "arkivanov-decompose" }
 arkivanov-decompose-extensions = { module = "com.arkivanov.decompose:extensions-compose-jetbrains", version.ref = "arkivanov-decompose" }
 
+auth-java-jwt = "com.auth0:java-jwt:3.19.0"
+auth-jwks-rsa = "com.auth0:jwks-rsa:0.21.1"
+
 coroutine-dispatcher-core = "com.rickbusarow.dispatch:dispatch-core:1.0.0-beta10"
 fusesource-jansi = "org.fusesource.jansi:jansi:2.0.1"
 
@@ -53,8 +57,8 @@ google-firebase-common-ktx = "com.google.firebase:firebase-common-ktx:20.1.0"
 
 jakeWharton-mosaic = "com.jakewharton.mosaic:mosaic-runtime:0.1.0"
 
-# Unstable until 1.2.0-alpha01-dev686 (ClassNotFoundException: CallUtilKt)
-jetbrains-compose-gradle-plugin = "org.jetbrains.compose:compose-gradle-plugin:1.2.0-alpha01-dev667"
+jetbrains-compose-gradle-plugin = { module = "org.jetbrains.compose:compose-gradle-plugin", version.ref = "jetbrains-compose" }
+jetbrains-compose-runtime = { module = "org.jetbrains.compose.runtime:runtime", version.ref = "jetbrains-compose" }
 jetbrains-kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "jetbrains-kotlin" }
 jetbrains-kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "jetbrains-kotlin" }
 jetbrains-kotlin-serialization-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-serialization", version.ref = "jetbrains-kotlin" }
@@ -70,6 +74,8 @@ jetbrains-kotlinx-datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.3.2"
 jetbrains-kotlinx-serialization-core = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version.ref = "kotlinx-serialization" }
 jetbrains-kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
 jetbrains-kotlinx-serialization-properties = { module = "org.jetbrains.kotlinx:kotlinx-serialization-properties", version.ref = "kotlinx-serialization" }
+
+johnRengelman-shadow = "gradle.plugin.com.github.johnrengelman:shadow:7.1.2"
 jraf-klibnotion = "org.jraf:klibnotion:1.11.0"
 
 ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
@@ -113,7 +119,6 @@ ktor-server = ["ktor-serialization-json", "ktor-serialization-kotlinx", "ktor-se
 [plugins]
 android-application = { id = "com.android.application", version.ref = "google.android" }
 android-library = { id = "com.android.library", version.ref = "google.android" }
-apollo = { id = "com.apollographql.apollo", version.ref = "apollo-graphql" }
 cash-molecule = { id = "app.cash.molecule", version.ref = "cash-molecule" }
 gradle-doctor = "com.osacky.doctor:0.8.0"
 gradle-ktlint = "org.jlleitschuh.gradle.ktlint:10.2.1"
@@ -122,7 +127,6 @@ jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = 
 jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrains-kotlin" }
 jetbrains-kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "jetbrains-kotlin" }
 jetbrains-kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "jetbrains-kotlin" }
-johnRengelman-shadow = "com.github.johnrengelman.shadow:7.1.2"
 sqldelight = { id = "com.squareup.sqldelight", version.ref = "squareup-sqldelight" }
 version-catalog-update = "nl.littlerobots.version-catalog-update:0.3.1"
 versions = "com.github.ben-manes.versions:0.42.0"

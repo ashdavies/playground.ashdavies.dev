@@ -1,7 +1,5 @@
 name: Pre Merge Checks
 
-
-
 on:
   push:
     branches:
@@ -19,15 +17,15 @@ jobs:
   gradle:
     runs-on: ubuntu-latest
     steps:
-      - name: set up JDK
+      - name: Set up JDK
         uses: actions/setup-java@v1
         with:
           java-version: 11
 
-      - name: Checkout Repo
+      - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Cache Gradle Caches
+      - name: Cache Gradle caches
         uses: actions/cache@v1
         with:
           path: ~/.gradle/caches/
@@ -43,16 +41,25 @@ jobs:
 #      - run: openssl rand -base64 32
 
 #      - name: Encrypt Google Services config file
-#        run: openssl aes-256-cbc -md sha256 -salt -in android/google-services.json -out android/google-services.aes -k ${{ secrets.GOOGLE_SERVICES_PASSPHRASE }}
+#        run: find . -type f -name "google-services.json" -exec sh -c 'openssl aes-256-cbc -md sha256 -salt -in "$0" -out "${0%.json*}.aes" -k "${GOOGLE_SERVICES_PASSPHRASE}"' {} \;
 
       - name: Decrypt Google Services config file
-        run: openssl aes-256-cbc -md sha256 -d -in android/google-services.aes -out android/google-services.json -k ${{ secrets.GOOGLE_SERVICES_PASSPHRASE }}
+        run: find . -type f -name "google-services.aes" -exec sh -c 'openssl aes-256-cbc -md sha256 -d -in "$0" -out "${0%.aes*}.json" -k "${GOOGLE_SERVICES_PASSPHRASE}"' {} \;
 
       - name: Run Gradle tasks
         run: ./gradlew build check
 
-      - name: TestForest Dashboard
+      - name: Test Summary
         uses: test-summary/action@v1.0
+        with:
+          paths: "**/build/test-results/test/TEST-*.xml"
+
+      - name: Upload Test Summary
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-summary
+          path: test-summary.md
+        if: always()
 
       - name: Display dependency updates
         run: ./gradlew dependencyUpdates
