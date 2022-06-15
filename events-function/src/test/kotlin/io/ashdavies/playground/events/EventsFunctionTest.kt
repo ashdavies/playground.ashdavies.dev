@@ -9,7 +9,7 @@ internal class EventsFunctionTest {
     private val response = FakeHttpResponse()
     private val function = EventsFunction()
 
-    @Test(expected = IllegalArgumentException::class)
+    @Test(expected = IllegalStateException::class)
     fun test() = runBlocking<Unit> {
         function.service(request, response)
     }
