@@ -17,15 +17,15 @@ jobs:
   gradle:
     runs-on: ubuntu-latest
     steps:
-      - name: set up JDK
+      - name: Set up JDK
         uses: actions/setup-java@v1
         with:
           java-version: 11
 
-      - name: Checkout Repo
+      - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Cache Gradle Caches
+      - name: Cache Gradle caches
         uses: actions/cache@v1
         with:
           path: ~/.gradle/caches/
@@ -49,8 +49,17 @@ jobs:
       - name: Run Gradle tasks
         run: ./gradlew build check
 
-      - name: TestForest Dashboard
+      - name: Test Summary
         uses: test-summary/action@v1.0
+        with:
+          paths: "**/build/test-results/test/TEST-*.xml"
+
+      - name: Upload Test Summary
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-summary
+          path: test-summary.md
+        if: always()
 
       - name: Display dependency updates
         run: ./gradlew dependencyUpdates
