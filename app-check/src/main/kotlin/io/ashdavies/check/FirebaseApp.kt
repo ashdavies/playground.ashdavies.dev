@@ -47,13 +47,13 @@ internal fun rememberAppCheckClient(
 }
 
 @Composable
-internal fun rememberAlgorithm(
-    credentials: ServiceAccountCredentials = rememberGoogleCredentials()
-): JwtAlgorithm = remember(credentials) {
-    val jwkProvider = UrlJwkProvider(URL(APP_CHECK_PUBLIC_KEY))
-    val privateKey = credentials.privateKey as RSAPrivateKey
+internal fun rememberAlgorithm(credentials: ServiceAccountCredentials = rememberGoogleCredentials()): JwtAlgorithm {
+    return remember(credentials) {
+        val jwkProvider = UrlJwkProvider(URL(APP_CHECK_PUBLIC_KEY))
+        val privateKey = credentials.privateKey as RSAPrivateKey
 
-    JwtAlgorithm.RSA256(Algorithm.Provider(jwkProvider, privateKey))
+        JwtAlgorithm.RSA256(Algorithm.Provider(jwkProvider, privateKey))
+    }
 }
 
 private inline operator fun <reified T : Any, reified R : Any> T.invoke(name: String): R =

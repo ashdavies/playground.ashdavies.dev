@@ -7,6 +7,7 @@ import io.ashdavies.check.AppCheckConstants.GOOGLE_TOKEN_ENDPOINT
 import io.ashdavies.playground.cloud.HttpException
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.request.bearerAuth
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
@@ -14,19 +15,23 @@ import io.ktor.client.statement.HttpResponse
 import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
+import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 private val HttpStatusCode.isError: Boolean
     get() = value in (400 until 600)
 
-internal class AppCheckClient(private val httpClient: HttpClient, private val config: Config) {
-    suspend fun exchangeToken(token: String, request: io.ashdavies.check.AppCheckRequest): AppCheckToken {
+internal class AppCheckClient(private val config: Config) {
+
+    private val httpClient = HttpClient { install(ContentNegotiation) { json() } }
+
+    suspend fun exchangeToken(token: String, request: AppCheckRequest): AppCheckToken {
         val urlString = "$APP_CHECK_V1_API/${config.projectId}/apps/${request.appId}:exchangeCustomToken"
         val response: HttpResponse = httpClient.post(urlString) {
             contentType(ContentType.Application.Json)
+            setBody(mapOf("customToken" to token))
             bearerAuth(getBearerToken(request))
-            setBody(AppCheckRequest(token))
         }
 
         if (response.status.isError) {
@@ -41,7 +46,7 @@ internal class AppCheckClient(private val httpClient: HttpClient, private val co
         return AppCheckToken(result.token, ttlMillis)
     }
 
-    private suspend fun getBearerToken(request: io.ashdavies.check.AppCheckRequest): String {
+    private suspend fun getBearerToken(request: AppCheckRequest): String {
         val jwt = Jwt.create(config.algorithm) {
             audience = GOOGLE_TOKEN_ENDPOINT
             scope = FIREBASE_CLAIMS_SCOPES
@@ -64,11 +69,6 @@ internal class AppCheckClient(private val httpClient: HttpClient, private val co
         val algorithm: Algorithm,
         val clientEmail: String,
         val projectId: String,
-    )
-
-    @Serializable
-    data class AppCheckRequest(
-        @SerialName("customToken") val customToken: String
     )
 
     @Serializable

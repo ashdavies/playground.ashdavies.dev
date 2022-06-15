@@ -6,17 +6,12 @@ import com.google.cloud.functions.HttpRequest
 import io.ashdavies.playground.cloud.LocalHttpRequest
 import io.ashdavies.playground.cloud.firstQueryParameterAsString
 
-internal interface AppCheckRequest {
-    val appId: String
-    val token: String
-}
-
-private fun AppCheckRequest(request: HttpRequest): AppCheckRequest = object : AppCheckRequest {
-    override val appId: String by request.firstQueryParameterAsString()
-    override val token: String by request.firstQueryParameterAsString()
+internal class AppCheckRequest(request: HttpRequest) {
+    val appId: String by request.firstQueryParameterAsString()
+    val token: String by request.firstQueryParameterAsString()
 }
 
 @Composable
 internal fun rememberAppCheckRequest(request: HttpRequest = LocalHttpRequest.current): AppCheckRequest {
-    return remember(request) { AppCheckRequest(request) }
+    return remember { AppCheckRequest(request) }
 }
