@@ -2,6 +2,7 @@ package io.ashdavies.playground.cloud
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.window.ApplicationScope
 import com.google.cloud.functions.HttpResponse
 import kotlinx.coroutines.CoroutineScope
 import java.net.HttpURLConnection

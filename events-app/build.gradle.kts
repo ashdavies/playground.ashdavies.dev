@@ -21,8 +21,8 @@ kotlin {
             implementation(project(":local-storage"))
             implementation(project(":playground-app"))
 
-            implementation(libs.alialbaali.kamel)
             implementation(libs.bundles.arkivanov.decompose)
+            implementation(libs.bundles.ktor.client)
             implementation(libs.kuuuurt.multiplatform.paging)
             implementation(libs.sqldelight.coroutines.extensions)
         }

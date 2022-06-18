@@ -9,6 +9,7 @@ import androidx.compose.runtime.Recomposer
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.window.ApplicationScope
 import com.google.cloud.functions.HttpFunction
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -41,8 +42,10 @@ private fun application(content: @Composable ApplicationScope.() -> Unit) = runB
     withContext(MainUIDispatcher + YieldFrameClock) {
         val recomposer = Recomposer(coroutineContext)
         var isOpen by mutableStateOf(true)
-        val scope = ApplicationScope {
-            isOpen = false
+        val scope = object : ApplicationScope {
+            override fun exitApplication() {
+                isOpen = false
+            }
         }
 
         launch {
@@ -53,10 +56,6 @@ private fun application(content: @Composable ApplicationScope.() -> Unit) = runB
             compose(recomposer) { if (isOpen) scope.content() }
         }
     }
-}
-
-public fun interface ApplicationScope {
-    fun exitApplication()
 }
 
 private object YieldFrameClock : MonotonicFrameClock {

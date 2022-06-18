@@ -23,20 +23,20 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.dp
+import io.ashdavies.playground.EmptyPainter
 import io.ashdavies.playground.EventsBottomBar
 import io.ashdavies.playground.EventsRoot
+import io.ashdavies.playground.Resource
 import io.ashdavies.playground.android.FlowRow
 import io.ashdavies.playground.android.fade
-import io.ashdavies.playground.compose.EmptyPainter
 import io.ashdavies.playground.compose.rememberState
+import io.ashdavies.playground.getOrElse
+import io.ashdavies.playground.imagePainter
+import io.ashdavies.playground.isLoading
 import io.ashdavies.playground.network.OpenUri
 import io.ashdavies.playground.profile.ProfileViewState.LogIn
 import io.ashdavies.playground.profile.ProfileViewState.LoggedIn
 import io.ashdavies.playground.profile.ProfileViewState.LoggedOut
-import io.kamel.core.Resource
-import io.kamel.core.getOrElse
-import io.kamel.core.isLoading
-import io.kamel.image.lazyPainterResource
 import kotlin.random.Random.Default.nextInt
 
 @Composable
@@ -61,7 +61,7 @@ internal fun ProfileScreen(child: EventsRoot.Child.Profile) {
 @ExperimentalMaterial3Api
 private fun ProfileScreen(viewState: ProfileViewState, modifier: Modifier = Modifier, onLogin: () -> Unit = { }) {
     val resourcePainter: Resource<Painter> = (viewState as? LoggedIn)?.picture
-        ?.let { lazyPainterResource(it) }
+        ?.let { imagePainter(it) }
         ?: Resource.Success(EmptyPainter)
 
     Box(modifier = modifier) {
@@ -145,7 +145,7 @@ private fun LoggedInFooter(resourcePainter: Resource<Painter>) {
             .padding(16.dp),
     ) {
         Image(
-            painter = resourcePainter.getOrElse({ EmptyPainter }, { EmptyPainter }),
+            painter = resourcePainter.getOrElse(),
             contentDescription = null,
             modifier = Modifier
                 .fade(resourcePainter.isLoading)

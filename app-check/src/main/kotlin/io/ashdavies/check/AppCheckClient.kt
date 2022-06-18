@@ -27,7 +27,7 @@ private val HttpStatusCode.isError: Boolean
 
 internal class AppCheckClient @Remember constructor(private val client: HttpClient, private val config: Config) {
 
-    suspend fun exchangeToken(token: String, request: AppCheckRequest): AppCheckToken {
+    suspend fun exchangeToken(token: String, request: AppCheckRequest): AppCheckGenerator.Token {
         val urlString = "$APP_CHECK_V1_API/${config.projectId}/apps/${request.appId}:exchangeCustomToken"
         val response: HttpResponse = client.post(urlString) {
             contentType(ContentType.Application.Json)
@@ -44,7 +44,7 @@ internal class AppCheckClient @Remember constructor(private val client: HttpClie
             .substring(0, result.ttl.length - 1)
             .toInt() * 1000
 
-        return AppCheckToken(result.token, ttlMillis)
+        return AppCheckGenerator.Token(result.token, ttlMillis)
     }
 
     private suspend fun getBearerToken(request: AppCheckRequest): String {

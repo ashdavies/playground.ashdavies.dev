@@ -13,7 +13,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
@@ -31,6 +33,14 @@ import io.ktor.utils.io.ByteReadChannel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.map
+
+public val Resource<*>.isLoading: Boolean
+    get() = this is Resource.Loading
+
+public object EmptyPainter : Painter() {
+    override val intrinsicSize: Size get() = Size.Unspecified
+    override fun DrawScope.onDraw(): Unit = Unit
+}
 
 internal expect fun ImageBitmap(bytes: ByteArray): ImageBitmap
 
@@ -66,16 +76,6 @@ public sealed class Resource<out T : Any> {
     public data class Failure(val exception: Throwable) : Resource<Nothing>()
 }
 
-internal inline fun <T : Any, R : Any> Resource<T>.map(transform: (T) -> R): Resource<R> = when (this) {
-    is Resource.Loading -> Resource.Loading(progress)
-    is Resource.Failure -> Resource.Failure(exception)
-    is Resource.Success -> try {
-        Resource.Success(transform(value))
-    } catch (exception: Exception) {
-        Resource.Failure(exception)
-    }
-}
-
 /**
  * TODO Create event listener for image loading logging
  */
@@ -92,3 +92,35 @@ public fun RemoteImage(urlString: String, modifier: Modifier = Modifier, content
     }
 }
 
+public inline fun Resource<Painter>.getOrElse(
+    onFailure: (Throwable) -> Painter = { EmptyPainter },
+    onLoading: (Float) -> Painter = { EmptyPainter },
+): Painter = fold(
+    onFailure = onFailure,
+    onLoading = onLoading,
+    onSuccess = { it },
+)
+
+@PublishedApi
+internal inline fun <T : Any, R : Any> Resource<T>.fold(
+    onFailure: (Throwable) -> R,
+    onLoading: (Float) -> R,
+    onSuccess: (T) -> R
+): R = when (this) {
+    is Resource.Failure -> onFailure(exception)
+    is Resource.Loading -> onLoading(progress)
+    is Resource.Success -> onSuccess(value)
+}
+
+@PublishedApi
+internal inline fun <T : Any, R : Any> Resource<T>.map(
+    transform: (T) -> R
+): Resource<R> = when (this) {
+    is Resource.Loading -> Resource.Loading(progress)
+    is Resource.Failure -> Resource.Failure(exception)
+    is Resource.Success -> try {
+        Resource.Success(transform(value))
+    } catch (exception: Exception) {
+        Resource.Failure(exception)
+    }
+}
