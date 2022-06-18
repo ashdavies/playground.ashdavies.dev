@@ -2,11 +2,11 @@ package io.ashdavies.playground.events
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import io.ashdavies.http.LocalHttpClient
 import io.ashdavies.playground.Event
 import io.ashdavies.playground.PlaygroundService
 import io.ashdavies.playground.getting
 import io.ashdavies.playground.invoke
-import io.ashdavies.http.LocalHttpClient
 import io.ktor.client.HttpClient
 import io.ktor.client.request.parameter
 import io.ktor.http.content.OutgoingContent.NoContent

@@ -10,18 +10,12 @@ import io.ktor.client.HttpClientConfig
 import io.ktor.client.plugins.DefaultRequest
 import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.HttpTimeout.Plugin.INFINITE_TIMEOUT_MS
-import io.ktor.client.plugins.cache.HttpCache
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logging
-import io.ktor.client.request.header
-import io.ktor.http.HttpHeaders
-import io.ktor.http.URLProtocol
 import io.ktor.http.takeFrom
 import io.ktor.http.userAgent
 import io.ktor.serialization.kotlinx.json.json
-import kotlinx.serialization.Serializable
-import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.contextual
@@ -33,6 +27,7 @@ public val LocalHttpClient: ProvidableCompositionLocal<HttpClient> = staticCompo
     HttpClient {
         install(ContentNegotiation) {
             json(Json {
+                serializersModule = SerializersModule { contextual(EventsSerializer) }
                 ignoreUnknownKeys = true
                 encodeDefaults = true
             })
