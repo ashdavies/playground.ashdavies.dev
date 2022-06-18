@@ -2,6 +2,10 @@ plugins {
     `cloud-function`
 }
 
+dependencies {
+    implementation(project(":app-check"))
+}
+
 tasks.register<DeployFunctionTask>("deployEventsFunction") {
     entryPoint = "io.ashdavies.playground.events.EventsFunction"
     description = "Deploy events function to Google Cloud"

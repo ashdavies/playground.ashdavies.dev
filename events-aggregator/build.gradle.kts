@@ -16,5 +16,11 @@ val deployEventsAggregatorFunction by tasks.registering(DeployFunctionTask::clas
 val runEventsAggregatorFunction by tasks.registering(RunFunctionTask::class) {
     target = "io.ashdavies.playground.aggregator.AggregatorFunction"
     description = "Run events aggregator cloud function"
+
+    doFirst {
+        sourceSets.main.configure {
+            args("--classpath", files(configurations.runtimeClasspath, output).asPath)
+        }
+    }
 }
 

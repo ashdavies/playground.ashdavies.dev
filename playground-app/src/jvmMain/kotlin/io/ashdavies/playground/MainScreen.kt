@@ -11,6 +11,8 @@ import com.arkivanov.decompose.DefaultComponentContext
 
 public fun MainScreen(title: String = "Playground", content: @Composable (ComponentContext) -> Unit) {
     singleWindowApplication(WindowState(size = DpSize(450.dp, 975.dp)), title = title) {
-        content(DefaultComponentContext(DefaultLifecycle()))
+        ProvideAppCheckToken {
+            content(DefaultComponentContext(DefaultLifecycle()))
+        }
     }
 }
