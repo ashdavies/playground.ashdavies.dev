@@ -2,15 +2,18 @@ package io.ashdavies.playground.kingdom
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import io.ashdavies.http.LocalHttpClient
 import io.ashdavies.playground.DominionCard
 import io.ashdavies.playground.DominionExpansion
 import io.ashdavies.playground.DominionRequest
 import io.ashdavies.playground.DominionService
 import io.ashdavies.playground.DominionViewState
+import io.ashdavies.playground.ObsoletePlaygroundApi
 import io.ashdavies.playground.produceState
 import io.ashdavies.playground.rememberDominionService
 import io.ashdavies.playground.serialization.getContent
 import io.ashdavies.playground.serialization.getOrThrow
+import io.ktor.client.HttpClient
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -71,5 +74,6 @@ private fun String.encoded(): String =
         .replace("'", "%27")
 
 @Composable
-internal fun rememberKingdomViewModel(service: DominionService = rememberDominionService()): KingdomViewModel =
-    remember { KingdomViewModel(service) }
+@OptIn(ObsoletePlaygroundApi::class)
+internal fun rememberKingdomViewModel(client: HttpClient = LocalHttpClient.current): KingdomViewModel =
+    remember { KingdomViewModel(DominionService(client)) }

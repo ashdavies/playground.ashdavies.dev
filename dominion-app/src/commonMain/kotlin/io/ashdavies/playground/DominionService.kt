@@ -1,8 +1,6 @@
 package io.ashdavies.playground
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
-import io.ashdavies.http.LocalHttpClient
+import io.ashdavies.http.path
 import io.ktor.client.HttpClient
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonObject
@@ -14,13 +12,10 @@ import kotlinx.serialization.json.JsonObject
 // http://wiki.dominionstrategy.com/api.php?action=parse&format=json&page=Dominion_(Base_Set)&section=3&prop=links
 // http://wiki.dominionstrategy.com/api.php?action=parse&format=json&page=Dominion_(Base_Set)&section=9
 
-internal class DominionService(client: HttpClient) : PlaygroundService by PlaygroundService(client) {
-    val api by getting<DominionRequest, JsonObject> { "$it.php" }
+@ObsoletePlaygroundApi
+internal class DominionService(client: HttpClient) : PlaygroundService(client) {
+    val api by requesting<DominionRequest, JsonObject> { path("$it.php") }
 }
-
-@Composable
-internal fun rememberDominionService(client: HttpClient = LocalHttpClient.current): DominionService =
-    remember(client) { DominionService(client) }
 
 @Serializable
 internal sealed class DominionRequest(val format: String = "json") {

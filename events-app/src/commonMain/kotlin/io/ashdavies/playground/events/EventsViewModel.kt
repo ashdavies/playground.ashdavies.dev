@@ -6,23 +6,27 @@ import com.kuuurt.paging.multiplatform.PagingConfig
 import com.kuuurt.paging.multiplatform.PagingData
 import com.kuuurt.paging.multiplatform.PagingResult
 import com.kuuurt.paging.multiplatform.helpers.cachedIn
+import io.ashdavies.http.LocalHttpClient
 import io.ashdavies.playground.Event
 import io.ashdavies.playground.EventsQueries
 import io.ashdavies.playground.LocalPlaygroundDatabase
+import io.ashdavies.playground.ObsoletePlaygroundApi
 import io.ashdavies.playground.android.ViewModel
 import io.ashdavies.playground.android.viewModel
 import io.ashdavies.playground.android.viewModelScope
 import io.ashdavies.playground.kotlin.CloseableFlow
 import io.ashdavies.playground.kotlin.asCloseableFlow
 import io.ashdavies.playground.network.todayAsString
+import io.ktor.client.HttpClient
 
 private const val NETWORK_PAGE_SIZE = 10
 
 @Composable
+@OptIn(ObsoletePlaygroundApi::class)
 internal fun rememberEventsViewModel(
     queries: EventsQueries = LocalPlaygroundDatabase.current.eventsQueries,
-    service: EventsService = rememberEventsService(),
-) = viewModel { EventsViewModel(queries, service) }
+    client: HttpClient = LocalHttpClient.current,
+) = viewModel { EventsViewModel(queries, EventsService(client)) }
 
 internal class EventsViewModel(
     private val queries: EventsQueries,
@@ -43,7 +47,7 @@ internal class EventsViewModel(
 
     private suspend fun getItems(currentKey: String, pageSize: Int): PagingResult<String, Event> {
         suspend fun fetchItems(currentKey: String, pageSize: Int): List<Event> {
-            val items: List<Event> = service.events(currentKey, pageSize)
+            val items: List<Event> = service.events(EventsRequest(currentKey, pageSize))
             queries.transaction { items.forEach(queries::insertOrReplace) }
             return items
         }

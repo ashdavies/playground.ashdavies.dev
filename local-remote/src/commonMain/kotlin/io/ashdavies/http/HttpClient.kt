@@ -71,18 +71,6 @@ public fun HttpClient.header(key: String, value: Any?): HttpClient = defaultRequ
 public fun HttpClient.url(block: URLBuilder.() -> Unit): HttpClient = defaultRequest { url(block) }
 
 @Composable
-public fun ProvideHttpClient(
-    client: HttpClient = LocalHttpClient.current,
-    block: HttpClientConfig<*>.() -> Unit = { },
-    content: @Composable () -> Unit,
-) {
-    CompositionLocalProvider(
-        LocalHttpClient provides client.config(block),
-        content = content
-    )
-}
-
-@Composable
 public inline fun <reified T : Any> requesting(
     client: HttpClient = LocalHttpClient.current,
     noinline block: HttpRequestBuilder.() -> Unit = { },

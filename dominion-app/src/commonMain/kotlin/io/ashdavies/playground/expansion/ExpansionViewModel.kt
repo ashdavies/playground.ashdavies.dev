@@ -2,14 +2,16 @@ package io.ashdavies.playground.expansion
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import io.ashdavies.http.LocalHttpClient
 import io.ashdavies.playground.DominionExpansion
 import io.ashdavies.playground.DominionRequest
 import io.ashdavies.playground.DominionService
 import io.ashdavies.playground.DominionViewState
+import io.ashdavies.playground.ObsoletePlaygroundApi
 import io.ashdavies.playground.produceState
-import io.ashdavies.playground.rememberDominionService
 import io.ashdavies.playground.serialization.getContent
 import io.ashdavies.playground.serialization.getOrThrow
+import io.ktor.client.HttpClient
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -55,8 +57,10 @@ internal fun DominionExpansion(element: JsonElement) = DominionExpansion(
 )
 
 @Composable
-internal fun rememberExpansionViewModel(service: DominionService = rememberDominionService()): ExpansionViewModel =
-    remember { ExpansionViewModel(service) }
+@OptIn(ObsoletePlaygroundApi::class)
+internal fun rememberExpansionViewModel(client: HttpClient = LocalHttpClient.current): ExpansionViewModel {
+    return remember { ExpansionViewModel(DominionService(client)) }
+}
 
 
 private inline val JsonElement.title: String

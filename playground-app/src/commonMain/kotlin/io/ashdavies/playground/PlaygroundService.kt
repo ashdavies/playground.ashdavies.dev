@@ -1,45 +1,35 @@
 package io.ashdavies.playground
 
+import io.ashdavies.http.path
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.request.accept
 import io.ktor.client.request.parameter
 import io.ktor.client.request.request
-import io.ktor.client.request.setBody
 import io.ktor.client.utils.EmptyContent
 import io.ktor.http.ContentType
-import io.ktor.http.HttpMethod
-import io.ktor.http.content.OutgoingContent.NoContent
 import io.ktor.http.contentType
-import kotlinx.coroutines.ObsoleteCoroutinesApi
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.properties.Properties
 import kotlinx.serialization.properties.encodeToMap
 import kotlin.properties.ReadOnlyProperty
 
 @ObsoletePlaygroundApi
-public interface PlaygroundService {
-    public val client: HttpClient
-
-    public interface Operator<Request : Any, Response : Any> {
-        public suspend operator fun invoke(
-            request: Request,
-            builder: HttpRequestBuilder.() -> Unit = {}
-        ): Response
+public abstract class PlaygroundService(@PublishedApi internal val client: HttpClient) {
+    public class Operator<T : Any, R : Any>(private val block: suspend (T, HttpRequestBuilder.() -> Unit) -> R) {
+        public suspend operator fun invoke(request: T, builder: HttpRequestBuilder.() -> Unit = {}): R {
+            return block(request, builder)
+        }
     }
-
-    public companion object
 }
 
 @PublishedApi
 @ObsoletePlaygroundApi
-internal inline fun <reified Request : Any, reified Response : Any> PlaygroundService.Companion.Operator(
-    client: HttpClient,
-    crossinline urlString: () -> String,
-    crossinline configure: HttpRequestBuilder.(Request) -> Unit
-): PlaygroundService.Operator<Request, Response> = PlaygroundService.Operator { request, builder ->
-    client.request(urlString()) {
+internal inline fun <reified T : Any, reified R : Any> requesting(
+    client: HttpClient, crossinline configure: HttpRequestBuilder.(T) -> Unit
+): PlaygroundService.Operator<T, R> = PlaygroundService.Operator { request, builder ->
+    client.request {
         contentType(ContentType.Application.Json)
         accept(ContentType.Application.Json)
         configure(request)
@@ -47,73 +37,20 @@ internal inline fun <reified Request : Any, reified Response : Any> PlaygroundSe
     }.body()
 }
 
-@PublishedApi
 @ObsoletePlaygroundApi
-internal fun <Request : Any, Response : Any> PlaygroundService.Companion.Operator(
-    block: suspend (Request, HttpRequestBuilder.() -> Unit) -> Response
-): PlaygroundService.Operator<Request, Response> = object : PlaygroundService.Operator<Request, Response> {
-    override suspend fun invoke(
-        request: Request,
-        builder: HttpRequestBuilder.() -> Unit
-    ): Response = block(request, builder)
-}
-
-public fun PlaygroundService(client: HttpClient): PlaygroundService = object : PlaygroundService {
-    override val client: HttpClient = client
-}
-
-@PublishedApi
-@ObsoletePlaygroundApi
-internal inline fun <reified Request : Any, reified Response : Any> PlaygroundService.Companion.Operator(
-    crossinline urlString: (String) -> String,
-    crossinline configure: HttpRequestBuilder.(Request) -> Unit
-): ReadOnlyProperty<PlaygroundService, PlaygroundService.Operator<Request, Response>> {
-    return ReadOnlyProperty { thisRef, property ->
-        PlaygroundService.Operator(
-            urlString = { urlString(property.name) },
-            client = thisRef.client,
-            configure = configure
-        )
+public inline fun <reified T : Any, reified R : Any> PlaygroundService.requesting(
+    crossinline configure: HttpRequestBuilder.(T) -> Unit = { },
+): ReadOnlyProperty<Any?, PlaygroundService.Operator<T, R>> = ReadOnlyProperty { _, property ->
+    requesting(client) {
+        path(property.name)
+        configure(it)
     }
 }
 
-@ObsoletePlaygroundApi
-public inline fun <reified Request : Any, reified Response : Any> PlaygroundService.getting(
-    crossinline urlString: (String) -> String = { it }
-): ReadOnlyProperty<PlaygroundService, PlaygroundService.Operator<Request, Response>> {
-    return PlaygroundService.Operator(urlString) {
-        method = HttpMethod.Get
-        parameters(it)
-    }
-}
-
-@ObsoletePlaygroundApi
-public inline fun <reified Request : Any, reified Response : Any> PlaygroundService.posting(
-    crossinline urlString: (String) -> String = { it }
-): ReadOnlyProperty<PlaygroundService, PlaygroundService.Operator<Request, Response>> {
-    return PlaygroundService.Operator(urlString) {
-        method = HttpMethod.Post
-        setBody(it)
-    }
-}
-
-@ObsoletePlaygroundApi
-public suspend operator fun <Response : Any> PlaygroundService.Operator<NoContent, Response>.invoke(
-    builder: HttpRequestBuilder.() -> Unit = { }
-): Response = invoke(EmptyContent, builder)
-
-@PublishedApi
 @ObsoletePlaygroundApi
 @OptIn(ExperimentalSerializationApi::class)
-internal inline fun <reified T> HttpRequestBuilder.parameters(value: T) {
-    if (value !is EmptyContent) parameters(Properties.encodeToMap(value))
-}
-
-@PublishedApi
-@ObsoletePlaygroundApi
-internal fun HttpRequestBuilder.parameters(values: Map<String, Any?>) {
-    values.forEach { (key, value) ->
-        // TODO Figure out parameter encoding properly
+public inline fun <reified T> HttpRequestBuilder.parameters(value: T) {
+    if (value !is EmptyContent) Properties.encodeToMap(value).forEach { (key, value) ->
         if (key != "type" && key.startsWith("value")) parameter(key.substringAfter("value."), value)
     }
 }
