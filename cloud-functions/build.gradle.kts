@@ -12,6 +12,4 @@ dependencies {
     implementation(compose.runtime)
 
     implementation(libs.bundles.jetbrains.kotlinx)
-    implementation(libs.google.cloud.functionsFrameworkApi)
-    implementation(libs.google.firebase.admin)
 }

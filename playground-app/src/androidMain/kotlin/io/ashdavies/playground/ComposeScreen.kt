@@ -14,7 +14,7 @@ internal fun ComposeScreen(content: @Composable () -> Unit) {
         )
     }*/
 
-    ProvideAppCheckToken {
+    AppCheck {
         //PlaygroundTheme(content = content)
         content()
     }

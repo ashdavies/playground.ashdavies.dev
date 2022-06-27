@@ -1,6 +1,7 @@
 package io.ashdavies.playground
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import com.arkivanov.decompose.ComponentContext
@@ -15,11 +16,11 @@ import com.arkivanov.decompose.router.router
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.parcelable.Parcelable
 import com.arkivanov.essenty.parcelable.Parcelize
-import io.ashdavies.http.ProvideHttpClient
+import io.ashdavies.http.LocalHttpClient
+import io.ashdavies.http.url
 import io.ashdavies.playground.card.CardScreen
 import io.ashdavies.playground.expansion.ExpansionScreen
 import io.ashdavies.playground.kingdom.KingdomScreen
-import io.ktor.client.plugins.DefaultRequest
 import io.ktor.http.takeFrom
 
 /**
@@ -32,11 +33,9 @@ private const val DOMINION_STRATEGY_HOST = "http://wiki.dominionstrategy.com/"
 @Composable
 @OptIn(ExperimentalDecomposeApi::class)
 internal fun DominionRoot(componentContext: ComponentContext, modifier: Modifier = Modifier) {
-    ProvideHttpClient(configure = {
-        install(DefaultRequest) {
-            url { takeFrom(DOMINION_STRATEGY_HOST) }
-        }
-    }) {
+    val client = LocalHttpClient.current.url { takeFrom(DOMINION_STRATEGY_HOST) }
+
+    CompositionLocalProvider(LocalHttpClient provides client) {
         DominionRoot(rememberDominionRoot(componentContext), modifier)
     }
 }
@@ -96,6 +95,7 @@ private class DominionRootComponent(componentContext: ComponentContext) :
             expansion = configuration.value,
             navigation = createNavigation(),
         )
+
         is ChildConfiguration.Card -> DominionRoot.Child.Card(
             navigation = createNavigation(),
             card = configuration.value,

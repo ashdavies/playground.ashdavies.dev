@@ -2,24 +2,22 @@ package io.ashdavies.playground
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import io.ashdavies.http.LocalHttpClient
+import io.ashdavies.http.getValue
+import io.ashdavies.http.header
+import io.ashdavies.http.path
+import io.ashdavies.http.requesting
+import io.ktor.client.HttpClient
+
+private const val X_FIREBASE_APP_CHECK = "X-FIREBASE-AppCheck"
 
 @Composable
-public expect fun AppCheckListener(listener: (String) -> Unit)
+public fun AppCheck(client: HttpClient = LocalHttpClient.current, content: @Composable () -> Unit) {
+    val token: AppCheckToken by requesting(client) { path("createToken") }
 
-@Composable
-public fun ProvideAppCheckToken(content: @Composable () -> Unit) {
-    var _token: String? by remember { mutableStateOf(null) }
-    val token: String? = _token
-
-    AppCheckListener { _token = it }
-
-    if (token != null) {
-        CompositionLocalProvider(LocalAppCheckToken provides token) {
-            content()
-        }
-    }
+    CompositionLocalProvider(
+        LocalHttpClient provides client.header(X_FIREBASE_APP_CHECK, token),
+        LocalAppCheckToken provides token,
+        content = content,
+    )
 }

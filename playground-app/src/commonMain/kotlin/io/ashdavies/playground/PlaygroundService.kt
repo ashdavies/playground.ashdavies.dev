@@ -12,11 +12,13 @@ import io.ktor.http.ContentType
 import io.ktor.http.HttpMethod
 import io.ktor.http.content.OutgoingContent.NoContent
 import io.ktor.http.contentType
+import kotlinx.coroutines.ObsoleteCoroutinesApi
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.properties.Properties
 import kotlinx.serialization.properties.encodeToMap
 import kotlin.properties.ReadOnlyProperty
 
+@ObsoletePlaygroundApi
 public interface PlaygroundService {
     public val client: HttpClient
 
@@ -31,6 +33,7 @@ public interface PlaygroundService {
 }
 
 @PublishedApi
+@ObsoletePlaygroundApi
 internal inline fun <reified Request : Any, reified Response : Any> PlaygroundService.Companion.Operator(
     client: HttpClient,
     crossinline urlString: () -> String,
@@ -45,6 +48,7 @@ internal inline fun <reified Request : Any, reified Response : Any> PlaygroundSe
 }
 
 @PublishedApi
+@ObsoletePlaygroundApi
 internal fun <Request : Any, Response : Any> PlaygroundService.Companion.Operator(
     block: suspend (Request, HttpRequestBuilder.() -> Unit) -> Response
 ): PlaygroundService.Operator<Request, Response> = object : PlaygroundService.Operator<Request, Response> {
@@ -59,6 +63,7 @@ public fun PlaygroundService(client: HttpClient): PlaygroundService = object : P
 }
 
 @PublishedApi
+@ObsoletePlaygroundApi
 internal inline fun <reified Request : Any, reified Response : Any> PlaygroundService.Companion.Operator(
     crossinline urlString: (String) -> String,
     crossinline configure: HttpRequestBuilder.(Request) -> Unit
@@ -72,6 +77,7 @@ internal inline fun <reified Request : Any, reified Response : Any> PlaygroundSe
     }
 }
 
+@ObsoletePlaygroundApi
 public inline fun <reified Request : Any, reified Response : Any> PlaygroundService.getting(
     crossinline urlString: (String) -> String = { it }
 ): ReadOnlyProperty<PlaygroundService, PlaygroundService.Operator<Request, Response>> {
@@ -81,6 +87,7 @@ public inline fun <reified Request : Any, reified Response : Any> PlaygroundServ
     }
 }
 
+@ObsoletePlaygroundApi
 public inline fun <reified Request : Any, reified Response : Any> PlaygroundService.posting(
     crossinline urlString: (String) -> String = { it }
 ): ReadOnlyProperty<PlaygroundService, PlaygroundService.Operator<Request, Response>> {
@@ -90,17 +97,20 @@ public inline fun <reified Request : Any, reified Response : Any> PlaygroundServ
     }
 }
 
+@ObsoletePlaygroundApi
 public suspend operator fun <Response : Any> PlaygroundService.Operator<NoContent, Response>.invoke(
     builder: HttpRequestBuilder.() -> Unit = { }
 ): Response = invoke(EmptyContent, builder)
 
 @PublishedApi
+@ObsoletePlaygroundApi
 @OptIn(ExperimentalSerializationApi::class)
 internal inline fun <reified T> HttpRequestBuilder.parameters(value: T) {
     if (value !is EmptyContent) parameters(Properties.encodeToMap(value))
 }
 
 @PublishedApi
+@ObsoletePlaygroundApi
 internal fun HttpRequestBuilder.parameters(values: Map<String, Any?>) {
     values.forEach { (key, value) ->
         // TODO Figure out parameter encoding properly

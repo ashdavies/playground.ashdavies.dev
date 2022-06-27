@@ -23,17 +23,15 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.dp
+import io.ashdavies.http.isLoading
+import io.ashdavies.http.rememberState
 import io.ashdavies.playground.EmptyPainter
 import io.ashdavies.playground.EventsBottomBar
 import io.ashdavies.playground.EventsRoot
-import io.ashdavies.playground.Resource
 import io.ashdavies.playground.android.FlowRow
 import io.ashdavies.playground.android.fade
-import io.ashdavies.playground.compose.rememberState
-import io.ashdavies.playground.getOrElse
-import io.ashdavies.playground.imagePainter
-import io.ashdavies.playground.isLoading
 import io.ashdavies.playground.network.OpenUri
+import io.ashdavies.playground.produceImagePainterState
 import io.ashdavies.playground.profile.ProfileViewState.LogIn
 import io.ashdavies.playground.profile.ProfileViewState.LoggedIn
 import io.ashdavies.playground.profile.ProfileViewState.LoggedOut
@@ -60,9 +58,7 @@ internal fun ProfileScreen(child: EventsRoot.Child.Profile) {
 @Composable
 @ExperimentalMaterial3Api
 private fun ProfileScreen(viewState: ProfileViewState, modifier: Modifier = Modifier, onLogin: () -> Unit = { }) {
-    val resourcePainter: Resource<Painter> = (viewState as? LoggedIn)?.picture
-        ?.let { imagePainter(it) }
-        ?: Resource.Success(EmptyPainter)
+    val painter: Result<Painter> by produceImagePainterState((viewState as? LoggedIn)?.picture)
 
     Box(modifier = modifier) {
         Column(modifier = Modifier.padding(16.dp)) {
@@ -70,7 +66,7 @@ private fun ProfileScreen(viewState: ProfileViewState, modifier: Modifier = Modi
                 is LogIn -> OpenUri(viewState.uriString)
                 is LoggedOut -> LoggedOutScreen(onLogin)
                 else -> {
-                    ProfileHeader(resourcePainter, viewState as LoggedIn)
+                    ProfileHeader(painter, viewState as LoggedIn)
                     StubLanyardFlow()
                 }
             }
@@ -80,7 +76,7 @@ private fun ProfileScreen(viewState: ProfileViewState, modifier: Modifier = Modi
 
 @Composable
 @ExperimentalMaterial3Api
-private fun ProfileHeader(resourcePainter: Resource<Painter>, viewState: LoggedIn) {
+private fun ProfileHeader(painter: Result<Painter>, viewState: LoggedIn) {
     Card(
         modifier = Modifier
             .padding(top = 64.dp, bottom = 12.dp)
@@ -93,7 +89,7 @@ private fun ProfileHeader(resourcePainter: Resource<Painter>, viewState: LoggedI
             Text(
                 modifier = Modifier
                     .padding(4.dp, 64.dp, 4.dp, 4.dp)
-                    .fade(resourcePainter.isLoading),
+                    .fade(painter.isLoading),
                 style = MaterialTheme.typography.headlineSmall,
                 text = viewState.name
             )
@@ -137,7 +133,7 @@ private fun LoggedOutScreen(onLogin: () -> Unit) {
 }
 
 @Composable
-private fun LoggedInFooter(resourcePainter: Resource<Painter>) {
+private fun LoggedInFooter(painter: Result<Painter>) {
     Column(
         horizontalAlignment = CenterHorizontally,
         modifier = Modifier
@@ -145,10 +141,10 @@ private fun LoggedInFooter(resourcePainter: Resource<Painter>) {
             .padding(16.dp),
     ) {
         Image(
-            painter = resourcePainter.getOrElse(),
+            painter = painter.getOrElse { EmptyPainter },
             contentDescription = null,
             modifier = Modifier
-                .fade(resourcePainter.isLoading)
+                .fade(painter.isLoading)
                 .align(CenterHorizontally)
                 .border(2.dp, Color.LightGray, CircleShape)
                 .clip(CircleShape)

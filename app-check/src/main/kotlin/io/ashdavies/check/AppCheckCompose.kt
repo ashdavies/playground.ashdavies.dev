@@ -15,11 +15,6 @@ import io.ashdavies.playground.cloud.LocalApplicationScope
 import io.ashdavies.playground.cloud.LocalHttpRequest
 import io.ashdavies.playground.cloud.LocalHttpResponse
 
-private const val X_FIREBASE_APP_CHECK = "X-FIREBASE-AppCheck"
-
-private val HttpRequest.appCheckToken: String?
-    get() = headers[X_FIREBASE_APP_CHECK]?.firstOrNull()
-
 @Composable
 public fun AppCheck(verify: Boolean = false, content: @Composable () -> Unit) {
     var isVerified by remember { mutableStateOf(!verify) }

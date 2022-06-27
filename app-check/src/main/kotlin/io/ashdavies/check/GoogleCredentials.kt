@@ -28,11 +28,11 @@ private inline operator fun <reified T : Any, reified R : Any> T.invoke(name: St
 
 @Serializable
 internal data class Credentials(val clientEmail: String, val projectId: String, val privateKey: RSAPrivateKey) {
-    constructor(credentials: ComputeEngineCredentials) : this(
+    /*constructor(credentials: ComputeEngineCredentials) : this(
         privateKey = credentials.privateKey as RSAPrivateKey,
         clientEmail = credentials.clientEmail,
         projectId = credentials.projectId,
-    )
+    )*/
 
     constructor(credentials: ServiceAccountCredentials) : this(
         privateKey = credentials.privateKey as RSAPrivateKey,

@@ -7,7 +7,6 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation(project(":app-check"))
                 implementation(project(":local-remote"))
                 implementation(project(":local-storage"))
 
@@ -28,8 +27,6 @@ kotlin {
                     implementation(swiperefresh)
                     implementation(systemuicontroller)
                 }
-
-                implementation(libs.google.firebase.appcheck)
             }
         }
     }
