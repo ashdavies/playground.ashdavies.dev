@@ -15,35 +15,27 @@ import kotlinx.serialization.properties.Properties
 import kotlinx.serialization.properties.encodeToMap
 import kotlin.properties.ReadOnlyProperty
 
+@Retention(value = AnnotationRetention.BINARY)
+@RequiresOptIn(level = RequiresOptIn.Level.WARNING)
+public annotation class ObsoletePlaygroundApi
+
 @ObsoletePlaygroundApi
 public abstract class PlaygroundService(@PublishedApi internal val client: HttpClient) {
-    public class Operator<T : Any, R : Any>(private val block: suspend (T, HttpRequestBuilder.() -> Unit) -> R) {
-        public suspend operator fun invoke(request: T, builder: HttpRequestBuilder.() -> Unit = {}): R {
-            return block(request, builder)
-        }
-    }
-}
-
-@PublishedApi
-@ObsoletePlaygroundApi
-internal inline fun <reified T : Any, reified R : Any> requesting(
-    client: HttpClient, crossinline configure: HttpRequestBuilder.(T) -> Unit
-): PlaygroundService.Operator<T, R> = PlaygroundService.Operator { request, builder ->
-    client.request {
-        contentType(ContentType.Application.Json)
-        accept(ContentType.Application.Json)
-        configure(request)
-        builder()
-    }.body()
+    public fun interface Operator<T, V> : suspend (T, HttpRequestBuilder.() -> Unit) -> V
 }
 
 @ObsoletePlaygroundApi
-public inline fun <reified T : Any, reified R : Any> PlaygroundService.requesting(
-    crossinline configure: HttpRequestBuilder.(T) -> Unit = { },
+public inline fun <T, reified R> PlaygroundService.requesting(
+    noinline configure: HttpRequestBuilder.(T) -> Unit = { }
 ): ReadOnlyProperty<Any?, PlaygroundService.Operator<T, R>> = ReadOnlyProperty { _, property ->
-    requesting(client) {
-        path(property.name)
-        configure(it)
+    PlaygroundService.Operator { request, builder ->
+        client.request {
+            contentType(ContentType.Application.Json)
+            accept(ContentType.Application.Json)
+            path(property.name)
+            configure(request)
+            builder()
+        }.body()
     }
 }
 
