@@ -2,25 +2,30 @@ package io.ashdavies.playground
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.getValue
 import io.ashdavies.http.LocalHttpClient
-import io.ashdavies.http.getValue
 import io.ashdavies.http.header
 import io.ashdavies.http.path
-import io.ashdavies.http.requesting
+import io.ashdavies.http.requestingState
 import io.ktor.client.HttpClient
 import kotlinx.serialization.Serializable
 
 private const val X_FIREBASE_APP_CHECK = "X-FIREBASE-AppCheck"
 
+/**
+ * TODO: Use property delegate to omit path("createToken") from request
+ */
 @Composable
 public fun AppCheck(client: HttpClient = LocalHttpClient.current, content: @Composable () -> Unit) {
-    val token: AppCheckToken by requesting(client) { path("createToken") }
+    val createToken by requestingState<AppCheckToken>(client) { path("createToken") }
 
-    CompositionLocalProvider(
-        LocalHttpClient provides client.header(X_FIREBASE_APP_CHECK, token),
-        LocalAppCheckToken provides token,
-        content = content,
-    )
+    createToken.onSuccess {
+        CompositionLocalProvider(
+            LocalHttpClient provides client.header(X_FIREBASE_APP_CHECK, it),
+            LocalAppCheckToken provides it,
+            content = content,
+        )
+    }
 }
 
 @Serializable

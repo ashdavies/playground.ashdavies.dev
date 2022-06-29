@@ -46,11 +46,9 @@ public fun produceImagePainterState(urlString: String? = null): State<Result<Pai
 }
 
 @Composable
-internal fun produceImagePainterState(client: HttpClient, urlString: String): State<Result<Painter>> {
-    return produceState {
-        val response = client.get(urlString) { onProgress { value = Result.loading(it) } }
-        value = Result.success(BitmapPainter(ImageBitmap(response.body())))
-    }
+internal fun produceImagePainterState(client: HttpClient, urlString: String): State<Result<Painter>> = produceState {
+    val response = client.get(urlString) { onProgress { value = Result.loading(it) } }
+    value = Result.success(BitmapPainter(ImageBitmap(response.body())))
 }
 
 @Composable
