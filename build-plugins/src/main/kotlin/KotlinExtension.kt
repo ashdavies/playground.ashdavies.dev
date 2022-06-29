@@ -1,11 +1,17 @@
 import com.android.build.api.dsl.CommonExtension
 import org.gradle.api.JavaVersion
+import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.getValue
+import org.gradle.kotlin.dsl.getting
 import org.jetbrains.compose.ExperimentalComposeLibrary
 import org.jetbrains.compose.compose
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.dsl.KotlinProjectExtension
 import org.jetbrains.kotlin.gradle.plugin.KotlinDependencyHandler
+import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
+import kotlin.properties.PropertyDelegateProvider
+import kotlin.properties.ReadOnlyProperty
 
 internal object Playground {
 
@@ -50,7 +56,7 @@ internal fun KotlinMultiplatformExtension.configureKotlinMultiplatform(target: P
     android()
     jvm()
 
-    commonMain {
+    val commonMain by sourceSets.dependencies {
         implementation(compose.foundation)
         implementation(compose.material3)
         implementation(compose.runtime)
@@ -62,34 +68,32 @@ internal fun KotlinMultiplatformExtension.configureKotlinMultiplatform(target: P
         implementation(libs.oolong)
     }
 
-    commonTest {
+    val commonTest by sourceSets.dependencies {
         implementation(libs.bundles.jetbrains.kotlin.test)
     }
 
-    androidMain {
+    val androidMain by sourceSets.dependencies {
         implementation(libs.androidx.annotation)
         implementation(libs.androidx.core.ktx)
         implementation(libs.google.android.material)
         implementation(libs.jetbrains.kotlinx.coroutines.android)
     }
 
-    jvmMain {
+    val androidAndroidTestRelease by sourceSets.getting
+
+    val androidTest: KotlinSourceSet by sourceSets.getting {
+        dependsOn(androidAndroidTestRelease)
+    }
+
+    val jvmMain by sourceSets.dependencies {
         implementation(compose.desktop.currentOs)
         implementation(libs.jetbrains.kotlinx.coroutines.swing)
     }
 }
 
-internal fun KotlinMultiplatformExtension.commonMain(block: KotlinDependencyHandler.() -> Unit) =
-    dependencies("commonMain", block)
-
-internal fun KotlinMultiplatformExtension.commonTest(block: KotlinDependencyHandler.() -> Unit) =
-    dependencies("commonTest", block)
-
-internal fun KotlinMultiplatformExtension.androidMain(block: KotlinDependencyHandler.() -> Unit) =
-    dependencies("androidMain", block)
-
-internal fun KotlinMultiplatformExtension.jvmMain(block: KotlinDependencyHandler.() -> Unit) =
-    dependencies("jvmMain", block)
-
-private fun KotlinMultiplatformExtension.dependencies(name: String, block: KotlinDependencyHandler.() -> Unit) =
-    sourceSets.getByName(name).dependencies(block)
+private fun NamedDomainObjectContainer<KotlinSourceSet>.dependencies(
+    block: KotlinDependencyHandler.() -> Unit
+) = PropertyDelegateProvider<Any?, ReadOnlyProperty<Any?, KotlinSourceSet>> { _, property ->
+    val sourceSet = getByName(property.name) { dependencies(block) }
+    ReadOnlyProperty { _, _ -> sourceSet }
+}

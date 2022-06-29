@@ -8,6 +8,7 @@ import io.ashdavies.http.header
 import io.ashdavies.http.path
 import io.ashdavies.http.requesting
 import io.ktor.client.HttpClient
+import kotlinx.serialization.Serializable
 
 private const val X_FIREBASE_APP_CHECK = "X-FIREBASE-AppCheck"
 
@@ -21,3 +22,6 @@ public fun AppCheck(client: HttpClient = LocalHttpClient.current, content: @Comp
         content = content,
     )
 }
+
+@Serializable
+public data class AppCheckToken(val token: String, val expireTimeMillis: Long)

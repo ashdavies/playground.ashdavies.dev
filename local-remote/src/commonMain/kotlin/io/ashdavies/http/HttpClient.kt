@@ -1,7 +1,6 @@
 package io.ashdavies.http
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.State
 import androidx.compose.runtime.staticCompositionLocalOf
@@ -31,7 +30,7 @@ private const val DEFAULT_FUNCTIONS_HOST = "https://europe-west1-playground-1a13
 private const val LOCAL_FUNCTIONS_HOST = "http://localhost:5001/"
 
 private val DefaultUserAgent: String
-    get() = "Ktor/2.0.0 (${softwareVersion.productName}; ${softwareVersion.buildVersion})"
+    get() = "${Software.clientName} (${Software.productName}; ${Software.buildVersion})"
 
 private fun DefaultHttpClient(block: HttpClientConfig<*>.() -> Unit = { }): HttpClient = HttpClient {
     install(ContentNegotiation) {
@@ -82,7 +81,8 @@ public inline fun <reified T : Any> requesting(
 }
 
 public operator fun <T> State<Result<T>>.getValue(thisRef: Any?, property: KProperty<*>): T {
-    while (value.isLoading) { /* ... */ }
+    while (value.isLoading) { /* ... */
+    }
     return value.getOrThrow()
 }
 

@@ -4,6 +4,7 @@ import com.auth0.jwt.algorithms.Algorithm
 import com.auth0.jwt.exceptions.JWTVerificationException
 import com.auth0.jwt.interfaces.DecodedJWT
 import io.ashdavies.check.AppCheckGenerator.Token
+import io.ashdavies.http.runCatching
 import io.ashdavies.playground.cloud.HttpException.Companion.InvalidArgument
 import io.ashdavies.playground.compose.Remember
 import kotlinx.serialization.Serializable

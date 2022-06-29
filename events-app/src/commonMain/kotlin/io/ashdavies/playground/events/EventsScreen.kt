@@ -22,6 +22,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SmallTopAppBar
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.currentComposer
+import androidx.compose.runtime.currentRecomposeScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
@@ -43,6 +45,7 @@ import io.ashdavies.playground.platform.PlatformSwipeRefresh
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 internal fun EventsScreen(child: EventsRoot.Child.Events) {
+
     val viewModel: EventsViewModel = rememberEventsViewModel()
     val pagingItems: LazyPagingItems<Event> = viewModel
         .pagingData

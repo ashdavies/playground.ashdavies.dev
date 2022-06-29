@@ -21,7 +21,9 @@ public annotation class ObsoletePlaygroundApi
 
 @ObsoletePlaygroundApi
 public abstract class PlaygroundService(@PublishedApi internal val client: HttpClient) {
-    public fun interface Operator<T, V> : suspend (T, HttpRequestBuilder.() -> Unit) -> V
+    public fun interface Operator<T, V> : suspend (T, HttpRequestBuilder.() -> Unit) -> V {
+        public suspend operator fun invoke(request: T): V = invoke(request) { }
+    }
 }
 
 @ObsoletePlaygroundApi
