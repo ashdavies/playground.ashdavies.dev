@@ -3,7 +3,7 @@
 [![Pre Merge Checks](https://img.shields.io/github/workflow/status/ashdavies/playground/pre-merge?logo=github&logoColor=%23969da4)](https://github.com/ashdavies/playground/actions/workflows/pre-merge.yaml)
 [![Scan with Detekt](https://img.shields.io/github/workflow/status/ashdavies/playground/detekt?logo=github&logoColor=%23969da4)](https://github.com/ashdavies/playground/actions/workflows/detekt.yaml)
 
-[![Last Commit](https://img.shields.io/github/last-commit/ashdavies/playground.svg)](https://github.com/ashdavies/playground/commits/master)
+[![Last Commit](https://img.shields.io/github/last-commit/ashdavies/playground.svg)](https://github.com/ashdavies/playground/commits/main)
 [![Issues](https://img.shields.io/github/issues-pr/ashdavies/playground.svg)](https://github.com/ashdavies/playground/pulls)
 [![License](https://img.shields.io/github/license/ashdavies/playground.svg)](https://github.com/ashdavies/playground/blob/main/LICENSE)
 
