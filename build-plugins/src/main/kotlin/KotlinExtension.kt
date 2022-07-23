@@ -1,6 +1,5 @@
 import com.android.build.api.dsl.CommonExtension
 import org.gradle.api.JavaVersion
-import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.getValue
 import org.gradle.kotlin.dsl.getting
@@ -10,8 +9,7 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.dsl.KotlinProjectExtension
 import org.jetbrains.kotlin.gradle.plugin.KotlinDependencyHandler
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
-import kotlin.properties.PropertyDelegateProvider
-import kotlin.properties.ReadOnlyProperty
+import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetContainer
 
 internal object Playground {
 
@@ -56,7 +54,7 @@ internal fun KotlinMultiplatformExtension.configureKotlinMultiplatform(target: P
     android()
     jvm()
 
-    val commonMain by sourceSets.dependencies {
+    val commonMain by dependencies {
         implementation(compose.foundation)
         implementation(compose.material3)
         implementation(compose.runtime)
@@ -68,32 +66,27 @@ internal fun KotlinMultiplatformExtension.configureKotlinMultiplatform(target: P
         implementation(libs.oolong)
     }
 
-    val commonTest by sourceSets.dependencies {
+    val commonTest by dependencies {
         implementation(libs.bundles.jetbrains.kotlin.test)
     }
 
-    val androidMain by sourceSets.dependencies {
+    val androidMain by dependencies {
         implementation(libs.androidx.annotation)
         implementation(libs.androidx.core.ktx)
         implementation(libs.google.android.material)
         implementation(libs.jetbrains.kotlinx.coroutines.android)
     }
 
-    val androidAndroidTestRelease by sourceSets.getting
-
     val androidTest: KotlinSourceSet by sourceSets.getting {
+        val androidAndroidTestRelease by sourceSets.getting
         dependsOn(androidAndroidTestRelease)
     }
 
-    val jvmMain by sourceSets.dependencies {
+    val jvmMain by dependencies {
         implementation(compose.desktop.currentOs)
         implementation(libs.jetbrains.kotlinx.coroutines.swing)
     }
 }
 
-private fun NamedDomainObjectContainer<KotlinSourceSet>.dependencies(
-    block: KotlinDependencyHandler.() -> Unit
-) = PropertyDelegateProvider<Any?, ReadOnlyProperty<Any?, KotlinSourceSet>> { _, property ->
-    val sourceSet = getByName(property.name) { dependencies(block) }
-    ReadOnlyProperty { _, _ -> sourceSet }
-}
+fun KotlinSourceSetContainer.dependencies(configure: KotlinDependencyHandler.() -> Unit) =
+    sourceSets.getting { dependencies(configure) }

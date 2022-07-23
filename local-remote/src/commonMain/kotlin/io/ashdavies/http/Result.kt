@@ -12,9 +12,7 @@ internal class LoadingException(val progress: Float) : Exception()
 public val Result<*>.isLoading: Boolean
     get() = exceptionOrNull() is LoadingException
 
-public inline infix fun <R, reified T : Throwable> Result<R>.catch(
-    transform: (T) -> Nothing,
-): R = fold({ it }) {
+public inline infix fun <R, reified T : Throwable> Result<R>.catch(transform: (T) -> Nothing): R = fold({ it }) {
     when (it) {
         is T -> transform(it)
         else -> throw it
@@ -41,9 +39,15 @@ public inline fun <T, R> Result<T>.fold(
     },
 )
 
-public fun <T> Result.Companion.loading(
-    progress: Float = 0f
-): Result<T> = failure(LoadingException(progress))
+public fun <T> Result.Companion.loading(progress: Float = 0f): Result<T> = failure(LoadingException(progress))
+
+@OptIn(ExperimentalContracts::class)
+public inline fun <T> Result<T>.onFailure(action: (Throwable) -> Unit): Result<T> {
+    contract { callsInPlace(action, InvocationKind.AT_MOST_ONCE) }
+    val exception = exceptionOrNull() ?: return this
+    if (!isLoading) action(exception)
+    return this
+}
 
 @OptIn(ExperimentalContracts::class)
 public inline fun <T> Result<T>.onLoading(action: (progress: Float) -> Unit): Result<T> {
@@ -52,6 +56,6 @@ public inline fun <T> Result<T>.onLoading(action: (progress: Float) -> Unit): Re
     return this
 }
 
-public inline fun <R, reified T : Throwable> runCatching(
-    block: () -> R, transform: (T) -> Nothing
-): R = runCatching(block) catch transform
+public inline fun <R, reified T : Throwable> runCatching(block: () -> R, transform: (T) -> Nothing): R {
+    return runCatching(block) catch transform
+}

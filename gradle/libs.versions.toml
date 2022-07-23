@@ -7,6 +7,8 @@ cash-molecule = "0.2.0"
 google-accompanist = "0.23.1"
 google-android = "7.0.4"
 google-auto = "1.0.1"
+google-maps-compose = "2.5.3"
+jetbrains-compose = "1.2.0-alpha01-dev667" # Unstable until 1.2.0-alpha01-dev686 (ClassNotFoundException: CallUtilKt)
 jetbrains-compose = "1.2.0-alpha01-dev667"
 jetbrains-kotlin = "1.6.10"
 kotlinx-coroutines = "1.6.1"
@@ -48,6 +50,8 @@ google-accompanist-flowlayout = { module = "com.google.accompanist:accompanist-f
 google-accompanist-placeholderMaterial = { module = "com.google.accompanist:accompanist-placeholder-material", version.ref = "google-accompanist" }
 google-accompanist-swiperefresh = { module = "com.google.accompanist:accompanist-swiperefresh", version.ref = "google-accompanist" }
 google-accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "google-accompanist" }
+
+google-android-maps = "com.google.android.gms:play-services-maps:18.0.2"
 google-android-material = "com.google.android.material:material:1.5.0"
 
 google-cloud-functionsFrameworkApi = "com.google.cloud.functions:functions-framework-api:1.0.4"
@@ -57,6 +61,9 @@ google-firebase-admin = "com.google.firebase:firebase-admin:8.1.0"
 google-firebase-appcheck = "com.google.firebase:firebase-appcheck:16.0.0"
 google-firebase-analytics = "com.google.firebase:firebase-analytics:20.1.2"
 google-firebase-common-ktx = "com.google.firebase:firebase-common-ktx:20.1.0"
+
+google-maps-android-compose = { module = "com.google.maps.android:maps-compose", version.ref = "google-maps-compose" }
+google-maps-android-compose-widgets = { module = "com.google.maps.android:maps-compose-widgets", version.ref = "google-maps-compose" }
 
 jakeWharton-mosaic = "com.jakewharton.mosaic:mosaic-runtime:0.1.0"
 
@@ -71,6 +78,7 @@ jetbrains-kotlin-test-annotations = { module = "org.jetbrains.kotlin:kotlin-test
 jetbrains-kotlin-test-common = { module = "org.jetbrains.kotlin:kotlin-test-common", version.ref = "jetbrains-kotlin" }
 jetbrains-kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "jetbrains-kotlin" }
 jetbrains-kotlinx-cli = "org.jetbrains.kotlinx:kotlinx-cli:0.3.4"
+jetbrains-kotlinx-collections-immutable = "org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.5"
 jetbrains-kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinx-coroutines" }
 jetbrains-kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
 jetbrains-kotlinx-coroutines-play = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services", version.ref = "kotlinx-coroutines" }
@@ -118,6 +126,7 @@ androidx-paging = ["androidx-paging-compose", "androidx-paging-runtime"]
 androidx-viewmodel = ["androidx-lifecycle-viewmodel-compose", "androidx-lifecycle-viewmodel-ktx"]
 arkivanov-decompose = ["arkivanov-decompose", "arkivanov-decompose-extensions"]
 google-firebase = ["google-firebase-analytics", "google-firebase-common-ktx"]
+google-maps = ["google-android-maps", "google-maps-android-compose", "google-maps-android-compose-widgets"]
 jetbrains-kotlinx = ["jetbrains-kotlinx-coroutines-core", "jetbrains-kotlinx-datetime", "jetbrains-kotlinx-serialization-core", "jetbrains-kotlinx-serialization-json", "jetbrains-kotlinx-serialization-properties"]
 jetbrains-kotlin-test = ["jetbrains-kotlin-test", "jetbrains-kotlin-test-annotations", "jetbrains-kotlin-test-common", "jetbrains-kotlin-test-junit", "jetbrains-kotlinx-coroutines-test"]
 ktor-client = ["ktor-client-okhttp3", "ktor-client-content-negotiation", "ktor-client-core", "ktor-client-json", "ktor-client-logging", "ktor-serialization-json", "ktor-serialization-kotlinx", "slf4j-simple"]

@@ -14,39 +14,35 @@ android {
 }
 
 kotlin {
-    val commonMain by sourceSets.getting {
-        dependencies {
-            implementation(project(":auth-oauth"))
-            implementation(project(":local-remote"))
-            implementation(project(":local-storage"))
-            implementation(project(":playground-app"))
+    val commonMain by dependencies {
+        implementation(project(":auth-oauth"))
+        implementation(project(":local-remote"))
+        implementation(project(":local-storage"))
+        implementation(project(":playground-app"))
 
-            implementation(libs.bundles.arkivanov.decompose)
-            implementation(libs.bundles.ktor.client)
-            implementation(libs.kuuuurt.multiplatform.paging)
-            implementation(libs.sqldelight.coroutines.extensions)
-        }
+        implementation(libs.bundles.arkivanov.decompose)
+        implementation(libs.bundles.ktor.client)
+
+        implementation(libs.kuuuurt.multiplatform.paging)
+        implementation(libs.sqldelight.coroutines.extensions)
     }
 
-    val androidMain by sourceSets.getting {
-        dependencies {
-            implementation(libs.bundles.androidx.activity)
-            implementation(libs.bundles.androidx.paging)
-            implementation(libs.bundles.androidx.viewmodel)
+    val androidMain by dependencies {
+        implementation(libs.bundles.androidx.activity)
+        implementation(libs.bundles.androidx.paging)
+        implementation(libs.bundles.androidx.viewmodel)
 
-            with(libs.google.accompanist) {
-                implementation(flowlayout)
-                implementation(placeholderMaterial)
-                implementation(swiperefresh)
-            }
-
-            implementation(libs.bundles.google.firebase)
+        with(libs.google.accompanist) {
+            implementation(flowlayout)
+            implementation(placeholderMaterial)
+            implementation(swiperefresh)
         }
+
+        implementation(libs.bundles.google.firebase)
+        implementation(libs.bundles.google.maps)
     }
 
-    val jvmMain by sourceSets.getting {
-        dependencies {
-            implementation(libs.bundles.androidx.paging)
-        }
+    val jvmMain by dependencies {
+        implementation(libs.bundles.androidx.paging)
     }
 }
