@@ -10,6 +10,7 @@ dependencies {
     implementation(libs.auth.jwks.rsa)
 
     implementation(libs.bundles.ktor.client)
+    implementation(libs.ktor.client.auth)
 }
 
 val deployAppCheckFunction by tasks.registering(DeployFunctionTask::class) {
@@ -17,11 +18,14 @@ val deployAppCheckFunction by tasks.registering(DeployFunctionTask::class) {
     description = "Deploy app check function to Google Cloud"
     allowUnauthenticated = true
     function = "createToken"
+
+    envVar("APP_CHECK_KEY")
 }
 
 val runAppCheckFunction by tasks.registering(RunFunctionTask::class) {
     target = "io.ashdavies.check.AppCheckFunction"
     description = "Run app check cloud function"
+
     setupClasspath()
 }
 

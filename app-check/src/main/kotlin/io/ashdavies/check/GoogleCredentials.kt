@@ -2,40 +2,67 @@ package io.ashdavies.check
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import com.google.auth.ServiceAccountSigner
 import com.google.auth.oauth2.GoogleCredentials
-import com.google.auth.oauth2.ServiceAccountCredentials
+import com.google.auth.oauth2.UserCredentials
 import com.google.firebase.FirebaseApp
 import com.google.firebase.FirebaseOptions
+import io.ashdavies.check.AppCheckConstants.IAM_V1_ENDPOINT
+import io.ashdavies.http.LocalHttpClient
 import io.ashdavies.playground.cloud.LocalFirebaseApp
 import io.ashdavies.playground.compose.Provides
-import java.security.interfaces.RSAPrivateKey
-import kotlinx.serialization.Serializable
+import io.ktor.client.HttpClient
+import kotlinx.coroutines.runBlocking
 
 private const val GET_CREDENTIALS_METHOD = "getCredentials"
 
 @Provides
 @Composable
-internal inline fun <reified T : GoogleCredentials> rememberGoogleCredentials(app: FirebaseApp = LocalFirebaseApp.current): T {
-    return remember(app.name) { app.options<FirebaseOptions, T>("getCredentials") }
-}
-
-private inline operator fun <reified T : Any, reified R : Any> T.invoke(name: String): R {
-    return T::class.java.getDeclaredMethod(name)
+private fun rememberGoogleCredentials(app: FirebaseApp = LocalFirebaseApp.current): GoogleCredentials = remember(app) {
+    FirebaseOptions::class.java
+        .getDeclaredMethod(GET_CREDENTIALS_METHOD)
         .also { it.isAccessible = true }
-        .invoke(this) as R
+        .invoke(app.options) as GoogleCredentials
 }
 
-@Serializable
-internal data class Credentials(val clientEmail: String, val projectId: String, val privateKey: RSAPrivateKey) {
-    /*constructor(credentials: ComputeEngineCredentials) : this(
-        privateKey = credentials.privateKey as RSAPrivateKey,
-        clientEmail = credentials.clientEmail,
-        projectId = credentials.projectId,
-    )*/
+@Composable
+internal fun rememberAccountSigner(app: FirebaseApp = LocalFirebaseApp.current): ServiceAccountSigner {
+    return when (val credentials: GoogleCredentials = rememberGoogleCredentials(app)) {
+        is UserCredentials -> rememberIamSigner(app)
+        is ServiceAccountSigner -> credentials
+        else -> throw IllegalStateException()
+    }
+}
 
-    constructor(credentials: ServiceAccountCredentials) : this(
-        privateKey = credentials.privateKey as RSAPrivateKey,
-        clientEmail = credentials.clientEmail,
-        projectId = credentials.projectId,
+private class IamSigner(private val client: HttpClient, private val serviceAccountId: String) : ServiceAccountSigner {
+
+    override fun sign(toSign: ByteArray): ByteArray = runBlocking { signBlob(toSign) }
+    override fun getAccount(): String = serviceAccountId
+
+    private suspend fun signBlob(toSign: ByteArray): ByteArray {
+        val urlString = "$IAM_V1_ENDPOINT/-/serviceAccounts/${serviceAccountId}:signBlob"
+        val body = mapOf("payload" to toSign)
+
+        return client
+            .post<Map<String, String>>(urlString, body)
+            .getValue("signedBlob")
+            .toByteArray()
+    }
+}
+
+/**
+ * TODO Debugging is possible here, discover evident credentials for FirebaseApp when debugging function
+ */
+@Composable
+private fun rememberIamSigner(
+    app: FirebaseApp = LocalFirebaseApp.current,
+    client: HttpClient = LocalHttpClient.current
+): ServiceAccountSigner = remember {
+    if (app.options.serviceAccountId == null) {
+        println("WARNING serviceAccountId is null")
+    }
+    IamSigner(
+        serviceAccountId = app.options.serviceAccountId,
+        client = client,
     )
 }

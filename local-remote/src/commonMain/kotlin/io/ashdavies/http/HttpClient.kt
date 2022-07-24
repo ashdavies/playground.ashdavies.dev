@@ -18,7 +18,9 @@ import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.request.request
+import io.ktor.http.ContentType
 import io.ktor.http.URLBuilder
+import io.ktor.http.contentType
 import io.ktor.http.takeFrom
 import io.ktor.http.userAgent
 import io.ktor.serialization.kotlinx.json.json
@@ -48,6 +50,7 @@ private fun DefaultHttpClient(block: HttpClientConfig<*>.() -> Unit = { }): Http
     }
 
     install(DefaultRequest) {
+        contentType(ContentType.Application.Json)
         url(DEFAULT_FUNCTIONS_HOST)
         userAgent(DefaultUserAgent)
     }
@@ -57,7 +60,7 @@ private fun DefaultHttpClient(block: HttpClientConfig<*>.() -> Unit = { }): Http
     }
 
     install(Logging) {
-        level = LogLevel.ALL
+        level = LogLevel.HEADERS
     }
 
     block()

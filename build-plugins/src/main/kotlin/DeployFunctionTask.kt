@@ -6,6 +6,7 @@ public abstract class DeployFunctionTask : Exec() {
     @Input lateinit var entryPoint: String
     @Input lateinit var function: String
 
+    @Input var envVars = emptyMap<String, String>()
     @Input var projectId = "playground-1a136"
     @Input var allowUnauthenticated = false
     @Input var region = "europe-west1"
@@ -36,6 +37,18 @@ public abstract class DeployFunctionTask : Exec() {
             commandLine.add("--allow-unauthenticated")
         }
 
+        if (envVars.isNotEmpty()) {
+            val envVarsAsString: String = envVars
+                .map { "${it.key}=${it.value}" }
+                .joinToString(",")
+
+            commandLine.add("--set-env-vars $envVarsAsString")
+        }
+
         super.exec()
     }
+}
+
+public fun DeployFunctionTask.envVar(name: String, value: String = System.getenv(name)) {
+    envVars += name to value
 }

@@ -7,3 +7,5 @@ public interface Environment {
 
     public companion object Default : Environment by System
 }
+
+public fun Environment.require(key: String): String = requireNotNull(env[key])

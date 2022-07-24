@@ -92,6 +92,7 @@ jetbrains-kotlinx-serialization-properties = { module = "org.jetbrains.kotlinx:k
 johnRengelman-shadow = "gradle.plugin.com.github.johnrengelman:shadow:7.1.2"
 jraf-klibnotion = "org.jraf:klibnotion:1.11.0"
 
+ktor-client-auth = { module = "io.ktor:ktor-client-auth", version.ref = "ktor" }
 ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
 ktor-client-json = { module = "io.ktor:ktor-client-json", version.ref = "ktor" }
@@ -130,7 +131,7 @@ google-maps = ["google-android-maps", "google-maps-android-compose", "google-map
 jetbrains-kotlinx = ["jetbrains-kotlinx-coroutines-core", "jetbrains-kotlinx-datetime", "jetbrains-kotlinx-serialization-core", "jetbrains-kotlinx-serialization-json", "jetbrains-kotlinx-serialization-properties"]
 jetbrains-kotlin-test = ["jetbrains-kotlin-test", "jetbrains-kotlin-test-annotations", "jetbrains-kotlin-test-common", "jetbrains-kotlin-test-junit", "jetbrains-kotlinx-coroutines-test"]
 ktor-client = ["ktor-client-okhttp3", "ktor-client-content-negotiation", "ktor-client-core", "ktor-client-json", "ktor-client-logging", "ktor-serialization-json", "ktor-serialization-kotlinx", "slf4j-simple"]
-ktor-server = ["ktor-serialization-json", "ktor-serialization-kotlinx", "ktor-server-auth", "ktor-server-call-logging", "ktor-server-cio", "ktor-server-core", "ktor-server-html-builder"]
+ktor-server = ["ktor-client-auth", "ktor-serialization-json", "ktor-serialization-kotlinx", "ktor-server-auth", "ktor-server-call-logging", "ktor-server-cio", "ktor-server-core", "ktor-server-html-builder"]
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "google.android" }

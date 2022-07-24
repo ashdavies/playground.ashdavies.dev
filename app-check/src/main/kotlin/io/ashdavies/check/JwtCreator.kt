@@ -19,8 +19,8 @@ internal object PublicClaims : com.auth0.jwt.impl.PublicClaims {
     const val SCOPE = "scope"
 }
 
-internal fun Jwt.create(algorithm: Algorithm, config: JwtOptions.() -> Unit = {}): String {
-    return with(JwtOptions().apply(config)) {
+internal fun Jwt.create(algorithm: Algorithm, config: (JwtOptions) -> Unit = {}): String {
+    return with(JwtOptions().also(config)) {
         JWT.create()
             .withClaim(PublicClaims.APP_ID, appId)
             .withExpiresAt(expiresAt.toJavaDate())

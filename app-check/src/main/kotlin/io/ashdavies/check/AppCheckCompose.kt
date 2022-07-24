@@ -10,10 +10,12 @@ import androidx.compose.ui.window.ApplicationScope
 import com.auth0.jwt.algorithms.Algorithm
 import com.google.cloud.functions.HttpRequest
 import com.google.cloud.functions.HttpResponse
+import io.ashdavies.http.LocalHttpClient
 import io.ashdavies.playground.cloud.HttpException
 import io.ashdavies.playground.cloud.LocalApplicationScope
 import io.ashdavies.playground.cloud.LocalHttpRequest
 import io.ashdavies.playground.cloud.LocalHttpResponse
+import io.ktor.client.HttpClient
 
 @Composable
 public fun AppCheck(verify: Boolean = false, content: @Composable () -> Unit) {
@@ -43,11 +45,12 @@ public fun AppCheck(verify: Boolean = false, content: @Composable () -> Unit) {
 }
 
 @Composable
-public fun rememberAppCheck(algorithm: Algorithm = rememberAlgorithm()): AppCheck {
-    return rememberAppCheck(rememberAppCheckClient(), algorithm)
-}
-
-@Composable
-internal fun rememberAppCheck(client: AppCheckClient, algorithm: Algorithm = rememberAlgorithm()): AppCheck {
-    return remember(client, algorithm) { AppCheck(client, algorithm) }
+internal fun rememberAppCheck(
+    client: HttpClient = LocalHttpClient.current,
+    algorithm: Algorithm = rememberAlgorithm(),
+): AppCheck = remember(client, algorithm) {
+    AppCheck(
+        algorithm = algorithm,
+        client = client,
+    )
 }

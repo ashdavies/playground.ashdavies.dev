@@ -1,36 +1,40 @@
 package io.ashdavies.check
 
-import com.google.auth.oauth2.ServiceAccountCredentials
+import com.google.auth.ServiceAccountSigner
 import com.google.cloud.functions.HttpFunction
+import com.google.firebase.FirebaseApp
 import io.ashdavies.check.AppCheckConstants.APP_CHECK_ENDPOINT
-import io.ashdavies.check.AppCheckConstants.APP_CHECK_TOKEN_KEY
-import io.ashdavies.playground.cloud.HttpApplication
+import io.ashdavies.check.AppCheckConstants.APP_CHECK_KEY
 import io.ashdavies.playground.cloud.HttpEffect
 import io.ashdavies.playground.cloud.HttpException
+import io.ashdavies.playground.cloud.LocalFirebaseApp
 import kotlinx.datetime.Clock.System.now
 import kotlin.time.Duration.Companion.hours
 
-internal class AppCheckFunction : HttpFunction by HttpApplication({
-    val credentials: ServiceAccountCredentials = rememberGoogleCredentials()
-    val request: AppCheckRequest = rememberAppCheckRequest()
+private val AppCheckQuery.projectNumber: String
+    get() = appId.split(":")[1]
+
+@Suppress("unused")
+internal class AppCheckFunction : HttpFunction by AuthorizedHttpApplication({
+    val signer: ServiceAccountSigner = rememberAccountSigner()
+    val query: AppCheckQuery = rememberAppCheckRequest()
+    val app: FirebaseApp = LocalFirebaseApp.current
     val appCheck: AppCheck = rememberAppCheck()
 
     HttpEffect {
-        if (request.token != System.getenv(APP_CHECK_TOKEN_KEY)) {
+        if (query.appKey != System.getenv(APP_CHECK_KEY)) {
             throw HttpException.Forbidden("Bad authenticity")
         }
 
+        val request = AppCheckToken.Request.Raw(query.appId, app.options.projectId)
         val token = appCheck.createToken(request) {
-            issuer = credentials.clientEmail
-            expiresAt = now() + 1.hours
-            appId = request.appId
+            it.expiresAt = now() + 1.hours
+            it.issuer = signer.account
+            it.appId = request.appId
         }.token
 
         appCheck
-            .verifyToken(token) { issuer = "${APP_CHECK_ENDPOINT}${request.projectNumber}"}
+            .verifyToken(token) { issuer = "${APP_CHECK_ENDPOINT}${query.projectNumber}" }
             .token
     }
 })
-
-private val AppCheckRequest.projectNumber: String
-    get() = appId.split(":")[1]
