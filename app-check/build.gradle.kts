@@ -11,6 +11,9 @@ dependencies {
 
     implementation(libs.bundles.ktor.client)
     implementation(libs.ktor.client.auth)
+
+    testImplementation(libs.bundles.ktor.client)
+    testImplementation(libs.google.cloud.javaFunctionInvoker)
 }
 
 val deployAppCheckFunction by tasks.registering(DeployFunctionTask::class) {
@@ -20,17 +23,6 @@ val deployAppCheckFunction by tasks.registering(DeployFunctionTask::class) {
     function = "createToken"
 
     envVar("APP_CHECK_KEY")
-}
-
-val runAppCheckFunction by tasks.registering(RunFunctionTask::class) {
-    target = "io.ashdavies.check.AppCheckFunction"
-    description = "Run app check cloud function"
-
-    setupClasspath()
-}
-
-fun RunFunctionTask.setupClasspath() = doFirst {
-    sourceSets.main.configure { args("--classpath", files(configurations.runtimeClasspath, output).asPath) }
 }
 
 /*configurations.configureEach {

@@ -34,8 +34,8 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.contextual
 
-private const val DEFAULT_FUNCTIONS_HOST = "https://europe-west1-playground-1a136.cloudfunctions.net/"
-private const val LOCAL_FUNCTIONS_HOST = "http://localhost:5001/"
+private const val DEFAULT_FUNCTIONS_HOST =
+    "https://europe-west1-playground-1a136.cloudfunctions.net/"
 
 private val DefaultUserAgent: String
     get() = "${Software.clientName} (${Software.productName}; ${Software.buildVersion})"

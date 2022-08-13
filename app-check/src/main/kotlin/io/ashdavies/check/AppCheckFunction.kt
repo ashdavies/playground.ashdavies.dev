@@ -11,10 +11,6 @@ import io.ashdavies.playground.cloud.LocalFirebaseApp
 import kotlinx.datetime.Clock.System.now
 import kotlin.time.Duration.Companion.hours
 
-private val AppCheckQuery.projectNumber: String
-    get() = appId.split(":")[1]
-
-@Suppress("unused")
 internal class AppCheckFunction : HttpFunction by AuthorizedHttpApplication({
     val signer: ServiceAccountSigner = rememberAccountSigner()
     val query: AppCheckQuery = rememberAppCheckRequest()
@@ -27,6 +23,8 @@ internal class AppCheckFunction : HttpFunction by AuthorizedHttpApplication({
         }
 
         val request = AppCheckToken.Request.Raw(query.appId, app.options.projectId)
+        val projectNumber = query.appId.split(":")[1]
+
         val token = appCheck.createToken(request) {
             it.expiresAt = now() + 1.hours
             it.issuer = signer.account
@@ -34,7 +32,7 @@ internal class AppCheckFunction : HttpFunction by AuthorizedHttpApplication({
         }.token
 
         appCheck
-            .verifyToken(token) { issuer = "${APP_CHECK_ENDPOINT}${query.projectNumber}" }
+            .verifyToken(token) { issuer = "${APP_CHECK_ENDPOINT}${projectNumber}" }
             .token
     }
 })
