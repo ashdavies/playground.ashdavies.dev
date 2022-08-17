@@ -1,3 +1,5 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+
 plugins {
     // id("compose-constructor")
     `cloud-function`
@@ -13,6 +15,7 @@ dependencies {
     implementation(libs.ktor.client.auth)
 
     testImplementation(libs.bundles.ktor.client)
+    testImplementation(libs.jetbrains.kotlinx.coroutines.test)
     testImplementation(libs.google.cloud.javaFunctionInvoker)
 }
 

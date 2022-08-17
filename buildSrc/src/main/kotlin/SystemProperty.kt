@@ -7,7 +7,7 @@ private const val String = "String"
 public typealias StringDelegateProvider = PropertyDelegateProvider<Any?, ReadOnlyProperty<Any?, String>>
 
 public fun <T> T.SystemProperty(
-    block: T.(type: String, name: String, value: String) -> Unit,
+    block: T.(type: String, name: String, value: String) -> Unit = { _, _, _ -> },
     value: (String) -> String = System::getenv,
 ) = PropertyDelegateProvider<Any?, ReadOnlyProperty<Any?, String>> { _, property ->
     val name = CaseFormat.LowerCamel(property.name).toUpperSnake()

@@ -10,7 +10,7 @@ import java.security.interfaces.RSAPrivateKey
 import java.security.interfaces.RSAPublicKey
 import com.auth0.jwt.algorithms.Algorithm as JwtAlgorithm
 
-private object EmptyProvider : RSAKeyProvider {
+private object EmptyKeyProvider : RSAKeyProvider {
     override fun getPublicKeyById(keyId: String): RSAPublicKey? = null
     override fun getPrivateKey(): RSAPrivateKey? = null
     override fun getPrivateKeyId(): String? = null
@@ -19,10 +19,13 @@ private object EmptyProvider : RSAKeyProvider {
 @Suppress("OVERRIDE_DEPRECATION")
 internal class GoogleAlgorithm(private val signer: ServiceAccountSigner) : RsaAlgorithm() {
     override fun sign(contentBytes: ByteArray): ByteArray = signer.sign(contentBytes)
-    override fun verify(jwt: DecodedJWT) = throw IllegalStateException()
+    override fun verify(jwt: DecodedJWT) {
+        RSA256(EmptyKeyProvider).verify(jwt)
+        throw IllegalStateException("Not Implemented")
+    }
 }
 
-internal abstract class RsaAlgorithm(from: JwtAlgorithm = RSA256(EmptyProvider)) : JwtAlgorithm(from.name, "$from")
+internal abstract class RsaAlgorithm(val from: JwtAlgorithm = RSA256(EmptyKeyProvider)) : JwtAlgorithm(from.name, "$from")
 
 @Provides
 @Composable

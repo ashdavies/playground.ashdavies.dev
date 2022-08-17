@@ -1,20 +1,19 @@
 package io.ashdavies.check
 
 import com.google.auth.ServiceAccountSigner
+import com.google.auth.oauth2.ServiceAccountCredentials
 import com.google.cloud.functions.HttpFunction
-import com.google.firebase.FirebaseApp
 import io.ashdavies.check.AppCheckConstants.APP_CHECK_ENDPOINT
 import io.ashdavies.check.AppCheckConstants.APP_CHECK_KEY
 import io.ashdavies.playground.cloud.HttpEffect
 import io.ashdavies.playground.cloud.HttpException
-import io.ashdavies.playground.cloud.LocalFirebaseApp
 import kotlinx.datetime.Clock.System.now
 import kotlin.time.Duration.Companion.hours
 
 internal class AppCheckFunction : HttpFunction by AuthorizedHttpApplication({
+    val credentials: ServiceAccountCredentials = rememberGoogleCredentials() as ServiceAccountCredentials
     val signer: ServiceAccountSigner = rememberAccountSigner()
     val query: AppCheckQuery = rememberAppCheckRequest()
-    val app: FirebaseApp = LocalFirebaseApp.current
     val appCheck: AppCheck = rememberAppCheck()
 
     HttpEffect {
@@ -22,7 +21,7 @@ internal class AppCheckFunction : HttpFunction by AuthorizedHttpApplication({
             throw HttpException.Forbidden("Bad authenticity")
         }
 
-        val request = AppCheckToken.Request.Raw(query.appId, app.options.projectId)
+        val request = AppCheckToken.Request.Raw(query.appId, credentials.projectId)
         val projectNumber = query.appId.split(":")[1]
 
         val token = appCheck.createToken(request) {
@@ -31,8 +30,8 @@ internal class AppCheckFunction : HttpFunction by AuthorizedHttpApplication({
             it.appId = request.appId
         }.token
 
-        appCheck
-            .verifyToken(token) { issuer = "${APP_CHECK_ENDPOINT}${projectNumber}" }
-            .token
+        appCheck.verifyToken(token) {
+            issuer = "${APP_CHECK_ENDPOINT}${projectNumber}"
+        }.token
     }
 })
