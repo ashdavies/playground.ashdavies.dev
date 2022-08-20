@@ -5,6 +5,7 @@ import io.ashdavies.http.catch
 import io.ashdavies.playground.cloud.HttpException
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
+import io.ktor.client.request.header
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.client.statement.HttpResponse
@@ -14,7 +15,11 @@ internal val HttpStatusCode.isError: Boolean
     get() = value in (400 until 600)
 
 internal suspend inline fun <reified T> HttpClient.post(urlString: String, body: Any?): T = runCatching {
-    val response: HttpResponse = post(urlString) { setBody(body) }
+    val response: HttpResponse = post(urlString) {
+        header("X-Firebase-Client", "fire-admin-node/10.2.0")
+        setBody(body);
+    }
+
     if (response.status.isError) throw HttpException(response)
     return@runCatching response.body<T>()
 } catch { it: JWTVerificationException ->

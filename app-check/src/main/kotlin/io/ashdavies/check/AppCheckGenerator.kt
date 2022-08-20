@@ -1,10 +1,11 @@
 package io.ashdavies.check
 
 import com.auth0.jwt.algorithms.Algorithm
-import io.ashdavies.check.AppCheckConstants.APP_CHECK_V1_API
 import io.ashdavies.check.AppCheckToken.Request
 import io.ashdavies.check.AppCheckToken.Response
 import io.ktor.client.HttpClient
+
+private const val APP_CHECK_V1_API = "https://firebaseappcheck.googleapis.com/v1/projects"
 
 internal fun interface AppCheckGenerator {
     suspend fun createToken(request: Request.Raw, config: (JwtOptions) -> Unit): Response.Normalised

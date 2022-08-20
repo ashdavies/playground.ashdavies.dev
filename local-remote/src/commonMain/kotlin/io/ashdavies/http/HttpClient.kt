@@ -60,7 +60,7 @@ private fun DefaultHttpClient(block: HttpClientConfig<*>.() -> Unit = { }): Http
     }
 
     install(Logging) {
-        level = LogLevel.HEADERS
+        level = LogLevel.ALL
     }
 
     block()

@@ -1,5 +1,3 @@
-import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
-
 plugins {
     // id("compose-constructor")
     `cloud-function`
@@ -17,6 +15,11 @@ dependencies {
     testImplementation(libs.bundles.ktor.client)
     testImplementation(libs.jetbrains.kotlinx.coroutines.test)
     testImplementation(libs.google.cloud.javaFunctionInvoker)
+}
+
+kotlin {
+    sourceSets.all { languageSettings.optIn("kotlin.RequiresOptIn") }
+    explicitApiWarning()
 }
 
 val deployAppCheckFunction by tasks.registering(DeployFunctionTask::class) {

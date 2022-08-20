@@ -18,7 +18,7 @@ import io.ashdavies.http.require
 import io.ktor.client.HttpClient
 import kotlinx.serialization.Serializable
 
-private const val X_FIREBASE_APP_CHECK = "X-FIREBASE-AppCheck"
+private const val X_FIREBASE_APP_CHECK = "X-Firebase-AppCheck"
 
 /**
  * TODO: Use property delegate to omit path("createToken") from request
