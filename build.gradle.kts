@@ -34,6 +34,7 @@ doctor {
 }
 
 spotless {
+    val ktlintVersion: String = libs.versions.pinterest.ktlint.get()
     fun FormatExtension.kotlinDefault(extension: String = "kt") {
         targetExclude("**/build/**/*.$extension")
         target("src/**/*.$extension")
@@ -42,12 +43,12 @@ spotless {
     }
 
     kotlinGradle {
-        ktlint("0.45.2").userData(mapOf("android" to "true"))
+        ktlint(ktlintVersion).userData(mapOf("android" to "true"))
         kotlinDefault("kts")
     }
 
     kotlin {
-        ktlint("0.45.2").userData(mapOf("android" to "true"))
+        ktlint(ktlintVersion).userData(mapOf("android" to "true"))
         kotlinDefault("kt")
     }
 }
