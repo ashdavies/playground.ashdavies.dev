@@ -34,37 +34,44 @@ doctor {
 }
 
 spotless {
+    fun FormatExtension.kotlinDefault(extension: String = "kt") {
+        targetExclude("**/build/**/*.$extension")
+        target("src/**/*.$extension")
+        trimTrailingWhitespace()
+        endWithNewline()
+    }
+
     kotlinGradle {
         ktlint("0.45.2").userData(mapOf("android" to "true"))
-        kotlinDefault()
+        kotlinDefault("kts")
     }
 
     kotlin {
         ktlint("0.45.2").userData(mapOf("android" to "true"))
-        kotlinDefault()
+        kotlinDefault("kt")
     }
 }
 
 versionCatalogUpdate {
-    pin { libraries.addAll(libs.android.tools.build.gradle, libs.jetbrains.kotlin.gradle.plugin) }
-}
-
-fun isUnstable(version: String): Boolean {
-    val unstableKeywords = listOf("ALPHA", "BETA", "RC")
-    val upperVersion = version.toUpperCase()
-
-    return unstableKeywords.any {
-        upperVersion.contains(it)
+    pin {
+        libraries.addAll(
+            libs.android.tools.build.gradle,
+            libs.jetbrains.kotlin.gradle.plugin
+        )
     }
 }
 
-fun FormatExtension.kotlinDefault() {
-    targetExclude("**/build/**/*.kt")
-    target("src/**/*.kt")
-    trimTrailingWhitespace()
-    endWithNewline()
-}
-
 tasks.withType<DependencyUpdatesTask> {
-    rejectVersionIf { isUnstable(candidate.version) }
+    fun isUnstable(version: String): Boolean {
+        val unstableKeywords = listOf("ALPHA", "BETA", "RC")
+        val upperVersion = version.toUpperCase()
+
+        return unstableKeywords.any {
+            upperVersion.contains(it)
+        }
+    }
+
+    rejectVersionIf {
+        isUnstable(candidate.version)
+    }
 }
