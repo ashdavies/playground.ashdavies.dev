@@ -1,6 +1,7 @@
 // https://youtrack.jetbrains.com/issue/KTIJ-19369
 @file:Suppress("DSL_SCOPE_VIOLATION", "UnstableApiUsage")
 
+import com.diffplug.gradle.spotless.FormatExtension
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 
 buildscript {
@@ -19,9 +20,9 @@ buildscript {
 }
 
 plugins {
+    alias(libs.plugins.diffplug.spotless)
     alias(libs.plugins.jetbrains.kotlinx.kover)
     alias(libs.plugins.gradle.doctor)
-    alias(libs.plugins.gradle.ktlint)
     alias(libs.plugins.versions)
     alias(libs.plugins.version.catalog.update)
 }
@@ -29,10 +30,23 @@ plugins {
 doctor {
     allowBuildingAllAndroidAppsSimultaneously.set(true)
     disallowCleanTaskDependencies.set(false)
+    javaHome { failOnError.set(false) }
+}
 
-    javaHome {
-        failOnError.set(false)
+spotless {
+    kotlinGradle {
+        ktlint("0.45.2").userData(mapOf("android" to "true"))
+        kotlinDefault()
     }
+
+    kotlin {
+        ktlint("0.45.2").userData(mapOf("android" to "true"))
+        kotlinDefault()
+    }
+}
+
+versionCatalogUpdate {
+    pin { libraries.addAll(libs.android.tools.build.gradle, libs.jetbrains.kotlin.gradle.plugin) }
 }
 
 fun isUnstable(version: String): Boolean {
@@ -44,10 +58,13 @@ fun isUnstable(version: String): Boolean {
     }
 }
 
-tasks.withType<DependencyUpdatesTask> {
-    rejectVersionIf { isUnstable(candidate.version) }
+fun FormatExtension.kotlinDefault() {
+    targetExclude("**/build/**/*.kt")
+    target("src/**/*.kt")
+    trimTrailingWhitespace()
+    endWithNewline()
 }
 
-versionCatalogUpdate {
-    pin { libraries.addAll(libs.android.tools.build.gradle, libs.jetbrains.kotlin.gradle.plugin) }
+tasks.withType<DependencyUpdatesTask> {
+    rejectVersionIf { isUnstable(candidate.version) }
 }
