@@ -1,4 +1,9 @@
-@file:Suppress("DSL_SCOPE_VIOLATION", "UnstableApiUsage") // https://youtrack.jetbrains.com/issue/KTIJ-19369
+@file:Suppress("DSL_SCOPE_VIOLATION", "UnstableApiUsage")
+
+import org.jetbrains.kotlin.gradle.plugin.HasKotlinDependencies
+import org.jetbrains.kotlin.gradle.plugin.KotlinDependencyHandler
+
+// https://youtrack.jetbrains.com/issue/KTIJ-19369
 
 plugins {
     `multiplatform-application`
@@ -14,27 +19,23 @@ kotlin {
 
             implementation(libs.bundles.ktor.client)
             implementation(libs.kuuuurt.multiplatform.paging)
+            implementation(libs.molecule.runtime)
         }
     }
 
-    sourceSets {
-        val androidMain by getting {
-            dependencies {
-                implementation(libs.bundles.androidx.activity)
+    val androidMain by sourceSets.dependencies {
+        implementation(libs.bundles.androidx.activity)
+        implementation(libs.bundles.google.firebase)
 
-                with(libs.google.accompanist) {
-                    implementation(placeholderMaterial)
-                    implementation(swiperefresh)
-                }
+        implementation(libs.google.accompanist.placeholderMaterial)
+        implementation(libs.google.accompanist.swiperefresh)
+    }
 
-                implementation(libs.bundles.google.firebase)
-            }
-        }
-
-        val androidTest by getting {
-            dependencies {
-                implementation(libs.molecule.testing)
-            }
-        }
+    val androidTest by sourceSets.dependencies {
+        implementation(libs.molecule.testing)
     }
 }
+
+fun <T : HasKotlinDependencies> NamedDomainObjectContainer<T>.dependencies(
+    configuration: KotlinDependencyHandler.() -> Unit
+) = getting { dependencies(configuration) }

@@ -2,6 +2,9 @@ package io.ashdavies.playground.kingdom
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import com.arkivanov.essenty.parcelable.Parcelable
+import com.arkivanov.essenty.parcelable.Parcelize
 import io.ashdavies.http.LocalHttpClient
 import io.ashdavies.http.filterIsSuccess
 import io.ashdavies.http.parameter
@@ -12,7 +15,10 @@ import io.ashdavies.playground.DominionRequest
 import io.ashdavies.playground.serialization.getContent
 import io.ashdavies.playground.serialization.getOrThrow
 import io.ktor.client.HttpClient
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
+import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
@@ -27,10 +33,10 @@ private val JsonElement.hasImageInfo: Boolean
 private val JsonElement.isKingdomCards: Boolean
     get() = getContent("line") == "Kingdom cards"
 
-private fun String.encoded(): String =
-    replace(" ", "_").replace("'", "%27")
+private fun String.encoded(): String = replace(" ", "_")
+    .replace("'", "%27")
 
-internal class KingdomViewModel(private val client: HttpClient) {
+internal class KingdomViewModel(private val scope: CoroutineScope, private val client: HttpClient) {
 
     private val JsonObject.section: String
         get() = getOrThrow<JsonObject>("parse")
@@ -74,11 +80,30 @@ internal class KingdomViewModel(private val client: HttpClient) {
             .associateWith { name -> images.firstOrNull { name.encoded() in it } }
             .map { DominionCard(expansion, it.key, it.value) }
     }
+
+    fun getViewStateFlow(expansion: DominionExpansion): StateFlow<KingdomViewState> = TODO()
+}
+
+@Serializable
+internal sealed interface KingdomViewState : Parcelable {
+
+    @Parcelize
+    @Serializable
+    object Ready : KingdomViewState
+
+    @Parcelize
+    @Serializable
+    object Loading : KingdomViewState
+
+    @Parcelize
+    @Serializable
+    data class Success(val value: List<DominionCard>)
 }
 
 @Composable
 internal fun rememberKingdomViewModel(
-    client: HttpClient = LocalHttpClient.current
+    scope: CoroutineScope = rememberCoroutineScope(),
+    client: HttpClient = LocalHttpClient.current,
 ): KingdomViewModel = remember(client) {
-    KingdomViewModel(client)
+    KingdomViewModel(scope, client)
 }

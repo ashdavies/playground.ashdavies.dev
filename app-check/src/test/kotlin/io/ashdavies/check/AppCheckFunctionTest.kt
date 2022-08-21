@@ -13,14 +13,14 @@ internal class AppCheckFunctionTest {
     private val appCheckKey get() = requireNotNull(System.getenv("APP_CHECK_KEY"))
 
     @Test
-    fun `should ping server`() = startServer<AppCheckFunction> { client ->
+    fun `app attestation should fail`() = startServer<AppCheckFunction> { client ->
         val response: HttpResponse = client.get {
             parameter("appId", serviceAccountId)
             parameter("appKey", appCheckKey)
         }
 
         assertEquals(
-            HttpStatusCode.OK,
+            HttpStatusCode.Forbidden,
             response.status,
         )
     }
