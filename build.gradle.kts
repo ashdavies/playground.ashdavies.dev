@@ -43,12 +43,20 @@ spotless {
     }
 
     kotlinGradle {
-        ktlint(ktlintVersion).userData(mapOf("android" to "true"))
+        ktlint(ktlintVersion)
+            .editorConfigOverride(mapOf("disabled_rules" to "filename"))
+            .userData(mapOf("android" to "true"))
+            .setUseExperimental(true)
+
         kotlinDefault("kts")
     }
 
     kotlin {
-        ktlint(ktlintVersion).userData(mapOf("android" to "true"))
+        ktlint(ktlintVersion)
+            .editorConfigOverride(mapOf("disabled_rules" to "filename"))
+            .userData(mapOf("android" to "true"))
+            .setUseExperimental(true)
+
         kotlinDefault("kt")
     }
 }
