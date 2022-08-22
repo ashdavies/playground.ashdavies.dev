@@ -1,6 +1,7 @@
 // https://youtrack.jetbrains.com/issue/KTIJ-19369
 @file:Suppress("DSL_SCOPE_VIOLATION", "UnstableApiUsage")
 
+import com.diffplug.gradle.spotless.FormatExtension
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 
 buildscript {
@@ -19,9 +20,9 @@ buildscript {
 }
 
 plugins {
+    alias(libs.plugins.diffplug.spotless)
     alias(libs.plugins.jetbrains.kotlinx.kover)
     alias(libs.plugins.gradle.doctor)
-    alias(libs.plugins.gradle.ktlint)
     alias(libs.plugins.versions)
     alias(libs.plugins.version.catalog.update)
 }
@@ -29,25 +30,57 @@ plugins {
 doctor {
     allowBuildingAllAndroidAppsSimultaneously.set(true)
     disallowCleanTaskDependencies.set(false)
+    javaHome { failOnError.set(false) }
+}
 
-    javaHome {
-        failOnError.set(false)
+spotless {
+    val ktlintVersion: String = libs.versions.pinterest.ktlint.get()
+    fun FormatExtension.kotlinDefault(extension: String = "kt") {
+        targetExclude("**/build/**/*.$extension")
+        target("src/**/*.$extension")
+        trimTrailingWhitespace()
+        endWithNewline()
+    }
+
+    kotlinGradle {
+        ktlint(ktlintVersion)
+            .editorConfigOverride(mapOf("disabled_rules" to "filename"))
+            .userData(mapOf("android" to "true"))
+            .setUseExperimental(true)
+
+        kotlinDefault("kts")
+    }
+
+    kotlin {
+        ktlint(ktlintVersion)
+            .editorConfigOverride(mapOf("disabled_rules" to "filename"))
+            .userData(mapOf("android" to "true"))
+            .setUseExperimental(true)
+
+        kotlinDefault("kt")
     }
 }
 
-fun isUnstable(version: String): Boolean {
-    val unstableKeywords = listOf("ALPHA", "BETA", "RC")
-    val upperVersion = version.toUpperCase()
-
-    return unstableKeywords.any {
-        upperVersion.contains(it)
+versionCatalogUpdate {
+    pin {
+        libraries.addAll(
+            libs.android.tools.build.gradle,
+            libs.jetbrains.kotlin.gradle.plugin
+        )
     }
 }
 
 tasks.withType<DependencyUpdatesTask> {
-    rejectVersionIf { isUnstable(candidate.version) }
-}
+    fun isUnstable(version: String): Boolean {
+        val unstableKeywords = listOf("ALPHA", "BETA", "RC")
+        val upperVersion = version.toUpperCase()
 
-versionCatalogUpdate {
-    pin { libraries.addAll(libs.android.tools.build.gradle, libs.jetbrains.kotlin.gradle.plugin) }
+        return unstableKeywords.any {
+            upperVersion.contains(it)
+        }
+    }
+
+    rejectVersionIf {
+        isUnstable(candidate.version)
+    }
 }
