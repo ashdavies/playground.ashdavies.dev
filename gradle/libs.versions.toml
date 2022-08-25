@@ -6,7 +6,8 @@ arkivanov-decompose = "0.6.0"
 cash-molecule = "0.2.0"
 google-accompanist = "0.23.1"
 google-android = "7.0.4"
-jetbrains-compose = "1.2.0-alpha01-dev667" # Unstable until 1.2.0-alpha01-dev686 (ClassNotFoundException: CallUtilKt)
+google-auto = "1.0.1"
+jetbrains-compose = "1.2.0-alpha01-dev667"
 jetbrains-kotlin = "1.6.10"
 kotlinx-coroutines = "1.6.1"
 kotlinx-serialization = "1.3.2"
@@ -43,6 +44,8 @@ auth-jwks-rsa = "com.auth0:jwks-rsa:0.21.1"
 coroutine-dispatcher-core = "com.rickbusarow.dispatch:dispatch-core:1.0.0-beta10"
 fusesource-jansi = "org.fusesource.jansi:jansi:2.0.1"
 
+google-auto-service = { module = "com.google.auto.service:auto-service", version.ref = "google-auto" }
+google-auto-service-annotations = { module = "com.google.auto.service:auto-service-annotations", version.ref = "google-auto" }
 google-accompanist-flowlayout = { module = "com.google.accompanist:accompanist-flowlayout", version.ref = "google-accompanist" }
 google-accompanist-placeholderMaterial = { module = "com.google.accompanist:accompanist-placeholder-material", version.ref = "google-accompanist" }
 google-accompanist-swiperefresh = { module = "com.google.accompanist:accompanist-swiperefresh", version.ref = "google-accompanist" }
@@ -60,7 +63,9 @@ jakeWharton-mosaic = "com.jakewharton.mosaic:mosaic-runtime:0.1.0"
 
 jetbrains-compose-gradle-plugin = { module = "org.jetbrains.compose:compose-gradle-plugin", version.ref = "jetbrains-compose" }
 jetbrains-compose-runtime = { module = "org.jetbrains.compose.runtime:runtime", version.ref = "jetbrains-compose" }
+jetbrains-kotlin-compiler-embeddable = { module = "org.jetbrains.kotlin:kotlin-compiler-embeddable", version.ref = "jetbrains-kotlin" }
 jetbrains-kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "jetbrains-kotlin" }
+jetbrains-kotlin-gradle-plugin-api = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "jetbrains-kotlin" }
 jetbrains-kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "jetbrains-kotlin" }
 jetbrains-kotlin-serialization-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-serialization", version.ref = "jetbrains-kotlin" }
 jetbrains-kotlin-test-annotations = { module = "org.jetbrains.kotlin:kotlin-test-annotations-common", version.ref = "jetbrains-kotlin" }
@@ -105,6 +110,8 @@ sqldelight-kotlin-gradle-plugin = { module = "com.squareup.sqldelight:gradle-plu
 sqldelight-runtime = { module = "com.squareup.sqldelight:runtime", version.ref = "squareup-sqldelight" }
 sqldelight-sqlite-driver = { module = "com.squareup.sqldelight:sqlite-driver", version.ref = "squareup-sqldelight" }
 
+tschuchortdev-kotlin-compile-testing = "com.github.tschuchortdev:kotlin-compile-testing:1.4.9"
+
 [bundles]
 androidx-activity = ["androidx-activity-compose", "androidx-activity-ktx"]
 androidx-paging = ["androidx-paging-compose", "androidx-paging-runtime"]
@@ -122,6 +129,8 @@ android-library = { id = "com.android.library", version.ref = "google.android" }
 cash-molecule = { id = "app.cash.molecule", version.ref = "cash-molecule" }
 diffplug-spotless = "com.diffplug.spotless:6.9.1"
 gradle-doctor = "com.osacky.doctor:0.8.0"
+gradle-publish = "com.gradle.plugin-publish:0.11.0"
+jetbrains-dokka = "org.jetbrains.dokka:0.10.0"
 jetbrains-kotlinx-kover = { id = "org.jetbrains.kotlinx.kover", version = "0.5.0" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "jetbrains-kotlin" }
 jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrains-kotlin" }

@@ -64,8 +64,8 @@ spotless {
 versionCatalogUpdate {
     pin {
         libraries.addAll(
-            libs.android.tools.build.gradle,
-            libs.jetbrains.kotlin.gradle.plugin
+            libs.jetbrains.kotlin.gradle.plugin.asProvider(), // Unstable until 1.2.0-alpha01-dev686
+            libs.android.tools.build.gradle, // Compatibility with JetBrains Compose Plugin
         )
     }
 }

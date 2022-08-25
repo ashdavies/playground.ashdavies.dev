@@ -15,7 +15,16 @@ include(
     ":version-catalog",
 )
 
-includeBuild("build-plugins")
+include(
+    ":compose-constructor:plugin-common",
+    ":compose-constructor:plugin-gradle",
+    ":compose-constructor:plugin-native",
+    ":compose-constructor:plugin-runtime"
+)
+
+includeBuild(
+    "build-plugins"
+)
 
 gradleEnterprise {
     buildScan {
