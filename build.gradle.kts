@@ -1,6 +1,6 @@
 @file:Suppress("DSL_SCOPE_VIOLATION", "UnstableApiUsage") // https://youtrack.jetbrains.com/issue/KTIJ-19369
 
-import com.diffplug.gradle.spotless.FormatExtension
+// import com.diffplug.gradle.spotless.FormatExtension
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 
 buildscript {
@@ -19,7 +19,7 @@ buildscript {
 }
 
 plugins {
-    alias(libs.plugins.diffplug.spotless)
+    // alias(libs.plugins.diffplug.spotless)
     alias(libs.plugins.jetbrains.kotlinx.kover)
     alias(libs.plugins.gradle.doctor)
     alias(libs.plugins.versions)
@@ -32,34 +32,33 @@ doctor {
     javaHome { failOnError.set(false) }
 }
 
-spotless {
-    val ktlintVersion: String = libs.versions.pinterest.ktlint.get()
-    fun FormatExtension.kotlinDefault(extension: String = "kt") {
-        targetExclude("**/build/**")
-        // target("**/*.$extension")
-        target("src/**/*.$extension")
-        trimTrailingWhitespace()
-        endWithNewline()
-    }
-
-    kotlinGradle {
-        ktlint(ktlintVersion)
-            .editorConfigOverride(mapOf("disabled_rules" to "filename"))
-            .userData(mapOf("android" to "true"))
-            .setUseExperimental(true)
-
-        kotlinDefault("kts")
-    }
-
-    kotlin {
-        ktlint(ktlintVersion)
-            .editorConfigOverride(mapOf("disabled_rules" to "filename"))
-            .userData(mapOf("android" to "true"))
-            .setUseExperimental(true)
-
-        kotlinDefault("kt")
-    }
-}
+// spotless {
+//     val ktlintVersion: String = libs.versions.pinterest.ktlint.get()
+//     fun FormatExtension.kotlinDefault(extension: String = "kt") {
+//         targetExclude("**/build/**")
+//         target("src/**/*.$extension")
+//         trimTrailingWhitespace()
+//         endWithNewline()
+//     }
+//
+//     kotlinGradle {
+//         ktlint(ktlintVersion)
+//             .editorConfigOverride(mapOf("disabled_rules" to "filename"))
+//             .userData(mapOf("android" to "true"))
+//             .setUseExperimental(true)
+//
+//         kotlinDefault("kts")
+//     }
+//
+//     kotlin {
+//         ktlint(ktlintVersion)
+//             .editorConfigOverride(mapOf("disabled_rules" to "filename"))
+//             .userData(mapOf("android" to "true"))
+//             .setUseExperimental(true)
+//
+//         kotlinDefault("kt")
+//     }
+// }
 
 versionCatalogUpdate {
     pin {
