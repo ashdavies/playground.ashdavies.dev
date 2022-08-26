@@ -6,9 +6,10 @@ import com.auth0.jwt.algorithms.Algorithm
 import com.auth0.jwt.exceptions.JWTVerificationException
 import com.auth0.jwt.interfaces.DecodedJWT
 import io.ashdavies.playground.cloud.HttpException.Companion.InvalidArgument
+import io.ashdavies.playground.compose.Remember
 import kotlinx.serialization.Serializable
 
-internal class AppCheck(client: AppCheckClient, algorithm: Algorithm) :
+internal class AppCheck @Remember constructor(client: AppCheckClient, algorithm: Algorithm) :
     AppCheckGenerator by AppCheckGenerator(client, algorithm),
     AppCheckVerifier by AppCheckVerifier(algorithm)
 

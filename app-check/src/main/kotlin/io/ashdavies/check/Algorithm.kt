@@ -6,6 +6,7 @@ import com.auth0.jwk.JwkProvider
 import com.auth0.jwk.UrlJwkProvider
 import com.auth0.jwt.interfaces.RSAKeyProvider
 import com.google.auth.oauth2.ServiceAccountCredentials
+import io.ashdavies.playground.compose.Provides
 import java.net.URL
 import java.security.interfaces.RSAPrivateKey
 import java.security.interfaces.RSAPublicKey
@@ -24,6 +25,7 @@ internal abstract class Algorithm(name: String, description: String) : JwtAlgori
     }
 }
 
+@Provides
 @Composable
 internal fun rememberAlgorithm(credentials: ServiceAccountCredentials = rememberGoogleCredentials()): JwtAlgorithm {
     return remember(credentials) { JwtAlgorithm.RSA256(Algorithm.Provider(credentials)) }

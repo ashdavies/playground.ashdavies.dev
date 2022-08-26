@@ -10,7 +10,7 @@ internal class ComposeConstructorComponentRegistrarTest {
     @Test
     fun `should return successful exit code`() {
         val compilationResult = compile("""
-            data class ComposeConstructor @io.ashdavies.playground.compose.Remember constructor()
+            data class ComposeConstructor @io.ashdavies.playground.compose.Remember constructor(val enabled: Boolean)
         """.trimIndent()
         )
 

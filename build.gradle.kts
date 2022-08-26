@@ -1,5 +1,4 @@
-// https://youtrack.jetbrains.com/issue/KTIJ-19369
-@file:Suppress("DSL_SCOPE_VIOLATION", "UnstableApiUsage")
+@file:Suppress("DSL_SCOPE_VIOLATION", "UnstableApiUsage") // https://youtrack.jetbrains.com/issue/KTIJ-19369
 
 import com.diffplug.gradle.spotless.FormatExtension
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
@@ -36,7 +35,8 @@ doctor {
 spotless {
     val ktlintVersion: String = libs.versions.pinterest.ktlint.get()
     fun FormatExtension.kotlinDefault(extension: String = "kt") {
-        targetExclude("**/build/**/*.$extension")
+        targetExclude("**/build/**")
+        // target("**/*.$extension")
         target("src/**/*.$extension")
         trimTrailingWhitespace()
         endWithNewline()

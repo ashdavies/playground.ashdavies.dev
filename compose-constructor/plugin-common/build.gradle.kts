@@ -12,6 +12,7 @@ dependencies {
     compileOnly(libs.google.auto.service.annotations)
     kapt(libs.google.auto.service)
 
+    testImplementation(project(":compose-constructor:plugin-runtime"))
     testImplementation(kotlin("test"))
 
     testImplementation(libs.jetbrains.kotlin.compiler.embeddable)

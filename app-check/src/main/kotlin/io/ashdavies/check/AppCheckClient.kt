@@ -9,6 +9,7 @@ import io.ashdavies.check.AppCheckConstants.FIREBASE_CLAIMS_SCOPES
 import io.ashdavies.check.AppCheckConstants.GOOGLE_TOKEN_ENDPOINT
 import io.ashdavies.http.LocalHttpClient
 import io.ashdavies.playground.cloud.HttpException
+import io.ashdavies.playground.compose.Remember
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.bearerAuth
@@ -24,7 +25,7 @@ import kotlinx.serialization.Serializable
 private val HttpStatusCode.isError: Boolean
     get() = value in (400 until 600)
 
-internal class AppCheckClient(private val client: HttpClient, private val config: Config) {
+internal class AppCheckClient @Remember constructor(private val client: HttpClient, private val config: Config) {
 
     suspend fun exchangeToken(token: String, request: AppCheckRequest): AppCheckToken {
         val urlString = "$APP_CHECK_V1_API/${config.projectId}/apps/${request.appId}:exchangeCustomToken"
@@ -66,7 +67,7 @@ internal class AppCheckClient(private val client: HttpClient, private val config
             .substring(0..240)
     }
 
-    data class Config(
+    data class Config @Remember constructor(
         val algorithm: Algorithm,
         val clientEmail: String,
         val projectId: String,

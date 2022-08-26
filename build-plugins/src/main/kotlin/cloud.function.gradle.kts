@@ -26,6 +26,7 @@ dependencies {
     implementation(libs.google.firebase.admin)
 
     testImplementation(kotlin("test"))
+    testImplementation(libs.jetbrains.kotlinx.coroutines.test)
 
     add("invoker", libs.google.cloud.javaFunctionInvoker)
 }
