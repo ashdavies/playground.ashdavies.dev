@@ -49,6 +49,12 @@ jobs:
       - name: Run Gradle tasks
         run: ./gradlew build check
 
+      - name: Test Artifact
+        uses: test-summary/action@v1.0
+        with:
+           name: Package
+           paths: "**/build/reports/tests/*.html"
+
       - name: Test Summary
         uses: test-summary/action@v1.0
         with:

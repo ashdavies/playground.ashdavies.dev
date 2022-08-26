@@ -7,6 +7,7 @@ import kotlin.test.assertEquals
 internal class EventsFunctionTest {
 
     @Test
+    @Suppress("OPT_IN_USAGE")
     fun `test assertion succeeds`() = runTest {
         assertEquals(2 + 2, 4)
     }
