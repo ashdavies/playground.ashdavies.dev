@@ -8,7 +8,8 @@ google-accompanist = "0.23.1"
 google-android = "7.0.4"
 google-auto = "1.0.1"
 google-maps-compose = "2.5.3"
-jetbrains-compose = "1.2.0-alpha01-dev667" # Unstable until 1.2.0-alpha01-dev686 (ClassNotFoundException: CallUtilKt)
+# Unstable until 1.2.0-alpha01-dev686 (ClassNotFoundException: CallUtilKt)
+# @pin
 jetbrains-compose = "1.2.0-alpha01-dev667"
 jetbrains-kotlin = "1.6.10"
 kotlinx-coroutines = "1.6.1"
