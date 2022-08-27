@@ -48,6 +48,8 @@ jobs:
 
       - name: Run Gradle tasks
         run: ./gradlew build check
+
+      - name: Test Artifact
         uses: test-summary/action@v1.0
         with:
            name: Package
