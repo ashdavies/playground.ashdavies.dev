@@ -10,8 +10,10 @@ on:
       - '*'
 
 env:
+  APP_CHECK_KEY: ${{ secrets.APP_CHECK_KEY }}
   GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
   PLAYGROUND_API_KEY: ${{ secrets.PLAYGROUND_API_KEY }}
+  SERVICE_ACCOUNT_ID: ${{ secrets.SERVICE_ACCOUNT_ID }}
 
 jobs:
   gradle:
