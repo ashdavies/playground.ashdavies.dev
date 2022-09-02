@@ -12,6 +12,8 @@ on:
 env:
   APP_CHECK_KEY: ${{ secrets.APP_CHECK_KEY }}
   GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+  GOOGLE_SA_EMAIL: ${{ secrets.GOOGLE_SA_EMAIL }}
+  GOOGLE_SA_KEY: ${{ secrets.GOOGLE_SA_KEY }}
   PLAYGROUND_API_KEY: ${{ secrets.PLAYGROUND_API_KEY }}
   SERVICE_ACCOUNT_ID: ${{ secrets.SERVICE_ACCOUNT_ID }}
 
@@ -47,6 +49,15 @@ jobs:
 
       - name: Decrypt Google Services
         run: find . -type f -name "google-services.aes" -exec sh -c 'openssl aes-256-cbc -md sha256 -d -in "$0" -out "${0%.aes*}.json" -k "${GOOGLE_SERVICES_PASSPHRASE}"' {} \;
+
+      - name: Google Cloud Auth
+        uses: 'google-github-actions/auth@v0'
+        with:
+          workload_identity_provider: ${{ secrets.GOOGLE_SA_KEY }}
+          service_account: ${{ secrets.GOOGLE_SA_EMAIL }}
+
+      - name: Setup Cloud SDK
+        uses: 'google-github-actions/setup-gcloud@v0'
 
       - name: Run Gradle Tasks
         run: ./gradlew build check
