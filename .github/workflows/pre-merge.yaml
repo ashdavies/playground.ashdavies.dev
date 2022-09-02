@@ -56,11 +56,6 @@ jobs:
         with:
            name: Package
            paths: "**/build/reports/tests/*.html"
-
-      - name: Test Summary
-        uses: test-summary/action@v1.0
-        with:
-          paths: "**/build/test-results/test/TEST-*.xml"
         if: always()
 
       - name: Upload Artifact
