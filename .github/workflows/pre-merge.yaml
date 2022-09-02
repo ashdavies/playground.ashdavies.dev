@@ -54,11 +54,18 @@ jobs:
       - name: Test Artifact
         uses: test-summary/action@v1.0
         with:
-           name: Package
            paths: "**/build/reports/tests/*.html"
         if: always()
 
-      - name: Upload Artifact
+      - name: Upload Test Report
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-report
+          path: "**/build/reports/tests"
+          if-no-files-found: error
+        if: always()
+
+      - name: Upload Test Summary
         uses: actions/upload-artifact@v3
         with:
           name: test-summary
