@@ -20,6 +20,11 @@ env:
 jobs:
   gradle:
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
     steps:
       - name: Setup JDK
         uses: actions/setup-java@v1
