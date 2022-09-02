@@ -51,6 +51,14 @@ jobs:
       - name: Run Gradle tasks
         run: ./gradlew build check
 
+      - name: Upload Test Report
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-report
+          path: "**/build/reports/tests/test/*.html"
+          if-no-files-found: error
+        if: failure()
+
       - name: Test Artifact
         uses: test-summary/action@v1.0
         with:
@@ -67,6 +75,7 @@ jobs:
         with:
           name: test-summary
           path: test-summary.md
+          if-no-files-found: error
         if: always()
 
       - name: Display dependency updates
