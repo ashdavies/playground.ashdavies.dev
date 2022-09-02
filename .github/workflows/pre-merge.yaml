@@ -19,15 +19,15 @@ jobs:
   gradle:
     runs-on: ubuntu-latest
     steps:
-      - name: Set up JDK
+      - name: Setup JDK
         uses: actions/setup-java@v1
         with:
           java-version: 11
 
-      - name: Checkout repository
+      - name: Checkout Repository
         uses: actions/checkout@v2
 
-      - name: Cache Gradle caches
+      - name: Cache Gradle Caches
         uses: actions/cache@v1
         with:
           path: ~/.gradle/caches/
@@ -45,17 +45,11 @@ jobs:
 #      - name: Encrypt Google Services config file
 #        run: find . -type f -name "google-services.json" -exec sh -c 'openssl aes-256-cbc -md sha256 -salt -in "$0" -out "${0%.json*}.aes" -k "${GOOGLE_SERVICES_PASSPHRASE}"' {} \;
 
-      - name: Decrypt Google Services config file
+      - name: Decrypt Google Services
         run: find . -type f -name "google-services.aes" -exec sh -c 'openssl aes-256-cbc -md sha256 -d -in "$0" -out "${0%.aes*}.json" -k "${GOOGLE_SERVICES_PASSPHRASE}"' {} \;
 
-      - name: Run Gradle tasks
+      - name: Run Gradle Tasks
         run: ./gradlew build check
-
-      - name: Test Artifact
-        uses: test-summary/action@v1.0
-        with:
-           paths: "**/build/reports/tests/*.html"
-        if: always()
 
       - name: Upload Test Report
         uses: actions/upload-artifact@v3
@@ -63,6 +57,12 @@ jobs:
           name: test-report
           path: "**/build/reports/tests"
           if-no-files-found: error
+        if: always()
+
+      - name: Generate Test Summary
+        uses: test-summary/action@v1.0
+        with:
+          paths: "test/results/**/TEST-*.xml"
         if: always()
 
       - name: Upload Test Summary
