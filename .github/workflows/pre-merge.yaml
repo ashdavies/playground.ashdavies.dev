@@ -55,7 +55,8 @@ jobs:
       - name: Decrypt Google Services
         run: find . -type f -name "google-services.aes" -exec sh -c 'openssl aes-256-cbc -md sha256 -d -in "$0" -out "${0%.aes*}.json" -k "${GOOGLE_SERVICES_PASSPHRASE}"' {} \;
 
-      - name: Google Cloud Auth
+      - id: 'auth'
+        name: Google Cloud Auth
         uses: 'google-github-actions/auth@v0'
         with:
           workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY }}
@@ -65,6 +66,9 @@ jobs:
         run: |-
           gcloud auth login --brief --cred-file="${{ steps.auth.outputs.credentials_file_path }}"
           gcloud services list
+
+      - name: Google Cloud Diagnostics
+        run: gcloud info --run-diagnostics
 
       - name: Setup Cloud SDK
         uses: 'google-github-actions/setup-gcloud@v0'
