@@ -13,9 +13,9 @@ env:
   APP_CHECK_KEY: ${{ secrets.APP_CHECK_KEY }}
   GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
   GOOGLE_SA_EMAIL: ${{ secrets.GOOGLE_SA_EMAIL }}
-  GOOGLE_SA_KEY: ${{ secrets.GOOGLE_SA_KEY }}
   PLAYGROUND_API_KEY: ${{ secrets.PLAYGROUND_API_KEY }}
   SERVICE_ACCOUNT_ID: ${{ secrets.SERVICE_ACCOUNT_ID }}
+  WORKLOAD_IDENTITY: ${{ secrets.WORKLOAD_IDENTITY }}
 
 jobs:
   gradle:
@@ -58,7 +58,8 @@ jobs:
       - name: Google Cloud Auth
         uses: 'google-github-actions/auth@v0'
         with:
-          credentials_json: ${{ secrets.GOOGLE_SA_KEY }}
+          workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY }}
+          service_account: ${{ secrets.GOOGLE_SA_EMAIL }}
 
       - name: Setup Cloud SDK
         uses: 'google-github-actions/setup-gcloud@v0'
