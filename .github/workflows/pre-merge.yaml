@@ -62,13 +62,13 @@ jobs:
           workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY }}
           service_account: ${{ secrets.GOOGLE_SA_EMAIL }}
 
+      - name: Google Cloud Diagnostics
+        run: gcloud info --run-diagnostics
+
       - name: Google Cloud Services
         run: |-
           gcloud auth login --brief --cred-file="${{ steps.auth.outputs.credentials_file_path }}"
           gcloud services list
-
-      - name: Google Cloud Diagnostics
-        run: gcloud info --run-diagnostics
 
       - name: Setup Cloud SDK
         uses: 'google-github-actions/setup-gcloud@v0'
