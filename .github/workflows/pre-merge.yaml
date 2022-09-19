@@ -82,7 +82,7 @@ jobs:
       - name: Generate Test Summary
         uses: test-summary/action@v1.0
         with:
-          paths: "test/results/**/TEST-*.xml"
+          paths: "**/build/test-results/test/TEST-*.xml"
         if: always()
 
       - name: Upload Test Summary
