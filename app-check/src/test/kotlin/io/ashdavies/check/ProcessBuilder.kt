@@ -37,7 +37,6 @@ internal fun <T> startServer(kls: Class<T>, action: suspend (client: HttpClient)
     val localPort = serverSocket.use { it.localPort }
 
     val environment: Map<String, String> = mapOf(
-        "GOOGLE_APPLICATION_CREDENTIALS" to "$UserDir/../service-account.json",
         "FUNCTION_SIGNATURE_TYPE" to HTTP_SIGNATURE,
         "FUNCTION_TARGET" to kls.canonicalName,
         "K_SERVICE" to kls.name,
