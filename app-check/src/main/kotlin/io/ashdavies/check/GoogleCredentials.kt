@@ -16,7 +16,7 @@ internal fun rememberAccountSigner(app: FirebaseApp = LocalFirebaseApp.current):
     return when (val credentials: GoogleCredentials = rememberGoogleCredentials(app)) {
         is ServiceAccountSigner -> credentials
         else -> throw IllegalStateException("""
-            Unsupported credentials ${credentials::class.simpleName ?: error(T::class)}
+            Unsupported credentials ${credentials::class.simpleName!!}
         """.trimIndent())
     }
 }
