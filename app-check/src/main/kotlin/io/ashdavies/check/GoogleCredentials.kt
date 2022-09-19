@@ -15,7 +15,9 @@ private const val GET_CREDENTIALS_METHOD = "getCredentials"
 internal fun rememberAccountSigner(app: FirebaseApp = LocalFirebaseApp.current): ServiceAccountSigner {
     return when (val credentials: GoogleCredentials = rememberGoogleCredentials(app)) {
         is ServiceAccountSigner -> credentials
-        else -> throw IllegalStateException()
+        else -> throw IllegalStateException("""
+            Unsupported credentials ${credentials::class.simpleName ?: error(T::class)}
+        """..trimIndent())
     }
 }
 
