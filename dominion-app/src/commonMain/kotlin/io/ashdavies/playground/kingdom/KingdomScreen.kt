@@ -25,8 +25,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -34,33 +32,34 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
+import io.ashdavies.http.onLoading
+import io.ashdavies.http.produceStateInline
 import io.ashdavies.playground.DominionCard
 import io.ashdavies.playground.DominionExpansion
-import io.ashdavies.playground.DominionRoot
-import io.ashdavies.playground.DominionViewState
+import io.ashdavies.playground.DominionRoot.Child.Kingdom
 import io.ashdavies.playground.RemoteImage
 import io.ashdavies.playground.windowInsetsPadding
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-internal fun KingdomScreen(child: DominionRoot.Child.Kingdom) {
+internal fun KingdomScreen(child: Kingdom, viewModel: KingdomViewModel = rememberKingdomViewModel()) {
+    val state by produceStateInline { viewModel.getViewState(child.expansion) }
     val scrollBehavior = remember { TopAppBarDefaults.enterAlwaysScrollBehavior() }
-    val viewModel: KingdomViewModel = rememberKingdomViewModel()
-
-    val _state: DominionViewState<DominionCard> by viewModel.state.collectAsState()
-    LaunchedEffect(Unit) { viewModel.produceEvent(child.expansion) }
 
     Scaffold(
         topBar = { KingdomTopBar(child.expansion, scrollBehavior) { child.navigateToExpansion() } },
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
     ) { contentPadding ->
-        when (val state = _state) {
-            is DominionViewState.Success -> KingdomScreen(
-                onClick = { child.navigateToCard(it) },
+        state.onSuccess {
+            KingdomScreen(
+                onClick = child::navigateToCard,
                 contentPadding = contentPadding,
-                kingdom = state.value,
+                kingdom = it,
             )
-            else -> LinearProgressIndicator(
+        }
+
+        state.onLoading {
+            LinearProgressIndicator(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(4.dp)

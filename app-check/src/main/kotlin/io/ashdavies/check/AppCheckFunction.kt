@@ -1,36 +1,44 @@
 package io.ashdavies.check
 
+import com.google.auth.ServiceAccountSigner
 import com.google.auth.oauth2.ServiceAccountCredentials
 import com.google.cloud.functions.HttpFunction
-import io.ashdavies.check.AppCheckConstants.APP_CHECK_ENDPOINT
-import io.ashdavies.check.AppCheckConstants.APP_CHECK_TOKEN_KEY
-import io.ashdavies.playground.cloud.HttpApplication
 import io.ashdavies.playground.cloud.HttpEffect
 import io.ashdavies.playground.cloud.HttpException
 import kotlinx.datetime.Clock.System.now
 import kotlin.time.Duration.Companion.hours
 
-internal class AppCheckFunction : HttpFunction by HttpApplication({
-    val credentials: ServiceAccountCredentials = rememberGoogleCredentials()
-    val request: AppCheckRequest = rememberAppCheckRequest()
+private const val APP_CHECK_ENDPOINT = "https://firebaseappcheck.googleapis.com/"
+private const val APP_CHECK_KEY = "APP_CHECK_KEY"
+
+private const val BAD_AUTHENTICITY = "Bad authenticity"
+
+internal class AppCheckFunction : HttpFunction by AuthorizedHttpApplication({
+    val credentials: ServiceAccountCredentials = rememberGoogleCredentials() as ServiceAccountCredentials
+    val signer: ServiceAccountSigner = rememberAccountSigner()
+    val query: AppCheckQuery = rememberAppCheckRequest()
     val appCheck: AppCheck = rememberAppCheck()
 
     HttpEffect {
-        if (request.token != System.getenv(APP_CHECK_TOKEN_KEY)) {
-            throw HttpException.Forbidden("Bad authenticity")
+        if (query.appKey != System.getenv(APP_CHECK_KEY)) {
+            throw HttpException.Forbidden(BAD_AUTHENTICITY)
         }
 
-        val token = appCheck.createToken(request) {
-            issuer = credentials.clientEmail
-            expiresAt = now() + 1.hours
-            appId = request.appId
-        }.token
+        val request = AppCheckToken.Request.Raw(query.appId, credentials.projectId)
+        val response = appCheck.createToken(request) {
+            it.expiresAt = now() + 1.hours
+            it.issuer = signer.account
+            it.appId = request.appId
+        }
 
-        appCheck
-            .verifyToken(token) { issuer = "${APP_CHECK_ENDPOINT}${request.projectNumber}"}
-            .token
+        val decoded = appCheck.verifyToken(response.token) {
+            issuer = "${APP_CHECK_ENDPOINT}${query.appId.split(":")[1]}"
+        }
+
+        if (response.token == decoded.token) {
+            println("WARNING: Performed unnecessary token validation")
+        }
+
+        decoded.token
     }
 })
-
-private val AppCheckRequest.projectNumber: String
-    get() = appId.split(":")[1]

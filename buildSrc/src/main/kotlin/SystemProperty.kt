@@ -2,18 +2,20 @@ import java.util.Locale
 import kotlin.properties.PropertyDelegateProvider
 import kotlin.properties.ReadOnlyProperty
 
-typealias SystemDelegateProvider = PropertyDelegateProvider<Any?, ReadOnlyProperty<Any?, String>>
+private const val String = "String"
 
-fun <T> T.SystemProperty(block: T.(type: String, name: String, value: String) -> Unit) = SystemProperty { name, value ->
-    block("String", name, "\"$value\"")
-}
+public typealias StringDelegateProvider = PropertyDelegateProvider<Any?, ReadOnlyProperty<Any?, String>>
 
-fun <T> T.SystemProperty(block: T.(name: String, value: String) -> Unit) = SystemDelegateProvider { _, property ->
+public fun <T> T.SystemProperty(
+    block: T.(type: String, name: String, value: String) -> Unit = { _, _, _ -> },
+    value: (String) -> String = System::getenv,
+) = PropertyDelegateProvider<Any?, ReadOnlyProperty<Any?, String>> { _, property ->
     val name = CaseFormat.LowerCamel(property.name).toUpperSnake()
-    val value = System.getenv(name)
-    block(name, value)
+    block(String, name, "\"${value(name)}\"")
 
-    ReadOnlyProperty<Any?, String> { _, _ -> value }
+    ReadOnlyProperty<Any?, String> { _, _ ->
+        value(name)
+    }
 }
 
 internal class CaseFormat private constructor(private val words: List<String>) {

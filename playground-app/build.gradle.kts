@@ -1,33 +1,27 @@
-
 plugins {
     `multiplatform-library`
 }
 
 kotlin {
-    sourceSets {
-        val commonMain by getting {
-            dependencies {
-                implementation(project(":local-remote"))
-                implementation(project(":local-storage"))
+    val commonMain by dependencies {
+        implementation(project(":local-remote"))
+        implementation(project(":local-storage"))
 
-                implementation(libs.bundles.ktor.client)
-                implementation(libs.kuuuurt.multiplatform.paging)
-            }
-        }
+        implementation(libs.bundles.ktor.client)
+        implementation(libs.jetbrains.kotlinx.collections.immutable)
+        implementation(libs.kuuuurt.multiplatform.paging)
+    }
 
-        val androidMain by getting {
-            dependencies {
-                implementation(libs.androidx.compose.foundation)
-                implementation(libs.bundles.androidx.activity)
+    val androidMain by dependencies {
+        implementation(libs.androidx.compose.foundation)
+        implementation(libs.bundles.androidx.activity)
+        implementation(libs.bundles.google.firebase)
+        implementation(libs.jetbrains.kotlinx.coroutines.play)
 
-                with(libs.google.accompanist) {
-                    implementation(placeholderMaterial)
-                    implementation(swiperefresh)
-                    implementation(systemuicontroller)
-                }
-
-                implementation(libs.bundles.google.firebase)
-            }
+        with(libs.google.accompanist) {
+            implementation(placeholderMaterial)
+            implementation(swiperefresh)
+            implementation(systemuicontroller)
         }
     }
 }

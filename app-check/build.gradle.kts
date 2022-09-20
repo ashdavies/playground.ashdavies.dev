@@ -10,23 +10,25 @@ dependencies {
     implementation(libs.auth.jwks.rsa)
 
     implementation(libs.bundles.ktor.client)
+    implementation(libs.ktor.client.auth)
+
+    testImplementation(libs.bundles.ktor.client)
+    testImplementation(libs.jetbrains.kotlinx.coroutines.test)
+    testImplementation(libs.google.cloud.javaFunctionInvoker)
+}
+
+kotlin {
+    sourceSets.all { languageSettings.optIn("kotlin.RequiresOptIn") }
+    explicitApiWarning()
 }
 
 val deployAppCheckFunction by tasks.registering(DeployFunctionTask::class) {
     entryPoint = "io.ashdavies.check.AppCheckFunction"
     description = "Deploy app check function to Google Cloud"
     allowUnauthenticated = true
-    function = "app-check"
-}
+    function = "createToken"
 
-val runAppCheckFunction by tasks.registering(RunFunctionTask::class) {
-    target = "io.ashdavies.check.AppCheckFunction"
-    description = "Run app check cloud function"
-    setupClasspath()
-}
-
-fun RunFunctionTask.setupClasspath() = doFirst {
-    sourceSets.main.configure { args("--classpath", files(configurations.runtimeClasspath, output).asPath) }
+    envVar("APP_CHECK_KEY")
 }
 
 /*configurations.configureEach {

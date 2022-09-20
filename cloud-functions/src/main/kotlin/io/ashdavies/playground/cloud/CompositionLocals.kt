@@ -2,8 +2,9 @@ package io.ashdavies.playground.cloud
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ProvidableCompositionLocal
-import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.ui.window.ApplicationScope
 import com.google.cloud.firestore.Firestore
 import com.google.cloud.functions.HttpRequest
 import com.google.cloud.functions.HttpResponse
@@ -12,16 +13,16 @@ import com.google.firebase.cloud.FirestoreClient
 import io.ashdavies.playground.google.DocumentProvider
 
 public val LocalApplicationScope: ProvidableCompositionLocal<ApplicationScope> =
-    compositionLocalOf { noLocalProvidedFor("LocalApplicationScope") }
+    staticCompositionLocalOf { noLocalProvidedFor("LocalApplicationScope") }
 
 public val LocalFirebaseApp: ProvidableCompositionLocal<FirebaseApp> =
-    compositionLocalOf { FirebaseApp.initializeApp() }
+    staticCompositionLocalOf { FirebaseApp.initializeApp() }
 
 public val LocalHttpRequest: ProvidableCompositionLocal<HttpRequest> =
-    compositionLocalOf { noLocalProvidedFor("LocalHttpRequest") }
+    staticCompositionLocalOf { noLocalProvidedFor("LocalHttpRequest") }
 
 public val LocalHttpResponse: ProvidableCompositionLocal<HttpResponse> =
-    compositionLocalOf { noLocalProvidedFor("LocalHttpResponse") }
+    staticCompositionLocalOf { noLocalProvidedFor("LocalHttpResponse") }
 
 @Composable
 public fun rememberDocumentProvider(path: String, firestore: Firestore = rememberFirestore()): DocumentProvider =

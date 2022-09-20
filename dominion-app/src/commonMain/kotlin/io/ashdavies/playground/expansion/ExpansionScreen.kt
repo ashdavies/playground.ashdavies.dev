@@ -16,47 +16,37 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SmallTopAppBar
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import io.ashdavies.http.onLoading
+import io.ashdavies.http.produceStateInline
 import io.ashdavies.playground.DominionExpansion
-import io.ashdavies.playground.DominionRoot
-import io.ashdavies.playground.DominionViewState
+import io.ashdavies.playground.DominionRoot.Child.Expansion
 import io.ashdavies.playground.RemoteImage
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-internal fun ExpansionScreen(child: DominionRoot.Child.Expansion) {
-    val viewModel: ExpansionViewModel = rememberExpansionViewModel()
-    val _state: DominionViewState<DominionExpansion> by viewModel
-        .state
-        .collectAsState()
+internal fun ExpansionScreen(child: Expansion, viewModel: ExpansionViewModel = rememberExpansionViewModel()) {
+    val state by produceStateInline { viewModel.getViewState() }
 
-    LaunchedEffect(Unit) { viewModel.produceEvent() }
-
-    Scaffold(
-        topBar = { SmallTopAppBar(title = { Text("Dominion") }) }
-    ) { contentPadding ->
-        when (val state = _state) {
-            is DominionViewState.Success -> ExpansionScreen(
+    Scaffold(topBar = { SmallTopAppBar(title = { Text("Dominion") }) }) { contentPadding ->
+        state.onSuccess {
+            ExpansionScreen(
                 onClick = { child.navigateToKingdom(it) },
                 contentPadding = contentPadding,
-                expansions = state.value,
+                expansions = it,
             )
-            else -> LinearProgressIndicator(
+        }
+
+        state.onLoading {
+            LinearProgressIndicator(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(4.dp)
             )
         }
     }
-}
-
-@Composable
-private fun ExpansionTopAppBar() {
-    SmallTopAppBar(title = { Text("Dominion") })
 }
 
 @Composable

@@ -4,29 +4,36 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import com.auth0.jwk.JwkProvider
 import com.auth0.jwk.UrlJwkProvider
+import com.auth0.jwt.interfaces.DecodedJWT
 import com.auth0.jwt.interfaces.RSAKeyProvider
-import com.google.auth.oauth2.ServiceAccountCredentials
+import com.google.auth.ServiceAccountSigner
 import io.ashdavies.playground.compose.Provides
-import java.net.URL
 import java.security.interfaces.RSAPrivateKey
 import java.security.interfaces.RSAPublicKey
 import com.auth0.jwt.algorithms.Algorithm as JwtAlgorithm
 
-internal abstract class Algorithm(name: String, description: String) : JwtAlgorithm(name, description) {
-    class Provider(private val publicKeys: JwkProvider, private val privateKey: RSAPrivateKey) : RSAKeyProvider {
-        constructor(credentials: ServiceAccountCredentials) : this(
-            publicKeys = UrlJwkProvider(URL(AppCheckConstants.APP_CHECK_PUBLIC_KEY)),
-            privateKey = credentials.privateKey as RSAPrivateKey,
-        )
+private const val JWKS_URL = "https://firebaseappcheck.googleapis.com/v1/jwks"
 
-        override fun getPublicKeyById(keyId: String): RSAPublicKey = publicKeys.get(keyId).publicKey as RSAPublicKey
-        override fun getPrivateKey(): RSAPrivateKey = privateKey
-        override fun getPrivateKeyId(): String? = null
-    }
+private fun PublicKeyProvider(provider: JwkProvider = UrlJwkProvider(JWKS_URL)) = PublicKeyProvider {
+    provider[it].publicKey as RSAPublicKey
 }
+
+private fun PublicKeyProvider(block: (keyId: String) -> RSAPublicKey) = object : RSAKeyProvider {
+    override fun getPublicKeyById(keyId: String): RSAPublicKey = block(keyId)
+    override fun getPrivateKey(): RSAPrivateKey? = null
+    override fun getPrivateKeyId(): String? = null
+}
+
+@Suppress("OVERRIDE_DEPRECATION")
+internal class GoogleAlgorithm(private val signer: ServiceAccountSigner) : RsaAlgorithm(RSA256(PublicKeyProvider())) {
+    override fun sign(contentBytes: ByteArray): ByteArray = signer.sign(contentBytes)
+    override fun verify(jwt: DecodedJWT) = from.verify(jwt)
+}
+
+internal abstract class RsaAlgorithm(val from: JwtAlgorithm) : JwtAlgorithm(from.name, "$from")
 
 @Provides
 @Composable
-internal fun rememberAlgorithm(credentials: ServiceAccountCredentials = rememberGoogleCredentials()): JwtAlgorithm {
-    return remember(credentials) { JwtAlgorithm.RSA256(Algorithm.Provider(credentials)) }
+internal fun rememberAlgorithm(signer: ServiceAccountSigner = rememberAccountSigner()): JwtAlgorithm {
+    return remember(signer) { GoogleAlgorithm(signer) }
 }

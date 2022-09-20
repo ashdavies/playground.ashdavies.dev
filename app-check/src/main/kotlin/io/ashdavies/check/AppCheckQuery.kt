@@ -7,12 +7,12 @@ import io.ashdavies.playground.cloud.LocalHttpRequest
 import io.ashdavies.playground.cloud.firstQueryParameterAsString
 import io.ashdavies.playground.compose.Remember
 
-internal class AppCheckRequest @Remember constructor(request: HttpRequest) {
+internal class AppCheckQuery @Remember constructor(request: HttpRequest) {
+    val appKey: String by request.firstQueryParameterAsString()
     val appId: String by request.firstQueryParameterAsString()
-    val token: String by request.firstQueryParameterAsString()
 }
 
 @Composable
-internal fun rememberAppCheckRequest(request: HttpRequest = LocalHttpRequest.current): AppCheckRequest {
-    return remember { AppCheckRequest(request) }
+internal fun rememberAppCheckRequest(request: HttpRequest = LocalHttpRequest.current): AppCheckQuery {
+    return remember { AppCheckQuery(request) }
 }

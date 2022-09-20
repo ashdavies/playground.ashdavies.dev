@@ -9,20 +9,32 @@ import androidx.compose.runtime.Recomposer
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.window.ApplicationScope
 import com.google.cloud.functions.HttpFunction
+import com.google.cloud.functions.HttpRequest
+import com.google.cloud.functions.HttpResponse
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.yield
 import org.jetbrains.skiko.MainUIDispatcher
+import java.net.HttpURLConnection
 
-public fun HttpApplication(block: @Composable () -> Unit): HttpFunction = HttpFunction { request, response ->
+public fun HttpApplication(block: @Composable () -> Unit): HttpFunction = LocalHttpFunction { request, response ->
     application {
         CompositionLocalProvider(
             LocalApplicationScope provides this,
             LocalHttpRequest provides request,
             LocalHttpResponse provides response,
         ) { block() }
+    }
+}
+
+private fun LocalHttpFunction(block: (HttpRequest, HttpResponse) -> Unit) = HttpFunction { request, response ->
+    runCatching { block(request, response) }.recover { throwable ->
+        response.setStatusCode(HttpURLConnection.HTTP_INTERNAL_ERROR, throwable.message)
+        response.writer.write(throwable.message ?: "Unknown error")
+        throwable.printStackTrace()
     }
 }
 
@@ -41,8 +53,10 @@ private fun application(content: @Composable ApplicationScope.() -> Unit) = runB
     withContext(MainUIDispatcher + YieldFrameClock) {
         val recomposer = Recomposer(coroutineContext)
         var isOpen by mutableStateOf(true)
-        val scope = ApplicationScope {
-            isOpen = false
+        val scope = object : ApplicationScope {
+            override fun exitApplication() {
+                isOpen = false
+            }
         }
 
         launch {
@@ -53,10 +67,6 @@ private fun application(content: @Composable ApplicationScope.() -> Unit) = runB
             compose(recomposer) { if (isOpen) scope.content() }
         }
     }
-}
-
-public fun interface ApplicationScope {
-    fun exitApplication()
 }
 
 private object YieldFrameClock : MonotonicFrameClock {

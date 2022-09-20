@@ -5,12 +5,13 @@ import com.auth0.jwt.JWTCreator
 import com.auth0.jwt.JWTVerifier
 import com.auth0.jwt.algorithms.Algorithm
 import com.auth0.jwt.interfaces.DecodedJWT
-import io.ashdavies.check.AppCheckConstants.APP_CHECK_AUDIENCE
-import io.ashdavies.check.AppCheckConstants.APP_CHECK_ENDPOINT
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import kotlinx.datetime.toJavaInstant
 import kotlin.time.Duration.Companion.hours
+
+private const val APP_CHECK_ENDPOINT = "https://firebaseappcheck.googleapis.com/"
+private const val APP_CHECK_AUDIENCE = "${APP_CHECK_ENDPOINT}/google.firebase.appcheck.v1.TokenExchangeService"
 
 internal object Jwt : JWT()
 
@@ -19,8 +20,8 @@ internal object PublicClaims : com.auth0.jwt.impl.PublicClaims {
     const val SCOPE = "scope"
 }
 
-internal fun Jwt.create(algorithm: Algorithm, config: JwtOptions.() -> Unit = {}): String {
-    return with(JwtOptions().apply(config)) {
+internal fun Jwt.create(algorithm: Algorithm, config: (JwtOptions) -> Unit = {}): String {
+    return with(JwtOptions().also(config)) {
         JWT.create()
             .withClaim(PublicClaims.APP_ID, appId)
             .withExpiresAt(expiresAt.toJavaDate())
