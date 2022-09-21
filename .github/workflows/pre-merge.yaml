@@ -48,7 +48,7 @@ jobs:
           key: cache-gradle-wrapper
 
       - name: Generate encryption passphrase
-      - run: openssl rand -base64 32
+        run: openssl rand -base64 32
         if: ${{ false }}
 
       - name: Encrypt Google Services config file
