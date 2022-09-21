@@ -3,7 +3,6 @@ package io.ashdavies.check
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import com.auth0.jwt.algorithms.Algorithm
-import com.google.auth.ServiceAccountSigner
 import io.ashdavies.http.LocalHttpClient
 import io.ashdavies.playground.cloud.HttpApplication
 import io.ktor.client.HttpClient
@@ -86,10 +85,10 @@ internal data class BearerResponse(
 @Composable
 private fun rememberHttpClientConfig(
     request: AppCheckQuery = rememberAppCheckRequest(),
-    signer: ServiceAccountSigner = rememberAccountSigner(),
-    algorithm: Algorithm = rememberAlgorithm(signer)
+    signer: CryptoSigner = rememberCryptoSigner(),
+    algorithm: Algorithm = rememberAlgorithm()
 ) = HttpClientConfig(
-    accountId = signer.account,
+    accountId = signer.getAccountId(),
     appId = request.appId,
     algorithm = algorithm,
 )

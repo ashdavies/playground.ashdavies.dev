@@ -1,7 +1,5 @@
 package io.ashdavies.check
 
-import com.google.auth.ServiceAccountSigner
-import com.google.auth.oauth2.ServiceAccountCredentials
 import com.google.cloud.functions.HttpFunction
 import io.ashdavies.playground.cloud.HttpEffect
 import io.ashdavies.playground.cloud.HttpException
@@ -14,9 +12,8 @@ private const val APP_CHECK_KEY = "APP_CHECK_KEY"
 private const val BAD_AUTHENTICITY = "Bad authenticity"
 
 internal class AppCheckFunction : HttpFunction by AuthorizedHttpApplication({
-    val credentials: ServiceAccountCredentials = rememberGoogleCredentials() as ServiceAccountCredentials
-    val signer: ServiceAccountSigner = rememberAccountSigner()
     val query: AppCheckQuery = rememberAppCheckRequest()
+    val signer: CryptoSigner = rememberCryptoSigner()
     val appCheck: AppCheck = rememberAppCheck()
 
     HttpEffect {
@@ -24,10 +21,10 @@ internal class AppCheckFunction : HttpFunction by AuthorizedHttpApplication({
             throw HttpException.Forbidden(BAD_AUTHENTICITY)
         }
 
-        val request = AppCheckToken.Request.Raw(query.appId, credentials.projectId)
+        val request = AppCheckToken.Request.Raw(query.appId, getProjectId())
         val response = appCheck.createToken(request) {
+            it.issuer = signer.getAccountId()
             it.expiresAt = now() + 1.hours
-            it.issuer = signer.account
             it.appId = request.appId
         }
 

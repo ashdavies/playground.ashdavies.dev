@@ -9,19 +9,32 @@ internal sealed class AppCheckToken {
     sealed class Request : AppCheckToken() {
 
         @Serializable
-        data class Raw(val appId: String, val projectId: String) : Request()
+        data class Raw(
+            val projectId: String,
+            val appId: String,
+        ) : Request()
 
         @Serializable
-        data class Processed(val customToken: String, val projectId: String, val appId: String) : Request()
+        data class Processed(
+            val customToken: String,
+            val projectId: String,
+            val appId: String,
+        ) : Request()
     }
 
     @Serializable
     sealed class Response : AppCheckToken() {
 
         @Serializable
-        data class Normalised(val token: String, val ttlMillis: Int) : Response()
+        data class Normalised(
+            val ttlMillis: Int,
+            val token: String,
+        ) : Response()
 
         @Serializable
-        data class Raw(val token: String, val ttl: String) : Response()
+        data class Raw(
+            val token: String,
+            val ttl: String,
+        ) : Response()
     }
 }
