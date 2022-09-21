@@ -47,26 +47,26 @@ jobs:
           path: ~/.gradle/wrapper/
           key: cache-gradle-wrapper
 
-#      - name: Generate encryption passphrase
-#      - run: openssl rand -base64 32
+      - name: Generate encryption passphrase
+      - run: openssl rand -base64 32
 
-#      - name: Encrypt Google Services config file
-#        run: find . -type f -name "google-services.json" -exec sh -c 'openssl aes-256-cbc -md sha256 -salt -in "$0" -out "${0%.json*}.aes" -k "${GOOGLE_SERVICES_PASSPHRASE}"' {} \;
+      - name: Encrypt Google Services config file
+        run: find . -type f -name "google-services.json" -exec sh -c 'openssl aes-256-cbc -md sha256 -salt -in "$0" -out "${0%.json*}.aes" -k "${GOOGLE_SERVICES_PASSPHRASE}"' {} \;
 
       - name: Decrypt Google Services
         run: find . -type f -name "google-services.aes" -exec sh -c 'openssl aes-256-cbc -md sha256 -d -in "$0" -out "${0%.aes*}.json" -k "${GOOGLE_SERVICES_PASSPHRASE}"' {} \;
 
-#      - name: Google Cloud Auth
-#        uses: 'google-github-actions/auth@v0'
-#        with:
-#          workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY }}
-#          service_account: ${{ secrets.GOOGLE_SA_EMAIL }}
+      - name: Google Cloud Auth
+        uses: 'google-github-actions/auth@v0'
+        with:
+          workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY }}
+          service_account: ${{ secrets.GOOGLE_SA_EMAIL }}
 
-#      - name: 'Set up Cloud SDK'
-#        uses: 'google-github-actions/setup-gcloud@v0'
+      - name: 'Set up Cloud SDK'
+        uses: 'google-github-actions/setup-gcloud@v0'
 
-#      - name: 'Use gcloud CLI'
-#        run: 'gcloud info'
+      - name: 'Use gcloud CLI'
+        run: 'gcloud info'
 
       - name: Run Gradle Tasks
         run: ./gradlew build check --console=plain --info
