@@ -14,6 +14,7 @@ env:
   GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
   GOOGLE_SA_EMAIL: ${{ secrets.GOOGLE_SA_EMAIL }}
   PLAYGROUND_API_KEY: ${{ secrets.PLAYGROUND_API_KEY }}
+  MOBILE_SDK_APP_ID: ${{ secrets.MOBILE_SDK_APP_ID }}
   SERVICE_ACCOUNT_ID: ${{ secrets.SERVICE_ACCOUNT_ID }}
   WORKLOAD_IDENTITY: ${{ secrets.WORKLOAD_IDENTITY }}
 
@@ -68,7 +69,7 @@ jobs:
 
       - name: 'Use gcloud CLI'
         run: 'gcloud info'
-      
+
       - name: Run Gradle Tasks
         run: ./gradlew build check --console=plain --info
 

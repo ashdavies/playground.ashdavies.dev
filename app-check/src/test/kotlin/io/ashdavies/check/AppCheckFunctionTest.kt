@@ -9,13 +9,13 @@ import kotlin.test.assertEquals
 
 internal class AppCheckFunctionTest {
 
-    private val serviceAccountId get() = requireNotNull(System.getenv("SERVICE_ACCOUNT_ID"))
+    private val mobileSdkAppId get() = requireNotNull(System.getenv("MOBILE_SDK_APP_ID"))
     private val appCheckKey get() = requireNotNull(System.getenv("APP_CHECK_KEY"))
 
     @Test
     fun `app attestation should fail`() = startServer<AppCheckFunction> { client ->
         val response: HttpResponse = client.get {
-            parameter("appId", serviceAccountId)
+            parameter("appId", mobileSdkAppId)
             parameter("appKey", appCheckKey)
         }
 
