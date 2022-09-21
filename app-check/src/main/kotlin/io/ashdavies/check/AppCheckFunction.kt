@@ -15,7 +15,7 @@ internal class AppCheckFunction : HttpFunction by AuthorizedHttpApplication({
     val query: AppCheckQuery = rememberAppCheckRequest()
     val signer: CryptoSigner = rememberCryptoSigner()
     val appCheck: AppCheck = rememberAppCheck()
-    val projectId: String = getProjectId()
+    val projectId: String = rememberProjectId()
 
     HttpEffect {
         if (query.appKey != System.getenv(APP_CHECK_KEY)) {

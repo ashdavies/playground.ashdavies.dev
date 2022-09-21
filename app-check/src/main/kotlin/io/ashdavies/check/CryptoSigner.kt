@@ -32,16 +32,16 @@ internal fun rememberCryptoSigner(app: FirebaseApp = LocalFirebaseApp.current): 
 
 @Composable
 private fun rememberIamSigner(
-    encoder: Base64.Encoder = Base64.getEncoder(),
+    serviceAccountId: String = rememberServiceAccountId(),
     client: HttpClient = LocalHttpClient.current,
-    app: FirebaseApp = LocalFirebaseApp.current,
-): CryptoSigner = CryptoSigner(app.options.serviceAccountId) {
-    client.post(
-        body = mapOf("payload" to encoder.encodeToString(it)),
-        urlString = getUrlString(app.options.serviceAccountId),
-    )
-}
+): CryptoSigner = remember(client) {
+    val urlString = "https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/$serviceAccountId:signBlob"
+    val encoder = Base64.getEncoder()
 
-private fun getUrlString(serviceAccountId: String): String {
-    return "https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/$serviceAccountId:signBlob"
+    return CryptoSigner(serviceAccountId) {
+        client.post(
+            body = mapOf("payload" to encoder.encodeToString(it)),
+            urlString = urlString,
+        )
+    }
 }
