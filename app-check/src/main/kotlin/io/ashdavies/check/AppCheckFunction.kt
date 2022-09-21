@@ -15,13 +15,14 @@ internal class AppCheckFunction : HttpFunction by AuthorizedHttpApplication({
     val query: AppCheckQuery = rememberAppCheckRequest()
     val signer: CryptoSigner = rememberCryptoSigner()
     val appCheck: AppCheck = rememberAppCheck()
+    val projectId: String = getProjectId()
 
     HttpEffect {
         if (query.appKey != System.getenv(APP_CHECK_KEY)) {
             throw HttpException.Forbidden(BAD_AUTHENTICITY)
         }
 
-        val request = AppCheckToken.Request.Raw(query.appId, getProjectId())
+        val request = AppCheckToken.Request.Raw(projectId, query.appId)
         val response = appCheck.createToken(request) {
             it.issuer = signer.getAccountId()
             it.expiresAt = now() + 1.hours

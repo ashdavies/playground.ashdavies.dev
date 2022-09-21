@@ -1,6 +1,7 @@
 package io.ashdavies.check
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import com.google.auth.ServiceAccountSigner
 import com.google.auth.oauth2.GoogleCredentials
 import com.google.firebase.FirebaseApp
@@ -23,7 +24,7 @@ internal fun CryptoSigner(accountId: String, sign: suspend (value: ByteArray) ->
 @Provides
 @Composable
 internal fun rememberCryptoSigner(app: FirebaseApp = LocalFirebaseApp.current): CryptoSigner {
-    return when (val credentials: GoogleCredentials = rememberGoogleCredentials(app)) {
+    return when (val credentials: GoogleCredentials = remember(app) { app.credentials }) {
         is ServiceAccountSigner -> CryptoSigner(credentials.account, credentials::sign)
         else -> rememberIamSigner()
     }
@@ -31,12 +32,16 @@ internal fun rememberCryptoSigner(app: FirebaseApp = LocalFirebaseApp.current): 
 
 @Composable
 private fun rememberIamSigner(
-    serviceAccountId: String = getServiceAccountId(),
     encoder: Base64.Encoder = Base64.getEncoder(),
     client: HttpClient = LocalHttpClient.current,
-): CryptoSigner = CryptoSigner(serviceAccountId) {
+    app: FirebaseApp = LocalFirebaseApp.current,
+): CryptoSigner = CryptoSigner(app.options.serviceAccountId) {
     client.post(
-        urlString = "https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/$serviceAccountId:signBlob",
         body = mapOf("payload" to encoder.encodeToString(it)),
+        urlString = getUrlString(app.options.serviceAccountId),
     )
+}
+
+private fun getUrlString(serviceAccountId: String): String {
+    return "https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/$serviceAccountId:signBlob"
 }
