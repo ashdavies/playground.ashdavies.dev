@@ -4,8 +4,8 @@ import com.google.cloud.functions.HttpFunction
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter
 import io.ktor.client.statement.HttpResponse
+import io.ktor.client.statement.bodyAsText
 import io.ktor.http.HttpStatusCode
-import junit.framework.TestCase.assertNotNull
 import org.junit.Test
 import kotlin.test.assertEquals
 
@@ -28,13 +28,11 @@ internal class AppCheckFunctionTest {
     }
 
     @Test
-    fun `test function should succeed`() {
-        startServer<TestAppCheckFunction> { client ->
-            assertNotNull(client.get("https://www.greetingsapi.com/random"))
-        }
+    fun `test function should succeed`() = startServer<TestAppCheckFunction> { client ->
+        assertEquals("Hello World", client.get { }.bodyAsText())
     }
 }
 
-private class TestAppCheckFunction : HttpFunction by AuthorizedHttpApplication({
+internal class TestAppCheckFunction : HttpFunction by AuthorizedHttpApplication({
     println("Hello World")
 })
