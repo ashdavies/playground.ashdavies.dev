@@ -27,14 +27,14 @@ private val FIREBASE_CLAIMS_SCOPES = listOf(
 
 private const val GOOGLE_TOKEN_ENDPOINT = "https://accounts.google.com/o/oauth2/token"
 
-internal fun AuthorizedHttpApplication(content: @Composable () -> Unit) = HttpApplication {
-    CompositionLocalProvider(LocalHttpClient provides AuthorizedHttpClient()) {
+internal fun AuthorisedHttpApplication(content: @Composable () -> Unit) = HttpApplication {
+    CompositionLocalProvider(LocalHttpClient provides AuthorisedHttpClient()) {
         content()
     }
 }
 
 @Composable
-private fun AuthorizedHttpClient(
+private fun AuthorisedHttpClient(
     client: HttpClient = LocalHttpClient.current,
     config: HttpClientConfig = rememberHttpClientConfig(),
 ): HttpClient = client.config {

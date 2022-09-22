@@ -10,6 +10,9 @@ import java.net.HttpURLConnection
 private const val APPLICATION_JSON = "application/json"
 private const val UNKNOWN_ERROR = "Unknown error"
 
+/**
+ * TODO Convert to extension function to ensure valid calling scope
+ */
 @Composable
 public fun HttpEffect(key: Any? = Unit, block: suspend CoroutineScope.() -> String) {
     val scope: ApplicationScope = LocalApplicationScope.current

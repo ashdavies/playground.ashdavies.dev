@@ -11,7 +11,7 @@ private const val APP_CHECK_KEY = "APP_CHECK_KEY"
 
 private const val BAD_AUTHENTICITY = "Bad authenticity"
 
-internal class AppCheckFunction : HttpFunction by AuthorizedHttpApplication({
+internal class AppCheckFunction : HttpFunction by AuthorisedHttpApplication({
     val query: AppCheckQuery = rememberAppCheckRequest()
     val signer: CryptoSigner = rememberCryptoSigner()
     val appCheck: AppCheck = rememberAppCheck()
