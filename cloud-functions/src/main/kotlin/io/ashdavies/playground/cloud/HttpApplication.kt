@@ -45,10 +45,6 @@ private fun application(content: @Composable ApplicationScope.() -> Unit) = runB
             composition.setContent(content)
             recomposer.close()
             recomposer.join()
-        } catch (exception: Exception) {
-            println("=== Exception thrown in HttpApplication compose content ===")
-            exception.printStackTrace()
-            throw exception
         } finally {
             composition.dispose()
         }
