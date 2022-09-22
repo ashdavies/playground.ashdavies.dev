@@ -5,6 +5,7 @@ import io.ktor.client.HttpClient
 import io.ktor.client.plugins.DefaultRequest
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.logging.LogLevel
+import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -23,9 +24,12 @@ private const val HTTP_SIGNATURE = "http"
 
 private val ClassPath get() = requireNotNull(System.getProperty("java.class.path"))
 private val JavaHome get() = requireNotNull(System.getProperty("java.home"))
-private val UserDir get() = requireNotNull(System.getProperty("user.dir"))
 
 private val Java get() = "$JavaHome/bin/java"
+
+private object SystemOutLogger : Logger {
+    override fun log(message: String) = println(message)
+}
 
 internal inline fun <reified T> startServer(noinline action: suspend (client: HttpClient) -> Unit) {
     startServer(T::class.java, action)
@@ -68,12 +72,20 @@ internal fun <T> startServer(kls: Class<T>, action: suspend (client: HttpClient)
 
     val client = HttpClient {
         install(DefaultRequest) { url("http://localhost:$localPort/") }
-        install(Logging) { level = LogLevel.HEADERS }
         install(ContentNegotiation) { json() }
+
+        install(Logging) {
+            logger = SystemOutLogger
+            level = LogLevel.HEADERS
+        }
     }
 
     runTest {
-        action(client)
-        process.destroy()
+        try {
+            action(client)
+        } finally {
+            println("Destroying process...")
+            process.destroy()
+        }
     }
 }
