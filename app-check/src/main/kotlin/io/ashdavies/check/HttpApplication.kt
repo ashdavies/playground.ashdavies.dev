@@ -3,6 +3,7 @@ package io.ashdavies.check
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import com.auth0.jwt.algorithms.Algorithm
+import com.google.common.annotations.VisibleForTesting
 import io.ashdavies.http.LocalHttpClient
 import io.ashdavies.playground.cloud.HttpApplication
 import io.ktor.client.HttpClient
@@ -34,7 +35,8 @@ internal fun AuthorisedHttpApplication(content: @Composable () -> Unit) = HttpAp
 }
 
 @Composable
-private fun AuthorisedHttpClient(
+@VisibleForTesting
+internal fun AuthorisedHttpClient(
     client: HttpClient = LocalHttpClient.current,
     config: HttpClientConfig = rememberHttpClientConfig(),
 ): HttpClient = client.config {
@@ -43,7 +45,8 @@ private fun AuthorisedHttpClient(
     }
 }
 
-private suspend fun HttpClient.getBearerTokens(config: HttpClientConfig): BearerTokens {
+@VisibleForTesting
+internal suspend fun HttpClient.getBearerTokens(config: HttpClientConfig): BearerTokens {
     val jwt = Jwt.create(config.algorithm) {
         it.audience = GOOGLE_TOKEN_ENDPOINT
         it.scope = FIREBASE_CLAIMS_SCOPES
@@ -82,7 +85,8 @@ internal data class BearerResponse(
 )
 
 @Composable
-private fun rememberHttpClientConfig(
+@VisibleForTesting
+internal fun rememberHttpClientConfig(
     request: AppCheckQuery = rememberAppCheckRequest(),
     signer: CryptoSigner = rememberCryptoSigner(),
     algorithm: Algorithm = rememberAlgorithm()

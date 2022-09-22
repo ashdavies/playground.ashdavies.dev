@@ -84,7 +84,6 @@ internal fun <T> startServer(kls: Class<T>, action: suspend (client: HttpClient)
         try {
             action(client)
         } finally {
-            println("Destroying process...")
             process.destroy()
         }
     }

@@ -1,17 +1,18 @@
 package io.ashdavies.check
 
 import com.google.cloud.functions.HttpFunction
-import com.google.cloud.functions.HttpRequest
-import com.google.cloud.functions.HttpResponse
+import io.ashdavies.http.LocalHttpClient
 import io.ashdavies.playground.cloud.HttpApplication
 import io.ashdavies.playground.cloud.HttpEffect
+import io.ktor.client.HttpClient
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter
+import io.ktor.client.statement.HttpResponse
 import io.ktor.client.statement.bodyAsText
 import io.ktor.http.HttpStatusCode
 import org.junit.Test
-import java.net.HttpURLConnection
 import kotlin.test.assertEquals
+import kotlin.test.assertNotEquals
 
 internal class AppCheckFunctionTest {
 
@@ -19,54 +20,35 @@ internal class AppCheckFunctionTest {
     private val appCheckKey get() = requireNotNull(System.getenv("APP_CHECK_KEY"))
 
     @Test
-    fun `test simple function`() = startServer<SimpleHttpFunction> { client ->
-        assertEquals("Hello World", client.get { }.bodyAsText())
-    }
-
-    @Test
-    fun `test simple delegate function`() = startServer<SimpleDelegateHttpFunction> { client ->
-        assertEquals("Hello World", client.get { }.bodyAsText())
-    }
-
-    @Test
-    fun `should validate http application`() = startServer<TestHttpApplication> { client ->
-        assertEquals("Hello World", client.get { }.bodyAsText())
+    fun `should load bearer tokens with config`() = startServer<TestHttpApplication> { client ->
+        assertNotEquals("", client.request { it.bodyAsText() })
     }
 
     @Test
     fun `should validate authorised http application`() = startServer<TestAuthorizedHttpApplication> { client ->
-        val response = client.get { parameter("appId", mobileSdkAppId) }
-        assertEquals("Hello World", response.bodyAsText())
+        assertEquals("Hello World", client.request { it.bodyAsText() })
     }
 
     @Test
     fun `should return app check token for given credentials`() = startServer<AppCheckFunction> { client ->
-        val response = client.get {
-            parameter("appId", mobileSdkAppId)
-            parameter("appKey", appCheckKey)
-        }
-
-        assertEquals(
-            HttpStatusCode.Forbidden,
-            response.status,
-        )
+        assertEquals(HttpStatusCode.Forbidden, client.request { it.status })
     }
-}
 
-internal class SimpleHttpFunction : HttpFunction {
-    override fun service(request: HttpRequest, response: HttpResponse) {
-        response.setStatusCode(HttpURLConnection.HTTP_OK)
-        response.writer.write("Hello World")
-    }
+    private suspend fun <T> HttpClient.request(
+        appId: String = mobileSdkAppId,
+        appKey: String = appCheckKey,
+        transform: suspend (HttpResponse) -> T,
+    ): T = get {
+        parameter("appId", appId)
+        parameter("appKey", appKey)
+    }.let { transform(it) }
 }
-
-internal class SimpleDelegateHttpFunction : HttpFunction by HttpFunction({ _, response ->
-    response.setStatusCode(HttpURLConnection.HTTP_OK)
-    response.writer.write("Hello World")
-})
 
 internal class TestHttpApplication : HttpFunction by HttpApplication({
-    HttpEffect { "Hello World" }
+    val config: HttpClientConfig = rememberHttpClientConfig()
+    val client: HttpClient = LocalHttpClient.current
+
+    HttpEffect { client.getBearerTokens(config).accessToken }
 })
 
 internal class TestAuthorizedHttpApplication : HttpFunction by AuthorisedHttpApplication({
