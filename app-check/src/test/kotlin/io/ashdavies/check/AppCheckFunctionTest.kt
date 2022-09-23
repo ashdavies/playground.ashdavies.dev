@@ -25,7 +25,6 @@ import io.ktor.http.HttpStatusCode
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import java.util.Base64
-import kotlin.test.Ignore
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
@@ -94,29 +93,23 @@ internal class AppCheckFunctionTest {
     }
 
     @Test
-    @Ignore("Compose Runtime internal error")
     fun `should append bearer tokens manually`() = test<TestManualBearerTokenApplication>()
 
     @Test
-    @Ignore("Failed: Compose Runtime internal error")
     fun `should load tokens for client`() = test<TestLoadTokensApplication>()
 
     @Test
-    @Ignore("Failed: Compose Runtime internal error")
     fun `should get hello world when authorised`() = test<TestAuthorisedApplication>()
 
     @Test
-    @Ignore("Failed: Compose Runtime internal error")
     fun `should execute app check action when authorised`() = test<TestAppCheckActionApplication>()
 
     @Test
-    @Ignore("Failed: Compose Runtime internal error")
     fun `should return app check token for given credentials`() = startServer<AppCheckFunction> { client ->
         assertEquals(HttpStatusCode.Forbidden, client.request { it.status })
     }
 }
 
-// Passed
 internal class TestGetAccessTokenApplication : HttpFunction by HttpApplication({
     val config: HttpClientConfig = rememberHttpClientConfig()
     val client: HttpClient = LocalHttpClient.current
@@ -124,7 +117,6 @@ internal class TestGetAccessTokenApplication : HttpFunction by HttpApplication({
     HttpEffect { client.getBearerTokens(config).accessToken }
 })
 
-// Passed
 internal class TestSampleTokensApplication : HttpFunction by HttpApplication({
     val client: HttpClient = LocalHttpClient.current
 
@@ -147,7 +139,6 @@ internal class TestSampleTokensApplication : HttpFunction by HttpApplication({
     }
 })
 
-// Failed
 internal class TestManualBearerTokenApplication : HttpFunction by HttpApplication({
     val config: HttpClientConfig = rememberHttpClientConfig()
     val client: HttpClient = LocalHttpClient.current
@@ -165,7 +156,6 @@ internal class TestManualBearerTokenApplication : HttpFunction by HttpApplicatio
     }
 })
 
-// Failed
 internal class TestLoadTokensApplication : HttpFunction by HttpApplication({
     val config: HttpClientConfig = rememberHttpClientConfig()
     val client: HttpClient = LocalHttpClient.current
@@ -188,12 +178,10 @@ internal class TestLoadTokensApplication : HttpFunction by HttpApplication({
     }
 })
 
-// Failed
 internal class TestAuthorisedApplication : HttpFunction by AuthorisedHttpApplication({
     HttpEffect { "Hello World" }
 })
 
-// Failed
 internal class TestAppCheckActionApplication : HttpFunction by HttpApplication({
     val config: HttpClientConfig = rememberHttpClientConfig()
     val client: HttpClient = LocalHttpClient.current
