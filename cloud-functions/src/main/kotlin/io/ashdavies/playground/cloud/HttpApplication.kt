@@ -13,6 +13,7 @@ import androidx.compose.ui.window.ApplicationScope
 import com.google.cloud.functions.HttpFunction
 import com.google.cloud.functions.HttpRequest
 import com.google.cloud.functions.HttpResponse
+import com.google.common.annotations.VisibleForTesting
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
@@ -30,7 +31,8 @@ public fun HttpApplication(block: @Composable () -> Unit): HttpFunction = LocalH
     }
 }
 
-private fun LocalHttpFunction(block: (HttpRequest, HttpResponse) -> Unit) = HttpFunction { request, response ->
+@VisibleForTesting // private
+public fun LocalHttpFunction(block: (HttpRequest, HttpResponse) -> Unit) = HttpFunction { request, response ->
     runCatching { block(request, response) }.recover { throwable ->
         response.setStatusCode(HttpURLConnection.HTTP_INTERNAL_ERROR, throwable.message)
         response.writer.write(throwable.message ?: "Unknown error")

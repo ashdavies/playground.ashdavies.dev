@@ -1,9 +1,10 @@
 package io.ashdavies.check
 
 import com.google.cloud.functions.HttpFunction
-import io.ashdavies.http.LocalHttpClient
-import io.ashdavies.playground.cloud.HttpApplication
+import com.google.firebase.FirebaseApp
+import io.ashdavies.http.DefaultHttpClient
 import io.ashdavies.playground.cloud.HttpEffect
+import io.ashdavies.playground.cloud.LocalHttpFunction
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
@@ -14,11 +15,43 @@ import io.ktor.client.statement.bodyAsText
 import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
 internal class AppCheckFunctionTest {
+
+    @Test
+    @OptIn(ExperimentalCoroutinesApi::class)
+    fun `should request bearer tokens in coroutine scope`() = runTest {
+        val firebaseApp = FirebaseApp.initializeApp()
+        val client = DefaultHttpClient()
+
+        val signer = CryptoSigner(firebaseApp, client)
+        val algorithm = GoogleAlgorithm(signer)
+
+        val jwt = Jwt.create(algorithm) {
+            it.appId = requireNotNull(System.getenv("MOBILE_SDK_APP_ID"))
+            it.audience = GOOGLE_TOKEN_ENDPOINT
+            it.scope = FIREBASE_CLAIMS_SCOPES
+            it.issuer = signer.getAccountId()
+        }
+
+        val result = client.post(GOOGLE_TOKEN_ENDPOINT) {
+            contentType(ContentType.Application.FormUrlEncoded)
+            grantType(JwtBearer)
+            assertion(jwt)
+        }
+
+        val response = result
+            .body<BearerResponse>()
+            .accessToken
+
+        assertNotNull(response)
+    }
 
     /**
      * ComparisonFailure: expected:<[Hello World]> but was:<[Compose Runtime internal error.
@@ -49,40 +82,34 @@ internal class AppCheckFunctionTest {
     }
 }
 
-internal class TestUnauthorisedApplication : HttpFunction by HttpApplication({
-    val config = rememberHttpClientConfig().also(::println)
-    val client = LocalHttpClient.current
+internal class TestUnauthorisedApplication : HttpFunction by LocalHttpFunction({ request, response ->
+    val app = FirebaseApp.initializeApp()
+    val query = AppCheckQuery(request)
+    val client = DefaultHttpClient()
 
-    HttpEffect {
-        var message = "An unreported exception occurred"
+    val signer = CryptoSigner(app, client)
+    val algorithm = GoogleAlgorithm(signer)
 
-        try {
-            val jwt = Jwt.create(config.algorithm) {
-                it.audience = GOOGLE_TOKEN_ENDPOINT
-                it.scope = FIREBASE_CLAIMS_SCOPES
-                it.issuer = config.accountId
-                it.appId = config.appId
-            }.also(::println)
+    val accessToken = runBlocking {
+        val jwt = Jwt.create(algorithm) {
+            it.audience = GOOGLE_TOKEN_ENDPOINT
+            it.scope = FIREBASE_CLAIMS_SCOPES
+            it.issuer = signer.getAccountId()
+            it.appId = query.appId
+        }.also(::println)
 
-            val response = client.post(GOOGLE_TOKEN_ENDPOINT) {
-                contentType(ContentType.Application.FormUrlEncoded)
-                grantType(JwtBearer)
-                assertion(jwt)
-            }.also(::println)
+        val result = client.post(GOOGLE_TOKEN_ENDPOINT) {
+            contentType(ContentType.Application.FormUrlEncoded)
+            grantType(JwtBearer)
+            assertion(jwt)
+        }.also(::println)
 
-            response
-                .body<BearerResponse>()
-                .accessToken
-                .substring(0..240)
-                .also(::println)
-        } catch (throwable: Throwable) {
-            println("An exception was thrown within the application block")
-            message = "An exception occurred: ${throwable.message}"
-            throwable.printStackTrace()
-        }
-
-        message
+        result
+            .body<BearerResponse>()
+            .accessToken
     }
+
+    response.writer.write(accessToken)
 })
 
 internal class TestAuthorisedApplication : HttpFunction by AuthorisedHttpApplication({

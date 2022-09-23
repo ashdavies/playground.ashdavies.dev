@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import com.google.auth.ServiceAccountSigner
 import com.google.auth.oauth2.GoogleCredentials
+import com.google.common.annotations.VisibleForTesting
 import com.google.firebase.FirebaseApp
 import io.ashdavies.http.LocalHttpClient
 import io.ashdavies.playground.cloud.LocalFirebaseApp
@@ -21,27 +22,29 @@ internal fun CryptoSigner(accountId: String, sign: suspend (value: ByteArray) ->
     override fun getAccountId(): String = accountId
 }
 
-@Provides
-@Composable
-internal fun rememberCryptoSigner(app: FirebaseApp = LocalFirebaseApp.current): CryptoSigner {
-    return when (val credentials: GoogleCredentials = remember(app) { app.credentials }) {
+@VisibleForTesting
+internal fun CryptoSigner(app: FirebaseApp, client: HttpClient): CryptoSigner {
+    return when (val credentials: GoogleCredentials = app.credentials) {
         is ServiceAccountSigner -> CryptoSigner(credentials.account, credentials::sign)
-        else -> rememberIamSigner()
+        else -> IamSigner(client, findExplicitServiceAccountId(app)!!)
     }
 }
 
+@Provides
 @Composable
-private fun rememberIamSigner(
-    serviceAccountId: String = rememberServiceAccountId(),
-    client: HttpClient = LocalHttpClient.current,
-): CryptoSigner = remember(client) {
+internal fun rememberCryptoSigner(app: FirebaseApp = LocalFirebaseApp.current): CryptoSigner {
+    val client: HttpClient = LocalHttpClient.current
+    return remember(app, client) {
+        CryptoSigner(app, client)
+    }
+}
+
+private fun IamSigner(client: HttpClient, serviceAccountId: String) = CryptoSigner(serviceAccountId) {
     val urlString = "https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/$serviceAccountId:signBlob"
     val encoder = Base64.getEncoder()
 
-    return CryptoSigner(serviceAccountId) {
-        client.post(
-            body = mapOf("payload" to encoder.encodeToString(it)),
-            urlString = urlString,
-        )
-    }
+    client.post(
+        body = mapOf("payload" to encoder.encodeToString(it)),
+        urlString = urlString,
+    )
 }

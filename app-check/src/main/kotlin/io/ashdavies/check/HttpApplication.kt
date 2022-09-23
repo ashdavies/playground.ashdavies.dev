@@ -97,11 +97,11 @@ internal data class BearerResponse(
 @Composable
 @VisibleForTesting
 internal fun rememberHttpClientConfig(
-    request: AppCheckQuery = rememberAppCheckRequest(),
+    query: AppCheckQuery = rememberAppCheckQuery(),
     signer: CryptoSigner = rememberCryptoSigner(),
     algorithm: Algorithm = rememberAlgorithm()
 ) = HttpClientConfig(
     accountId = signer.getAccountId(),
-    appId = request.appId,
     algorithm = algorithm,
+    appId = query.appId,
 )

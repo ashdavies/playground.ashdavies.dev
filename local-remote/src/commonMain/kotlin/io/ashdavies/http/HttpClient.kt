@@ -45,7 +45,8 @@ private fun DefaultLogger(block: (message: String) -> Unit = ::println): Logger 
     override fun log(message: String) = block(message)
 }
 
-private fun DefaultHttpClient(block: HttpClientConfig<*>.() -> Unit = { }): HttpClient = HttpClient {
+// @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+public fun DefaultHttpClient(block: HttpClientConfig<*>.() -> Unit = { }): HttpClient = HttpClient {
     install(ContentNegotiation) {
         json(Json {
             serializersModule = SerializersModule { contextual(EventsSerializer) }
