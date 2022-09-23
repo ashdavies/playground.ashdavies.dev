@@ -2,6 +2,7 @@ package io.ashdavies.check
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.remember
 import com.auth0.jwt.algorithms.Algorithm
 import com.google.common.annotations.VisibleForTesting
 import io.ashdavies.http.LocalHttpClient
@@ -29,19 +30,21 @@ private val FIREBASE_CLAIMS_SCOPES = listOf(
 private const val GOOGLE_TOKEN_ENDPOINT = "https://accounts.google.com/o/oauth2/token"
 
 internal fun AuthorisedHttpApplication(content: @Composable () -> Unit) = HttpApplication {
-    CompositionLocalProvider(LocalHttpClient provides AuthorisedHttpClient()) {
+    CompositionLocalProvider(LocalHttpClient provides rememberAuthorisedHttpClient()) {
         content()
     }
 }
 
 @Composable
 @VisibleForTesting
-internal fun AuthorisedHttpClient(
+private fun rememberAuthorisedHttpClient(
     client: HttpClient = LocalHttpClient.current,
     config: HttpClientConfig = rememberHttpClientConfig(),
-): HttpClient = client.config {
-    install(Auth) {
-        bearer { loadTokens { client.getBearerTokens(config) } }
+): HttpClient = remember(client, config) {
+    client.config {
+        install(Auth) {
+            bearer { loadTokens { client.getBearerTokens(config) } }
+        }
     }
 }
 
