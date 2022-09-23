@@ -136,7 +136,7 @@ ktor-server = ["ktor-client-auth", "ktor-serialization-json", "ktor-serializatio
 [plugins]
 android-application = { id = "com.android.application", version.ref = "google.android" }
 android-library = { id = "com.android.library", version.ref = "google.android" }
-cash-molecule = { id = "app.cash.molecule", version = "0.5.0-beta01" }
+cash-molecule = { id = "app.cash.molecule", version = "0.4.0" }
 diffplug-spotless = "com.diffplug.spotless:6.9.1"
 gradle-doctor = "com.osacky.doctor:0.8.0"
 gradle-publish = "com.gradle.plugin-publish:0.11.0"
