@@ -40,7 +40,8 @@ private const val DEFAULT_FUNCTIONS_HOST =
 private val DefaultUserAgent: String
     get() = "${Software.clientName} (${Software.productName}; ${Software.buildVersion})"
 
-private fun DefaultHttpClient(block: HttpClientConfig<*>.() -> Unit = { }): HttpClient = HttpClient {
+// @VisibleForTesting
+public fun DefaultHttpClient(block: HttpClientConfig<*>.() -> Unit = { }): HttpClient = HttpClient {
     install(ContentNegotiation) {
         json(Json {
             serializersModule = SerializersModule { contextual(EventsSerializer) }
