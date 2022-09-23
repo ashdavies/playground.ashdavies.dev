@@ -1,12 +1,18 @@
 package io.ashdavies.check
 
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
+import com.google.auth.ServiceAccountSigner
+import com.google.auth.oauth2.GoogleCredentials
 import com.google.cloud.functions.HttpFunction
+import com.google.firebase.FirebaseApp
 import io.ashdavies.http.DefaultHttpClient
 import io.ashdavies.http.LocalHttpClient
 import io.ashdavies.playground.cloud.HttpApplication
 import io.ashdavies.playground.cloud.HttpEffect
+import io.ashdavies.playground.cloud.LocalFirebaseApp
+import io.ashdavies.playground.compose.Provides
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.auth.Auth
 import io.ktor.client.plugins.auth.providers.BearerTokens
@@ -18,10 +24,16 @@ import io.ktor.client.statement.HttpResponse
 import io.ktor.client.statement.bodyAsText
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runTest
+import java.util.Base64
 import kotlin.test.Ignore
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
+
+private val mobileSdkAppId = requireNotNull(System.getenv("MOBILE_SDK_APP_ID"))
+private val appCheckKey = requireNotNull(System.getenv("APP_CHECK_KEY"))
 
 internal class AppCheckFunctionTest {
 
@@ -32,10 +44,59 @@ internal class AppCheckFunctionTest {
     fun `should get default response with sample bearer`() = test<TestSampleTokensApplication>()
 
     @Test
+    @OptIn(ExperimentalCoroutinesApi::class)
+    fun `should make coroutine bearer token request`() = runTest {
+        val firebaseApp = FirebaseApp.initializeApp()
+
+        val serviceAccountId = requireNotNull(findExplicitServiceAccountId(firebaseApp))
+        val client = DefaultHttpClient()
+
+        val signer = CryptoSigner(
+            serviceAccountId = serviceAccountId,
+            firebaseApp = firebaseApp,
+            client = client,
+        )
+
+        val config = HttpClientConfig(
+            algorithm = GoogleAlgorithm(signer),
+            accountId = signer.getAccountId(),
+            appId = mobileSdkAppId,
+        )
+
+        val token: String = client
+            .getBearerTokens(config)
+            .accessToken
+
+        val response = client
+            .get("https://firebaseappcheck.googleapis.com/v1/projects") {
+            header(HttpHeaders.Authorization, "Bearer $token")
+        }.bodyAsText()
+
+        println(response)
+    }
+
+    private fun CryptoSigner(firebaseApp: FirebaseApp, client: HttpClient, serviceAccountId: String): CryptoSigner {
+        return when (val credentials: GoogleCredentials = firebaseApp.credentials) {
+            is ServiceAccountSigner -> CryptoSigner(credentials.account, credentials::sign)
+            else -> IamSigner(client, serviceAccountId)
+        }
+    }
+
+    private fun IamSigner(client: HttpClient, serviceAccountId: String): CryptoSigner {
+        val urlString = "https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/$serviceAccountId:signBlob"
+        val encoder = Base64.getEncoder()
+
+        return CryptoSigner(serviceAccountId) {
+            client.post(urlString, mapOf("payload" to encoder.encodeToString(it)))
+        }
+    }
+
+    @Test
+    @Ignore("Compose Runtime internal error")
     fun `should append bearer tokens manually`() = test<TestManualBearerTokenApplication>()
 
     @Test
-    // @Ignore("Failed: Compose Runtime internal error")
+    @Ignore("Failed: Compose Runtime internal error")
     fun `should load tokens for client`() = test<TestLoadTokensApplication>()
 
     @Test
@@ -53,6 +114,7 @@ internal class AppCheckFunctionTest {
     }
 }
 
+// Passed
 internal class TestGetAccessTokenApplication : HttpFunction by HttpApplication({
     val config: HttpClientConfig = rememberHttpClientConfig()
     val client: HttpClient = LocalHttpClient.current
@@ -60,6 +122,7 @@ internal class TestGetAccessTokenApplication : HttpFunction by HttpApplication({
     HttpEffect { client.getBearerTokens(config).accessToken }
 })
 
+// Passed
 internal class TestSampleTokensApplication : HttpFunction by HttpApplication({
     val client: HttpClient = LocalHttpClient.current
 
@@ -82,6 +145,7 @@ internal class TestSampleTokensApplication : HttpFunction by HttpApplication({
     }
 })
 
+// Failed
 internal class TestManualBearerTokenApplication : HttpFunction by HttpApplication({
     val config: HttpClientConfig = rememberHttpClientConfig()
     val client: HttpClient = LocalHttpClient.current
@@ -91,7 +155,7 @@ internal class TestManualBearerTokenApplication : HttpFunction by HttpApplicatio
             .getBearerTokens(config)
             .accessToken
 
-        val response = client.get("https://api.github.com/") {
+        val response = client.get("https://firebaseappcheck.googleapis.com/v1/projects") {
             header(HttpHeaders.Authorization, "Bearer $token")
         }.bodyAsText()
 
@@ -99,6 +163,7 @@ internal class TestManualBearerTokenApplication : HttpFunction by HttpApplicatio
     }
 })
 
+// Failed
 internal class TestLoadTokensApplication : HttpFunction by HttpApplication({
     val config: HttpClientConfig = rememberHttpClientConfig()
     val client: HttpClient = LocalHttpClient.current
@@ -121,10 +186,12 @@ internal class TestLoadTokensApplication : HttpFunction by HttpApplication({
     }
 })
 
+// Failed
 internal class TestAuthorisedApplication : HttpFunction by AuthorisedHttpApplication({
     HttpEffect { "Hello World" }
 })
 
+// Failed
 internal class TestAppCheckActionApplication : HttpFunction by HttpApplication({
     val config: HttpClientConfig = rememberHttpClientConfig()
     val client: HttpClient = LocalHttpClient.current
@@ -147,8 +214,8 @@ private inline fun <reified T : HttpFunction> test(
 ) = startServer<T> { client -> block(client.request { it.bodyAsText() }) }
 
 private suspend fun <T> HttpClient.request(
-    appId: String = requireNotNull(System.getenv("MOBILE_SDK_APP_ID")),
-    appKey: String = requireNotNull(System.getenv("APP_CHECK_KEY")),
+    appId: String = mobileSdkAppId,
+    appKey: String = appCheckKey,
     transform: suspend (HttpResponse) -> T,
 ): T = get {
     parameter("appId", appId)
