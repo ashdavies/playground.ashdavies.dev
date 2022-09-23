@@ -33,6 +33,7 @@ import kotlin.test.assertNotNull
 private val mobileSdkAppId = requireNotNull(System.getenv("MOBILE_SDK_APP_ID"))
 private val appCheckKey = requireNotNull(System.getenv("APP_CHECK_KEY"))
 
+@OptIn(ExperimentalCoroutinesApi::class)
 internal class AppCheckFunctionTest {
 
     @Test
@@ -42,7 +43,6 @@ internal class AppCheckFunctionTest {
     fun `should get default response with sample bearer`() = test<TestSampleTokensApplication>()
 
     @Test
-    @OptIn(ExperimentalCoroutinesApi::class)
     fun `should make coroutine bearer token request`() = runTest {
         val firebaseApp = FirebaseApp.initializeApp()
 
@@ -76,34 +76,43 @@ internal class AppCheckFunctionTest {
         }
     }
 
-    private fun CryptoSigner(firebaseApp: FirebaseApp, client: HttpClient, serviceAccountId: String): CryptoSigner {
-        return when (val credentials: GoogleCredentials = firebaseApp.credentials) {
-            is ServiceAccountSigner -> CryptoSigner(credentials.account, credentials::sign)
-            else -> IamSigner(client, serviceAccountId)
-        }
-    }
-
-    private fun IamSigner(client: HttpClient, serviceAccountId: String): CryptoSigner {
-        val urlString = "https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/$serviceAccountId:signBlob"
-        val encoder = Base64.getEncoder()
-
-        return CryptoSigner(serviceAccountId) {
-            client.post(urlString, mapOf("payload" to encoder.encodeToString(it)))
-        }
-    }
-
+    /**
+     * ComparisonFailure: expected:<[Hello World]> but was:<[Compose Runtime internal error.
+     * Unexpected or incorrect use of the Compose internal runtime API (Start/end imbalance).
+     * Please report to Google or use https://goo.gle/compose-feedback]>
+     */
     @Test
     fun `should append bearer tokens manually`() = test<TestManualBearerTokenApplication>()
 
+    /**
+     * ComparisonFailure: expected:<[Hello World]> but was:<[Compose Runtime internal error.
+     * Unexpected or incorrect use of the Compose internal runtime API (Start/end imbalance).
+     * Please report to Google or use https://goo.gle/compose-feedback]>
+     */
     @Test
     fun `should load tokens for client`() = test<TestLoadTokensApplication>()
 
+    /**
+     * ComparisonFailure: expected:<[Hello World]> but was:<[Compose Runtime internal error.
+     * Unexpected or incorrect use of the Compose internal runtime API (Start/end imbalance).
+     * Please report to Google or use https://goo.gle/compose-feedback]>
+     */
     @Test
     fun `should get hello world when authorised`() = test<TestAuthorisedApplication>()
 
+    /**
+     * ComparisonFailure: expected:<[Hello World]> but was:<[Compose Runtime internal error.
+     * Unexpected or incorrect use of the Compose internal runtime API (Start/end imbalance).
+     * Please report to Google or use https://goo.gle/compose-feedback]>
+     */
     @Test
     fun `should execute app check action when authorised`() = test<TestAppCheckActionApplication>()
 
+    /**
+     * AssertionError: expected:<403 Forbidden> but was:<500 Compose Runtime internal error.
+     * Unexpected or incorrect use of the Compose internal runtime API (Start/end imbalance).
+     * Please report to Google or use https://goo.gle/compose-feedback>
+     */
     @Test
     fun `should return app check token for given credentials`() = startServer<AppCheckFunction> { client ->
         assertEquals(HttpStatusCode.Forbidden, client.request { it.status })
@@ -198,6 +207,22 @@ internal class TestAppCheckActionApplication : HttpFunction by HttpApplication({
         AppCheckAction()
     }
 })
+
+private fun CryptoSigner(firebaseApp: FirebaseApp, client: HttpClient, serviceAccountId: String): CryptoSigner {
+    return when (val credentials: GoogleCredentials = firebaseApp.credentials) {
+        is ServiceAccountSigner -> CryptoSigner(credentials.account, credentials::sign)
+        else -> IamSigner(client, serviceAccountId)
+    }
+}
+
+private fun IamSigner(client: HttpClient, serviceAccountId: String): CryptoSigner {
+    val urlString = "https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/$serviceAccountId:signBlob"
+    val encoder = Base64.getEncoder()
+
+    return CryptoSigner(serviceAccountId) {
+        client.post(urlString, mapOf("payload" to encoder.encodeToString(it)))
+    }
+}
 
 private inline fun <reified T : HttpFunction> test(
     noinline block: (actual: String) -> Unit = { assertEquals("Hello World", it) }
