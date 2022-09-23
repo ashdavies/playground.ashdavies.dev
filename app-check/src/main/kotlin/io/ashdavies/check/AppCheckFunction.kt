@@ -1,8 +1,6 @@
 package io.ashdavies.check
 
-import androidx.compose.runtime.Composable
 import com.google.cloud.functions.HttpFunction
-import com.google.common.annotations.VisibleForTesting
 import io.ashdavies.playground.cloud.HttpEffect
 import io.ashdavies.playground.cloud.HttpException
 import kotlinx.datetime.Clock.System.now
@@ -14,12 +12,6 @@ private const val APP_CHECK_KEY = "APP_CHECK_KEY"
 private const val BAD_AUTHENTICITY = "Bad authenticity"
 
 internal class AppCheckFunction : HttpFunction by AuthorisedHttpApplication({
-    AppCheckAction()
-})
-
-@Composable
-@VisibleForTesting
-internal fun AppCheckAction() {
     val query: AppCheckQuery = rememberAppCheckRequest()
     val signer: CryptoSigner = rememberCryptoSigner()
     val appCheck: AppCheck = rememberAppCheck()
@@ -47,5 +39,4 @@ internal fun AppCheckAction() {
 
         decoded.token
     }
-
-}
+})

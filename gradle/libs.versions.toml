@@ -108,8 +108,6 @@ ktor-server-core = { module = "io.ktor:ktor-server-core", version.ref = "ktor" }
 ktor-server-html-builder = { module = "io.ktor:ktor-server-html-builder", version.ref = "ktor" }
 
 kuuuurt-multiplatform-paging = "io.github.kuuuurt:multiplatform-paging:0.4.7"
-molecule-runtime = { module = "app.cash.molecule:molecule-runtime", version.ref = "cash-molecule" }
-molecule-testing = { module = "app.cash.molecule:molecule-testing", version.ref = "cash-molecule" }
 oolong = "org.oolong-kt:oolong:2.0.4"
 qos-logbackClassic = "ch.qos.logback:logback-classic:1.2.11"
 requery-sqlite-android = "com.github.requery:sqlite-android:3.36.0"
@@ -138,7 +136,7 @@ ktor-server = ["ktor-client-auth", "ktor-serialization-json", "ktor-serializatio
 [plugins]
 android-application = { id = "com.android.application", version.ref = "google.android" }
 android-library = { id = "com.android.library", version.ref = "google.android" }
-cash-molecule = { id = "app.cash.molecule", version.ref = "cash-molecule" }
+cash-molecule = { id = "app.cash.molecule", version = "0.5.0-beta01" }
 diffplug-spotless = "com.diffplug.spotless:6.9.1"
 gradle-doctor = "com.osacky.doctor:0.8.0"
 gradle-publish = "com.gradle.plugin-publish:0.11.0"

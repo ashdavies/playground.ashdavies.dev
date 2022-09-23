@@ -5,7 +5,6 @@ import androidx.compose.runtime.remember
 import com.google.auth.oauth2.ComputeEngineCredentials
 import com.google.auth.oauth2.GoogleCredentials
 import com.google.auth.oauth2.ServiceAccountCredentials
-import com.google.common.annotations.VisibleForTesting
 import com.google.firebase.FirebaseApp
 import com.google.firebase.FirebaseOptions
 import io.ashdavies.playground.cloud.LocalFirebaseApp
@@ -40,8 +39,7 @@ private fun findExplicitProjectId(app: FirebaseApp): String? = app.options.proje
     ?: GoogleCloudProject
     ?: GCloudProject
 
-@VisibleForTesting
-internal fun findExplicitServiceAccountId(app: FirebaseApp): String? = app.options.serviceAccountId
+private fun findExplicitServiceAccountId(app: FirebaseApp): String? = app.options.serviceAccountId
     ?: (app.credentials as? ServiceAccountCredentials)?.account
     ?: (app.credentials as? ComputeEngineCredentials)?.account
     ?: ServiceAccountId

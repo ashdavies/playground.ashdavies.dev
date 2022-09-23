@@ -1,9 +1,7 @@
-@file:Suppress("DSL_SCOPE_VIOLATION", "UnstableApiUsage")
+@file:Suppress("DSL_SCOPE_VIOLATION", "UnstableApiUsage") // https://youtrack.jetbrains.com/issue/KTIJ-19369
 
 import org.jetbrains.kotlin.gradle.plugin.HasKotlinDependencies
 import org.jetbrains.kotlin.gradle.plugin.KotlinDependencyHandler
-
-// https://youtrack.jetbrains.com/issue/KTIJ-19369
 
 plugins {
     `multiplatform-application`
@@ -12,15 +10,12 @@ plugins {
 }
 
 kotlin {
-    val commonMain by sourceSets.getting {
-        dependencies {
-            implementation(project(":local-remote"))
-            implementation(project(":playground-app"))
+    val commonMain by sourceSets.dependencies {
+        implementation(project(":local-remote"))
+        implementation(project(":playground-app"))
 
-            implementation(libs.bundles.ktor.client)
-            implementation(libs.kuuuurt.multiplatform.paging)
-            implementation(libs.molecule.runtime)
-        }
+        implementation(libs.bundles.ktor.client)
+        implementation(libs.kuuuurt.multiplatform.paging)
     }
 
     val androidMain by sourceSets.dependencies {
@@ -31,9 +26,7 @@ kotlin {
         implementation(libs.google.accompanist.swiperefresh)
     }
 
-    val androidTest by sourceSets.dependencies {
-        implementation(libs.molecule.testing)
-    }
+    val androidTest by sourceSets
 }
 
 fun <T : HasKotlinDependencies> NamedDomainObjectContainer<T>.dependencies(

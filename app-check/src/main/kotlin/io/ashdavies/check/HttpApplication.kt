@@ -4,7 +4,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
 import com.auth0.jwt.algorithms.Algorithm
-import com.google.common.annotations.VisibleForTesting
 import io.ashdavies.http.LocalHttpClient
 import io.ashdavies.playground.cloud.HttpApplication
 import io.ktor.client.HttpClient
@@ -36,20 +35,20 @@ internal fun AuthorisedHttpApplication(content: @Composable () -> Unit) = HttpAp
 }
 
 @Composable
-@VisibleForTesting
 private fun rememberAuthorisedHttpClient(
     client: HttpClient = LocalHttpClient.current,
     config: HttpClientConfig = rememberHttpClientConfig(),
 ): HttpClient = remember(client, config) {
     client.config {
         install(Auth) {
-            bearer { loadTokens { client.getBearerTokens(config) } }
+            bearer {
+                loadTokens { client.getBearerTokens(config) }
+            }
         }
     }
 }
 
-@VisibleForTesting
-internal suspend fun HttpClient.getBearerTokens(config: HttpClientConfig): BearerTokens {
+private suspend fun HttpClient.getBearerTokens(config: HttpClientConfig): BearerTokens {
     val jwt = Jwt.create(config.algorithm) {
         it.audience = GOOGLE_TOKEN_ENDPOINT
         it.scope = FIREBASE_CLAIMS_SCOPES
@@ -88,8 +87,7 @@ internal data class BearerResponse(
 )
 
 @Composable
-@VisibleForTesting
-internal fun rememberHttpClientConfig(
+private fun rememberHttpClientConfig(
     request: AppCheckQuery = rememberAppCheckRequest(),
     signer: CryptoSigner = rememberCryptoSigner(),
     algorithm: Algorithm = rememberAlgorithm()
