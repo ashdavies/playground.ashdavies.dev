@@ -74,7 +74,7 @@ internal suspend fun HttpClient.getBearerTokens(config: HttpClientConfig): Beare
     )
 }
 
-internal data class HttpClientConfig constructor(
+internal data class HttpClientConfig(
     val algorithm: Algorithm,
     val accountId: String,
     val appId: String,

@@ -10,7 +10,6 @@ import io.ashdavies.http.DefaultHttpClient
 import io.ashdavies.http.LocalHttpClient
 import io.ashdavies.playground.cloud.HttpApplication
 import io.ashdavies.playground.cloud.HttpEffect
-import io.ashdavies.playground.cloud.HttpException
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.auth.Auth
 import io.ktor.client.plugins.auth.providers.BearerTokens
@@ -47,33 +46,25 @@ internal class AppCheckFunctionTest {
         val firebaseApp = FirebaseApp.initializeApp()
 
         val serviceAccountId = requireNotNull(findExplicitServiceAccountId(firebaseApp))
-        val client = DefaultHttpClient()
+        val httpClient = DefaultHttpClient()
 
-        val signer = CryptoSigner(
+        val cryptoSigner = CryptoSigner(
             serviceAccountId = serviceAccountId,
             firebaseApp = firebaseApp,
-            client = client,
+            client = httpClient,
         )
 
-        val config = HttpClientConfig(
-            algorithm = GoogleAlgorithm(signer),
-            accountId = signer.getAccountId(),
+        val clientConfig = HttpClientConfig(
+            algorithm = GoogleAlgorithm(cryptoSigner),
+            accountId = cryptoSigner.getAccountId(),
             appId = mobileSdkAppId,
         )
 
-        try {
-            val urlString = "https://firebaseappcheck.googleapis.com/v1/projects"
-            val token: String = client.getBearerTokens(config).accessToken
+        val accessToken = httpClient
+            .getBearerTokens(clientConfig)
+            .accessToken
 
-            val request = client.get(urlString) { header(HttpHeaders.Authorization, "Bearer $token") }
-            val response = request.bodyAsText()
-
-            println(response)
-            assertNotNull(response)
-        } catch (exception: HttpException) {
-            println(exception)
-            assertEquals(401, exception.code)
-        }
+        assertNotNull(accessToken)
     }
 
     /**
