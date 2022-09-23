@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
 import com.auth0.jwt.algorithms.Algorithm
+import com.google.common.annotations.VisibleForTesting
 import io.ashdavies.http.LocalHttpClient
 import io.ashdavies.playground.cloud.HttpApplication
 import io.ktor.client.HttpClient
@@ -18,7 +19,8 @@ import io.ktor.http.contentType
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-private val FIREBASE_CLAIMS_SCOPES = listOf(
+@VisibleForTesting
+internal val FIREBASE_CLAIMS_SCOPES = listOf(
     "https://www.googleapis.com/auth/cloud-platform",
     "https://www.googleapis.com/auth/firebase.database",
     "https://www.googleapis.com/auth/firebase.messaging",
@@ -26,7 +28,8 @@ private val FIREBASE_CLAIMS_SCOPES = listOf(
     "https://www.googleapis.com/auth/userinfo.email",
 )
 
-private const val GOOGLE_TOKEN_ENDPOINT = "https://accounts.google.com/o/oauth2/token"
+@VisibleForTesting
+internal const val GOOGLE_TOKEN_ENDPOINT = "https://accounts.google.com/o/oauth2/token"
 
 internal fun AuthorisedHttpApplication(content: @Composable () -> Unit) = HttpApplication {
     CompositionLocalProvider(LocalHttpClient provides rememberAuthorisedHttpClient()) {
@@ -35,42 +38,47 @@ internal fun AuthorisedHttpApplication(content: @Composable () -> Unit) = HttpAp
 }
 
 @Composable
-private fun rememberAuthorisedHttpClient(
-    client: HttpClient = LocalHttpClient.current,
-    config: HttpClientConfig = rememberHttpClientConfig(),
-): HttpClient = remember(client, config) {
-    client.config {
-        install(Auth) {
-            bearer {
-                loadTokens { client.getBearerTokens(config) }
-            }
-        }
+private fun rememberAuthorisedHttpClient(): HttpClient {
+    val config: HttpClientConfig = rememberHttpClientConfig()
+    val client: HttpClient = LocalHttpClient.current
+
+    return remember(config, client) {
+        AuthorisedHttpClient(client, config)
     }
 }
 
-private suspend fun HttpClient.getBearerTokens(config: HttpClientConfig): BearerTokens {
-    val jwt = Jwt.create(config.algorithm) {
-        it.audience = GOOGLE_TOKEN_ENDPOINT
-        it.scope = FIREBASE_CLAIMS_SCOPES
-        it.issuer = config.accountId
-        it.appId = config.appId
+@VisibleForTesting
+internal fun AuthorisedHttpClient(from: HttpClient, config: HttpClientConfig): HttpClient = from.config {
+    suspend fun HttpClient.bearerTokens(config: HttpClientConfig): BearerTokens {
+        val jwt = Jwt.create(config.algorithm) {
+            it.audience = GOOGLE_TOKEN_ENDPOINT
+            it.scope = FIREBASE_CLAIMS_SCOPES
+            it.issuer = config.accountId
+            it.appId = config.appId
+        }
+
+        val response: HttpResponse = post(GOOGLE_TOKEN_ENDPOINT) {
+            contentType(ContentType.Application.FormUrlEncoded)
+            grantType(JwtBearer)
+            assertion(jwt)
+        }
+
+        val bearer: BearerResponse = response.body()
+        val accessToken: String = bearer
+            .accessToken
+            .substring(0..240)
+
+        return BearerTokens(
+            accessToken = accessToken,
+            refreshToken = "",
+        )
     }
 
-    val response: HttpResponse = post(GOOGLE_TOKEN_ENDPOINT) {
-        contentType(ContentType.Application.FormUrlEncoded)
-        grantType(JwtBearer)
-        assertion(jwt)
+    install(Auth) {
+        bearer {
+            loadTokens { from.bearerTokens(config) }
+        }
     }
-
-    val bearer: BearerResponse = response.body()
-    val accessToken: String = bearer
-        .accessToken
-        .substring(0..240)
-
-    return BearerTokens(
-        accessToken = accessToken,
-        refreshToken = "",
-    )
 }
 
 internal data class HttpClientConfig(
@@ -87,7 +95,8 @@ internal data class BearerResponse(
 )
 
 @Composable
-private fun rememberHttpClientConfig(
+@VisibleForTesting
+internal fun rememberHttpClientConfig(
     request: AppCheckQuery = rememberAppCheckRequest(),
     signer: CryptoSigner = rememberCryptoSigner(),
     algorithm: Algorithm = rememberAlgorithm()

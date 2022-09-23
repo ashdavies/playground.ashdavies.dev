@@ -1,26 +1,26 @@
 package io.ashdavies.check
 
-import androidx.compose.runtime.remember
 import com.google.cloud.functions.HttpFunction
 import io.ashdavies.http.LocalHttpClient
 import io.ashdavies.playground.cloud.HttpApplication
 import io.ashdavies.playground.cloud.HttpEffect
 import io.ktor.client.HttpClient
-import io.ktor.client.plugins.auth.Auth
-import io.ktor.client.plugins.auth.providers.BearerTokens
-import io.ktor.client.plugins.auth.providers.bearer
+import io.ktor.client.call.body
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter
+import io.ktor.client.request.post
 import io.ktor.client.statement.HttpResponse
 import io.ktor.client.statement.bodyAsText
+import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
+import io.ktor.http.contentType
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 internal class AppCheckFunctionTest {
 
     @Test
-    fun `should get default response with sample bearer`() = test<TestSampleTokensApplication>()
+    fun `should load bearer tokens for unauthorised http client`() = test<TestUnauthorisedApplication>()
 
     /**
      * ComparisonFailure: expected:<[Hello World]> but was:<[Compose Runtime internal error.
@@ -28,7 +28,7 @@ internal class AppCheckFunctionTest {
      * Please report to Google or use https://goo.gle/compose-feedback]>
      */
     @Test
-    fun `should get hello world when authorised`() = test<TestAuthorisedApplication>()
+    fun `should load bearer tokens for authorised http client`() = test<TestAuthorisedApplication>()
 
     /**
      * AssertionError: expected:<403 Forbidden> but was:<500 Compose Runtime internal error.
@@ -41,25 +41,29 @@ internal class AppCheckFunctionTest {
     }
 }
 
-internal class TestSampleTokensApplication : HttpFunction by HttpApplication({
-    val client: HttpClient = LocalHttpClient.current
-
-    val authorised = remember(client) {
-        client.config {
-            install(Auth) {
-                bearer {
-                    loadTokens { BearerTokens("abc123", "xyz111") }
-                }
-            }
-        }
-    }
+internal class TestUnauthorisedApplication : HttpFunction by HttpApplication({
+    val config = rememberHttpClientConfig().also(::println)
+    val client = LocalHttpClient.current
 
     HttpEffect {
-        val response = authorised
-            .get("https://api.github.com/")
-            .bodyAsText()
+        val jwt = Jwt.create(config.algorithm) {
+            it.audience = GOOGLE_TOKEN_ENDPOINT
+            it.scope = FIREBASE_CLAIMS_SCOPES
+            it.issuer = config.accountId
+            it.appId = config.appId
+        }.also(::println)
 
-        if (response.isNotEmpty()) "Hello World" else ""
+        val response = client.post(GOOGLE_TOKEN_ENDPOINT) {
+            contentType(ContentType.Application.FormUrlEncoded)
+            grantType(JwtBearer)
+            assertion(jwt)
+        }.also(::println)
+
+        response
+            .body<BearerResponse>()
+            .accessToken
+            .substring(0..240)
+            .also(::println)
     }
 })
 
