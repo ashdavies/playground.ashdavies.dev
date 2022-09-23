@@ -62,14 +62,13 @@ internal class AppCheckFunctionTest {
             appId = mobileSdkAppId,
         )
 
-        val token: String = client
-            .getBearerTokens(config)
-            .accessToken
-
         try {
             val urlString = "https://firebaseappcheck.googleapis.com/v1/projects"
+            val token: String = client.getBearerTokens(config).accessToken
+
             val request = client.get(urlString) { header(HttpHeaders.Authorization, "Bearer $token") }
             val response = request.bodyAsText()
+
             println(response)
             assertNotNull(response)
         } catch (exception: HttpException) {
