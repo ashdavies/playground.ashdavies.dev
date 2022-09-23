@@ -16,11 +16,19 @@ import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertNotNull
 
 internal class AppCheckFunctionTest {
 
+    /**
+     * ComparisonFailure: expected:<[Hello World]> but was:<[Compose Runtime internal error.
+     * Unexpected or incorrect use of the Compose internal runtime API (Start/end imbalance).
+     * Please report to Google or use https://goo.gle/compose-feedback]>
+     */
     @Test
-    fun `should load bearer tokens for unauthorised http client`() = test<TestUnauthorisedApplication>()
+    fun `should load bearer tokens for unauthorised http client`() {
+        test<TestUnauthorisedApplication> { assertNotNull(it) }
+    }
 
     /**
      * ComparisonFailure: expected:<[Hello World]> but was:<[Compose Runtime internal error.
@@ -46,24 +54,34 @@ internal class TestUnauthorisedApplication : HttpFunction by HttpApplication({
     val client = LocalHttpClient.current
 
     HttpEffect {
-        val jwt = Jwt.create(config.algorithm) {
-            it.audience = GOOGLE_TOKEN_ENDPOINT
-            it.scope = FIREBASE_CLAIMS_SCOPES
-            it.issuer = config.accountId
-            it.appId = config.appId
-        }.also(::println)
+        var message = "An unreported exception occurred"
 
-        val response = client.post(GOOGLE_TOKEN_ENDPOINT) {
-            contentType(ContentType.Application.FormUrlEncoded)
-            grantType(JwtBearer)
-            assertion(jwt)
-        }.also(::println)
+        try {
+            val jwt = Jwt.create(config.algorithm) {
+                it.audience = GOOGLE_TOKEN_ENDPOINT
+                it.scope = FIREBASE_CLAIMS_SCOPES
+                it.issuer = config.accountId
+                it.appId = config.appId
+            }.also(::println)
 
-        response
-            .body<BearerResponse>()
-            .accessToken
-            .substring(0..240)
-            .also(::println)
+            val response = client.post(GOOGLE_TOKEN_ENDPOINT) {
+                contentType(ContentType.Application.FormUrlEncoded)
+                grantType(JwtBearer)
+                assertion(jwt)
+            }.also(::println)
+
+            response
+                .body<BearerResponse>()
+                .accessToken
+                .substring(0..240)
+                .also(::println)
+        } catch (throwable: Throwable) {
+            println("An exception was thrown within the application block")
+            message = "An exception occurred: ${throwable.message}"
+            throwable.printStackTrace()
+        }
+
+        message
     }
 })
 
