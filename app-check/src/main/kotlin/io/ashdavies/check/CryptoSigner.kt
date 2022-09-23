@@ -10,6 +10,8 @@ import io.ashdavies.http.LocalHttpClient
 import io.ashdavies.playground.cloud.LocalFirebaseApp
 import io.ashdavies.playground.compose.Provides
 import io.ktor.client.HttpClient
+import io.ktor.client.request.header
+import io.ktor.http.HttpHeaders
 import java.util.Base64
 
 internal interface CryptoSigner {
@@ -26,25 +28,29 @@ internal fun CryptoSigner(accountId: String, sign: suspend (value: ByteArray) ->
 internal fun CryptoSigner(app: FirebaseApp, client: HttpClient): CryptoSigner {
     return when (val credentials: GoogleCredentials = app.credentials) {
         is ServiceAccountSigner -> CryptoSigner(credentials.account, credentials::sign)
-        else -> IamSigner(client, findExplicitServiceAccountId(app)!!)
+        else -> IamSigner(client, getServiceAccountId(app), getToken(credentials))
     }
 }
+
+private fun IamSigner(client: HttpClient, accountId: String, token: String) = CryptoSigner(accountId) {
+    val urlString = "https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/$accountId:signBlob"
+    val payload = Base64.getEncoder().encodeToString(it)
+
+    client.post(urlString, mapOf("payload" to payload)) {
+        header(HttpHeaders.Authorization, "Bearer $token")
+    }
+}
+
+private fun getToken(credentials: GoogleCredentials): String = credentials
+    .also { it.refreshIfExpired() }
+    .accessToken
+    .tokenValue
 
 @Provides
 @Composable
-internal fun rememberCryptoSigner(app: FirebaseApp = LocalFirebaseApp.current): CryptoSigner {
-    val client: HttpClient = LocalHttpClient.current
-    return remember(app, client) {
-        CryptoSigner(app, client)
-    }
-}
-
-private fun IamSigner(client: HttpClient, serviceAccountId: String) = CryptoSigner(serviceAccountId) {
-    val urlString = "https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/$serviceAccountId:signBlob"
-    val encoder = Base64.getEncoder()
-
-    client.post(
-        body = mapOf("payload" to encoder.encodeToString(it)),
-        urlString = urlString,
-    )
+internal fun rememberCryptoSigner(
+    app: FirebaseApp = LocalFirebaseApp.current,
+    client: HttpClient = LocalHttpClient.current,
+): CryptoSigner = remember(app, client) {
+    CryptoSigner(app, client)
 }

@@ -3,6 +3,7 @@ package io.ashdavies.check
 import com.google.cloud.functions.HttpFunction
 import com.google.firebase.FirebaseApp
 import io.ashdavies.http.DefaultHttpClient
+import io.ashdavies.playground.cloud.HttpApplication
 import io.ashdavies.playground.cloud.HttpEffect
 import io.ashdavies.playground.cloud.LocalHttpFunction
 import io.ktor.client.HttpClient
@@ -23,6 +24,9 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
 internal class AppCheckFunctionTest {
+
+    @Test
+    fun `should gracefully handle failing application`() = test<TestFailingApplication>()
 
     @Test
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -81,6 +85,10 @@ internal class AppCheckFunctionTest {
         assertEquals(HttpStatusCode.Forbidden, client.request { it.status })
     }
 }
+
+internal class TestFailingApplication : HttpFunction by HttpApplication({
+    throw UnsupportedOperationException()
+})
 
 internal class TestUnauthorisedApplication : HttpFunction by LocalHttpFunction({ request, response ->
     val app = FirebaseApp.initializeApp()
