@@ -1,6 +1,5 @@
 package io.ashdavies.check
 
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
 import com.google.auth.ServiceAccountSigner
@@ -11,8 +10,7 @@ import io.ashdavies.http.DefaultHttpClient
 import io.ashdavies.http.LocalHttpClient
 import io.ashdavies.playground.cloud.HttpApplication
 import io.ashdavies.playground.cloud.HttpEffect
-import io.ashdavies.playground.cloud.LocalFirebaseApp
-import io.ashdavies.playground.compose.Provides
+import io.ashdavies.playground.cloud.HttpException
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.auth.Auth
 import io.ktor.client.plugins.auth.providers.BearerTokens
@@ -31,6 +29,7 @@ import kotlin.test.Ignore
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
+import kotlin.test.assertNotNull
 
 private val mobileSdkAppId = requireNotNull(System.getenv("MOBILE_SDK_APP_ID"))
 private val appCheckKey = requireNotNull(System.getenv("APP_CHECK_KEY"))
@@ -67,12 +66,16 @@ internal class AppCheckFunctionTest {
             .getBearerTokens(config)
             .accessToken
 
-        val response = client
-            .get("https://firebaseappcheck.googleapis.com/v1/projects") {
-            header(HttpHeaders.Authorization, "Bearer $token")
-        }.bodyAsText()
-
-        println(response)
+        try {
+            val urlString = "https://firebaseappcheck.googleapis.com/v1/projects"
+            val request = client.get(urlString) { header(HttpHeaders.Authorization, "Bearer $token") }
+            val response = request.bodyAsText()
+            println(response)
+            assertNotNull(response)
+        } catch (exception: HttpException) {
+            println(exception)
+            assertEquals(401, exception.code)
+        }
     }
 
     private fun CryptoSigner(firebaseApp: FirebaseApp, client: HttpClient, serviceAccountId: String): CryptoSigner {
