@@ -24,8 +24,7 @@ internal fun CryptoSigner(accountId: String, sign: suspend (value: ByteArray) ->
     override fun getAccountId(): String = accountId
 }
 
-@VisibleForTesting
-internal fun CryptoSigner(app: FirebaseApp, client: HttpClient): CryptoSigner {
+private fun CryptoSigner(app: FirebaseApp, client: HttpClient): CryptoSigner {
     return when (val credentials: GoogleCredentials = app.credentials) {
         is ServiceAccountSigner -> CryptoSigner(credentials.account, credentials::sign)
         else -> IamSigner(client, getServiceAccountId(app), getToken(credentials))
@@ -42,7 +41,7 @@ private fun IamSigner(client: HttpClient, accountId: String, token: String) = Cr
 }
 
 private fun getToken(credentials: GoogleCredentials): String = credentials
-    .also { it.refreshIfExpired() }
+    .apply { refreshIfExpired() }
     .accessToken
     .tokenValue
 

@@ -31,8 +31,7 @@ public fun HttpApplication(block: @Composable () -> Unit): HttpFunction = LocalH
     }
 }
 
-@VisibleForTesting // private
-public fun LocalHttpFunction(block: (HttpRequest, HttpResponse) -> Unit) = HttpFunction { request, response ->
+private fun LocalHttpFunction(block: (HttpRequest, HttpResponse) -> Unit) = HttpFunction { request, response ->
     runCatching { block(request, response) }.recover { throwable ->
         response.setStatusCode(HttpURLConnection.HTTP_INTERNAL_ERROR, throwable.message)
         response.writer.write(throwable.message ?: "Unknown error")
