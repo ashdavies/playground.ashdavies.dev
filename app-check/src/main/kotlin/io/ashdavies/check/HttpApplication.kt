@@ -6,6 +6,7 @@ import androidx.compose.runtime.remember
 import com.auth0.jwt.algorithms.Algorithm
 import io.ashdavies.http.LocalHttpClient
 import io.ashdavies.playground.cloud.HttpApplication
+import io.ashdavies.playground.cloud.HttpScope
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.auth.Auth
@@ -28,7 +29,7 @@ private val FIREBASE_CLAIMS_SCOPES = listOf(
 
 private const val GOOGLE_TOKEN_ENDPOINT = "https://accounts.google.com/o/oauth2/token"
 
-internal fun AuthorisedHttpApplication(content: @Composable () -> Unit) = HttpApplication {
+internal fun AuthorisedHttpApplication(content: @Composable HttpScope.() -> Unit) = HttpApplication {
     CompositionLocalProvider(LocalHttpClient provides rememberAuthorisedHttpClient()) {
         content()
     }

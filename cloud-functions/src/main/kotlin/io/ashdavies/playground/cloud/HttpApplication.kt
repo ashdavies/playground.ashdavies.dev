@@ -21,7 +21,9 @@ import kotlinx.coroutines.yield
 import org.jetbrains.skiko.MainUIDispatcher
 import java.net.HttpURLConnection
 
-public fun HttpApplication(block: @Composable () -> Unit): HttpFunction = LocalHttpFunction { request, response ->
+private object HttpApplicationScope : HttpScope
+
+public fun HttpApplication(block: @Composable HttpScope.() -> Unit): HttpFunction = LocalHttpFunction { request, response ->
     application {
         CompositionLocalProvider(
             LocalApplicationScope provides this,
@@ -31,8 +33,8 @@ public fun HttpApplication(block: @Composable () -> Unit): HttpFunction = LocalH
     }
 }
 
-private fun LocalHttpFunction(block: (HttpRequest, HttpResponse) -> Unit) = HttpFunction { request, response ->
-    runCatching { block(request, response) }.recover { throwable ->
+private fun LocalHttpFunction(block: HttpScope.(HttpRequest, HttpResponse) -> Unit) = HttpFunction { request, response ->
+    runCatching { HttpApplicationScope.block(request, response) }.recover { throwable ->
         response.setStatusCode(HttpURLConnection.HTTP_INTERNAL_ERROR, throwable.message)
         response.writer.write(throwable.message ?: "Unknown error")
         throwable.printStackTrace()
