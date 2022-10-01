@@ -7,10 +7,11 @@ import androidx.compose.ui.window.WindowState
 import androidx.compose.ui.window.singleWindowApplication
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.DefaultComponentContext
+import io.ashdavies.http.LocalHttpClient
 
 public fun MainScreen(title: String = "Playground", content: @Composable (ComponentContext) -> Unit) {
     singleWindowApplication(WindowState(size = DpSize(450.dp, 975.dp)), title = title) {
-        AppCheck {
+        ProvideAppCheckToken(LocalHttpClient.current) {
             content(DefaultComponentContext(DefaultLifecycle()))
         }
     }
