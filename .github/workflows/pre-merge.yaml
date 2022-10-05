@@ -56,41 +56,28 @@ jobs:
         run: find . -type f -name "google-services.aes" -exec sh -c 'openssl aes-256-cbc -md sha256 -d -in "$0" -out "${0%.aes*}.json" -k "${GOOGLE_SERVICES_PASSPHRASE}"' {} \;
 
       - name: Google Cloud Auth
-        uses: 'google-github-actions/auth@v0'
+        uses: google-github-actions/auth@v0
         with:
           workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY }}
           service_account: ${{ secrets.GOOGLE_SA_EMAIL }}
 
-      - name: 'Set up Cloud SDK'
-        uses: 'google-github-actions/setup-gcloud@v0'
-        with:
-          export_default_credentials: true
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v0
 
-      - name: 'Use gcloud CLI'
-        run: 'gcloud info'
-      
       - name: Run Gradle Tasks
         run: ./gradlew build check --console=plain --info
+
+      - name: Produce Test Summary
+        uses: test-summary/action@v1.0
+        with:
+          paths: "**/build/test-results/test/TEST-*.xml"
+        if: always()
 
       - name: Upload Test Report
         uses: actions/upload-artifact@v3
         with:
           name: test-report
           path: "**/build/reports/tests"
-          if-no-files-found: error
-        if: always()
-
-      - name: Generate Test Summary
-        uses: test-summary/action@v1.0
-        with:
-          paths: "**/build/test-results/test/TEST-*.xml"
-        if: always()
-
-      - name: Upload Test Summary
-        uses: actions/upload-artifact@v3
-        with:
-          name: test-summary
-          path: "**/test-summary.md"
           if-no-files-found: error
         if: always()
 
