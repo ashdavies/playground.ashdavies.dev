@@ -1,8 +1,13 @@
 package io.ashdavies.playground
 
-import androidx.compose.runtime.Composable
-import com.arkivanov.decompose.ComponentContext
+import android.os.Bundle
+import androidx.activity.compose.setContent
+import androidx.appcompat.app.AppCompatActivity
+import com.arkivanov.decompose.defaultComponentContext
 
-internal class DominionActivity : ComposeActivity() {
-    override val content: @Composable (ComponentContext) -> Unit = { DominionRoot(it) }
+internal class DominionActivity : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent { DominionApp(defaultComponentContext()) }
+    }
 }

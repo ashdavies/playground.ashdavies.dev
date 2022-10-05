@@ -31,15 +31,20 @@ kotlin {
         implementation(libs.bundles.androidx.activity)
         implementation(libs.bundles.androidx.paging)
         implementation(libs.bundles.androidx.viewmodel)
-
-        with(libs.google.accompanist) {
-            implementation(flowlayout)
-            implementation(placeholderMaterial)
-            implementation(swiperefresh)
-        }
-
         implementation(libs.bundles.google.firebase)
         implementation(libs.bundles.google.maps)
+
+        with(libs.google) {
+            implementation(accompanist.flowlayout)
+            implementation(accompanist.placeholderMaterial)
+            implementation(accompanist.swiperefresh)
+            implementation(firebase.appcheck.playintegrity)
+            implementation(firebase.appcheck)
+        }
+    }
+
+    val androidDebug by dependencies {
+        implementation(libs.google.firebase.appcheck.debug)
     }
 
     val jvmMain by dependencies {
