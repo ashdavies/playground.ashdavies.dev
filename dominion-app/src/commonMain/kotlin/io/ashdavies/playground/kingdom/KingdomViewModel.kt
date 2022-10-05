@@ -85,19 +85,19 @@ internal class KingdomViewModel(private val scope: CoroutineScope, private val c
 }
 
 @Serializable
-internal sealed interface KingdomViewState : Parcelable {
+internal sealed class KingdomViewState : Parcelable {
 
     @Parcelize
     @Serializable
-    object Ready : KingdomViewState
+    object Ready : KingdomViewState()
 
     @Parcelize
     @Serializable
-    object Loading : KingdomViewState
+    object Loading : KingdomViewState()
 
     @Parcelize
     @Serializable
-    data class Success(val value: List<DominionCard>)
+    data class Success(val value: List<DominionCard>) : KingdomViewState()
 }
 
 @Composable

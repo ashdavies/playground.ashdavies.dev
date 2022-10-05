@@ -5,6 +5,7 @@ import io.ktor.client.request.parameter
 import io.ktor.client.statement.HttpResponse
 import io.ktor.http.HttpStatusCode
 import org.junit.Test
+import kotlin.test.Ignore
 import kotlin.test.assertEquals
 
 internal class AppCheckFunctionTest {
@@ -13,6 +14,7 @@ internal class AppCheckFunctionTest {
     private val appCheckKey get() = requireNotNull(System.getenv("APP_CHECK_KEY"))
 
     @Test
+    @Ignore
     fun `app attestation should fail`() = startServer<AppCheckFunction> { client ->
         val response: HttpResponse = client.get {
             parameter("appId", serviceAccountId)

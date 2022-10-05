@@ -58,8 +58,11 @@ google-android-material = "com.google.android.material:material:1.5.0"
 google-cloud-functionsFrameworkApi = "com.google.cloud.functions:functions-framework-api:1.0.4"
 google-cloud-javaFunctionInvoker = "com.google.cloud.functions.invoker:java-function-invoker:1.1.0"
 
+google-firebase-bom = "com.google.firebase:firebase-bom:30.4.1"
 google-firebase-admin = "com.google.firebase:firebase-admin:8.1.0"
-google-firebase-appcheck = "com.google.firebase:firebase-appcheck:16.0.0"
+google-firebase-appcheck = "com.google.firebase:firebase-appcheck:16.0.2"
+google-firebase-appcheck-debug = "com.google.firebase:firebase-appcheck-debug:16.0.2"
+google-firebase-appcheck-playintegrity = "com.google.firebase:firebase-appcheck-playintegrity:16.0.2"
 google-firebase-analytics = "com.google.firebase:firebase-analytics:20.1.2"
 google-firebase-common-ktx = "com.google.firebase:firebase-common-ktx:20.1.0"
 
