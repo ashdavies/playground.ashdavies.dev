@@ -1,11 +1,8 @@
-@file:Suppress("UnstableApiUsage")
-
 import com.android.build.api.dsl.CommonExtension
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.getValue
 import org.gradle.kotlin.dsl.getting
-import org.gradle.plugin.use.PluginDependency
 import org.jetbrains.compose.ExperimentalComposeLibrary
 import org.jetbrains.compose.compose
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
@@ -80,19 +77,17 @@ internal fun KotlinMultiplatformExtension.configureKotlinMultiplatform(target: P
         implementation(libs.jetbrains.kotlinx.coroutines.android)
     }
 
-    val androidTest: KotlinSourceSet by sourceSets.getting {
+    val androidTest by sourceSets.getting {
         val androidAndroidTestRelease by sourceSets.getting
         dependsOn(androidAndroidTestRelease)
     }
 
-    val jvmMain by dependencies {
+    val jvmMain: KotlinSourceSet by dependencies {
         implementation(compose.desktop.currentOs)
         implementation(libs.jetbrains.kotlinx.coroutines.swing)
     }
 }
 
-public fun KotlinSourceSetContainer.dependencies(configure: KotlinDependencyHandler.() -> Unit) =
-    sourceSets.getting { dependencies(configure) }
-
-public fun KotlinDependencyHandler.plugin(dependency: PluginDependency) =
-    implementation("${dependency.pluginId}:${dependency.pluginId}.gradle.plugin:${dependency.version}")
+public fun KotlinSourceSetContainer.dependencies(
+    configure: KotlinDependencyHandler.() -> Unit
+) = sourceSets.getting { dependencies(configure) }

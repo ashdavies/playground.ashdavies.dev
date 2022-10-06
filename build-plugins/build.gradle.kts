@@ -5,11 +5,15 @@ plugins {
 dependencies {
     implementation(files(libs.javaClass.superclass.protectionDomain.codeSource.location))
 
-    implementation(libs.android.tools.build.gradle)
-    implementation(libs.apollographql.apollo.gradle.plugin)
-    implementation(libs.jetbrains.compose.gradle.plugin)
-    implementation(libs.jetbrains.kotlin.gradle.plugin)
-    implementation(libs.jetbrains.kotlin.serialization.gradlePlugin)
-    implementation(libs.johnRengelman.shadow)
-    implementation(libs.sqldelight.kotlin.gradle.plugin)
+    plugin(libs.plugins.android.library)
+    plugin(libs.plugins.apollo.graphql)
+    plugin(libs.plugins.kotlin.compose)
+    plugin(libs.plugins.kotlin.multiplatform)
+    plugin(libs.plugins.kotlin.serialization)
+    plugin(libs.plugins.johnrengelman.shadow)
+    plugin(libs.plugins.squareup.sqldelight)
+}
+
+fun DependencyHandler.plugin(provider: Provider<PluginDependency>): Dependency? {
+    return with(provider.get()) { implementation("$pluginId:$pluginId.gradle.plugin:$version") }
 }

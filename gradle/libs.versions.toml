@@ -19,7 +19,6 @@ pinterest-ktlint = "0.47.0"
 squareup-sqldelight = "1.5.3"
 
 [libraries]
-android-tools-build-gradle = { module = "com.android.tools.build:gradle", version.ref = "google.android" }
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity" }
 androidx-activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "androidx-activity" }
 androidx-annotation = "androidx.annotation:annotation:1.3.0"
@@ -32,9 +31,8 @@ androidx-paging-runtime = "androidx.paging:paging-runtime:3.1.1"
 
 apache-batikExt = "org.apache.xmlgraphics:batik-ext:1.14"
 
-apollographql-apollo-coroutines-support = { module = "com.apollographql.apollo:apollo-coroutines-support", version.ref = "apollo-graphql" }
-apollographql-apollo-gradle-plugin = { module = "com.apollographql.apollo:apollo-gradle-plugin", version.ref = "apollo-graphql" }
-apollographql-apollo-runtime = { module = "com.apollographql.apollo:apollo-runtime", version.ref = "apollo-graphql" }
+apollo-graphql-coroutines-support = { module = "com.apollographql.apollo:apollo-coroutines-support", version.ref = "apollo-graphql" }
+apollo-graphql-runtime = { module = "com.apollographql.apollo:apollo-runtime", version.ref = "apollo-graphql" }
 
 arkivanov-decompose = { module = "com.arkivanov.decompose:decompose", version.ref = "arkivanov-decompose" }
 arkivanov-decompose-extensions = { module = "com.arkivanov.decompose:extensions-compose-jetbrains", version.ref = "arkivanov-decompose" }
@@ -71,13 +69,10 @@ google-maps-android-compose-widgets = { module = "com.google.maps.android:maps-c
 
 jakeWharton-mosaic = "com.jakewharton.mosaic:mosaic-runtime:0.1.0"
 
-jetbrains-compose-gradle-plugin = { module = "org.jetbrains.compose:compose-gradle-plugin", version.ref = "jetbrains-compose" }
 jetbrains-compose-runtime = { module = "org.jetbrains.compose.runtime:runtime", version.ref = "jetbrains-compose" }
 jetbrains-kotlin-compiler-embeddable = { module = "org.jetbrains.kotlin:kotlin-compiler-embeddable", version.ref = "jetbrains-kotlin" }
 jetbrains-kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "jetbrains-kotlin" }
-jetbrains-kotlin-gradle-plugin-api = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "jetbrains-kotlin" }
 jetbrains-kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "jetbrains-kotlin" }
-jetbrains-kotlin-serialization-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-serialization", version.ref = "jetbrains-kotlin" }
 jetbrains-kotlin-test-annotations = { module = "org.jetbrains.kotlin:kotlin-test-annotations-common", version.ref = "jetbrains-kotlin" }
 jetbrains-kotlin-test-common = { module = "org.jetbrains.kotlin:kotlin-test-common", version.ref = "jetbrains-kotlin" }
 jetbrains-kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "jetbrains-kotlin" }
@@ -93,7 +88,6 @@ jetbrains-kotlinx-serialization-core = { module = "org.jetbrains.kotlinx:kotlinx
 jetbrains-kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
 jetbrains-kotlinx-serialization-properties = { module = "org.jetbrains.kotlinx:kotlinx-serialization-properties", version.ref = "kotlinx-serialization" }
 
-johnRengelman-shadow = "gradle.plugin.com.github.johnrengelman:shadow:7.1.2"
 jraf-klibnotion = "org.jraf:klibnotion:1.11.0"
 
 ktor-client-auth = { module = "io.ktor:ktor-client-auth", version.ref = "ktor" }
@@ -117,7 +111,6 @@ slf4j-simple = "org.slf4j:slf4j-simple:1.7.21"
 
 sqldelight-android-driver = { module = "com.squareup.sqldelight:android-driver", version.ref = "squareup-sqldelight" }
 sqldelight-coroutines-extensions = { module = "com.squareup.sqldelight:coroutines-extensions", version.ref = "squareup-sqldelight" }
-sqldelight-kotlin-gradle-plugin = { module = "com.squareup.sqldelight:gradle-plugin", version.ref = "squareup-sqldelight" }
 sqldelight-runtime = { module = "com.squareup.sqldelight:runtime", version.ref = "squareup-sqldelight" }
 sqldelight-sqlite-driver = { module = "com.squareup.sqldelight:sqlite-driver", version.ref = "squareup-sqldelight" }
 
@@ -146,10 +139,11 @@ diffplug-spotless = "com.diffplug.spotless:6.9.1"
 gradle-doctor = "com.osacky.doctor:0.8.0"
 gradle-publish = "com.gradle.plugin-publish:0.11.0"
 jetbrains-dokka = "org.jetbrains.dokka:0.10.0"
+johnrengelman-shadow = "com.github.johnrengelman.shadow:7.1.2"
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "jetbrains-kotlin" }
+kotlin-compose = { id = "org.jetbrains.compose", version.ref = "jetbrains-compose" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrains-kotlin" }
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "jetbrains-kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "jetbrains-kotlin" }
 kotlinx-kover = { id = "org.jetbrains.kotlinx.kover", version = "0.5.0" }
-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "jetbrains-kotlin" }
-kotlin-compose = { id = "org.jetbrains.compose", version.ref = "jetbrains-compose" }
-sqldelight = { id = "com.squareup.sqldelight", version.ref = "squareup-sqldelight" }
+squareup-sqldelight = { id = "com.squareup.sqldelight", version.ref = "squareup-sqldelight" }

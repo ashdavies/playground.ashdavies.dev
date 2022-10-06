@@ -54,9 +54,9 @@ doctor {
 
 versionCatalogUpdate {
     pin {
-        libraries.addAll(
-            libs.jetbrains.kotlin.gradle.plugin.asProvider(), // Unstable until 1.2.0-alpha01-dev686
-            libs.android.tools.build.gradle, // Compatibility with JetBrains Compose Plugin
+        versions.addAll(
+            libs.versions.jetbrains.compose.get(), // Unstable until 1.2.0-alpha01-dev686
+            libs.versions.google.android.get(), // JetBrains Compose Plugin Compatibility
         )
     }
 }
