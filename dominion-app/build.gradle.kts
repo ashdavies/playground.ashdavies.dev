@@ -6,7 +6,7 @@ import org.jetbrains.kotlin.gradle.plugin.KotlinDependencyHandler
 // https://youtrack.jetbrains.com/issue/KTIJ-19369
 
 plugins {
-    `multiplatform-application`
+    id("io.ashdavies.application")
 
     alias(libs.plugins.cash.molecule)
 }
@@ -19,7 +19,6 @@ kotlin {
 
             implementation(libs.bundles.ktor.client)
             implementation(libs.kuuuurt.multiplatform.paging)
-            implementation(libs.molecule.runtime)
         }
     }
 
@@ -29,10 +28,6 @@ kotlin {
 
         implementation(libs.google.accompanist.placeholderMaterial)
         implementation(libs.google.accompanist.swiperefresh)
-    }
-
-    val androidTest by sourceSets.dependencies {
-        implementation(libs.molecule.testing)
     }
 }
 

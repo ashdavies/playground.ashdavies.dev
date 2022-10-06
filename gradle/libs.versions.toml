@@ -111,11 +111,8 @@ ktor-server-core = { module = "io.ktor:ktor-server-core", version.ref = "ktor" }
 ktor-server-html-builder = { module = "io.ktor:ktor-server-html-builder", version.ref = "ktor" }
 
 kuuuurt-multiplatform-paging = "io.github.kuuuurt:multiplatform-paging:0.4.7"
-molecule-runtime = { module = "app.cash.molecule:molecule-runtime", version.ref = "cash-molecule" }
-molecule-testing = { module = "app.cash.molecule:molecule-testing", version.ref = "cash-molecule" }
 oolong = "org.oolong-kt:oolong:2.0.4"
 qos-logbackClassic = "ch.qos.logback:logback-classic:1.2.11"
-requery-sqlite-android = "com.github.requery:sqlite-android:3.36.0"
 slf4j-simple = "org.slf4j:slf4j-simple:1.7.21"
 
 sqldelight-android-driver = { module = "com.squareup.sqldelight:android-driver", version.ref = "squareup-sqldelight" }
@@ -141,16 +138,18 @@ ktor-server = ["ktor-client-auth", "ktor-serialization-json", "ktor-serializatio
 [plugins]
 android-application = { id = "com.android.application", version.ref = "google.android" }
 android-library = { id = "com.android.library", version.ref = "google.android" }
+apollo-graphql = { id = "com.apollographql.apollo", version.ref = "apollo-graphql" }
+benManes-versions = "com.github.ben-manes.versions:0.42.0"
 cash-molecule = { id = "app.cash.molecule", version.ref = "cash-molecule" }
+catalog-update = "nl.littlerobots.version-catalog-update:0.3.1"
 diffplug-spotless = "com.diffplug.spotless:6.9.1"
 gradle-doctor = "com.osacky.doctor:0.8.0"
 gradle-publish = "com.gradle.plugin-publish:0.11.0"
 jetbrains-dokka = "org.jetbrains.dokka:0.10.0"
-jetbrains-kotlinx-kover = { id = "org.jetbrains.kotlinx.kover", version = "0.5.0" }
-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "jetbrains-kotlin" }
-jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrains-kotlin" }
-jetbrains-kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "jetbrains-kotlin" }
-jetbrains-kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "jetbrains-kotlin" }
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrains-kotlin" }
+kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "jetbrains-kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "jetbrains-kotlin" }
+kotlinx-kover = { id = "org.jetbrains.kotlinx.kover", version = "0.5.0" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "jetbrains-kotlin" }
+kotlin-compose = { id = "org.jetbrains.compose", version.ref = "jetbrains-compose" }
 sqldelight = { id = "com.squareup.sqldelight", version.ref = "squareup-sqldelight" }
-version-catalog-update = "nl.littlerobots.version-catalog-update:0.3.1"
-versions = "com.github.ben-manes.versions:0.42.0"

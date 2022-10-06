@@ -12,6 +12,6 @@ apollo {
 }
 
 dependencies {
-    implementation(libs.apollographql.apollo.runtime)
     implementation(libs.apollographql.apollo.coroutines.support)
+    implementation(libs.apollographql.apollo.runtime)
 }

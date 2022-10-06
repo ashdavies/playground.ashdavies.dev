@@ -1,8 +1,11 @@
+@file:Suppress("UnstableApiUsage")
+
 import com.android.build.api.dsl.CommonExtension
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.getValue
 import org.gradle.kotlin.dsl.getting
+import org.gradle.plugin.use.PluginDependency
 import org.jetbrains.compose.ExperimentalComposeLibrary
 import org.jetbrains.compose.compose
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
@@ -88,5 +91,8 @@ internal fun KotlinMultiplatformExtension.configureKotlinMultiplatform(target: P
     }
 }
 
-fun KotlinSourceSetContainer.dependencies(configure: KotlinDependencyHandler.() -> Unit) =
+public fun KotlinSourceSetContainer.dependencies(configure: KotlinDependencyHandler.() -> Unit) =
     sourceSets.getting { dependencies(configure) }
+
+public fun KotlinDependencyHandler.plugin(dependency: PluginDependency) =
+    implementation("${dependency.pluginId}:${dependency.pluginId}.gradle.plugin:${dependency.version}")
