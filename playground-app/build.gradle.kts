@@ -1,5 +1,5 @@
 plugins {
-    `multiplatform-library`
+    id("io.ashdavies.library")
 }
 
 kotlin {

@@ -21,7 +21,6 @@ kotlin {
     val androidMain by sourceSets.getting {
         dependencies {
             with(libs) {
-                implementation(requery.sqlite.android)
                 implementation(sqldelight.android.driver)
             }
         }

@@ -1,6 +1,7 @@
 plugins {
-    `apollo-graphql`
-    `cloud-function`
+    id("io.ashdavies.cloud")
+    id("apollo.graphql")
+    id("deploy-function")
 }
 
 dependencies {

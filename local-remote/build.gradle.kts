@@ -3,7 +3,7 @@
 import com.android.build.api.dsl.VariantDimension
 
 plugins {
-    `multiplatform-library`
+    id("io.ashdavies.library")
 }
 
 android {

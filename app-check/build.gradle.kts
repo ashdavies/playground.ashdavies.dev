@@ -1,6 +1,7 @@
 plugins {
     // id("compose-constructor")
-    `cloud-function`
+    id("io.ashdavies.cloud")
+    id("deploy-function")
 }
 
 dependencies {

@@ -8,7 +8,6 @@ import org.jetbrains.compose.compose
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.dsl.KotlinProjectExtension
 import org.jetbrains.kotlin.gradle.plugin.KotlinDependencyHandler
-import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetContainer
 
 internal object Playground {
@@ -77,7 +76,7 @@ internal fun KotlinMultiplatformExtension.configureKotlinMultiplatform(target: P
         implementation(libs.jetbrains.kotlinx.coroutines.android)
     }
 
-    val androidTest: KotlinSourceSet by sourceSets.getting {
+    val androidTest by sourceSets.getting {
         val androidAndroidTestRelease by sourceSets.getting
         dependsOn(androidAndroidTestRelease)
     }
@@ -88,5 +87,6 @@ internal fun KotlinMultiplatformExtension.configureKotlinMultiplatform(target: P
     }
 }
 
-fun KotlinSourceSetContainer.dependencies(configure: KotlinDependencyHandler.() -> Unit) =
-    sourceSets.getting { dependencies(configure) }
+public fun KotlinSourceSetContainer.dependencies(
+    configure: KotlinDependencyHandler.() -> Unit
+) = sourceSets.getting { dependencies(configure) }
