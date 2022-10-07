@@ -1,5 +1,6 @@
 plugins {
     id("io.ashdavies.cloud")
+    id("deploy-function")
 }
 
 dependencies {

@@ -20,6 +20,7 @@ include(
 )
 
 includeBuild("build-plugins")
+includeBuild("cloud-deploy")
 
 includeBuild("compose-constructor/plugin-gradle") {
     dependencySubstitution {
