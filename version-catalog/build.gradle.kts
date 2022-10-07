@@ -1,4 +1,6 @@
-import kotlin.reflect.KProperty
+@file:Suppress("UnstableApiUsage")
+
+import org.gradle.api.initialization.dsl.VersionCatalogBuilder.AliasBuilder
 
 plugins {
     kotlin("jvm")
@@ -53,4 +55,33 @@ publishing {
             from(components["versionCatalog"])
         }
     }
+}
+
+fun VersionCatalogBuilder.androidx(block: VersionCatalogGroup.Unversioned.() -> Unit) = group("androidx", block)
+
+fun VersionCatalogBuilder.group(group: String, block: VersionCatalogGroup.Unversioned.() -> Unit) = when (this) {
+    is VersionCatalogGroup -> VersionCatalogGroup.Unversioned(CatalogBuilder(::alias), "$group:$group")
+    else -> VersionCatalogGroup.Unversioned(CatalogBuilder(::alias), group)
+}.apply(block)
+
+fun VersionCatalogBuilder.group(group: String, version: String, block: VersionCatalogGroup.Versioned.() -> Unit) =
+    VersionCatalogGroup.Versioned(CatalogBuilder(::alias), group, version).apply(block)
+
+fun VersionCatalogBuilder.com(block: VersionCatalogGroup.Unversioned.() -> Unit) = group("com", block)
+
+fun VersionCatalogGroup.Unversioned.artifact(name: String, version: String) = alias("$group-$name")
+    .to(group, name)
+    .version(version)
+
+fun VersionCatalogGroup.Versioned.artifact(name: String) = alias("$group-$name")
+    .to(group, name)
+    .version(version)
+
+sealed class VersionCatalogGroup(builder: CatalogBuilder): CatalogBuilder by builder {
+    class Versioned(builder: CatalogBuilder, val group: String, val version: String) : VersionCatalogGroup(builder)
+    class Unversioned(builder: CatalogBuilder, val group: String) : VersionCatalogGroup(builder)
+}
+
+fun interface CatalogBuilder {
+    fun alias(alias: String): AliasBuilder
 }

@@ -8,7 +8,6 @@ import org.jetbrains.compose.compose
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.dsl.KotlinProjectExtension
 import org.jetbrains.kotlin.gradle.plugin.KotlinDependencyHandler
-import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetContainer
 
 internal object Playground {
@@ -82,7 +81,7 @@ internal fun KotlinMultiplatformExtension.configureKotlinMultiplatform(target: P
         dependsOn(androidAndroidTestRelease)
     }
 
-    val jvmMain: KotlinSourceSet by dependencies {
+    val jvmMain by dependencies {
         implementation(compose.desktop.currentOs)
         implementation(libs.jetbrains.kotlinx.coroutines.swing)
     }
