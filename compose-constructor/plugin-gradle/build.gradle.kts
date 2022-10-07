@@ -3,13 +3,12 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version libs.versions.jetbrains.kotlin.get()
-
+    alias(libs.plugins.kotlin.jvm)
     id("java-gradle-plugin")
 }
 
 dependencies {
-    implementation(libs.jetbrains.kotlin.gradle.plugin.api)
+    implementation(libs.jetbrains.kotlin.gradle.plugin)
 }
 
 gradlePlugin {

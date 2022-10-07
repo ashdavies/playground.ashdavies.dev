@@ -4,7 +4,7 @@ import org.jetbrains.kotlin.gradle.plugin.HasKotlinDependencies
 import org.jetbrains.kotlin.gradle.plugin.KotlinDependencyHandler
 
 plugins {
-    `multiplatform-application`
+    id("io.ashdavies.application")
 
     alias(libs.plugins.cash.molecule)
 }

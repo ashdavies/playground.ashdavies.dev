@@ -3,27 +3,19 @@
 // import com.diffplug.gradle.spotless.FormatExtension
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 
-buildscript {
-    dependencies {
-        with(libs.versions.jetbrains.kotlin) {
-            classpath(kotlin("gradle-plugin", version = get()))
-            classpath(kotlin("serialization", version = get()))
-        }
-
-        classpath(libs.android.tools.build.gradle)
-        classpath(libs.apache.batikExt)
-        classpath(libs.apollographql.apollo.gradle.plugin)
-        classpath(libs.jetbrains.compose.gradle.plugin)
-        classpath(libs.jetbrains.kotlin.gradle.plugin)
-    }
-}
-
 plugins {
+    resolve(libs.plugins.android.application)
+    resolve(libs.plugins.android.library)
+    resolve(libs.plugins.apollo.graphql)
+    resolve(libs.plugins.kotlin.compose)
+    resolve(libs.plugins.kotlin.multiplatform)
+    resolve(libs.plugins.kotlin.serialization)
+
+    alias(libs.plugins.benManes.versions)
+    alias(libs.plugins.catalog.update)
     // alias(libs.plugins.diffplug.spotless)
-    alias(libs.plugins.jetbrains.kotlinx.kover)
     alias(libs.plugins.gradle.doctor)
-    alias(libs.plugins.versions)
-    alias(libs.plugins.version.catalog.update)
+    alias(libs.plugins.kotlinx.kover)
 }
 
 doctor {
@@ -62,9 +54,9 @@ doctor {
 
 versionCatalogUpdate {
     pin {
-        libraries.addAll(
-            libs.jetbrains.kotlin.gradle.plugin.asProvider(), // Unstable until 1.2.0-alpha01-dev686
-            libs.android.tools.build.gradle, // Compatibility with JetBrains Compose Plugin
+        versions.addAll(
+            libs.versions.jetbrains.compose.get(), // Unstable until 1.2.0-alpha01-dev686
+            libs.versions.google.android.get(), // JetBrains Compose Plugin Compatibility
         )
     }
 }

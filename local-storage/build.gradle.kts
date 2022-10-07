@@ -1,11 +1,10 @@
 plugins {
-    `multiplatform-library`
-    `multiplatform-sql`
+    id("io.ashdavies.library")
+    id("io.ashdavies.sql")
 }
 
 sqldelight {
     database("PlaygroundDatabase") {
         packageName = "io.ashdavies.playground"
-        dialect = "sqlite:3.25"
     }
 }
