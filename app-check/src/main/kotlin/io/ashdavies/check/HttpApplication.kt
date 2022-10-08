@@ -13,7 +13,6 @@ import io.ktor.client.plugins.auth.Auth
 import io.ktor.client.plugins.auth.providers.BearerTokens
 import io.ktor.client.plugins.auth.providers.bearer
 import io.ktor.client.request.post
-import io.ktor.client.statement.HttpResponse
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import kotlinx.serialization.SerialName
@@ -63,19 +62,14 @@ private suspend fun HttpClient.bearerTokens(config: HttpClientConfig): BearerTok
         it.appId = config.appId
     }
 
-    val response: HttpResponse = post(GOOGLE_TOKEN_ENDPOINT) {
+    val response: BearerResponse = post(GOOGLE_TOKEN_ENDPOINT) {
         contentType(ContentType.Application.FormUrlEncoded)
         grantType(JwtBearer)
         assertion(jwt)
-    }
-
-    val bearer: BearerResponse = response.body()
-    val accessToken: String = bearer
-        .accessToken
-        .substring(0..240)
+    }.body()
 
     return BearerTokens(
-        accessToken = accessToken,
+        accessToken = response.accessToken,
         refreshToken = "",
     )
 }

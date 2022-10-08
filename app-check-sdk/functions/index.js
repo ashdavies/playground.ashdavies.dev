@@ -1,31 +1,18 @@
-const functions = require('firebase-functions');
-const firebaseAdmin = require('firebase-admin');
+const functions = require("firebase-functions");
+const firebaseAdmin = require("firebase-admin");
+
 firebaseAdmin.initializeApp();
 
-exports.verifyAppCheckToken = functions.region('asia-northeast1').https.onRequest((req, res) => {
-    const token = req.header('X-Firebase-AppCheck')
-    firebaseAdmin.appCheck().verifyToken(token)
-        .then(function (tokenRes) {
-            console.log("verify", tokenRes)
-            return res.sendStatus(200);
-        })
-        .catch(function (err) {
-            console.error(err);
-            return res.sendStatus(401);
-        })
+exports.fetchAppCheckToken = functions.region("europe-west1").https.onRequest((req, res) => {
+    firebaseAdmin.appCheck().createToken(req.query.appId)
+        .then((token) => { return res.send({ expiresAt: Math.floor(Date.now() / 1000) + 60 * 60, token: token }) })
+        .catch((err) => { res.status(401).send(err.message) })
 });
 
-const appId = 'YOUR_FIREBASE_APP_ID';
-exports.fetchAppCheckToken = functions.region('asia-northeast1').https.onRequest((req, res) => {
-    firebaseAdmin.appCheck().createToken(appId)
-        .then(function (token) {
-            return res.send({
-                token: token,
-                expiresAt: Math.floor(Date.now() / 1000) + 60 * 60,
-            })
-        })
-        .catch(function (err) {
-            console.error(err);
-            return res.sendStatus(500);
-        });
+exports.verifyAppCheckToken = functions.region("europe-west1").https.onRequest((req, res) => {
+    const token = req.header("X-Firebase-AppCheck")
+
+    firebaseAdmin.appCheck().verifyToken(token)
+        .then((tokenRes) => { return res.status(200).send(tokenRes.token) })
+        .catch((err) => { res.status(401).send(err.message) })
 });

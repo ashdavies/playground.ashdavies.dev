@@ -9,6 +9,7 @@ import io.ktor.client.statement.HttpResponse
 import io.ktor.client.statement.bodyAsText
 import io.ktor.http.HttpStatusCode
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlin.test.Ignore
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -16,6 +17,7 @@ import kotlin.test.assertEquals
 internal class AppCheckFunctionTest {
 
     @Test
+    @Ignore
     fun `should load bearer tokens for authorised http client`() = runTest<TestAuthorisedApplication>()
 
     @Test

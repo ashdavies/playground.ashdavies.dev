@@ -8,13 +8,14 @@ import com.auth0.jwt.interfaces.DecodedJWT
 import com.auth0.jwt.interfaces.RSAKeyProvider
 import io.ashdavies.playground.compose.Provides
 import kotlinx.coroutines.runBlocking
+import java.net.URL
 import java.security.interfaces.RSAPrivateKey
 import java.security.interfaces.RSAPublicKey
 import com.auth0.jwt.algorithms.Algorithm as JwtAlgorithm
 
 private const val JWKS_URL = "https://firebaseappcheck.googleapis.com/v1/jwks"
 
-private fun PublicKeyProvider(provider: JwkProvider = UrlJwkProvider(JWKS_URL)) = PublicKeyProvider {
+private fun PublicKeyProvider(provider: JwkProvider = UrlJwkProvider(URL(JWKS_URL))) = PublicKeyProvider {
     provider[it].publicKey as RSAPublicKey
 }
 
@@ -37,3 +38,4 @@ internal abstract class RsaAlgorithm(val from: JwtAlgorithm) : JwtAlgorithm(from
 internal fun rememberAlgorithm(signer: CryptoSigner = rememberCryptoSigner()): JwtAlgorithm {
     return remember(signer) { GoogleAlgorithm(signer) }
 }
+
