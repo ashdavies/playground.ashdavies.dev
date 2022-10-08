@@ -20,7 +20,7 @@ internal class AppCheckFunctionTest {
 
     @Test
     fun `should return app check token for given credentials`() = startServer<AppCheckFunction> { client ->
-        assertEquals(HttpStatusCode.Forbidden, client.makeRequest { it.status })
+        assertEquals(HttpStatusCode.OK, client.makeRequest { it.status })
     }
 }
 
