@@ -45,7 +45,7 @@ public fun AppCheck(verify: Boolean = false, content: @Composable () -> Unit) {
 }
 
 @Composable
-internal fun rememberAppCheck(
+public fun rememberAppCheck(
     client: HttpClient = LocalHttpClient.current,
     algorithm: Algorithm = rememberAlgorithm(),
 ): AppCheck = remember(client, algorithm) {

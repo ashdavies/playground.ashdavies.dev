@@ -6,7 +6,6 @@ import com.auth0.jwk.JwkProvider
 import com.auth0.jwk.UrlJwkProvider
 import com.auth0.jwt.interfaces.DecodedJWT
 import com.auth0.jwt.interfaces.RSAKeyProvider
-import io.ashdavies.playground.compose.Provides
 import kotlinx.coroutines.runBlocking
 import java.net.URL
 import java.security.interfaces.RSAPrivateKey
@@ -33,7 +32,6 @@ internal class GoogleAlgorithm(private val signer: CryptoSigner) : RsaAlgorithm(
 
 internal abstract class RsaAlgorithm(val from: JwtAlgorithm) : JwtAlgorithm(from.name, "$from")
 
-@Provides
 @Composable
 internal fun rememberAlgorithm(signer: CryptoSigner = rememberCryptoSigner()): JwtAlgorithm {
     return remember(signer) { GoogleAlgorithm(signer) }

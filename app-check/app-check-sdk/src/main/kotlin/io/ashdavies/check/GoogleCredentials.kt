@@ -7,7 +7,6 @@ import com.google.auth.oauth2.GoogleCredentials
 import com.google.firebase.FirebaseApp
 import com.google.firebase.FirebaseOptions
 import io.ashdavies.playground.cloud.LocalFirebaseApp
-import io.ashdavies.playground.compose.Provides
 
 private const val GET_CREDENTIALS_METHOD = "getCredentials"
 
@@ -21,7 +20,6 @@ internal fun rememberAccountSigner(app: FirebaseApp = LocalFirebaseApp.current):
     }
 }
 
-@Provides
 @Composable
 internal fun rememberGoogleCredentials(app: FirebaseApp = LocalFirebaseApp.current): GoogleCredentials = remember(app) {
     FirebaseOptions::class.java

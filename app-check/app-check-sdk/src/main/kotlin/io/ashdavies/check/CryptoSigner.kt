@@ -4,19 +4,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import com.google.auth.ServiceAccountSigner
 import com.google.auth.oauth2.GoogleCredentials
-import com.google.common.annotations.VisibleForTesting
 import com.google.firebase.FirebaseApp
 import io.ashdavies.http.LocalHttpClient
 import io.ashdavies.playground.cloud.LocalFirebaseApp
-import io.ashdavies.playground.compose.Provides
 import io.ktor.client.HttpClient
 import io.ktor.client.request.header
 import io.ktor.http.HttpHeaders
 import java.util.Base64
 
-internal interface CryptoSigner {
-    suspend fun sign(value: ByteArray): ByteArray
-    fun getAccountId(): String
+public interface CryptoSigner {
+    public suspend fun sign(value: ByteArray): ByteArray
+    public fun getAccountId(): String
 }
 
 internal fun CryptoSigner(accountId: String, sign: suspend (value: ByteArray) -> ByteArray) = object : CryptoSigner {
@@ -45,9 +43,8 @@ private fun getToken(credentials: GoogleCredentials): String = credentials
     .accessToken
     .tokenValue
 
-@Provides
 @Composable
-internal fun rememberCryptoSigner(
+public fun rememberCryptoSigner(
     app: FirebaseApp = LocalFirebaseApp.current,
     client: HttpClient = LocalHttpClient.current,
 ): CryptoSigner = remember(app, client) {

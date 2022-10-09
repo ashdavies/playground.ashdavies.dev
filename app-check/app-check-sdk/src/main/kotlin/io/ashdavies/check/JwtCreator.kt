@@ -44,14 +44,14 @@ internal fun Jwt.verify(algorithm: Algorithm, token: String, config: JwtOptions.
     }
 }
 
-internal class JwtOptions(
-    var audience: String = APP_CHECK_AUDIENCE,
-    var issuedAt: Instant = Clock.System.now(),
-    var expiresAt: Instant = issuedAt + 1.hours,
-    var scope: List<String> = emptyList(),
+public class JwtOptions(
+    public var audience: String = APP_CHECK_AUDIENCE,
+    public var issuedAt: Instant = Clock.System.now(),
+    public var expiresAt: Instant = issuedAt + 1.hours,
+    public var scope: List<String> = emptyList(),
 ) {
-    lateinit var issuer: String
-    lateinit var appId: String
+    public lateinit var issuer: String
+    public lateinit var appId: String
 }
 
 private fun Instant.toJavaDate() = java.util.Date.from(toJavaInstant())
