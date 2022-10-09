@@ -1,6 +1,7 @@
-package io.ashdavies.check
+package io.ashdavies.compose
 
 import androidx.compose.runtime.Composable
+import io.ashdavies.compose.AppCheck
 import io.ashdavies.playground.cloud.HttpEffect
 import io.ashdavies.playground.cloud.HttpScope
 import kotlinx.coroutines.CoroutineScope

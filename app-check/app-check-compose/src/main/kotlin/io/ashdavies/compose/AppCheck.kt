@@ -1,4 +1,4 @@
-package io.ashdavies.check
+package io.ashdavies.compose
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -10,6 +10,8 @@ import androidx.compose.ui.window.ApplicationScope
 import com.auth0.jwt.algorithms.Algorithm
 import com.google.cloud.functions.HttpRequest
 import com.google.cloud.functions.HttpResponse
+import io.ashdavies.check.AppCheck
+import io.ashdavies.check.appCheckToken
 import io.ashdavies.http.LocalHttpClient
 import io.ashdavies.playground.cloud.HttpException
 import io.ashdavies.playground.cloud.LocalApplicationScope
@@ -49,8 +51,5 @@ public fun rememberAppCheck(
     client: HttpClient = LocalHttpClient.current,
     algorithm: Algorithm = rememberAlgorithm(),
 ): AppCheck = remember(client, algorithm) {
-    AppCheck(
-        algorithm = algorithm,
-        client = client,
-    )
+    AppCheck(client, algorithm)
 }

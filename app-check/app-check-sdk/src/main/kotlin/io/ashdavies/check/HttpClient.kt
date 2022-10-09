@@ -33,5 +33,5 @@ internal suspend inline fun <reified T> HttpClient.post(
 }
 
 internal suspend fun HttpException(response: HttpResponse): HttpException {
-    return HttpException(response.status.value, response.body())
+    return HttpException(response.status.value, response.body(), null)
 }

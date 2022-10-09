@@ -4,8 +4,8 @@ import com.google.cloud.functions.HttpRequest
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
-public operator fun <T> HttpRequest.invoke(supplier: (String?) -> T) = ReadOnlyProperty<Any?, T> { _, property ->
-    getFirstQueryParameter(property.name, supplier)
+public operator fun <T> HttpRequest.invoke(supplier: (String?) -> T): ReadOnlyProperty<Any?, T> {
+    return ReadOnlyProperty { _, property -> getFirstQueryParameter(property.name, supplier) }
 }
 
 public operator fun HttpRequest.getValue(thisRef: Any?, property: KProperty<*>): String {

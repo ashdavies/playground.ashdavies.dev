@@ -9,7 +9,7 @@ private const val KEY_GRANT_TYPE = "grant_type"
 
 private const val X_FIREBASE_APP_CHECK = "X-Firebase-AppCheck"
 
-internal val HttpMessage.appCheckToken: String?
+public val HttpMessage.appCheckToken: String?
     get() = headers[X_FIREBASE_APP_CHECK]?.firstOrNull()
 
 internal fun HttpRequestBuilder.assertion(value: Any?) {

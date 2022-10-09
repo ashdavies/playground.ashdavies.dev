@@ -32,7 +32,9 @@ dependencies {
 }
 
 kotlin {
+    sourceSets.all { languageSettings.optIn("kotlin.RequiresOptIn") }
     // configureKotlinProject(project)
+    explicitApiWarning()
 }
 
 tasks.named<ShadowJar>("shadowJar") {

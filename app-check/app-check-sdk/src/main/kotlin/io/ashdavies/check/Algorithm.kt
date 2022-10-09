@@ -1,7 +1,5 @@
 package io.ashdavies.check
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import com.auth0.jwk.JwkProvider
 import com.auth0.jwk.UrlJwkProvider
 import com.auth0.jwt.interfaces.DecodedJWT
@@ -25,15 +23,11 @@ private fun PublicKeyProvider(block: (keyId: String) -> RSAPublicKey) = object :
 }
 
 @Suppress("OVERRIDE_DEPRECATION")
-internal class GoogleAlgorithm(private val signer: CryptoSigner) : RsaAlgorithm(RSA256(PublicKeyProvider())) {
+public class GoogleAlgorithm(private val signer: CryptoSigner) : RsaAlgorithm(RSA256(PublicKeyProvider())) {
     override fun sign(contentBytes: ByteArray): ByteArray = runBlocking { signer.sign(contentBytes) }
-    override fun verify(jwt: DecodedJWT) = from.verify(jwt)
+    override fun verify(jwt: DecodedJWT): Unit = from.verify(jwt)
 }
 
-internal abstract class RsaAlgorithm(val from: JwtAlgorithm) : JwtAlgorithm(from.name, "$from")
+public abstract class RsaAlgorithm(public val from: JwtAlgorithm) : JwtAlgorithm(from.name, "$from")
 
-@Composable
-internal fun rememberAlgorithm(signer: CryptoSigner = rememberCryptoSigner()): JwtAlgorithm {
-    return remember(signer) { GoogleAlgorithm(signer) }
-}
 

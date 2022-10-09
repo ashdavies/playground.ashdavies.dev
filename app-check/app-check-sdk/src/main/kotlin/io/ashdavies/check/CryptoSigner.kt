@@ -1,12 +1,8 @@
 package io.ashdavies.check
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import com.google.auth.ServiceAccountSigner
 import com.google.auth.oauth2.GoogleCredentials
 import com.google.firebase.FirebaseApp
-import io.ashdavies.http.LocalHttpClient
-import io.ashdavies.playground.cloud.LocalFirebaseApp
 import io.ktor.client.HttpClient
 import io.ktor.client.request.header
 import io.ktor.http.HttpHeaders
@@ -22,7 +18,7 @@ internal fun CryptoSigner(accountId: String, sign: suspend (value: ByteArray) ->
     override fun getAccountId(): String = accountId
 }
 
-private fun CryptoSigner(app: FirebaseApp, client: HttpClient): CryptoSigner {
+public fun CryptoSigner(app: FirebaseApp, client: HttpClient): CryptoSigner {
     return when (val credentials: GoogleCredentials = app.credentials) {
         is ServiceAccountSigner -> CryptoSigner(credentials.account, credentials::sign)
         else -> IamSigner(client, getServiceAccountId(app), getToken(credentials))
@@ -42,11 +38,3 @@ private fun getToken(credentials: GoogleCredentials): String = credentials
     .apply { refreshIfExpired() }
     .accessToken
     .tokenValue
-
-@Composable
-public fun rememberCryptoSigner(
-    app: FirebaseApp = LocalFirebaseApp.current,
-    client: HttpClient = LocalHttpClient.current,
-): CryptoSigner = remember(app, client) {
-    CryptoSigner(app, client)
-}
