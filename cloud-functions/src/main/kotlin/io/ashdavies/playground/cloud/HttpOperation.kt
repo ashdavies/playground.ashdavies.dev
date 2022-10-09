@@ -11,7 +11,7 @@ private const val APPLICATION_JSON = "application/json"
 private const val UNKNOWN_ERROR = "Unknown error"
 
 @Composable
-public fun HttpEffect(key: Any? = Unit, block: suspend CoroutineScope.() -> String) {
+public fun HttpScope.HttpEffect(key: Any? = Unit, block: suspend CoroutineScope.() -> String) {
     val scope: ApplicationScope = LocalApplicationScope.current
     val response: HttpResponse = LocalHttpResponse.current
 
