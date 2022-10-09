@@ -23,9 +23,8 @@ public fun AuthorisedHttpApplication(content: @Composable HttpScope.() -> Unit):
 }
 
 @Composable
-private fun rememberAuthorisedHttpClient(): HttpClient {
+private fun rememberAuthorisedHttpClient(client: HttpClient = LocalHttpClient.current): HttpClient {
     val signer: CryptoSigner = rememberCryptoSigner()
-    val client: HttpClient = LocalHttpClient.current
     val algorithm: Algorithm = rememberAlgorithm()
     val appId: String by LocalHttpRequest.current
 
