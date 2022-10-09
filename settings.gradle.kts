@@ -1,7 +1,7 @@
 apply(from = "repositories.gradle.kts")
 
 include(
-    ":app-check",
+    ":app-check:app-check-sdk",
     ":auth-oauth",
     ":cloud-functions",
     ":compose-constructor:plugin-common",
