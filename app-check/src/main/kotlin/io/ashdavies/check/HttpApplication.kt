@@ -2,17 +2,17 @@ package io.ashdavies.check
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.remember
 import com.auth0.jwt.algorithms.Algorithm
-import com.google.auth.ServiceAccountSigner
 import io.ashdavies.http.LocalHttpClient
 import io.ashdavies.playground.cloud.HttpApplication
+import io.ashdavies.playground.cloud.HttpScope
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.auth.Auth
 import io.ktor.client.plugins.auth.providers.BearerTokens
 import io.ktor.client.plugins.auth.providers.bearer
 import io.ktor.client.request.post
-import io.ktor.client.statement.HttpResponse
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import kotlinx.serialization.SerialName
@@ -28,24 +28,33 @@ private val FIREBASE_CLAIMS_SCOPES = listOf(
 
 private const val GOOGLE_TOKEN_ENDPOINT = "https://accounts.google.com/o/oauth2/token"
 
-internal fun AuthorizedHttpApplication(content: @Composable () -> Unit) = HttpApplication {
-    CompositionLocalProvider(
-        LocalHttpClient provides AuthorizedHttpClient(),
-        content = content,
-    )
-}
-
-@Composable
-private fun AuthorizedHttpClient(
-    client: HttpClient = LocalHttpClient.current,
-    config: HttpClientConfig = rememberHttpClientConfig(),
-): HttpClient = client.config {
-    install(Auth) {
-        bearer { loadTokens { client.getBearerTokens(config) } }
+internal fun AuthorisedHttpApplication(content: @Composable HttpScope.() -> Unit) = HttpApplication {
+    CompositionLocalProvider(LocalHttpClient provides rememberAuthorisedHttpClient()) {
+        content()
     }
 }
 
-private suspend fun HttpClient.getBearerTokens(config: HttpClientConfig): BearerTokens {
+@Composable
+private fun rememberAuthorisedHttpClient(): HttpClient {
+    val config: HttpClientConfig = rememberHttpClientConfig()
+    val client: HttpClient = LocalHttpClient.current
+
+    return remember(config, client) {
+        AuthorisedHttpClient(client) {
+            client.bearerTokens(config)
+        }
+    }
+}
+
+private fun AuthorisedHttpClient(from: HttpClient, loadTokens: suspend () -> BearerTokens?): HttpClient = from.config {
+    install(Auth) {
+        bearer {
+            loadTokens { loadTokens() }
+        }
+    }
+}
+
+private suspend fun HttpClient.bearerTokens(config: HttpClientConfig): BearerTokens {
     val jwt = Jwt.create(config.algorithm) {
         it.audience = GOOGLE_TOKEN_ENDPOINT
         it.scope = FIREBASE_CLAIMS_SCOPES
@@ -53,19 +62,14 @@ private suspend fun HttpClient.getBearerTokens(config: HttpClientConfig): Bearer
         it.appId = config.appId
     }
 
-    val response: HttpResponse = post(GOOGLE_TOKEN_ENDPOINT) {
+    val response: BearerResponse = post(GOOGLE_TOKEN_ENDPOINT) {
         contentType(ContentType.Application.FormUrlEncoded)
         grantType(JwtBearer)
         assertion(jwt)
-    }
-
-    val bearer: BearerResponse = response.body()
-    val accessToken: String = bearer
-        .accessToken
-        .substring(0..240)
+    }.body()
 
     return BearerTokens(
-        accessToken = accessToken,
+        accessToken = response.accessToken,
         refreshToken = "",
     )
 }
@@ -85,11 +89,11 @@ internal data class BearerResponse(
 
 @Composable
 private fun rememberHttpClientConfig(
-    request: AppCheckQuery = rememberAppCheckRequest(),
-    signer: ServiceAccountSigner = rememberAccountSigner(),
-    algorithm: Algorithm = rememberAlgorithm(signer)
+    query: AppCheckQuery = rememberAppCheckQuery(),
+    signer: CryptoSigner = rememberCryptoSigner(),
+    algorithm: Algorithm = rememberAlgorithm()
 ) = HttpClientConfig(
-    accountId = signer.account,
-    appId = request.appId,
+    accountId = signer.getAccountId(),
     algorithm = algorithm,
+    appId = query.appId,
 )

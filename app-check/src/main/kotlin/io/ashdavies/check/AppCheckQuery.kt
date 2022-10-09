@@ -13,6 +13,6 @@ internal class AppCheckQuery @Remember constructor(request: HttpRequest) {
 }
 
 @Composable
-internal fun rememberAppCheckRequest(request: HttpRequest = LocalHttpRequest.current): AppCheckQuery {
+internal fun rememberAppCheckQuery(request: HttpRequest = LocalHttpRequest.current): AppCheckQuery {
     return remember { AppCheckQuery(request) }
 }

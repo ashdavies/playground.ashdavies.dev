@@ -5,9 +5,11 @@ import io.ktor.client.HttpClient
 import io.ktor.client.plugins.DefaultRequest
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.logging.LogLevel
+import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest
 import java.io.InputStream
 import java.io.InputStreamReader
@@ -23,16 +25,20 @@ private const val HTTP_SIGNATURE = "http"
 
 private val ClassPath get() = requireNotNull(System.getProperty("java.class.path"))
 private val JavaHome get() = requireNotNull(System.getProperty("java.home"))
-private val UserDir get() = requireNotNull(System.getProperty("user.dir"))
 
 private val Java get() = "$JavaHome/bin/java"
 
-internal inline fun <reified T> startServer(noinline action: suspend (client: HttpClient) -> Unit) {
+private object SystemOutLogger : Logger {
+    override fun log(message: String) = println(message)
+}
+
+@ExperimentalCoroutinesApi
+internal inline fun <reified T> startServer(noinline action: suspend TestScope.(client: HttpClient) -> Unit) {
     startServer(T::class.java, action)
 }
 
-@OptIn(ExperimentalCoroutinesApi::class)
-internal fun <T> startServer(kls: Class<T>, action: suspend (client: HttpClient) -> Unit) {
+@ExperimentalCoroutinesApi
+internal fun <T> startServer(kls: Class<T>, action: suspend TestScope.(client: HttpClient) -> Unit) {
     val serverSocket = ServerSocket(AUTOMATIC_PORT)
     val localPort = serverSocket.use { it.localPort }
 
@@ -68,12 +74,19 @@ internal fun <T> startServer(kls: Class<T>, action: suspend (client: HttpClient)
 
     val client = HttpClient {
         install(DefaultRequest) { url("http://localhost:$localPort/") }
-        install(Logging) { level = LogLevel.HEADERS }
         install(ContentNegotiation) { json() }
+
+        install(Logging) {
+            logger = SystemOutLogger
+            level = LogLevel.HEADERS
+        }
     }
 
     runTest {
-        action(client)
-        process.destroy()
+        try {
+            action(client)
+        } finally {
+            process.destroy()
+        }
     }
 }

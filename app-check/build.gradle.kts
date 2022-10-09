@@ -1,7 +1,11 @@
+@file:Suppress("DSL_SCOPE_VIOLATION") // https://youtrack.jetbrains.com/issue/KTIJ-19369
+
 plugins {
     // id("compose-constructor")
     id("io.ashdavies.cloud")
     id("deploy-function")
+
+    alias(libs.plugins.cash.molecule)
 }
 
 dependencies {
