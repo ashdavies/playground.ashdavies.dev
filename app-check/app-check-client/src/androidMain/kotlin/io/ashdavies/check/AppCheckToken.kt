@@ -1,6 +1,4 @@
-@file:JvmName("AppCheckTokenAndroid")
-
-package io.ashdavies.playground
+package io.ashdavies.check
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -9,6 +7,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.produceState
 import com.google.firebase.appcheck.FirebaseAppCheck
 import com.google.firebase.appcheck.playintegrity.PlayIntegrityAppCheckProviderFactory
+import io.ashdavies.compose.LocalFirebaseApp
 import io.ashdavies.http.LocalHttpClient
 import io.ashdavies.http.header
 import io.ktor.client.HttpClient

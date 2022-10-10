@@ -1,6 +1,7 @@
 apply(from = "repositories.gradle.kts")
 
 include(
+    ":app-check:app-check-client",
     ":app-check:app-check-compose",
     ":app-check:app-check-function",
     ":app-check:app-check-sdk",
@@ -10,10 +11,12 @@ include(
     // ":compose-constructor:plugin-ide",
     // ":compose-constructor:plugin-native",
     ":compose-constructor:plugin-runtime",
+    ":compose-locals",
+    ":dominion-app",
     ":events-aggregator",
     ":events-app",
     ":events-function",
-    ":dominion-app",
+    ":firebase-compose",
     ":local-remote",
     ":local-storage",
     ":notion-console",

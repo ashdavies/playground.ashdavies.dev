@@ -1,4 +1,4 @@
-package io.ashdavies.playground
+package io.ashdavies.compose
 
 import android.content.Context
 import androidx.compose.runtime.Composable
@@ -8,13 +8,10 @@ import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.platform.LocalContext
 import com.google.android.gms.common.util.ProcessUtils
 import com.google.firebase.FirebaseApp
-import com.google.firebase.appcheck.FirebaseAppCheck
 
-public val LocalFirebaseApp: ProvidableCompositionLocal<FirebaseApp> =
-    staticCompositionLocalOf { noLocalProvidedFor("LocalFirebaseApp") }
-
-public val FirebaseApp.appCheck: FirebaseAppCheck
-    get() = FirebaseAppCheck.getInstance(this)
+public val LocalFirebaseApp: ProvidableCompositionLocal<FirebaseApp> = staticCompositionLocalOf {
+    noLocalProvidedFor("LocalFirebaseApp")
+}
 
 @Composable
 public fun ProvideFirebaseApp(context: Context = LocalContext.current, content: @Composable () -> Unit) {

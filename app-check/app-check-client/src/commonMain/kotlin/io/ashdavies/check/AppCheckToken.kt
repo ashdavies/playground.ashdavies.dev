@@ -1,4 +1,4 @@
-package io.ashdavies.playground
+package io.ashdavies.check
 
 import androidx.compose.runtime.Composable
 import io.ashdavies.http.LocalHttpClient
@@ -13,6 +13,6 @@ public data class AppCheckToken(
 
 @Composable
 public expect fun ProvideAppCheckToken(
-    client: HttpClient,// = LocalHttpClient.current,
+    client: HttpClient = LocalHttpClient.current,
     content: @Composable () -> Unit,
 )

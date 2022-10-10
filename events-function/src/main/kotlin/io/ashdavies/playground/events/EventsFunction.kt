@@ -1,7 +1,6 @@
 package io.ashdavies.playground.events
 
 import com.google.cloud.functions.HttpFunction
-import io.ashdavies.check.VerifiedHttpEffect
 import io.ashdavies.playground.EventsSerializer
 import io.ashdavies.playground.cloud.HttpApplication
 import io.ashdavies.playground.cloud.LocalHttpRequest
@@ -17,7 +16,8 @@ internal class EventsFunction : HttpFunction by HttpApplication({
     val query = EventsQuery(LocalHttpRequest.current)
     val reader = EventsReader(provider, query)
 
-    VerifiedHttpEffect(COLLECTION_PATH) {
+    // VerifiedHttpEffect
+    HttpEffect(COLLECTION_PATH) {
         Json.encodeToString(ListSerializer(EventsSerializer), reader())
     }
 })
