@@ -4,6 +4,7 @@ import com.android.build.api.dsl.VariantDimension
 
 plugins {
     id("io.ashdavies.library")
+    id("android-manifest")
 }
 
 android {

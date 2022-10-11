@@ -19,7 +19,7 @@ include(
     ":version-catalog",
 )
 
-includeBuild("android-manifest")
+includeBuild("app-manifest")
 includeBuild("build-plugins")
 includeBuild("cloud-deploy")
 
