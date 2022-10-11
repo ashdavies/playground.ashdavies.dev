@@ -8,11 +8,10 @@ import androidx.compose.ui.window.singleWindowApplication
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.DefaultComponentContext
 import io.ashdavies.check.ProvideAppCheckToken
-import io.ashdavies.http.LocalHttpClient
 
 public fun MainScreen(title: String = "Playground", content: @Composable (ComponentContext) -> Unit) {
     singleWindowApplication(WindowState(size = DpSize(450.dp, 975.dp)), title = title) {
-        ProvideAppCheckToken(LocalHttpClient.current) {
+        ProvideAppCheckToken {
             content(DefaultComponentContext(DefaultLifecycle()))
         }
     }

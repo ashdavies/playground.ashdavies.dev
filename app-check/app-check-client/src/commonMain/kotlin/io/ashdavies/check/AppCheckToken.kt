@@ -6,13 +6,12 @@ import io.ktor.client.HttpClient
 import kotlinx.serialization.Serializable
 
 @Serializable
-public data class AppCheckToken(
-    public val expireTimeMillis: Long,
-    public val token: String,
-)
+public data class AppCheckToken(public val token: String, public val expireTimeMillis: Long)
 
 @Composable
-public expect fun ProvideAppCheckToken(
-    client: HttpClient/* = LocalHttpClient.current*/,
-    content: @Composable () -> Unit,
-)
+public expect fun ProvideAppCheckToken(client: HttpClient, content: @Composable () -> Unit)
+
+@Composable
+public fun ProvideAppCheckToken(content: @Composable () -> Unit) {
+    ProvideAppCheckToken(LocalHttpClient.current, content)
+}
