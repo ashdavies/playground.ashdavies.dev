@@ -3,6 +3,7 @@ package io.ashdavies.playground.events
 import com.google.cloud.functions.HttpFunction
 import io.ashdavies.playground.EventsSerializer
 import io.ashdavies.playground.cloud.HttpApplication
+import io.ashdavies.playground.cloud.HttpEffect
 import io.ashdavies.playground.cloud.LocalHttpRequest
 import io.ashdavies.playground.cloud.rememberDocumentProvider
 import io.ashdavies.playground.google.DocumentProvider

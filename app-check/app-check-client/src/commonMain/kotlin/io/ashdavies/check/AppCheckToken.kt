@@ -13,6 +13,6 @@ public data class AppCheckToken(
 
 @Composable
 public expect fun ProvideAppCheckToken(
-    client: HttpClient = LocalHttpClient.current,
+    client: HttpClient/* = LocalHttpClient.current*/,
     content: @Composable () -> Unit,
 )
