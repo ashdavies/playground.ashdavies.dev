@@ -9,13 +9,15 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
-suspend fun <T> ApiFuture<T>.await(): T = suspendCancellableCoroutine { continuation: CancellableContinuation<T> ->
-    addCallback(this, object : ApiFutureCallback<T> {
-        override fun onFailure(throwable: Throwable) = continuation.resumeWithException(throwable)
-        override fun onSuccess(result: T) = continuation.resume(result)
-    }, directExecutor())
+public suspend fun <T> ApiFuture<T>.await(): T {
+    return suspendCancellableCoroutine { continuation: CancellableContinuation<T> ->
+        addCallback(this, object : ApiFutureCallback<T> {
+            override fun onFailure(throwable: Throwable) = continuation.resumeWithException(throwable)
+            override fun onSuccess(result: T) = continuation.resume(result)
+        }, directExecutor())
 
-    continuation.invokeOnCancellation {
-        cancel(false)
+        continuation.invokeOnCancellation {
+            cancel(false)
+        }
     }
 }

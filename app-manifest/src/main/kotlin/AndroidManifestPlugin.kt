@@ -22,7 +22,7 @@ private val Project.isSyncing: Boolean
 internal class AndroidManifestPlugin : Plugin<Project> {
     override fun apply(target: Project) = target.run {
         extensions.getByType(AndroidComponentsExtension::class).finalizeDsl { android ->
-            android.namespace = "${target.group}.${ModuleNameService.Default()}"
+            android.namespace = "${rootProject.name}.${ModuleNameService.Default()}"
         }
 
         extensions.configure<LibraryExtension>("android") {

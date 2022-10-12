@@ -4,7 +4,8 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":app-check"))
+    implementation(project(":app-check:app-check-compose"))
+    implementation(project(":app-check:app-check-sdk"))
 }
 
 tasks.register<DeployFunctionTask>("deployEventsFunction") {

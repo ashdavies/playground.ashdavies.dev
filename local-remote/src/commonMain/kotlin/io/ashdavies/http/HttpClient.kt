@@ -15,6 +15,7 @@ import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.HttpTimeout.Plugin.INFINITE_TIMEOUT_MS
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.logging.LogLevel
+import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.request.request
@@ -40,6 +41,10 @@ private const val DEFAULT_FUNCTIONS_HOST =
 private val DefaultUserAgent: String
     get() = "${Software.clientName} (${Software.productName}; ${Software.buildVersion})"
 
+private fun DefaultLogger(block: (message: String) -> Unit = ::println): Logger = object : Logger {
+    override fun log(message: String) = block(message)
+}
+
 private fun DefaultHttpClient(block: HttpClientConfig<*>.() -> Unit = { }): HttpClient = HttpClient {
     install(ContentNegotiation) {
         json(Json {
@@ -60,6 +65,7 @@ private fun DefaultHttpClient(block: HttpClientConfig<*>.() -> Unit = { }): Http
     }
 
     install(Logging) {
+        logger = DefaultLogger()
         level = LogLevel.ALL
     }
 

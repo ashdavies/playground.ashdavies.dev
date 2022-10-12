@@ -12,14 +12,14 @@ plugins {
 }
 
 kotlin {
-    val commonMain by sourceSets.getting {
-        dependencies {
-            implementation(project(":local-remote"))
-            implementation(project(":playground-app"))
+    val commonMain by dependencies {
+        implementation(project(":app-check:app-check-client"))
 
-            implementation(libs.bundles.ktor.client)
-            implementation(libs.kuuuurt.multiplatform.paging)
-        }
+        implementation(project(":local-remote"))
+        implementation(project(":playground-app"))
+
+        implementation(libs.bundles.ktor.client)
+        implementation(libs.kuuuurt.multiplatform.paging)
     }
 
     val androidMain by sourceSets.dependencies {
