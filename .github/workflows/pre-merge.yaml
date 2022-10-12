@@ -14,6 +14,7 @@ env:
   GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
   GOOGLE_SA_EMAIL: ${{ secrets.GOOGLE_SA_EMAIL }}
   PLAYGROUND_API_KEY: ${{ secrets.PLAYGROUND_API_KEY }}
+  MOBILE_SDK_APP_ID: ${{ secrets.MOBILE_SDK_APP_ID }}
   SERVICE_ACCOUNT_ID: ${{ secrets.SERVICE_ACCOUNT_ID }}
   WORKLOAD_IDENTITY: ${{ secrets.WORKLOAD_IDENTITY }}
 
@@ -46,11 +47,13 @@ jobs:
           path: ~/.gradle/wrapper/
           key: cache-gradle-wrapper
 
-#      - name: Generate encryption passphrase
-#      - run: openssl rand -base64 32
+      - name: Generate encryption passphrase
+        run: openssl rand -base64 32
+        if: ${{ false }}
 
-#      - name: Encrypt Google Services config file
-#        run: find . -type f -name "google-services.json" -exec sh -c 'openssl aes-256-cbc -md sha256 -salt -in "$0" -out "${0%.json*}.aes" -k "${GOOGLE_SERVICES_PASSPHRASE}"' {} \;
+      - name: Encrypt Google Services config file
+        run: find . -type f -name "google-services.json" -exec sh -c 'openssl aes-256-cbc -md sha256 -salt -in "$0" -out "${0%.json*}.aes" -k "${GOOGLE_SERVICES_PASSPHRASE}"' {} \;
+        if: ${{ false }}
 
       - name: Decrypt Google Services
         run: find . -type f -name "google-services.aes" -exec sh -c 'openssl aes-256-cbc -md sha256 -d -in "$0" -out "${0%.aes*}.json" -k "${GOOGLE_SERVICES_PASSPHRASE}"' {} \;
