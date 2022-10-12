@@ -3,7 +3,6 @@ androidx-activity = "1.4.0"
 androidx-lifecycle = "2.4.1"
 apollo-graphql = "2.5.11"
 arkivanov-decompose = "0.6.0"
-cash-molecule = "0.4.0"
 google-accompanist = "0.23.1"
 google-android = "7.0.4"
 google-auto = "1.0.1"
@@ -133,7 +132,7 @@ android-application = { id = "com.android.application", version.ref = "google.an
 android-library = { id = "com.android.library", version.ref = "google.android" }
 apollo-graphql = { id = "com.apollographql.apollo", version.ref = "apollo-graphql" }
 benManes-versions = "com.github.ben-manes.versions:0.42.0"
-cash-molecule = { id = "app.cash.molecule", version.ref = "cash-molecule" }
+cash-molecule = { id = "app.cash.molecule", version = "0.4.0" }
 catalog-update = "nl.littlerobots.version-catalog-update:0.3.1"
 diffplug-spotless = "com.diffplug.spotless:6.9.1"
 gradle-doctor = "com.osacky.doctor:0.8.0"
