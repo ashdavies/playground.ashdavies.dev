@@ -1,7 +1,9 @@
-@file:Suppress("DSL_SCOPE_VIOLATION", "UnstableApiUsage") // https://youtrack.jetbrains.com/issue/KTIJ-19369
+@file:Suppress("DSL_SCOPE_VIOLATION", "UnstableApiUsage")
 
 import org.jetbrains.kotlin.gradle.plugin.HasKotlinDependencies
 import org.jetbrains.kotlin.gradle.plugin.KotlinDependencyHandler
+
+// https://youtrack.jetbrains.com/issue/KTIJ-19369
 
 plugins {
     id("io.ashdavies.application")
@@ -10,7 +12,9 @@ plugins {
 }
 
 kotlin {
-    val commonMain by sourceSets.dependencies {
+    val commonMain by dependencies {
+        implementation(project(":app-check:app-check-client"))
+
         implementation(project(":local-remote"))
         implementation(project(":playground-app"))
 
@@ -25,8 +29,6 @@ kotlin {
         implementation(libs.google.accompanist.placeholderMaterial)
         implementation(libs.google.accompanist.swiperefresh)
     }
-
-    val androidTest by sourceSets
 }
 
 fun <T : HasKotlinDependencies> NamedDomainObjectContainer<T>.dependencies(

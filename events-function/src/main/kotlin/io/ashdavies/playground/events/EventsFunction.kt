@@ -1,7 +1,7 @@
 package io.ashdavies.playground.events
 
 import com.google.cloud.functions.HttpFunction
-import io.ashdavies.check.VerifiedHttpEffect
+import io.ashdavies.compose.VerifiedHttpEffect
 import io.ashdavies.playground.EventsSerializer
 import io.ashdavies.playground.cloud.HttpApplication
 import io.ashdavies.playground.cloud.LocalHttpRequest

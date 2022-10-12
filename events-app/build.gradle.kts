@@ -15,6 +15,8 @@ android {
 
 kotlin {
     val commonMain by dependencies {
+        implementation(project(":app-check:app-check-client"))
+
         implementation(project(":auth-oauth"))
         implementation(project(":local-remote"))
         implementation(project(":local-storage"))
@@ -28,6 +30,8 @@ kotlin {
     }
 
     val androidMain by dependencies {
+        implementation(project(":firebase-compose"))
+
         implementation(libs.bundles.androidx.activity)
         implementation(libs.bundles.androidx.paging)
         implementation(libs.bundles.androidx.viewmodel)

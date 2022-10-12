@@ -7,9 +7,9 @@ import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
 public interface QueryBuilder {
-    var orderBy: String
-    var startAt: Any
-    var limit: Int
+    public var orderBy: String
+    public var startAt: Any
+    public var limit: Int
 }
 
 internal data class FirestoreQueryBuilder(private var query: Query) : QueryBuilder {
@@ -23,6 +23,5 @@ private inline fun <T> setValue(crossinline block: (T) -> Unit) =
     WriteOnlyProperty<Any?, T> { _, _, value -> block(value) }
 
 private fun interface WriteOnlyProperty<in T, V> : ReadWriteProperty<T, V> {
-    override fun getValue(thisRef: T, property: KProperty<*>): V =
-        throw UnsupportedOperationException()
+    override fun getValue(thisRef: T, property: KProperty<*>): V = throw UnsupportedOperationException()
 }
