@@ -1,3 +1,7 @@
+resource "github_repository" "repo" {
+  name = var.gh_repo_name
+}
+
 resource "google_service_account" "sa" {
   project    = var.project_id
   account_id = "test-storage-sa"
@@ -7,6 +11,18 @@ resource "google_project_iam_member" "project" {
   project = var.project_id
   role    = "roles/storage.admin"
   member  = "serviceAccount:${google_service_account.sa.email}"
+}
+
+resource "github_actions_secret" "google_service_account_id" {
+  repository      = github_repository.repo.name
+  secret_name     = "google_service_account_id"
+  plaintext_value = google_service_account.sa.email
+}
+
+resource "github_actions_secret" "google_workload_identity" {
+  repository      = github_repository.repo.name
+  secret_name     = "google_workload_identity"
+  plaintext_value = ""
 }
 
 module "gh-oidc" {
