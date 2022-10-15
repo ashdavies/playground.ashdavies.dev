@@ -1,10 +1,6 @@
-resource "github_repository" "repo" {
-  name = var.gh_repo_name
-}
-
 resource "google_service_account" "sa" {
   project    = var.project_id
-  account_id = "test-storage-sa"
+  account_id = "gh-oidc"
 }
 
 resource "google_project_iam_member" "project" {
@@ -13,17 +9,17 @@ resource "google_project_iam_member" "project" {
   member  = "serviceAccount:${google_service_account.sa.email}"
 }
 
-resource "github_actions_secret" "google_service_account_id" {
-  repository      = github_repository.repo.name
+/*resource "github_actions_secret" "google_service_account_id" {
+  repository      = "ashdavies/playground"
   secret_name     = "google_service_account_id"
   plaintext_value = google_service_account.sa.email
-}
+}*/
 
-resource "github_actions_secret" "google_workload_identity" {
-  repository      = github_repository.repo.name
+/*resource "github_actions_secret" "google_workload_identity" {
+  repository      = "ashdavies/playground"
   secret_name     = "google_workload_identity"
   plaintext_value = ""
-}
+}*/
 
 module "gh-oidc" {
   source      = "terraform-google-modules/github-actions-runners/google//modules/gh-oidc"
