@@ -1,3 +1,8 @@
+provider "github" {
+  token = var.gh_token
+  owner = "ashdavies"
+}
+
 resource "google_service_account" "sa" {
   project    = var.project_id
   account_id = "gh-oidc"
@@ -9,17 +14,17 @@ resource "google_project_iam_member" "project" {
   member  = "serviceAccount:${google_service_account.sa.email}"
 }
 
-/*resource "github_actions_secret" "google_service_account_id" {
-  repository      = "ashdavies/playground"
+resource "github_actions_secret" "google_service_account_id" {
+  repository      = var.gh_repo_name
   secret_name     = "google_service_account_id"
   plaintext_value = google_service_account.sa.email
-}*/
+}
 
-/*resource "github_actions_secret" "google_workload_identity" {
-  repository      = "ashdavies/playground"
+resource "github_actions_secret" "google_workload_identity" {
+  repository      = var.gh_repo_name
   secret_name     = "google_workload_identity"
   plaintext_value = ""
-}*/
+}
 
 module "gh-oidc" {
   source      = "terraform-google-modules/github-actions-runners/google//modules/gh-oidc"

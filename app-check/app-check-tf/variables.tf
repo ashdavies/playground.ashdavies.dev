@@ -7,7 +7,7 @@ variable "project_id" {
 variable "gh_repo_name" {
   type        = string
   description = "The GitHub repository to set actions secrets"
-  default     = "ashdavies/playground"
+  default     = "terraform-sandbox"
 }
 
 variable "gh_token" {
