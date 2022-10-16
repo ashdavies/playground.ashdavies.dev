@@ -10,5 +10,5 @@ output "provider_name" {
 
 output "sa_email" {
   description = "Google Service Account email"
-  value       = google_service_account.sa.email
+  value       = google_service_account.gh_service_account.email
 }

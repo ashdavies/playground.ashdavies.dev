@@ -1,16 +1,16 @@
 variable "project_id" {
   type        = string
-  description = "The project id to create WIF pool and example SA"
-  default     = "sandbox-365610"
+  description = "Project id to create WIF pool and example SA"
+  default     = "playground-1a136"
 }
 
 variable "gh_repo_name" {
   type        = string
-  description = "The GitHub repository to set actions secrets"
-  default     = "terraform-sandbox"
+  description = "GitHub repository to set actions secrets"
+  default     = "playground"
 }
 
 variable "gh_token" {
   type        = string
-  description = "The GitHub personal access token"
+  description = "GitHub personal access token"
 }

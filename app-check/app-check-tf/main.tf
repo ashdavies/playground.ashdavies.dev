@@ -3,20 +3,20 @@ provider "github" {
   owner = "ashdavies"
 }
 
-resource "google_service_account" "sa" {
+resource "google_service_account" "gh_service_account" {
   display_name = "GitHub Service Account"
-  project    = var.project_id
-  account_id = "gh-oidc"
+  project      = var.project_id
+  account_id   = "gh-oidc"
 }
 
 resource "google_project_iam_member" "project" {
-  member  = "serviceAccount:${google_service_account.sa.email}"
+  member  = "serviceAccount:${google_service_account.gh_service_account.email}"
   role    = "roles/storage.admin"
   project = var.project_id
 }
 
 resource "github_actions_secret" "google_service_account_id" {
-  plaintext_value = google_service_account.sa.email
+  plaintext_value = google_service_account.gh_service_account.email
   secret_name     = "google_service_account_id"
   repository      = var.gh_repo_name
 }
@@ -33,8 +33,8 @@ module "gh-oidc" {
   project_id  = var.project_id
   pool_id     = "gh-oidc-pool"
   sa_mapping = {
-    (google_service_account.sa.account_id) = {
-      sa_name   = google_service_account.sa.name
+    (google_service_account.gh_service_account.account_id) = {
+      sa_name   = google_service_account.gh_service_account.name
       attribute = "attribute.repository/user/repo"
     }
   }
