@@ -16,7 +16,7 @@ env:
 
 jobs:
   gradle:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
 
     permissions:
       contents: 'read'
