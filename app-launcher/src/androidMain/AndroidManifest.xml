@@ -10,9 +10,10 @@
         tools:ignore="MissingApplicationIcon">
 
         <activity
-            android:name="io.ashdavies.playground.MainActivity"
+            android:name="io.ashdavies.playground.LauncherActivity"
+            android:configChanges="keyboardHidden|orientation"
             android:exported="true"
-            android:label="@string/application"
+            android:label="Playground"
             android:theme="@style/Theme.Material3.DynamicColors.DayNight">
 
             <intent-filter>

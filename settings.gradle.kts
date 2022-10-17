@@ -5,7 +5,7 @@ include(
     ":app-check:app-check-compose",
     ":app-check:app-check-function",
     ":app-check:app-check-sdk",
-    ":app-android",
+    ":app-launcher",
     ":auth-oauth",
     ":cloud-functions",
     ":compose-constructor:plugin-common",
