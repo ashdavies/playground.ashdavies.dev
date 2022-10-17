@@ -2,6 +2,7 @@ package io.ashdavies.check
 
 import com.google.auth.oauth2.ComputeEngineCredentials
 import com.google.auth.oauth2.GoogleCredentials
+import com.google.auth.oauth2.IdentityPoolCredentials
 import com.google.auth.oauth2.ServiceAccountCredentials
 import com.google.firebase.FirebaseApp
 import com.google.firebase.FirebaseOptions
@@ -11,6 +12,7 @@ import io.ktor.client.request.get
 import io.ktor.client.request.header
 import kotlinx.coroutines.runBlocking
 
+private val GoogleServiceAccountId: String? get() = System.getenv("GOOGLE_SERVICE_ACCOUNT_ID")
 private val GoogleCloudProject: String? get() = System.getenv("GOOGLE_CLOUD_PROJECT")
 private val GCloudProject: String? get() = System.getenv("GCLOUD_PROJECT")
 
@@ -40,7 +42,8 @@ private fun findExplicitProjectId(app: FirebaseApp): String? = app.options.proje
 private fun findExplicitServiceAccountId(app: FirebaseApp): String? = app.options.serviceAccountId
     ?: (app.credentials as? ServiceAccountCredentials)?.account
     ?: (app.credentials as? ComputeEngineCredentials)?.account
-    ?: fetchServiceAccountId(HttpClient())
+    ?: (app.credentials as? IdentityPoolCredentials)?.clientId
+    ?: GoogleServiceAccountId
 
 private fun fetchServiceAccountId(client: HttpClient): String? = runBlocking {
     client.get("http://metadata/computeMetadata/v1/instance/service-accounts/default/email") {
