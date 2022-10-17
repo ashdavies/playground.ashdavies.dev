@@ -23,7 +23,7 @@ public fun getProjectId(app: FirebaseApp): String = requireNotNull(findExplicitP
 }
 
 internal fun getServiceAccountId(app: FirebaseApp): String = requireNotNull(findExplicitServiceAccountId(app)) {
-    "Failed to determine service account identifier."
+    "Failed to determine service account identifier from Firebase credentials ${app.credentials}."
 }
 
 private fun findExplicitProjectId(app: FirebaseApp): String? = app.options.projectId

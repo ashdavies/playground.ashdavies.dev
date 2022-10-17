@@ -27,6 +27,21 @@ resource "github_actions_secret" "google_workload_identity" {
   repository      = var.gh_repo_name
 }
 
+resource "random_id" "bucket_prefix" {
+  byte_length = 8
+}
+
+resource "google_storage_bucket" "default" {
+  name          = "${random_id.bucket_prefix.hex}-bucket-tfstate"
+  project       = var.project_id
+  storage_class = "STANDARD"
+  force_destroy = false
+  location      = "EU"
+  versioning {
+    enabled = true
+  }
+}
+
 module "gh-oidc" {
   source      = "terraform-google-modules/github-actions-runners/google//modules/gh-oidc"
   provider_id = "gh-oidc-provider"
