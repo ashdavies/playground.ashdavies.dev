@@ -57,8 +57,8 @@ jobs:
       - name: Google Cloud Auth
         uses: google-github-actions/auth@v0
         with:
-          workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY }}
-          service_account: ${{ secrets.GOOGLE_SA_EMAIL }}
+          workload_identity_provider: ${{ secrets.GOOGLE_WORKLOAD_IDENTITY }}
+          service_account: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
 
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v0
