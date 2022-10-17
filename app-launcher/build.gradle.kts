@@ -4,8 +4,8 @@ plugins {
 
 kotlin {
     val commonMain by dependencies {
-        implementation(project(":dominion-app"))
-        implementation(project(":events-app"))
+        // implementation(project(":dominion-app"))
+        // implementation(project(":events-app"))
 
         implementation(libs.bundles.arkivanov.decompose)
         implementation(compose.materialIconsExtended)
