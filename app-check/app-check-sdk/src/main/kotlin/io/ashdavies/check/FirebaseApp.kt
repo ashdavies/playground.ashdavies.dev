@@ -5,9 +5,13 @@ import com.google.auth.oauth2.GoogleCredentials
 import com.google.auth.oauth2.ServiceAccountCredentials
 import com.google.firebase.FirebaseApp
 import com.google.firebase.FirebaseOptions
+import io.ktor.client.HttpClient
+import io.ktor.client.call.body
+import io.ktor.client.request.get
+import io.ktor.client.request.header
+import kotlinx.coroutines.runBlocking
 
 private val GoogleCloudProject: String? get() = System.getenv("GOOGLE_CLOUD_PROJECT")
-private val ServiceAccountId: String? get() = System.getenv("SERVICE_ACCOUNT_ID")
 private val GCloudProject: String? get() = System.getenv("GCLOUD_PROJECT")
 
 internal val FirebaseApp.credentials: GoogleCredentials
@@ -23,7 +27,9 @@ public fun getProjectId(app: FirebaseApp): String = requireNotNull(findExplicitP
 }
 
 internal fun getServiceAccountId(app: FirebaseApp): String = requireNotNull(findExplicitServiceAccountId(app)) {
-    "Failed to determine service account identifier from Firebase credentials ${app.credentials}."
+    "Failed to determine service account. Make sure to initialize " +
+            "the SDK with a service account credential. Alternatively specify a service " +
+            "account with iam.serviceAccounts.signBlob permission."
 }
 
 private fun findExplicitProjectId(app: FirebaseApp): String? = app.options.projectId
@@ -34,4 +40,10 @@ private fun findExplicitProjectId(app: FirebaseApp): String? = app.options.proje
 private fun findExplicitServiceAccountId(app: FirebaseApp): String? = app.options.serviceAccountId
     ?: (app.credentials as? ServiceAccountCredentials)?.account
     ?: (app.credentials as? ComputeEngineCredentials)?.account
-    ?: ServiceAccountId
+    ?: fetchServiceAccountId(HttpClient())
+
+private fun fetchServiceAccountId(client: HttpClient): String? = runBlocking {
+    client.get("http://metadata/computeMetadata/v1/instance/service-accounts/default/email") {
+        header("Metadata-Flavor", "Google")
+    }.body()
+}
