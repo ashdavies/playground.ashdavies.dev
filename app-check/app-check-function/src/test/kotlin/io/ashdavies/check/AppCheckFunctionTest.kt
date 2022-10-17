@@ -11,12 +11,12 @@ import kotlin.test.assertEquals
 @OptIn(ExperimentalCoroutinesApi::class)
 internal class AppCheckFunctionTest {
 
+    private val mobileSdkAppId: String
+        get() = requireNotNull(System.getenv("MOBILE_SDK_APP_ID"))
+
     @Test
     fun `should return app check token for given credentials`() = startServer<AppCheckFunction> { client ->
-        val request: HttpResponse = client.get {
-            parameter("appId", requireNotNull(System.getenv("MOBILE_SDK_APP_ID")))
-            parameter("appKey", requireNotNull(System.getenv("APP_CHECK_KEY")))
-        }
+        val request: HttpResponse = client.get { parameter("appId", mobileSdkAppId) }
 
         assertEquals(HttpStatusCode.OK, request.status)
     }
