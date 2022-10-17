@@ -26,6 +26,7 @@ jobs:
       - name: Setup JDK
         uses: actions/setup-java@v3
         with:
+          distribution: temurin
           java-version: 11
 
       - name: Checkout Repository
