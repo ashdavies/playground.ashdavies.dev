@@ -1,6 +1,5 @@
 package io.ashdavies.check
 
-import com.google.auth.oauth2.GoogleCredentials
 import com.google.auth.oauth2.IdentityPoolCredentials
 import com.google.firebase.FirebaseApp
 import com.google.firebase.FirebaseOptions
@@ -18,34 +17,25 @@ private val FirebaseApp.credentials: IdentityPoolCredentials
         .also { it.isAccessible = true }
         .invoke(options) as IdentityPoolCredentials
 
+private val MOBILE_SDK_APP_ID: String
+    get() = requireNotNull(System.getenv("MOBILE_SDK_APP_ID"))
+
 @OptIn(ExperimentalCoroutinesApi::class)
 internal class AppCheckFunctionTest {
 
-    private val mobileSdkAppId: String
-        get() = requireNotNull(System.getenv("MOBILE_SDK_APP_ID"))
-
     @Test
     fun `should return app check token for given credentials`() = startServer<AppCheckFunction> { client ->
-        val request: HttpResponse = client.get { parameter("appId", mobileSdkAppId) }
+        val request: HttpResponse = client.get { parameter("appId", MOBILE_SDK_APP_ID) }
 
         assertEquals(HttpStatusCode.OK, request.status)
     }
 
     @Test
-    fun `should print client identifier`() {
+    fun `client id should match service account`() {
         val credentials = FirebaseApp
             .initializeApp()
             .credentials
 
-        println("=== ClientId (${credentials.clientId}) ===")
-    }
-
-    @Test
-    fun `should retrieve subject token`() {
-        val credentials = FirebaseApp
-            .initializeApp()
-            .credentials
-
-        println("=== SubjectToken (${credentials.retrieveSubjectToken()}) ===")
+        assertEquals(credentials.clientId, System.getenv("GOOGLE_SERVICE_ACCOUNT_ID"))
     }
 }
