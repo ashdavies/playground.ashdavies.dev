@@ -1,6 +1,6 @@
 provider "github" {
   token = var.gh_token
-  owner = "ashdavies"
+  owner = var.gh_owner
 }
 
 resource "google_service_account" "gh_service_account" {
@@ -18,6 +18,12 @@ resource "google_project_iam_member" "service_account_token_creator" {
 resource "google_project_iam_member" "storage_admin" {
   member  = "serviceAccount:${google_service_account.gh_service_account.email}"
   role    = "roles/storage.admin"
+  project = var.project_id
+}
+
+resource "google_project_iam_member" "workload_identity_user" {
+  member  = "serviceAccount:${google_service_account.gh_service_account.email}"
+  role    = "roles/iam.workloadIdentityUser"
   project = var.project_id
 }
 
@@ -55,8 +61,8 @@ module "gh-oidc" {
   pool_id     = "gh-oidc-pool"
   sa_mapping = {
     (google_service_account.gh_service_account.account_id) = {
+      attribute = "attribute.repository/${var.gh_owner}/${var.gh_repo_name}"
       sa_name   = google_service_account.gh_service_account.name
-      attribute = "attribute.repository/user/repo"
     }
   }
 }
