@@ -9,7 +9,13 @@ resource "google_service_account" "gh_service_account" {
   account_id   = "gh-oidc"
 }
 
-resource "google_project_iam_member" "project" {
+resource "google_project_iam_member" "service_account_token_creator" {
+  member  = "serviceAccount:${google_service_account.gh_service_account.email}"
+  role    = "roles/iam.serviceAccountTokenCreator"
+  project = var.project_id
+}
+
+resource "google_project_iam_member" "storage_admin" {
   member  = "serviceAccount:${google_service_account.gh_service_account.email}"
   role    = "roles/storage.admin"
   project = var.project_id
