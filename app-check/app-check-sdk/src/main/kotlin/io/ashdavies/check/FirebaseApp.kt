@@ -6,8 +6,8 @@ import com.google.auth.oauth2.ServiceAccountCredentials
 import com.google.firebase.FirebaseApp
 import com.google.firebase.FirebaseOptions
 
+private val GoogleServiceAccountId: String? get() = System.getenv("GOOGLE_SERVICE_ACCOUNT_ID")
 private val GoogleCloudProject: String? get() = System.getenv("GOOGLE_CLOUD_PROJECT")
-private val ServiceAccountId: String? get() = System.getenv("SERVICE_ACCOUNT_ID")
 private val GCloudProject: String? get() = System.getenv("GCLOUD_PROJECT")
 
 internal val FirebaseApp.credentials: GoogleCredentials
@@ -23,7 +23,9 @@ public fun getProjectId(app: FirebaseApp): String = requireNotNull(findExplicitP
 }
 
 internal fun getServiceAccountId(app: FirebaseApp): String = requireNotNull(findExplicitServiceAccountId(app)) {
-    "Failed to determine service account identifier."
+    "Failed to determine service account. Make sure to initialize " +
+            "the SDK with a service account credential. Alternatively specify a service " +
+            "account with iam.serviceAccounts.signBlob permission."
 }
 
 private fun findExplicitProjectId(app: FirebaseApp): String? = app.options.projectId
@@ -34,4 +36,4 @@ private fun findExplicitProjectId(app: FirebaseApp): String? = app.options.proje
 private fun findExplicitServiceAccountId(app: FirebaseApp): String? = app.options.serviceAccountId
     ?: (app.credentials as? ServiceAccountCredentials)?.account
     ?: (app.credentials as? ComputeEngineCredentials)?.account
-    ?: ServiceAccountId
+    ?: GoogleServiceAccountId

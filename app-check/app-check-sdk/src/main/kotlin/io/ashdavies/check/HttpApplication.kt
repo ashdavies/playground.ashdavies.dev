@@ -12,25 +12,26 @@ import io.ktor.http.contentType
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-private val FIREBASE_CLAIMS_SCOPES = listOf(
-    "https://www.googleapis.com/auth/cloud-platform",
-    "https://www.googleapis.com/auth/firebase.database",
-    "https://www.googleapis.com/auth/firebase.messaging",
-    "https://www.googleapis.com/auth/identitytoolkit",
-    "https://www.googleapis.com/auth/userinfo.email",
-)
-
+private const val GOOGLE_AUTH_SCOPE = "https://www.googleapis.com/auth"
 private const val GOOGLE_TOKEN_ENDPOINT = "https://accounts.google.com/o/oauth2/token"
 
-public fun AuthorisedHttpClient(from: HttpClient, loadTokens: suspend () -> BearerTokens?): HttpClient = from.config {
+private val FIREBASE_CLAIMS_SCOPES = listOf(
+    "$GOOGLE_AUTH_SCOPE/cloud-platform",
+    "$GOOGLE_AUTH_SCOPE/firebase.database",
+    "$GOOGLE_AUTH_SCOPE/firebase.messaging",
+    "$GOOGLE_AUTH_SCOPE/identitytoolkit",
+    "$GOOGLE_AUTH_SCOPE/userinfo.email",
+)
+
+public fun AuthorisedHttpClient(from: HttpClient, config: HttpClientConfig): HttpClient = from.config {
     install(Auth) {
         bearer {
-            loadTokens { loadTokens() }
+            loadTokens { bearerTokens(from, config) }
         }
     }
 }
 
-public suspend fun HttpClient.bearerTokens(config: HttpClientConfig): BearerTokens {
+private suspend fun bearerTokens(client: HttpClient, config: HttpClientConfig): BearerTokens {
     val jwt = Jwt.create(config.algorithm) {
         it.audience = GOOGLE_TOKEN_ENDPOINT
         it.scope = FIREBASE_CLAIMS_SCOPES
@@ -38,7 +39,7 @@ public suspend fun HttpClient.bearerTokens(config: HttpClientConfig): BearerToke
         it.appId = config.appId
     }
 
-    val response: BearerResponse = post(GOOGLE_TOKEN_ENDPOINT) {
+    val response: BearerResponse = client.post(GOOGLE_TOKEN_ENDPOINT) {
         contentType(ContentType.Application.FormUrlEncoded)
         grantType(JwtBearer)
         assertion(jwt)

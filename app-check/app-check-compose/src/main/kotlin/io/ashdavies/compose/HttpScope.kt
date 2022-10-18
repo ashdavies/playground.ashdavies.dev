@@ -9,15 +9,19 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.window.ApplicationScope
 import com.google.cloud.functions.HttpRequest
 import com.google.cloud.functions.HttpResponse
+import com.google.firebase.FirebaseApp
 import io.ashdavies.check.AppCheck
 import io.ashdavies.check.appCheckToken
+import io.ashdavies.http.LocalHttpClient
 import io.ashdavies.playground.cloud.HttpEffect
 import io.ashdavies.playground.cloud.HttpException
 import io.ashdavies.playground.cloud.HttpScope
 import io.ashdavies.playground.cloud.LocalApplicationScope
+import io.ashdavies.playground.cloud.LocalFirebaseApp
 import io.ashdavies.playground.cloud.LocalHttpRequest
 import io.ashdavies.playground.cloud.LocalHttpResponse
 import io.ashdavies.playground.cloud.getValue
+import io.ktor.client.HttpClient
 import kotlinx.coroutines.CoroutineScope
 
 private const val APP_CHECK_ENDPOINT = "https://firebaseappcheck.googleapis.com/"
@@ -48,4 +52,12 @@ public fun HttpScope.VerifiedHttpEffect(key: Any = Unit, block: suspend Coroutin
     if (isVerified) {
         HttpEffect(key, block)
     }
+}
+
+@Composable
+private fun rememberAppCheck(
+    firebaseApp: FirebaseApp = LocalFirebaseApp.current,
+    httpClient: HttpClient = LocalHttpClient.current,
+): AppCheck = remember(firebaseApp, httpClient) {
+    AppCheck(firebaseApp, httpClient)
 }

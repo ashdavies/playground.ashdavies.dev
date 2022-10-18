@@ -13,10 +13,8 @@ internal class AppCheckFunctionTest {
 
     @Test
     fun `should return app check token for given credentials`() = startServer<AppCheckFunction> { client ->
-        val request: HttpResponse = client.get {
-            parameter("appId", requireNotNull(System.getenv("MOBILE_SDK_APP_ID")))
-            parameter("appKey", requireNotNull(System.getenv("APP_CHECK_KEY")))
-        }
+        val mobileSdkAppId: String = requireNotNull(System.getenv("MOBILE_SDK_APP_ID"))
+        val request: HttpResponse = client.get { parameter("appId", mobileSdkAppId) }
 
         assertEquals(HttpStatusCode.OK, request.status)
     }

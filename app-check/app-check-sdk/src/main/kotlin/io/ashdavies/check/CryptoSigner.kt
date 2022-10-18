@@ -6,6 +6,7 @@ import com.google.firebase.FirebaseApp
 import io.ktor.client.HttpClient
 import io.ktor.client.request.header
 import io.ktor.http.HttpHeaders
+import kotlinx.serialization.Serializable
 import java.util.Base64
 
 public interface CryptoSigner {
@@ -25,16 +26,27 @@ public fun CryptoSigner(app: FirebaseApp, client: HttpClient): CryptoSigner {
     }
 }
 
-private fun IamSigner(client: HttpClient, accountId: String, token: String) = CryptoSigner(accountId) {
+private fun IamSigner(client: HttpClient, accountId: String, token: String) = CryptoSigner(accountId) { src ->
     val urlString = "https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/$accountId:signBlob"
-    val payload = Base64.getEncoder().encodeToString(it)
-
-    client.post(urlString, mapOf("payload" to payload)) {
+    val response = client.post<IamSignedResponse>(urlString, mapOf("payload" to src.encodeToString())) {
         header(HttpHeaders.Authorization, "Bearer $token")
     }
+
+    response
+        .signedBlob
+        .decodeFromString()
 }
 
 private fun getToken(credentials: GoogleCredentials): String = credentials
     .apply { refreshIfExpired() }
     .accessToken
     .tokenValue
+
+@Serializable
+internal data class IamSignedResponse(val keyId: String, val signedBlob: String)
+
+private fun ByteArray.encodeToString(encoder: Base64.Encoder = Base64.getEncoder()): String =
+    encoder.encodeToString(this)
+
+private fun String.decodeFromString(decoder: Base64.Decoder = Base64.getDecoder()): ByteArray =
+    decoder.decode(this)

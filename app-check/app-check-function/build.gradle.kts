@@ -17,6 +17,4 @@ val deployAppCheckFunction by tasks.registering(DeployFunctionTask::class) {
     description = "Deploy app check function to Google Cloud"
     allowUnauthenticated = true
     function = "createToken"
-
-    envVar("APP_CHECK_KEY")
 }

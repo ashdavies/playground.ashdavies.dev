@@ -12,6 +12,7 @@ on:
 env:
   GOOGLE_SERVICE_ACCOUNT_ID: ${{ secrets.google_service_account_id }}
   GOOGLE_WORKLOAD_IDENTITY: ${{ secrets.google_workload_identity }}
+  MOBILE_SDK_APP_ID: ${{ secrets.mobile_sdk_app_id }}
 
 jobs:
   gradle:
@@ -23,21 +24,22 @@ jobs:
 
     steps:
       - name: Setup JDK
-        uses: actions/setup-java@v1
+        uses: actions/setup-java@v3
         with:
+          distribution: temurin
           java-version: 11
 
       - name: Checkout Repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Cache Gradle Caches
-        uses: actions/cache@v1
+        uses: actions/cache@v3
         with:
           path: ~/.gradle/caches/
           key: cache-gradle-cache
 
       - name: Cache Gradle Wrapper
-        uses: actions/cache@v1
+        uses: actions/cache@v3
         with:
           path: ~/.gradle/wrapper/
           key: cache-gradle-wrapper
@@ -56,8 +58,8 @@ jobs:
       - name: Google Cloud Auth
         uses: google-github-actions/auth@v0
         with:
-          workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY }}
-          service_account: ${{ secrets.GOOGLE_SA_EMAIL }}
+          workload_identity_provider: ${{ secrets.GOOGLE_WORKLOAD_IDENTITY }}
+          service_account: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
 
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v0
@@ -66,7 +68,7 @@ jobs:
         run: ./gradlew build check --console=plain --info
 
       - name: Produce Test Summary
-        uses: test-summary/action@v1.0
+        uses: test-summary/action@v2
         with:
           paths: "**/build/test-results/test/TEST-*.xml"
         if: always()
