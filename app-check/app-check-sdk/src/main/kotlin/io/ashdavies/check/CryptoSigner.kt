@@ -7,6 +7,7 @@ import io.ktor.client.HttpClient
 import io.ktor.client.request.header
 import io.ktor.http.HttpHeaders
 import java.util.Base64
+import java.util.Date
 
 public interface CryptoSigner {
     public suspend fun sign(value: ByteArray): ByteArray
@@ -35,6 +36,14 @@ private fun IamSigner(client: HttpClient, accountId: String, token: String) = Cr
 }
 
 private fun getToken(credentials: GoogleCredentials): String = credentials
-    .apply { refreshIfExpired() }
+    .apply { validateExpiry(accessToken.expirationTime) }
+    // .apply { refreshIfExpired() }
     .accessToken
     .tokenValue
+
+private fun validateExpiry(expirationTime: Date) {
+    println("=== CryptoSigner.accessToken.expirationTime ($expirationTime) ===")
+    if (expirationTime.time > System.currentTimeMillis() + 3600) {
+        println("WARNING: Expiration time is sooner than one hour ahead")
+    }
+}
