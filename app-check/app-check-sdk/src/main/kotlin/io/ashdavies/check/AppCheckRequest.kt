@@ -1,5 +1,6 @@
 package io.ashdavies.check
 
-public interface AppCheckRequest {
-    public val appId: String
-}
+import kotlinx.serialization.Serializable
+
+@Serializable
+public data class AppCheckRequest(val appId: String)

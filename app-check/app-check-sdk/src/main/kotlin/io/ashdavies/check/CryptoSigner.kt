@@ -20,7 +20,7 @@ internal fun CryptoSigner(accountId: String, sign: suspend (value: ByteArray) ->
 }
 
 public fun CryptoSigner(app: FirebaseApp, client: HttpClient): CryptoSigner {
-    return when (val credentials: GoogleCredentials = app.credentials) {
+    return when (val credentials: GoogleCredentials = GoogleCredentials.getApplicationDefault()) {
         is ServiceAccountSigner -> CryptoSigner(credentials.account, credentials::sign)
         else -> IamSigner(client, getServiceAccountId(app), getToken(credentials))
     }
