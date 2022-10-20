@@ -1,8 +1,6 @@
 plugins {
     id("io.ashdavies.cloud")
     id("deploy-function")
-
-    kotlin("plugin.serialization")
 }
 
 dependencies {

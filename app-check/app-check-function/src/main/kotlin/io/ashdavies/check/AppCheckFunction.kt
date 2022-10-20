@@ -11,11 +11,7 @@ import io.ashdavies.playground.cloud.HttpEffect
 import io.ashdavies.playground.cloud.LocalFirebaseApp
 import io.ashdavies.playground.cloud.LocalHttpRequest
 import io.ktor.client.HttpClient
-import io.ktor.http.HttpMethod
 import kotlinx.datetime.Clock.System.now
-import kotlinx.serialization.ExperimentalSerializationApi
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.decodeFromStream
 import kotlin.time.Duration.Companion.hours
 
 internal class AppCheckFunction : HttpFunction by AuthorisedHttpApplication({
@@ -37,12 +33,10 @@ internal class AppCheckFunction : HttpFunction by AuthorisedHttpApplication({
 })
 
 @Composable
-@OptIn(ExperimentalSerializationApi::class)
 private fun rememberAppCheckRequest(
     httpRequest: HttpRequest = LocalHttpRequest.current
 ): AppCheckRequest = remember(httpRequest) {
-    check(httpRequest.method == HttpMethod.Post.value)
-    Json.decodeFromStream(httpRequest.inputStream)
+    AppCheckRequest(httpRequest)
 }
 
 @Composable
