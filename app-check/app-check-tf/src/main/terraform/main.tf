@@ -1,12 +1,50 @@
+data "archive_file" "source" {
+  source_dir  = "${var.project_dir}/${var.source_dir}"
+  output_path = "/tmp/function.zip"
+  type        = "zip"
+}
+
 provider "github" {
   token = var.gh_token
   owner = var.gh_owner
+}
+
+provider "google" {
+  region  = var.project_region
+  project = var.project_id
+}
+
+resource "github_actions_secret" "google_service_account_id" {
+  plaintext_value = google_service_account.gh_service_account.email
+  secret_name     = "google_service_account_id"
+  repository      = var.gh_repo_name
+}
+
+resource "github_actions_secret" "google_workload_identity" {
+  plaintext_value = module.gh-oidc.provider_name
+  secret_name     = "google_workload_identity"
+  repository      = var.gh_repo_name
 }
 
 resource "google_service_account" "gh_service_account" {
   display_name = "GitHub Service Account"
   project      = var.project_id
   account_id   = "gh-oidc"
+}
+
+resource "google_cloudfunctions_function" "google_function_create_token" {
+  source_archive_bucket = google_storage_bucket.function_bucket.name
+  source_archive_object = google_storage_bucket_object.zip.name
+  entry_point           = "io.ashdavies.check.AppCheckFunction"
+  description           = "Creates a new AppCheck token"
+  name                  = "createToken"
+  runtime               = "java11"
+  trigger_http          = true
+
+  depends_on            = [
+    google_storage_bucket.function_bucket,
+    google_storage_bucket_object.zip
+  ]
 }
 
 resource "google_project_iam_member" "service_account_token_creator" {
@@ -25,18 +63,6 @@ resource "google_project_iam_member" "workload_identity_user" {
   member  = "serviceAccount:${google_service_account.gh_service_account.email}"
   role    = "roles/iam.workloadIdentityUser"
   project = var.project_id
-}
-
-resource "github_actions_secret" "google_service_account_id" {
-  plaintext_value = google_service_account.gh_service_account.email
-  secret_name     = "google_service_account_id"
-  repository      = var.gh_repo_name
-}
-
-resource "github_actions_secret" "google_workload_identity" {
-  plaintext_value = module.gh-oidc.provider_name
-  secret_name     = "google_workload_identity"
-  repository      = var.gh_repo_name
 }
 
 resource "random_id" "bucket_prefix" {

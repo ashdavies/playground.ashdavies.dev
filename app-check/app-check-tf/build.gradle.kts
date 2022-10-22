@@ -8,6 +8,7 @@ terraform {
             executeDestroyOnlyIf { project.properties["tf.destroy"] == "true" }
             executeApplyOnlyIf { project.properties["tf.apply"] == "true"  }
 
+            planVariable("project_dir", projectDir)
         }
     }
 
