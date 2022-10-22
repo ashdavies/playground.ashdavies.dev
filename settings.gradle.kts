@@ -5,6 +5,7 @@ include(
     ":app-check:app-check-compose",
     ":app-check:app-check-function",
     ":app-check:app-check-sdk",
+    ":app-check:app-check-tf",
     ":app-launcher",
     ":auth-oauth",
     ":cloud-functions",
@@ -27,7 +28,6 @@ include(
 
 includeBuild("app-manifest")
 includeBuild("build-plugins")
-includeBuild("cloud-deploy")
 
 includeBuild("compose-constructor/plugin-gradle") {
     dependencySubstitution {

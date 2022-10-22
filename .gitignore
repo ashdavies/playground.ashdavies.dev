@@ -13,8 +13,8 @@
 
 # Firebase
 **/google-services.json
-**/service-account.json
 **/.runtimeconfig.json
+**/*-sa.json
 **/*.log
 
 # Gradle
