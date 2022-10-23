@@ -26,14 +26,3 @@ variable "project_region" {
   description = "Google Cloud region to deploy functions"
   default     = "europe-west1"
 }
-
-variable "project_dir" {
-  type        = string
-  description = "Project directory set by gradle script"
-}
-
-variable "source_dir" {
-  type        = string
-  description = "Source directory for the compiled cloud function"
-  default     = "../app-check-function/build/libs"
-}

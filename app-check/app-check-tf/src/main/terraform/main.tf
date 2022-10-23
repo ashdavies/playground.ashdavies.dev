@@ -1,5 +1,5 @@
 data "archive_file" "source" {
-  source_dir  = "${var.project_dir}/${var.source_dir}"
+  source_file  = var.resources.app-check-function-all_jar.path
   output_path = "/tmp/function.zip"
   type        = "zip"
 }
