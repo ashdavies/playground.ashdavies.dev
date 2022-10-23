@@ -17,9 +17,6 @@
 ![Planned](https://img.shields.io/badge/project-planned-status.svg?colorA=555555&colorB=blue&label=&logo=kotlin&logoColor=ffffff&logoWidth=10)
 ![JVM](https://img.shields.io/badge/project-jvm-component.svg?colorA=555555&colorB=7F52FF&label=&logo=kotlin&logoColor=ffffff&logoWidth=10)
 
-- `:app-check:deployAppCheckFunction`
-- `:app-check:runAppCheckFunction`
-
 Implements a custom app-check provider for multiplatform applications to verify client applications.  
 https://firebase.google.com/docs/app-check/custom-provider
 

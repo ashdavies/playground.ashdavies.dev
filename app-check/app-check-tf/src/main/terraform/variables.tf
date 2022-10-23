@@ -17,6 +17,12 @@ variable "gh_token" {
 
 variable "project_id" {
   type        = string
-  description = "Project id to create WIF pool and example SA"
+  description = "Google Cloud project id to create workload identity provider"
   default     = "playground-1a136"
+}
+
+variable "project_region" {
+  type        = string
+  description = "Google Cloud region to deploy functions"
+  default     = "europe-west1"
 }

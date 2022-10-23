@@ -50,6 +50,16 @@ doctor {
 //
 //         kotlinDefault("kt")
 //     }
+//
+//     format("terraform") {
+//         target("src/main/terraform/**/*.tf")
+//         custom("terraform") { fileContents ->
+//             terraformExec {
+//                 stdin(fileContents)
+//                 args("fmt", "-")
+//             }
+//         }
+//     }
 // }
 
 versionCatalogUpdate {
