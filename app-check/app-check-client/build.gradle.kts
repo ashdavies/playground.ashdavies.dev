@@ -5,8 +5,8 @@ plugins {
 
 kotlin {
     val commonMain by dependencies {
-        implementation(project(":firebase-compose"))
-        implementation(project(":local-remote"))
+        implementation(projects.firebaseCompose)
+        implementation(projects.localRemote)
 
         implementation(libs.bundles.ktor.client)
     }

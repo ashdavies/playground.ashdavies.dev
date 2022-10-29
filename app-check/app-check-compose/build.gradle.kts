@@ -3,5 +3,5 @@ plugins {
 }
 
 dependencies {
-    api(project(":app-check:app-check-sdk"))
+    api(projects.appCheck.appCheckSdk)
 }
