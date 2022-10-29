@@ -17,7 +17,7 @@ internal class EventsFunction : HttpFunction by HttpApplication({
     val query = EventsQuery(LocalHttpRequest.current)
     val reader = EventsReader(provider, query)
 
-    VerifiedHttpEffect(COLLECTION_PATH) {
+    VerifiedHttpEffect {
         Json.encodeToString(ListSerializer(EventsSerializer), reader())
     }
 })

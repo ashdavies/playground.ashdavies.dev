@@ -7,6 +7,7 @@ import com.google.cloud.functions.HttpRequest
 import com.google.firebase.FirebaseApp
 import io.ashdavies.compose.AuthorisedHttpApplication
 import io.ashdavies.http.LocalHttpClient
+import io.ashdavies.playground.cloud.HttpConfig
 import io.ashdavies.playground.cloud.HttpEffect
 import io.ashdavies.playground.cloud.LocalFirebaseApp
 import io.ashdavies.playground.cloud.LocalHttpRequest
@@ -17,15 +18,14 @@ import java.nio.charset.Charset
 import java.nio.charset.StandardCharsets
 import kotlin.time.Duration.Companion.hours
 
-internal class AppCheckFunction : HttpFunction by AuthorisedHttpApplication({
+internal class AppCheckFunction : HttpFunction by AuthorisedHttpApplication(HttpConfig.Post, {
     val appCheckRequest = rememberAppCheckRequest()
     val cryptoSigner = rememberCryptoSigner()
     val projectId = rememberProjectId()
     val appCheck = rememberAppCheck()
 
     HttpEffect {
-        val token = AppCheckToken.Request.Raw(projectId, urlDecode(appCheckRequest.appId))
-
+        val token = AppCheckToken.Request.Raw(urlDecode(appCheckRequest.appId), projectId)
         val response = appCheck.createToken(token) {
             it.issuer = cryptoSigner.getAccountId()
             it.expiresAt = now() + 1.hours
