@@ -1,5 +1,7 @@
 apply(from = "repositories.gradle.kts")
 
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+
 include(
     ":app-check:app-check-client",
     ":app-check:app-check-compose",

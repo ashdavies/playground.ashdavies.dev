@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-    lambda(project(":app-check:app-check-function"))
+    lambda(projects.appCheck.appCheckFunction)
 }
 
 terraform {
