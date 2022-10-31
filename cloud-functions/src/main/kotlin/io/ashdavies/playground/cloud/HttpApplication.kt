@@ -23,10 +23,6 @@ import org.jetbrains.skiko.MainUIDispatcher
 
 private object HttpApplicationScope : HttpScope
 
-public fun HttpApplication(block: @Composable HttpScope.() -> Unit): HttpFunction {
-    return HttpApplication(HttpConfig.Get, block)
-}
-
 public fun HttpApplication(config: HttpConfig, block: @Composable HttpScope.() -> Unit): HttpFunction {
     return LocalHttpFunction(config) { request, response ->
         application {
@@ -34,7 +30,8 @@ public fun HttpApplication(config: HttpConfig, block: @Composable HttpScope.() -
                 LocalApplicationScope provides this,
                 LocalHttpResponse provides response,
                 LocalHttpRequest provides request,
-            ) { block() }
+                content = { block() },
+            )
         }
     }
 }
