@@ -1,7 +1,6 @@
 package io.ashdavies.check
 
 import io.ktor.client.request.get
-import io.ktor.client.request.parameter
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.client.statement.HttpResponse
@@ -17,10 +16,11 @@ import kotlin.test.assertEquals
 @OptIn(ExperimentalCoroutinesApi::class)
 internal class AppCheckFunctionTest {
 
+    private val mobileSdkAppId: String
+        get() = requireNotNull(System.getenv("MOBILE_SDK_APP_ID"))
+
     @Test
     fun `should return app check token for given app id`() = startServer<AppCheckFunction> { client ->
-        val mobileSdkAppId = requireNotNull(System.getenv("MOBILE_SDK_APP_ID"))
-
         val response: HttpResponse = client.post {
             contentType(ContentType.Application.Json)
             setBody(AppCheckRequest(mobileSdkAppId))
@@ -30,12 +30,19 @@ internal class AppCheckFunctionTest {
     }
 
     @Test
-    fun `should return headers for method not allowed`() = startServer<AppCheckFunction> { client ->
-        val mobileSdkAppId = requireNotNull(System.getenv("MOBILE_SDK_APP_ID"))
-
-        val response = client.get {
+    fun `should return bad request with missing body`() = startServer<AppCheckFunction> { client ->
+        val response: HttpResponse = client.post {
             contentType(ContentType.Application.Json)
-            parameter("appId", mobileSdkAppId)
+        }
+
+        assertEquals(HttpStatusCode.BadRequest, response.status)
+    }
+
+    @Test
+    fun `should return headers for method not allowed`() = startServer<AppCheckFunction> { client ->
+        val response: HttpResponse = client.get {
+            contentType(ContentType.Application.Json)
+            setBody(AppCheckRequest(mobileSdkAppId))
         }
 
         assertEquals(HttpMethod.Post.value, response.headers[HttpHeaders.Allow])
@@ -44,8 +51,6 @@ internal class AppCheckFunctionTest {
 
     @Test
     fun `should return header unsupported media type`() = startServer<AppCheckFunction> { client ->
-        val mobileSdkAppId = requireNotNull(System.getenv("MOBILE_SDK_APP_ID"))
-
         val response: HttpResponse = client.post {
             setBody(xml(AppCheckRequest(mobileSdkAppId)))
             contentType(ContentType.Application.Xml)

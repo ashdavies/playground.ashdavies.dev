@@ -38,18 +38,24 @@ public fun HttpApplication(config: HttpConfig, block: @Composable HttpScope.() -
 
 private fun LocalHttpFunction(config: HttpConfig, block: HttpScope.(HttpRequest, HttpResponse) -> Unit): HttpFunction {
     return HttpFunction { request, response ->
-        if (request.contentType.get() != "${config.accept}") {
-            response.appendHeader(HttpHeaders.Accept, "${config.accept}")
-            response.setStatusCode(HttpStatusCode.UnsupportedMediaType)
-            return@HttpFunction
-        } else if (request.method != config.allow.value) {
-            response.appendHeader(HttpHeaders.Allow, config.allow.value)
-            response.setStatusCode(HttpStatusCode.MethodNotAllowed)
-            return@HttpFunction
-        } else runCatching { HttpApplicationScope.block(request, response) }.recover { throwable ->
-            response.setStatusCode(HttpStatusCode.InternalServerError, throwable.message)
-            response.writer.write(throwable.message ?: "Unknown error")
-            throwable.printStackTrace()
+        when {
+            request.contentLength == 0L -> response.setStatusCode(HttpStatusCode.BadRequest)
+
+            request.contentType.get() != "${config.accept}" -> {
+                response.appendHeader(HttpHeaders.Accept, "${config.accept}")
+                response.setStatusCode(HttpStatusCode.UnsupportedMediaType)
+            }
+
+            request.method != config.allow.value -> {
+                response.appendHeader(HttpHeaders.Allow, config.allow.value)
+                response.setStatusCode(HttpStatusCode.MethodNotAllowed)
+            }
+
+            else -> runCatching { HttpApplicationScope.block(request, response) }.recover { throwable ->
+                response.setStatusCode(HttpStatusCode.InternalServerError, throwable.message)
+                response.writer.write(throwable.message ?: "Unknown error")
+                throwable.printStackTrace()
+            }
         }
     }
 }
