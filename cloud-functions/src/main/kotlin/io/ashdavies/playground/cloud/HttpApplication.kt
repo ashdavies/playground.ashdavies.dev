@@ -13,7 +13,6 @@ import androidx.compose.ui.window.ApplicationScope
 import com.google.cloud.functions.HttpFunction
 import com.google.cloud.functions.HttpRequest
 import com.google.cloud.functions.HttpResponse
-import com.google.common.annotations.VisibleForTesting
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
@@ -23,21 +22,26 @@ import java.net.HttpURLConnection
 
 private object HttpApplicationScope : HttpScope
 
-public fun HttpApplication(block: @Composable HttpScope.() -> Unit): HttpFunction = LocalHttpFunction { request, response ->
-    application {
-        CompositionLocalProvider(
-            LocalApplicationScope provides this,
-            LocalHttpRequest provides request,
-            LocalHttpResponse provides response,
-        ) { block() }
+public fun HttpApplication(block: @Composable HttpScope.() -> Unit): HttpFunction {
+    return LocalHttpFunction { request, response ->
+        application {
+            CompositionLocalProvider(
+                LocalApplicationScope provides this,
+                LocalHttpRequest provides request,
+                LocalHttpResponse provides response,
+                content = { block() },
+            )
+        }
     }
 }
 
-private fun LocalHttpFunction(block: HttpScope.(HttpRequest, HttpResponse) -> Unit) = HttpFunction { request, response ->
-    runCatching { HttpApplicationScope.block(request, response) }.recover { throwable ->
-        response.setStatusCode(HttpURLConnection.HTTP_INTERNAL_ERROR, throwable.message)
-        response.writer.write(throwable.message ?: "Unknown error")
-        throwable.printStackTrace()
+private fun LocalHttpFunction(block: HttpScope.(HttpRequest, HttpResponse) -> Unit): HttpFunction {
+    return HttpFunction { request, response ->
+        runCatching { HttpApplicationScope.block(request, response) }.recover { throwable ->
+            response.setStatusCode(HttpURLConnection.HTTP_INTERNAL_ERROR, throwable.message)
+            response.writer.write(throwable.message ?: "Unknown error")
+            throwable.printStackTrace()
+        }
     }
 }
 
