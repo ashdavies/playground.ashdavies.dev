@@ -32,19 +32,28 @@ resource "google_service_account" "gh_service_account" {
   account_id   = "gh-oidc"
 }
 
-resource "google_cloudfunctions_function" "google_function_create_token" {
-  source_archive_bucket = google_storage_bucket.function_bucket.name
-  source_archive_object = google_storage_bucket_object.zip.name
-  entry_point           = "io.ashdavies.check.AppCheckFunction"
-  description           = "Creates a new AppCheck token"
-  name                  = "createToken"
-  runtime               = "java11"
-  trigger_http          = true
+resource "google_cloudfunctions2_function" "google_function_create_token" {
+  description = "Creates a new AppCheck token"
+  location    = var.project_region
+  name        = "create-token"
 
-  depends_on            = [
-    google_storage_bucket.function_bucket,
-    google_storage_bucket_object.zip
-  ]
+  build_config {
+    entry_point = "io.ashdavies.check.AppCheckFunction"
+    runtime     = "java11"
+
+    source {
+      storage_source {
+        bucket = google_storage_bucket.function_bucket.name
+        object = google_storage_bucket_object.zip.name
+      }
+    }
+  }
+
+  service_config {
+    max_instance_count = 1
+    available_memory   = "256M"
+    timeout_seconds    = 60
+  }
 }
 
 resource "google_project_iam_member" "service_account_token_creator" {
