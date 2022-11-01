@@ -27,7 +27,7 @@ import kotlinx.coroutines.CoroutineScope
 private const val APP_CHECK_ENDPOINT = "https://firebaseappcheck.googleapis.com/"
 
 @Composable
-public fun HttpScope.VerifiedHttpEffect(key: Any = Unit, block: suspend CoroutineScope.() -> String) {
+public fun HttpScope.VerifiedHttpEffect(block: suspend CoroutineScope.() -> String) {
     var isVerified by remember { mutableStateOf(false) }
 
     if (!isVerified) {
@@ -50,7 +50,7 @@ public fun HttpScope.VerifiedHttpEffect(key: Any = Unit, block: suspend Coroutin
     }
 
     if (isVerified) {
-        HttpEffect(key, block)
+        HttpEffect(block)
     }
 }
 

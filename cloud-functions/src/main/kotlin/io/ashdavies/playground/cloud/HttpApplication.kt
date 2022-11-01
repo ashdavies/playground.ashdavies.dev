@@ -13,34 +13,53 @@ import androidx.compose.ui.window.ApplicationScope
 import com.google.cloud.functions.HttpFunction
 import com.google.cloud.functions.HttpRequest
 import com.google.cloud.functions.HttpResponse
+import io.ktor.http.HttpHeaders
+import io.ktor.http.HttpStatusCode
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.yield
 import org.jetbrains.skiko.MainUIDispatcher
-import java.net.HttpURLConnection
 
 private object HttpApplicationScope : HttpScope
 
 public fun HttpApplication(block: @Composable HttpScope.() -> Unit): HttpFunction {
-    return LocalHttpFunction { request, response ->
+    return HttpApplication(HttpConfig.Get, block)
+}
+
+public fun HttpApplication(config: HttpConfig, block: @Composable HttpScope.() -> Unit): HttpFunction {
+    return LocalHttpFunction(config) { request, response ->
         application {
             CompositionLocalProvider(
                 LocalApplicationScope provides this,
-                LocalHttpRequest provides request,
                 LocalHttpResponse provides response,
+                LocalHttpRequest provides request,
                 content = { block() },
             )
         }
     }
 }
 
-private fun LocalHttpFunction(block: HttpScope.(HttpRequest, HttpResponse) -> Unit): HttpFunction {
+private fun LocalHttpFunction(config: HttpConfig, block: HttpScope.(HttpRequest, HttpResponse) -> Unit): HttpFunction {
     return HttpFunction { request, response ->
-        runCatching { HttpApplicationScope.block(request, response) }.recover { throwable ->
-            response.setStatusCode(HttpURLConnection.HTTP_INTERNAL_ERROR, throwable.message)
-            response.writer.write(throwable.message ?: "Unknown error")
-            throwable.printStackTrace()
+        when {
+            request.contentLength == 0L -> response.setStatusCode(HttpStatusCode.BadRequest)
+
+            request.contentType.get() != "${config.accept}" -> {
+                response.appendHeader(HttpHeaders.Accept, "${config.accept}")
+                response.setStatusCode(HttpStatusCode.UnsupportedMediaType)
+            }
+
+            request.method != config.allow.value -> {
+                response.appendHeader(HttpHeaders.Allow, config.allow.value)
+                response.setStatusCode(HttpStatusCode.MethodNotAllowed)
+            }
+
+            else -> runCatching { HttpApplicationScope.block(request, response) }.recover { throwable ->
+                response.setStatusCode(HttpStatusCode.InternalServerError, throwable.message)
+                response.writer.write(throwable.message ?: "Unknown error")
+                throwable.printStackTrace()
+            }
         }
     }
 }

@@ -9,8 +9,8 @@ dependencies {
 terraform {
     sourceSets {
         main {
-            executeDestroyOnlyIf { project.properties["tf.destroy"] == "true" }
-            executeApplyOnlyIf { project.properties["tf.apply"] == "true"  }
+            executeDestroyOnlyIf { project.hasProperty("tf.destroy") }
+            executeApplyOnlyIf { project.hasProperty("tf.apply") }
         }
     }
 

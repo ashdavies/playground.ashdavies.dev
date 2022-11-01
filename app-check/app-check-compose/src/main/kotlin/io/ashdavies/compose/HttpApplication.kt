@@ -13,14 +13,21 @@ import io.ashdavies.check.GoogleAlgorithm
 import io.ashdavies.check.HttpClientConfig
 import io.ashdavies.http.LocalHttpClient
 import io.ashdavies.playground.cloud.HttpApplication
+import io.ashdavies.playground.cloud.HttpConfig
 import io.ashdavies.playground.cloud.HttpScope
 import io.ashdavies.playground.cloud.LocalFirebaseApp
 import io.ashdavies.playground.cloud.LocalHttpRequest
 import io.ktor.client.HttpClient
 
-public fun AuthorisedHttpApplication(content: @Composable HttpScope.() -> Unit): HttpFunction = HttpApplication {
-    CompositionLocalProvider(LocalHttpClient provides rememberAuthorisedHttpClient()) {
-        content()
+public fun AuthorisedHttpApplication(content: @Composable HttpScope.() -> Unit): HttpFunction {
+    return AuthorisedHttpApplication(HttpConfig.Get, content)
+}
+
+public fun AuthorisedHttpApplication(config: HttpConfig, content: @Composable HttpScope.() -> Unit): HttpFunction {
+    return HttpApplication(config) {
+        CompositionLocalProvider(LocalHttpClient provides rememberAuthorisedHttpClient()) {
+            content()
+        }
     }
 }
 
