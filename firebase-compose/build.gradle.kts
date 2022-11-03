@@ -2,12 +2,16 @@ plugins {
     id("io.ashdavies.library")
 }
 
+android {
+    namespace = "io.ashdavies.firebase.compose"
+}
+
 kotlin {
-    val commonMain by dependencies {
-        implementation(project(":compose-locals"))
+    val commonMain by sourceSets.dependencies {
+        implementation(projects.composeLocals)
     }
 
-    val androidMain by dependencies {
+    val androidMain by sourceSets.dependencies {
         implementation(libs.bundles.google.firebase)
     }
 }

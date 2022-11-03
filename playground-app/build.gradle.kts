@@ -1,6 +1,9 @@
 plugins {
     id("io.ashdavies.library")
-    id("android-manifest")
+}
+
+android {
+    namespace = "io.ashdavies.playground"
 }
 
 kotlin {
