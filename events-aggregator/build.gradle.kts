@@ -4,5 +4,7 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":events-function"))
+    implementation(projects.cloudFunctions)
+    implementation(projects.eventsFunction)
+    implementation(projects.localStorage)
 }

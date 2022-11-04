@@ -3,12 +3,12 @@ plugins {
 }
 
 kotlin {
-    val commonMain by dependencies {
+    val commonMain by sourceSets.dependencies {
         implementation(libs.bundles.arkivanov.decompose)
         implementation(compose.materialIconsExtended)
     }
 
-    val androidMain by dependencies {
+    val androidMain by sourceSets.dependencies {
         implementation(libs.androidx.compose.foundation)
         implementation(libs.androidx.core.splashscreen)
         implementation(libs.bundles.androidx.activity)

@@ -4,4 +4,7 @@ plugins {
 
 dependencies {
     api(projects.appCheck.appCheckSdk)
+
+    implementation(projects.cloudFunctions)
+    implementation(projects.localRemote)
 }

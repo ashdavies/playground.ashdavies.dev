@@ -14,9 +14,6 @@ plugins {
 configurations.create("invoker")
 
 dependencies {
-    implementation(project(":local-storage"))
-    implementation(project(":local-remote"))
-
     implementation(compose.foundation)
     implementation(compose.runtime)
 
@@ -27,7 +24,6 @@ dependencies {
     testImplementation(kotlin("test"))
     testImplementation(libs.jetbrains.kotlinx.coroutines.test)
 
-    if (project.name != "cloud-functions") implementation(project(":cloud-functions"))
     add("invoker", libs.google.cloud.javaFunctionInvoker)
 }
 

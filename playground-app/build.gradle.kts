@@ -7,19 +7,19 @@ android {
 }
 
 kotlin {
-    val commonMain by dependencies {
-        implementation(project(":app-check:app-check-client"))
+    val commonMain by sourceSets.dependencies {
+        implementation(projects.appCheck.appCheckClient)
 
-        implementation(project(":local-remote"))
-        implementation(project(":local-storage"))
+        implementation(projects.localRemote)
+        implementation(projects.localStorage)
 
         implementation(libs.bundles.ktor.client)
         implementation(libs.jetbrains.kotlinx.collections.immutable)
         implementation(libs.kuuuurt.multiplatform.paging)
     }
 
-    val androidMain by dependencies {
-        implementation(project(":firebase-compose"))
+    val androidMain by sourceSets.dependencies {
+        implementation(projects.firebaseCompose)
 
         implementation(libs.androidx.compose.foundation)
         implementation(libs.bundles.androidx.activity)

@@ -10,7 +10,6 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.dsl.KotlinProjectExtension
 import org.jetbrains.kotlin.gradle.plugin.KotlinDependencyHandler
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
-import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetContainer
 
 internal object Playground {
 
@@ -88,10 +87,6 @@ internal fun KotlinMultiplatformExtension.configureKotlinMultiplatform(target: P
         implementation(libs.jetbrains.kotlinx.coroutines.swing)
     }
 }
-
-public fun KotlinSourceSetContainer.dependencies(
-    configure: KotlinDependencyHandler.() -> Unit
-) = sourceSets.dependencies(configure)
 
 public fun NamedDomainObjectCollection<KotlinSourceSet>.dependencies(
     configure: KotlinDependencyHandler.() -> Unit

@@ -14,13 +14,13 @@ android {
 }
 
 kotlin {
-    val commonMain by dependencies {
-        implementation(project(":app-check:app-check-client"))
+    val commonMain by sourceSets.dependencies {
+        implementation(projects.appCheck.appCheckClient)
 
-        implementation(project(":auth-oauth"))
-        implementation(project(":local-remote"))
-        implementation(project(":local-storage"))
-        implementation(project(":playground-app"))
+        implementation(projects.authOauth)
+        implementation(projects.localRemote)
+        implementation(projects.localStorage)
+        implementation(projects.playgroundApp)
 
         implementation(libs.bundles.arkivanov.decompose)
         implementation(libs.bundles.ktor.client)
@@ -29,8 +29,8 @@ kotlin {
         implementation(libs.sqldelight.coroutines.extensions)
     }
 
-    val androidMain by dependencies {
-        implementation(project(":firebase-compose"))
+    val androidMain by sourceSets.dependencies {
+        implementation(projects.firebaseCompose)
 
         implementation(libs.bundles.androidx.activity)
         implementation(libs.bundles.androidx.paging)
@@ -47,11 +47,11 @@ kotlin {
         }
     }
 
-    val androidDebug by dependencies {
+    val androidDebug by sourceSets.dependencies {
         implementation(libs.google.firebase.appcheck.debug)
     }
 
-    val jvmMain by dependencies {
+    val jvmMain by sourceSets.dependencies {
         implementation(libs.bundles.androidx.paging)
     }
 }
