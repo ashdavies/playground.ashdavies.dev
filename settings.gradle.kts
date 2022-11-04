@@ -28,7 +28,6 @@ include(
     ":version-catalog",
 )
 
-includeBuild("app-manifest")
 includeBuild("build-plugins")
 
 includeBuild("compose-constructor/plugin-gradle") {

@@ -1,5 +1,3 @@
-@file:Suppress("UnstableApiUsage")
-
 import org.gradle.api.initialization.dsl.VersionCatalogBuilder.AliasBuilder
 
 plugins {

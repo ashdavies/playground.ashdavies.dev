@@ -1,5 +1,6 @@
 import com.android.build.api.dsl.CommonExtension
 import org.gradle.api.JavaVersion
+import org.gradle.api.NamedDomainObjectCollection
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.getValue
 import org.gradle.kotlin.dsl.getting
@@ -8,7 +9,7 @@ import org.jetbrains.compose.compose
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.dsl.KotlinProjectExtension
 import org.jetbrains.kotlin.gradle.plugin.KotlinDependencyHandler
-import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetContainer
+import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
 
 internal object Playground {
 
@@ -21,7 +22,6 @@ internal object Playground {
     )
 }
 
-@Suppress("UnstableApiUsage")
 internal fun CommonExtension<*, *, *, *>.configureCommon() {
     buildFeatures {
         compose = true
@@ -53,7 +53,7 @@ internal fun KotlinMultiplatformExtension.configureKotlinMultiplatform(target: P
     android()
     jvm()
 
-    val commonMain by dependencies {
+    val commonMain by sourceSets.dependencies {
         implementation(compose.foundation)
         implementation(compose.material3)
         implementation(compose.runtime)
@@ -65,11 +65,11 @@ internal fun KotlinMultiplatformExtension.configureKotlinMultiplatform(target: P
         implementation(libs.oolong)
     }
 
-    val commonTest by dependencies {
+    val commonTest by sourceSets.dependencies {
         implementation(libs.bundles.jetbrains.kotlin.test)
     }
 
-    val androidMain by dependencies {
+    val androidMain by sourceSets.dependencies {
         implementation(libs.androidx.annotation)
         implementation(libs.androidx.core.ktx)
         implementation(libs.google.android.material)
@@ -81,12 +81,12 @@ internal fun KotlinMultiplatformExtension.configureKotlinMultiplatform(target: P
         dependsOn(androidAndroidTestRelease)
     }
 
-    val jvmMain by dependencies {
+    val jvmMain by sourceSets.dependencies {
         implementation(compose.desktop.currentOs)
         implementation(libs.jetbrains.kotlinx.coroutines.swing)
     }
 }
 
-public fun KotlinSourceSetContainer.dependencies(
+public fun NamedDomainObjectCollection<KotlinSourceSet>.dependencies(
     configure: KotlinDependencyHandler.() -> Unit
-) = sourceSets.getting { dependencies(configure) }
+) = getting { dependencies(configure) }

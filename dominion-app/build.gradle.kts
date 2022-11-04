@@ -1,9 +1,4 @@
-@file:Suppress("DSL_SCOPE_VIOLATION", "UnstableApiUsage")
-
-import org.jetbrains.kotlin.gradle.plugin.HasKotlinDependencies
-import org.jetbrains.kotlin.gradle.plugin.KotlinDependencyHandler
-
-// https://youtrack.jetbrains.com/issue/KTIJ-19369
+@file:Suppress("DSL_SCOPE_VIOLATION") // https://youtrack.jetbrains.com/issue/KTIJ-19369
 
 plugins {
     id("io.ashdavies.application")
@@ -11,12 +6,16 @@ plugins {
     alias(libs.plugins.cash.molecule)
 }
 
-kotlin {
-    val commonMain by dependencies {
-        implementation(project(":app-check:app-check-client"))
+android {
+    namespace = "io.ashdavies.dominion"
+}
 
-        implementation(project(":local-remote"))
-        implementation(project(":playground-app"))
+kotlin {
+    val commonMain by sourceSets.dependencies {
+        implementation(projects.appCheck.appCheckClient)
+
+        implementation(projects.localRemote)
+        implementation(projects.playgroundApp)
 
         implementation(libs.bundles.ktor.client)
         implementation(libs.kuuuurt.multiplatform.paging)
@@ -30,7 +29,3 @@ kotlin {
         implementation(libs.google.accompanist.swiperefresh)
     }
 }
-
-fun <T : HasKotlinDependencies> NamedDomainObjectContainer<T>.dependencies(
-    configuration: KotlinDependencyHandler.() -> Unit
-) = getting { dependencies(configuration) }

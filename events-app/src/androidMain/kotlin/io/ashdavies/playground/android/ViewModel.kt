@@ -6,13 +6,13 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.coroutines.CoroutineScope
 
-actual typealias ViewModel = androidx.lifecycle.ViewModel
+public actual typealias ViewModel = androidx.lifecycle.ViewModel
 
-actual val ViewModel.viewModelScope: CoroutineScope
+public actual val ViewModel.viewModelScope: CoroutineScope
     get() = viewModelScope
 
 @Composable
-actual inline fun <reified T : ViewModel> viewModel(noinline create: () -> T): T =
+public actual inline fun <reified T : ViewModel> viewModel(noinline create: () -> T): T =
     viewModel(factory = Factory(create))
 
 @PublishedApi

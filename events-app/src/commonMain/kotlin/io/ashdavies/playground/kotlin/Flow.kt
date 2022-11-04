@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
 public interface CloseableFlow<T> : Flow<T> {
-    fun watch(block: suspend (T) -> Unit): Closeable
+    public fun watch(block: suspend (T) -> Unit): Closeable
 }
 
 public fun <T> Flow<T>.asCloseableFlow(): CloseableFlow<T> = CloseableFlowImpl(this)

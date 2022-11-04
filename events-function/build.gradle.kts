@@ -3,6 +3,8 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":app-check:app-check-compose"))
-    implementation(project(":app-check:app-check-sdk"))
+    implementation(projects.appCheck.appCheckCompose)
+    implementation(projects.appCheck.appCheckSdk)
+    implementation(projects.cloudFunctions)
+    implementation(projects.localStorage)
 }

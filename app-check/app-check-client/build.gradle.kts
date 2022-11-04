@@ -1,21 +1,24 @@
 plugins {
     id("io.ashdavies.library")
-    id("android-manifest")
+}
+
+android {
+    namespace = "io.ashdavies.check.client"
 }
 
 kotlin {
-    val commonMain by dependencies {
+    val commonMain by sourceSets.dependencies {
         implementation(projects.firebaseCompose)
         implementation(projects.localRemote)
 
         implementation(libs.bundles.ktor.client)
     }
 
-    val androidDebug by dependencies {
+    val androidDebug by sourceSets.dependencies {
         implementation(libs.google.firebase.appcheck.debug)
     }
 
-    val androidMain by dependencies {
+    val androidMain by sourceSets.dependencies {
         implementation(libs.androidx.compose.foundation)
         implementation(libs.bundles.google.firebase)
         implementation(libs.google.firebase.appcheck.playintegrity)

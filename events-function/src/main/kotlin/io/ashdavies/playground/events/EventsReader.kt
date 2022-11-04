@@ -9,10 +9,11 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.properties.Properties.Default.decodeFromMap
 
 public fun interface EventsReader {
-    suspend operator fun invoke(): List<Event>
+    public suspend operator fun invoke(): List<Event>
 }
 
 @OptIn(ExperimentalSerializationApi::class)
+@Suppress("NO_EXPLICIT_RETURN_TYPE_IN_API_MODE_WARNING")
 public fun EventsReader(provider: DocumentProvider, request: EventsQuery) = EventsReader {
     val snapshot: QuerySnapshot = provider {
         orderBy = request.orderBy

@@ -7,11 +7,9 @@ dependencies {
 }
 
 terraform {
-    sourceSets {
-        main {
-            executeDestroyOnlyIf { project.hasProperty("tf.destroy") }
-            executeApplyOnlyIf { project.hasProperty("tf.apply") }
-        }
+    sourceSets.main {
+        executeDestroyOnlyIf { project.hasProperty("tf.destroy") }
+        executeApplyOnlyIf { project.hasProperty("tf.apply") }
     }
 
     showInitOutputInConsole = true

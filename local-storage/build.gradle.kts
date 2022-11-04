@@ -1,7 +1,10 @@
 plugins {
     id("io.ashdavies.library")
     id("io.ashdavies.sql")
-    id("android-manifest")
+}
+
+android {
+    namespace = "io.ashdavies.local.storage"
 }
 
 sqldelight {
