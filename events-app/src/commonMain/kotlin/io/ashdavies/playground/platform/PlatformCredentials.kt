@@ -1,6 +1,6 @@
 package io.ashdavies.playground.platform
 
 public expect object PlatformCredentials {
-    val googleClientId: String
-    val webApiKey: String
+    public val googleClientId: String
+    public val webApiKey: String
 }
