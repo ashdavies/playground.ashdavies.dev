@@ -1,5 +1,3 @@
-@file:Suppress("UnstableApiUsage")
-
 import org.gradle.kotlin.dsl.kotlin
 
 plugins {

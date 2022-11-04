@@ -2,6 +2,10 @@ plugins {
     id("io.ashdavies.application")
 }
 
+android {
+    namespace = "io.ashdavies.playground"
+}
+
 kotlin {
     val commonMain by sourceSets.dependencies {
         implementation(libs.bundles.arkivanov.decompose)

@@ -22,7 +22,6 @@ internal object Playground {
     )
 }
 
-@Suppress("UnstableApiUsage")
 internal fun CommonExtension<*, *, *, *>.configureCommon() {
     buildFeatures {
         compose = true

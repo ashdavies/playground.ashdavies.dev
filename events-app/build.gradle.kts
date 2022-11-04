@@ -1,5 +1,3 @@
-@file:Suppress("UnstableApiUsage")
-
 import com.android.build.api.dsl.VariantDimension
 
 plugins {
@@ -11,6 +9,8 @@ android {
         val googleClientId by SystemProperty(VariantDimension::buildConfigField)
         val playgroundApiKey by SystemProperty(VariantDimension::buildConfigField)
     }
+
+    namespace = "io.ashdavies.events"
 }
 
 kotlin {
