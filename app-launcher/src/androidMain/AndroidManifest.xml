@@ -6,7 +6,7 @@
 
     <application
         android:theme="@style/Theme.SplashScreen"
-        tools:ignore="MissingApplicationIcon">
+        android:icon="@mipmap/ic_launcher">
 
         <activity
             android:name="io.ashdavies.playground.LauncherActivity"
