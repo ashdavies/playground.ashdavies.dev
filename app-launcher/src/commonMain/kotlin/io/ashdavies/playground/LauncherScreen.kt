@@ -27,15 +27,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.ComponentContext
+import io.ashdavies.dominion.DominionRoot
 
 @Composable
-internal fun LauncherScreen(componentContext: ComponentContext) {
-    var route by remember { mutableStateOf(LauncherRoute.Default) }
+internal fun LauncherScreen(componentContext: ComponentContext, startRoute: LauncherRoute? = null) {
+    var route by remember { mutableStateOf(startRoute ?: LauncherRoute.Default) }
 
     when (route) {
         LauncherRoute.Default -> LauncherScreen { route = it }
-        LauncherRoute.Dominion -> Unit
-        LauncherRoute.Events -> Unit
+        LauncherRoute.Dominion -> DominionRoot(componentContext)
+        LauncherRoute.Events -> EventsRoot(componentContext)
     }
 }
 

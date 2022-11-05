@@ -1,4 +1,4 @@
-package io.ashdavies.playground
+package io.ashdavies.dominion
 
 import kotlinx.serialization.Serializable
 
