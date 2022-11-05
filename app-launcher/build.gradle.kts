@@ -8,8 +8,11 @@ android {
 
 kotlin {
     val commonMain by sourceSets.dependencies {
-        implementation(libs.bundles.arkivanov.decompose)
         implementation(compose.materialIconsExtended)
+        implementation(libs.bundles.arkivanov.decompose)
+
+        implementation(projects.dominionApp)
+        implementation(projects.eventsApp)
     }
 
     val androidMain by sourceSets.dependencies {

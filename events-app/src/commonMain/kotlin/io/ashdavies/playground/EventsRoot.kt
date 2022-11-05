@@ -20,7 +20,7 @@ import io.ashdavies.playground.profile.ProfileScreen
 
 @Composable
 @OptIn(ExperimentalDecomposeApi::class)
-internal fun EventsRoot(componentContext: ComponentContext, modifier: Modifier = Modifier) {
+public fun EventsRoot(componentContext: ComponentContext, modifier: Modifier = Modifier) {
     EventsRoot(rememberEventsRoot(componentContext), modifier)
 }
 

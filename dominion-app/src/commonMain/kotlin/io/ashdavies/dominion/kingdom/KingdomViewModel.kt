@@ -1,4 +1,4 @@
-package io.ashdavies.playground.kingdom
+package io.ashdavies.dominion.kingdom
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -9,11 +9,11 @@ import io.ashdavies.http.LocalHttpClient
 import io.ashdavies.http.filterIsSuccess
 import io.ashdavies.http.parameter
 import io.ashdavies.http.requesting
-import io.ashdavies.playground.DominionCard
-import io.ashdavies.playground.DominionExpansion
-import io.ashdavies.playground.DominionRequest
-import io.ashdavies.playground.serialization.getContent
-import io.ashdavies.playground.serialization.getOrThrow
+import io.ashdavies.dominion.DominionCard
+import io.ashdavies.dominion.DominionExpansion
+import io.ashdavies.dominion.DominionRequest
+import io.ashdavies.dominion.serialization.getContent
+import io.ashdavies.dominion.serialization.getOrThrow
 import io.ktor.client.HttpClient
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.StateFlow

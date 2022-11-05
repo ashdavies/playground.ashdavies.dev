@@ -1,7 +1,7 @@
 @file:Suppress("DSL_SCOPE_VIOLATION") // https://youtrack.jetbrains.com/issue/KTIJ-19369
 
 plugins {
-    id("io.ashdavies.application")
+    id("io.ashdavies.library")
 
     alias(libs.plugins.cash.molecule)
 }
