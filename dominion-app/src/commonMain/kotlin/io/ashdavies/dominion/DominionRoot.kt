@@ -1,4 +1,4 @@
-package io.ashdavies.playground
+package io.ashdavies.dominion
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -18,9 +18,10 @@ import com.arkivanov.essenty.parcelable.Parcelable
 import com.arkivanov.essenty.parcelable.Parcelize
 import io.ashdavies.http.LocalHttpClient
 import io.ashdavies.http.url
-import io.ashdavies.playground.card.CardScreen
-import io.ashdavies.playground.expansion.ExpansionScreen
-import io.ashdavies.playground.kingdom.KingdomScreen
+import io.ashdavies.dominion.card.CardScreen
+import io.ashdavies.dominion.expansion.ExpansionScreen
+import io.ashdavies.dominion.kingdom.KingdomScreen
+import io.ashdavies.playground.NavigationRoot
 import io.ktor.http.takeFrom
 
 /**
@@ -32,7 +33,7 @@ private const val DOMINION_STRATEGY_HOST = "http://wiki.dominionstrategy.com/"
 
 @Composable
 @OptIn(ExperimentalDecomposeApi::class)
-internal fun DominionRoot(componentContext: ComponentContext, modifier: Modifier = Modifier) {
+public fun DominionRoot(componentContext: ComponentContext, modifier: Modifier = Modifier) {
     val client = LocalHttpClient.current.url { takeFrom(DOMINION_STRATEGY_HOST) }
 
     CompositionLocalProvider(LocalHttpClient provides client) {

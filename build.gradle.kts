@@ -7,11 +7,13 @@ plugins {
     resolve(libs.plugins.android.application)
     resolve(libs.plugins.android.library)
     resolve(libs.plugins.apollo.graphql)
+    resolve(libs.plugins.google.services)
     resolve(libs.plugins.kotlin.compose)
     resolve(libs.plugins.kotlin.multiplatform)
     resolve(libs.plugins.kotlin.serialization)
 
     alias(libs.plugins.benManes.versions)
+    // alias(libs.plugins.cash.molecule)
     alias(libs.plugins.catalog.update)
     // alias(libs.plugins.diffplug.spotless)
     alias(libs.plugins.gradle.doctor)

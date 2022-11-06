@@ -1,4 +1,4 @@
-package io.ashdavies.playground.serialization
+package io.ashdavies.dominion.serialization
 
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.jsonObject

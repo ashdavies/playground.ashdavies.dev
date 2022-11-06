@@ -1,4 +1,4 @@
-package io.ashdavies.playground.kingdom
+package io.ashdavies.dominion.kingdom
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -34,9 +34,9 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
 import io.ashdavies.http.onLoading
 import io.ashdavies.http.produceStateInline
-import io.ashdavies.playground.DominionCard
-import io.ashdavies.playground.DominionExpansion
-import io.ashdavies.playground.DominionRoot.Child.Kingdom
+import io.ashdavies.dominion.DominionCard
+import io.ashdavies.dominion.DominionExpansion
+import io.ashdavies.dominion.DominionRoot.Child.Kingdom
 import io.ashdavies.playground.RemoteImage
 import io.ashdavies.playground.windowInsetsPadding
 

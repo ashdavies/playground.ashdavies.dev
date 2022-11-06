@@ -1,4 +1,4 @@
-package io.ashdavies.playground
+package io.ashdavies.dominion
 
 import com.arkivanov.essenty.parcelable.Parcelable
 import com.arkivanov.essenty.parcelable.Parcelize

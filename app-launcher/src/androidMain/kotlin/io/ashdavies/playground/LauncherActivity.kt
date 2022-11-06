@@ -11,7 +11,6 @@ internal class LauncherActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setDecorFitsSystemWindows(window, true)
-        setContent { LauncherScreen(defaultComponentContext()) }
-        // val configuration = LocalConfiguration.current
+        setContent { LauncherApp(defaultComponentContext()) }
     }
 }

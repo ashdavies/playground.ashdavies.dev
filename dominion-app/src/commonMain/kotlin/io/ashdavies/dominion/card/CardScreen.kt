@@ -1,4 +1,4 @@
-package io.ashdavies.playground.card
+package io.ashdavies.dominion.card
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,8 +13,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
-import io.ashdavies.playground.DominionCard
-import io.ashdavies.playground.DominionRoot
+import io.ashdavies.dominion.DominionCard
+import io.ashdavies.dominion.DominionRoot
 import io.ashdavies.playground.RemoteImage
 
 @Composable

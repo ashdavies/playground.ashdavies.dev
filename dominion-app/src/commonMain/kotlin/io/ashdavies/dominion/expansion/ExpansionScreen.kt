@@ -1,4 +1,4 @@
-package io.ashdavies.playground.expansion
+package io.ashdavies.dominion.expansion
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -21,8 +21,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.ashdavies.http.onLoading
 import io.ashdavies.http.produceStateInline
-import io.ashdavies.playground.DominionExpansion
-import io.ashdavies.playground.DominionRoot.Child.Expansion
+import io.ashdavies.dominion.DominionExpansion
+import io.ashdavies.dominion.DominionRoot.Child.Expansion
 import io.ashdavies.playground.RemoteImage
 
 @Composable
