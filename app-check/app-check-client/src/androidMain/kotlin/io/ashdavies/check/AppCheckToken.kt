@@ -4,10 +4,8 @@ package io.ashdavies.check
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.produceState
-import com.google.firebase.appcheck.FirebaseAppCheck
 import com.google.firebase.appcheck.playintegrity.PlayIntegrityAppCheckProviderFactory
 import io.ashdavies.compose.LocalFirebaseApp
 import io.ashdavies.http.LocalHttpClient
@@ -23,20 +21,16 @@ public actual fun ProvideAppCheckToken(client: HttpClient, content: @Composable 
     val firebaseApp = LocalFirebaseApp.current
     val appCheck = firebaseApp.appCheck
 
-    val token by appCheck.produceAppCheckTokenState()
+    val token by produceState<AppCheckToken?>(null) {
+        appCheck.addAppCheckListener { value = AppCheckToken(it) }
+    }
+
     appCheck.installAppCheckProviderFactory(factory)
 
     CompositionLocalProvider(
         LocalHttpClient provides client.header(X_FIREBASE_APP_CHECK, token),
         content = content,
     )
-}
-
-@Composable
-private fun FirebaseAppCheck.produceAppCheckTokenState(): State<AppCheckToken?> {
-    return produceState<AppCheckToken?>(null) {
-        addAppCheckListener { value = AppCheckToken(it) }
-    }
 }
 
 private fun AppCheckToken(from: FirebaseAppCheckToken) = AppCheckToken(

@@ -16,12 +16,17 @@ public val LocalFirebaseApp: ProvidableCompositionLocal<FirebaseApp> = staticCom
 @Composable
 public fun ProvideFirebaseApp(context: Context = LocalContext.current, content: @Composable () -> Unit) {
     CompositionLocalProvider(
-        LocalFirebaseApp provides context.requireFirebaseApp(),
+        LocalFirebaseApp provides requireFirebaseApp(context),
         content = content,
     )
 }
 
-private fun Context.requireFirebaseApp(): FirebaseApp = requireNotNull(FirebaseApp.initializeApp(this)) {
-    "Default FirebaseApp is not initialized in this process ${ProcessUtils.getMyProcessName()}." +
-            "Make sure to call FirebaseApp.initializeApp(Context) first."
+private fun requireFirebaseApp(context: Context): FirebaseApp {
+    val firebaseApp = if (FirebaseApp.getApps(context).size > 0) FirebaseApp.getInstance()
+    else FirebaseApp.initializeApp(context)
+
+    return requireNotNull(firebaseApp) {
+        "Default FirebaseApp is not initialized in this process ${ProcessUtils.getMyProcessName()}. " +
+                "Make sure to call FirebaseApp.initializeApp(Context) first."
+    }
 }

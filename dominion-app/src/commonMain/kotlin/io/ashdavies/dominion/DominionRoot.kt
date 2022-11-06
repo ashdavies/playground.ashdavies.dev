@@ -16,12 +16,12 @@ import com.arkivanov.decompose.router.router
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.parcelable.Parcelable
 import com.arkivanov.essenty.parcelable.Parcelize
-import io.ashdavies.http.LocalHttpClient
-import io.ashdavies.http.url
-import io.ashdavies.playground.NavigationRoot
 import io.ashdavies.dominion.card.CardScreen
 import io.ashdavies.dominion.expansion.ExpansionScreen
 import io.ashdavies.dominion.kingdom.KingdomScreen
+import io.ashdavies.http.LocalHttpClient
+import io.ashdavies.http.url
+import io.ashdavies.playground.NavigationRoot
 import io.ktor.http.takeFrom
 
 /**

@@ -2,8 +2,6 @@
 
 plugins {
     id("io.ashdavies.library")
-
-    alias(libs.plugins.cash.molecule)
 }
 
 android {

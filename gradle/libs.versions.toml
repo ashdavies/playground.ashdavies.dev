@@ -63,7 +63,7 @@ google-firebase-admin = "com.google.firebase:firebase-admin:8.1.0"
 google-firebase-appcheck = "com.google.firebase:firebase-appcheck:16.0.2"
 google-firebase-appcheck-debug = "com.google.firebase:firebase-appcheck-debug:16.0.2"
 google-firebase-appcheck-playintegrity = "com.google.firebase:firebase-appcheck-playintegrity:16.0.2"
-google-firebase-analytics = "com.google.firebase:firebase-analytics:20.1.2"
+google-firebase-analytics = "com.google.firebase:firebase-analytics-ktx:20.1.2"
 google-firebase-common-ktx = "com.google.firebase:firebase-common-ktx:20.1.0"
 
 google-maps-android-compose = { module = "com.google.maps.android:maps-compose", version.ref = "google-maps-compose" }
@@ -139,6 +139,7 @@ benManes-versions = "com.github.ben-manes.versions:0.42.0"
 cash-molecule = { id = "app.cash.molecule", version = "0.4.0" }
 catalog-update = "nl.littlerobots.version-catalog-update:0.3.1"
 diffplug-spotless = "com.diffplug.spotless:6.9.1"
+google-services = "com.google.gms.google-services:4.3.14"
 gradle-doctor = "com.osacky.doctor:0.8.0"
 gradle-publish = "com.gradle.plugin-publish:0.11.0"
 jetbrains-dokka = "org.jetbrains.dokka:0.10.0"

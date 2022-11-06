@@ -5,6 +5,8 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     id("com.android.application")
+    id("com.google.gms.google-services")
+
     id("kotlin-parcelize")
     id("org.jetbrains.compose")
 

@@ -15,13 +15,14 @@ import com.arkivanov.decompose.router.router
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.parcelable.Parcelable
 import com.arkivanov.essenty.parcelable.Parcelize
+import io.ashdavies.check.ProvideAppCheckToken
 import io.ashdavies.playground.events.EventsScreen
 import io.ashdavies.playground.profile.ProfileScreen
 
 @Composable
 @OptIn(ExperimentalDecomposeApi::class)
 public fun EventsRoot(componentContext: ComponentContext, modifier: Modifier = Modifier) {
-    EventsRoot(rememberEventsRoot(componentContext), modifier)
+    ProvideAppCheckToken { EventsRoot(rememberEventsRoot(componentContext), modifier) }
 }
 
 @Composable
@@ -67,8 +68,10 @@ private class EventsRootComponent(componentContext: ComponentContext) :
 }
 
 private sealed class ChildConfiguration : Parcelable {
-    @Parcelize object Events : ChildConfiguration()
-    @Parcelize object Profile : ChildConfiguration()
+    @Parcelize
+    object Events : ChildConfiguration()
+    @Parcelize
+    object Profile : ChildConfiguration()
 }
 
 private fun createNavigation(router: Router<ChildConfiguration, EventsRoot.Child>) = object : EventsRoot.Navigation {
