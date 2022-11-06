@@ -14,7 +14,7 @@ internal class LauncherActivity : KotlinActivity({
     val route = enumValueOfOrNull<LauncherRoute>(intent.getStringExtra(INTENT_EXTRA_ROUTE))
 
     setDecorFitsSystemWindows(window, true)
-    setContent { LauncherScreen(defaultComponentContext(), route) }
+    setContent { LauncherApp(defaultComponentContext(), route) }
 })
 
 internal abstract class KotlinActivity(private val action: OnCreateAction) : ComponentActivity() {
