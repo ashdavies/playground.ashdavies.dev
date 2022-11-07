@@ -1,6 +1,7 @@
 resource "google_storage_bucket" "function_bucket" {
-  name                        = "${var.project_id}-function"
+  name                        = "${var.project_id}-${var.function_name}"
   location                    = var.project_region
+  force_destroy               = true
   uniform_bucket_level_access = true
 }
 
