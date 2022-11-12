@@ -15,7 +15,7 @@ public fun interface EventsReader {
 @OptIn(ExperimentalSerializationApi::class)
 @Suppress("NO_EXPLICIT_RETURN_TYPE_IN_API_MODE_WARNING")
 public fun EventsReader(provider: DocumentProvider, request: EventsQuery) = EventsReader {
-    val snapshot: QuerySnapshot = provider {
+    val snapshot: QuerySnapshot = provider.invoke {
         orderBy = request.orderBy
 
         if (request.limit > 0) {

@@ -19,8 +19,9 @@ internal data class FirestoreQueryBuilder(private var query: Query) : QueryBuild
     fun get(): ApiFuture<QuerySnapshot> = query.get()
 }
 
-private inline fun <T> setValue(crossinline block: (T) -> Unit) =
-    WriteOnlyProperty<Any?, T> { _, _, value -> block(value) }
+private inline fun <T> setValue(crossinline block: (T) -> Unit) = WriteOnlyProperty<Any?, T> { _, _, value ->
+    block(value)
+}
 
 private fun interface WriteOnlyProperty<in T, V> : ReadWriteProperty<T, V> {
     override fun getValue(thisRef: T, property: KProperty<*>): V = throw UnsupportedOperationException()

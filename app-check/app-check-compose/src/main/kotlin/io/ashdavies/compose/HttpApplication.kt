@@ -15,7 +15,7 @@ import io.ashdavies.http.LocalHttpClient
 import io.ashdavies.playground.cloud.HttpApplication
 import io.ashdavies.playground.cloud.HttpConfig
 import io.ashdavies.playground.cloud.HttpScope
-import io.ashdavies.playground.cloud.LocalFirebaseApp
+import io.ashdavies.playground.cloud.LocalFirebaseAdminApp
 import io.ashdavies.playground.cloud.LocalHttpRequest
 import io.ktor.client.HttpClient
 
@@ -60,7 +60,7 @@ private fun rememberAppCheckRequest(
 
 @Composable
 private fun rememberCryptoSigner(
-    firebaseApp: FirebaseApp = LocalFirebaseApp.current,
+    firebaseApp: FirebaseApp = LocalFirebaseAdminApp.current,
     httpClient: HttpClient = LocalHttpClient.current
 ): CryptoSigner = remember(firebaseApp, httpClient) {
     CryptoSigner(firebaseApp, httpClient)

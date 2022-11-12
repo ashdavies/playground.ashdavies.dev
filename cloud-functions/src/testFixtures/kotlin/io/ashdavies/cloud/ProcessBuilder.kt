@@ -1,4 +1,4 @@
-package io.ashdavies.check
+package io.ashdavies.cloud
 
 import com.google.cloud.functions.invoker.runner.Invoker
 import io.ktor.client.HttpClient
@@ -33,12 +33,12 @@ private object SystemOutLogger : Logger {
 }
 
 @ExperimentalCoroutinesApi
-internal inline fun <reified T> startServer(noinline action: suspend TestScope.(client: HttpClient) -> Unit) {
+public inline fun <reified T> startServer(noinline action: suspend TestScope.(client: HttpClient) -> Unit) {
     startServer(T::class.java, action)
 }
 
 @ExperimentalCoroutinesApi
-internal fun <T> startServer(kls: Class<T>, action: suspend TestScope.(client: HttpClient) -> Unit) {
+public fun <T> startServer(kls: Class<T>, action: suspend TestScope.(client: HttpClient) -> Unit) {
     val serverSocket = ServerSocket(AUTOMATIC_PORT)
     val localPort = serverSocket.use { it.localPort }
 

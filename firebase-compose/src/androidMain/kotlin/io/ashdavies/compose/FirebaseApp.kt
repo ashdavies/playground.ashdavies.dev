@@ -9,14 +9,14 @@ import androidx.compose.ui.platform.LocalContext
 import com.google.android.gms.common.util.ProcessUtils
 import com.google.firebase.FirebaseApp
 
-public val LocalFirebaseApp: ProvidableCompositionLocal<FirebaseApp> = staticCompositionLocalOf {
-    noLocalProvidedFor("LocalFirebaseApp")
+public val LocalFirebaseAndroidApp: ProvidableCompositionLocal<FirebaseApp> = staticCompositionLocalOf {
+    noLocalProvidedFor("LocalFirebaseAndroidApp")
 }
 
 @Composable
 public fun ProvideFirebaseApp(context: Context = LocalContext.current, content: @Composable () -> Unit) {
     CompositionLocalProvider(
-        LocalFirebaseApp provides requireFirebaseApp(context),
+        LocalFirebaseAndroidApp provides requireFirebaseApp(context),
         content = content,
     )
 }
@@ -26,7 +26,8 @@ private fun requireFirebaseApp(context: Context): FirebaseApp {
     else FirebaseApp.initializeApp(context)
 
     return requireNotNull(firebaseApp) {
-        "Default FirebaseApp is not initialized in this process ${ProcessUtils.getMyProcessName()}. " +
-                "Make sure to call FirebaseApp.initializeApp(Context) first."
+        "Default FirebaseApp is not initialized in this " +
+                "process ${ProcessUtils.getMyProcessName()}. Make sure " +
+                "to call FirebaseApp.initializeApp(Context) first."
     }
 }

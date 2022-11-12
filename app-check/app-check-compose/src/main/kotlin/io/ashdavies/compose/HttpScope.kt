@@ -17,7 +17,7 @@ import io.ashdavies.playground.cloud.HttpEffect
 import io.ashdavies.playground.cloud.HttpException
 import io.ashdavies.playground.cloud.HttpScope
 import io.ashdavies.playground.cloud.LocalApplicationScope
-import io.ashdavies.playground.cloud.LocalFirebaseApp
+import io.ashdavies.playground.cloud.LocalFirebaseAdminApp
 import io.ashdavies.playground.cloud.LocalHttpRequest
 import io.ashdavies.playground.cloud.LocalHttpResponse
 import io.ashdavies.playground.cloud.getValue
@@ -56,7 +56,7 @@ public fun HttpScope.VerifiedHttpEffect(block: suspend CoroutineScope.() -> Stri
 
 @Composable
 private fun rememberAppCheck(
-    firebaseApp: FirebaseApp = LocalFirebaseApp.current,
+    firebaseApp: FirebaseApp = LocalFirebaseAdminApp.current,
     httpClient: HttpClient = LocalHttpClient.current,
 ): AppCheck = remember(firebaseApp, httpClient) {
     AppCheck(firebaseApp, httpClient)

@@ -10,12 +10,13 @@ import com.google.cloud.functions.HttpRequest
 import com.google.cloud.functions.HttpResponse
 import com.google.firebase.FirebaseApp
 import com.google.firebase.cloud.FirestoreClient
+import io.ashdavies.compose.noLocalProvidedFor
 import io.ashdavies.playground.google.DocumentProvider
 
 public val LocalApplicationScope: ProvidableCompositionLocal<ApplicationScope> =
     staticCompositionLocalOf { noLocalProvidedFor("LocalApplicationScope") }
 
-public val LocalFirebaseApp: ProvidableCompositionLocal<FirebaseApp> =
+public val LocalFirebaseAdminApp: ProvidableCompositionLocal<FirebaseApp> =
     staticCompositionLocalOf { FirebaseApp.initializeApp() }
 
 public val LocalHttpRequest: ProvidableCompositionLocal<HttpRequest> =
@@ -29,9 +30,5 @@ public fun rememberDocumentProvider(path: String, firestore: Firestore = remembe
     remember(path) { DocumentProvider { firestore.collection(path) } }
 
 @Composable
-public fun rememberFirestore(firebaseApp: FirebaseApp = LocalFirebaseApp.current): Firestore =
+public fun rememberFirestore(firebaseApp: FirebaseApp = LocalFirebaseAdminApp.current): Firestore =
     remember { FirestoreClient.getFirestore(firebaseApp) }
-
-private fun noLocalProvidedFor(name: String): Nothing =
-    error("CompositionLocal $name not present")
-
