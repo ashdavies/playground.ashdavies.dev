@@ -7,6 +7,7 @@ import io.ktor.client.plugins.logging.Logging
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
 import io.ktor.serialization.kotlinx.json.json
+import io.ktor.server.application.ApplicationCall
 import io.ktor.server.application.call
 import io.ktor.server.application.install
 import io.ktor.server.auth.Authentication
@@ -23,12 +24,18 @@ import io.ktor.server.routing.routing
 import io.ktor.util.toMap
 import kotlinx.coroutines.CompletableDeferred
 import io.ktor.server.cio.CIO
+import io.ktor.server.request.receive
 
 private const val GRACE_PERIOD_MILLIS = 1000L
 private const val TIMEOUT_MILLIS = 5000L
 
+public data class StubReceiver(val value: String)
+
 public actual suspend fun getAccessToken(provider: OAuthProvider): AccessToken {
     val response = CompletableDeferred<AccessToken>()
+    val application: ApplicationCall = TODO()
+
+    val receiver = application.receive<StubReceiver>()
 
     val server: CIOApplicationEngine = embeddedServer(CIO, port = 8080) {
         install(Authentication) {

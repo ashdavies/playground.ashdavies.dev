@@ -45,7 +45,7 @@ private fun LocalHttpFunction(config: HttpConfig, block: HttpScope.(HttpRequest,
         when {
             request.contentLength == 0L -> response.setStatusCode(HttpStatusCode.BadRequest)
 
-            request.contentType.get() != "${config.accept}" -> {
+            !request.contentType.isEmpty && request.contentType.get() != "${config.accept}" -> {
                 response.appendHeader(HttpHeaders.Accept, "${config.accept}")
                 response.setStatusCode(HttpStatusCode.UnsupportedMediaType)
             }
