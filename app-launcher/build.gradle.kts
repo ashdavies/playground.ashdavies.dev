@@ -1,9 +1,10 @@
 plugins {
     id("io.ashdavies.application")
+    id("com.google.gms.google-services")
 }
 
 android {
-    namespace = "io.ashdavies.launcher"
+    namespace = "io.ashdavies.playground"
 }
 
 kotlin {

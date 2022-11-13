@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    namespace = "io.ashdavies.playground"
+    namespace = "io.ashdavies.common"
 }
 
 kotlin {
