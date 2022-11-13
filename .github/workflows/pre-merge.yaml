@@ -11,6 +11,7 @@ on:
 
 env:
   GOOGLE_SERVICE_ACCOUNT_ID: ${{ secrets.google_service_account_id }}
+  GOOGLE_SERVICES_PASSPHRASE: ${{ secrets.google_services_passphrase }}
   GOOGLE_WORKLOAD_IDENTITY: ${{ secrets.google_workload_identity }}
   MOBILE_SDK_APP_ID: ${{ secrets.mobile_sdk_app_id }}
 
