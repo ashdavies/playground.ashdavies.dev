@@ -1,5 +1,6 @@
 @file:Suppress("DSL_SCOPE_VIOLATION") // https://youtrack.jetbrains.com/issue/KTIJ-19369
 
+import com.diffplug.gradle.spotless.FormatExtension
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 
 buildscript {
@@ -9,20 +10,21 @@ buildscript {
 }
 
 plugins {
-    resolve(libs.plugins.android.application)
-    resolve(libs.plugins.android.library)
-    resolve(libs.plugins.apollo.graphql)
-    resolve(libs.plugins.google.services)
-    resolve(libs.plugins.kotlin.compose)
-    resolve(libs.plugins.kotlin.multiplatform)
-    resolve(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.android.application) apply false
+    alias(libs.plugins.android.library) apply false
+    alias(libs.plugins.apollo.graphql) apply false
+    alias(libs.plugins.google.services) apply false
+    alias(libs.plugins.kotlin.compose) apply false
+    alias(libs.plugins.kotlin.multiplatform) apply false
+    alias(libs.plugins.kotlin.serialization) apply false
 
     alias(libs.plugins.benManes.versions)
-    // alias(libs.plugins.cash.molecule)
     alias(libs.plugins.catalog.update)
-    // alias(libs.plugins.diffplug.spotless)
+    alias(libs.plugins.diffplug.spotless)
     alias(libs.plugins.gradle.doctor)
-    alias(libs.plugins.kotlinx.kover)
+
+    // alias(libs.plugins.cash.molecule)
+    // alias(libs.plugins.kotlinx.kover)
 }
 
 doctor {
@@ -31,51 +33,43 @@ doctor {
     javaHome { failOnError.set(false) }
 }
 
-// spotless {
-//     val ktlintVersion: String = libs.versions.pinterest.ktlint.get()
-//     fun FormatExtension.kotlinDefault(extension: String = "kt") {
-//         targetExclude("**/build/**")
-//         target("src/**/*.$extension")
-//         trimTrailingWhitespace()
-//         endWithNewline()
-//     }
-//
-//     kotlinGradle {
-//         ktlint(ktlintVersion)
-//             .editorConfigOverride(mapOf("disabled_rules" to "filename"))
-//             .userData(mapOf("android" to "true"))
-//             .setUseExperimental(true)
-//
-//         kotlinDefault("kts")
-//     }
-//
-//     kotlin {
-//         ktlint(ktlintVersion)
-//             .editorConfigOverride(mapOf("disabled_rules" to "filename"))
-//             .userData(mapOf("android" to "true"))
-//             .setUseExperimental(true)
-//
-//         kotlinDefault("kt")
-//     }
-//
-//     format("terraform") {
-//         target("src/main/terraform/**/*.tf")
-//         custom("terraform") { fileContents ->
-//             terraformExec {
-//                 stdin(fileContents)
-//                 args("fmt", "-")
-//             }
-//         }
-//     }
-// }
-
-versionCatalogUpdate {
-    pin {
-        versions.addAll(
-            libs.versions.jetbrains.compose.get(), // Unstable until 1.2.0-alpha01-dev686
-            libs.versions.google.android.get(), // JetBrains Compose Plugin Compatibility
-        )
+configure<com.diffplug.gradle.spotless.SpotlessExtension> {
+    val ktLintVersion = libs.versions.pinterest.ktlint.get()
+    fun FormatExtension.kotlinDefault(extension: String = "kt") {
+        target("**/src/**/*.$extension")
+        targetExclude("**/build/**")
+        trimTrailingWhitespace()
+        endWithNewline()
     }
+
+    kotlinGradle {
+        kotlinDefault("gradle.kts")
+        ktlint(ktLintVersion)
+    }
+
+    kotlin {
+        val editorConfig = mapOf(
+            "ij_kotlin_allow_trailing_comma_on_call_site" to "true",
+            "ij_kotlin_allow_trailing_comma" to "true",
+            "disabled_rules" to "filename",
+            "experimental" to "true",
+            "android" to "true",
+        )
+
+        ktlint(ktLintVersion)
+            .editorConfigOverride(editorConfig)
+            .setUseExperimental(true)
+
+        kotlinDefault()
+    }
+
+    format("terraform") {
+        val terraformExe = "$projectDir/google-cloud/build/terraform/terraform_1.3.1"
+        nativeCmd("terraform", terraformExe, listOf("fmt", "-"))
+        target("src/main/terraform/**/*.tf")
+    }
+
+    ratchetFrom = "origin/main"
 }
 
 tasks.withType<DependencyUpdatesTask> {
