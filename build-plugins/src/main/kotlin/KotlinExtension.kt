@@ -4,6 +4,7 @@ import org.gradle.api.NamedDomainObjectCollection
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.getValue
 import org.gradle.kotlin.dsl.getting
+import org.jetbrains.compose.ComposePlugin
 import org.jetbrains.compose.ExperimentalComposeLibrary
 import org.jetbrains.compose.compose
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
@@ -33,7 +34,7 @@ internal fun CommonExtension<*, *, *, *>.configureCommon() {
     }
 
     defaultConfig {
-        compileSdk = 31
+        compileSdk = 33
         minSdk = 21
     }
 
@@ -52,6 +53,8 @@ internal fun KotlinProjectExtension.configureKotlinProject(target: Project) = ta
 internal fun KotlinMultiplatformExtension.configureKotlinMultiplatform(target: Project) = target.run {
     android()
     jvm()
+
+    val compose = ComposePlugin.Dependencies
 
     val commonMain by sourceSets.dependencies {
         implementation(compose.foundation)
@@ -80,6 +83,10 @@ internal fun KotlinMultiplatformExtension.configureKotlinMultiplatform(target: P
         val androidAndroidTestRelease by sourceSets.getting
         dependsOn(androidAndroidTestRelease)
     }
+
+    val androidTestFixtures by sourceSets.getting
+    val androidTestFixturesDebug by sourceSets.getting
+    val androidTestFixturesRelease by sourceSets.getting
 
     val jvmMain by sourceSets.dependencies {
         implementation(compose.desktop.currentOs)

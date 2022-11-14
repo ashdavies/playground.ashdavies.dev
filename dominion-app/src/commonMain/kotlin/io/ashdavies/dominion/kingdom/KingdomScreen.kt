@@ -24,6 +24,8 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
+import androidx.compose.material3.TopAppBarScrollState
+import androidx.compose.material3.rememberTopAppBarScrollState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -32,25 +34,25 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
-import io.ashdavies.http.onLoading
-import io.ashdavies.http.produceStateInline
 import io.ashdavies.dominion.DominionCard
 import io.ashdavies.dominion.DominionExpansion
 import io.ashdavies.dominion.DominionRoot.Child.Kingdom
+import io.ashdavies.http.onLoading
+import io.ashdavies.http.produceStateInline
 import io.ashdavies.playground.RemoteImage
 import io.ashdavies.playground.windowInsetsPadding
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 internal fun KingdomScreen(child: Kingdom, viewModel: KingdomViewModel = rememberKingdomViewModel()) {
-    val state by produceStateInline { viewModel.getViewState(child.expansion) }
-    val scrollBehavior = remember { TopAppBarDefaults.enterAlwaysScrollBehavior() }
+    val viewState by produceStateInline { viewModel.getViewState(child.expansion) }
+    val scrollBehavior = rememberTopAppBarScrollBehavior()
 
     Scaffold(
         topBar = { KingdomTopBar(child.expansion, scrollBehavior) { child.navigateToExpansion() } },
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
     ) { contentPadding ->
-        state.onSuccess {
+        viewState.onSuccess {
             KingdomScreen(
                 onClick = child::navigateToCard,
                 contentPadding = contentPadding,
@@ -58,7 +60,7 @@ internal fun KingdomScreen(child: Kingdom, viewModel: KingdomViewModel = remembe
             )
         }
 
-        state.onLoading {
+        viewState.onLoading {
             LinearProgressIndicator(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -144,4 +146,13 @@ private fun KingdomCard(
             }
         }
     }
+}
+
+
+@Composable
+@ExperimentalMaterial3Api
+private fun rememberTopAppBarScrollBehavior(
+    state: TopAppBarScrollState = rememberTopAppBarScrollState()
+): TopAppBarScrollBehavior = remember(state) {
+    TopAppBarDefaults.enterAlwaysScrollBehavior(state)
 }
