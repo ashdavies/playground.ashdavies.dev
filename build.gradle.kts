@@ -1,7 +1,12 @@
 @file:Suppress("DSL_SCOPE_VIOLATION") // https://youtrack.jetbrains.com/issue/KTIJ-19369
 
-// import com.diffplug.gradle.spotless.FormatExtension
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
+
+buildscript {
+    dependencies {
+        classpath("com.google.gms:google-services:4.3.14")
+    }
+}
 
 plugins {
     resolve(libs.plugins.android.application)

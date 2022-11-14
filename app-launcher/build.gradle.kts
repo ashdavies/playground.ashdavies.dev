@@ -1,5 +1,6 @@
 plugins {
     id("io.ashdavies.application")
+    id("com.google.gms.google-services")
 }
 
 android {

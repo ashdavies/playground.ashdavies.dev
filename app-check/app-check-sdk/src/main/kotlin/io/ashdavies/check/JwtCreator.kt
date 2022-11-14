@@ -15,7 +15,7 @@ private const val APP_CHECK_AUDIENCE = "${APP_CHECK_ENDPOINT}/google.firebase.ap
 
 internal object Jwt : JWT()
 
-internal object PublicClaims : com.auth0.jwt.impl.PublicClaims {
+internal object PrivateClaims {
     const val APP_ID = "app_id"
     const val SCOPE = "scope"
 }
@@ -23,7 +23,7 @@ internal object PublicClaims : com.auth0.jwt.impl.PublicClaims {
 internal fun Jwt.create(algorithm: Algorithm, config: (JwtOptions) -> Unit = {}): String {
     return with(JwtOptions().also(config)) {
         JWT.create()
-            .withClaim(PublicClaims.APP_ID, appId)
+            .withClaim(PrivateClaims.APP_ID, appId)
             .withExpiresAt(expiresAt.toJavaDate())
             .withIssuedAt(issuedAt.toJavaDate())
             .withScopeIfNotEmpty(scope)
@@ -57,5 +57,5 @@ public class JwtOptions(
 private fun Instant.toJavaDate() = java.util.Date.from(toJavaInstant())
 
 private fun JWTCreator.Builder.withScopeIfNotEmpty(list: List<*>): JWTCreator.Builder {
-    return if (list.isNotEmpty()) withClaim(PublicClaims.SCOPE, list.joinToString(separator = " ")) else this
+    return if (list.isNotEmpty()) withClaim(PrivateClaims.SCOPE, list.joinToString(separator = " ")) else this
 }
