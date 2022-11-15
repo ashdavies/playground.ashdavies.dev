@@ -32,6 +32,8 @@ jobs:
 
       - name: Checkout Repository
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
       - name: Cache Gradle Caches
         uses: actions/cache@v3
