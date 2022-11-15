@@ -63,8 +63,9 @@ configure<com.diffplug.gradle.spotless.SpotlessExtension> {
         kotlinDefault()
     }
 
-    format("terraform") {
-        val terraformExe = "$projectDir/google-cloud/build/terraform/terraform_1.3.1"
+    val terraformPath = System.getenv("TERRAFORM_PATH")
+    if (terraformPath != null) format("terraform") {
+        val terraformExe = "$terraformPath/terraform_1.3.1"
         nativeCmd("terraform", terraformExe, listOf("fmt", "-"))
         target("src/main/terraform/**/*.tf")
     }
