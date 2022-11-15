@@ -15,7 +15,7 @@ import androidx.paging.LoadState
 import androidx.paging.LoadStates
 import androidx.paging.NullPaddedList
 import androidx.paging.PagingDataDiffer
-import com.kuuurt.paging.multiplatform.PagingData
+import app.cash.paging.PagingData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
@@ -40,9 +40,14 @@ public actual class LazyPagingItems<T : Any>(private val flow: Flow<PagingData<T
 
     private val pagingDataDiffer = object : PagingDataDiffer<T>(
         differCallback = object : DifferCallback {
-            override fun onChanged(position: Int, count: Int) = if (count > 0) updateItemSnapshotList() else Unit
-            override fun onInserted(position: Int, count: Int) = if (count > 0) updateItemSnapshotList() else Unit
-            override fun onRemoved(position: Int, count: Int) = if (count > 0) updateItemSnapshotList() else Unit
+            override fun onChanged(position: Int, count: Int) =
+                if (count > 0) updateItemSnapshotList() else Unit
+
+            override fun onInserted(position: Int, count: Int) =
+                if (count > 0) updateItemSnapshotList() else Unit
+
+            override fun onRemoved(position: Int, count: Int) =
+                if (count > 0) updateItemSnapshotList() else Unit
         },
         mainDispatcher = Dispatchers.Swing,
     ) {
@@ -50,7 +55,7 @@ public actual class LazyPagingItems<T : Any>(private val flow: Flow<PagingData<T
             previousList: NullPaddedList<T>,
             newList: NullPaddedList<T>,
             lastAccessedIndex: Int,
-            onListPresentable: () -> Unit
+            onListPresentable: () -> Unit,
         ): Int? {
             onListPresentable()
             updateItemSnapshotList()
@@ -66,8 +71,8 @@ public actual class LazyPagingItems<T : Any>(private val flow: Flow<PagingData<T
             IncompleteLoadState,
             IncompleteLoadState,
             IncompleteLoadState,
-            InitialLoadStates
-        )
+            InitialLoadStates,
+        ),
     )
         private set
 
@@ -109,7 +114,7 @@ public actual fun <T : Any> LazyPagingItems<T>.refresh() =
 
 public actual fun <T : Any> LazyListScope.items(
     items: LazyPagingItems<T>,
-    itemContent: @Composable LazyItemScope.(value: T?) -> Unit
+    itemContent: @Composable LazyItemScope.(value: T?) -> Unit,
 ) {
     items(count = items.itemCount) { index ->
         itemContent(items[index])

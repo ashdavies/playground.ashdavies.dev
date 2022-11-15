@@ -3,7 +3,7 @@ package io.ashdavies.playground.android
 import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.runtime.Composable
-import com.kuuurt.paging.multiplatform.PagingData
+import app.cash.paging.PagingData
 import kotlinx.coroutines.flow.Flow
 
 @Composable

@@ -24,19 +24,21 @@ kotlin {
 
         implementation(libs.bundles.arkivanov.decompose)
         implementation(libs.bundles.ktor.client)
+        implementation(libs.cash.paging.common)
 
-        implementation(libs.kuuuurt.multiplatform.paging)
         implementation(libs.sqldelight.coroutines.extensions)
     }
 
     val androidMain by sourceSets.dependencies {
         implementation(projects.firebaseCompose)
 
-        implementation(libs.bundles.androidx.activity)
-        implementation(libs.bundles.androidx.paging)
-        implementation(libs.bundles.androidx.viewmodel)
-        implementation(libs.bundles.google.firebase)
-        implementation(libs.bundles.google.maps)
+        with (libs.bundles) {
+            implementation(androidx.activity)
+            implementation(androidx.paging)
+            implementation(androidx.viewmodel)
+            implementation(google.firebase)
+            implementation(google.maps)
+        }
 
         with(libs.google) {
             implementation(accompanist.flowlayout)
@@ -49,9 +51,5 @@ kotlin {
 
     val androidDebug by sourceSets.dependencies {
         implementation(libs.google.firebase.appcheck.debug)
-    }
-
-    val jvmMain by sourceSets.dependencies {
-        implementation(libs.bundles.androidx.paging)
     }
 }
