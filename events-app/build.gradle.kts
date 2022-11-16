@@ -16,6 +16,7 @@ android {
 kotlin {
     val commonMain by sourceSets.dependencies {
         implementation(projects.appCheck.appCheckClient)
+        implementation(projects.pagingCompose)
 
         implementation(projects.authOauth)
         implementation(projects.localRemote)
@@ -24,7 +25,6 @@ kotlin {
 
         implementation(libs.bundles.arkivanov.decompose)
         implementation(libs.bundles.ktor.client)
-        implementation(libs.cash.paging.common)
 
         implementation(libs.sqldelight.coroutines.extensions)
     }
@@ -34,7 +34,6 @@ kotlin {
 
         with (libs.bundles) {
             implementation(androidx.activity)
-            implementation(androidx.paging)
             implementation(androidx.viewmodel)
             implementation(google.firebase)
             implementation(google.maps)
