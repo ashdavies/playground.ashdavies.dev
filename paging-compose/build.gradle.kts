@@ -1,42 +1,12 @@
-@file:Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
-
-import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
-import java.nio.file.Files
-import java.util.zip.ZipEntry
-import java.util.zip.ZipFile
-
-val Configuration.isJvm: Boolean
-    get() = name.contains("jvm", ignoreCase = true)
-
-val artifactType: Attribute<String> =
-    Attribute.of("artifactType", String::class.java)
+import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
 plugins {
-    alias(libs.plugins.johnrengelman.shadow)
     id("io.ashdavies.library")
+    id("io.ashdavies.aar")
 }
 
 android {
     namespace = "io.ashdavies.paging"
-}
-
-configurations.all {
-    if (isCanBeResolved && !isCanBeConsumed && isJvm) {
-        attributes.attribute(artifactType, "jar")
-    }
-}
-
-dependencies {
-    attributesSchema {
-        getMatchingStrategy(LibraryElements.LIBRARY_ELEMENTS_ATTRIBUTE)
-            .compatibilityRules
-            .add(AarCompatibility::class.java)
-    }
-
-    registerTransform(UnpackAar::class.java) {
-        from.attribute(artifactType, "aar")
-        to.attribute(artifactType, "jar")
-    }
 }
 
 kotlin {
@@ -49,39 +19,44 @@ kotlin {
     }
 
     val jvmMain by sourceSets.dependencies {
+        api(files("${project.buildDir}/intermediates/aar_unpack/jvmMain/classes"))
         api(libs.androidx.paging.compose)
     }
 }
 
-val repackageJar by tasks.creating(ShadowJar::class.java) {
-    dependencies { include(dependency(libs.androidx.paging.compose.get())) }
-    configurations = listOf(project.configurations["jvmRuntimeClasspath"])
-    from(kotlin.jvm().compilations["main"].output)
+val unpackAar by tasks.registering(Copy::class) {
+    fun Configuration.isJvm(): Boolean = name.contains("jvm", ignoreCase = true)
+    fun Dependency.artifact(): String = "$name-$version"
+
+    val destination = "${project.buildDir}/intermediates/aar_unpack"
+    val kotlin = project.extensions.getByName("kotlin") as KotlinMultiplatformExtension
+    val runtimeClasspath = configurations["jvmRuntimeClasspath"]
+    val sourceSets = kotlin.sourceSets
+
+    val targets = configurations.filter { it.isJvm() && it.dependencies.isNotEmpty() }
+    val input = targets.associate { it.name to it.dependencies.map(Dependency::artifact) }
+
+    for (target in targets) {
+        val sourceSet = sourceSets.first { target.name.contains(it.name, ignoreCase = true) }
+        val artifacts = target.dependencies.map(Dependency::artifact)
+
+        for (artifact in artifacts) {
+            val aar = runtimeClasspath.find { it.name.endsWith("$artifact.aar") } ?: continue
+            val files = zipTree(aar).matching { include("*.jar") }
+
+            for (file in files) copy {
+                val dir = "$destination/${sourceSet.name}/${file.nameWithoutExtension}"
+                into("$destination/${sourceSet.name}/${file.nameWithoutExtension}")
+                // target.dependencies.add(project.dependencies.create(files(dir)))
+                from(zipTree(file))
+            }
+        }
+
+        inputs.properties(input)
+        outputs.dir(destination)
+    }
 }
 
-public class AarCompatibility : AttributeCompatibilityRule<LibraryElements> {
-    override fun execute(details: CompatibilityCheckDetails<LibraryElements>) {
-        if (details.producerValue?.name == "aar") details.compatible()
-    }
-}
-
-public abstract class UnpackAar : TransformAction<TransformParameters.None> {
-
-    @get:InputArtifact
-    abstract val inputArtifact: Provider<FileSystemLocation>
-
-    override fun transform(outputs: TransformOutputs) {
-        ZipFile(inputArtifact.get().asFile).use { zip ->
-            zip.entries().asSequence()
-                .filter { !it.isDirectory }
-                .filter { it.name.endsWith(".jar") }
-                .forEach { zip.unzip(it, outputs.file(it.name)) }
-        }
-    }
-
-    private fun ZipFile.unzip(entry: ZipEntry, output: File) {
-        getInputStream(entry).use {
-            Files.copy(it, output.toPath())
-        }
-    }
+val preBuild: Task by tasks.getting {
+    dependsOn(unpackAar)
 }
