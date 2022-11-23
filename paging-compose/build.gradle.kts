@@ -1,9 +1,4 @@
-@file:Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
-
-import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
-
 plugins {
-    alias(libs.plugins.johnrengelman.shadow)
     id("io.ashdavies.library")
     id("io.ashdavies.aar")
 }
@@ -26,9 +21,22 @@ kotlin {
     }
 }
 
-val repackageJar by tasks.creating(ShadowJar::class.java) {
-    dependencies { include(dependency(libs.androidx.paging.compose.get())) }
-    configurations = listOf(project.configurations["jvmRuntimeClasspath"])
-    from(kotlin.jvm().compilations["main"].output)
+val jvmJar by tasks.getting(Jar::class) {
+    doFirst { from(dependency(libs.androidx.paging.compose)) }
 }
 
+// Filter all artifacts by jar value instead of name or path
+fun Jar.dependency(provider: Provider<MinimalExternalModuleDependency>): List<FileTree> {
+    val jvmRuntimeClasspath: FileCollection by configurations
+    val dependency = provider.get()
+
+
+    return jvmRuntimeClasspath.filter { file ->
+        val fileTree = if (file.isDirectory) file as FileTree else zipTree(file)
+        val version = fileTree.firstOrNull { it.extension == "version" } ?: return@filter false
+        if (dependency.module.group in version.name) {
+            return@filter true
+        }
+        false
+    }.map { if (it.isDirectory) it as FileTree else zipTree(it) }
+}
