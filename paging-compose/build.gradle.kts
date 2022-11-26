@@ -24,19 +24,3 @@ kotlin {
 val jvmJar by tasks.getting(Jar::class) {
     doFirst { from(dependency(libs.androidx.paging.compose)) }
 }
-
-// Filter all artifacts by jar value instead of name or path
-fun Jar.dependency(provider: Provider<MinimalExternalModuleDependency>): List<FileTree> {
-    val jvmRuntimeClasspath: FileCollection by configurations
-    val dependency = provider.get()
-
-
-    return jvmRuntimeClasspath.filter { file ->
-        val fileTree = if (file.isDirectory) file as FileTree else zipTree(file)
-        val version = fileTree.firstOrNull { it.extension == "version" } ?: return@filter false
-        if (dependency.module.group in version.name) {
-            return@filter true
-        }
-        false
-    }.map { if (it.isDirectory) it as FileTree else zipTree(it) }
-}
