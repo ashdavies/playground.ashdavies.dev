@@ -7,4 +7,3 @@ class AarCompatibility : AttributeCompatibilityRule<LibraryElements> {
         if (details.producerValue?.name == "aar") details.compatible()
     }
 }
-

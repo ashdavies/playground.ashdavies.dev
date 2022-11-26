@@ -5,8 +5,6 @@ package io.ashdavies.paging
 import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.runtime.Composable
-import app.cash.paging.PagingData
-import kotlinx.coroutines.flow.Flow
 
 public expect val <T : Any> LazyPagingItems<T>.errorMessage: String?
 

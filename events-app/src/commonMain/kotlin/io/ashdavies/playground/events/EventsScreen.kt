@@ -50,7 +50,7 @@ internal fun EventsScreen(child: EventsRoot.Child.Events) {
 
     Scaffold(
         topBar = { SmallTopAppBar(title = { Text("Events") }) },
-        bottomBar = { EventsBottomBar(child) }
+        bottomBar = { EventsBottomBar(child) },
     ) { contentPadding ->
         PlatformSwipeRefresh(
             isRefreshing = pagingItems.isRefreshing,
@@ -89,19 +89,18 @@ private fun EventSection(event: Event?, onClick: () -> Unit) {
                     contentDescription = null,
                     modifier = Modifier
                         .align(Alignment.CenterVertically)
-                        .fillMaxHeight()
+                        .fillMaxHeight(),
                 )
 
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(start = 12.dp)
+                        .padding(start = 12.dp),
                 ) {
                     PlaceholderText(event?.name, style = MaterialTheme.typography.labelLarge)
                     PlaceholderText(event?.location, style = MaterialTheme.typography.labelMedium)
                     PlaceholderText(event?.dateStart, style = MaterialTheme.typography.labelSmall)
                 }
-
             }
         }
     }
