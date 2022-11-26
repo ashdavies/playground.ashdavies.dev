@@ -1,7 +1,5 @@
 import com.android.build.api.dsl.CommonExtension
 import com.android.build.gradle.LibraryExtension
-import org.gradle.kotlin.dsl.configure
-import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 

@@ -15,7 +15,6 @@ kotlin {
 
         implementation(libs.bundles.ktor.client)
         implementation(libs.jetbrains.kotlinx.collections.immutable)
-        implementation(libs.kuuuurt.multiplatform.paging)
     }
 
     val androidMain by sourceSets.dependencies {

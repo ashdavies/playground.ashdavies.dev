@@ -24,6 +24,7 @@ include(
     ":local-remote",
     ":local-storage",
     ":notion-console",
+    ":paging-compose",
     ":playground-app",
     ":version-catalog",
 )

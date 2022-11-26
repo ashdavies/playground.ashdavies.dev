@@ -16,7 +16,6 @@ kotlin {
         implementation(projects.playgroundApp)
 
         implementation(libs.bundles.ktor.client)
-        implementation(libs.kuuuurt.multiplatform.paging)
     }
 
     val androidMain by sourceSets.dependencies {
