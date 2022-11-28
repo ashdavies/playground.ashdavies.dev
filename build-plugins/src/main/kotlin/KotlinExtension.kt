@@ -2,15 +2,20 @@ import com.android.build.api.dsl.CommonExtension
 import org.gradle.api.JavaVersion
 import org.gradle.api.NamedDomainObjectCollection
 import org.gradle.api.Project
+import org.gradle.api.artifacts.MinimalExternalModuleDependency
+import org.gradle.api.file.FileTree
+import org.gradle.api.provider.Provider
+import org.gradle.jvm.tasks.Jar
 import org.gradle.kotlin.dsl.getValue
 import org.gradle.kotlin.dsl.getting
+import org.gradle.kotlin.dsl.provideDelegate
 import org.jetbrains.compose.ComposePlugin
 import org.jetbrains.compose.ExperimentalComposeLibrary
-import org.jetbrains.compose.compose
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.dsl.KotlinProjectExtension
 import org.jetbrains.kotlin.gradle.plugin.KotlinDependencyHandler
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
+import java.io.File
 
 public object Playground {
 
@@ -92,6 +97,28 @@ internal fun KotlinMultiplatformExtension.configureKotlinMultiplatform(target: P
         implementation(compose.desktop.currentOs)
         implementation(libs.jetbrains.kotlinx.coroutines.swing)
     }
+}
+
+public fun Jar.dependency(provider: Provider<MinimalExternalModuleDependency>): List<FileTree> {
+    val jvmRuntimeClasspath by project.configurations
+    val dependency = provider.get()
+
+    val matches = jvmRuntimeClasspath.filter {
+        dependency.matches(fileTree(project, it))
+    }
+
+    return matches.map {
+        fileTree(project, it)
+    }
+}
+
+private fun MinimalExternalModuleDependency.matches(tree: FileTree): Boolean {
+    val version = tree.firstOrNull { it.extension == "version" } ?: return false
+    return version.name.contains(module.group)
+}
+
+private fun fileTree(project: Project, file: File): FileTree {
+    return if (file.isDirectory) file as FileTree else project.zipTree(file)
 }
 
 public fun NamedDomainObjectCollection<KotlinSourceSet>.dependencies(

@@ -1,6 +1,5 @@
-@file:Suppress("DSL_SCOPE_VIOLATION") // https://youtrack.jetbrains.com/issue/KTIJ-19369
-
 plugins {
+    id("com.android.library")
     id("io.ashdavies.library")
 }
 

@@ -3,9 +3,11 @@ import com.android.build.gradle.LibraryExtension
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
+pluginManager.withPlugin("android") {
+    plugins { id("kotlin-parcelize") }
+}
+
 plugins {
-    id("com.android.library")
-    id("kotlin-parcelize")
     id("org.jetbrains.compose")
 
     kotlin("multiplatform")
