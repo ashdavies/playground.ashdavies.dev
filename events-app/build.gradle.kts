@@ -2,7 +2,7 @@ import com.android.build.api.dsl.VariantDimension
 
 plugins {
     id("com.android.library")
-    id("io.ashdavies.library")
+    id("io.ashdavies.kotlin")
 }
 
 android {

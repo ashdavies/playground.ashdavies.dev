@@ -1,6 +1,7 @@
 plugins {
-    id("io.ashdavies.application")
+    id("com.android.application")
     id("com.google.gms.google-services")
+    id("io.ashdavies.kotlin")
 }
 
 android {

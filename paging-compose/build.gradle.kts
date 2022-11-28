@@ -1,6 +1,6 @@
 plugins {
     id("com.android.library")
-    id("io.ashdavies.library")
+    id("io.ashdavies.kotlin")
     id("io.ashdavies.aar")
 }
 
