@@ -5,15 +5,17 @@ plugins {
 }
 
 android {
-    namespace = "io.ashdavies.firebase.compose"
+    namespace = "io.ashdavies.common"
 }
 
 kotlin {
     val commonMain by sourceSets.dependencies {
-        implementation(projects.composeLocals)
+        implementation(compose.materialIconsExtended)
+        implementation(projects.dominionApp)
+        implementation(projects.eventsApp)
     }
 
     val androidMain by sourceSets.dependencies {
-        implementation(libs.bundles.google.firebase)
+        implementation(libs.bundles.androidx.activity)
     }
 }

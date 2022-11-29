@@ -7,7 +7,9 @@ include(
     ":app-check:app-check-compose",
     ":app-check:app-check-function",
     ":app-check:app-check-sdk",
-    ":app-launcher",
+    ":app-launcher:android",
+    ":app-launcher:common",
+    ":app-launcher:desktop",
     ":auth-oauth",
     ":cloud-functions",
     ":compose-constructor:plugin-common",
@@ -29,8 +31,6 @@ include(
     ":version-catalog",
 )
 
-includeBuild("build-plugins")
-
 includeBuild("compose-constructor/plugin-gradle") {
     dependencySubstitution {
         substitute(module("io.ashdavies.playground:plugin-gradle")).using(project(":"))
@@ -43,6 +43,10 @@ gradleEnterprise {
         termsOfServiceAgree = "yes"
         publishAlways()
     }
+}
+
+pluginManagement {
+    includeBuild("build-plugins")
 }
 
 plugins {

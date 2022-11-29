@@ -68,10 +68,8 @@ private class EventsRootComponent(componentContext: ComponentContext) :
 }
 
 private sealed class ChildConfiguration : Parcelable {
-    @Parcelize
-    object Events : ChildConfiguration()
-    @Parcelize
-    object Profile : ChildConfiguration()
+    @Parcelize object Events : ChildConfiguration()
+    @Parcelize object Profile : ChildConfiguration()
 }
 
 private fun createNavigation(router: Router<ChildConfiguration, EventsRoot.Child>) = object : EventsRoot.Navigation {

@@ -1,5 +1,6 @@
 plugins {
     id("com.android.library")
+    id("io.ashdavies.android")
     id("io.ashdavies.kotlin")
     id("io.ashdavies.aar")
 }
@@ -18,7 +19,7 @@ kotlin {
     }
 
     val jvmMain by sourceSets.dependencies {
-        api(libs.androidx.paging.compose)
+        implementation(libs.androidx.paging.compose)
     }
 }
 

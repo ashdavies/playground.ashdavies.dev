@@ -30,7 +30,7 @@ import com.arkivanov.decompose.ComponentContext
 import io.ashdavies.dominion.DominionRoot
 
 @Composable
-internal fun LauncherScreen(componentContext: ComponentContext, startRoute: LauncherRoute? = null) {
+public fun LauncherScreen(componentContext: ComponentContext, startRoute: LauncherRoute? = null) {
     var route by remember { mutableStateOf(startRoute ?: LauncherRoute.Default) }
 
     when (route) {
