@@ -2,6 +2,7 @@ import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
 plugins {
     id("io.ashdavies.kotlin")
+    id("io.ashdavies.aar")
 }
 
 kotlin {
