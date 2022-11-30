@@ -26,7 +26,10 @@ dependencies {
     add("invoker", libs.google.cloud.javaFunctionInvoker)
 }
 
-kotlin.configureKotlinProject(project)
+kotlin {
+    sourceSets.all { languageSettings.optIn("kotlin.RequiresOptIn") }
+    explicitApiWarning()
+}
 
 tasks.withType<KotlinCompile> {
     kotlinOptions.freeCompilerArgs += Playground.freeCompilerArgs

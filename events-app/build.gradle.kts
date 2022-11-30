@@ -1,7 +1,10 @@
 import com.android.build.api.dsl.VariantDimension
 
 plugins {
-    id("io.ashdavies.library")
+    id("com.android.library")
+    id("io.ashdavies.android")
+    id("io.ashdavies.kotlin")
+    id("kotlin-parcelize")
 }
 
 android {

@@ -1,34 +1,26 @@
 @file:Suppress("UNUSED_VARIABLE")
 
-import org.gradle.kotlin.dsl.getting
-import org.gradle.kotlin.dsl.kotlin
-
 plugins {
     id("com.squareup.sqldelight")
     kotlin("multiplatform")
 }
 
 kotlin {
-    val commonMain by sourceSets.getting {
-        dependencies {
-            with(libs.sqldelight) {
-                implementation(coroutines.extensions)
-                implementation(runtime)
-            }
+    @Suppress("UNUSED_VARIABLE")
+    val commonMain by sourceSets.dependencies {
+        with(libs.sqldelight) {
+            implementation(coroutines.extensions)
+            implementation(runtime)
         }
     }
 
-    val androidMain by sourceSets.getting {
-        dependencies {
-            with(libs) {
-                implementation(sqldelight.android.driver)
-            }
-        }
+    @Suppress("UNUSED_VARIABLE")
+    val androidMain by sourceSets.dependencies {
+        implementation(libs.sqldelight.android.driver)
     }
 
-    val jvmMain by sourceSets.getting {
-        dependencies {
-            implementation(libs.sqldelight.sqlite.driver)
-        }
+    @Suppress("UNUSED_VARIABLE")
+    val jvmMain by sourceSets.dependencies {
+        implementation(libs.sqldelight.sqlite.driver)
     }
 }
