@@ -1,9 +1,7 @@
 import com.android.build.api.dsl.VariantDimension
 
 plugins {
-    id("com.android.library")
-    id("io.ashdavies.android")
-    id("io.ashdavies.kotlin")
+    id("io.ashdavies.default")
     id("kotlin-parcelize")
 }
 
@@ -17,7 +15,7 @@ android {
 }
 
 kotlin {
-    val commonMain by sourceSets.dependencies {
+    commonMain.dependencies {
         implementation(projects.appCheck.appCheckClient)
         implementation(projects.pagingCompose)
 
@@ -32,7 +30,7 @@ kotlin {
         implementation(libs.sqldelight.coroutines.extensions)
     }
 
-    val androidMain by sourceSets.dependencies {
+    androidMain.dependencies {
         implementation(projects.firebaseCompose)
 
         with (libs.bundles) {
@@ -51,7 +49,7 @@ kotlin {
         }
     }
 
-    val androidDebug by sourceSets.dependencies {
+    androidDebug.dependencies {
         implementation(libs.google.firebase.appcheck.debug)
     }
 }

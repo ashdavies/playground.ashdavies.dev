@@ -1,7 +1,5 @@
 plugins {
-    id("com.android.library")
-    id("io.ashdavies.android")
-    id("io.ashdavies.kotlin")
+    id("io.ashdavies.default")
 }
 
 android {
@@ -9,13 +7,13 @@ android {
 }
 
 kotlin {
-    val commonMain by sourceSets.dependencies {
+    commonMain.dependencies {
         implementation(compose.materialIconsExtended)
         implementation(projects.dominionApp)
         implementation(projects.eventsApp)
     }
 
-    val androidMain by sourceSets.dependencies {
+    androidMain.dependencies {
         implementation(libs.bundles.androidx.activity)
     }
 }
