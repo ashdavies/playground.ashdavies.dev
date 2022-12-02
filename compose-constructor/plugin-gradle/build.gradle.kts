@@ -1,4 +1,4 @@
-@file:Suppress("DSL_SCOPE_VIOLATION") // https://youtrack.jetbrains.com/issue/KTIJ-19369
+@file:Suppress("DSL_SCOPE_VIOLATION") // https://github.com/gradle/gradle/issues/22797
 
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 

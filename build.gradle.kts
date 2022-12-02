@@ -1,10 +1,11 @@
-@file:Suppress("DSL_SCOPE_VIOLATION") // https://youtrack.jetbrains.com/issue/KTIJ-19369
+@file:Suppress("DSL_SCOPE_VIOLATION") // https://github.com/gradle/gradle/issues/22797
 
 import com.diffplug.gradle.spotless.FormatExtension
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 
 buildscript {
     dependencies {
+        classpath("app.cash.molecule:molecule-gradle-plugin:0.6.1")
         classpath("com.google.gms:google-services:4.3.14")
     }
 }

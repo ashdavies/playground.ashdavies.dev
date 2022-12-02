@@ -3,6 +3,7 @@ plugins {
     id("com.google.gms.google-services")
     id("io.ashdavies.android")
     id("io.ashdavies.kotlin")
+    id("app.cash.molecule")
 }
 
 android {

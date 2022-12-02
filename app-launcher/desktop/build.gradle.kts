@@ -13,6 +13,7 @@ kotlin {
     jvmMain.dependencies {
         implementation(compose.desktop.currentOs)
         implementation(libs.bundles.arkivanov.decompose)
+        implementation(libs.jetbrains.kotlinx.cli)
         implementation(projects.appLauncher.common)
     }
 }
