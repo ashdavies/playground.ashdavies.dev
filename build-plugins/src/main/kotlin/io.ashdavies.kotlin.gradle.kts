@@ -36,6 +36,13 @@ kotlin {
         implementation(compose.desktop.currentOs)
         implementation(libs.jetbrains.kotlinx.coroutines.swing)
     }
+
+    configurations.forEach {
+        if (it.name.contains("jvm")) it.exclude(
+            module = "kotlinx-coroutines-android",
+            group = "org.jetbrains.kotlinx",
+        )
+    }
 }
 
 tasks.withType<KotlinCompile> {
