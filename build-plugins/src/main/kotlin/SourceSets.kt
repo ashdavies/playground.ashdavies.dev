@@ -23,4 +23,3 @@ private class SourceSetDelegate : ReadOnlyProperty<KotlinSourceSetContainer, Kot
 }
 
 public operator fun KotlinSourceSet.invoke(action: KotlinSourceSet.() -> Unit) = action()
-git
