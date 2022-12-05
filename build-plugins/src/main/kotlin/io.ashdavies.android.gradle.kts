@@ -1,6 +1,7 @@
 import com.android.build.api.dsl.CommonExtension
 import com.android.build.gradle.LibraryExtension
 import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
+import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
 /*pluginManager.withPlugin("android") {
     plugins { id("kotlin-parcelize") }
@@ -20,15 +21,20 @@ kotlin {
         implementation(libs.jetbrains.kotlinx.coroutines.android)
     }
 
-    val androidTest by sourceSets.getting {
-        val androidAndroidTestDebug by sourceSets.getting
-        dependsOn(androidAndroidTestDebug)
+    androidTest {
+        dependsOn(androidAndroidTestRelease)
     }
 }
 
-extensions.withExtension<BaseAppModuleExtension> { configure() }
+afterEvaluate {
+    extensions.withType<KotlinMultiplatformExtension> {
+        sourceSets.removeAll { it.name.startsWith("androidTestFixtures") }
+    }
+}
 
-extensions.withExtension<LibraryExtension> { configure() }
+extensions.withType<BaseAppModuleExtension> { configure() }
+
+extensions.withType<LibraryExtension> { configure() }
 
 fun CommonExtension<*, *, *, *>.configure() {
     buildFeatures {

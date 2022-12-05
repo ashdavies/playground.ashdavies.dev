@@ -1,5 +1,3 @@
-@file:JvmName("AppCheckTokenAndroid")
-
 package io.ashdavies.check
 
 import androidx.compose.runtime.Composable

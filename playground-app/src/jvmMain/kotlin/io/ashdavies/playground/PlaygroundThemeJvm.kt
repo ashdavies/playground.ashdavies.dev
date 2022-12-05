@@ -1,5 +1,3 @@
-@file:JvmName("PlaygroundThemeJvm")
-
 package io.ashdavies.playground
 
 import androidx.compose.material3.ColorScheme

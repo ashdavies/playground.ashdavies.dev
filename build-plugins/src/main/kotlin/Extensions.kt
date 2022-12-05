@@ -38,6 +38,6 @@ public fun NamedDomainObjectCollection<KotlinSourceSet>.dependencies(
     configure: KotlinDependencyHandler.() -> Unit,
 ) = getting { dependencies(configure) }
 
-public inline fun <reified T> ExtensionContainer.withExtension(
+public inline fun <reified T> ExtensionContainer.withType(
     configure: T.() -> Unit,
 ) = findByType(T::class.java)?.configure()

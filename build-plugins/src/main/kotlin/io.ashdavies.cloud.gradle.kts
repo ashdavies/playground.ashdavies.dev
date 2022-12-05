@@ -1,5 +1,4 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
-import org.jetbrains.compose.compose
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
@@ -27,7 +26,6 @@ dependencies {
 }
 
 kotlin {
-    sourceSets.all { languageSettings.optIn("kotlin.RequiresOptIn") }
     explicitApiWarning()
 }
 
@@ -40,4 +38,3 @@ tasks.named<ShadowJar>("shadowJar") {
     destinationDirectory.set(file("$buildDir/playground"))
     mergeServiceFiles()
 }
-

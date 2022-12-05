@@ -8,6 +8,7 @@ import kotlin.reflect.KProperty
 public val KotlinMultiplatformExtension.commonMain: KotlinSourceSet by SourceSetDelegate()
 public val KotlinMultiplatformExtension.commonTest: KotlinSourceSet by SourceSetDelegate()
 
+public val KotlinMultiplatformExtension.androidAndroidTestRelease: KotlinSourceSet by SourceSetDelegate()
 public val KotlinMultiplatformExtension.androidDebug: KotlinSourceSet by SourceSetDelegate()
 public val KotlinMultiplatformExtension.androidMain: KotlinSourceSet by SourceSetDelegate()
 public val KotlinMultiplatformExtension.androidTest: KotlinSourceSet by SourceSetDelegate()

@@ -33,7 +33,7 @@ kotlin {
     androidMain.dependencies {
         implementation(projects.firebaseCompose)
 
-        with (libs.bundles) {
+        with(libs.bundles) {
             implementation(androidx.activity)
             implementation(androidx.viewmodel)
             implementation(google.firebase)

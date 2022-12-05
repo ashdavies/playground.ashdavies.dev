@@ -3,6 +3,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     id("org.jetbrains.compose")
+    // id("app.cash.molecule")
 
     kotlin("multiplatform")
     kotlin("plugin.serialization")
@@ -11,10 +12,6 @@ plugins {
 kotlin {
     explicitApiWarning()
     jvm()
-
-    sourceSets.all {
-        languageSettings.optIn("kotlin.RequiresOptIn")
-    }
 
     @OptIn(ExperimentalComposeLibrary::class)
     commonMain.dependencies {
@@ -31,6 +28,8 @@ kotlin {
 
     commonTest.dependencies {
         implementation(libs.bundles.jetbrains.kotlin.test)
+        implementation(libs.bundles.jetbrains.kotlinx)
+        implementation(libs.app.cash.turbine)
     }
 
     jvmMain.dependencies {
