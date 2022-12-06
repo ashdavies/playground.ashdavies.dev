@@ -24,27 +24,33 @@ open class KotlinJvmTest : Test() {
     var targetName: String? = null
 
     override fun createTestExecuter(): TestExecuter<JvmTestExecutionSpec> =
-        if (targetName != null) Executor(
-            super.createTestExecuter(),
-            targetName!!
-        )
-        else super.createTestExecuter()
+        if (targetName != null) {
+            Executor(
+                super.createTestExecuter(),
+                targetName!!,
+            )
+        } else {
+            super.createTestExecuter()
+        }
 
     class Executor(
         private val delegate: TestExecuter<JvmTestExecutionSpec>,
-        private val targetName: String
+        private val targetName: String,
     ) : TestExecuter<JvmTestExecutionSpec> by delegate {
         override fun execute(testExecutionSpec: JvmTestExecutionSpec, testResultProcessor: TestResultProcessor) {
-            delegate.execute(testExecutionSpec, object : TestResultProcessor by testResultProcessor {
-                override fun started(test: TestDescriptorInternal, event: TestStartEvent) {
-                    val myTest = object : TestDescriptorInternal by test {
-                        override fun getDisplayName(): String = "${test.displayName}[$targetName]"
-                        override fun getClassName(): String? = test.className?.replace('$', '.')
-                        override fun getClassDisplayName(): String? = test.classDisplayName?.replace('$', '.')
+            delegate.execute(
+                testExecutionSpec,
+                object : TestResultProcessor by testResultProcessor {
+                    override fun started(test: TestDescriptorInternal, event: TestStartEvent) {
+                        val myTest = object : TestDescriptorInternal by test {
+                            override fun getDisplayName(): String = "${test.displayName}[$targetName]"
+                            override fun getClassName(): String? = test.className?.replace('$', '.')
+                            override fun getClassDisplayName(): String? = test.classDisplayName?.replace('$', '.')
+                        }
+                        testResultProcessor.started(myTest, event)
                     }
-                    testResultProcessor.started(myTest, event)
-                }
-            })
+                },
+            )
         }
     }
 }

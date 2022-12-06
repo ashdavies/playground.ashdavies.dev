@@ -17,7 +17,7 @@ public actual fun <T : Any> Flow<PagingData<T>>.collectAsLazyPagingItems(): Lazy
 private object StandardLogger : Logger {
     override fun isLoggable(level: Int): Boolean = true
     override fun log(level: Int, message: String, tr: Throwable?) {
-        println("$level: $message");
+        println("$level: $message")
         tr?.printStackTrace()
     }
 }

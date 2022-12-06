@@ -38,10 +38,12 @@ kotlin {
     }
 
     configurations.forEach {
-        if (it.name.contains("jvm")) it.exclude(
-            module = "kotlinx-coroutines-android",
-            group = "org.jetbrains.kotlinx",
-        )
+        if (it.name.contains("jvm")) {
+            it.exclude(
+                module = "kotlinx-coroutines-android",
+                group = "org.jetbrains.kotlinx"
+            )
+        }
     }
 }
 
