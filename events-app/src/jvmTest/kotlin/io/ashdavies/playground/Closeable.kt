@@ -15,10 +15,8 @@ import kotlin.test.assertEquals
 internal class CloseableFlowTest {
 
     @Test
-    fun `should execute on swing dispatcher`() = runTest {
-        val flow = flowOf(1, 2, 3, 4, 5)
-        val closable = flow.asCloseableFlow()
-
+    fun `should execute on jvm main dispatcher`() = runTest {
+        val closable = flowOf(1, 2, 3).asCloseableFlow()
         val channel = Channel<Int>(UNLIMITED)
         closable.watch { channel.send(it) }
 
@@ -26,8 +24,6 @@ internal class CloseableFlowTest {
             assertEquals(awaitItem(), 1)
             assertEquals(awaitItem(), 2)
             assertEquals(awaitItem(), 3)
-            assertEquals(awaitItem(), 4)
-            assertEquals(awaitItem(), 5)
         }
     }
 }

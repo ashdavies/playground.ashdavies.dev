@@ -17,7 +17,9 @@ kotlin {
     }
 
     jvmMain.dependencies {
-        implementation(libs.androidx.paging.compose)
+        implementation(libs.androidx.paging.compose) {
+            exclude("org.jetbrains.kotlinx", "kotlinx-coroutines-android")
+        }
     }
 }
 
