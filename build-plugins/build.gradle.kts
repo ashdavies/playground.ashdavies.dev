@@ -5,15 +5,6 @@ plugins {
 dependencies {
     implementation(files(libs.javaClass.superclass.protectionDomain.codeSource.location))
 
-<<<<<<< Updated upstream
-    plugin(libs.plugins.android.library)
-    plugin(libs.plugins.apollo.graphql)
-    plugin(libs.plugins.kotlin.compose)
-    plugin(libs.plugins.kotlin.multiplatform)
-    plugin(libs.plugins.kotlin.serialization)
-    plugin(libs.plugins.johnrengelman.shadow)
-    plugin(libs.plugins.squareup.sqldelight)
-=======
     fun plugin(provider: Provider<PluginDependency>) = with(provider.get()) {
         "$pluginId:$pluginId.gradle.plugin:$version"
     }
@@ -27,9 +18,8 @@ dependencies {
         implementation(plugin(johnrengelman.shadow))
         implementation(plugin(squareup.sqldelight))
     }
->>>>>>> Stashed changes
 }
 
-fun DependencyHandler.plugin(provider: Provider<PluginDependency>): Dependency? {
-    return with(provider.get()) { implementation("$pluginId:$pluginId.gradle.plugin:$version") }
+kotlin.sourceSets.all {
+    languageSettings.optIn("kotlin.RequiresOptIn")
 }

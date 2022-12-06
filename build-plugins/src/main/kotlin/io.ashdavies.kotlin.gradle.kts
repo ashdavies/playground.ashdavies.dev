@@ -3,6 +3,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     id("org.jetbrains.compose")
+    // id("app.cash.molecule")
 
     kotlin("multiplatform")
     kotlin("plugin.serialization")
@@ -12,13 +13,8 @@ kotlin {
     explicitApiWarning()
     jvm()
 
-    sourceSets.all {
-        languageSettings.optIn("kotlin.RequiresOptIn")
-    }
-
-    @Suppress("UNUSED_VARIABLE")
     @OptIn(ExperimentalComposeLibrary::class)
-    val commonMain by sourceSets.dependencies {
+    commonMain.dependencies {
         implementation(compose.foundation)
         implementation(compose.material3)
         implementation(compose.runtime)
@@ -30,13 +26,13 @@ kotlin {
         implementation(libs.oolong)
     }
 
-    @Suppress("UNUSED_VARIABLE")
-    val commonTest by sourceSets.dependencies {
+    commonTest.dependencies {
         implementation(libs.bundles.jetbrains.kotlin.test)
+        implementation(libs.bundles.jetbrains.kotlinx)
+        implementation(libs.app.cash.turbine)
     }
 
-    @Suppress("UNUSED_VARIABLE")
-    val jvmMain by sourceSets.dependencies {
+    jvmMain.dependencies {
         implementation(compose.desktop.currentOs)
         implementation(libs.jetbrains.kotlinx.coroutines.swing)
     }

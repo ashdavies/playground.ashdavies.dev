@@ -1,5 +1,3 @@
-@file:JvmName("PlaygroundThemeAndroid")
-
 package io.ashdavies.playground
 
 import android.content.Context
@@ -13,7 +11,11 @@ import androidx.compose.ui.platform.LocalContext
 
 @Composable
 public actual fun dynamicColorScheme(darkTheme: Boolean): ColorScheme = when {
-    Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> dynamicColorScheme(LocalContext.current, darkTheme)
+    Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> dynamicColorScheme(
+        context = LocalContext.current,
+        darkTheme = darkTheme,
+    )
+
     else -> defaultColorScheme(darkTheme)
 }
 

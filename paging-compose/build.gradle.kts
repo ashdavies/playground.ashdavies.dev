@@ -1,7 +1,5 @@
 plugins {
-    id("com.android.library")
-    id("io.ashdavies.android")
-    id("io.ashdavies.kotlin")
+    id("io.ashdavies.default")
     id("io.ashdavies.aar")
 }
 
@@ -10,16 +8,18 @@ android {
 }
 
 kotlin {
-    val commonMain by sourceSets.dependencies {
+    commonMain.dependencies {
         api(libs.cash.paging.common)
     }
 
-    val androidMain by sourceSets.dependencies {
+    androidMain.dependencies {
         api(libs.bundles.androidx.paging)
     }
 
-    val jvmMain by sourceSets.dependencies {
-        implementation(libs.androidx.paging.compose)
+    jvmMain.dependencies {
+        implementation(libs.androidx.paging.compose) {
+            exclude("org.jetbrains.kotlinx", "kotlinx-coroutines-android")
+        }
     }
 }
 

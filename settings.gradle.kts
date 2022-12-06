@@ -31,6 +31,8 @@ include(
     ":version-catalog",
 )
 
+includeBuild("build-plugins")
+
 includeBuild("compose-constructor/plugin-gradle") {
     dependencySubstitution {
         substitute(module("io.ashdavies.playground:plugin-gradle")).using(project(":"))
@@ -43,10 +45,6 @@ gradleEnterprise {
         termsOfServiceAgree = "yes"
         publishAlways()
     }
-}
-
-pluginManagement {
-    includeBuild("build-plugins")
 }
 
 plugins {

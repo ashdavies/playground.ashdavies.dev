@@ -1,7 +1,6 @@
-import com.android.build.api.dsl.CommonExtension
-import org.gradle.api.JavaVersion
 import org.gradle.api.NamedDomainObjectCollection
 import org.gradle.api.Project
+import org.gradle.api.artifacts.ExternalModuleDependency
 import org.gradle.api.artifacts.MinimalExternalModuleDependency
 import org.gradle.api.file.FileTree
 import org.gradle.api.plugins.ExtensionContainer
@@ -13,17 +12,6 @@ import org.gradle.kotlin.dsl.provideDelegate
 import org.jetbrains.kotlin.gradle.plugin.KotlinDependencyHandler
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
 import java.io.File
-
-public object Playground {
-
-    const val jvmTarget = "11"
-
-    val freeCompilerArgs = listOf(
-        "-opt-in=kotlin.RequiresOptIn",
-        "-Xallow-result-return-type",
-        "-Xmulti-platform"
-    )
-}
 
 public fun Jar.dependency(provider: Provider<MinimalExternalModuleDependency>): List<FileTree> {
     fun MinimalExternalModuleDependency.matches(tree: FileTree): Boolean {
@@ -48,9 +36,14 @@ public fun Jar.dependency(provider: Provider<MinimalExternalModuleDependency>): 
 }
 
 public fun NamedDomainObjectCollection<KotlinSourceSet>.dependencies(
-    configure: KotlinDependencyHandler.() -> Unit
+    configure: KotlinDependencyHandler.() -> Unit,
 ) = getting { dependencies(configure) }
 
-public inline fun <reified T> ExtensionContainer.withExtension(configure: T.() -> Unit) {
-    findByType(T::class.java)?.configure()
-}
+public fun KotlinDependencyHandler.implementation(
+    provider: Provider<MinimalExternalModuleDependency>,
+    configure: ExternalModuleDependency.() -> Unit,
+) = implementation("${provider.get()}", configure)
+
+public inline fun <reified T> ExtensionContainer.withType(
+    configure: T.() -> Unit,
+) = findByType(T::class.java)?.configure()

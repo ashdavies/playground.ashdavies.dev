@@ -1,5 +1,3 @@
-@file:JvmName("BuildersJvm")
-
 package io.ashdavies.notion.coroutines
 
 import kotlinx.coroutines.CoroutineScope
