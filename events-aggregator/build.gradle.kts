@@ -1,6 +1,6 @@
 plugins {
     id("io.ashdavies.cloud")
-    id("apollo.graphql")
+    id("io.ashdavies.graphql")
 }
 
 dependencies {

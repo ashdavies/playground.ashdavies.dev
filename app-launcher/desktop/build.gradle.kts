@@ -10,9 +10,10 @@ kotlin {
         withJava()
     }
 
-    val jvmMain by sourceSets.dependencies {
+    jvmMain.dependencies {
         implementation(compose.desktop.currentOs)
         implementation(libs.bundles.arkivanov.decompose)
+        implementation(libs.jetbrains.kotlinx.cli)
         implementation(projects.appLauncher.common)
     }
 }

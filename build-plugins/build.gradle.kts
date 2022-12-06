@@ -5,15 +5,21 @@ plugins {
 dependencies {
     implementation(files(libs.javaClass.superclass.protectionDomain.codeSource.location))
 
-    plugin(libs.plugins.android.library)
-    plugin(libs.plugins.apollo.graphql)
-    plugin(libs.plugins.kotlin.compose)
-    plugin(libs.plugins.kotlin.multiplatform)
-    plugin(libs.plugins.kotlin.serialization)
-    plugin(libs.plugins.johnrengelman.shadow)
-    plugin(libs.plugins.squareup.sqldelight)
+    fun DependencyHandler.plugin(provider: Provider<PluginDependency>) = with(provider.get()) {
+        implementation("$pluginId:$pluginId.gradle.plugin:$version")
+    }
+
+    with(libs.plugins) {
+        plugin(android.library)
+        plugin(apollo.graphql)
+        plugin(kotlin.compose)
+        plugin(kotlin.multiplatform)
+        plugin(kotlin.serialization)
+        plugin(johnrengelman.shadow)
+        plugin(squareup.sqldelight)
+    }
 }
 
-fun DependencyHandler.plugin(provider: Provider<PluginDependency>): Dependency? {
-    return with(provider.get()) { implementation("$pluginId:$pluginId.gradle.plugin:$version") }
+kotlin.sourceSets.all {
+    languageSettings.optIn("kotlin.RequiresOptIn")
 }

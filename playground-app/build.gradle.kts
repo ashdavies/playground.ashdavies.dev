@@ -1,7 +1,5 @@
 plugins {
-    id("com.android.library")
-    id("io.ashdavies.android")
-    id("io.ashdavies.kotlin")
+    id("io.ashdavies.default")
 }
 
 android {
@@ -9,7 +7,7 @@ android {
 }
 
 kotlin {
-    val commonMain by sourceSets.dependencies {
+    commonMain.dependencies {
         implementation(projects.appCheck.appCheckClient)
 
         implementation(projects.localRemote)
@@ -19,7 +17,7 @@ kotlin {
         implementation(libs.jetbrains.kotlinx.collections.immutable)
     }
 
-    val androidMain by sourceSets.dependencies {
+    androidMain.dependencies {
         implementation(projects.firebaseCompose)
 
         implementation(libs.androidx.compose.foundation)

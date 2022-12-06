@@ -1,11 +1,7 @@
 import com.android.build.api.dsl.CommonExtension
 import com.android.build.gradle.LibraryExtension
 import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
-import org.gradle.api.JavaVersion
-import org.gradle.kotlin.dsl.dependencies
-import org.gradle.kotlin.dsl.getValue
-import org.gradle.kotlin.dsl.getting
-import org.gradle.kotlin.dsl.kotlin
+import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
 /*pluginManager.withPlugin("android") {
     plugins { id("kotlin-parcelize") }
@@ -18,24 +14,27 @@ plugins {
 kotlin {
     android()
 
-    @Suppress("UNUSED_VARIABLE")
-    val androidMain by sourceSets.dependencies {
+    androidMain.dependencies {
         implementation(libs.androidx.annotation)
         implementation(libs.androidx.core.ktx)
         implementation(libs.google.android.material)
         implementation(libs.jetbrains.kotlinx.coroutines.android)
     }
 
-    @Suppress("UNUSED_VARIABLE")
-    val androidTest by sourceSets.getting {
-        val androidAndroidTestDebug by sourceSets.getting
-        dependsOn(androidAndroidTestDebug)
+    androidTest {
+        dependsOn(androidAndroidTestRelease)
     }
 }
 
-extensions.withExtension<BaseAppModuleExtension> { configure() }
+afterEvaluate {
+    extensions.withType<KotlinMultiplatformExtension> {
+        sourceSets.removeAll { it.name.startsWith("androidTestFixtures") }
+    }
+}
 
-extensions.withExtension<LibraryExtension> { configure() }
+extensions.withType<BaseAppModuleExtension> { configure() }
+
+extensions.withType<LibraryExtension> { configure() }
 
 fun CommonExtension<*, *, *, *>.configure() {
     buildFeatures {
@@ -48,8 +47,8 @@ fun CommonExtension<*, *, *, *>.configure() {
     }
 
     defaultConfig {
-        compileSdk = 33
-        minSdk = 21
+        compileSdk = Playground.compileSdk
+        minSdk = Playground.minSdk
     }
 
     sourceSets.configureEach {

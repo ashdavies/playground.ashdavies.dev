@@ -1,7 +1,5 @@
 plugins {
-    id("com.android.library")
-    id("io.ashdavies.android")
-    id("io.ashdavies.kotlin")
+    id("io.ashdavies.default")
 }
 
 android {
@@ -9,7 +7,7 @@ android {
 }
 
 kotlin {
-    val commonMain by sourceSets.dependencies {
+    commonMain.dependencies {
         implementation(libs.bundles.ktor.client)
         implementation(libs.bundles.ktor.server)
     }

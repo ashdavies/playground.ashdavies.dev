@@ -1,7 +1,5 @@
 plugins {
-    id("com.android.library")
-    id("io.ashdavies.android")
-    id("io.ashdavies.kotlin")
+    id("io.ashdavies.default")
 }
 
 android {
@@ -9,18 +7,18 @@ android {
 }
 
 kotlin {
-    val commonMain by sourceSets.dependencies {
+    commonMain.dependencies {
         implementation(projects.firebaseCompose)
         implementation(projects.localRemote)
 
         implementation(libs.bundles.ktor.client)
     }
 
-    val androidDebug by sourceSets.dependencies {
+    androidDebug.dependencies {
         implementation(libs.google.firebase.appcheck.debug)
     }
 
-    val androidMain by sourceSets.dependencies {
+    androidMain.dependencies {
         implementation(libs.androidx.compose.foundation)
         implementation(libs.bundles.google.firebase)
         implementation(libs.google.firebase.appcheck.playintegrity)
