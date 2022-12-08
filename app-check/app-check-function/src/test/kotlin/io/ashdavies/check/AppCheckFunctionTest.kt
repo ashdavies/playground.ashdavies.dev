@@ -1,5 +1,6 @@
 package io.ashdavies.check
 
+import io.ashdavies.cloud.TestHttpClient
 import io.ashdavies.cloud.startServer
 import io.ktor.client.request.get
 import io.ktor.client.request.post
@@ -11,8 +12,12 @@ import io.ktor.http.HttpMethod
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.runBlocking
 import kotlin.test.Test
 import kotlin.test.assertEquals
+
+private val CREATE_TOKEN_FUNCTION: String =
+    TODO("CREATE_TOKEN_FUNCTION")
 
 private val MOBILE_SDK_APP_ID: String
     get() = requireNotNull(System.getenv("MOBILE_SDK_APP_ID"))
@@ -21,7 +26,19 @@ private val MOBILE_SDK_APP_ID: String
 internal class AppCheckFunctionTest {
 
     @Test
-    fun `should return app check token for given app id`() = startServer<AppCheckFunction> { client ->
+    fun `should create production app check token`() = runBlocking {
+        val client = TestHttpClient(CREATE_TOKEN_FUNCTION)
+        val response: HttpResponse = client.post {
+            contentType(ContentType.Application.Json)
+            setBody(AppCheckRequest(MOBILE_SDK_APP_ID))
+        }
+
+        // Function can only be accessed with permission
+        assertEquals(HttpStatusCode.OK, response.status)
+    }
+
+    @Test
+    fun `should return app check token for request`() = startServer<AppCheckFunction> { client ->
         val response: HttpResponse = client.post {
             contentType(ContentType.Application.Json)
             setBody(AppCheckRequest(MOBILE_SDK_APP_ID))

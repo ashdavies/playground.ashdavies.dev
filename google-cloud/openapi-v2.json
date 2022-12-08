@@ -1,0 +1,35 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Playground Endpoints",
+    "description": "Playground APIs for project data with Firebase App Check",
+    "version": "1.0.0"
+  },
+  "host": "${host}",
+  "schemes": [
+    "https"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/create-token": {
+      "post": {
+        "summary": "Create a new Firebase App Check token",
+        "operationId": "createToken",
+        "x-google-backend": {
+          "address": "${create_token_address}",
+          "protocol": "h2"
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  }
+}

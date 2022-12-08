@@ -7,4 +7,6 @@ dependencies {
     implementation(projects.appCheck.appCheckSdk)
     implementation(projects.cloudFunctions)
     implementation(projects.localStorage)
+
+    testImplementation(testFixtures(projects.cloudFunctions))
 }
