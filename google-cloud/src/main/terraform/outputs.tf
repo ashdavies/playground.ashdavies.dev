@@ -1,3 +1,8 @@
+output "playground_endpoint" {
+  description = "Playground API endpoint"
+  value       = local.endpoints_service_name
+}
+
 output "pool_name" {
   description = "Workload Identity Pool name"
   value       = module.gh-oidc.pool_name
