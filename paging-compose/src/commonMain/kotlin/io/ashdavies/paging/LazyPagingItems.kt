@@ -49,7 +49,7 @@ public class LazyPagingItems<T : Any> internal constructor(
     /**
      * the [Flow] object which contains a stream of [PagingData] elements.
      */
-    private val flow: Flow<PagingData<T>>
+    private val flow: Flow<PagingData<T>>,
 ) {
     private val mainDispatcher = Dispatchers.Main
 
@@ -60,7 +60,7 @@ public class LazyPagingItems<T : Any> internal constructor(
      * Use [get] to achieve such behavior.
      */
     var itemSnapshotList by mutableStateOf(
-        ItemSnapshotList<T>(0, 0, emptyList())
+        ItemSnapshotList<T>(0, 0, emptyList()),
     )
         private set
 
@@ -91,13 +91,13 @@ public class LazyPagingItems<T : Any> internal constructor(
 
     private val pagingDataDiffer = object : PagingDataDiffer<T>(
         differCallback = differCallback,
-        mainDispatcher = mainDispatcher
+        mainDispatcher = mainDispatcher,
     ) {
         override suspend fun presentNewList(
             previousList: NullPaddedList<T>,
             newList: NullPaddedList<T>,
             lastAccessedIndex: Int,
-            onListPresentable: () -> Unit
+            onListPresentable: () -> Unit,
         ): Int? {
             onListPresentable()
             updateItemSnapshotList()
@@ -172,8 +172,8 @@ public class LazyPagingItems<T : Any> internal constructor(
             refresh = InitialLoadStates.refresh,
             prepend = InitialLoadStates.prepend,
             append = InitialLoadStates.append,
-            source = InitialLoadStates
-        )
+            source = InitialLoadStates,
+        ),
     )
         private set
 
@@ -194,7 +194,7 @@ private val IncompleteLoadState = LoadState.NotLoading(false)
 private val InitialLoadStates = LoadStates(
     IncompleteLoadState,
     IncompleteLoadState,
-    IncompleteLoadState
+    IncompleteLoadState,
 )
 
 /**
@@ -239,18 +239,22 @@ public fun <T : Any> Flow<PagingData<T>>.collectAsLazyPagingItems(): LazyPagingI
 public fun <T : Any> LazyListScope.items(
     items: LazyPagingItems<T>,
     key: ((item: T) -> Any)? = null,
-    itemContent: @Composable LazyItemScope.(value: T?) -> Unit
+    itemContent: @Composable LazyItemScope.(value: T?) -> Unit,
 ) {
     items(
         count = items.itemCount,
-        key = if (key == null) null else { index ->
-            val item = items.peek(index)
-            if (item == null) {
-                PagingPlaceholderKey(index)
-            } else {
-                key(item)
+        key = if (key == null) {
+            null
+        } else {
+            { index ->
+                val item = items.peek(index)
+                if (item == null) {
+                    PagingPlaceholderKey(index)
+                } else {
+                    key(item)
+                }
             }
-        }
+        },
     ) { index ->
         itemContent(items[index])
     }
@@ -278,18 +282,22 @@ public fun <T : Any> LazyListScope.items(
 public fun <T : Any> LazyListScope.itemsIndexed(
     items: LazyPagingItems<T>,
     key: ((index: Int, item: T) -> Any)? = null,
-    itemContent: @Composable LazyItemScope.(index: Int, value: T?) -> Unit
+    itemContent: @Composable LazyItemScope.(index: Int, value: T?) -> Unit,
 ) {
     items(
         count = items.itemCount,
-        key = if (key == null) null else { index ->
-            val item = items.peek(index)
-            if (item == null) {
-                PagingPlaceholderKey(index)
-            } else {
-                key(index, item)
+        key = if (key == null) {
+            null
+        } else {
+            { index ->
+                val item = items.peek(index)
+                if (item == null) {
+                    PagingPlaceholderKey(index)
+                } else {
+                    key(index, item)
+                }
             }
-        }
+        },
     ) { index ->
         itemContent(index, items[index])
     }

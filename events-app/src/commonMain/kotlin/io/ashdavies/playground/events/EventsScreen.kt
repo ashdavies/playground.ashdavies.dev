@@ -117,7 +117,7 @@ private fun EventSection(event: Event?, onClick: () -> Unit) {
 
                     PlaceholderText(
                         style = MaterialTheme.typography.labelSmall,
-                        text = event?.dateStart
+                        text = event?.dateStart,
                     )
                 }
             }
