@@ -1,6 +1,7 @@
+import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode.Disabled
+
 plugins {
     id("io.ashdavies.default")
-    id("io.ashdavies.aar")
 }
 
 android {
@@ -13,16 +14,8 @@ kotlin {
     }
 
     androidMain.dependencies {
-        api(libs.bundles.androidx.paging)
+        api(libs.androidx.paging.runtime)
     }
 
-    jvmMain.dependencies {
-        implementation(libs.androidx.paging.compose) {
-            exclude("org.jetbrains.kotlinx", "kotlinx-coroutines-android")
-        }
-    }
-}
-
-val jvmJar by tasks.getting(Jar::class) {
-    doFirst { from(dependency(libs.androidx.paging.compose)) }
+    explicitApi = Disabled
 }

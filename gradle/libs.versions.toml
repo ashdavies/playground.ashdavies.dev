@@ -26,7 +26,6 @@ androidx-core-ktx = "androidx.core:core-ktx:1.9.0"
 androidx-core-splashscreen = "androidx.core:core-splashscreen:1.0.0"
 androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "androidx-lifecycle" }
 androidx-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "androidx-lifecycle" }
-androidx-paging-compose = "androidx.paging:paging-compose:1.0.0-alpha17"
 androidx-paging-runtime = { module = "androidx.paging:paging-runtime", version.ref = "androidx-paging" }
 
 apache-batikExt = "org.apache.xmlgraphics:batik-ext:1.14"
@@ -121,7 +120,6 @@ tschuchortdev-kotlin-compile-testing = "com.github.tschuchortdev:kotlin-compile-
 
 [bundles]
 androidx-activity = ["androidx-activity-compose", "androidx-activity-ktx"]
-androidx-paging = ["androidx-paging-compose", "androidx-paging-runtime"]
 androidx-viewmodel = ["androidx-lifecycle-viewmodel-compose", "androidx-lifecycle-viewmodel-ktx"]
 arkivanov-decompose = ["arkivanov-decompose", "arkivanov-decompose-extensions"]
 google-firebase = ["google-firebase-analytics", "google-firebase-common-ktx"]
