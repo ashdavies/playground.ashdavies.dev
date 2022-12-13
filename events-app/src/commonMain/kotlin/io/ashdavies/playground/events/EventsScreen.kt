@@ -28,17 +28,24 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import app.cash.paging.LoadStateError
+import app.cash.paging.LoadStateLoading
 import io.ashdavies.paging.LazyPagingItems
 import io.ashdavies.paging.collectAsLazyPagingItems
-import io.ashdavies.paging.errorMessage
-import io.ashdavies.paging.isRefreshing
 import io.ashdavies.paging.items
-import io.ashdavies.paging.refresh
 import io.ashdavies.playground.Event
 import io.ashdavies.playground.EventsBottomBar
 import io.ashdavies.playground.EventsRoot
 import io.ashdavies.playground.android.fade
 import io.ashdavies.playground.platform.PlatformSwipeRefresh
+
+private val <T : Any> LazyPagingItems<T>.errorMessage: String?
+    get() = (loadState.append as? LoadStateError)
+        ?.error
+        ?.message
+
+private val <T : Any> LazyPagingItems<T>.isRefreshing: Boolean
+    get() = loadState.refresh is LoadStateLoading
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
@@ -56,8 +63,9 @@ internal fun EventsScreen(child: EventsRoot.Child.Events) {
             isRefreshing = pagingItems.isRefreshing,
             onRefresh = pagingItems::refresh,
         ) {
-            if (pagingItems.errorMessage != null) {
-                EventFailure(pagingItems.errorMessage)
+            val errorMessage = pagingItems.errorMessage
+            if (errorMessage != null) {
+                EventFailure(errorMessage)
             }
 
             LazyColumn(
@@ -97,9 +105,20 @@ private fun EventSection(event: Event?, onClick: () -> Unit) {
                         .fillMaxWidth()
                         .padding(start = 12.dp),
                 ) {
-                    PlaceholderText(event?.name, style = MaterialTheme.typography.labelLarge)
-                    PlaceholderText(event?.location, style = MaterialTheme.typography.labelMedium)
-                    PlaceholderText(event?.dateStart, style = MaterialTheme.typography.labelSmall)
+                    PlaceholderText(
+                        style = MaterialTheme.typography.labelLarge,
+                        text = event?.name,
+                    )
+
+                    PlaceholderText(
+                        style = MaterialTheme.typography.labelMedium,
+                        text = event?.location,
+                    )
+
+                    PlaceholderText(
+                        style = MaterialTheme.typography.labelSmall,
+                        text = event?.dateStart,
+                    )
                 }
             }
         }
@@ -114,7 +133,7 @@ private fun ColumnScope.PlaceholderText(
 ) {
     Text(
         overflow = TextOverflow.Ellipsis,
-        text = text ?: emptyString(),
+        text = text ?: String(),
         style = style,
         maxLines = 1,
         modifier = modifier
@@ -126,16 +145,13 @@ private fun ColumnScope.PlaceholderText(
 }
 
 @Composable
-private fun EventFailure(message: String?, modifier: Modifier = Modifier) {
+private fun EventFailure(message: String, modifier: Modifier = Modifier) {
     Column(verticalArrangement = Arrangement.Center) {
         Row(horizontalArrangement = Arrangement.Center) {
             Text(
                 modifier = modifier.padding(16.dp, 12.dp),
-                text = message ?: "Something went wrong",
+                text = message,
             )
         }
     }
 }
-
-@Suppress("NOTHING_TO_INLINE")
-private inline fun emptyString(): String = ""
