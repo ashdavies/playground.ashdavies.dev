@@ -16,8 +16,12 @@ internal class EventsPagingSource(
             limit = params.loadSize.toLong(),
         ).executeAsList()
 
+        val nextKey = query
+            .lastOrNull()
+            ?.dateStart
+
         return LoadResult.Page(
-            nextKey = query.last().dateStart,
+            nextKey = nextKey,
             prevKey = null,
             data = query,
         )
