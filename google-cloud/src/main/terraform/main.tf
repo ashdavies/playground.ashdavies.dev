@@ -1,7 +1,3 @@
-locals {
-    endpoints_service_name = "${var.gh_repo_name}.endpoints.${var.project_id}.cloud.goog"
-}
-
 provider "github" {
   token = var.gh_token
   owner = var.gh_owner
@@ -24,15 +20,6 @@ resource "github_actions_secret" "google_workload_identity" {
   repository      = var.gh_repo_name
 }
 
-resource "google_endpoints_service" "endpoints" {
-  service_name   = local.endpoints_service_name
-  project        = var.project_id
-  openapi_config = templatefile("../../../../openapi-v2.json", {
-    create_token_address = module.create-token.function_uri
-    host = local.endpoints_service_name
-  })
-}
-
 resource "google_service_account" "gh_service_account" {
   display_name = "GitHub Service Account"
   project      = var.project_id
@@ -52,7 +39,6 @@ resource "google_project_iam_member" "gh_service_account" {
 }
 
 module "create-token" {
-  // source_file          = "../../../build/terraform/main/runtimeExecution/resources/app-check-function-all.jar"
   source_file          = var.resources.app-check-function-all_jar.path
   function_description = "Create a new Firebase App Check token"
   entry_point          = "io.ashdavies.check.AppCheckFunction"
@@ -63,7 +49,6 @@ module "create-token" {
 }
 
 module "aggregate-events" {
-  // source_file          = "../../../build/terraform/main/runtimeExecution/resources/events-aggregator-all.jar"
   entry_point          = "io.ashdavies.playground.aggregator.AggregatorFunction"
   source_file          = var.resources.events-aggregator-all_jar.path
   function_description = "Google Cloud Function to aggregate events"
