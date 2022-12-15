@@ -48,7 +48,7 @@ module "create-token" {
   function_name        = "create-token"
 }
 
-module "aggregate-events" {
+/*module "aggregate-events" {
   entry_point          = "io.ashdavies.playground.aggregator.AggregatorFunction"
   source_file          = var.resources.events-aggregator-all_jar.path
   function_description = "Google Cloud Function to aggregate events"
@@ -56,7 +56,7 @@ module "aggregate-events" {
   project_region       = var.project_region
   function_name        = "aggregate-events"
   project_id           = var.project_id
-}
+}*/
 
 module "gh-oidc" {
   source      = "terraform-google-modules/github-actions-runners/google//modules/gh-oidc"

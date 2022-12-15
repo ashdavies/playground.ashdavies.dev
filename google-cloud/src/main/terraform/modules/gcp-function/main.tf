@@ -32,7 +32,7 @@ resource "google_cloudfunctions2_function" "google_cloud_function" {
   }
 }
 
-resource "google_cloud_run_service" "endpoint" {
+/*resource "google_cloud_run_service" "endpoint" {
   depends_on = [null_resource.openapi_proxy_image]
   location   = var.project_region
   name       = var.function_name
@@ -50,9 +50,9 @@ resource "google_cloud_run_service" "endpoint" {
       }
     }
   }
-}
+}*/
 
-resource "google_endpoints_service" "endpoints" {
+/*resource "google_endpoints_service" "endpoints" {
   service_name   = local.endpoints_service_name
   project        = var.project_id
   openapi_config = templatefile(var.resources.openapi-v2_json.path, {
@@ -62,7 +62,7 @@ resource "google_endpoints_service" "endpoints" {
     method       = var.function_method
     operation_id = var.function_name
   })
-}
+}*/
 
 resource "google_storage_bucket" "default" {
   name          = "${random_id.bucket_prefix.hex}-bucket-tfstate"
@@ -75,21 +75,21 @@ resource "google_storage_bucket" "default" {
   }
 }
 
-resource "null_resource" "openapi_proxy_image" {
-   triggers = {
-     config_id = google_endpoints_service.endpoints.config_id
-   }
+/*resource "null_resource" "openapi_proxy_image" {
+  triggers = {
+    config_id = google_endpoints_service.endpoints.config_id
+  }
 
-   provisioner "local-exec" {
-     command = <<EOS
-       bash ${var.resources.gcloud-build-image.path} \
-         -c ${google_endpoints_service.endpoints.config_id} \
-         -s ${local.endpoints_service_name} \
-         -p ${var.project_id} \
-         -v ${var.esp_tag}
-     EOS
-   }
- }
+  provisioner "local-exec" {
+    command = <<EOS
+    bash ${var.resources.gcloud-build-image.path} \
+    -c ${google_endpoints_service.endpoints.config_id} \
+    -s ${local.endpoints_service_name} \
+    -p ${var.project_id} \
+    -v ${var.esp_tag}
+    EOS
+  }
+}*/
 
 resource "random_id" "bucket_prefix" {
   byte_length = 8
