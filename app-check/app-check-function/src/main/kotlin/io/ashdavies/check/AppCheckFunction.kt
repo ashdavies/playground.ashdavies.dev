@@ -8,6 +8,8 @@ import io.ashdavies.playground.cloud.HttpEffect
 import io.ashdavies.playground.cloud.LocalFirebaseAdminApp
 import io.ashdavies.playground.cloud.LocalHttpRequest
 import kotlinx.datetime.Clock.System.now
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import java.net.URLDecoder
 import java.nio.charset.Charset
 import java.nio.charset.StandardCharsets
@@ -39,6 +41,6 @@ internal class AppCheckFunction : HttpFunction by AuthorisedHttpApplication(Http
             it.appId = token.appId
         }
 
-        response.token
+        Json.encodeToString(response)
     }
 })

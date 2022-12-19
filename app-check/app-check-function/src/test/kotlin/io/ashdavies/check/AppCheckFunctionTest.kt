@@ -16,8 +16,8 @@ import kotlinx.coroutines.runBlocking
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-private val CREATE_TOKEN_FUNCTION: String =
-    TODO("CREATE_TOKEN_FUNCTION")
+private const val CREATE_TOKEN_FUNCTION: String =
+    "https://playground.ashdavies.dev/token"
 
 private val MOBILE_SDK_APP_ID: String
     get() = requireNotNull(System.getenv("MOBILE_SDK_APP_ID"))

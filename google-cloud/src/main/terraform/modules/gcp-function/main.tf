@@ -78,6 +78,14 @@ data "google_iam_policy" "noauth" {
   }
 }
 
+resource "google_project_service" "endpoints_project_service" {
+  service    = google_endpoints_service.endpoints.service_name
+  depends_on = [google_endpoints_service.endpoints]
+  project    = var.project_id
+}
+
+// TODO Enable API keys for project
+
 resource "google_storage_bucket" "default" {
   name          = "${random_id.bucket_prefix.hex}-bucket-tfstate"
   project       = var.project_id
