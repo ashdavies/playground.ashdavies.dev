@@ -52,6 +52,13 @@ resource "google_cloud_run_service" "endpoint" {
   }
 }
 
+resource "google_cloud_run_service_iam_policy" "noauth-endpoints" {
+  location    = google_cloud_run_service.endpoint.location
+  project     = google_cloud_run_service.endpoint.project
+  policy_data = data.google_iam_policy.noauth.policy_data
+  service     = google_cloud_run_service.endpoint.name
+}
+
 resource "google_endpoints_service" "endpoints" {
   service_name   = local.endpoints_service_name
   project        = var.project_id
@@ -62,6 +69,13 @@ resource "google_endpoints_service" "endpoints" {
     method       = var.function_method
     operation_id = var.function_name
   })
+}
+
+data "google_iam_policy" "noauth" {
+  binding {
+    role = "roles/run.invoker"
+    members = ["allUsers"]
+  }
 }
 
 resource "google_storage_bucket" "default" {
