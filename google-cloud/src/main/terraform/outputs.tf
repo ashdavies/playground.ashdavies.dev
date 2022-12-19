@@ -1,3 +1,8 @@
+output "create_token_url" {
+  value       = module.create-token.endpoint_url
+  description = "Create Token URL"
+}
+
 output "pool_name" {
   description = "Workload Identity Pool name"
   value       = module.gh-oidc.pool_name
