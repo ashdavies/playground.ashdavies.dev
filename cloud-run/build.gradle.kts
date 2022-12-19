@@ -14,5 +14,7 @@ dependencies {
     implementation(compose.runtime)
 
     implementation(libs.bundles.jetbrains.kotlinx)
+    implementation(libs.bundles.ktor.serialization)
     implementation(libs.bundles.ktor.server)
+    implementation(libs.qos.logbackClassic)
 }
