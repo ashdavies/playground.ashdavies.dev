@@ -6,7 +6,7 @@ variable "entry_point" {
 variable "esp_tag" {
   type        = string
   description = "ESPv2 version"
-  default     = "2"
+  default     = "2.40.0"
 }
 
 variable "function_description" {

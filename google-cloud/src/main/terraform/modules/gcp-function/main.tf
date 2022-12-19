@@ -9,9 +9,9 @@ locals {
 }
 
 resource "google_cloudfunctions2_function" "google_cloud_function" {
+  name        = "${var.function_name}-function"
   description = var.function_description
   location    = var.project_region
-  name        = var.function_name
 
   build_config {
     entry_point = var.entry_point
@@ -32,10 +32,10 @@ resource "google_cloudfunctions2_function" "google_cloud_function" {
   }
 }
 
-/*resource "google_cloud_run_service" "endpoint" {
+resource "google_cloud_run_service" "endpoint" {
   depends_on = [null_resource.openapi_proxy_image]
+  name       = "${var.function_name}-service"
   location   = var.project_region
-  name       = var.function_name
   project    = var.project_id
   template {
     spec {
@@ -50,9 +50,9 @@ resource "google_cloudfunctions2_function" "google_cloud_function" {
       }
     }
   }
-}*/
+}
 
-/*resource "google_endpoints_service" "endpoints" {
+resource "google_endpoints_service" "endpoints" {
   service_name   = local.endpoints_service_name
   project        = var.project_id
   openapi_config = templatefile(var.resources.openapi-v2_json.path, {
@@ -62,7 +62,7 @@ resource "google_cloudfunctions2_function" "google_cloud_function" {
     method       = var.function_method
     operation_id = var.function_name
   })
-}*/
+}
 
 resource "google_storage_bucket" "default" {
   name          = "${random_id.bucket_prefix.hex}-bucket-tfstate"
@@ -75,7 +75,7 @@ resource "google_storage_bucket" "default" {
   }
 }
 
-/*resource "null_resource" "openapi_proxy_image" {
+resource "null_resource" "openapi_proxy_image" {
   triggers = {
     config_id = google_endpoints_service.endpoints.config_id
   }
@@ -89,7 +89,7 @@ resource "google_storage_bucket" "default" {
     -v ${var.esp_tag}
     EOS
   }
-}*/
+}
 
 resource "random_id" "bucket_prefix" {
   byte_length = 8
