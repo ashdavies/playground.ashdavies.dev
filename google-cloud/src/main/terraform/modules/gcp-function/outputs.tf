@@ -3,7 +3,7 @@ output "function_uri" {
   description = "Google Cloud Function Service Config URI"
 }
 
-/*output "endpoint_url" {
+output "endpoint_url" {
   value = google_cloud_run_service.endpoint.status[0].url
   description = "Google Cloud Run Endpoint URL"
-}*/
+}
