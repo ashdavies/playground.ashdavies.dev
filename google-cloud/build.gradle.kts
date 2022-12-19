@@ -5,7 +5,7 @@ plugins {
 dependencies {
     lambda(projects.appCheck.appCheckFunction)
     lambda(projects.eventsAggregator)
-    lambda(projects.cloudRun)
+    //lambda(projects.cloudRun)
 }
 
 terraform {
