@@ -10,6 +10,7 @@ import io.ktor.http.HttpMethod
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlin.test.Ignore
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -17,6 +18,7 @@ import kotlin.test.assertEquals
 internal class EventsFunctionTest {
 
     @Test
+    @Ignore
     fun `should deny request without app check token`() = startServer<EventsFunction> { client ->
         assertEquals(HttpStatusCode.Unauthorized, client.get { }.status)
     }
