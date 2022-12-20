@@ -31,18 +31,20 @@ jobs:
           java-version: 11
 
       - name: Google Cloud Auth
-        id: "auth"
+        id: google_cloud_auth
         uses: google-github-actions/auth@v0
         with:
           workload_identity_provider: ${{ secrets.GOOGLE_WORKLOAD_IDENTITY }}
           service_account: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
+          create_credentials_file: false
+          token_format: access_token
 
       - name: Docker Auth
         uses: docker/login-action@v2
         with:
-          registry: europe-west1-docker.pkg.dev
           username: oauth2accesstoken
-          password: ${{ steps.auth.outputs.access_token }}
+          password: ${{ steps.google_cloud_auth.outputs.access_token }}
+          registry: europe-west1-docker.pkg.dev
 
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v0
