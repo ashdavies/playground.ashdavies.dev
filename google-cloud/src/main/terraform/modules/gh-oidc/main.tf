@@ -27,6 +27,9 @@ resource "google_project_iam_member" "gh_service_account" {
   for_each = toset([
     "roles/iam.serviceAccountTokenCreator",
     "roles/iam.workloadIdentityUser",
+    "roles/artifactregistry.writer",
+    "roles/iam.serviceAccountUser",
+    "roles/run.developer",
     "roles/storage.admin",
   ])
 

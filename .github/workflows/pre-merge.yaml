@@ -45,7 +45,7 @@ jobs:
       - name: Deploy Cloud Run
         uses: google-github-actions/deploy-cloudrun@v1
         with:
-          image: europe-west1-docker.pkg.dev/${{ steps.google_cloud_auth.outputs.project_id }}/cloud-run-server/cloud-run-service
+          image: europe-west1-docker.pkg.dev/${{ steps.google_cloud_auth.outputs.project_id }}/cloud-run-source-deploy/cloud-run-service
           service: cloud-run-server
           region: europe-west1
 
