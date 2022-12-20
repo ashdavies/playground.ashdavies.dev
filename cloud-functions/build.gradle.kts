@@ -12,6 +12,7 @@ dependencies {
 
     testFixturesImplementation(compose.runtime)
     testFixturesImplementation(libs.bundles.ktor.client)
+    testFixturesImplementation(libs.bundles.ktor.serialization)
     testFixturesImplementation(libs.google.cloud.javaFunctionInvoker)
     testFixturesImplementation(libs.jetbrains.kotlinx.coroutines.test)
 }
