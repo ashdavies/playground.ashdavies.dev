@@ -9,6 +9,7 @@ android {
 kotlin {
     commonMain.dependencies {
         implementation(libs.bundles.ktor.client)
+        implementation(libs.bundles.ktor.serialization)
         implementation(libs.bundles.ktor.server)
     }
 }

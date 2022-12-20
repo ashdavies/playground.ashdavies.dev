@@ -13,6 +13,7 @@ import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
+import kotlin.test.Ignore
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -26,6 +27,7 @@ private val MOBILE_SDK_APP_ID: String
 internal class AppCheckFunctionTest {
 
     @Test
+    @Ignore("Ignore until Playground server is available")
     fun `should create production app check token`() = runBlocking {
         val client = TestHttpClient(CREATE_TOKEN_FUNCTION)
         val response: HttpResponse = client.post {
@@ -38,6 +40,7 @@ internal class AppCheckFunctionTest {
     }
 
     @Test
+    @Ignore("Ignore until Playground server is available")
     fun `should return app check token for request`() = startServer<AppCheckFunction> { client ->
         val response: HttpResponse = client.post {
             contentType(ContentType.Application.Json)

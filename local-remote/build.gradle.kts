@@ -15,6 +15,8 @@ android {
 kotlin {
     commonMain.dependencies {
         implementation(projects.localStorage)
+
         implementation(libs.bundles.ktor.client)
+        implementation(libs.bundles.ktor.serialization)
     }
 }

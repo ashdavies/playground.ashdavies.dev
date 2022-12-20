@@ -12,6 +12,7 @@ include(
     ":app-launcher:desktop",
     ":auth-oauth",
     ":cloud-functions",
+    ":cloud-run",
     ":compose-constructor:plugin-common",
     // ":compose-constructor:plugin-ide",
     // ":compose-constructor:plugin-native",

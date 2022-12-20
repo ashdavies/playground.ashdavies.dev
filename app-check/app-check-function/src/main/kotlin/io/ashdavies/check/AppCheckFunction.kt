@@ -43,4 +43,4 @@ internal class AppCheckFunction : HttpFunction by AuthorisedHttpApplication(Http
 
         Json.encodeToString(response)
     }
-})
+},)

@@ -35,19 +35,33 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Cache Gradle Caches
+      - name: Google Cloud Auth
+        id: google_cloud_auth
+        uses: google-github-actions/auth@v1
+        with:
+          workload_identity_provider: ${{ secrets.GOOGLE_WORKLOAD_IDENTITY }}
+          service_account: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
+          token_format: access_token
+
+      - name: Docker Auth
+        uses: docker/login-action@v2
+        with:
+          username: oauth2accesstoken
+          password: ${{ steps.google_cloud_auth.outputs.access_token }}
+          registry: europe-west1-docker.pkg.dev
+
+      - name: Setup Cloud SDK
+        uses: google-github-actions/setup-gcloud@v0
+
+      - name: Setup Gradle Caches
         uses: actions/cache@v3
         with:
-          path: ~/.gradle/caches/
-          key: cache-gradle-cache
+          key: gradle-cache
+          path: |
+            ~/.gradle/wrapper/
+            ~/.gradle/caches/
 
-      - name: Cache Gradle Wrapper
-        uses: actions/cache@v3
-        with:
-          path: ~/.gradle/wrapper/
-          key: cache-gradle-wrapper
-
-      - name: Generate encryption passphrase
+      - name: Generate Encryption Passphrase
         run: openssl rand -base64 32
         if: ${{ false }}
 
@@ -58,17 +72,18 @@ jobs:
       - name: Decrypt Google Services
         run: find . -type f -name "google-services.aes" -exec sh -c 'openssl aes-256-cbc -md sha256 -d -in "$0" -out "${0%.aes*}.json" -k "${GOOGLE_SERVICES_PASSPHRASE}"' {} \;
 
-      - name: Google Cloud Auth
-        uses: google-github-actions/auth@v0
-        with:
-          workload_identity_provider: ${{ secrets.GOOGLE_WORKLOAD_IDENTITY }}
-          service_account: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
-
-      - name: Set up Cloud SDK
-        uses: google-github-actions/setup-gcloud@v0
-
       - name: Run Gradle Tasks
-        run: ./gradlew build check --console=plain --info
+        run: ./gradlew build --console=plain --info
+
+      - name: Containerize Cloud Run
+        run: ./gradlew cloud-run:jib --image=europe-west1-docker.pkg.dev/${{ steps.google_cloud_auth.outputs.project_id }}/cloud-run-source-deploy/cloud-run-service --console=plain --info
+
+      - name: Deploy Cloud Run
+        uses: google-github-actions/deploy-cloudrun@v1
+        with:
+          image: europe-west1-docker.pkg.dev/${{ steps.google_cloud_auth.outputs.project_id }}/cloud-run-source-deploy/cloud-run-service
+          service: cloud-run-server
+          region: europe-west1
 
       - name: Produce Test Summary
         uses: test-summary/action@v2

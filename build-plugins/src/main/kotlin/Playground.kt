@@ -7,6 +7,7 @@ public object Playground {
     val freeCompilerArgs = listOf(
         "-opt-in=kotlin.RequiresOptIn",
         "-Xallow-result-return-type",
+        "-Xexplicit-api=warning",
         "-Xcontext-receivers",
         "-Xmulti-platform",
     )

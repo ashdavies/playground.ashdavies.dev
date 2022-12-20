@@ -25,10 +25,6 @@ dependencies {
     add("invoker", libs.google.cloud.javaFunctionInvoker)
 }
 
-kotlin {
-    explicitApiWarning()
-}
-
 tasks.withType<KotlinCompile> {
     kotlinOptions.freeCompilerArgs += Playground.freeCompilerArgs
     kotlinOptions.jvmTarget = Playground.jvmTarget

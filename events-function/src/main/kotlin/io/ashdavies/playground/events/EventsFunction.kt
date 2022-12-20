@@ -21,4 +21,4 @@ internal class EventsFunction : HttpFunction by HttpApplication(HttpConfig.Get, 
     VerifiedHttpEffect {
         Json.encodeToString(ListSerializer(EventsSerializer), reader())
     }
-})
+},)
