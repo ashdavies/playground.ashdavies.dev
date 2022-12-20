@@ -15,6 +15,7 @@ dependencies {
         implementation(plugin(kotlin.compose))
         implementation(plugin(kotlin.multiplatform))
         implementation(plugin(kotlin.serialization))
+        implementation(plugin(jetbrains.terraform))
         implementation(plugin(johnrengelman.shadow))
         implementation(plugin(squareup.sqldelight))
     }
