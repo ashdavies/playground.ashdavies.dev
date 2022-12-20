@@ -47,6 +47,7 @@ jobs:
         with:
           image: europe-west1-docker.pkg.dev/${{ steps.google_cloud_auth.outputs.project_id }}/cloud-run-server/cloud-run-service
           service: cloud-run-server
+          region: europe-west1
 
 #      - name: Docker Auth
 #        uses: docker/login-action@v2
