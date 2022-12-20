@@ -30,6 +30,23 @@ jobs:
           distribution: temurin
           java-version: 11
 
+      - name: Google Cloud Auth
+        id: "auth"
+        uses: google-github-actions/auth@v0
+        with:
+          workload_identity_provider: ${{ secrets.GOOGLE_WORKLOAD_IDENTITY }}
+          service_account: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
+
+      - name: Docker Auth
+        uses: docker/login-action@v2
+        with:
+          registry: europe-west1-docker.pkg.dev
+          username: oauth2accesstoken
+          password: ${{ steps.auth.outputs.access_token }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v0
+
       - name: Checkout Repository
         uses: actions/checkout@v3
         with:
@@ -57,23 +74,6 @@ jobs:
 
       - name: Decrypt Google Services
         run: find . -type f -name "google-services.aes" -exec sh -c 'openssl aes-256-cbc -md sha256 -d -in "$0" -out "${0%.aes*}.json" -k "${GOOGLE_SERVICES_PASSPHRASE}"' {} \;
-
-      - name: Google Cloud Auth
-        id: google-cloud-auth
-        uses: google-github-actions/auth@v0
-        with:
-          workload_identity_provider: ${{ secrets.GOOGLE_WORKLOAD_IDENTITY }}
-          service_account: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
-
-      - name: Docker Auth
-        uses: docker/login-action@v2
-        with:
-          registry: europe-west1-docker.pkg.dev
-          username: oauth2accesstoken
-          password: ${{ steps.google-cloud-auth.outputs.access_token }}
-
-      - name: Set up Cloud SDK
-        uses: google-github-actions/setup-gcloud@v0
 
       - name: Run Gradle Tasks
         run: ./gradlew build --console=plain --info
