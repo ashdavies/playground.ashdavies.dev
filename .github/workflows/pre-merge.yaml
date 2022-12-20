@@ -30,6 +30,11 @@ jobs:
           distribution: temurin
           java-version: 11
 
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
       - name: Google Cloud Auth
         id: google_cloud_auth
         uses: google-github-actions/auth@v0
@@ -46,27 +51,18 @@ jobs:
           password: ${{ steps.google_cloud_auth.outputs.access_token }}
           registry: europe-west1-docker.pkg.dev
 
-      - name: Set up Cloud SDK
+      - name: Setup Cloud SDK
         uses: google-github-actions/setup-gcloud@v0
 
-      - name: Checkout Repository
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-
-      - name: Cache Gradle Caches
+      - name: Setup Gradle Caches
         uses: actions/cache@v3
         with:
-          path: ~/.gradle/caches/
           key: cache-gradle-cache
+          path: |
+            ~/.gradle/wrapper/
+            ~/.gradle/caches/
 
-      - name: Cache Gradle Wrapper
-        uses: actions/cache@v3
-        with:
-          path: ~/.gradle/wrapper/
-          key: cache-gradle-wrapper
-
-      - name: Generate encryption passphrase
+      - name: Generate Encryption Passphrase
         run: openssl rand -base64 32
         if: ${{ false }}
 
