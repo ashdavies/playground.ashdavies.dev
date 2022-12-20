@@ -39,9 +39,8 @@ resource "google_project_iam_member" "gh_service_account" {
 }
 
 module "create-token" {
-  // source_file          = "../../../build/terraform/main/runtimeExecution/resources/app-check-function-all.jar"
-  function_description = "Firebase AppCheck function to create a new token"
   source_file          = var.resources.app-check-function-all_jar.path
+  function_description = "Create a new Firebase App Check token"
   entry_point          = "io.ashdavies.check.AppCheckFunction"
   source               = "./modules/gcp-function"
   project_region       = var.project_region
@@ -50,7 +49,6 @@ module "create-token" {
 }
 
 module "aggregate-events" {
-  // source_file          = "../../../build/terraform/main/runtimeExecution/resources/events-aggregator-all.jar"
   entry_point          = "io.ashdavies.playground.aggregator.AggregatorFunction"
   source_file          = var.resources.events-aggregator-all_jar.path
   function_description = "Google Cloud Function to aggregate events"
