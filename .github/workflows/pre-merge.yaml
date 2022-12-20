@@ -41,8 +41,6 @@ jobs:
         with:
           workload_identity_provider: ${{ secrets.GOOGLE_WORKLOAD_IDENTITY }}
           service_account: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
-          create_credentials_file: false
-          token_format: access_token
 
       - name: Deploy Cloud Run
         uses: google-github-actions/deploy-cloudrun@v1
@@ -50,63 +48,63 @@ jobs:
           image: europe-west1-docker.pkg.dev/${{ steps.google_cloud_auth.outputs.project_id }}/cloud-run-server/cloud-run-service
           service: cloud-run-server
 
-      - name: Docker Auth
-        uses: docker/login-action@v2
-        with:
-          username: oauth2accesstoken
-          password: ${{ steps.google_cloud_auth.outputs.access_token }}
-          registry: europe-west1-docker.pkg.dev
-
-      - name: Setup Cloud SDK
-        uses: google-github-actions/setup-gcloud@v0
-
-      - name: Setup Gradle Caches
-        uses: actions/cache@v3
-        with:
-          key: gradle-cache
-          path: |
-            ~/.gradle/wrapper/
-            ~/.gradle/caches/
-
-      - name: Generate Encryption Passphrase
-        run: openssl rand -base64 32
-        if: ${{ false }}
-
-      - name: Encrypt Google Services config file
-        run: find . -type f -name "google-services.json" -exec sh -c 'openssl aes-256-cbc -md sha256 -salt -in "$0" -out "${0%.json*}.aes" -k "${GOOGLE_SERVICES_PASSPHRASE}"' {} \;
-        if: ${{ false }}
-
-      - name: Decrypt Google Services
-        run: find . -type f -name "google-services.aes" -exec sh -c 'openssl aes-256-cbc -md sha256 -d -in "$0" -out "${0%.aes*}.json" -k "${GOOGLE_SERVICES_PASSPHRASE}"' {} \;
-
-      - name: Run Gradle Tasks
-        run: ./gradlew build --console=plain --info
-
-      - name: Containerize Cloud Run
-        run: ./gradlew cloud-run:jib --image=europe-west1-docker.pkg.dev/${{ steps.google_cloud_auth.outputs.project_id }}/cloud-run-source-deploy/cloud-run-service --console=plain --info
-
+#      - name: Docker Auth
+#        uses: docker/login-action@v2
+#        with:
+#          username: oauth2accesstoken
+#          password: ${{ steps.google_cloud_auth.outputs.access_token }}
+#          registry: europe-west1-docker.pkg.dev
+#
+#      - name: Setup Cloud SDK
+#        uses: google-github-actions/setup-gcloud@v0
+#
+#      - name: Setup Gradle Caches
+#        uses: actions/cache@v3
+#        with:
+#          key: gradle-cache
+#          path: |
+#            ~/.gradle/wrapper/
+#            ~/.gradle/caches/
+#
+#      - name: Generate Encryption Passphrase
+#        run: openssl rand -base64 32
+#        if: ${{ false }}
+#
+#      - name: Encrypt Google Services config file
+#        run: find . -type f -name "google-services.json" -exec sh -c 'openssl aes-256-cbc -md sha256 -salt -in "$0" -out "${0%.json*}.aes" -k "${GOOGLE_SERVICES_PASSPHRASE}"' {} \;
+#        if: ${{ false }}
+#
+#      - name: Decrypt Google Services
+#        run: find . -type f -name "google-services.aes" -exec sh -c 'openssl aes-256-cbc -md sha256 -d -in "$0" -out "${0%.aes*}.json" -k "${GOOGLE_SERVICES_PASSPHRASE}"' {} \;
+#
+#      - name: Run Gradle Tasks
+#        run: ./gradlew build --console=plain --info
+#
+#      - name: Containerize Cloud Run
+#        run: ./gradlew cloud-run:jib --image=europe-west1-docker.pkg.dev/${{ steps.google_cloud_auth.outputs.project_id }}/cloud-run-source-deploy/cloud-run-service --console=plain --info
+#
 #      - name: Deploy Cloud Run
 #        uses: google-github-actions/deploy-cloudrun@v1
 #        with:
 #          image: europe-west1-docker.pkg.dev/${{ steps.google_cloud_auth.outputs.project_id }}/cloud-run-server/cloud-run-service
 #          service: cloud-run-server
-
-      - name: Produce Test Summary
-        uses: test-summary/action@v2
-        with:
-          paths: "**/build/test-results/test/TEST-*.xml"
-        if: always()
-
-      - name: Upload Test Report
-        uses: actions/upload-artifact@v3
-        with:
-          name: test-report
-          path: "**/build/reports/tests"
-          if-no-files-found: error
-        if: always()
-
-      - name: Display dependency updates
-        run: ./gradlew dependencyUpdates
-
-      - name: Stop Gradle
-        run: ./gradlew --stop
+#
+#      - name: Produce Test Summary
+#        uses: test-summary/action@v2
+#        with:
+#          paths: "**/build/test-results/test/TEST-*.xml"
+#        if: always()
+#
+#      - name: Upload Test Report
+#        uses: actions/upload-artifact@v3
+#        with:
+#          name: test-report
+#          path: "**/build/reports/tests"
+#          if-no-files-found: error
+#        if: always()
+#
+#      - name: Display dependency updates
+#        run: ./gradlew dependencyUpdates
+#
+#      - name: Stop Gradle
+#        run: ./gradlew --stop
