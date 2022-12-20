@@ -18,7 +18,7 @@ import kotlin.test.assertEquals
 internal class EventsFunctionTest {
 
     @Test
-    @Ignore
+    @Ignore("Ignore until Playground server is available")
     fun `should deny request without app check token`() = startServer<EventsFunction> { client ->
         assertEquals(HttpStatusCode.Unauthorized, client.get { }.status)
     }
