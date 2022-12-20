@@ -41,6 +41,8 @@ jobs:
         with:
           workload_identity_provider: ${{ secrets.GOOGLE_WORKLOAD_IDENTITY }}
           service_account: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
+#          create_credentials_file: false
+          token_format: access_token
 
       - name: Deploy Cloud Run
         uses: google-github-actions/deploy-cloudrun@v1
