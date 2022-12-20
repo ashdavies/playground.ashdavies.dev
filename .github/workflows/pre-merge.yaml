@@ -59,16 +59,33 @@ jobs:
         run: find . -type f -name "google-services.aes" -exec sh -c 'openssl aes-256-cbc -md sha256 -d -in "$0" -out "${0%.aes*}.json" -k "${GOOGLE_SERVICES_PASSPHRASE}"' {} \;
 
       - name: Google Cloud Auth
+        id: google-cloud-auth
         uses: google-github-actions/auth@v0
         with:
           workload_identity_provider: ${{ secrets.GOOGLE_WORKLOAD_IDENTITY }}
           service_account: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
 
+      - name: Docker Auth
+        uses: docker/login-action@v2
+        with:
+          username: oauth2accesstoken
+          password: steps.google-cloud-auth.outputs.access_token
+          registry: europe-west1-docker.pkg.dev
+
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v0
 
       - name: Run Gradle Tasks
-        run: ./gradlew build check --console=plain --info
+        run: ./gradlew build --console=plain --info
+
+      - name: Containerize Cloud Run
+        run: ./gradlew cloud-run:jib --image=europe-west1-docker.pkg.dev/playground-1a136/cloud-run-server --console=plain --info
+
+      - name: Deploy Cloud Run
+        uses: google-github-actions/deploy-cloudrun@v1
+        with:
+          image: europe-west1-docker.pkg.dev/playground-1a136/cloud-run-server
+          service: cloud-run-server
 
       - name: Produce Test Summary
         uses: test-summary/action@v2

@@ -141,6 +141,7 @@ benManes-versions = "com.github.ben-manes.versions:0.44.0"
 cash-molecule = { id = "app.cash.molecule", version = "0.4.0" }
 catalog-update = "nl.littlerobots.version-catalog-update:0.7.0"
 diffplug-spotless = "com.diffplug.spotless:6.11.0"
+google-cloud-jib = "com.google.cloud.tools.jib:3.3.1"
 google-services = "com.google.gms.google-services:4.3.14"
 gradle-doctor = "com.osacky.doctor:0.8.1"
 jetbrains-dokka = "org.jetbrains.dokka:0.10.0"
