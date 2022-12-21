@@ -13,10 +13,38 @@
     "application/json"
   ],
   "paths": {
+    "/events": {
+      "get": {
+        "summary": "Events",
+        "operationId": "events",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
     "/hello": {
       "get": {
         "summary": "Greeting",
         "operationId": "hello",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/token": {
+      "get": {
+        "summary": "Token",
+        "operationId": "token",
         "responses": {
           "200": {
             "description": "OK",
