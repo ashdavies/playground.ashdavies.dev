@@ -3,7 +3,7 @@ resource "google_project_iam_member" "gh_service_account" {
     "roles/servicemanagement.configEditor",
     "roles/iam.workloadIdentityUser",
     "roles/artifactregistry.writer",
-    "roles/storage.objectViewer",
+    "roles/storage.objectAdmin",
     "roles/run.admin",
   ])
 
