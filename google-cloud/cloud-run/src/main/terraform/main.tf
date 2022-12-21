@@ -1,9 +1,9 @@
 resource "google_endpoints_service" "endpoints" {
-  service_name   = local.endpoints_path
+  service_name   = var.service_name
   project        = var.project_id
   openapi_config = templatefile(var.resources.openapi-v2_json.path, {
     backend_service_name = google_cloud_run_service.service.status[0].url
-    cloud_run_hostname   = local.endpoints_path
+    cloud_run_hostname   = var.service_name
   })
 }
 
@@ -31,7 +31,7 @@ resource "null_resource" "openapi_proxy_image" {
     bash ${var.resources.gcloud-build-image.path} \
       -g ${var.project_region}-docker.pkg.dev/${var.project_id}/endpoints-release \
       -c ${google_endpoints_service.endpoints.config_id} \
-      -s ${local.endpoints_path} \
+      -s ${var.service_name} \
       -p ${var.project_id} \
       -v ${var.esp_tag}
     EOS

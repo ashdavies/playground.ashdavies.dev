@@ -5,7 +5,7 @@ variable "esp_tag" {
 
 variable "service_name" {
   description = "Google Cloud Run service name"
-  default     = "playground"
+  default     = "playground.ashdavies.dev"
 }
 
 variable "project_id" {
