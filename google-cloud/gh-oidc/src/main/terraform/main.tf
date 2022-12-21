@@ -4,6 +4,7 @@ resource "google_project_iam_member" "gh_service_account" {
     "roles/servicemanagement.configEditor",
     "roles/iam.workloadIdentityUser",
     "roles/artifactregistry.writer",
+    "roles/cloudbuild.serviceAgent",
     "roles/storage.objectAdmin",
     "roles/run.developer",
   ])
