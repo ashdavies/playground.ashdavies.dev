@@ -27,3 +27,12 @@ resource "google_cloud_run_service" "service" {
     percent         = 100
   }
 }
+
+resource "google_endpoints_service" "endpoints" {
+  service_name   = local.endpoints_path
+  project        = var.project_id
+  openapi_config = templatefile(var.resources.openapi-v2_json.path, {
+    backend_service_name = google_cloud_run_service.service.status[0].url
+    cloud_run_hostname   = local.endpoints_path
+  })
+}

@@ -1,11 +1,11 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "Playground Endpoints",
-    "description": "Playground Endpoint definition for Google Cloud Functions",
+    "title": "Playground Service",
+    "description": "Playground Service definition hosted by Cloud Endpoints with a Cloud Run backend",
     "version": "1.0.0"
   },
-  "host": "${host}",
+  "host": "${cloud_run_hostname}",
   "schemes": [
     "https"
   ],
@@ -13,14 +13,10 @@
     "application/json"
   ],
   "paths": {
-    "/": {
-      "${method}": {
-        "summary": "${summary}",
-        "operationId": "${operation_id}",
-        "x-google-backend": {
-          "address": "${address}",
-          "protocol": "h2"
-        },
+    "/hello": {
+      "get": {
+        "summary": "Greeting",
+        "operationId": "hello",
         "responses": {
           "200": {
             "description": "OK",
@@ -43,5 +39,9 @@
     {
       "ApiKeyAuth": []
     }
-  ]
+  ],
+  "x-google-backend": {
+    "address": "${backend_service_name}",
+    "protocol": "h2"
+  }
 }
