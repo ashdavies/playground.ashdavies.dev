@@ -1,4 +1,9 @@
-variable "cloud_run_service" {
+variable "esp_tag" {
+  description = "ESPv2 version"
+  default     = "2.40.0"
+}
+
+variable "service_name" {
   description = "Google Cloud Run service name"
   default     = "playground"
 }
