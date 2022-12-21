@@ -1,10 +1,9 @@
 resource "google_project_iam_member" "gh_service_account" {
   for_each = toset([
-    "roles/servicemanagement.configEditor",
+    "roles/servicemanagement.configEditor"
     "roles/iam.workloadIdentityUser",
     "roles/artifactregistry.writer",
-    "roles/storage.objectAdmin",
-    "roles/run.admin",
+    "roles/run.developer",
   ])
 
   member  = "serviceAccount:${google_service_account.gh_service_account.email}"

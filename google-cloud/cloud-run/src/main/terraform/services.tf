@@ -1,14 +1,14 @@
 resource "google_cloud_run_service" "endpoint" {
   depends_on = [null_resource.openapi_proxy_image]
-  name       = "${var.service_name}/endpoint"
+  name       = "${var.resource_prefix}-endpoint"
   location   = var.project_region
   project    = var.project_id
   template {
     spec {
       containers {
         image = format(
-          "gcr.io/%s/endpoints-runtime-serverless:%s-%s-%s",
-          var.project_id, var.esp_tag, var.service_name,
+          "%s/endpoints-runtime-serverless:%s-%s-%s",
+          local.endpoints_registry, var.esp_tag, var.service_name,
           google_endpoints_service.endpoints.config_id,
         )
       }
@@ -17,7 +17,7 @@ resource "google_cloud_run_service" "endpoint" {
 }
 
 resource "google_cloud_run_service" "service" {
-  name     = "${var.service_name}/service"
+  name     = "${var.resource_prefix}-service"
   location = var.project_region
 
   template {

@@ -17,3 +17,8 @@ variable "project_region" {
   description = "Google Cloud project region"
   default     = "europe-west1"
 }
+
+variable "resource_prefix" {
+  description = "Google Cloud resource prefix"
+  default     = "playground"
+}
