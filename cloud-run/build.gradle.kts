@@ -29,6 +29,11 @@ java {
     targetCompatibility = JavaVersion.VERSION_11
 }
 
+tasks.withType<com.google.cloud.tools.jib.gradle.JibTask> {
+    dependsOn("build")
+}
+
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     kotlinOptions.freeCompilerArgs += "-Xexplicit-api=warning"
 }
+

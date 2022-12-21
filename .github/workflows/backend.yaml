@@ -1,4 +1,5 @@
-name: Pre Merge Checks
+description: Deploy Cloud Endpoints with Cloud Run backend
+name: Deploy Backend
 
 on:
   push:
@@ -41,9 +42,17 @@ jobs:
         with:
           workload_identity_provider: ${{ secrets.GOOGLE_WORKLOAD_IDENTITY }}
           service_account: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
+          token_format: access_token
 
       - name: Setup Cloud SDK
         uses: google-github-actions/setup-gcloud@v0
+
+      - name: Docker Auth
+        uses: docker/login-action@v2
+        with:
+          username: oauth2accesstoken
+          password: ${{ steps.google_cloud_auth.outputs.access_token }}
+          registry: europe-west1-docker.pkg.dev
 
       - name: Setup Gradle Caches
         uses: actions/cache@v3
@@ -53,36 +62,21 @@ jobs:
             ~/.gradle/wrapper/
             ~/.gradle/caches/
 
-      - name: Generate Encryption Passphrase
-        run: openssl rand -base64 32
-        if: ${{ false }}
+      - name: Containerize Cloud Run
+        run: ./gradlew cloud-run:jib \
+          --image=europe-west1-docker.pkg.dev/${{ steps.google_cloud_auth.outputs.project_id }}/cloud-run-source-deploy/playground \
+          --console=plain \
+          --info
 
-      - name: Encrypt Google Services config file
-        run: find . -type f -name "google-services.json" -exec sh -c 'openssl aes-256-cbc -md sha256 -salt -in "$0" -out "${0%.json*}.aes" -k "${GOOGLE_SERVICES_PASSPHRASE}"' {} \;
-        if: ${{ false }}
-
-      - name: Decrypt Google Services
-        run: find . -type f -name "google-services.aes" -exec sh -c 'openssl aes-256-cbc -md sha256 -d -in "$0" -out "${0%.aes*}.json" -k "${GOOGLE_SERVICES_PASSPHRASE}"' {} \;
-
-      - name: Run Gradle Tasks
-        run: ./gradlew build --console=plain --info
-
-      - name: Produce Test Summary
-        uses: test-summary/action@v2
+      - name: Deploy Cloud Run Source
+        uses: google-github-actions/deploy-cloudrun@v1
         with:
-          paths: "**/build/test-results/test/TEST-*.xml"
-        if: always()
+          image: europe-west1-docker.pkg.dev/${{ steps.google_cloud_auth.outputs.project_id }}/cloud-run-source-deploy/playground
+          service: cloud-run-server
+          region: europe-west1
 
-      - name: Upload Test Report
-        uses: actions/upload-artifact@v3
-        with:
-          name: test-report
-          path: "**/build/reports/tests"
-          if-no-files-found: error
-        if: always()
-
-      - name: Display dependency updates
-        run: ./gradlew dependencyUpdates
+      - name: Apply Terraform Config
+        run: ./gradlew google-cloud:cloud-run:terraformApply -Ptf.apply -Ptf.destroy
 
       - name: Stop Gradle
         run: ./gradlew --stop
