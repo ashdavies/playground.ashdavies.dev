@@ -15,6 +15,7 @@ resource "null_resource" "openapi_proxy_image" {
   provisioner "local-exec" {
     command = <<EOS
     bash ${var.resources.gcloud-build-image.path} \
+      -g ${var.project_region}-docker.pkg.dev/${var.project_id}/endpoints-release \
       -c ${google_endpoints_service.endpoints.config_id} \
       -s ${local.endpoints_path} \
       -p ${var.project_id} \
