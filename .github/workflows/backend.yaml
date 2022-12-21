@@ -1,4 +1,3 @@
-description: Deploy Cloud Endpoints with Cloud Run backend
 name: Deploy Backend
 
 on:
