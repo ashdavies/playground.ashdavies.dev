@@ -68,13 +68,6 @@ jobs:
             --console=plain \
             --info
 
-      - name: Deploy Cloud Run Source
-        uses: google-github-actions/deploy-cloudrun@v1
-        with:
-          image: europe-west1-docker.pkg.dev/${{ steps.google_cloud_auth.outputs.project_id }}/cloud-run-source-deploy/playground
-          service: cloud-run-server
-          region: europe-west1
-
       - name: Apply Terraform Config
         run: |
           ./gradlew google-cloud:cloud-run:terraformApply \
