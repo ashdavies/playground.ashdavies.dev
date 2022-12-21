@@ -33,3 +33,10 @@ resource "google_cloud_run_service" "service" {
     percent         = 100
   }
 }
+
+resource "google_cloud_run_service_iam_policy" "noauth-endpoints" {
+  location    = google_cloud_run_service.endpoint.location
+  project     = google_cloud_run_service.endpoint.project
+  policy_data = data.google_iam_policy.noauth.policy_data
+  service     = google_cloud_run_service.endpoint.name
+}

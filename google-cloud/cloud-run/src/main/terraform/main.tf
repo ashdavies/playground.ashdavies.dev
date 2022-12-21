@@ -7,6 +7,13 @@ resource "google_endpoints_service" "endpoints" {
   })
 }
 
+data "google_iam_policy" "noauth" {
+  binding {
+    role = "roles/run.invoker"
+    members = ["allUsers"]
+  }
+}
+
 resource "null_resource" "openapi_proxy_image" {
   triggers = {
     config_id = google_endpoints_service.endpoints.config_id
