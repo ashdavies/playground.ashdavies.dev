@@ -62,10 +62,11 @@ jobs:
             ~/.gradle/caches/
 
       - name: Containerize Cloud Run
-        run: ./gradlew cloud-run:jib \
-          --image=europe-west1-docker.pkg.dev/${{ steps.google_cloud_auth.outputs.project_id }}/cloud-run-source-deploy/playground \
-          --console=plain \
-          --info
+        run: |
+          ./gradlew cloud-run:jib \
+            --image=europe-west1-docker.pkg.dev/${{ steps.google_cloud_auth.outputs.project_id }}/cloud-run-source-deploy/playground \
+            --console=plain \
+            --info
 
       - name: Deploy Cloud Run Source
         uses: google-github-actions/deploy-cloudrun@v1
