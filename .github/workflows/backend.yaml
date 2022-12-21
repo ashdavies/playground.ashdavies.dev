@@ -76,7 +76,12 @@ jobs:
           region: europe-west1
 
       - name: Apply Terraform Config
-        run: ./gradlew google-cloud:cloud-run:terraformApply -Ptf.apply -Ptf.destroy
+        run: |
+          ./gradlew google-cloud:cloud-run:terraformApply \
+            --console=plain \
+            -Ptf.destroy \
+            -Ptf.apply \
+            --info
 
       - name: Stop Gradle
         run: ./gradlew --stop
