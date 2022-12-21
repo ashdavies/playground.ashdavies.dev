@@ -16,7 +16,7 @@ env:
   MOBILE_SDK_APP_ID: ${{ secrets.mobile_sdk_app_id }}
 
 jobs:
-  gradle:
+  build:
     runs-on: ubuntu-latest
 
     permissions:

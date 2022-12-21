@@ -20,7 +20,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  gradle:
+  build:
     runs-on: ubuntu-latest
 
     permissions:
