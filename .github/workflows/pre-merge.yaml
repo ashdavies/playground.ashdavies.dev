@@ -76,12 +76,12 @@ jobs:
         run: ./gradlew build --console=plain --info
 
       - name: Containerize Cloud Run
-        run: ./gradlew cloud-run:jib --image=europe-west1-docker.pkg.dev/${{ steps.google_cloud_auth.outputs.project_id }}/cloud-run-source-deploy/cloud-run-service --console=plain --info
+        run: ./gradlew cloud-run:jib --image=europe-west1-docker.pkg.dev/${{ steps.google_cloud_auth.outputs.project_id }}/cloud-run-source-deploy/playground --console=plain --info
 
       - name: Deploy Cloud Run
         uses: google-github-actions/deploy-cloudrun@v1
         with:
-          image: europe-west1-docker.pkg.dev/${{ steps.google_cloud_auth.outputs.project_id }}/cloud-run-source-deploy/cloud-run-service
+          image: europe-west1-docker.pkg.dev/${{ steps.google_cloud_auth.outputs.project_id }}/cloud-run-source-deploy/playground
           service: cloud-run-server
           region: europe-west1
 
