@@ -1,5 +1,5 @@
 resource "github_actions_secret" "google_service_account_id" {
-  plaintext_value = google_service_account.gh_service_account.email
+  plaintext_value = google_service_account.main.email
   secret_name     = "google_service_account_id"
   repository      = var.gh_repo_name
 }

@@ -4,9 +4,9 @@ module "gh-oidc" {
   project_id  = var.project_id
   pool_id     = "gh-oidc-pool"
   sa_mapping  = {
-    (google_service_account.gh_service_account.account_id) = {
+    (google_service_account.main.account_id) = {
       attribute = "attribute.repository/${var.gh_owner}/${var.gh_repo_name}"
-      sa_name   = google_service_account.gh_service_account.name
+      sa_name   = google_service_account.main.name
     }
   }
 }
