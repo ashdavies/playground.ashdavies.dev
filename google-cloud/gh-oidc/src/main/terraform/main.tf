@@ -3,6 +3,7 @@ resource "google_project_iam_custom_role" "main" {
   title       = "Actions Publisher"
   role_id     = "actionsPublisher"
   permissions = [
+    "artifactregistry.repositories.uploadArtifacts",
     "cloudbuild.builds.create",
     "resourcemanager.projects.get",
     "run.services.get",
