@@ -1,10 +1,5 @@
 plugins {
-    id("org.jetbrains.gradle.terraform") version "1.4.2"
-}
-
-dependencies {
-    lambda(projects.appCheck.appCheckFunction)
-    lambda(projects.eventsAggregator)
+    id("org.jetbrains.gradle.terraform")
 }
 
 terraform {
