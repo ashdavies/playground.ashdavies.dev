@@ -6,8 +6,7 @@ on:
       - main
 
   pull_request:
-    branches:
-      - '*'
+    types: [ labeled, opened, reopened, synchronize ]
 
 env:
   GOOGLE_SERVICE_ACCOUNT_ID: ${{ secrets.google_service_account_id }}
@@ -15,8 +14,13 @@ env:
   GOOGLE_WORKLOAD_IDENTITY: ${{ secrets.google_workload_identity }}
   MOBILE_SDK_APP_ID: ${{ secrets.mobile_sdk_app_id }}
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build:
+    if: ${{ contains(github.event.pull_request.labels.*.name, 'backend') }}
     runs-on: ubuntu-latest
 
     permissions:
