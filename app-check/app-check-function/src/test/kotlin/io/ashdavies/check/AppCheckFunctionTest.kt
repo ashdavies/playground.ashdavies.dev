@@ -40,7 +40,6 @@ internal class AppCheckFunctionTest {
     }
 
     @Test
-    @Ignore("Ignore until Playground server is available")
     fun `should return app check token for request`() = startServer<AppCheckFunction> { client ->
         val response: HttpResponse = client.post {
             contentType(ContentType.Application.Json)

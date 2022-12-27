@@ -1,15 +1,27 @@
 package io.ashdavies.check
 
-import com.auth0.jwt.algorithms.Algorithm
 import com.google.firebase.FirebaseApp
 import io.ktor.client.HttpClient
 
-public class AppCheck(client: HttpClient, algorithm: Algorithm) :
-    AppCheckGenerator by AppCheckGenerator(client, algorithm),
-    AppCheckVerifier by AppCheckVerifier(algorithm)
+public class AppCheck internal constructor(
+    httpClient: HttpClient,
+    projectId: String,
+    cryptoSigner: CryptoSigner,
+) : AppCheckGenerator by AppCheckGenerator(
+    httpClient = httpClient,
+    projectId = projectId,
+    cryptoSigner = cryptoSigner,
+),
+    AppCheckVerifier by AppCheckVerifier(
+        cryptoSigner = cryptoSigner,
+    )
 
-public fun AppCheck(client: HttpClient, signer: CryptoSigner): AppCheck =
-    AppCheck(client, GoogleAlgorithm(signer))
-
-public fun AppCheck(app: FirebaseApp, client: HttpClient): AppCheck =
-    AppCheck(client, CryptoSigner(app, client))
+internal fun AppCheck(
+    firebaseApp: FirebaseApp,
+    httpClient: HttpClient,
+    projectId: String,
+): AppCheck = AppCheck(
+    cryptoSigner = CryptoSigner(firebaseApp, httpClient),
+    httpClient = httpClient,
+    projectId = projectId,
+)

@@ -15,17 +15,24 @@ private val GoogleCloudProject: String? get() = System.getenv("GOOGLE_CLOUD_PROJ
 private val GCloudProject: String? get() = System.getenv("GCLOUD_PROJECT")
 private val GCPProject: String? get() = System.getenv("GCP_PROJECT")
 
-public fun getProjectId(app: FirebaseApp): String = requireNotNull(findExplicitProjectId(app)) {
+public fun FirebaseApp.appCheck(httpClient: HttpClient): AppCheck = AppCheck(
+    projectId = getProjectId(this),
+    httpClient = httpClient,
+    firebaseApp = this,
+)
+
+internal fun getProjectId(app: FirebaseApp): String = requireNotNull(findExplicitProjectId(app)) {
     "Failed to determine project ID. Initialize the " +
-            "SDK with service account credentials or set project ID as an app option. " +
-            "Alternatively, set the GOOGLE_CLOUD_PROJECT environment variable."
+        "SDK with service account credentials or set project ID as an app option. " +
+        "Alternatively, set the GOOGLE_CLOUD_PROJECT environment variable."
 }
 
-internal fun getServiceAccountId(app: FirebaseApp): String = requireNotNull(findExplicitServiceAccountId(app)) {
-    "Failed to determine service account. Make sure to initialize " +
+internal fun getServiceAccountId(app: FirebaseApp): String =
+    requireNotNull(findExplicitServiceAccountId(app)) {
+        "Failed to determine service account. Make sure to initialize " +
             "the SDK with a service account credential. Alternatively specify a service " +
             "account with iam.serviceAccounts.signBlob permission."
-}
+    }
 
 private fun findExplicitProjectId(app: FirebaseApp): String? = app.options.projectId
     ?: googleCredentials<ServiceAccountCredentials, String?> { it.projectId }
@@ -44,12 +51,12 @@ private inline fun <reified T : GoogleCredentials, R> googleCredentials(transfor
     return (GoogleCredentials.getApplicationDefault() as? T)?.let(transform)
 }
 
-private fun fetchProjectId(): String = runBlocking {
-    fetchComputeMetadata(HttpClient(), "project/project-id")
+private fun fetchProjectId(httpClient: HttpClient = HttpClient()): String = runBlocking {
+    fetchComputeMetadata(httpClient, "project/project-id")
 }
 
-private fun fetchServiceAccountId(): String = runBlocking {
-    fetchComputeMetadata(HttpClient(), "instance/service-accounts/default/email")
+private fun fetchServiceAccountId(httpClient: HttpClient = HttpClient()): String = runBlocking {
+    fetchComputeMetadata(httpClient, "instance/service-accounts/default/email")
 }
 
 private suspend inline fun <reified T> fetchComputeMetadata(client: HttpClient, path: String): T {

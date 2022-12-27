@@ -6,21 +6,11 @@ import kotlinx.serialization.Serializable
 public sealed class AppCheckToken {
 
     @Serializable
-    public sealed class Request : AppCheckToken() {
-
-        @Serializable
-        public data class Raw(
-            val projectId: String,
-            val appId: String,
-        ) : Request()
-
-        @Serializable
-        public data class Processed(
-            val customToken: String,
-            val projectId: String,
-            val appId: String,
-        ) : Request()
-    }
+    public class Request(
+        public val customToken: String,
+        public val projectId: String,
+        public val appId: String,
+    ) : AppCheckToken()
 
     @Serializable
     public sealed class Response : AppCheckToken() {

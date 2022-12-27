@@ -5,6 +5,7 @@ resource "google_project_iam_custom_role" "main" {
   permissions = [
     "artifactregistry.repositories.uploadArtifacts",
     "cloudbuild.builds.create",
+    "iam.serviceAccounts.signBlob",
     "resourcemanager.projects.get",
     "run.services.get",
     "run.services.getIamPolicy",
