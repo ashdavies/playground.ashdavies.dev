@@ -10,14 +10,15 @@ private const val CUSTOM_EXCHANGE_URL_TEMPLATE =
     "https://firebaseappcheck.googleapis.com/v1/projects/%s/apps/%s:exchangeCustomToken"
 
 internal fun interface AppCheckGenerator {
-    suspend fun createToken(appId: String): Response.Normalised
+    suspend fun createToken(): Response.Normalised
 }
 
 internal fun AppCheckGenerator(
     httpClient: HttpClient,
     cryptoSigner: CryptoSigner,
     projectId: String,
-) = AppCheckGenerator { appId ->
+    appId: String,
+) = AppCheckGenerator {
     val urlString = String.format(CUSTOM_EXCHANGE_URL_TEMPLATE, projectId, appId)
     val algorithm = GoogleAlgorithm(cryptoSigner)
 

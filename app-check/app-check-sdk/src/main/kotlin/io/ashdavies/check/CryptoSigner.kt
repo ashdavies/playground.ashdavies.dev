@@ -19,10 +19,10 @@ internal fun CryptoSigner(accountId: String, sign: suspend (value: ByteArray) ->
     override fun getAccountId(): String = accountId
 }
 
-public fun CryptoSigner(app: FirebaseApp, client: HttpClient): CryptoSigner {
+public fun CryptoSigner(firebaseApp: FirebaseApp, httpClient: HttpClient): CryptoSigner {
     return when (val credentials: GoogleCredentials = GoogleCredentials.getApplicationDefault()) {
         is ServiceAccountSigner -> CryptoSigner(credentials.account, credentials::sign)
-        else -> IamSigner(client, getServiceAccountId(app), getToken(credentials))
+        else -> IamSigner(httpClient, getServiceAccountId(firebaseApp), getToken(credentials))
     }
 }
 

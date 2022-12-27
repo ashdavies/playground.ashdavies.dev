@@ -5,23 +5,36 @@ import io.ktor.client.HttpClient
 
 public class AppCheck internal constructor(
     httpClient: HttpClient,
-    projectId: String,
     cryptoSigner: CryptoSigner,
+    projectId: String,
+    appId: String,
 ) : AppCheckGenerator by AppCheckGenerator(
-    httpClient = httpClient,
-    projectId = projectId,
+    httpClient = AuthorisedHttpClient(
+        config = HttpClientConfig(
+            accountId = cryptoSigner.getAccountId(),
+            algorithm = GoogleAlgorithm(cryptoSigner),
+            appId = appId,
+        ),
+        from = httpClient,
+    ),
     cryptoSigner = cryptoSigner,
-),
-    AppCheckVerifier by AppCheckVerifier(
-        cryptoSigner = cryptoSigner,
-    )
+    projectId = projectId,
+    appId = appId,
+), AppCheckVerifier by AppCheckVerifier(
+    cryptoSigner = cryptoSigner,
+)
 
 internal fun AppCheck(
     firebaseApp: FirebaseApp,
     httpClient: HttpClient,
     projectId: String,
+    appId: String,
 ): AppCheck = AppCheck(
-    cryptoSigner = CryptoSigner(firebaseApp, httpClient),
+    cryptoSigner = CryptoSigner(
+        firebaseApp = firebaseApp,
+        httpClient = httpClient,
+    ),
     httpClient = httpClient,
     projectId = projectId,
+    appId = appId,
 )

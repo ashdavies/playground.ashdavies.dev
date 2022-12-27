@@ -23,32 +23,33 @@ private val FIREBASE_CLAIMS_SCOPES = listOf(
     "$GOOGLE_AUTH_SCOPE/userinfo.email",
 )
 
-public fun AuthorisedHttpClient(from: HttpClient, config: HttpClientConfig): HttpClient = from.config {
-    install(Auth) {
-        bearer {
-            loadTokens { bearerTokens(from, config) }
+public fun AuthorisedHttpClient(from: HttpClient, config: HttpClientConfig): HttpClient =
+    from.config {
+        install(Auth) {
+            bearer {
+                loadTokens { bearerTokens(from, config) }
+            }
         }
     }
-}
 
 private suspend fun bearerTokens(client: HttpClient, config: HttpClientConfig): BearerTokens {
-    val jwt = Jwt.create(config.algorithm) {
-        it.audience = GOOGLE_TOKEN_ENDPOINT
-        it.scope = FIREBASE_CLAIMS_SCOPES
-        it.issuer = config.accountId
-        it.appId = config.appId
-    }
-
-    val response: BearerResponse = client.post(GOOGLE_TOKEN_ENDPOINT) {
+    val response = client.post(GOOGLE_TOKEN_ENDPOINT) {
         contentType(ContentType.Application.FormUrlEncoded)
+        assertion(createJwt(config))
         grantType(JwtBearer)
-        assertion(jwt)
-    }.body()
+    }.body<BearerResponse>()
 
     return BearerTokens(
         accessToken = response.accessToken,
-        refreshToken = "",
+        refreshToken = "null",
     )
+}
+
+private fun createJwt(config: HttpClientConfig): String = Jwt.create(config.algorithm) {
+    it.audience = GOOGLE_TOKEN_ENDPOINT
+    it.scope = FIREBASE_CLAIMS_SCOPES
+    it.issuer = config.accountId
+    it.appId = config.appId
 }
 
 public data class HttpClientConfig(

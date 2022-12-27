@@ -21,14 +21,14 @@ public fun HttpApplication(block: @Composable HttpScope.() -> Unit): HttpFunctio
     return HttpApplication(HttpConfig.Get, block)
 }
 
-public fun HttpApplication(config: HttpConfig, block: HttpComposable): HttpFunction {
+public fun HttpApplication(config: HttpConfig, content: HttpComposable): HttpFunction {
     return HttpApplier(config) { request, response ->
         application {
             CompositionLocalProvider(
                 LocalApplicationScope provides this,
                 LocalHttpResponse provides response,
                 LocalHttpRequest provides request,
-                content = { block() },
+                content = { content() },
             )
         }
     }
