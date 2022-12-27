@@ -20,7 +20,7 @@ concurrency:
 
 jobs:
   build:
-    if: ${{ contains(github.event.pull_request.labels.*.name, 'backend') }}
+    if: ${{ github.ref == 'refs/heads/main' || contains(github.event.pull_request.labels.*.name, 'backend') }}
     runs-on: ubuntu-latest
 
     permissions:
