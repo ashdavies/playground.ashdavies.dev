@@ -11,9 +11,10 @@ public class AppCheck internal constructor(
     httpClient = httpClient,
     projectId = projectId,
     cryptoSigner = cryptoSigner,
-), AppCheckVerifier by AppCheckVerifier(
-    cryptoSigner = cryptoSigner,
-)
+),
+    AppCheckVerifier by AppCheckVerifier(
+        cryptoSigner = cryptoSigner,
+    )
 
 internal fun AppCheck(
     firebaseApp: FirebaseApp,

@@ -30,7 +30,7 @@ private fun HttpScope.appCheck(
     val appCheck = firebaseApp.appCheck(httpClient)
 
     val response = appCheck.createToken(
-        appId = appCheckRequest.appId
+        appId = appCheckRequest.appId,
     )
 
     Json.encodeToString(response)
