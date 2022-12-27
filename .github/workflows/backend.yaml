@@ -6,8 +6,7 @@ on:
       - main
 
   pull_request:
-    branches:
-      - '*'
+    types: [ labeled, opened, reopened, synchronize ]
 
 env:
   GOOGLE_SERVICE_ACCOUNT_ID: ${{ secrets.google_service_account_id }}
