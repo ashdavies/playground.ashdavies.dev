@@ -2,7 +2,6 @@ package io.ashdavies.playground.cloud
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import com.google.cloud.functions.HttpResponse
 import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
 import kotlinx.coroutines.CoroutineScope

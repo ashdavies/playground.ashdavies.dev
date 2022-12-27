@@ -1,27 +1,44 @@
 package io.ashdavies.check
 
-import com.auth0.jwt.algorithms.Algorithm
 import io.ashdavies.check.AppCheckToken.Request
 import io.ashdavies.check.AppCheckToken.Response
 import io.ktor.client.HttpClient
+import kotlinx.datetime.Clock
+import kotlin.time.Duration.Companion.hours
 
 private const val CUSTOM_EXCHANGE_URL_TEMPLATE =
     "https://firebaseappcheck.googleapis.com/v1/projects/%s/apps/%s:exchangeCustomToken"
 
 internal fun interface AppCheckGenerator {
-    suspend fun createToken(request: Request.Raw, config: (JwtOptions) -> Unit): Response.Normalised
+    suspend fun createToken(appId: String): Response.Normalised
 }
 
-internal fun AppCheckGenerator(client: HttpClient, algorithm: Algorithm) = AppCheckGenerator { request, config ->
-    val urlString = String.format(CUSTOM_EXCHANGE_URL_TEMPLATE, request.projectId, request.appId)
-    val processed = Request.Processed(Jwt.create(algorithm, config), request.projectId, request.appId)
+internal fun AppCheckGenerator(
+    httpClient: HttpClient,
+    cryptoSigner: CryptoSigner,
+    projectId: String,
+) = AppCheckGenerator { appId ->
+    val urlString = String.format(CUSTOM_EXCHANGE_URL_TEMPLATE, projectId, appId)
+    val algorithm = GoogleAlgorithm(cryptoSigner)
 
-    val result: Response.Raw = client.post(
-        body = mapOf("customToken" to processed.customToken),
+    val customToken = Jwt.create(algorithm) {
+        it.issuer = cryptoSigner.getAccountId()
+        it.expiresAt = Clock.System.now() + 1.hours
+        it.appId = appId
+    }
+
+    val request = Request(
+        customToken = customToken,
+        projectId = projectId,
+        appId = appId,
+    )
+
+    val result: Response.Raw = httpClient.post(
+        body = mapOf("customToken" to request.customToken),
         urlString = urlString,
     )
 
-    val ttlMillis: Int = result.ttl
+    val ttlMillis = result.ttl
         .substring(0, result.ttl.length - 1)
         .toInt() * 1000
 
