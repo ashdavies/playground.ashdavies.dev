@@ -32,7 +32,7 @@ private fun HttpScope.appCheck(
     val appCheckRequest = Json.decodeFromStream<AppCheckRequest>(httpRequest.inputStream)
     val appCheck = firebaseApp.appCheck(httpClient)
     val response = appCheck.createToken(
-        appId = appCheckRequest.appId
+        appId = appCheckRequest.appId,
     )
 
     Json.encodeToString(response)

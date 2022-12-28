@@ -15,18 +15,18 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlin.time.Duration.Companion.hours
 
-private const val GOOGLE_AUTH_SCOPE = "https://www.googleapis.com/auth"
-private const val GOOGLE_TOKEN_ENDPOINT = "https://accounts.google.com/o/oauth2/token"
+private const val GOOGLE_TOKEN_ENDPOINT =
+    "https://accounts.google.com/o/oauth2/token"
 
 private const val CUSTOM_EXCHANGE_URL_TEMPLATE =
     "https://firebaseappcheck.googleapis.com/v1/projects/%s/apps/%s:exchangeCustomToken"
 
 private val FIREBASE_CLAIMS_SCOPES = listOf(
-    "$GOOGLE_AUTH_SCOPE/cloud-platform",
-    "$GOOGLE_AUTH_SCOPE/firebase.database",
-    "$GOOGLE_AUTH_SCOPE/firebase.messaging",
-    "$GOOGLE_AUTH_SCOPE/identitytoolkit",
-    "$GOOGLE_AUTH_SCOPE/userinfo.email",
+    "https://www.googleapis.com/auth/cloud-platform",
+    "https://www.googleapis.com/auth/firebase.database",
+    "https://www.googleapis.com/auth/firebase.messaging",
+    "https://www.googleapis.com/auth/identitytoolkit",
+    "https://www.googleapis.com/auth/userinfo.email",
 )
 
 public fun interface AppCheckGenerator {
@@ -38,7 +38,6 @@ internal fun AppCheckGenerator(
     cryptoSigner: CryptoSigner,
     projectId: String,
 ) = AppCheckGenerator { appId: String ->
-    val urlString = String.format(CUSTOM_EXCHANGE_URL_TEMPLATE, projectId, appId)
     val algorithm = GoogleAlgorithm(cryptoSigner)
 
     val assertionToken = Jwt.create(algorithm) {
@@ -60,7 +59,7 @@ internal fun AppCheckGenerator(
         it.appId = appId
     }
 
-    val result = httpClient.post(urlString) {
+    val result = httpClient.post(String.format(CUSTOM_EXCHANGE_URL_TEMPLATE, projectId, appId)) {
         header(HttpHeaders.Authorization, "Bearer ${bearer.accessToken}")
         header("X-Firebase-Client", "fire-admin-node/10.2.0")
         setBody(mapOf("customToken" to customToken))
