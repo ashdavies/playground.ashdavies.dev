@@ -15,12 +15,27 @@ private val GoogleCloudProject: String? get() = System.getenv("GOOGLE_CLOUD_PROJ
 private val GCloudProject: String? get() = System.getenv("GCLOUD_PROJECT")
 private val GCPProject: String? get() = System.getenv("GCP_PROJECT")
 
-public fun FirebaseApp.appCheck(httpClient: HttpClient, appId: String): AppCheck = AppCheck(
-    cryptoSigner = CryptoSigner(this, httpClient),
-    projectId = getProjectId(this),
-    httpClient = httpClient,
-    appId = appId,
-)
+public fun FirebaseApp.appCheck(httpClient: HttpClient, appId: String): AppCheck {
+    val cryptoSigner = CryptoSigner(this, httpClient)
+
+    val config = HttpClientConfig(
+        algorithm = GoogleAlgorithm(cryptoSigner),
+        accountId = cryptoSigner.getAccountId(),
+        appId = appId,
+    )
+
+    val authorisedHttpClient = AuthorisedHttpClient(
+        from = httpClient,
+        config = config,
+    )
+
+    return AppCheck(
+        cryptoSigner = cryptoSigner,
+        projectId = getProjectId(this),
+        httpClient = authorisedHttpClient,
+        appId = appId,
+    )
+}
 
 internal fun getProjectId(app: FirebaseApp): String = requireNotNull(findExplicitProjectId(app)) {
     "Failed to determine project ID. Initialize the " +

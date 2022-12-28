@@ -8,14 +8,7 @@ public class AppCheck internal constructor(
     projectId: String,
     appId: String,
 ) : AppCheckGenerator by AppCheckGenerator(
-    httpClient = AuthorisedHttpClient(
-        config = HttpClientConfig(
-            accountId = cryptoSigner.getAccountId(),
-            algorithm = GoogleAlgorithm(cryptoSigner),
-            appId = appId,
-        ),
-        from = httpClient,
-    ),
+    httpClient = httpClient,
     cryptoSigner = cryptoSigner,
     projectId = projectId,
     appId = appId,
