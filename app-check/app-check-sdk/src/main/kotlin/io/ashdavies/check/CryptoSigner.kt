@@ -29,6 +29,10 @@ public fun CryptoSigner(firebaseApp: FirebaseApp, httpClient: HttpClient): Crypt
     }
 }
 
+/**
+ * Bearer authentication is required here!
+ * Is it necessary for app check?
+ */
 private fun IamSigner(client: HttpClient, accountId: String, token: String) = CryptoSigner(accountId) { src ->
     val urlString = "https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/$accountId:signBlob"
     val response = client.post(urlString) {

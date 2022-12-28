@@ -30,10 +30,8 @@ private fun HttpScope.appCheck(
     httpClient: HttpClient = LocalHttpClient.current,
 ) = HttpEffect {
     val appCheckRequest = Json.decodeFromStream<AppCheckRequest>(httpRequest.inputStream)
-    val appCheck = firebaseApp.appCheck(httpClient)
-    val response = appCheck.createToken(
-        appId = appCheckRequest.appId,
-    )
+    val appCheck = firebaseApp.appCheck(httpClient, appCheckRequest.appId)
+    val response = appCheck.createToken()
 
     Json.encodeToString(response)
 }
