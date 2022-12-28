@@ -4,7 +4,10 @@ import com.google.auth.ServiceAccountSigner
 import com.google.auth.oauth2.GoogleCredentials
 import com.google.firebase.FirebaseApp
 import io.ktor.client.HttpClient
+import io.ktor.client.call.body
 import io.ktor.client.request.header
+import io.ktor.client.request.post
+import io.ktor.client.request.setBody
 import io.ktor.http.HttpHeaders
 import kotlinx.serialization.Serializable
 import java.util.Base64
@@ -28,9 +31,11 @@ public fun CryptoSigner(firebaseApp: FirebaseApp, httpClient: HttpClient): Crypt
 
 private fun IamSigner(client: HttpClient, accountId: String, token: String) = CryptoSigner(accountId) { src ->
     val urlString = "https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/$accountId:signBlob"
-    val response = client.post<IamSignedResponse>(urlString, mapOf("payload" to src.encodeToString())) {
+    val response = client.post(urlString) {
+        header("X-Firebase-Client", "fire-admin-node/10.2.0")
         header(HttpHeaders.Authorization, "Bearer $token")
-    }
+        setBody(mapOf("payload" to src.encodeToString()))
+    }.body<IamSignedResponse>()
 
     response
         .signedBlob
