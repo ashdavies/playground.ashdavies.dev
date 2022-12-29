@@ -3,7 +3,6 @@ package io.ashdavies.check
 import com.google.firebase.FirebaseApp
 import io.ashdavies.http.DefaultHttpClient
 import io.ktor.client.HttpClient
-import io.ktor.client.plugins.auth.Auth
 
 public class AppCheck internal constructor(
     httpClient: HttpClient,
