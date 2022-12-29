@@ -16,6 +16,8 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.decodeFromStream
+import java.net.URLDecoder
+import java.nio.charset.StandardCharsets
 
 @OptIn(ExperimentalSerializationApi::class)
 internal class AppCheckFunction : HttpFunction by HttpApplication(
@@ -31,10 +33,11 @@ private fun HttpScope.appCheck(
     httpClient: HttpClient = LocalHttpClient.current,
 ) = HttpEffect {
     val appCheckRequest = Json.decodeFromStream<AppCheckRequest>(httpRequest.inputStream)
+    val decodedAppId = URLDecoder.decode(appCheckRequest.appId, StandardCharsets.UTF_8)
     val appCheck = firebaseApp.appCheck(httpClient)
 
     val response = appCheck.createToken(
-        appId = appCheckRequest.appId,
+        appId = decodedAppId,
     )
 
     Json.encodeToString(response)
