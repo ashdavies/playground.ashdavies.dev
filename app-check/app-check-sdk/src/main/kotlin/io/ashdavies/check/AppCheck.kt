@@ -1,7 +1,9 @@
 package io.ashdavies.check
 
 import com.google.firebase.FirebaseApp
+import io.ashdavies.http.DefaultHttpClient
 import io.ktor.client.HttpClient
+import io.ktor.client.plugins.auth.Auth
 
 public class AppCheck internal constructor(
     httpClient: HttpClient,
@@ -21,7 +23,10 @@ internal fun AppCheck(
     httpClient: HttpClient,
     projectId: String,
 ): AppCheck = AppCheck(
-    cryptoSigner = CryptoSigner(firebaseApp, httpClient),
     httpClient = httpClient,
     projectId = projectId,
+    cryptoSigner = CryptoSigner(
+        client = DefaultHttpClient(),
+        app = firebaseApp,
+    ),
 )
