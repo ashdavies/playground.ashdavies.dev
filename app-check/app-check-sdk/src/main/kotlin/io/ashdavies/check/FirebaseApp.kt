@@ -15,11 +15,10 @@ private val GoogleCloudProject: String? get() = System.getenv("GOOGLE_CLOUD_PROJ
 private val GCloudProject: String? get() = System.getenv("GCLOUD_PROJECT")
 private val GCPProject: String? get() = System.getenv("GCP_PROJECT")
 
-public fun FirebaseApp.appCheck(httpClient: HttpClient, appId: String): AppCheck = AppCheck(
+public fun FirebaseApp.appCheck(httpClient: HttpClient): AppCheck = AppCheck(
     projectId = getProjectId(this),
     httpClient = httpClient,
     firebaseApp = this,
-    appId = appId,
 )
 
 internal fun getProjectId(app: FirebaseApp): String = requireNotNull(findExplicitProjectId(app)) {
