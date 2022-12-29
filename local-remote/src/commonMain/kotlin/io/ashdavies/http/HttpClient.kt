@@ -73,7 +73,8 @@ public fun DefaultHttpClient(block: HttpClientConfig<*>.() -> Unit = { }): HttpC
 }
 
 public val LocalHttpClient: ProvidableCompositionLocal<HttpClient> = staticCompositionLocalOf {
-    DefaultHttpClient { /*install(HttpCache)*/ }
+    // DefaultHttpClient { install(HttpCache) }
+    DefaultHttpClient { }
 }
 
 @Composable
