@@ -45,7 +45,7 @@ private fun DefaultLogger(block: (message: String) -> Unit = ::println): Logger 
     override fun log(message: String) = block(message)
 }
 
-public fun DefaultHttpClient(block: HttpClientConfig<*>.() -> Unit = { }): HttpClient = HttpClient {
+private fun DefaultHttpClient(block: HttpClientConfig<*>.() -> Unit = { }): HttpClient = HttpClient {
     install(ContentNegotiation) {
         json(
             Json {

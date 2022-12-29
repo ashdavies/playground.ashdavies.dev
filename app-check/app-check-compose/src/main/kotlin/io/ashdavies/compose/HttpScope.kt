@@ -36,7 +36,9 @@ public fun HttpScope.VerifiedHttpEffect(block: suspend CoroutineScope.() -> Stri
         val response: HttpResponse = LocalHttpResponse.current
         val request: HttpRequest = LocalHttpRequest.current
         val appId: String by LocalHttpRequest.current
-        val appCheck: AppCheck = rememberAppCheck()
+        val appCheck: AppCheck = rememberAppCheck(
+            appId = appId,
+        )
 
         LaunchedEffect(Unit) {
             try {
@@ -64,6 +66,7 @@ public fun HttpScope.VerifiedHttpEffect(block: suspend CoroutineScope.() -> Stri
 private fun rememberAppCheck(
     firebaseApp: FirebaseApp = LocalFirebaseAdminApp.current,
     httpClient: HttpClient = LocalHttpClient.current,
+    appId: String,
 ): AppCheck = remember(firebaseApp, httpClient) {
-    firebaseApp.appCheck(httpClient)
+    firebaseApp.appCheck(httpClient, appId)
 }
