@@ -4,33 +4,40 @@ import androidx.compose.runtime.Composable
 import com.google.cloud.functions.HttpFunction
 import com.google.cloud.functions.HttpRequest
 import com.google.firebase.FirebaseApp
-import io.ashdavies.compose.AuthorisedHttpApplication
 import io.ashdavies.http.LocalHttpClient
+import io.ashdavies.playground.cloud.HttpApplication
 import io.ashdavies.playground.cloud.HttpConfig
 import io.ashdavies.playground.cloud.HttpEffect
 import io.ashdavies.playground.cloud.HttpScope
 import io.ashdavies.playground.cloud.LocalFirebaseAdminApp
 import io.ashdavies.playground.cloud.LocalHttpRequest
 import io.ktor.client.HttpClient
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.decodeFromStream
+import java.net.URLDecoder
+import java.nio.charset.StandardCharsets
 
-internal class AppCheckFunction : HttpFunction by AuthorisedHttpApplication(
+@OptIn(ExperimentalSerializationApi::class)
+internal class AppCheckFunction : HttpFunction by HttpApplication(
     config = HttpConfig.Post,
-    content = { appCheck() },
+    block = { appCheck() },
 )
 
 @Composable
+@ExperimentalSerializationApi
 private fun HttpScope.appCheck(
     firebaseApp: FirebaseApp = LocalFirebaseAdminApp.current,
     httpRequest: HttpRequest = LocalHttpRequest.current,
     httpClient: HttpClient = LocalHttpClient.current,
 ) = HttpEffect {
-    val appCheckRequest = AppCheckRequest(httpRequest)
+    val appCheckRequest = Json.decodeFromStream<AppCheckRequest>(httpRequest.inputStream)
+    val decodedAppId = URLDecoder.decode(appCheckRequest.appId, StandardCharsets.UTF_8)
     val appCheck = firebaseApp.appCheck(httpClient)
 
     val response = appCheck.createToken(
-        appId = appCheckRequest.appId,
+        appId = decodedAppId,
     )
 
     Json.encodeToString(response)

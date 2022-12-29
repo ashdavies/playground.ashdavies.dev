@@ -47,11 +47,13 @@ private fun DefaultLogger(block: (message: String) -> Unit = ::println): Logger 
 
 private fun DefaultHttpClient(block: HttpClientConfig<*>.() -> Unit = { }): HttpClient = HttpClient {
     install(ContentNegotiation) {
-        json(Json {
-            serializersModule = SerializersModule { contextual(EventsSerializer) }
-            ignoreUnknownKeys = true
-            encodeDefaults = true
-        })
+        json(
+            Json {
+                serializersModule = SerializersModule { contextual(EventsSerializer) }
+                ignoreUnknownKeys = true
+                encodeDefaults = true
+            },
+        )
     }
 
     install(DefaultRequest) {
@@ -73,39 +75,46 @@ private fun DefaultHttpClient(block: HttpClientConfig<*>.() -> Unit = { }): Http
 }
 
 public val LocalHttpClient: ProvidableCompositionLocal<HttpClient> = staticCompositionLocalOf {
-    DefaultHttpClient { /*install(HttpCache)*/ }
+    // DefaultHttpClient { install(HttpCache) }
+    DefaultHttpClient { }
 }
 
 @Composable
 public inline fun <reified T : Any> requestingState(
     client: HttpClient = LocalHttpClient.current,
     scope: CoroutineScope = rememberCoroutineScope(),
-    noinline block: HttpRequestBuilder.() -> Unit = { }
+    noinline block: HttpRequestBuilder.() -> Unit = { },
 ): State<Result<T>> = client
     .requestingInternal<T>(scope, block)
     .collectAsState()
 
 public suspend inline fun <reified T : Any> HttpClient.requesting(
-    urlString: String, noinline block: HttpRequestBuilder.() -> Unit = { }
+    urlString: String,
+    noinline block: HttpRequestBuilder.() -> Unit = { },
 ): StateFlow<Result<T>> = requesting {
     url.takeFrom(urlString)
     block()
 }
 
 public suspend inline fun <reified T : Any> HttpClient.requesting(
-    noinline block: HttpRequestBuilder.() -> Unit = { }
+    noinline block: HttpRequestBuilder.() -> Unit = { },
 ): StateFlow<Result<T>> = coroutineScope {
     requestingInternal(this, block)
 }
 
 @PublishedApi
 internal inline fun <reified T : Any> HttpClient.requestingInternal(
-    scope: CoroutineScope, noinline block: HttpRequestBuilder.() -> Unit = { },
+    scope: CoroutineScope,
+    noinline block: HttpRequestBuilder.() -> Unit = { },
 ): StateFlow<Result<T>> = flow<Result<T>> {
-    emit(Result.success(request {
-        onProgress { emit(Result.loading(it)) }
-        block()
-    }.body()))
+    emit(
+        Result.success(
+            request {
+                onProgress { emit(Result.loading(it)) }
+                block()
+            }.body(),
+        ),
+    )
 }.stateIn(scope, SharingStarted.Lazily, Result.loading())
 
 public fun HttpClient.defaultRequest(
@@ -122,7 +131,7 @@ public fun HttpClient.header(
 }
 
 public fun HttpClient.url(
-    block: URLBuilder.() -> Unit
+    block: URLBuilder.() -> Unit,
 ): HttpClient = defaultRequest {
     url(block)
 }

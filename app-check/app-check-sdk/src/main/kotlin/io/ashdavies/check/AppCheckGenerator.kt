@@ -3,6 +3,8 @@ package io.ashdavies.check
 import io.ashdavies.check.AppCheckToken.Request
 import io.ashdavies.check.AppCheckToken.Response
 import io.ktor.client.HttpClient
+import io.ktor.client.request.header
+import io.ktor.http.HttpHeaders
 import kotlinx.datetime.Clock
 import kotlin.time.Duration.Companion.hours
 
@@ -33,10 +35,19 @@ internal fun AppCheckGenerator(
         appId = appId,
     )
 
+    val bearerResponse = bearerResponse(
+        accountId = cryptoSigner.getAccountId(),
+        algorithm = algorithm,
+        httpClient = httpClient,
+        appId = appId,
+    )
+
     val result: Response.Raw = httpClient.post(
         body = mapOf("customToken" to request.customToken),
         urlString = urlString,
-    )
+    ) {
+        header(HttpHeaders.Authorization, "Bearer ${bearerResponse.accessToken}")
+    }
 
     val ttlMillis = result.ttl
         .substring(0, result.ttl.length - 1)
