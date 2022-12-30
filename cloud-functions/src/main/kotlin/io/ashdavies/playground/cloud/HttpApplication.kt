@@ -17,8 +17,8 @@ import kotlinx.coroutines.withContext
 import kotlinx.coroutines.yield
 import org.jetbrains.skiko.MainUIDispatcher
 
-public fun HttpApplication(block: @Composable HttpScope.() -> Unit): HttpFunction {
-    return HttpApplication(HttpConfig.Get, block)
+public fun HttpApplication(content: @Composable HttpScope.() -> Unit): HttpFunction {
+    return HttpApplication(HttpConfig.Get, content)
 }
 
 public fun HttpApplication(config: HttpConfig, content: HttpComposable): HttpFunction {

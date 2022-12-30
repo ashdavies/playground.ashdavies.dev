@@ -6,13 +6,12 @@ public class AppCheck internal constructor(
     httpClient: HttpClient,
     cryptoSigner: CryptoSigner,
     projectId: String,
-    appId: String,
-) : AppCheckGenerator by AppCheckGenerator(
-    httpClient = httpClient,
-    cryptoSigner = cryptoSigner,
-    projectId = projectId,
-    appId = appId,
-),
+) :
+    AppCheckGenerator by AppCheckGenerator(
+        httpClient = httpClient,
+        cryptoSigner = cryptoSigner,
+        projectId = projectId,
+    ),
     AppCheckVerifier by AppCheckVerifier(
         cryptoSigner = cryptoSigner,
     )

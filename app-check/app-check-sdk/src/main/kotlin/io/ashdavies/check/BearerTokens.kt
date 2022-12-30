@@ -3,9 +3,6 @@ package io.ashdavies.check
 import com.auth0.jwt.algorithms.Algorithm
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
-import io.ktor.client.plugins.auth.Auth
-import io.ktor.client.plugins.auth.providers.BearerTokens
-import io.ktor.client.plugins.auth.providers.bearer
 import io.ktor.client.request.parameter
 import io.ktor.client.request.post
 import io.ktor.http.ContentType
@@ -24,40 +21,25 @@ private val FIREBASE_CLAIMS_SCOPES = listOf(
     "$GOOGLE_AUTH_SCOPE/userinfo.email",
 )
 
-public fun AuthorisedHttpClient(from: HttpClient, config: HttpClientConfig): HttpClient =
-    from.config {
-        install(Auth) {
-            bearer {
-                loadTokens { bearerTokens(from, config) }
-            }
-        }
+internal suspend fun bearerResponse(
+    httpClient: HttpClient,
+    algorithm: Algorithm,
+    accountId: String,
+    appId: String,
+): BearerResponse {
+    val assertionToken = Jwt.create(algorithm) {
+        it.audience = GOOGLE_TOKEN_ENDPOINT
+        it.scope = FIREBASE_CLAIMS_SCOPES
+        it.issuer = accountId
+        it.appId = appId
     }
 
-private suspend fun bearerTokens(client: HttpClient, config: HttpClientConfig): BearerTokens {
-    val response = client.post(GOOGLE_TOKEN_ENDPOINT) {
+    return httpClient.post(GOOGLE_TOKEN_ENDPOINT) {
         contentType(ContentType.Application.FormUrlEncoded)
         parameter("grant_type", "urn:ietf:params:oauth:grant-type:jwt-bearer")
-        parameter("assertion", createJwt(config))
-    }.body<BearerResponse>()
-
-    return BearerTokens(
-        accessToken = response.accessToken,
-        refreshToken = "null",
-    )
+        parameter("assertion", assertionToken)
+    }.body()
 }
-
-private fun createJwt(config: HttpClientConfig): String = Jwt.create(config.algorithm) {
-    it.audience = GOOGLE_TOKEN_ENDPOINT
-    it.scope = FIREBASE_CLAIMS_SCOPES
-    it.issuer = config.accountId
-    it.appId = config.appId
-}
-
-public data class HttpClientConfig(
-    val algorithm: Algorithm,
-    val accountId: String,
-    val appId: String,
-)
 
 @Serializable
 internal data class BearerResponse(

@@ -15,39 +15,23 @@ private val GoogleCloudProject: String? get() = System.getenv("GOOGLE_CLOUD_PROJ
 private val GCloudProject: String? get() = System.getenv("GCLOUD_PROJECT")
 private val GCPProject: String? get() = System.getenv("GCP_PROJECT")
 
-public fun FirebaseApp.appCheck(httpClient: HttpClient, appId: String): AppCheck {
-    val cryptoSigner = CryptoSigner(this, httpClient)
-
-    val config = HttpClientConfig(
-        algorithm = GoogleAlgorithm(cryptoSigner),
-        accountId = cryptoSigner.getAccountId(),
-        appId = appId,
-    )
-
-    val authorisedHttpClient = AuthorisedHttpClient(
-        from = httpClient,
-        config = config,
-    )
-
-    return AppCheck(
-        cryptoSigner = cryptoSigner,
-        projectId = getProjectId(this),
-        httpClient = authorisedHttpClient,
-        appId = appId,
-    )
-}
+public fun FirebaseApp.appCheck(httpClient: HttpClient): AppCheck = AppCheck(
+    cryptoSigner = CryptoSigner(this, httpClient),
+    projectId = getProjectId(this),
+    httpClient = httpClient,
+)
 
 internal fun getProjectId(app: FirebaseApp): String = requireNotNull(findExplicitProjectId(app)) {
     "Failed to determine project ID. Initialize the " +
-        "SDK with service account credentials or set project ID as an app option. " +
-        "Alternatively, set the GOOGLE_CLOUD_PROJECT environment variable."
+            "SDK with service account credentials or set project ID as an app option. " +
+            "Alternatively, set the GOOGLE_CLOUD_PROJECT environment variable."
 }
 
 internal fun getServiceAccountId(app: FirebaseApp): String =
     requireNotNull(findExplicitServiceAccountId(app)) {
         "Failed to determine service account. Make sure to initialize " +
-            "the SDK with a service account credential. Alternatively specify a service " +
-            "account with iam.serviceAccounts.signBlob permission."
+                "the SDK with a service account credential. Alternatively specify a service " +
+                "account with iam.serviceAccounts.signBlob permission."
     }
 
 private fun findExplicitProjectId(app: FirebaseApp): String? = app.options.projectId
