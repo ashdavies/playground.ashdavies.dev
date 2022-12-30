@@ -35,7 +35,7 @@ public fun HttpScope.VerifiedHttpEffect(block: suspend CoroutineScope.() -> Stri
         val appId by LocalHttpRequest.current
 
         val appCheck: AppCheck = remember(firebaseApp, httpClient) {
-            firebaseApp.appCheck(httpClient, appId)
+            firebaseApp.appCheck(httpClient)
         }
 
         LaunchedEffect(Unit) {
