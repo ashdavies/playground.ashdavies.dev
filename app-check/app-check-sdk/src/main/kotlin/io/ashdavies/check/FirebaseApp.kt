@@ -23,15 +23,15 @@ public fun FirebaseApp.appCheck(httpClient: HttpClient): AppCheck = AppCheck(
 
 internal fun getProjectId(app: FirebaseApp): String = requireNotNull(findExplicitProjectId(app)) {
     "Failed to determine project ID. Initialize the " +
-            "SDK with service account credentials or set project ID as an app option. " +
-            "Alternatively, set the GOOGLE_CLOUD_PROJECT environment variable."
+        "SDK with service account credentials or set project ID as an app option. " +
+        "Alternatively, set the GOOGLE_CLOUD_PROJECT environment variable."
 }
 
 internal fun getServiceAccountId(app: FirebaseApp): String =
     requireNotNull(findExplicitServiceAccountId(app)) {
         "Failed to determine service account. Make sure to initialize " +
-                "the SDK with a service account credential. Alternatively specify a service " +
-                "account with iam.serviceAccounts.signBlob permission."
+            "the SDK with a service account credential. Alternatively specify a service " +
+            "account with iam.serviceAccounts.signBlob permission."
     }
 
 private fun findExplicitProjectId(app: FirebaseApp): String? = app.options.projectId
