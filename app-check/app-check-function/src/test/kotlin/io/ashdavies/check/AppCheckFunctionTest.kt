@@ -27,15 +27,6 @@ private val MOBILE_SDK_APP_ID: String
 internal class AppCheckFunctionTest {
 
     @Test
-    fun `should find number from app id`() {
-        val projectNumber = MOBILE_SDK_APP_ID.let {
-            it.split(":")[1]
-        }
-
-        assertEquals(projectNumber, "279861227938")
-    }
-
-    @Test
     @Ignore("Ignore until Playground server is available")
     fun `should create production app check token`() = runBlocking {
         val client = TestHttpClient(CREATE_TOKEN_FUNCTION)
