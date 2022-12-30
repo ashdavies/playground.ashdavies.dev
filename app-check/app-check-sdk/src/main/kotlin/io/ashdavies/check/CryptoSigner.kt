@@ -17,7 +17,10 @@ public interface CryptoSigner {
     public fun getAccountId(): String
 }
 
-internal fun CryptoSigner(accountId: String, sign: suspend (value: ByteArray) -> ByteArray) = object : CryptoSigner {
+internal fun CryptoSigner(
+    accountId: String,
+    sign: suspend (value: ByteArray) -> ByteArray,
+): CryptoSigner = object : CryptoSigner {
     override suspend fun sign(value: ByteArray): ByteArray = sign(value)
     override fun getAccountId(): String = accountId
 }
@@ -29,21 +32,22 @@ public fun CryptoSigner(firebaseApp: FirebaseApp, httpClient: HttpClient): Crypt
     }
 }
 
-/**
- * Bearer authentication is required here!
- * Is it necessary for app check?
- */
-private fun IamSigner(client: HttpClient, accountId: String, token: String) = CryptoSigner(accountId) { src ->
-    val urlString = "https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/$accountId:signBlob"
-    val response = client.post(urlString) {
-        header("X-Firebase-Client", "fire-admin-node/10.2.0")
-        header(HttpHeaders.Authorization, "Bearer $token")
-        setBody(mapOf("payload" to src.encodeToString()))
-    }.body<IamSignedResponse>()
+private fun IamSigner(client: HttpClient, accountId: String, token: String): CryptoSigner {
+    return CryptoSigner(accountId) { src ->
+        val urlString = "https://iamcredentials.googleapis.com/v1/" +
+            "projects/-/serviceAccounts/" +
+            "$accountId:signBlob"
 
-    response
-        .signedBlob
-        .decodeFromString()
+        val response = client.post(urlString) {
+            header("X-Firebase-Client", "fire-admin-node/10.2.0")
+            header(HttpHeaders.Authorization, "Bearer $token")
+            setBody(mapOf("payload" to src.encodeToString()))
+        }.body<IamSignedResponse>()
+
+        response
+            .signedBlob
+            .decodeFromString()
+    }
 }
 
 private fun getToken(credentials: GoogleCredentials): String = credentials

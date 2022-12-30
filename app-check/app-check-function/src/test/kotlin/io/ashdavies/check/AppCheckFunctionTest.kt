@@ -1,7 +1,9 @@
 package io.ashdavies.check
 
+import com.google.firebase.FirebaseApp
 import io.ashdavies.cloud.TestHttpClient
 import io.ashdavies.cloud.startServer
+import io.ktor.client.call.body
 import io.ktor.client.request.get
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
@@ -37,6 +39,21 @@ internal class AppCheckFunctionTest {
 
         // Function can only be accessed with permission
         assertEquals(HttpStatusCode.OK, response.status)
+    }
+
+    @Test
+    fun `should verify token`() = startServer<AppCheckFunction> { client ->
+        val response = client.post {
+            contentType(ContentType.Application.Json)
+            setBody(AppCheckRequest(MOBILE_SDK_APP_ID))
+        }.body<AppCheckToken.Response.Normalised>()
+
+        val firebaseApp = FirebaseApp.initializeApp()
+        val appCheck = firebaseApp.appCheck(client)
+        val decoded = appCheck.verifyToken(response.token)
+
+        println("=== Decoded ===")
+        println(decoded)
     }
 
     @Test
