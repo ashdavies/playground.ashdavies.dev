@@ -17,18 +17,18 @@ import kotlinx.coroutines.withContext
 import kotlinx.coroutines.yield
 import org.jetbrains.skiko.MainUIDispatcher
 
-public fun HttpApplication(block: @Composable HttpScope.() -> Unit): HttpFunction {
-    return HttpApplication(HttpConfig.Get, block)
+public fun HttpApplication(content: @Composable HttpScope.() -> Unit): HttpFunction {
+    return HttpApplication(HttpConfig.Get, content)
 }
 
-public fun HttpApplication(config: HttpConfig, block: HttpComposable): HttpFunction {
+public fun HttpApplication(config: HttpConfig, content: HttpComposable): HttpFunction {
     return HttpApplier(config) { request, response ->
         application {
             CompositionLocalProvider(
                 LocalApplicationScope provides this,
                 LocalHttpResponse provides response,
                 LocalHttpRequest provides request,
-                content = { block() },
+                content = { content() },
             )
         }
     }

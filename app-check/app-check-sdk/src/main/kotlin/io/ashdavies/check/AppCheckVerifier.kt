@@ -1,17 +1,27 @@
 package io.ashdavies.check
 
 import com.auth0.jwt.exceptions.JWTVerificationException
-import com.auth0.jwt.interfaces.DecodedJWT
 import io.ashdavies.playground.cloud.HttpException
 
-internal fun interface AppCheckVerifier {
-    suspend fun verifyToken(token: String, config: JwtOptions.() -> Unit): DecodedJWT
+private const val APP_CHECK_ENDPOINT = "https://firebaseappcheck.googleapis.com/"
+
+public fun interface AppCheckVerifier {
+    public suspend fun verifyToken(token: String): DecodedToken
 }
 
-internal fun AppCheckVerifier(cryptoSigner: CryptoSigner) = AppCheckVerifier { token, config ->
-    try {
-        Jwt.verify(GoogleAlgorithm(cryptoSigner), token, config)
-    } catch (exception: JWTVerificationException) {
-        throw HttpException.InvalidArgument(requireNotNull(exception.message), exception)
+internal fun AppCheckVerifier(cryptoSigner: CryptoSigner, projectNumber: String): AppCheckVerifier {
+    return AppCheckVerifier { token ->
+        try {
+            val decoded = Jwt.verify(GoogleAlgorithm(cryptoSigner), token) {
+                issuer = "$APP_CHECK_ENDPOINT$projectNumber"
+            }
+
+            decoded.asDecodedToken()
+        } catch (exception: JWTVerificationException) {
+            throw HttpException.InvalidArgument(
+                message = requireNotNull(exception.message),
+                cause = exception,
+            )
+        }
     }
 }

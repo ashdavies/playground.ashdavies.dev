@@ -22,7 +22,7 @@ import java.nio.charset.StandardCharsets
 @OptIn(ExperimentalSerializationApi::class)
 internal class AppCheckFunction : HttpFunction by HttpApplication(
     config = HttpConfig.Post,
-    block = { appCheck() },
+    content = { appCheck() },
 )
 
 @Composable

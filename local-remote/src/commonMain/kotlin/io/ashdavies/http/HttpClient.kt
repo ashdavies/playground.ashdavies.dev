@@ -45,34 +45,35 @@ private fun DefaultLogger(block: (message: String) -> Unit = ::println): Logger 
     override fun log(message: String) = block(message)
 }
 
-private fun DefaultHttpClient(block: HttpClientConfig<*>.() -> Unit = { }): HttpClient = HttpClient {
-    install(ContentNegotiation) {
-        json(
-            Json {
-                serializersModule = SerializersModule { contextual(EventsSerializer) }
-                ignoreUnknownKeys = true
-                encodeDefaults = true
-            },
-        )
-    }
+private fun DefaultHttpClient(block: HttpClientConfig<*>.() -> Unit = { }): HttpClient =
+    HttpClient {
+        install(ContentNegotiation) {
+            json(
+                Json {
+                    serializersModule = SerializersModule { contextual(EventsSerializer) }
+                    ignoreUnknownKeys = true
+                    encodeDefaults = true
+                },
+            )
+        }
 
-    install(DefaultRequest) {
-        contentType(ContentType.Application.Json)
-        url(DEFAULT_FUNCTIONS_HOST)
-        userAgent(DefaultUserAgent)
-    }
+        install(DefaultRequest) {
+            contentType(ContentType.Application.Json)
+            url(DEFAULT_FUNCTIONS_HOST)
+            userAgent(DefaultUserAgent)
+        }
 
-    install(HttpTimeout) {
-        connectTimeoutMillis = INFINITE_TIMEOUT_MS
-    }
+        install(HttpTimeout) {
+            connectTimeoutMillis = INFINITE_TIMEOUT_MS
+        }
 
-    install(Logging) {
-        logger = DefaultLogger()
-        level = LogLevel.ALL
-    }
+        install(Logging) {
+            logger = DefaultLogger()
+            level = LogLevel.ALL
+        }
 
-    block()
-}
+        block()
+    }
 
 public val LocalHttpClient: ProvidableCompositionLocal<HttpClient> = staticCompositionLocalOf {
     // DefaultHttpClient { install(HttpCache) }
