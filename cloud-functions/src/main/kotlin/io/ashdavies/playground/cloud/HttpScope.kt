@@ -5,20 +5,22 @@ import androidx.compose.runtime.LaunchedEffect
 import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
 private const val UNKNOWN_ERROR = "Unknown error"
 
 public interface HttpScope
 
 @Composable
-public fun HttpScope.HttpEffect(block: suspend CoroutineScope.() -> String) {
+public fun HttpScope.HttpEffect(block: suspend CoroutineScope.() -> Any) {
     val scope = LocalApplicationScope.current
     val response = LocalHttpResponse.current
     val request = LocalHttpRequest.current
 
     LaunchedEffect(request) {
         try {
-            val result: String = block()
+            val result = Json.encodeToString(block())
             response.setContentType("${ContentType.Application.Json}")
             response.setStatusCode(HttpStatusCode.OK)
             response.write(result)

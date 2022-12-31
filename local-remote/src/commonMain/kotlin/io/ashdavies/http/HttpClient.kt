@@ -45,7 +45,7 @@ private fun DefaultLogger(block: (message: String) -> Unit = ::println): Logger 
     override fun log(message: String) = block(message)
 }
 
-private fun DefaultHttpClient(block: HttpClientConfig<*>.() -> Unit = { }): HttpClient =
+public fun DefaultHttpClient(block: HttpClientConfig<*>.() -> Unit = { }): HttpClient =
     HttpClient {
         install(ContentNegotiation) {
             json(
@@ -108,17 +108,15 @@ internal inline fun <reified T : Any> HttpClient.requestingInternal(
     scope: CoroutineScope,
     noinline block: HttpRequestBuilder.() -> Unit = { },
 ): StateFlow<Result<T>> = flow<Result<T>> {
-    emit(
-        Result.success(
-            request {
-                onProgress { emit(Result.loading(it)) }
-                block()
-            }.body(),
-        ),
-    )
+    val response = request {
+        onProgress { emit(Result.loading(it)) }
+        block()
+    }.body<T>()
+
+    emit(Result.success(response))
 }.stateIn(scope, SharingStarted.Lazily, Result.loading())
 
-public fun HttpClient.defaultRequest(
+private fun HttpClient.defaultRequest(
     configure: DefaultRequest.DefaultRequestBuilder.() -> Unit,
 ): HttpClient = config {
     install(DefaultRequest, configure)

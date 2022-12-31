@@ -17,7 +17,7 @@ import io.ashdavies.playground.cloud.LocalApplicationScope
 import io.ashdavies.playground.cloud.LocalFirebaseAdminApp
 import io.ashdavies.playground.cloud.LocalHttpRequest
 import io.ashdavies.playground.cloud.LocalHttpResponse
-import io.ashdavies.playground.cloud.getValue
+import io.ktor.http.HttpStatusCode.Companion.Unauthorized
 import kotlinx.coroutines.CoroutineScope
 
 private const val APP_CHECK_HEADER = "X-Firebase-AppCheck"
@@ -46,7 +46,7 @@ public fun HttpScope.VerifiedHttpEffect(block: suspend CoroutineScope.() -> Stri
                 appCheck.verifyToken(appCheckToken)
                 isVerified = true
             } catch (exception: HttpException) {
-                httpResponse.setStatusCode(401, "Unauthorized")
+                httpResponse.setStatusCode(Unauthorized.value, "Unauthorized")
                 applicationScope.exitApplication()
             }
         }
