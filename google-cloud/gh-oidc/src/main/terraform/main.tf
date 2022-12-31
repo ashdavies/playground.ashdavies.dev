@@ -10,6 +10,7 @@ resource "google_project_iam_custom_role" "main" {
     "run.services.get",
     "run.services.getIamPolicy",
     "servicemanagement.services.get",
+    "servicemanagement.services.update",
     "serviceusage.services.list",
     "storage.buckets.list",
     "storage.objects.create",

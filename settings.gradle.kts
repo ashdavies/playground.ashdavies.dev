@@ -5,7 +5,6 @@ enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 include(
     ":app-check:app-check-client",
     ":app-check:app-check-compose",
-    ":app-check:app-check-function",
     ":app-check:app-check-sdk",
     ":app-launcher:android",
     ":app-launcher:common",
