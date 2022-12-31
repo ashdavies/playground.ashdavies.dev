@@ -42,9 +42,9 @@
       }
     },
     "/token": {
-      "get": {
-        "summary": "Token",
-        "operationId": "token",
+      "post": {
+        "summary": "Create Token",
+        "operationId": "createToken",
         "responses": {
           "200": {
             "description": "OK",
@@ -56,6 +56,21 @@
       }
     }
   },
+  "/token:verify": {
+    "post": {
+      "summary": "Verify Token",
+      "operationId": "verifyToken",
+      "responses": {
+        "200": {
+          "description": "OK",
+          "schema": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+},
   "securityDefinitions": {
     "ApiKeyAuth": {
       "type": "apiKey",

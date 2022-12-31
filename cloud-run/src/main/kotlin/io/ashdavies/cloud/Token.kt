@@ -28,7 +28,7 @@ internal fun Routing.token(httpClient: HttpClient = DefaultHttpClient()) {
         )
     }
 
-    post("/token:validate") {
+    post("/token:verify") {
         val appCheckToken = requireNotNull(call.request.header("X-Firebase-AppCheck")) {
             "Request is missing app check token header"
         }
