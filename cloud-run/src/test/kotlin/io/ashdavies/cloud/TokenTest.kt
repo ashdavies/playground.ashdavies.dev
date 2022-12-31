@@ -9,6 +9,7 @@ import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.request.header
 import io.ktor.client.request.headers
 import io.ktor.client.request.post
+import io.ktor.client.request.put
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
@@ -30,7 +31,7 @@ internal class TokenTest {
     fun `should create production app check token`() = runBlocking {
         val client = HttpClient { install(ContentNegotiation, ContentNegotiation.Config::json) }
 
-        val response = client.post("https://playground.ashdavies.dev/token") {
+        val response = client.post("https://playground.ashdavies.dev/createToken") {
             headers { append("X-API-Key", playgroundApiKey) }
             contentType(ContentType.Application.Json)
             setBody(AppCheckRequest(mobileSdkAppId))
@@ -43,7 +44,7 @@ internal class TokenTest {
     fun `should return app check token for request`() = testApplication {
         val client = createClient { install(ContentNegotiation, ContentNegotiation.Config::json) }
 
-        val response = client.post("/token") {
+        val response = client.post("/createToken") {
             contentType(ContentType.Application.Json)
             setBody(AppCheckRequest(mobileSdkAppId))
         }
@@ -51,7 +52,7 @@ internal class TokenTest {
         assertEquals(HttpStatusCode.OK, response.status)
 
         val body = response.body<AppCheckToken.Response.Normalised>()
-        val verify = client.post("/token:verify") {
+        val verify = client.put("/verifyToken") {
             header("X-Firebase-AppCheck", body.token)
         }
 
@@ -63,7 +64,7 @@ internal class TokenTest {
 
     @Test
     fun `should return bad request with missing body`() = testApplication {
-        val response = client.post("/token") {
+        val response = client.post("/createToken") {
             contentType(ContentType.Application.Json)
         }
 
