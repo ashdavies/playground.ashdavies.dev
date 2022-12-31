@@ -45,7 +45,7 @@ internal fun AppCheckGenerator(
 
     val ttlMillis = result.ttl
         .substring(0, result.ttl.length - 1)
-        .toInt() * 1000
+        .toLong() * 1000
 
     Response.Normalised(
         ttlMillis = ttlMillis,

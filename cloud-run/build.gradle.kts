@@ -12,16 +12,22 @@ application {
 }
 
 dependencies {
-    implementation(projects.appCheck.appCheckFunction)
+    implementation(projects.appCheck.appCheckSdk)
     implementation(projects.composeLocals)
-    implementation(projects.eventsAggregator)
-    implementation(projects.eventsFunction)
+    implementation(projects.localRemote)
 
     implementation(libs.bundles.jetbrains.kotlinx)
     implementation(libs.bundles.ktor.serialization)
     implementation(libs.bundles.ktor.server)
     implementation(libs.google.firebase.admin)
     implementation(libs.qos.logbackClassic)
+
+    testImplementation(kotlin("test"))
+    testImplementation(projects.appCheck.appCheckSdk)
+    testImplementation(libs.jetbrains.kotlinx.coroutines.test)
+    testImplementation(libs.ktor.client.content.negotiation)
+    testImplementation(libs.ktor.client.core)
+    testImplementation(libs.ktor.server.test.host)
 }
 
 java {

@@ -1,11 +1,10 @@
 package io.ashdavies.check
 
 import com.auth0.jwt.interfaces.DecodedJWT
-import kotlinx.datetime.toKotlinInstant
 
 internal fun DecodedJWT.asDecodedToken() = DecodedToken(
-    expiresAt = expiresAtAsInstant.toKotlinInstant(),
-    issuedAt = issuedAtAsInstant.toKotlinInstant(),
+    expiresAt = expiresAtAsInstant.epochSecond,
+    issuedAt = issuedAtAsInstant.epochSecond,
     audience = audience,
     subject = subject,
     issuer = issuer,

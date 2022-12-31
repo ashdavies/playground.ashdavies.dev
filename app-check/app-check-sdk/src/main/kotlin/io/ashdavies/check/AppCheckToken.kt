@@ -17,7 +17,7 @@ public sealed class AppCheckToken {
 
         @Serializable
         public data class Normalised(
-            val ttlMillis: Int,
+            val ttlMillis: Long,
             val token: String,
         ) : Response()
 

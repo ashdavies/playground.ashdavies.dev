@@ -106,9 +106,13 @@ ktor-server-call-logging = { module = "io.ktor:ktor-server-call-logging", versio
 ktor-server-cio = { module = "io.ktor:ktor-server-cio", version.ref = "ktor" }
 ktor-server-compression = { module = "io.ktor:ktor-server-compression", version.ref = "ktor" }
 ktor-server-conditional-headers = { module = "io.ktor:ktor-server-conditional-headers", version.ref = "ktor" }
+ktor-server-content-negotiation = { module = "io.ktor:ktor-server-content-negotiation", version.ref = "ktor" }
 ktor-server-core = { module = "io.ktor:ktor-server-core", version.ref = "ktor" }
 ktor-server-default-headers = { module = "io.ktor:ktor-server-default-headers", version.ref = "ktor" }
+ktor-server-double-receive = { module = "io.ktor:ktor-server-double-receive", version.ref = "ktor" }
 ktor-server-html-builder = { module = "io.ktor:ktor-server-html-builder", version.ref = "ktor" }
+ktor-server-request-validation = { module = "io.ktor:ktor-server-request-validation", version.ref = "ktor" }
+ktor-server-test-host = { module = "io.ktor:ktor-server-test-host", version.ref = "ktor" }
 
 oolong = "org.oolong-kt:oolong:2.1.1"
 qos-logbackClassic = "ch.qos.logback:logback-classic:1.4.4"
@@ -131,7 +135,18 @@ jetbrains-kotlin-test = ["jetbrains-kotlin-test", "jetbrains-kotlin-test-annotat
 jetbrains-kotlinx = ["jetbrains-kotlinx-coroutines-core", "jetbrains-kotlinx-datetime", "jetbrains-kotlinx-serialization-core", "jetbrains-kotlinx-serialization-json", "jetbrains-kotlinx-serialization-properties"]
 ktor-client = ["ktor-client-content-negotiation", "ktor-client-core", "ktor-client-json", "ktor-client-logging", "ktor-client-okhttp3", "slf4j-simple"]
 ktor-serialization = ["ktor-serialization-json", "ktor-serialization-kotlinx"]
-ktor-server = ["ktor-client-auth", "ktor-server-auth", "ktor-server-call-logging", "ktor-server-cio", "ktor-server-compression", "ktor-server-conditional-headers", "ktor-server-core", "ktor-server-default-headers"]
+
+ktor-server = [
+    "ktor-server-auth",
+    "ktor-server-call-logging",
+    "ktor-server-cio",
+    "ktor-server-compression",
+    "ktor-server-conditional-headers",
+    "ktor-server-content-negotiation",
+    "ktor-server-core",
+    "ktor-server-default-headers",
+    "ktor-server-request-validation",
+]
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "google-android" }
@@ -146,7 +161,6 @@ google-services = "com.google.gms.google-services:4.3.14"
 gradle-doctor = "com.osacky.doctor:0.8.1"
 jetbrains-dokka = "org.jetbrains.dokka:0.10.0"
 jetbrains-terraform = "org.jetbrains.gradle.terraform:1.4.2"
-johnrengelman-shadow = "com.github.johnrengelman.shadow:7.1.2"
 kotlin-compose = { id = "org.jetbrains.compose", version.ref = "jetbrains-compose" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrains-kotlin" }
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "jetbrains-kotlin" }
