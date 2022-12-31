@@ -1,9 +1,7 @@
-import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     id("org.jetbrains.compose")
-    id("com.github.johnrengelman.shadow")
 
     kotlin("plugin.serialization")
     kotlin("jvm")
@@ -25,12 +23,12 @@ dependencies {
     add("invoker", libs.google.cloud.javaFunctionInvoker)
 }
 
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
+
 tasks.withType<KotlinCompile> {
     kotlinOptions.freeCompilerArgs += Playground.freeCompilerArgs
     kotlinOptions.jvmTarget = Playground.jvmTarget
-}
-
-tasks.named<ShadowJar>("shadowJar") {
-    destinationDirectory.set(file("$buildDir/playground"))
-    mergeServiceFiles()
 }
