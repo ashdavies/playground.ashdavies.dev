@@ -7,6 +7,6 @@ import io.ktor.server.routing.get
 
 internal fun Routing.hello() {
     get("/hello") {
-        call.respond("Hello, World! (07d3ae49)")
+        call.respond("Hello, World! (7af22c18)")
     }
 }

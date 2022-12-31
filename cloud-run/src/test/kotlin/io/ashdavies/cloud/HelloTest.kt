@@ -19,7 +19,7 @@ internal class HelloTest {
         )
 
         assertEquals(
-            expected = "Hello, World!",
+            expected = "Hello, World! (7af22c18)",
             actual = response.bodyAsText(),
         )
     }
