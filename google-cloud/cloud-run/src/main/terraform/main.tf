@@ -1,7 +1,7 @@
 resource "google_endpoints_service" "endpoints" {
   service_name   = var.service_name
   project        = var.project_id
-  openapi_config = templatefile(var.resources.openapi-v2_json.path, {
+  openapi_config = templatefile(var.resources.openapi-v2_yaml.path, {
     backend_service_name = google_cloud_run_service.service.status[0].url
     cloud_run_hostname   = var.service_name
   })
