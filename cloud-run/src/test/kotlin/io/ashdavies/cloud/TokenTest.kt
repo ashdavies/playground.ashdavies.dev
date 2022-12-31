@@ -1,15 +1,16 @@
 package io.ashdavies.cloud
 
 import io.ashdavies.check.AppCheckRequest
+import io.ashdavies.check.AppCheckToken
+import io.ashdavies.check.DecodedToken
 import io.ktor.client.HttpClient
+import io.ktor.client.call.body
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
-import io.ktor.client.request.get
+import io.ktor.client.request.header
 import io.ktor.client.request.headers
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
-import io.ktor.http.HttpHeaders
-import io.ktor.http.HttpMethod
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
 import io.ktor.serialization.kotlinx.json.json
@@ -48,43 +49,24 @@ internal class TokenTest {
         }
 
         assertEquals(HttpStatusCode.OK, response.status)
+
+        val body = response.body<AppCheckToken.Response.Normalised>()
+        val verify = client.post("/token:verify") {
+            header("X-Firebase-AppCheck", body.token)
+        }
+
+        assertEquals(HttpStatusCode.OK, verify.status)
+        val decoded = verify.body<DecodedToken>()
+
+        assertEquals(decoded.appId, decoded.subject)
     }
 
     @Test
-    @Ignore("DEBUGGING")
     fun `should return bad request with missing body`() = testApplication {
         val response = client.post("/token") {
             contentType(ContentType.Application.Json)
         }
 
         assertEquals(HttpStatusCode.BadRequest, response.status)
-    }
-
-    @Test
-    @Ignore("DEBUGGING")
-    fun `should return headers for method not allowed`() = testApplication {
-        val client = createClient { install(ContentNegotiation, ContentNegotiation.Config::json) }
-
-        val response = client.get("/token") {
-            contentType(ContentType.Application.Json)
-            setBody(AppCheckRequest(mobileSdkAppId))
-        }
-
-        assertEquals(HttpMethod.Post.value, response.headers[HttpHeaders.Allow])
-        assertEquals(HttpStatusCode.MethodNotAllowed, response.status)
-    }
-
-    @Test
-    @Ignore("DEBUGGING")
-    fun `should return headers for unsupported media type`() = testApplication {
-        val client = createClient { install(ContentNegotiation, ContentNegotiation.Config::json) }
-
-        val response = client.post("/token") {
-            setBody("<AppCheckRequest appId=\"$mobileSdkAppId\" />")
-            contentType(ContentType.Application.Xml)
-        }
-
-        assertEquals("${ContentType.Application.Json}", response.headers[HttpHeaders.Accept])
-        assertEquals(HttpStatusCode.UnsupportedMediaType, response.status)
     }
 }

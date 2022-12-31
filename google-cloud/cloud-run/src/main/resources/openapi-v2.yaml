@@ -19,7 +19,7 @@ paths:
       responses:
         "200":
           description: "OK"
-  /token:
+  /createToken:
     post:
       tags: [ "token" ]
       description: Create token
@@ -36,8 +36,8 @@ paths:
           description: "OK"
           schema:
             $ref: "#definitions/AppCheckToken"
-  /token:verify:
-    post:
+  /verifyToken:
+    put:
       tags: [ "token" ]
       description: "Verify token"
       operationId: "verifyToken"
