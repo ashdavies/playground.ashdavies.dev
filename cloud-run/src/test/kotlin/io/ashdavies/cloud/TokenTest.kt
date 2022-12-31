@@ -11,13 +11,15 @@ import io.ktor.client.request.headers
 import io.ktor.client.request.post
 import io.ktor.client.request.put
 import io.ktor.client.request.setBody
+import io.ktor.client.statement.bodyAsText
 import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
 import io.ktor.serialization.kotlinx.json.json
 import io.ktor.server.testing.testApplication
 import kotlinx.coroutines.runBlocking
-import org.junit.Ignore
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
 import org.junit.Test
 import kotlin.test.assertEquals
 
@@ -27,39 +29,45 @@ internal class TokenTest {
     private val playgroundApiKey = System.getenv("PLAYGROUND_API_KEY")
 
     @Test
-    @Ignore("Endpoint cannot be queried before deployment")
     fun `should create production app check token`() = runBlocking {
         val client = HttpClient { install(ContentNegotiation, ContentNegotiation.Config::json) }
 
-        val response = client.post("https://playground.ashdavies.dev/token") {
+        val bodyAsText = client.post("https://playground.ashdavies.dev/token") {
             headers { append("X-API-Key", playgroundApiKey) }
             contentType(ContentType.Application.Json)
             setBody(AppCheckRequest(mobileSdkAppId))
-        }
+        }.bodyAsText()
 
-        assertEquals(HttpStatusCode.OK, response.status)
+        println("=== Body ===")
+        println(bodyAsText)
+
+        val appCheckToken = Json.decodeFromString<AppCheckToken.Response.Normalised>(bodyAsText)
+
+        val decodedToken = client.put("/verify") {
+            header("X-Firebase-AppCheck", appCheckToken.token)
+        }.body<DecodedToken>()
+
+        assertEquals(
+            expected = decodedToken.appId,
+            actual = decodedToken.subject,
+        )
     }
 
     @Test
     fun `should return app check token for request`() = testApplication {
         val client = createClient { install(ContentNegotiation, ContentNegotiation.Config::json) }
 
-        val response = client.post("/token") {
+        val httpResponse = client.post("/token") {
             contentType(ContentType.Application.Json)
             setBody(AppCheckRequest(mobileSdkAppId))
         }
 
-        assertEquals(HttpStatusCode.OK, response.status)
+        val appCheckToken = httpResponse.body<AppCheckToken.Response.Normalised>()
 
-        val body = response.body<AppCheckToken.Response.Normalised>()
-        val verify = client.put("/verify") {
-            header("X-Firebase-AppCheck", body.token)
-        }
-
-        assertEquals(HttpStatusCode.OK, verify.status)
-        val decoded = verify.body<DecodedToken>()
-
-        assertEquals(decoded.appId, decoded.subject)
+        assertEquals(
+            actual = appCheckToken.ttlMillis,
+            expected = 3_600_000,
+        )
     }
 
     @Test
