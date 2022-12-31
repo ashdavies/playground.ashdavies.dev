@@ -27,6 +27,7 @@ dependencies {
     testImplementation(kotlin("test"))
     testImplementation(projects.appCheck.appCheckSdk)
     testImplementation(libs.jetbrains.kotlinx.coroutines.test)
+    testImplementation(libs.ktor.server.content.negotiation)
     testImplementation(libs.ktor.server.test.host)
 }
 
