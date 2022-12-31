@@ -31,7 +31,7 @@ internal class TokenTest {
     fun `should create production app check token`() = runBlocking {
         val client = HttpClient { install(ContentNegotiation, ContentNegotiation.Config::json) }
 
-        val response = client.post("https://playground.ashdavies.dev/createToken") {
+        val response = client.post("https://playground.ashdavies.dev/token") {
             headers { append("X-API-Key", playgroundApiKey) }
             contentType(ContentType.Application.Json)
             setBody(AppCheckRequest(mobileSdkAppId))
@@ -44,7 +44,7 @@ internal class TokenTest {
     fun `should return app check token for request`() = testApplication {
         val client = createClient { install(ContentNegotiation, ContentNegotiation.Config::json) }
 
-        val response = client.post("/createToken") {
+        val response = client.post("/token") {
             contentType(ContentType.Application.Json)
             setBody(AppCheckRequest(mobileSdkAppId))
         }
@@ -52,7 +52,7 @@ internal class TokenTest {
         assertEquals(HttpStatusCode.OK, response.status)
 
         val body = response.body<AppCheckToken.Response.Normalised>()
-        val verify = client.put("/verifyToken") {
+        val verify = client.put("/verify") {
             header("X-Firebase-AppCheck", body.token)
         }
 
@@ -64,7 +64,7 @@ internal class TokenTest {
 
     @Test
     fun `should return bad request with missing body`() = testApplication {
-        val response = client.post("/createToken") {
+        val response = client.post("/token") {
             contentType(ContentType.Application.Json)
         }
 

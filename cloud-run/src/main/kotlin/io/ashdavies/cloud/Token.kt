@@ -16,7 +16,7 @@ import io.ktor.server.routing.put
 internal fun Routing.token(httpClient: HttpClient = DefaultHttpClient()) {
     val appCheck = firebaseApp.appCheck(httpClient)
 
-    post("/createToken") {
+    post("/token") {
         val appCheckRequest = call.receive<AppCheckRequest>()
         val appCheckToken = appCheck.createToken(
             appId = appCheckRequest.appId,
@@ -28,7 +28,7 @@ internal fun Routing.token(httpClient: HttpClient = DefaultHttpClient()) {
         )
     }
 
-    put("/verifyToken") {
+    put("/verify") {
         val appCheckToken = requireNotNull(call.request.header("X-Firebase-AppCheck")) {
             "Request is missing app check token header"
         }
