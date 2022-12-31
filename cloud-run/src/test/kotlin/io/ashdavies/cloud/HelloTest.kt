@@ -15,7 +15,7 @@ internal class HelloTest {
 
         assertEquals(
             expected = HttpStatusCode.OK,
-            actual = response.status
+            actual = response.status,
         )
 
         assertEquals(

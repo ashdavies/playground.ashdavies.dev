@@ -1,11 +1,10 @@
 package io.ashdavies.cloud
 
-import com.google.firebase.FirebaseApp
+import io.ashdavies.check.AppCheckRequest
+import io.ashdavies.check.appCheck
 import io.ashdavies.http.DefaultHttpClient
 import io.ktor.client.HttpClient
 import io.ktor.http.HttpStatusCode
-import io.ashdavies.check.AppCheckRequest
-import io.ashdavies.check.appCheck
 import io.ktor.server.application.call
 import io.ktor.server.request.header
 import io.ktor.server.request.receive
@@ -19,7 +18,7 @@ internal fun Routing.token(httpClient: HttpClient = DefaultHttpClient()) {
     post("/token") {
         val appCheckRequest = call.receive<AppCheckRequest>()
         val appCheckToken = appCheck.createToken(
-            appId = appCheckRequest.appId
+            appId = appCheckRequest.appId,
         )
 
         call.respond(
