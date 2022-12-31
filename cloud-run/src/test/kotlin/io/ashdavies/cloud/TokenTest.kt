@@ -21,6 +21,7 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import org.junit.Test
+import kotlin.test.Ignore
 import kotlin.test.assertEquals
 
 internal class TokenTest {
@@ -29,6 +30,7 @@ internal class TokenTest {
     private val playgroundApiKey = System.getenv("PLAYGROUND_API_KEY")
 
     @Test
+    @Ignore("Unable to deploy to production")
     fun `should create production app check token`() = runBlocking {
         val client = HttpClient { install(ContentNegotiation, ContentNegotiation.Config::json) }
 
