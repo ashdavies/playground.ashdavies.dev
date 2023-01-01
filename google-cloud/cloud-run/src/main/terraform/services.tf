@@ -16,6 +16,7 @@ resource "google_cloud_run_service" "endpoint" {
   }
 }
 
+# Needs a trigger
 resource "google_cloud_run_service" "service" {
   name     = "${var.resource_prefix}-service"
   location = var.project_region
@@ -32,6 +33,12 @@ resource "google_cloud_run_service" "service" {
     latest_revision = true
     percent         = 100
   }
+
+  lifecycle {
+    replace_triggered_by = [
+      random_id.service_trigger.hex
+    ]
+  }
 }
 
 resource "google_cloud_run_service_iam_policy" "noauth-endpoints" {
@@ -39,4 +46,8 @@ resource "google_cloud_run_service_iam_policy" "noauth-endpoints" {
   project     = google_cloud_run_service.endpoint.project
   policy_data = data.google_iam_policy.noauth.policy_data
   service     = google_cloud_run_service.endpoint.name
+}
+
+resource "random_id" "service_trigger" {
+  byte_length = 8
 }

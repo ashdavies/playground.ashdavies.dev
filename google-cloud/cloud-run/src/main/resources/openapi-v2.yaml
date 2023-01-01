@@ -36,8 +36,8 @@ paths:
           description: "OK"
           schema:
             $ref: "#definitions/AppCheckToken"
-  /token:verify:
-    post:
+  /verify:
+    put:
       tags: [ "token" ]
       description: "Verify token"
       operationId: "verifyToken"

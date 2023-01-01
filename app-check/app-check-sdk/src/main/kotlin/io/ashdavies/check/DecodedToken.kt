@@ -1,5 +1,8 @@
 package io.ashdavies.check
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 public data class DecodedToken(
     val audience: List<String>,
     val expiresAt: Long,
