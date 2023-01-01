@@ -1,10 +1,10 @@
 package io.ashdavies.playground
 
-import com.arkivanov.decompose.router.RouterState
+import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.value.Value
 
 public interface PlaygroundRoot<T : Any> {
-    public val routerState: Value<RouterState<*, T>>
+    public val childStack: Value<ChildStack<*, T>>
 }
 
 public interface NavigationRoot<N : NavigationRoot.Navigation, T : NavigationRoot.Child<N>> : PlaygroundRoot<T> {

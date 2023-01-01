@@ -5,14 +5,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.ExperimentalDecomposeApi
-import com.arkivanov.decompose.extensions.compose.jetbrains.Children
-import com.arkivanov.decompose.extensions.compose.jetbrains.animation.child.childAnimation
-import com.arkivanov.decompose.extensions.compose.jetbrains.animation.child.slide
-import com.arkivanov.decompose.router.Router
-import com.arkivanov.decompose.router.RouterState
-import com.arkivanov.decompose.router.bringToFront
-import com.arkivanov.decompose.router.router
-import com.arkivanov.decompose.value.Value
+import com.arkivanov.decompose.extensions.compose.jetbrains.stack.Children
+import com.arkivanov.decompose.extensions.compose.jetbrains.stack.animation.slide
+import com.arkivanov.decompose.extensions.compose.jetbrains.stack.animation.stackAnimation
+import com.arkivanov.decompose.router.stack.StackNavigation
+import com.arkivanov.decompose.router.stack.bringToFront
+import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.essenty.parcelable.Parcelable
 import com.arkivanov.essenty.parcelable.Parcelize
 import io.ashdavies.check.ProvideAppCheckToken
@@ -28,7 +26,7 @@ public fun EventsRoot(componentContext: ComponentContext, modifier: Modifier = M
 @Composable
 @ExperimentalDecomposeApi
 private fun EventsRoot(root: EventsRoot, modifier: Modifier = Modifier) {
-    Children(root.routerState, modifier, childAnimation(slide())) {
+    Children(root.childStack, modifier, stackAnimation(slide())) {
         when (val child: EventsRoot.Child = it.instance) {
             is EventsRoot.Child.Events -> EventsScreen(child)
             is EventsRoot.Child.Profile -> ProfileScreen(child)
@@ -52,29 +50,39 @@ private class EventsRootComponent(componentContext: ComponentContext) :
     ComponentContext by componentContext,
     EventsRoot {
 
-    private val router: Router<ChildConfiguration, EventsRoot.Child> = router(
+    private val navigation = StackNavigation<ChildConfiguration>()
+
+    private val _childStack = childStack(
         childFactory = { configuration, _ -> createChild(configuration) },
         initialConfiguration = ChildConfiguration.Events,
         handleBackButton = true,
+        source = navigation,
     )
 
-    override val routerState: Value<RouterState<*, EventsRoot.Child>>
-        get() = router.state
+    override val childStack by ::_childStack
 
-    private fun createChild(configuration: ChildConfiguration): EventsRoot.Child = when (configuration) {
-        is ChildConfiguration.Events -> EventsRoot.Child.Events(createNavigation(router))
-        is ChildConfiguration.Profile -> EventsRoot.Child.Profile(createNavigation(router))
+    private fun createChild(configuration: ChildConfiguration): EventsRoot.Child {
+        return when (configuration) {
+            is ChildConfiguration.Events -> EventsRoot.Child.Events(createNavigation(navigation))
+            is ChildConfiguration.Profile -> EventsRoot.Child.Profile(createNavigation(navigation))
+        }
     }
 }
 
 private sealed class ChildConfiguration : Parcelable {
-    @Parcelize object Events : ChildConfiguration()
-    @Parcelize object Profile : ChildConfiguration()
+
+    @Parcelize
+    object Events : ChildConfiguration()
+
+    @Parcelize
+    object Profile : ChildConfiguration()
 }
 
-private fun createNavigation(router: Router<ChildConfiguration, EventsRoot.Child>) = object : EventsRoot.Navigation {
-    override fun navigateToEvents() = router.bringToFront(ChildConfiguration.Events)
-    override fun navigateToProfile() = router.bringToFront(ChildConfiguration.Profile)
+private fun createNavigation(navigation: StackNavigation<ChildConfiguration>): EventsRoot.Navigation {
+    return object : EventsRoot.Navigation {
+        override fun navigateToEvents() = navigation.bringToFront(ChildConfiguration.Events)
+        override fun navigateToProfile() = navigation.bringToFront(ChildConfiguration.Profile)
+    }
 }
 
 @Composable
