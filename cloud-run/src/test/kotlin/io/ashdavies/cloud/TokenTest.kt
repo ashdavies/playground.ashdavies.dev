@@ -20,8 +20,8 @@ import io.ktor.server.testing.testApplication
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
-import org.junit.Test
 import kotlin.test.Ignore
+import kotlin.test.Test
 import kotlin.test.assertEquals
 
 internal class TokenTest {
@@ -39,9 +39,6 @@ internal class TokenTest {
             contentType(ContentType.Application.Json)
             setBody(AppCheckRequest(mobileSdkAppId))
         }.bodyAsText()
-
-        println("=== Body ===")
-        println(bodyAsText)
 
         val appCheckToken = Json.decodeFromString<AppCheckToken.Response.Normalised>(bodyAsText)
 

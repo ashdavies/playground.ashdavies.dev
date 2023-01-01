@@ -4,7 +4,7 @@ import io.ktor.client.request.get
 import io.ktor.client.statement.bodyAsText
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.testing.testApplication
-import org.junit.Test
+import kotlin.test.Test
 import kotlin.test.assertEquals
 
 internal class HelloTest {
@@ -19,8 +19,8 @@ internal class HelloTest {
         )
 
         assertEquals(
-            expected = "Hello, World! (7af22c18)",
             actual = response.bodyAsText(),
+            expected = "Hello, World!",
         )
     }
 }

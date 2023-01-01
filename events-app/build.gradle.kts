@@ -31,6 +31,7 @@ kotlin {
     }
 
     androidMain.dependencies {
+        implementation(platform(libs.google.firebase.bom))
         implementation(projects.firebaseCompose)
 
         with(libs.bundles) {
@@ -46,6 +47,7 @@ kotlin {
             implementation(accompanist.swiperefresh)
             implementation(firebase.appcheck.playintegrity)
             implementation(firebase.appcheck)
+            implementation(firebase.auth.ktx)
         }
     }
 

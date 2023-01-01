@@ -7,7 +7,7 @@ import io.ktor.server.routing.Routing
 import io.ktor.server.routing.get
 
 internal fun Routing.events() {
-    get("/events") {
+    get("/event") {
         call.respond(HttpStatusCode.OK)
     }
 }

@@ -11,23 +11,45 @@ consumes:
 produces:
   - "application/json"
 paths:
+  /auth:
+    post:
+      tags: [ "auth" ]
+      description: ""
+      operationId: "signIn"
+      parameters:
+        - name: "body"
+          in: "body"
+          required: true
+          schema:
+            type: "object"
+            required:
+              - "uid"
+            properties:
+              uid:
+                type: "string"
+                description: "The UID to store in the token. This identifies the user to other Firebase services (Realtime Database, Firebase Auth, etc.). Should be less than 128 characters."
+                example: "jane.smith@example.com"
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            $ref: "#definitions/AuthResult"
   /hello:
     get:
       tags: [ "hello" ]
       description: "Greet the user"
-      operationId: "hello"
+      operationId: "helloWorld"
       responses:
         "200":
           description: "OK"
   /token:
     post:
       tags: [ "token" ]
-      description: Create token
-      operationId: createToken
+      description: "Creates a new AppCheckToken that can be sent back to a client."
+      operationId: "createToken"
       parameters:
         - name: "body"
           in: "body"
-          description: "The app ID to use as the JWT app_id"
           required: true
           schema:
             $ref: "#/definitions/FirebaseApp"
@@ -39,7 +61,7 @@ paths:
   /verify:
     put:
       tags: [ "token" ]
-      description: "Verify token"
+      description: "Verifies a Firebase App Check token (JWT). If the token is valid, the promise is fulfilled with the token's decoded claims; otherwise, the promise is rejected."
       operationId: "verifyToken"
       parameters:
         - name: "X-Firebase-AppCheck"
@@ -68,6 +90,20 @@ definitions:
       token:
         type: "string"
         description: "The Firebase App Check token"
+  AuthResult:
+    type: "object"
+    properties:
+      idToken:
+        type: "string"
+        description: "A Firebase Auth ID token generated from the provided custom token."
+      refreshToken:
+        type: "string"
+        description: "A Firebase Auth refresh token generated from the provided custom token."
+      expiresIn:
+        type: "integer"
+        format: "int64"
+        description: "The number of seconds in which the ID token expires."
+        example: 3600
   DecodedToken:
     type: "object"
     required:
