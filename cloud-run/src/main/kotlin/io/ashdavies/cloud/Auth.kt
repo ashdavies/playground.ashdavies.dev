@@ -22,7 +22,6 @@ internal fun Routing.auth(client: HttpClient) {
         val firebaseAuth = FirebaseAuth.getInstance(firebaseApp)
         val accountRequest = call.receive<SignInRequest>()
         val customToken = firebaseAuth.createCustomToken(
-            /* uid = */
             accountRequest.uid,
         )
 

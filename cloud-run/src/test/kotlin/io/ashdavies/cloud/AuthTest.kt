@@ -19,11 +19,12 @@ internal class AuthTest {
     @Test
     fun `should sign in with custom token`() = testApplication {
         val client = createClient { install(ContentNegotiation, ContentNegotiation.Config::json) }
+        val apiKey = requireNotNull(System.getenv("GOOGLE_PROJECT_API_KEY"))
 
         val authResult = client.post("/auth") {
-            header("X-API-Key", System.getenv("GOOGLE_PROJECT_API_KEY"))
             setBody(mapOf("uid" to "jane.smith@example.com"))
             contentType(ContentType.Application.Json)
+            header("X-API-Key", apiKey)
         }.body<Map<String, String>>()
 
         assertNotNull(authResult["idToken"])
