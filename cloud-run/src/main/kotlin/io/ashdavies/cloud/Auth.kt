@@ -24,22 +24,23 @@ internal fun Routing.auth(client: HttpClient) {
         val firebaseAuth = FirebaseAuth.getInstance(firebaseApp)
         val accountRequest = call.receive<SignInRequest>()
         val customToken = firebaseAuth.createCustomToken(
-            /* uid = */ accountRequest.uid,
+            /* uid = */
+            accountRequest.uid,
         )
 
-        val authResult = client.post(SIGNUP_ENDPOINT) {
+        val authResponse = client.post(SIGNUP_ENDPOINT) {
             setBody(mapOf("token" to customToken, "returnSecureToken" to "true"))
             parameter("key", call.request.header("X-API-Key"))
             contentType(ContentType.Application.Json)
         }.body<SignInResponse>()
 
-        call.respond(authResult)
+        call.respond(authResponse)
     }
 }
 
 @Serializable
 internal data class SignInRequest(
-    val uid: String
+    val uid: String,
 )
 
 @Serializable

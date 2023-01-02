@@ -11,7 +11,7 @@ import io.ktor.serialization.kotlinx.json.json
 import io.ktor.server.testing.testApplication
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlin.test.Test
-import kotlin.test.assertEquals
+import kotlin.test.assertNotNull
 
 @ExperimentalCoroutinesApi
 internal class AuthTest {
@@ -24,11 +24,8 @@ internal class AuthTest {
             header("X-API-Key", "AIzaSyAhRyznWxQxO1Yd2RkQken7GUFA0IT9P6w")
             setBody(mapOf("uid" to "jane.smith@example.com"))
             contentType(ContentType.Application.Json)
-        }.body<Map<String, Any?>>()
+        }.body<Map<String, String>>()
 
-        assertEquals(
-            expected = "{authResult.idToken}",
-            actual = authResult["idToken"],
-        )
+        assertNotNull(authResult["idToken"])
     }
 }
