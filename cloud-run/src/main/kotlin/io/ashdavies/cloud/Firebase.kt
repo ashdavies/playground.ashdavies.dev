@@ -9,14 +9,13 @@ internal val firebaseApp: FirebaseApp
         .firstOrNull { it.name == FirebaseApp.DEFAULT_APP_NAME }
         ?: initializeFirebaseApp()
 
-private fun initializeFirebaseApp(): FirebaseApp {
-    return when (val serviceAccountId = System.getenv("GOOGLE_SERVICE_ACCOUNT_ID")) {
+private fun initializeFirebaseApp(): FirebaseApp =
+    when (val serviceAccountId = System.getenv("GOOGLE_SERVICE_ACCOUNT_ID")) {
         null -> FirebaseApp.initializeApp()
         else -> FirebaseApp.initializeApp(
-            FirebaseOptions(serviceAccountId)
+            FirebaseOptions(serviceAccountId),
         )
     }
-}
 
 private fun FirebaseOptions(serviceAccountId: String): FirebaseOptions =
     FirebaseOptions.builder()
