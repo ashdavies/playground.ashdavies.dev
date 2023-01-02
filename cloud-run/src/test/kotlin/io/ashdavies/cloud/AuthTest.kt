@@ -21,7 +21,7 @@ internal class AuthTest {
         val client = createClient { install(ContentNegotiation, ContentNegotiation.Config::json) }
 
         val authResult = client.post("/auth") {
-            header("X-API-Key", "AIzaSyAhRyznWxQxO1Yd2RkQken7GUFA0IT9P6w")
+            header("X-API-Key", System.getenv("IDENTITY_API_KEY"))
             setBody(mapOf("uid" to "jane.smith@example.com"))
             contentType(ContentType.Application.Json)
         }.body<Map<String, String>>()
