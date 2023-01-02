@@ -6,8 +6,6 @@ import io.ktor.client.call.body
 import io.ktor.client.request.parameter
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
-import io.ktor.http.ContentType
-import io.ktor.http.contentType
 import io.ktor.server.application.call
 import io.ktor.server.request.header
 import io.ktor.server.request.receive
@@ -31,7 +29,6 @@ internal fun Routing.auth(client: HttpClient) {
         val authResponse = client.post(SIGNUP_ENDPOINT) {
             setBody(mapOf("token" to customToken, "returnSecureToken" to "true"))
             parameter("key", call.request.header("X-API-Key"))
-            contentType(ContentType.Application.Json)
         }.body<SignInResponse>()
 
         call.respond(authResponse)

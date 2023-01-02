@@ -18,6 +18,7 @@ import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.request.HttpRequestBuilder
+import io.ktor.client.request.accept
 import io.ktor.client.request.request
 import io.ktor.http.ContentType
 import io.ktor.http.URLBuilder
@@ -59,6 +60,7 @@ public fun DefaultHttpClient(block: HttpClientConfig<*>.() -> Unit = { }): HttpC
 
         install(DefaultRequest) {
             contentType(ContentType.Application.Json)
+            accept(ContentType.Application.Json)
             url(DEFAULT_FUNCTIONS_HOST)
             userAgent(DefaultUserAgent)
         }
