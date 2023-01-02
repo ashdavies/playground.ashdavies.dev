@@ -1,9 +1,3 @@
-output "api_key" {
-  description = "Google Project API Key"
-  value       = google_apikeys_key.integration.key_string
-  sensitive   = true
-}
-
 output "pool_name" {
   description = "Workload Identity Pool name"
   value       = module.gh-oidc.pool_name
