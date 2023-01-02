@@ -18,7 +18,6 @@ resource "google_project_service" "main" {
   service            = google_endpoints_service.endpoints.service_name
   depends_on         = [google_endpoints_service.endpoints]
   project            = var.project_id
-  disable_on_destroy = true
 }
 
 resource "null_resource" "openapi_proxy_image" {
