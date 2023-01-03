@@ -18,10 +18,6 @@ import androidx.compose.material3.SmallTopAppBar
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -41,16 +37,14 @@ public fun LauncherScreen(componentContext: ComponentContext, state: LauncherSta
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 private fun LauncherScreen(onClick: (LauncherRoute) -> Unit) {
-    MaterialTheme {
-        Scaffold(topBar = { LauncherTopAppBar() }) { padding ->
-            Column(modifier = Modifier.padding(padding)) {
-                LauncherRow(Icons.Filled.Event, "Events") {
-                    onClick(LauncherRoute.Events)
-                }
+    Scaffold(topBar = { LauncherTopAppBar() }) { padding ->
+        Column(modifier = Modifier.padding(padding)) {
+            LauncherRow(Icons.Filled.Event, "Events") {
+                onClick(LauncherRoute.Events)
+            }
 
-                LauncherRow(Icons.Filled.Grid4x4, "Dominion") {
-                    onClick(LauncherRoute.Dominion)
-                }
+            LauncherRow(Icons.Filled.Grid4x4, "Dominion") {
+                onClick(LauncherRoute.Dominion)
             }
         }
     }

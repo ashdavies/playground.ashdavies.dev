@@ -28,8 +28,8 @@ public sealed interface LauncherEvent : CircuitUiEvent {
 }
 
 @Composable
-internal fun LauncherPresenter(): LauncherState {
-    var route by remember { mutableStateOf(LauncherRoute.Default) }
+internal fun LauncherPresenter(initialRoute: LauncherRoute): LauncherState {
+    var route by remember { mutableStateOf(initialRoute) }
 
     return LauncherState(route) { event ->
         when (event) {
@@ -38,13 +38,15 @@ internal fun LauncherPresenter(): LauncherState {
     }
 }
 
-public class LauncherPresenterFactory : Presenter.Factory {
+public class LauncherPresenterFactory(
+    private val initialRoute: LauncherRoute,
+) : Presenter.Factory {
     override fun create(
         screen: Screen,
         navigator: Navigator,
         context: CircuitContext
     ): Presenter<*>? = when (screen) {
-        is LauncherScreen -> Presenter { LauncherPresenter() }
+        is LauncherScreen -> Presenter { LauncherPresenter(initialRoute) }
         else -> null
     }
 }
