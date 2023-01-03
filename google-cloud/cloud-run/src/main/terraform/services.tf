@@ -1,3 +1,19 @@
+data "docker_registry_image" "service" {
+  name = format(
+    "%s-docker.pkg.dev/%s/cloud-run-source-deploy/%s",
+    var.project_region,
+    var.project_id,
+    var.service_name,
+  )
+}
+
+data "google_container_registry_image" "service" {
+  digest  = data.docker_registry_image.service.sha256_digest
+  region  = var.project_region
+  name    = var.service_name
+  project = var.project_id
+}
+
 resource "google_cloud_run_service" "endpoint" {
   depends_on = [null_resource.openapi_proxy_image]
   name       = "${var.resource_prefix}-endpoint"
@@ -19,12 +35,15 @@ resource "google_cloud_run_service" "endpoint" {
 resource "google_cloud_run_service" "service" {
   name                       = "${var.resource_prefix}-service"
   location                   = var.project_region
-  autogenerate_revision_name = true
 
   template {
+    metadata {
+      name = data.docker_registry_image.service.id
+    }
+
     spec {
       containers {
-        image = local.cloud_run_artifact
+        image = data.docker_registry_image.service.name
       }
     }
   }
