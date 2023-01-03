@@ -21,8 +21,8 @@ kotlin {
         implementation(compose.uiTooling)
         implementation(compose.ui)
 
-        implementation(libs.bundles.arkivanov.decompose)
         implementation(libs.bundles.jetbrains.kotlinx)
+        implementation(libs.slack.circuit.core)
         implementation(libs.oolong)
     }
 

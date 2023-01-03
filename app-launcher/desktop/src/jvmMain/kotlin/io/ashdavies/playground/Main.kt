@@ -17,8 +17,11 @@ public fun main(args: Array<String>) {
         .default(LauncherRoute.Default)
         .apply { argParser.parse(args) }
 
+    val launcherState = LauncherState(launcherRoute) {
+    }
+
     singleWindowApplication(
-        content = { LauncherScreen(DefaultComponentContext(DefaultLifecycle()), launcherRoute) },
+        content = { LauncherScreen(DefaultComponentContext(DefaultLifecycle()), launcherState) },
         state = WindowState(size = DpSize(450.dp, 975.dp)),
         title = argParser.programName,
     )

@@ -3,6 +3,8 @@ plugins {
     id("com.google.gms.google-services")
     id("io.ashdavies.android")
     id("io.ashdavies.kotlin")
+
+    kotlin("plugin.parcelize")
 }
 
 android {
@@ -21,11 +23,14 @@ android {
 
 dependencies {
     implementation(platform(libs.google.firebase.bom))
-    implementation(libs.androidx.compose.foundation)
-    implementation(libs.androidx.core.splashscreen)
-    implementation(libs.bundles.androidx.activity)
-    implementation(libs.bundles.arkivanov.decompose)
-    implementation(libs.bundles.google.firebase)
     implementation(projects.appLauncher.common)
     implementation(projects.firebaseCompose)
+
+    implementation(libs.bundles.androidx.activity)
+    implementation(libs.bundles.arkivanov.decompose)
+
+    implementation(libs.androidx.compose.foundation)
+    implementation(libs.androidx.core.splashscreen)
+    implementation(libs.google.accompanist.systemuicontroller)
+    implementation(libs.slack.circuit.core)
 }

@@ -11,6 +11,8 @@ kotlin {
         implementation(compose.materialIconsExtended)
         implementation(projects.dominionApp)
         implementation(projects.eventsApp)
+
+        implementation(libs.bundles.arkivanov.decompose)
     }
 
     androidMain.dependencies {

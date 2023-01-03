@@ -14,6 +14,7 @@ kotlin {
         implementation(projects.localRemote)
         implementation(projects.playgroundApp)
 
+        implementation(libs.bundles.arkivanov.decompose)
         implementation(libs.bundles.ktor.client)
     }
 

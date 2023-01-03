@@ -13,6 +13,7 @@ kotlin {
         implementation(projects.localRemote)
         implementation(projects.localStorage)
 
+        implementation(libs.bundles.arkivanov.decompose)
         implementation(libs.bundles.ktor.client)
         implementation(libs.jetbrains.kotlinx.collections.immutable)
     }

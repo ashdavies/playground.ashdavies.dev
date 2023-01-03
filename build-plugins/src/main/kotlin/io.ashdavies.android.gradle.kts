@@ -51,6 +51,10 @@ fun CommonExtension<*, *, *, *>.configure() {
         minSdk = Playground.minSdk
     }
 
+    /*kotlinOptions {
+        jvmTarget = Playground.jvmTarget
+    }*/
+
     sourceSets.configureEach {
         manifest.srcFile("src/androidMain/AndroidManifest.xml")
     }

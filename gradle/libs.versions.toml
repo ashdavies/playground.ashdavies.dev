@@ -118,6 +118,7 @@ ktor-server-test-host = { module = "io.ktor:ktor-server-test-host", version.ref 
 
 oolong = "org.oolong-kt:oolong:2.1.1"
 qos-logbackClassic = "ch.qos.logback:logback-classic:1.4.4"
+slack-circuit-core = "com.slack.circuit:circuit-core:0.5.0"
 slf4j-simple = "org.slf4j:slf4j-simple:2.0.3"
 
 sqldelight-android-driver = { module = "com.squareup.sqldelight:android-driver", version.ref = "squareup-sqldelight" }

@@ -14,3 +14,5 @@ public interface NavigationRoot<N : NavigationRoot.Navigation, T : NavigationRoo
 
     public interface Navigation
 }
+
+public interface ChildStack<T>

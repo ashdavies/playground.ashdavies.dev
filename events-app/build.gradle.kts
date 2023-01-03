@@ -17,16 +17,15 @@ android {
 kotlin {
     commonMain.dependencies {
         implementation(projects.appCheck.appCheckClient)
-        implementation(projects.pagingCompose)
-
         implementation(projects.authOauth)
         implementation(projects.localRemote)
         implementation(projects.localStorage)
+        implementation(projects.pagingCompose)
         implementation(projects.playgroundApp)
 
         implementation(libs.bundles.arkivanov.decompose)
         implementation(libs.bundles.ktor.client)
-
+        implementation(libs.slack.circuit.core)
         implementation(libs.sqldelight.coroutines.extensions)
     }
 
