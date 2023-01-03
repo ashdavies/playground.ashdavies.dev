@@ -5,9 +5,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.core.view.WindowCompat.setDecorFitsSystemWindows
-import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.defaultComponentContext
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.slack.circuit.CircuitCompositionLocals
@@ -22,15 +20,18 @@ private const val INTENT_EXTRA_ROUTE = "route"
 internal object AndroidLauncherScreen : LauncherScreen, Parcelable
 
 internal class LauncherActivity : KotlinActivity({
-    val initialRoute = enumValueOfOrDefault(intent.getStringExtra(INTENT_EXTRA_ROUTE)) {
-        LauncherRoute.Default
-    }
-
     setDecorFitsSystemWindows(window, true)
+
+    val circuitConfig = CircuitConfig(
+        componentContext = defaultComponentContext(),
+        initialRoute = enumValueOfOrDefault(intent.getStringExtra(INTENT_EXTRA_ROUTE)) {
+            LauncherRoute.Default
+        },
+    )
 
     setContent {
         ProvideFirebaseApp {
-            LauncherApp(rememberCircuitConfig(defaultComponentContext(), initialRoute))
+            LauncherApp(circuitConfig)
         }
     }
 })
@@ -49,17 +50,6 @@ internal fun LauncherApp(circuitConfig: CircuitConfig) {
             CircuitContent(AndroidLauncherScreen)
         }
     }
-}
-
-@Composable
-private fun rememberCircuitConfig(
-    componentContext: ComponentContext,
-    initialRoute: LauncherRoute,
-): CircuitConfig = remember {
-    CircuitConfig.Builder()
-        .addPresenterFactory(LauncherPresenterFactory(initialRoute))
-        .addUiFactory(LauncherUiFactory(componentContext))
-        .build()
 }
 
 private inline fun <reified T : Enum<T>> enumValueOfOrDefault(
