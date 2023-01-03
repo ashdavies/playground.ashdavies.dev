@@ -20,7 +20,8 @@ dependencies {
     implementation(libs.bundles.ktor.serialization)
     implementation(libs.bundles.ktor.server)
     implementation(libs.google.firebase.admin)
-    implementation(libs.qos.logbackClassic)
+    implementation("io.ktor:ktor-server-compression-jvm:2.1.3")
+    // implementation(libs.qos.logbackClassic)
 
     testImplementation(kotlin("test"))
     testImplementation(projects.appCheck.appCheckSdk)

@@ -9,6 +9,7 @@ on:
     types: [ labeled, opened, reopened, synchronize ]
 
 env:
+  GOOGLE_PROJECT_API_KEY: ${{ secrets.google_project_api_key }}
   GOOGLE_SERVICE_ACCOUNT_ID: ${{ secrets.google_service_account_id }}
   GOOGLE_SERVICES_PASSPHRASE: ${{ secrets.google_services_passphrase }}
   GOOGLE_WORKLOAD_IDENTITY: ${{ secrets.google_workload_identity }}

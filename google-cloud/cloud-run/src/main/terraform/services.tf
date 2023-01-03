@@ -1,3 +1,12 @@
+data "docker_registry_image" "service" {
+  name = format(
+    "%s-docker.pkg.dev/%s/cloud-run-source-deploy/%s",
+    var.project_region,
+    var.project_id,
+    var.service_name,
+  )
+}
+
 resource "google_cloud_run_service" "endpoint" {
   depends_on = [null_resource.openapi_proxy_image]
   name       = "${var.resource_prefix}-endpoint"
@@ -16,15 +25,15 @@ resource "google_cloud_run_service" "endpoint" {
   }
 }
 
-# Needs a trigger
 resource "google_cloud_run_service" "service" {
-  name     = "${var.resource_prefix}-service"
-  location = var.project_region
+  name                       = "${var.resource_prefix}-service"
+  location                   = var.project_region
+  autogenerate_revision_name = true
 
   template {
     spec {
       containers {
-        image = local.cloud_run_artifact
+        image = "${data.docker_registry_image.service.name}@${data.docker_registry_image.service.sha256_digest}"
       }
     }
   }
@@ -33,12 +42,6 @@ resource "google_cloud_run_service" "service" {
     latest_revision = true
     percent         = 100
   }
-
-  lifecycle {
-    replace_triggered_by = [
-      random_id.service_trigger.hex
-    ]
-  }
 }
 
 resource "google_cloud_run_service_iam_policy" "noauth-endpoints" {
@@ -46,8 +49,4 @@ resource "google_cloud_run_service_iam_policy" "noauth-endpoints" {
   project     = google_cloud_run_service.endpoint.project
   policy_data = data.google_iam_policy.noauth.policy_data
   service     = google_cloud_run_service.endpoint.name
-}
-
-resource "random_id" "service_trigger" {
-  byte_length = 8
 }

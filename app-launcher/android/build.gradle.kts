@@ -20,6 +20,7 @@ android {
 }
 
 dependencies {
+    implementation(platform(libs.google.firebase.bom))
     implementation(libs.androidx.compose.foundation)
     implementation(libs.androidx.core.splashscreen)
     implementation(libs.bundles.androidx.activity)

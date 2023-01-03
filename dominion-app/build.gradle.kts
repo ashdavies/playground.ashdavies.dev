@@ -18,10 +18,12 @@ kotlin {
     }
 
     androidMain.dependencies {
+        implementation(platform(libs.google.firebase.bom))
         implementation(libs.bundles.androidx.activity)
         implementation(libs.bundles.google.firebase)
 
         implementation(libs.google.accompanist.placeholderMaterial)
         implementation(libs.google.accompanist.swiperefresh)
+        implementation(libs.google.firebase.auth.ktx)
     }
 }
