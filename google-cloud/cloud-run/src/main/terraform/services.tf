@@ -7,13 +7,6 @@ data "docker_registry_image" "service" {
   )
 }
 
-data "google_container_registry_image" "service" {
-  digest  = data.docker_registry_image.service.sha256_digest
-  region  = var.project_region
-  name    = var.service_name
-  project = var.project_id
-}
-
 resource "google_cloud_run_service" "endpoint" {
   depends_on = [null_resource.openapi_proxy_image]
   name       = "${var.resource_prefix}-endpoint"
@@ -40,7 +33,7 @@ resource "google_cloud_run_service" "service" {
   template {
     spec {
       containers {
-        image = data.docker_registry_image.service.name
+        image = "${data.docker_registry_image.service.name}@${data.docker_registry_image.service.sha256_digest}"
       }
     }
   }
