@@ -4,5 +4,5 @@ output "endpoint_url" {
 }
 
 output "service_image" {
-  value = data.docker_registry_image.service
+  value = data.docker_registry_image.service.id
 }

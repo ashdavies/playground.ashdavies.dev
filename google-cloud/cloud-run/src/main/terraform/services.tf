@@ -35,12 +35,9 @@ resource "google_cloud_run_service" "endpoint" {
 resource "google_cloud_run_service" "service" {
   name                       = "${var.resource_prefix}-service"
   location                   = var.project_region
+  autogenerate_revision_name = true
 
   template {
-    metadata {
-      name = data.docker_registry_image.service.id
-    }
-
     spec {
       containers {
         image = data.docker_registry_image.service.name
