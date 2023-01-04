@@ -22,29 +22,19 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
-import com.arkivanov.decompose.ComponentContext
-import io.ashdavies.dominion.DominionRoot
-
-@Composable
-public fun LauncherScreen(componentContext: ComponentContext, state: LauncherState) {
-    when (state.route) {
-        LauncherRoute.Default -> LauncherScreen { state.sink(LauncherEvent.Click(it)) }
-        LauncherRoute.Dominion -> DominionRoot(componentContext)
-        LauncherRoute.Events -> EventsRoot(componentContext)
-    }
-}
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-private fun LauncherScreen(onClick: (LauncherRoute) -> Unit) {
+internal fun LauncherScreen(state: LauncherState) {
     Scaffold(topBar = { LauncherTopAppBar() }) { padding ->
         Column(modifier = Modifier.padding(padding)) {
             LauncherRow(Icons.Filled.Event, "Events") {
-                onClick(LauncherRoute.Events)
+                println("state.sink(LauncherEvent.Events)")
+                state.sink(LauncherEvent.Events)
             }
 
             LauncherRow(Icons.Filled.Grid4x4, "Dominion") {
-                onClick(LauncherRoute.Dominion)
+                state.sink(LauncherEvent.Dominion)
             }
         }
     }

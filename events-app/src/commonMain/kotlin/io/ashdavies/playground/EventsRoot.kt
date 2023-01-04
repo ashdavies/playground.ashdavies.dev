@@ -53,7 +53,7 @@ private class EventsRootComponent(componentContext: ComponentContext) :
     private val navigation = StackNavigation<ChildConfiguration>()
 
     private val _childStack = childStack(
-        childFactory = { configuration, _ -> createChild(configuration) },
+        childFactory = { configuration: ChildConfiguration, _ -> createChild(configuration) },
         initialConfiguration = ChildConfiguration.Events,
         handleBackButton = true,
         source = navigation,

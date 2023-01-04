@@ -135,7 +135,16 @@ arkivanov-decompose = ["arkivanov-decompose", "arkivanov-decompose-extensions"]
 google-firebase = ["google-firebase-analytics", "google-firebase-common-ktx"]
 google-maps = ["google-android-maps", "google-maps-android-compose", "google-maps-android-compose-widgets"]
 jetbrains-kotlin-test = ["jetbrains-kotlin-test", "jetbrains-kotlin-test-annotations", "jetbrains-kotlin-test-common", "jetbrains-kotlin-test-junit", "jetbrains-kotlinx-coroutines-test"]
-jetbrains-kotlinx = ["jetbrains-kotlinx-coroutines-core", "jetbrains-kotlinx-datetime", "jetbrains-kotlinx-serialization-core", "jetbrains-kotlinx-serialization-json", "jetbrains-kotlinx-serialization-properties"]
+
+jetbrains-kotlinx = [
+    "jetbrains-kotlinx-collections-immutable",
+    "jetbrains-kotlinx-coroutines-core",
+    "jetbrains-kotlinx-datetime",
+    "jetbrains-kotlinx-serialization-core",
+    "jetbrains-kotlinx-serialization-json",
+    "jetbrains-kotlinx-serialization-properties"
+]
+
 ktor-client = ["ktor-client-content-negotiation", "ktor-client-core", "ktor-client-json", "ktor-client-logging", "ktor-client-okhttp3", "slf4j-simple"]
 ktor-serialization = ["ktor-serialization-json", "ktor-serialization-kotlinx"]
 
