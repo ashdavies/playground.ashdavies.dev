@@ -25,15 +25,15 @@ internal fun AppCheckGenerator(
     val algorithm = GoogleAlgorithm(cryptoSigner)
 
     val customToken = Jwt.create(algorithm) {
-        it.issuer = cryptoSigner.getAccount()
         it.expiresAt = Clock.System.now() + 1.hours
+        it.issuer = cryptoSigner.getAccount()
         it.appId = appId
     }
 
     val bearerResponse = bearerResponse(
         accountId = cryptoSigner.getAccount(),
-        algorithm = algorithm,
         httpClient = httpClient,
+        algorithm = algorithm,
         appId = appId,
     )
 
