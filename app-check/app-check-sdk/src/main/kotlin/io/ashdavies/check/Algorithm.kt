@@ -25,5 +25,3 @@ public class GoogleAlgorithm(private val signer: CryptoSigner) : RsaAlgorithm(Pu
 }
 
 public abstract class RsaAlgorithm(public val from: JwtAlgorithm) : JwtAlgorithm(from.name, "$from")
-
-
