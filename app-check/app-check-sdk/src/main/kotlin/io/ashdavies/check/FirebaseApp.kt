@@ -18,7 +18,7 @@ private val GCloudProject: String? get() = System.getenv("GCLOUD_PROJECT")
 private val GCPProject: String? get() = System.getenv("GCP_PROJECT")
 
 public fun FirebaseApp.appCheck(httpClient: HttpClient): AppCheck = AppCheck(
-    cryptoSigner = CryptoSigner(this, httpClient),
+    cryptoSigner = CryptoSigner(this),
     projectId = getProjectId(this),
     projectNumber = getProjectNumber(),
     httpClient = httpClient,
