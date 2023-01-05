@@ -48,10 +48,10 @@ private fun LauncherTopAppBar() {
             IconButton(onClick = { }) {
                 Icon(
                     imageVector = Icons.Filled.Code,
-                    contentDescription = null
+                    contentDescription = null,
                 )
             }
-        }
+        },
     )
 }
 
@@ -70,7 +70,7 @@ private fun LauncherRow(
         Card(modifier = modifier.fillMaxWidth()) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.padding(16.dp)
+                modifier = Modifier.padding(16.dp),
             ) {
                 Icon(
                     modifier = Modifier.padding(end = 12.dp),

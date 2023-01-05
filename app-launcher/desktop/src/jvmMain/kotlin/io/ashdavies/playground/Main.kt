@@ -34,7 +34,7 @@ public fun main(args: Array<String>) {
     ) {
         LifecycleController(
             lifecycleRegistry = lifecycleRegistry,
-            windowState = rememberWindowState()
+            windowState = rememberWindowState(),
         )
 
         LauncherApp(

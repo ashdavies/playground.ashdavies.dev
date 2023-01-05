@@ -19,7 +19,7 @@ internal fun LauncherApp(circuitConfig: CircuitConfig, initialBackStack: List<Sc
     val systemUiController = rememberSystemUiController()
 
     systemUiController.setSystemBarsColor(
-        color = colorScheme.primaryContainer
+        color = colorScheme.primaryContainer,
     )
 
     val backStack = rememberSaveableBackStack { initialBackStack.forEach(::push) }

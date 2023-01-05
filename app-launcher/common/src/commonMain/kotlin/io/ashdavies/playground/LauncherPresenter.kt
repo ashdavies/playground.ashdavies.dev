@@ -30,7 +30,7 @@ public class LauncherPresenterFactory : Presenter.Factory {
     override fun create(
         screen: Screen,
         navigator: Navigator,
-        context: CircuitContext
+        context: CircuitContext,
     ): Presenter<*>? = when (screen) {
         is LauncherScreen -> Presenter { LauncherPresenter(navigator) }
         else -> null
