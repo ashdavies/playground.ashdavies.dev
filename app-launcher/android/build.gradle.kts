@@ -28,9 +28,9 @@ dependencies {
 
     implementation(libs.bundles.androidx.activity)
     implementation(libs.bundles.arkivanov.decompose)
+    implementation(libs.bundles.slack.circuit)
 
     implementation(libs.androidx.compose.foundation)
     implementation(libs.androidx.core.splashscreen)
     implementation(libs.google.accompanist.systemuicontroller)
-    implementation(libs.slack.circuit.core)
 }

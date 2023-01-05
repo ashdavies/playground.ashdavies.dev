@@ -8,7 +8,9 @@ android {
 
 kotlin {
     commonMain.dependencies {
+        implementation(compose.foundation)
         implementation(compose.materialIconsExtended)
+
         implementation(projects.dominionApp)
         implementation(projects.eventsApp)
 

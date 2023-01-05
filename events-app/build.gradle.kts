@@ -25,7 +25,8 @@ kotlin {
 
         implementation(libs.bundles.arkivanov.decompose)
         implementation(libs.bundles.ktor.client)
-        implementation(libs.slack.circuit.core)
+        implementation(libs.bundles.slack.circuit)
+
         implementation(libs.sqldelight.coroutines.extensions)
     }
 

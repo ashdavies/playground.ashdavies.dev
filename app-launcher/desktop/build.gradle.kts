@@ -9,13 +9,16 @@ kotlin {
         withJava()
     }
 
+    commonMain.dependencies {
+        implementation(libs.bundles.slack.circuit)
+    }
+
     jvmMain.dependencies {
         implementation(compose.desktop.currentOs)
         implementation(projects.appLauncher.common)
 
         implementation(libs.bundles.arkivanov.decompose)
         implementation(libs.jetbrains.kotlinx.cli)
-        implementation(libs.slack.circuit.core)
     }
 }
 
