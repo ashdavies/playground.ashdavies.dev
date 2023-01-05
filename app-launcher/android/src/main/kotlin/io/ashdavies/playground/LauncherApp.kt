@@ -1,6 +1,5 @@
 package io.ashdavies.playground
 
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
@@ -15,12 +14,11 @@ import io.ashdavies.compose.ProvideFirebaseApp
 
 @Composable
 internal fun LauncherApp(circuitConfig: CircuitConfig, initialBackStack: List<Screen>) {
-    val colorScheme = dynamicColorScheme(isSystemInDarkTheme())
     val systemUiController = rememberSystemUiController()
+    val colorScheme = dynamicColorScheme()
 
-    systemUiController.setSystemBarsColor(
-        color = colorScheme.primaryContainer,
-    )
+    val primaryContainer = colorScheme.primaryContainer
+    systemUiController.setSystemBarsColor(primaryContainer)
 
     val backStack = rememberSaveableBackStack { initialBackStack.forEach(::push) }
     val navigator = rememberCircuitNavigator(backStack)
