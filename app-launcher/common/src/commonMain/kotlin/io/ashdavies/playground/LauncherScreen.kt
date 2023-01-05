@@ -29,7 +29,6 @@ internal fun LauncherScreen(state: LauncherState) {
     Scaffold(topBar = { LauncherTopAppBar() }) { padding ->
         Column(modifier = Modifier.padding(padding)) {
             LauncherRow(Icons.Filled.Event, "Events") {
-                println("state.sink(LauncherEvent.Events)")
                 state.sink(LauncherEvent.Events)
             }
 

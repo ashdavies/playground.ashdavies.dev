@@ -19,7 +19,6 @@ public sealed interface LauncherEvent : CircuitUiEvent {
 
 @Composable
 internal fun LauncherPresenter(navigator: Navigator): LauncherState = LauncherState { event ->
-    println("LauncherPresenter.LauncherState.sink($event)")
     when (event) {
         is LauncherEvent.Events -> navigator.goTo(EventsScreen)
         else -> Unit
