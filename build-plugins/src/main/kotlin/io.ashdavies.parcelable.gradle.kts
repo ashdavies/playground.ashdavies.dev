@@ -1,6 +1,6 @@
 import org.gradle.kotlin.dsl.kotlin
 
-pluginManager.withPlugin("com.android.application") {
+pluginManager.withPlugin("com.android.library") {
     plugins { id("kotlin-parcelize") }
 }
 
@@ -10,6 +10,6 @@ plugins {
 
 kotlin {
     commonMain.dependencies {
-        implementation(project(":parcel-support"))
+        implementation(project(":parcelable-support"))
     }
 }

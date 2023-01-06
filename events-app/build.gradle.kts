@@ -2,7 +2,7 @@ import com.android.build.api.dsl.VariantDimension
 
 plugins {
     id("io.ashdavies.default")
-    id("io.ashdavies.parcel")
+    id("io.ashdavies.parcelable")
 }
 
 android {
