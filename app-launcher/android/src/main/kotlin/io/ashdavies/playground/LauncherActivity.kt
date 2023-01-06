@@ -8,10 +8,7 @@ internal class LauncherActivity : KotlinActivity({
     setDecorFitsSystemWindows(window, true)
 
     val circuitConfig = CircuitConfig(defaultComponentContext())
-    val initialBackStack = buildInitialBackStack(
-        nextScreen = intent.getStringExtra("route"),
-        initialScreen = LauncherScreen,
-    )
+    val initialBackStack = buildInitialBackStack(intent.getStringExtra("route"))
 
     setContent {
         LauncherApp(

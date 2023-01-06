@@ -21,10 +21,7 @@ public fun main(args: Array<String>) {
     val argResult = argParser.parse(args)
 
     val circuitConfig = CircuitConfig(DefaultComponentContext(lifecycleRegistry))
-    val initialBackStack = buildInitialBackStack(
-        initialScreen = LauncherScreen,
-        nextScreen = routeArgOption,
-    )
+    val initialBackStack = buildInitialBackStack(routeArgOption)
 
     singleWindowApplication(
         state = WindowState(size = DpSize(450.dp, 975.dp)),

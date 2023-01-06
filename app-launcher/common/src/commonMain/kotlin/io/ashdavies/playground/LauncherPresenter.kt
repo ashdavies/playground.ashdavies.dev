@@ -38,16 +38,16 @@ public class LauncherPresenterFactory : Presenter.Factory {
         context: CircuitContext,
     ): Presenter<*>? = when (screen) {
         is LauncherScreen -> Presenter { LauncherPresenter(navigator) }
-        is DominionScreen -> Presenter { object : CircuitUiState { } }
-        is EventsScreen -> Presenter { object : CircuitUiState { } }
+        is DominionScreen -> Presenter { object : CircuitUiState {} }
+        is EventsScreen -> Presenter { object : CircuitUiState {} }
         else -> null
     }
 }
 
-public fun buildInitialBackStack(initialScreen: Screen, nextScreen: String? = null): List<Screen> {
-    return when (nextScreen) {
-        "dominion" -> persistentListOf(initialScreen, DominionScreen)
-        "events" -> persistentListOf(initialScreen, EventsScreen)
-        else -> persistentListOf(initialScreen)
+public fun buildInitialBackStack(initialScreen: String? = null): List<Screen> {
+    return when (initialScreen) {
+        "dominion" -> persistentListOf(LauncherScreen, DominionScreen)
+        "events" -> persistentListOf(LauncherScreen, EventsScreen)
+        else -> persistentListOf(LauncherScreen)
     }
 }
