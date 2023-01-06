@@ -1,6 +1,6 @@
 plugins {
     id("io.ashdavies.default")
-    id("kotlin-parcelize")
+    id("io.ashdavies.parcel")
 }
 
 android {

@@ -28,6 +28,7 @@ include(
     ":local-storage",
     ":notion-console",
     ":paging-compose",
+    ":parcel-support",
     ":playground-app",
     ":version-catalog",
 )
