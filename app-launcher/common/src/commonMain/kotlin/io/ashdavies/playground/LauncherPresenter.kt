@@ -1,25 +1,31 @@
 package io.ashdavies.playground
 
 import androidx.compose.runtime.Composable
+import com.arkivanov.essenty.parcelable.Parcelable
+import com.arkivanov.essenty.parcelable.Parcelize
 import com.slack.circuit.CircuitContext
 import com.slack.circuit.CircuitUiEvent
 import com.slack.circuit.CircuitUiState
 import com.slack.circuit.Navigator
 import com.slack.circuit.Presenter
 import com.slack.circuit.Screen
+import io.ashdavies.dominion.DominionScreen
+import kotlinx.collections.immutable.persistentListOf
 
-public interface LauncherScreen : Screen
+@Parcelize
+public object LauncherScreen : Parcelable, Screen
 
 public data class LauncherState(val sink: (LauncherEvent) -> Unit = { }) : CircuitUiState
 
 public sealed interface LauncherEvent : CircuitUiEvent {
-    public object Events : LauncherEvent
     public object Dominion : LauncherEvent
+    public object Events : LauncherEvent
 }
 
 @Composable
 internal fun LauncherPresenter(navigator: Navigator): LauncherState = LauncherState { event ->
     when (event) {
+        is LauncherEvent.Dominion -> navigator.goTo(DominionScreen)
         is LauncherEvent.Events -> navigator.goTo(EventsScreen)
         else -> Unit
     }
@@ -32,6 +38,16 @@ public class LauncherPresenterFactory : Presenter.Factory {
         context: CircuitContext,
     ): Presenter<*>? = when (screen) {
         is LauncherScreen -> Presenter { LauncherPresenter(navigator) }
+        is DominionScreen -> Presenter { object : CircuitUiState { } }
+        is EventsScreen -> Presenter { object : CircuitUiState { } }
         else -> null
+    }
+}
+
+public fun buildInitialBackStack(initialScreen: Screen, nextScreen: String? = null): List<Screen> {
+    return when (nextScreen) {
+        "dominion" -> persistentListOf(initialScreen, DominionScreen)
+        "events" -> persistentListOf(initialScreen, EventsScreen)
+        else -> persistentListOf(initialScreen)
     }
 }

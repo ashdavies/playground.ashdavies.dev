@@ -17,6 +17,7 @@ android {
 kotlin {
     commonMain.dependencies {
         implementation(projects.appCheck.appCheckClient)
+        implementation(projects.parcelableSupport)
         implementation(projects.authOauth)
         implementation(projects.localRemote)
         implementation(projects.localStorage)

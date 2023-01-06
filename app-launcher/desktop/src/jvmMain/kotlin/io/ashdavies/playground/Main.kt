@@ -12,8 +12,6 @@ import com.arkivanov.essenty.lifecycle.LifecycleRegistry
 import kotlinx.cli.ArgParser
 import kotlinx.cli.ArgType
 
-internal object DesktopLauncherScreen : LauncherScreen
-
 @ExperimentalDecomposeApi
 public fun main(args: Array<String>) {
     val argParser = ArgParser("Playground")
@@ -24,7 +22,7 @@ public fun main(args: Array<String>) {
 
     val circuitConfig = CircuitConfig(DefaultComponentContext(lifecycleRegistry))
     val initialBackStack = buildInitialBackStack(
-        initialScreen = DesktopLauncherScreen,
+        initialScreen = LauncherScreen,
         nextScreen = routeArgOption,
     )
 

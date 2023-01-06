@@ -7,7 +7,12 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 
 @Composable
-public expect fun dynamicColorScheme(darkTheme: Boolean = isSystemInDarkTheme()): ColorScheme
+public fun dynamicColorScheme(): ColorScheme {
+    return dynamicColorScheme(isSystemInDarkTheme())
+}
+
+@Composable
+public expect fun dynamicColorScheme(darkTheme: Boolean): ColorScheme
 
 @Composable
 internal fun defaultColorScheme(darkTheme: Boolean = isSystemInDarkTheme()): ColorScheme {
