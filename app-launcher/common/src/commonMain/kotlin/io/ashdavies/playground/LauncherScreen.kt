@@ -40,6 +40,7 @@ internal fun LauncherScreen(state: LauncherState) {
 }
 
 @Composable
+@ExperimentalMaterial3Api
 private fun LauncherTopAppBar() {
     SmallTopAppBar(
         title = { Text("Playground") },

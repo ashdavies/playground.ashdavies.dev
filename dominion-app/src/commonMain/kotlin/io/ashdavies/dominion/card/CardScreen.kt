@@ -26,6 +26,7 @@ internal fun CardScreen(child: DominionRoot.Child.Card) {
 }
 
 @Composable
+@OptIn(ExperimentalMaterial3Api::class)
 private fun CardTopBar(card: DominionCard, modifier: Modifier = Modifier, onBack: () -> Unit = { }) {
     SmallTopAppBar(
         title = { Text(card.name) },

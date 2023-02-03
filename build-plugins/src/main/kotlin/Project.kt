@@ -19,5 +19,5 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 val Project.libs: LibrariesForLibs
     get() = extensions.getByName<LibrariesForLibs>("libs")
 
-val KotlinMultiplatformExtension.compose: ComposePlugin.Dependencies
-    get() = ComposePlugin.Dependencies
+// val KotlinMultiplatformExtension.compose: ComposePlugin.Dependencies
+//     get() = ComposePlugin.Dependencies

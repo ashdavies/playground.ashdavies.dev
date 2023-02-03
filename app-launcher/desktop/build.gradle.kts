@@ -14,7 +14,6 @@ kotlin {
     }
 
     jvmMain.dependencies {
-        implementation(compose.desktop.currentOs)
         implementation(projects.appLauncher.common)
 
         implementation(libs.bundles.arkivanov.decompose)

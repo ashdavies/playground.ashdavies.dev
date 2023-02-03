@@ -1,6 +1,7 @@
 package io.ashdavies.playground
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import com.arkivanov.decompose.ComponentContext
 import com.slack.circuit.CircuitConfig
 import com.slack.circuit.CircuitUiState
@@ -22,8 +23,8 @@ internal inline fun <UiState : CircuitUiState> Presenter(
 }
 
 internal inline fun <UiState : CircuitUiState> Ui(
-    crossinline body: @Composable (state: UiState) -> Unit,
+    crossinline body: @Composable (state: UiState, modifier: Modifier) -> Unit,
 ): Ui<UiState> = object : Ui<UiState> {
     @Composable
-    override fun Content(state: UiState) = body(state)
+    override fun Content(state: UiState, modifier: Modifier) = body(state, modifier)
 }

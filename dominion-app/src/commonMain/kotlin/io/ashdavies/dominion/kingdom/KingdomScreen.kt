@@ -24,11 +24,9 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
-import androidx.compose.material3.TopAppBarScrollState
-import androidx.compose.material3.rememberTopAppBarScrollState
+import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
@@ -44,9 +42,12 @@ import io.ashdavies.playground.windowInsetsPadding
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-internal fun KingdomScreen(child: Kingdom, viewModel: KingdomViewModel = rememberKingdomViewModel()) {
+internal fun KingdomScreen(
+    child: Kingdom,
+    viewModel: KingdomViewModel = rememberKingdomViewModel()
+) {
+    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
     val viewState by produceStateInline { viewModel.getViewState(child.expansion) }
-    val scrollBehavior = rememberTopAppBarScrollBehavior()
 
     Scaffold(
         topBar = { KingdomTopBar(child.expansion, scrollBehavior) { child.navigateToExpansion() } },
@@ -71,6 +72,7 @@ internal fun KingdomScreen(child: Kingdom, viewModel: KingdomViewModel = remembe
 }
 
 @Composable
+@OptIn(ExperimentalMaterial3Api::class)
 private fun KingdomTopBar(
     expansion: DominionExpansion,
     scrollBehavior: TopAppBarScrollBehavior,
@@ -146,13 +148,4 @@ private fun KingdomCard(
             }
         }
     }
-}
-
-
-@Composable
-@ExperimentalMaterial3Api
-private fun rememberTopAppBarScrollBehavior(
-    state: TopAppBarScrollState = rememberTopAppBarScrollState()
-): TopAppBarScrollBehavior = remember(state) {
-    TopAppBarDefaults.enterAlwaysScrollBehavior(state)
 }

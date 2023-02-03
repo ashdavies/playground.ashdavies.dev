@@ -11,6 +11,7 @@ kotlin {
     commonMain.dependencies {
         implementation(compose.foundation)
         implementation(compose.materialIconsExtended)
+        implementation(compose.ui)
 
         implementation(projects.dominionApp)
         implementation(projects.eventsApp)
