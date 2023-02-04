@@ -16,4 +16,4 @@ internal class LauncherActivity : KotlinActivity({
             circuitConfig = circuitConfig,
         )
     }
-})
+},)

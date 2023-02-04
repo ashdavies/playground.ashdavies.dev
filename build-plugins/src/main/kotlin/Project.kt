@@ -1,8 +1,6 @@
 import org.gradle.accessors.dm.LibrariesForLibs
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.getByName
-import org.jetbrains.compose.ComposePlugin
-import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
 /**
  * In a similar way to [#15382](https://github.com/gradle/gradle/issues/15382), we want to make the

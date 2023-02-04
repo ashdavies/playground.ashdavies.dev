@@ -55,7 +55,7 @@ private fun CardScreen(card: DominionCard, modifier: Modifier = Modifier) {
     } else {
         RemoteImage(
             modifier = modifier.fillMaxSize(),
-            urlString = card.image
+            urlString = card.image,
         )
     }
 }

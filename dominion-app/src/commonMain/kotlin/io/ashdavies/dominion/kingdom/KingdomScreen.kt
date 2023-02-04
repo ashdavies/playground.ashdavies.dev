@@ -44,14 +44,14 @@ import io.ashdavies.playground.windowInsetsPadding
 @OptIn(ExperimentalMaterial3Api::class)
 internal fun KingdomScreen(
     child: Kingdom,
-    viewModel: KingdomViewModel = rememberKingdomViewModel()
+    viewModel: KingdomViewModel = rememberKingdomViewModel(),
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
     val viewState by produceStateInline { viewModel.getViewState(child.expansion) }
 
     Scaffold(
         topBar = { KingdomTopBar(child.expansion, scrollBehavior) { child.navigateToExpansion() } },
-        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
     ) { contentPadding ->
         viewState.onSuccess {
             KingdomScreen(
@@ -65,7 +65,7 @@ internal fun KingdomScreen(
             LinearProgressIndicator(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(4.dp)
+                    .padding(4.dp),
             )
         }
     }
@@ -76,7 +76,7 @@ internal fun KingdomScreen(
 private fun KingdomTopBar(
     expansion: DominionExpansion,
     scrollBehavior: TopAppBarScrollBehavior,
-    onBack: () -> Unit = { }
+    onBack: () -> Unit = { },
 ) {
     Surface(color = MaterialTheme.colorScheme.surface) {
         LargeTopAppBar(
@@ -92,7 +92,7 @@ private fun KingdomTopBar(
             scrollBehavior = scrollBehavior,
             modifier = Modifier
                 .nestedScroll(scrollBehavior.nestedScrollConnection)
-                .windowInsetsPadding()
+                .windowInsetsPadding(),
         )
     }
 }
@@ -137,13 +137,13 @@ private fun KingdomCard(
         Card(
             modifier = modifier
                 .clickable(onClick = onClick)
-                .aspectRatio(1.0f)
+                .aspectRatio(1.0f),
         ) {
             when (val image = value.image) {
                 null -> Text(value.name, color = Color.White)
                 else -> RemoteImage(
                     modifier = Modifier.aspectRatio(0.62F).height(300.dp),
-                    urlString = image
+                    urlString = image,
                 )
             }
         }
