@@ -7,7 +7,7 @@ resource "google_apikeys_key" "integration" {
 
   restrictions {
     api_targets {
-      methods = ["accounts.signInWithCustomToken"]
+      // methods = ["accounts.signInWithCustomToken"]
       service = "identitytoolkit.googleapis.com"
     }
   }
