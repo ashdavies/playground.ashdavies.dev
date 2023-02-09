@@ -3,6 +3,10 @@ import com.android.build.gradle.LibraryExtension
 import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
+/*pluginManager.withPlugin("android") {
+    plugins { id("kotlin-parcelize") }
+}*/
+
 plugins {
     kotlin("multiplatform")
 }
@@ -13,8 +17,8 @@ kotlin {
     androidMain.dependencies {
         implementation(libs.androidx.annotation)
         implementation(libs.androidx.core.ktx)
-        implementation(libs.google.android.material) // Necessary?
-        implementation(libs.jetbrains.kotlinx.coroutines.android) // Necessary?
+        implementation(libs.google.android.material)
+        implementation(libs.jetbrains.kotlinx.coroutines.android)
     }
 
     androidTest {
