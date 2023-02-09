@@ -1,6 +1,5 @@
 package io.ashdavies.check
 
-import com.google.auth.ServiceAccountSigner
 import com.google.auth.oauth2.GoogleCredentials
 import com.google.firebase.FirebaseApp
 import io.ktor.client.HttpClient
@@ -27,7 +26,7 @@ internal fun CryptoSigner(
 
 public fun CryptoSigner(firebaseApp: FirebaseApp, httpClient: HttpClient): CryptoSigner {
     return when (val credentials: GoogleCredentials = GoogleCredentials.getApplicationDefault()) {
-        is ServiceAccountSigner -> CryptoSigner(credentials.account, credentials::sign)
+        // is ServiceAccountSigner -> CryptoSigner(credentials.account, credentials::sign)
         else -> IamSigner(httpClient, getServiceAccountId(firebaseApp), getToken(credentials))
     }
 }
