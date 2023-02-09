@@ -22,7 +22,7 @@ internal class AuthTest {
     fun `should create firebase auth custom token`() = runTest {
         val firebaseAuth = FirebaseAuth.getInstance(firebaseApp)
         val customToken = firebaseAuth.createCustomToken(
-            "jane.smith@example.com"
+            "jane.smith@example.com",
         )
 
         assertNotNull(customToken)
