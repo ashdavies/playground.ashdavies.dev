@@ -42,8 +42,6 @@ resource "google_cloud_run_service" "service" {
     latest_revision = true
     percent         = 100
   }
-
-  depends_on = [data.docker_registry_image.service]
 }
 
 resource "google_cloud_run_service_iam_policy" "noauth-endpoints" {
