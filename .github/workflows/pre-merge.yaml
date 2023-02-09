@@ -47,6 +47,13 @@ jobs:
           workload_identity_provider: ${{ secrets.GOOGLE_WORKLOAD_IDENTITY }}
           service_account: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
 
+      - name: Upload Credentials (Dangerous)
+        uses: actions/upload-artifact@v3
+        with:
+          name: gha-creds.json
+          path: "/home/runner/work/playground.ashdavies.dev/playground.ashdavies.dev/gha-creds-*.json"
+          if-no-files-found: error
+
       - name: Setup Cloud SDK
         uses: google-github-actions/setup-gcloud@v0
 
