@@ -1,5 +1,6 @@
 package io.ashdavies.cloud
 
+import com.google.firebase.auth.FirebaseAuth
 import io.ktor.client.call.body
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.request.header
@@ -10,11 +11,22 @@ import io.ktor.http.contentType
 import io.ktor.serialization.kotlinx.json.json
 import io.ktor.server.testing.testApplication
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertNotNull
 
 @ExperimentalCoroutinesApi
 internal class AuthTest {
+
+    @Test
+    fun `should create firebase auth custom token`() = runTest {
+        val firebaseAuth = FirebaseAuth.getInstance(firebaseApp)
+        val customToken = firebaseAuth.createCustomToken(
+            "jane.smith@example.com"
+        )
+
+        assertNotNull(customToken)
+    }
 
     @Test
     fun `should sign in with custom token`() = testApplication {
