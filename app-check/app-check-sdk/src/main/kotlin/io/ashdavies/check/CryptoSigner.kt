@@ -23,8 +23,11 @@ public interface CryptoSigner {
     public fun getAccount(): String
 }
 
-internal fun CryptoSigner(firebaseApp: FirebaseApp): CryptoSigner = object : CryptoSigner {
+private class ReflectionCryptoSigner(private val instance: Any?) : CryptoSigner {
     override fun sign(value: ByteArray): ByteArray = signValue(instance, value) as ByteArray
     override fun getAccount(): String = getAccount(instance) as String
-    val instance = getCryptoSigner(null, firebaseApp)
+}
+
+internal fun CryptoSigner(firebaseApp: FirebaseApp): CryptoSigner {
+    return ReflectionCryptoSigner(getCryptoSigner(null, firebaseApp))
 }
