@@ -10,8 +10,20 @@ resource "github_actions_secret" "google_service_account_id" {
   repository      = var.gh_repo_name
 }
 
+/*resource "github_actions_secret" "google_workload_identity" {
+  plaintext_value = var.google_services_passphrase
+  secret_name     = "google_services_passphrase"
+  repository      = var.gh_repo_name
+}*/
+
 resource "github_actions_secret" "google_workload_identity" {
   plaintext_value = module.gh-oidc.provider_name
   secret_name     = "google_workload_identity"
   repository      = var.gh_repo_name
 }
+
+/*resource "github_actions_secret" "google_workload_identity" {
+  plaintext_value = var.mobile_sdk_app_id
+  secret_name     = "mobile_sdk_app_id"
+  repository      = var.gh_repo_name
+}*/

@@ -5,7 +5,7 @@ variable "gh_owner" {
 
 variable "gh_repo_name" {
   description = "GitHub repository to set actions secrets"
-  default     = "playground"
+  default     = "playground.ashdavies.dev"
 }
 
 variable "gh_token" {

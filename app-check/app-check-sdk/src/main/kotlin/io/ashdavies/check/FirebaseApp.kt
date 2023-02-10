@@ -1,6 +1,5 @@
 package io.ashdavies.check
 
-import com.google.auth.oauth2.ComputeEngineCredentials
 import com.google.auth.oauth2.GoogleCredentials
 import com.google.auth.oauth2.ServiceAccountCredentials
 import com.google.firebase.FirebaseApp
@@ -11,7 +10,6 @@ import io.ktor.client.request.header
 import kotlinx.coroutines.runBlocking
 import java.net.UnknownHostException
 
-private val GoogleServiceAccountId: String? get() = System.getenv("GOOGLE_SERVICE_ACCOUNT_ID")
 private val GoogleCloudProject: String? get() = System.getenv("GOOGLE_CLOUD_PROJECT")
 private val MobileSdkAppId: String? get() = System.getenv("MOBILE_SDK_APP_ID")
 private val GCloudProject: String? get() = System.getenv("GCLOUD_PROJECT")
@@ -38,13 +36,6 @@ internal fun getProjectNumber(): String =
             "Alternatively, set the GCP_PROJECT_NUMBER environment variable."
     }
 
-internal fun getServiceAccountId(firebaseApp: FirebaseApp): String =
-    requireNotNull(findExplicitServiceAccountId(firebaseApp)) {
-        "Failed to determine service account. Make sure to initialize " +
-            "the SDK with a service account credential. Alternatively specify a service " +
-            "account with iam.serviceAccounts.signBlob permission."
-    }
-
 private fun findExplicitProjectId(firebaseApp: FirebaseApp): String? =
     firebaseApp.options.projectId
         ?: googleCredentials<ServiceAccountCredentials, String?> { it.projectId }
@@ -58,13 +49,6 @@ private fun findExplicitProjectNumber(): String? =
         ?.let { it.split(":")[1] }
         ?: fetchProjectNumber()
 
-private fun findExplicitServiceAccountId(firebaseApp: FirebaseApp): String? =
-    firebaseApp.options.serviceAccountId
-        ?: googleCredentials<ServiceAccountCredentials, String?> { it.account }
-        ?: googleCredentials<ComputeEngineCredentials, String?> { it.account }
-        ?: GoogleServiceAccountId
-        ?: fetchServiceAccountId()
-
 private inline fun <reified T : GoogleCredentials, R> googleCredentials(transform: (T) -> R): R? =
     (GoogleCredentials.getApplicationDefault() as? T)?.let(transform)
 
@@ -73,9 +57,6 @@ private fun fetchProjectId(): String? =
 
 private fun fetchProjectNumber(): String? =
     fetchComputeMetadataBlocking(path = "project/numeric-project-id")
-
-private fun fetchServiceAccountId(): String? =
-    fetchComputeMetadataBlocking(path = "instance/service-accounts/default/email")
 
 private inline fun <reified T> fetchComputeMetadataBlocking(
     httpClient: HttpClient = HttpClient(),
