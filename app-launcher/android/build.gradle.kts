@@ -21,11 +21,16 @@ android {
 
 dependencies {
     implementation(platform(libs.google.firebase.bom))
-    implementation(libs.androidx.compose.foundation)
-    implementation(libs.androidx.core.splashscreen)
+
     implementation(libs.bundles.androidx.activity)
     implementation(libs.bundles.arkivanov.decompose)
+    implementation(libs.bundles.slack.circuit)
     implementation(libs.bundles.google.firebase)
+
+    implementation(libs.androidx.core.splashscreen)
+    implementation(libs.androidx.compose.foundation)
+    implementation(libs.google.accompanist.systemuicontroller)
+
     implementation(projects.appLauncher.common)
     implementation(projects.firebaseCompose)
 }

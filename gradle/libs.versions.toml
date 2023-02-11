@@ -15,6 +15,7 @@ kotlinx-coroutines = "1.6.4"
 kotlinx-serialization = "1.4.1"
 ktor = "2.1.3"
 pinterest-ktlint = "0.47.1"
+slack-circuit = "0.7.0"
 squareup-sqldelight = "1.5.4"
 
 [libraries]
@@ -37,6 +38,7 @@ app-cash-turbine = "app.cash.turbine:turbine:0.12.0"
 
 arkivanov-decompose = { module = "com.arkivanov.decompose:decompose", version.ref = "arkivanov-decompose" }
 arkivanov-decompose-extensions = { module = "com.arkivanov.decompose:extensions-compose-jetbrains", version.ref = "arkivanov-decompose" }
+arkivanov-parcelable = { module = "com.arkivanov.essenty:parcelable", version.ref = "arkivanov-decompose" }
 
 auth-java-jwt = "com.auth0:java-jwt:4.2.1"
 auth-jwks-rsa = "com.auth0:jwks-rsa:0.21.2"
@@ -118,6 +120,13 @@ ktor-server-test-host = { module = "io.ktor:ktor-server-test-host", version.ref 
 
 oolong = "org.oolong-kt:oolong:2.1.1"
 qos-logbackClassic = "ch.qos.logback:logback-classic:1.4.4"
+
+slack-circuit-backstack = { module = "com.slack.circuit:circuit-backstack", version.ref = "slack-circuit" }
+slack-circuit-core = { module = "com.slack.circuit:circuit-core", version.ref = "slack-circuit" }
+slack-circuit-overlay = { module = "com.slack.circuit:circuit-overlay", version.ref = "slack-circuit" }
+slack-circuit-retained = { module = "com.slack.circuit:circuit-retained", version.ref = "slack-circuit" }
+slack-circuit-test = { module = "com.slack.circuit:circuit-test", version.ref = "slack-circuit" }
+
 slf4j-simple = "org.slf4j:slf4j-simple:2.0.3"
 
 sqldelight-android-driver = { module = "com.squareup.sqldelight:android-driver", version.ref = "squareup-sqldelight" }
@@ -134,7 +143,16 @@ arkivanov-decompose = ["arkivanov-decompose", "arkivanov-decompose-extensions"]
 google-firebase = ["google-firebase-analytics", "google-firebase-common-ktx"]
 google-maps = ["google-android-maps", "google-maps-android-compose", "google-maps-android-compose-widgets"]
 jetbrains-kotlin-test = ["jetbrains-kotlin-test", "jetbrains-kotlin-test-annotations", "jetbrains-kotlin-test-common", "jetbrains-kotlin-test-junit", "jetbrains-kotlinx-coroutines-test"]
-jetbrains-kotlinx = ["jetbrains-kotlinx-coroutines-core", "jetbrains-kotlinx-datetime", "jetbrains-kotlinx-serialization-core", "jetbrains-kotlinx-serialization-json", "jetbrains-kotlinx-serialization-properties"]
+
+jetbrains-kotlinx = [
+    "jetbrains-kotlinx-collections-immutable",
+    "jetbrains-kotlinx-coroutines-core",
+    "jetbrains-kotlinx-datetime",
+    "jetbrains-kotlinx-serialization-core",
+    "jetbrains-kotlinx-serialization-json",
+    "jetbrains-kotlinx-serialization-properties"
+]
+
 ktor-client = ["ktor-client-content-negotiation", "ktor-client-core", "ktor-client-json", "ktor-client-logging", "ktor-client-okhttp3", "slf4j-simple"]
 ktor-serialization = ["ktor-serialization-json", "ktor-serialization-kotlinx"]
 
@@ -148,6 +166,13 @@ ktor-server = [
     "ktor-server-core",
     "ktor-server-default-headers",
     "ktor-server-request-validation",
+]
+
+slack-circuit = [
+    "slack-circuit-backstack",
+    "slack-circuit-core",
+    "slack-circuit-overlay",
+    "slack-circuit-retained",
 ]
 
 [plugins]
