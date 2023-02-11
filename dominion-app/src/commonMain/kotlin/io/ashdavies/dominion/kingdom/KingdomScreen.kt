@@ -22,13 +22,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.TopAppBarDefaults.enterAlwaysScrollBehavior
 import androidx.compose.material3.TopAppBarScrollBehavior
-import androidx.compose.material3.TopAppBarScrollState
-import androidx.compose.material3.rememberTopAppBarScrollState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
@@ -46,11 +43,11 @@ import io.ashdavies.playground.windowInsetsPadding
 @OptIn(ExperimentalMaterial3Api::class)
 internal fun KingdomScreen(child: Kingdom, viewModel: KingdomViewModel = rememberKingdomViewModel()) {
     val viewState by produceStateInline { viewModel.getViewState(child.expansion) }
-    val scrollBehavior = rememberTopAppBarScrollBehavior()
+    val scrollBehavior = enterAlwaysScrollBehavior()
 
     Scaffold(
         topBar = { KingdomTopBar(child.expansion, scrollBehavior) { child.navigateToExpansion() } },
-        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
     ) { contentPadding ->
         viewState.onSuccess {
             KingdomScreen(
@@ -64,17 +61,18 @@ internal fun KingdomScreen(child: Kingdom, viewModel: KingdomViewModel = remembe
             LinearProgressIndicator(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(4.dp)
+                    .padding(4.dp),
             )
         }
     }
 }
 
 @Composable
+@ExperimentalMaterial3Api
 private fun KingdomTopBar(
     expansion: DominionExpansion,
     scrollBehavior: TopAppBarScrollBehavior,
-    onBack: () -> Unit = { }
+    onBack: () -> Unit = { },
 ) {
     Surface(color = MaterialTheme.colorScheme.surface) {
         LargeTopAppBar(
@@ -90,7 +88,7 @@ private fun KingdomTopBar(
             scrollBehavior = scrollBehavior,
             modifier = Modifier
                 .nestedScroll(scrollBehavior.nestedScrollConnection)
-                .windowInsetsPadding()
+                .windowInsetsPadding(),
         )
     }
 }
@@ -135,24 +133,17 @@ private fun KingdomCard(
         Card(
             modifier = modifier
                 .clickable(onClick = onClick)
-                .aspectRatio(1.0f)
+                .aspectRatio(1.0f),
         ) {
             when (val image = value.image) {
                 null -> Text(value.name, color = Color.White)
                 else -> RemoteImage(
-                    modifier = Modifier.aspectRatio(0.62F).height(300.dp),
-                    urlString = image
+                    urlString = image,
+                    modifier = Modifier
+                        .aspectRatio(0.62F)
+                        .height(300.dp),
                 )
             }
         }
     }
-}
-
-
-@Composable
-@ExperimentalMaterial3Api
-private fun rememberTopAppBarScrollBehavior(
-    state: TopAppBarScrollState = rememberTopAppBarScrollState()
-): TopAppBarScrollBehavior = remember(state) {
-    TopAppBarDefaults.enterAlwaysScrollBehavior(state)
 }

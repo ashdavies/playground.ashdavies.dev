@@ -13,8 +13,8 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SmallTopAppBar
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -46,8 +46,8 @@ internal fun ProfileScreen(child: EventsRoot.Child.Profile) {
         .collectAsState()
 
     Scaffold(
-        topBar = { SmallTopAppBar(title = { Text("Profile") }) },
-        bottomBar = { EventsBottomBar(child) }
+        topBar = { TopAppBar(title = { Text("Profile") }) },
+        bottomBar = { EventsBottomBar(child) },
     ) { contentPadding ->
         ProfileScreen(
             modifier = Modifier.padding(contentPadding),
@@ -82,7 +82,7 @@ private fun ProfileHeader(painter: Result<Painter>, viewState: LoggedIn) {
     Card(
         modifier = Modifier
             .padding(top = 64.dp, bottom = 12.dp)
-            .fillMaxWidth()
+            .fillMaxWidth(),
     ) {
         Column(
             horizontalAlignment = CenterHorizontally,
@@ -93,7 +93,7 @@ private fun ProfileHeader(painter: Result<Painter>, viewState: LoggedIn) {
                     .padding(4.dp, 64.dp, 4.dp, 4.dp)
                     .fade(painter.isLoading),
                 style = MaterialTheme.typography.headlineSmall,
-                text = viewState.name
+                text = viewState.name,
             )
         }
     }
@@ -150,7 +150,7 @@ private fun LoggedInFooter(painter: Result<Painter>) {
                 .align(CenterHorizontally)
                 .border(2.dp, Color.LightGray, CircleShape)
                 .clip(CircleShape)
-                .size(128.dp)
+                .size(128.dp),
         )
     }
 }

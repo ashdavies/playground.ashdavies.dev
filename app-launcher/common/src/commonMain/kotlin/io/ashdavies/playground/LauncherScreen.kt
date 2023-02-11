@@ -14,9 +14,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SmallTopAppBar
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -59,17 +59,18 @@ private fun LauncherScreen(onClick: (LauncherRoute) -> Unit) {
 }
 
 @Composable
+@ExperimentalMaterial3Api
 private fun LauncherTopAppBar() {
-    SmallTopAppBar(
+    TopAppBar(
         title = { Text("Playground") },
         navigationIcon = {
             IconButton(onClick = { }) {
                 Icon(
                     imageVector = Icons.Filled.Code,
-                    contentDescription = null
+                    contentDescription = null,
                 )
             }
-        }
+        },
     )
 }
 
@@ -88,7 +89,7 @@ private fun LauncherRow(
         Card(modifier = modifier.fillMaxWidth()) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.padding(16.dp)
+                modifier = Modifier.padding(16.dp),
             ) {
                 Icon(
                     modifier = Modifier.padding(end = 12.dp),
