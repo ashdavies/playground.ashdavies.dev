@@ -14,7 +14,7 @@ import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.essenty.parcelable.Parcelable
 import com.arkivanov.essenty.parcelable.Parcelize
 import io.ashdavies.check.ProvideAppCheckToken
-import io.ashdavies.playground.events.EventsScreen
+import io.ashdavies.playground.home.EventsHomeScreen
 import io.ashdavies.playground.profile.ProfileScreen
 
 @Composable
@@ -28,7 +28,7 @@ public fun EventsRoot(componentContext: ComponentContext, modifier: Modifier = M
 private fun EventsRoot(root: EventsRoot, modifier: Modifier = Modifier) {
     Children(root.childStack, modifier, stackAnimation(slide())) {
         when (val child: EventsRoot.Child = it.instance) {
-            is EventsRoot.Child.Events -> EventsScreen(child)
+            is EventsRoot.Child.Events -> EventsHomeScreen(child)
             is EventsRoot.Child.Profile -> ProfileScreen(child)
         }
     }
