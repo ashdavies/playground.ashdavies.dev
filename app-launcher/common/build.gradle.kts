@@ -1,5 +1,6 @@
 plugins {
     id("io.ashdavies.default")
+    id("kotlin-parcelize")
 }
 
 android {
@@ -9,6 +10,8 @@ android {
 kotlin {
     commonMain.dependencies {
         implementation(compose.materialIconsExtended)
+        implementation(libs.arkivanov.parcelable)
+        implementation(libs.bundles.slack.circuit)
         implementation(projects.dominionApp)
         implementation(projects.eventsApp)
     }

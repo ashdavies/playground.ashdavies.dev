@@ -18,41 +18,22 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
-import com.arkivanov.decompose.ComponentContext
-import io.ashdavies.dominion.DominionRoot
-
-@Composable
-public fun LauncherScreen(componentContext: ComponentContext, startRoute: LauncherRoute? = null) {
-    var route by remember { mutableStateOf(startRoute ?: LauncherRoute.Default) }
-
-    when (route) {
-        LauncherRoute.Default -> LauncherScreen { route = it }
-        LauncherRoute.Dominion -> DominionRoot(componentContext)
-        LauncherRoute.Events -> EventsRoot(componentContext)
-    }
-}
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-private fun LauncherScreen(onClick: (LauncherRoute) -> Unit) {
-    MaterialTheme {
-        Scaffold(topBar = { LauncherTopAppBar() }) { padding ->
-            Column(modifier = Modifier.padding(padding)) {
-                LauncherRow(Icons.Filled.Event, "Events") {
-                    onClick(LauncherRoute.Events)
-                }
+public fun LauncherScreen(state: LauncherState) {
+    Scaffold(topBar = { LauncherTopAppBar() }) { padding ->
+        Column(modifier = Modifier.padding(padding)) {
+            LauncherRow(Icons.Filled.Event, "Events") {
+                state.sink(LauncherEvent.Events)
+            }
 
-                LauncherRow(Icons.Filled.Grid4x4, "Dominion") {
-                    onClick(LauncherRoute.Dominion)
-                }
+            LauncherRow(Icons.Filled.Grid4x4, "Dominion") {
+                state.sink(LauncherEvent.Dominion)
             }
         }
     }
