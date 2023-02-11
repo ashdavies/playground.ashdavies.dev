@@ -10,4 +10,9 @@ public actual fun PlatformSwipeRefresh(
     onRefresh: () -> Unit,
     modifier: Modifier,
     content: @Composable () -> Unit,
-) = Box(modifier) { content() }
+) {
+    Box(
+        content = { content() },
+        modifier = modifier,
+    )
+}
