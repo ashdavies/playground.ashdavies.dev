@@ -178,6 +178,7 @@ benManes-versions = "com.github.ben-manes.versions:0.44.0"
 cash-molecule = { id = "app.cash.molecule", version = "0.4.0" }
 catalog-update = "nl.littlerobots.version-catalog-update:0.7.0"
 diffplug-spotless = "com.diffplug.spotless:6.11.0"
+google-build-cache = "androidx.build.gradle.gcpbuildcache:1.0.0-beta01"
 google-cloud-jib = "com.google.cloud.tools.jib:3.1.2"
 google-services = "com.google.gms.google-services:4.3.14"
 gradle-doctor = "com.osacky.doctor:0.8.1"
