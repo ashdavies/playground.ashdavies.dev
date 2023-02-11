@@ -1,4 +1,4 @@
-package io.ashdavies.playground.events
+package io.ashdavies.playground.home
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -49,8 +49,8 @@ private val <T : Any> LazyPagingItems<T>.isRefreshing: Boolean
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-internal fun EventsScreen(child: EventsRoot.Child.Events) {
-    val viewModel: EventsViewModel = rememberEventsViewModel()
+internal fun EventsHomeScreen(child: EventsRoot.Child.Events) {
+    val viewModel: EventsHomeViewModel = rememberEventsViewModel()
     val pagingItems: LazyPagingItems<Event> = viewModel
         .pagingData
         .collectAsLazyPagingItems()
