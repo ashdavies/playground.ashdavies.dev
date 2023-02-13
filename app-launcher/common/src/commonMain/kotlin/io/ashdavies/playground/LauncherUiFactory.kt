@@ -10,9 +10,8 @@ import io.ashdavies.dominion.DominionRoot
 
 public class LauncherUiFactory(private val componentContext: ComponentContext) : Ui.Factory {
     override fun create(screen: Screen, context: CircuitContext): Ui<*>? = when (screen) {
-        is LauncherScreen -> ui<LauncherState> { state, _ -> LauncherScreen(state) }
+        is LauncherScreen -> ui<LauncherState> { state, modifier -> LauncherScreen(state, modifier) }
         is DominionScreen -> ui<CircuitUiState> { _, _ -> DominionRoot(componentContext) }
-        is EventsScreen -> ui<CircuitUiState> { _, _ -> EventsRoot(componentContext) }
         else -> null
     }
 }

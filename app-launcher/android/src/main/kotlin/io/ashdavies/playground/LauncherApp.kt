@@ -8,6 +8,7 @@ import com.slack.circuit.CircuitConfig
 import com.slack.circuit.NavigableCircuitContent
 import com.slack.circuit.Screen
 import com.slack.circuit.backstack.rememberSaveableBackStack
+import com.slack.circuit.overlay.ContentWithOverlays
 import com.slack.circuit.push
 import com.slack.circuit.rememberCircuitNavigator
 import io.ashdavies.compose.ProvideFirebaseApp
@@ -26,7 +27,7 @@ internal fun LauncherApp(circuitConfig: CircuitConfig, initialBackStack: List<Sc
     ProvideFirebaseApp {
         MaterialTheme(colorScheme = colorScheme) {
             CircuitCompositionLocals(circuitConfig) {
-                NavigableCircuitContent(navigator, backStack)
+                ContentWithOverlays { NavigableCircuitContent(navigator, backStack) }
             }
         }
     }

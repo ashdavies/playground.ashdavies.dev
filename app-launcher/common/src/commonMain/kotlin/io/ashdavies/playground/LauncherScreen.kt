@@ -25,8 +25,8 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-public fun LauncherScreen(state: LauncherState) {
-    Scaffold(topBar = { LauncherTopAppBar() }) { padding ->
+public fun LauncherScreen(state: LauncherState, modifier: Modifier = Modifier) {
+    Scaffold(modifier, topBar = { LauncherTopAppBar() }) { padding ->
         Column(modifier = Modifier.padding(padding)) {
             LauncherRow(Icons.Filled.Event, "Events") {
                 state.sink(LauncherEvent.Events)

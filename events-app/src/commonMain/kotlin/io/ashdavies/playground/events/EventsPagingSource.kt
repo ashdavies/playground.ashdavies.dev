@@ -6,9 +6,7 @@ import io.ashdavies.playground.Event
 import io.ashdavies.playground.EventsQueries
 import io.ashdavies.playground.network.todayAsString
 
-internal class EventsPagingSource(
-    private val queries: EventsQueries,
-) : PagingSource<String, Event>() {
+internal class EventsPagingSource(private val queries: EventsQueries) : PagingSource<String, Event>() {
 
     override suspend fun load(params: LoadParams<String>): LoadResult<String, Event> {
         val query = queries.selectAll(

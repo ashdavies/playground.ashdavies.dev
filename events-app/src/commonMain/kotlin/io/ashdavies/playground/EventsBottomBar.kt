@@ -11,18 +11,39 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
 @Composable
-internal fun EventsBottomBar(child: EventsRoot.Child, modifier: Modifier = Modifier) {
-    NavigationBar(modifier, MaterialTheme.colorScheme.surface.copy(alpha = 0.95f)) {
+internal fun EventsBottomBar(
+    state: EventsState,
+    modifier: Modifier = Modifier,
+) {
+    val sink = state.sink
+
+    EventsBottomBar(
+        onClick = { sink(EventsEvent.BottomNav(it)) },
+        selected = state.current,
+        modifier = modifier,
+    )
+}
+
+@Composable
+internal fun EventsBottomBar(
+    selected: EventsScreen,
+    modifier: Modifier = Modifier,
+    onClick: (EventsScreen) -> Unit = { },
+) {
+    NavigationBar(
+        containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.95f),
+        modifier = modifier,
+    ) {
         NavigationBarItem(
             icon = { Image(Icons.Default.Home, null) },
-            onClick = { child.navigation.navigateToEvents() },
-            selected = child is EventsRoot.Child.Events,
+            onClick = { onClick(EventsScreen.Home) },
+            selected = selected is EventsScreen.Home,
         )
 
         NavigationBarItem(
             icon = { Image(Icons.Default.Person, null) },
-            onClick = { child.navigation.navigateToProfile() },
-            selected = child is EventsRoot.Child.Profile,
+            onClick = { onClick(EventsScreen.Profile) },
+            selected = selected is EventsScreen.Profile,
         )
     }
 }

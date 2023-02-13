@@ -27,7 +27,7 @@ import androidx.compose.ui.unit.dp
 import io.ashdavies.http.isLoading
 import io.ashdavies.playground.EmptyPainter
 import io.ashdavies.playground.EventsBottomBar
-import io.ashdavies.playground.EventsRoot
+import io.ashdavies.playground.EventsState
 import io.ashdavies.playground.android.FlowRow
 import io.ashdavies.playground.android.fade
 import io.ashdavies.playground.network.OpenUri
@@ -39,7 +39,7 @@ import kotlin.random.Random.Default.nextInt
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-internal fun ProfileScreen(child: EventsRoot.Child.Profile) {
+internal fun ProfileScreen(state: EventsState, modifier: Modifier = Modifier) {
     val viewModel: ProfileViewModel = rememberProfileViewModel()
     val viewState: ProfileViewState by viewModel
         .viewState
@@ -47,10 +47,10 @@ internal fun ProfileScreen(child: EventsRoot.Child.Profile) {
 
     Scaffold(
         topBar = { TopAppBar(title = { Text("Profile") }) },
-        bottomBar = { EventsBottomBar(child) },
+        bottomBar = { EventsBottomBar(state) },
     ) { contentPadding ->
         ProfileScreen(
-            modifier = Modifier.padding(contentPadding),
+            modifier = modifier.padding(contentPadding),
             onLogin = { viewModel.onLogin() },
             viewState = viewState,
         )
@@ -78,9 +78,13 @@ private fun ProfileScreen(viewState: ProfileViewState, modifier: Modifier = Modi
 
 @Composable
 @ExperimentalMaterial3Api
-private fun ProfileHeader(painter: Result<Painter>, viewState: LoggedIn) {
+private fun ProfileHeader(
+    painter: Result<Painter>,
+    viewState: LoggedIn,
+    modifier: Modifier = Modifier,
+) {
     Card(
-        modifier = Modifier
+        modifier = modifier
             .padding(top = 64.dp, bottom = 12.dp)
             .fillMaxWidth(),
     ) {

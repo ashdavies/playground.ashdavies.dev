@@ -35,7 +35,7 @@ import io.ashdavies.paging.collectAsLazyPagingItems
 import io.ashdavies.paging.items
 import io.ashdavies.playground.Event
 import io.ashdavies.playground.EventsBottomBar
-import io.ashdavies.playground.EventsRoot
+import io.ashdavies.playground.EventsState
 import io.ashdavies.playground.android.fade
 import io.ashdavies.playground.platform.PlatformSwipeRefresh
 
@@ -49,7 +49,7 @@ private val <T : Any> LazyPagingItems<T>.isRefreshing: Boolean
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-internal fun EventsHomeScreen(child: EventsRoot.Child.Events) {
+internal fun HomeScreen(state: EventsState, modifier: Modifier = Modifier) {
     val viewModel: EventsHomeViewModel = rememberEventsViewModel()
     val pagingItems: LazyPagingItems<Event> = viewModel
         .pagingData
@@ -57,7 +57,7 @@ internal fun EventsHomeScreen(child: EventsRoot.Child.Events) {
 
     Scaffold(
         topBar = { TopAppBar(title = { Text("Events") }) },
-        bottomBar = { EventsBottomBar(child) },
+        bottomBar = { EventsBottomBar(state) },
     ) { contentPadding ->
         PlatformSwipeRefresh(
             isRefreshing = pagingItems.isRefreshing,
