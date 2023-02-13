@@ -10,11 +10,12 @@ android {
 kotlin {
     commonMain.dependencies {
         implementation(projects.appCheck.appCheckClient)
-
         implementation(projects.localRemote)
         implementation(projects.playgroundApp)
 
+        implementation(libs.arkivanov.parcelable)
         implementation(libs.bundles.ktor.client)
+        implementation(libs.bundles.slack.circuit)
     }
 
     androidMain.dependencies {

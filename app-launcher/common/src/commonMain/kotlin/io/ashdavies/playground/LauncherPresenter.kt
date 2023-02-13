@@ -10,13 +10,11 @@ import com.slack.circuit.Navigator
 import com.slack.circuit.Presenter
 import com.slack.circuit.Screen
 import com.slack.circuit.presenterOf
+import io.ashdavies.dominion.DominionScreen
 import kotlinx.collections.immutable.persistentListOf
 
 @Parcelize
 public object LauncherScreen : Parcelable, Screen
-
-@Parcelize
-public object DominionScreen : Parcelable, Screen
 
 public data class LauncherState(val sink: (LauncherEvent) -> Unit = { }) : CircuitUiState
 
@@ -29,14 +27,13 @@ public sealed interface LauncherEvent : CircuitUiEvent {
 internal fun LauncherPresenter(navigator: Navigator): LauncherState = LauncherState { event ->
     when (event) {
         is LauncherEvent.Events -> navigator.goTo(EventsScreen.Home)
-        is LauncherEvent.Dominion -> navigator.goTo(DominionScreen)
+        is LauncherEvent.Dominion -> navigator.goTo(DominionScreen.Home)
     }
 }
 
 public class LauncherPresenterFactory : Presenter.Factory {
     override fun create(screen: Screen, navigator: Navigator, context: CircuitContext): Presenter<*>? = when (screen) {
         is LauncherScreen -> presenterOf { LauncherPresenter(navigator) }
-        is DominionScreen -> presenterOf { object : CircuitUiState {} }
         else -> null
     }
 }
@@ -44,7 +41,7 @@ public class LauncherPresenterFactory : Presenter.Factory {
 public fun buildInitialBackStack(initialScreen: String? = null): List<Screen> {
     return when (initialScreen) {
         "events" -> persistentListOf(LauncherScreen, EventsScreen.Home)
-        "dominion" -> persistentListOf(LauncherScreen, DominionScreen)
+        "dominion" -> persistentListOf(LauncherScreen, DominionScreen.Home)
         else -> persistentListOf(LauncherScreen)
     }
 }

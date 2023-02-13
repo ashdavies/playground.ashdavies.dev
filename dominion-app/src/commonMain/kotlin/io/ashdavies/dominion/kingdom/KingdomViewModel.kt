@@ -2,23 +2,17 @@ package io.ashdavies.dominion.kingdom
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import com.arkivanov.essenty.parcelable.Parcelable
-import com.arkivanov.essenty.parcelable.Parcelize
-import io.ashdavies.http.LocalHttpClient
-import io.ashdavies.http.filterIsSuccess
-import io.ashdavies.http.parameter
-import io.ashdavies.http.requesting
+import io.ashdavies.dominion.DOMINION_STRATEGY_URL
 import io.ashdavies.dominion.DominionCard
 import io.ashdavies.dominion.DominionExpansion
 import io.ashdavies.dominion.DominionRequest
 import io.ashdavies.dominion.serialization.getContent
 import io.ashdavies.dominion.serialization.getOrThrow
+import io.ashdavies.http.LocalHttpClient
+import io.ashdavies.http.parameter
 import io.ktor.client.HttpClient
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.first
-import kotlinx.serialization.Serializable
+import io.ktor.client.call.body
+import io.ktor.client.request.get
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
@@ -36,7 +30,7 @@ private val JsonElement.isKingdomCards: Boolean
 private fun String.encoded(): String = replace(" ", "_")
     .replace("'", "%27")
 
-internal class KingdomViewModel(private val scope: CoroutineScope, private val client: HttpClient) {
+internal class KingdomViewModel(private val client: HttpClient) {
 
     private val JsonObject.section: String
         get() = getOrThrow<JsonObject>("parse")
@@ -58,19 +52,19 @@ internal class KingdomViewModel(private val scope: CoroutineScope, private val c
 
     suspend fun getViewState(expansion: DominionExpansion): List<DominionCard> {
         val section = client
-            .requesting<JsonObject>("api.php") { parameter(DominionRequest.Parse.Sections(expansion.name)) }
-            .filterIsSuccess { it.section }
-            .first()
+            .get(DOMINION_STRATEGY_URL) { parameter(DominionRequest.Parse.Sections(expansion.name)) }
+            .body<JsonObject>()
+            .section
 
         val links: List<String> = client
-            .requesting<JsonObject>("api.php") { parameter(DominionRequest.Parse.Section(expansion.name, section)) }
-            .filterIsSuccess { it.links }
-            .first()
+            .get(DOMINION_STRATEGY_URL) { parameter(DominionRequest.Parse.Section(expansion.name, section)) }
+            .body<JsonObject>()
+            .links
 
         suspend fun images(titles: String): List<String> = client
-            .requesting<JsonObject>("api.php") { parameter(DominionRequest.Query.Images(titles)) }
-            .filterIsSuccess { it.url }
-            .first()
+            .get(DOMINION_STRATEGY_URL) { parameter(DominionRequest.Query.Images(titles)) }
+            .body<JsonObject>()
+            .url
 
         val images: List<String> = links
             .chunked(WIKI_QUERY_LIMIT)
@@ -80,30 +74,11 @@ internal class KingdomViewModel(private val scope: CoroutineScope, private val c
             .associateWith { name -> images.firstOrNull { name.encoded() in it } }
             .map { DominionCard(expansion, it.key, it.value) }
     }
-
-    fun getViewStateFlow(expansion: DominionExpansion): StateFlow<KingdomViewState> = TODO()
-}
-
-@Serializable
-internal sealed class KingdomViewState : Parcelable {
-
-    @Parcelize
-    @Serializable
-    object Ready : KingdomViewState()
-
-    @Parcelize
-    @Serializable
-    object Loading : KingdomViewState()
-
-    @Parcelize
-    @Serializable
-    data class Success(val value: List<DominionCard>) : KingdomViewState()
 }
 
 @Composable
 internal fun rememberKingdomViewModel(
-    scope: CoroutineScope = rememberCoroutineScope(),
     client: HttpClient = LocalHttpClient.current,
 ): KingdomViewModel = remember(client) {
-    KingdomViewModel(scope, client)
+    KingdomViewModel(client)
 }

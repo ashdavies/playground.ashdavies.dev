@@ -13,6 +13,7 @@ import io.ktor.client.call.body
 import io.ktor.client.plugins.DefaultRequest
 import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.HttpTimeout.Plugin.INFINITE_TIMEOUT_MS
+import io.ktor.client.plugins.cache.HttpCache
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
@@ -24,7 +25,6 @@ import io.ktor.http.ContentType
 import io.ktor.http.URLBuilder
 import io.ktor.http.contentType
 import io.ktor.http.takeFrom
-import io.ktor.http.userAgent
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.coroutineScope
@@ -35,9 +35,6 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.contextual
-
-private const val DEFAULT_FUNCTIONS_HOST =
-    "https://europe-west1-playground-1a136.cloudfunctions.net/"
 
 private val DefaultUserAgent: String
     get() = "${Software.clientName} (${Software.productName}; ${Software.buildVersion})"
@@ -61,8 +58,7 @@ public fun DefaultHttpClient(block: HttpClientConfig<*>.() -> Unit = { }): HttpC
         install(DefaultRequest) {
             contentType(ContentType.Application.Json)
             accept(ContentType.Application.Json)
-            url(DEFAULT_FUNCTIONS_HOST)
-            userAgent(DefaultUserAgent)
+            // userAgent(DefaultUserAgent)
         }
 
         install(HttpTimeout) {
@@ -78,8 +74,7 @@ public fun DefaultHttpClient(block: HttpClientConfig<*>.() -> Unit = { }): HttpC
     }
 
 public val LocalHttpClient: ProvidableCompositionLocal<HttpClient> = staticCompositionLocalOf {
-    // DefaultHttpClient { install(HttpCache) }
-    DefaultHttpClient { }
+    DefaultHttpClient { install(HttpCache) }
 }
 
 @Composable
