@@ -22,7 +22,6 @@ plugins {
     alias(libs.plugins.benManes.versions)
     alias(libs.plugins.catalog.update)
     alias(libs.plugins.diffplug.spotless)
-    alias(libs.plugins.google.build.cache)
     alias(libs.plugins.gradle.doctor)
 
     // alias(libs.plugins.cash.molecule)
@@ -87,16 +86,5 @@ tasks.withType<DependencyUpdatesTask> {
 
     rejectVersionIf {
         isUnstable(candidate.version)
-    }
-}
-
-buildCache {
-    registerBuildCacheService(GcpBuildCache, GcpBuildCacheServiceFactory)
-
-    remote(GcpBuildCache) {
-        credentials = new ExportedKeyGcpCredentials(new File("path/to/credentials.json"))
-        bucketName = "gradle-build-cache"
-        projectId = "playground-1a136"
-        push = inCi
     }
 }
