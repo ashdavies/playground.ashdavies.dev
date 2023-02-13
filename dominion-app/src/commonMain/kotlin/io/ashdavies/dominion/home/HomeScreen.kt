@@ -1,4 +1,4 @@
-package io.ashdavies.dominion.expansion
+package io.ashdavies.dominion.home
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -10,31 +10,36 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.Card
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SmallTopAppBar
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import io.ashdavies.dominion.DominionExpansion
 import io.ashdavies.http.onLoading
 import io.ashdavies.http.produceStateInline
-import io.ashdavies.dominion.DominionExpansion
-import io.ashdavies.dominion.DominionRoot.Child.Expansion
 import io.ashdavies.playground.RemoteImage
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-internal fun ExpansionScreen(child: Expansion, viewModel: ExpansionViewModel = rememberExpansionViewModel()) {
-    val state by produceStateInline { viewModel.getViewState() }
+internal fun HomeScreen(modifier: Modifier = Modifier, onClick: (DominionExpansion) -> Unit = { }) {
+    val viewModel = rememberHomeViewModel()
+    val state by produceStateInline {
+        viewModel.getViewState()
+    }
 
-    Scaffold(topBar = { SmallTopAppBar(title = { Text("Dominion") }) }) { contentPadding ->
+    Scaffold(
+        topBar = { CenterAlignedTopAppBar({ Text("Dominion") }) },
+        modifier = modifier,
+    ) { contentPadding ->
         state.onSuccess {
-            ExpansionScreen(
-                onClick = { child.navigateToKingdom(it) },
+            HomeScreen(
                 contentPadding = contentPadding,
+                onClick = onClick,
                 expansions = it,
             )
         }
@@ -43,7 +48,7 @@ internal fun ExpansionScreen(child: Expansion, viewModel: ExpansionViewModel = r
             LinearProgressIndicator(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(4.dp)
+                    .padding(4.dp),
             )
         }
     }
@@ -51,7 +56,7 @@ internal fun ExpansionScreen(child: Expansion, viewModel: ExpansionViewModel = r
 
 @Composable
 @ExperimentalMaterial3Api
-private fun ExpansionScreen(
+private fun HomeScreen(
     expansions: List<DominionExpansion>,
     contentPadding: PaddingValues,
     onClick: (DominionExpansion) -> Unit = { },
@@ -73,14 +78,14 @@ private fun ExpansionScreen(
 private fun ExpansionCard(
     value: DominionExpansion,
     modifier: Modifier = Modifier,
-    onClick: () -> Unit = { }
+    onClick: () -> Unit = { },
 ) {
     Box(Modifier.padding(4.dp)) {
         Card(
             content = { RemoteImage(value.image) },
             modifier = modifier
                 .clickable(onClick = onClick)
-                .aspectRatio(1.0f)
+                .aspectRatio(1.0f),
         )
     }
 }

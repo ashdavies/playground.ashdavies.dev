@@ -1,18 +1,17 @@
-package io.ashdavies.dominion.expansion
+package io.ashdavies.dominion.home
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import io.ashdavies.http.LocalHttpClient
-import io.ashdavies.http.filterIsSuccess
-import io.ashdavies.http.parameter
-import io.ashdavies.http.requesting
+import io.ashdavies.dominion.DOMINION_STRATEGY_URL
 import io.ashdavies.dominion.DominionExpansion
 import io.ashdavies.dominion.DominionRequest
 import io.ashdavies.dominion.serialization.getContent
 import io.ashdavies.dominion.serialization.getOrThrow
+import io.ashdavies.http.LocalHttpClient
+import io.ashdavies.http.parameter
 import io.ktor.client.HttpClient
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.single
+import io.ktor.client.call.body
+import io.ktor.client.request.get
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
@@ -34,7 +33,7 @@ private inline val JsonElement.imageInfoUrl: String
  * http://wiki.dominionstrategy.com/api.php?action=parse&format=json&page=Dominion_(Base_Set)&section=3&prop=links
  * http://wiki.dominionstrategy.com/api.php?action=parse&format=json&page=Dominion_(Base_Set)&section=9
  */
-internal class ExpansionViewModel(private val client: HttpClient) {
+internal class HomeViewModel(private val client: HttpClient) {
 
     private val JsonObject.links: Set<String>
         get() = getOrThrow<JsonObject>("query", "pages", "157")
@@ -51,19 +50,24 @@ internal class ExpansionViewModel(private val client: HttpClient) {
 
     suspend fun getViewState(): List<DominionExpansion> {
         val links: Set<String> = client
-            .requesting<JsonObject>("api.php") { parameter(DominionRequest.Query.Expansions()) }
-            .filterIsSuccess { it.links }
-            .first()
+            .get(DOMINION_STRATEGY_URL) { parameter(DominionRequest.Query.Expansions()) }
+            .body<JsonObject>()
+            .also { println(it) }
+            .links
+
+        println("=== HomeViewModel.getViewState() // $links")
 
         val files: String = links
             .map { it.substring(5, it.length - 4) }
             .filterNot { it in EXCLUSIONS || "File:${it}2.jpg" in links }
             .joinToString("|") { "File:$it.jpg" }
 
+        println("=== HomeViewModel.getViewState() // $files")
+
         return client
-            .requesting<JsonObject>("api.php") { parameter(DominionRequest.Query.Images(files)) }
-            .filterIsSuccess { it.expansions }
-            .single()
+            .get(DOMINION_STRATEGY_URL) { parameter(DominionRequest.Query.Images(files)) }
+            .body<JsonObject>()
+            .expansions
     }
 }
 
@@ -73,8 +77,8 @@ internal fun DominionExpansion(element: JsonElement) = DominionExpansion(
 )
 
 @Composable
-internal fun rememberExpansionViewModel(
+internal fun rememberHomeViewModel(
     client: HttpClient = LocalHttpClient.current,
-): ExpansionViewModel = remember(client) {
-    ExpansionViewModel(client)
+): HomeViewModel = remember(client) {
+    HomeViewModel(client)
 }

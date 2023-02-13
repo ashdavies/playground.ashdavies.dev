@@ -23,7 +23,6 @@ dependencies {
     implementation(platform(libs.google.firebase.bom))
 
     implementation(libs.bundles.androidx.activity)
-    implementation(libs.bundles.arkivanov.decompose)
     implementation(libs.bundles.slack.circuit)
     implementation(libs.bundles.google.firebase)
 

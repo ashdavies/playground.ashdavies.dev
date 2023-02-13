@@ -14,15 +14,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import io.ashdavies.dominion.DominionCard
-import io.ashdavies.dominion.DominionRoot
 import io.ashdavies.playground.RemoteImage
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-internal fun CardScreen(child: DominionRoot.Child.Card) {
-    Scaffold(topBar = { CardTopBar(child.card) { child.navigateToKingdom(child.card.expansion) } }) { contentPadding ->
-        CardScreen(child.card, Modifier.padding(contentPadding))
-    }
+internal fun CardScreen(card: DominionCard, modifier: Modifier = Modifier, onBack: () -> Unit = { }) {
+    Scaffold(
+        content = { contentPadding -> CardScreen(card, Modifier.padding(contentPadding)) },
+        topBar = { CardTopBar(card, onBack = onBack) },
+        modifier = modifier,
+    )
 }
 
 @Composable
@@ -36,7 +37,7 @@ private fun CardTopBar(card: DominionCard, modifier: Modifier = Modifier, onBack
 }
 
 @Composable
-private fun BackIconButton(onClick: () -> Unit) {
+private fun BackIconButton(onClick: () -> Unit = { }) {
     IconButton(onClick = onClick) {
         Image(
             painter = rememberVectorPainter(Icons.Filled.ArrowBack),

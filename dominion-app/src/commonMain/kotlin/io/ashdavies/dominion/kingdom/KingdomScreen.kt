@@ -33,7 +33,6 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
 import io.ashdavies.dominion.DominionCard
 import io.ashdavies.dominion.DominionExpansion
-import io.ashdavies.dominion.DominionRoot.Child.Kingdom
 import io.ashdavies.http.onLoading
 import io.ashdavies.http.produceStateInline
 import io.ashdavies.playground.RemoteImage
@@ -41,18 +40,27 @@ import io.ashdavies.playground.windowInsetsPadding
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-internal fun KingdomScreen(child: Kingdom, viewModel: KingdomViewModel = rememberKingdomViewModel()) {
-    val viewState by produceStateInline { viewModel.getViewState(child.expansion) }
+internal fun KingdomScreen(
+    expansion: DominionExpansion,
+    onClick: (DominionCard) -> Unit = { },
+    onBack: () -> Unit = { },
+    modifier: Modifier = Modifier,
+) {
     val scrollBehavior = enterAlwaysScrollBehavior()
 
+    val viewModel = rememberKingdomViewModel()
+    val viewState by produceStateInline {
+        viewModel.getViewState(expansion)
+    }
+
     Scaffold(
-        topBar = { KingdomTopBar(child.expansion, scrollBehavior) { child.navigateToExpansion() } },
-        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+        modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+        topBar = { KingdomTopBar(expansion, scrollBehavior, onBack) },
     ) { contentPadding ->
         viewState.onSuccess {
             KingdomScreen(
-                onClick = child::navigateToCard,
                 contentPadding = contentPadding,
+                onClick = onClick,
                 kingdom = it,
             )
         }
@@ -130,11 +138,7 @@ private fun KingdomCard(
     onClick: () -> Unit = { },
 ) {
     Box(Modifier.padding(4.dp)) {
-        Card(
-            modifier = modifier
-                .clickable(onClick = onClick)
-                .aspectRatio(1.0f),
-        ) {
+        Card(modifier.clickable(onClick = onClick)) {
             when (val image = value.image) {
                 null -> Text(value.name, color = Color.White)
                 else -> RemoteImage(

@@ -10,9 +10,7 @@ import kotlinx.serialization.properties.encodeToMap
 
 @OptIn(ExperimentalSerializationApi::class)
 public inline fun <reified T> HttpRequestBuilder.parameter(value: T) {
-    Properties.encodeToMap(value)
-        .filter { (key, _) -> key != "type" && key.startsWith("value") }
-        .forEach { parameter(it.key.substringAfter("value."), it.value) }
+    Properties.encodeToMap(value).forEach { (key, value) -> parameter(key, value) }
 }
 
 public fun HttpRequestBuilder.path(vararg path: String) {

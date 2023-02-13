@@ -3,7 +3,6 @@ androidx-activity = "1.6.1"
 androidx-lifecycle = "2.5.1"
 androidx-paging = "3.1.1"
 apollo-graphql = "2.5.13"
-arkivanov-decompose = "0.8.0"
 cash-paging = "3.1.1-0.1.1"
 google-accompanist = "0.27.0"
 google-android = "7.3.1"
@@ -35,10 +34,7 @@ apollo-graphql-coroutines-support = { module = "com.apollographql.apollo:apollo-
 apollo-graphql-runtime = { module = "com.apollographql.apollo:apollo-runtime", version.ref = "apollo-graphql" }
 
 app-cash-turbine = "app.cash.turbine:turbine:0.12.0"
-
-arkivanov-decompose = { module = "com.arkivanov.decompose:decompose", version.ref = "arkivanov-decompose" }
-arkivanov-decompose-extensions = { module = "com.arkivanov.decompose:extensions-compose-jetbrains", version.ref = "arkivanov-decompose" }
-arkivanov-parcelable = { module = "com.arkivanov.essenty:parcelable", version.ref = "arkivanov-decompose" }
+arkivanov-parcelable = "com.arkivanov.essenty:parcelable:0.8.0"
 
 auth-java-jwt = "com.auth0:java-jwt:4.2.1"
 auth-jwks-rsa = "com.auth0:jwks-rsa:0.21.2"
@@ -139,7 +135,6 @@ tschuchortdev-kotlin-compile-testing = "com.github.tschuchortdev:kotlin-compile-
 [bundles]
 androidx-activity = ["androidx-activity-compose", "androidx-activity-ktx"]
 androidx-viewmodel = ["androidx-lifecycle-viewmodel-compose", "androidx-lifecycle-viewmodel-ktx"]
-arkivanov-decompose = ["arkivanov-decompose", "arkivanov-decompose-extensions"]
 google-firebase = ["google-firebase-analytics", "google-firebase-common-ktx"]
 google-maps = ["google-android-maps", "google-maps-android-compose", "google-maps-android-compose-widgets"]
 jetbrains-kotlin-test = ["jetbrains-kotlin-test", "jetbrains-kotlin-test-annotations", "jetbrains-kotlin-test-common", "jetbrains-kotlin-test-junit", "jetbrains-kotlinx-coroutines-test"]
