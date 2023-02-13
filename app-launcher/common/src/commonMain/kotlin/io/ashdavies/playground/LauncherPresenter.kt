@@ -18,9 +18,6 @@ public object LauncherScreen : Parcelable, Screen
 @Parcelize
 public object DominionScreen : Parcelable, Screen
 
-@Parcelize
-public object EventsScreen : Parcelable, Screen
-
 public data class LauncherState(val sink: (LauncherEvent) -> Unit = { }) : CircuitUiState
 
 public sealed interface LauncherEvent : CircuitUiEvent {
@@ -31,28 +28,23 @@ public sealed interface LauncherEvent : CircuitUiEvent {
 @Composable
 internal fun LauncherPresenter(navigator: Navigator): LauncherState = LauncherState { event ->
     when (event) {
+        is LauncherEvent.Events -> navigator.goTo(EventsScreen.Home)
         is LauncherEvent.Dominion -> navigator.goTo(DominionScreen)
-        is LauncherEvent.Events -> navigator.goTo(EventsScreen)
     }
 }
 
 public class LauncherPresenterFactory : Presenter.Factory {
-    override fun create(
-        screen: Screen,
-        navigator: Navigator,
-        context: CircuitContext,
-    ): Presenter<*>? = when (screen) {
+    override fun create(screen: Screen, navigator: Navigator, context: CircuitContext): Presenter<*>? = when (screen) {
         is LauncherScreen -> presenterOf { LauncherPresenter(navigator) }
         is DominionScreen -> presenterOf { object : CircuitUiState {} }
-        is EventsScreen -> presenterOf { object : CircuitUiState {} }
         else -> null
     }
 }
 
 public fun buildInitialBackStack(initialScreen: String? = null): List<Screen> {
     return when (initialScreen) {
+        "events" -> persistentListOf(LauncherScreen, EventsScreen.Home)
         "dominion" -> persistentListOf(LauncherScreen, DominionScreen)
-        "events" -> persistentListOf(LauncherScreen, EventsScreen)
         else -> persistentListOf(LauncherScreen)
     }
 }

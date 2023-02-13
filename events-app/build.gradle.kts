@@ -24,9 +24,10 @@ kotlin {
         implementation(projects.localStorage)
         implementation(projects.playgroundApp)
 
-        implementation(libs.bundles.arkivanov.decompose)
         implementation(libs.bundles.ktor.client)
+        implementation(libs.bundles.slack.circuit)
 
+        implementation(libs.arkivanov.parcelable)
         implementation(libs.sqldelight.coroutines.extensions)
     }
 
