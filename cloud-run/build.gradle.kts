@@ -1,7 +1,7 @@
 @file:Suppress("DSL_SCOPE_VIOLATION") // https://github.com/gradle/gradle/issues/22797
 
 plugins {
-    alias(libs.plugins.google.cloud.jib)
+    id("com.google.cloud.tools.jib")
     kotlin("plugin.serialization")
     kotlin("jvm")
     application
@@ -20,11 +20,9 @@ dependencies {
     implementation(libs.bundles.ktor.serialization)
     implementation(libs.bundles.ktor.server)
     implementation(libs.google.firebase.admin)
-    implementation("io.ktor:ktor-server-compression-jvm:2.1.3")
-    // implementation(libs.qos.logbackClassic)
 
     testImplementation(kotlin("test"))
-    testImplementation(projects.appCheck.appCheckSdk)
+
     testImplementation(libs.jetbrains.kotlinx.coroutines.test)
     testImplementation(libs.ktor.client.content.negotiation)
     testImplementation(libs.ktor.client.core)
@@ -43,4 +41,3 @@ tasks.withType<com.google.cloud.tools.jib.gradle.JibTask> {
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     kotlinOptions.freeCompilerArgs += "-Xexplicit-api=warning"
 }
-
