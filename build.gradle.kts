@@ -5,7 +5,6 @@ import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 
 buildscript {
     dependencies {
-        classpath("app.cash.molecule:molecule-gradle-plugin:0.6.1")
         classpath("com.google.gms:google-services:4.3.14")
     }
 }
