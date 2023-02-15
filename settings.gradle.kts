@@ -39,10 +39,6 @@ include(
     ":auth-oauth",
     ":cloud-functions",
     ":cloud-run",
-    ":compose-constructor:plugin-common",
-    // ":compose-constructor:plugin-ide",
-    // ":compose-constructor:plugin-native",
-    ":compose-constructor:plugin-runtime",
     ":compose-locals",
     ":dominion-app",
     ":events-aggregator",
@@ -61,11 +57,5 @@ include(
 )
 
 includeBuild("build-plugins")
-
-includeBuild("compose-constructor/plugin-gradle") {
-    dependencySubstitution {
-        substitute(module("io.ashdavies.playground:plugin-gradle")).using(project(":"))
-    }
-}
 
 rootProject.name = "playground"
