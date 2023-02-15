@@ -5,7 +5,7 @@ import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 
 buildscript {
     dependencies {
-        classpath("com.google.gms:google-services:4.3.14")
+        classpath("com.google.gms:google-services:4.3.15")
     }
 }
 
@@ -61,6 +61,12 @@ configure<com.diffplug.gradle.spotless.SpotlessExtension> {
             .setUseExperimental(true)
 
         kotlinDefault()
+    }
+
+    format("misc") {
+        target(".gitignore", "*.md", "*.toml")
+        trimTrailingWhitespace()
+        endWithNewline()
     }
 
     val terraformPath = System.getenv("TERRAFORM_PATH")

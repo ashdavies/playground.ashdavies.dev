@@ -53,7 +53,6 @@ include(
     ":paging-compose",
     ":parcelable-support",
     ":playground-app",
-    ":version-catalog",
 )
 
 includeBuild("build-plugins")

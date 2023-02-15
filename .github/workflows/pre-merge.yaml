@@ -86,8 +86,5 @@ jobs:
           if-no-files-found: error
         if: always()
 
-      - name: Display dependency updates
-        run: ./gradlew dependencyUpdates
-
       - name: Stop Gradle
         run: ./gradlew --stop

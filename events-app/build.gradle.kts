@@ -32,7 +32,7 @@ kotlin {
     }
 
     androidMain.dependencies {
-        implementation(platform(libs.google.firebase.bom))
+        implementation(dependencies.platform(libs.google.firebase.bom))
         implementation(projects.firebaseCompose)
 
         with(libs.bundles) {

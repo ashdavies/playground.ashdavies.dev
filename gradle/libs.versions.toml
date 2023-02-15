@@ -1,21 +1,22 @@
 [versions]
-androidx-activity = "1.6.1"
+androidx-activity = "1.3.0"
 androidx-lifecycle = "2.5.1"
 androidx-paging = "3.1.1"
-apollo-graphql = "2.5.13"
+apollo-graphql = "2.5.14"
 cash-paging = "3.1.1-0.1.1"
-google-accompanist = "0.27.0"
-google-android = "7.3.1"
+compose-compiler = "1.4.2"
+google-accompanist = "0.28.0"
+google-android = "7.4.1"
 google-auto = "1.0.1"
 google-maps-compose = "2.7.2"
 jetbrains-compose = "1.3.0"
-jetbrains-kotlin = "1.7.20"
+jetbrains-kotlin = "1.8.0"
 kotlinx-coroutines = "1.6.4"
 kotlinx-serialization = "1.4.1"
-ktor = "2.1.3"
+ktor = "2.2.3"
 pinterest-ktlint = "0.47.1"
 slack-circuit = "0.7.0"
-squareup-sqldelight = "1.5.4"
+squareup-sqldelight = "1.5.5"
 
 [libraries]
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity" }
@@ -28,21 +29,19 @@ androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-
 androidx-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "androidx-lifecycle" }
 androidx-paging-runtime = { module = "androidx.paging:paging-runtime", version.ref = "androidx-paging" }
 
-apache-batikExt = "org.apache.xmlgraphics:batik-ext:1.14"
-
 apollo-graphql-coroutines-support = { module = "com.apollographql.apollo:apollo-coroutines-support", version.ref = "apollo-graphql" }
 apollo-graphql-runtime = { module = "com.apollographql.apollo:apollo-runtime", version.ref = "apollo-graphql" }
 
-app-cash-turbine = "app.cash.turbine:turbine:0.12.0"
-arkivanov-parcelable = "com.arkivanov.essenty:parcelable:0.8.0"
+app-cash-turbine = "app.cash.turbine:turbine:0.12.1"
+arkivanov-parcelable = "com.arkivanov.essenty:parcelable:1.0.0"
 
-auth-java-jwt = "com.auth0:java-jwt:4.2.1"
-auth-jwks-rsa = "com.auth0:jwks-rsa:0.21.2"
+auth-java-jwt = "com.auth0:java-jwt:4.3.0"
+auth-jwks-rsa = "com.auth0:jwks-rsa:0.22.0"
 
 cash-paging-common = { module = "app.cash.paging:paging-common", version.ref = "cash.paging" }
 cash-paging-runtime = { module = "app.cash.paging:paging-runtime", version.ref = "cash.paging" }
 
-fusesource-jansi = "org.fusesource.jansi:jansi:2.0.1"
+fusesource-jansi = "org.fusesource.jansi:jansi:2.4.0"
 
 google-accompanist-flowlayout = { module = "com.google.accompanist:accompanist-flowlayout", version.ref = "google-accompanist" }
 google-accompanist-placeholderMaterial = { module = "com.google.accompanist:accompanist-placeholder-material", version.ref = "google-accompanist" }
@@ -50,13 +49,13 @@ google-accompanist-swiperefresh = { module = "com.google.accompanist:accompanist
 google-accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "google-accompanist" }
 
 google-android-maps = "com.google.android.gms:play-services-maps:18.1.0"
-google-android-material = "com.google.android.material:material:1.7.0"
+google-android-material = "com.google.android.material:material:1.8.0"
 
 google-cloud-functionsFrameworkApi = "com.google.cloud.functions:functions-framework-api:1.0.4"
 google-cloud-javaFunctionInvoker = "com.google.cloud.functions.invoker:java-function-invoker:1.2.0"
 
 google-firebase-admin = "com.google.firebase:firebase-admin:9.1.1"
-google-firebase-bom = "com.google.firebase:firebase-bom:31.1.1"
+google-firebase-bom = "com.google.firebase:firebase-bom:31.2.1"
 google-firebase-analytics = { module = "com.google.firebase:firebase-analytics-ktx" }
 google-firebase-appcheck = { module = "com.google.firebase:firebase-appcheck" }
 google-firebase-appcheck-debug = { module = "com.google.firebase:firebase-appcheck-debug" }
@@ -66,7 +65,7 @@ google-firebase-auth-ktx = { module = "com.google.firebase:firebase-auth-ktx" }
 google-maps-android-compose = { module = "com.google.maps.android:maps-compose", version.ref = "google-maps-compose" }
 google-maps-android-compose-widgets = { module = "com.google.maps.android:maps-compose-widgets", version.ref = "google-maps-compose" }
 
-jakeWharton-mosaic = "com.jakewharton.mosaic:mosaic-runtime:0.2.0"
+jakeWharton-mosaic = "com.jakewharton.mosaic:mosaic-runtime:0.3.0"
 
 jetbrains-compose-runtime = { module = "org.jetbrains.compose.runtime:runtime", version.ref = "jetbrains-compose" }
 jetbrains-kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "jetbrains-kotlin" }
@@ -110,7 +109,7 @@ ktor-server-request-validation = { module = "io.ktor:ktor-server-request-validat
 ktor-server-test-host = { module = "io.ktor:ktor-server-test-host", version.ref = "ktor" }
 
 oolong = "org.oolong-kt:oolong:2.1.1"
-qos-logbackClassic = "ch.qos.logback:logback-classic:1.4.4"
+qos-logbackClassic = "ch.qos.logback:logback-classic:1.4.5"
 
 slack-circuit-backstack = { module = "com.slack.circuit:circuit-backstack", version.ref = "slack-circuit" }
 slack-circuit-core = { module = "com.slack.circuit:circuit-core", version.ref = "slack-circuit" }
@@ -118,7 +117,7 @@ slack-circuit-overlay = { module = "com.slack.circuit:circuit-overlay", version.
 slack-circuit-retained = { module = "com.slack.circuit:circuit-retained", version.ref = "slack-circuit" }
 slack-circuit-test = { module = "com.slack.circuit:circuit-test", version.ref = "slack-circuit" }
 
-slf4j-simple = "org.slf4j:slf4j-simple:2.0.3"
+slf4j-simple = "org.slf4j:slf4j-simple:2.0.6"
 
 sqldelight-android-driver = { module = "com.squareup.sqldelight:android-driver", version.ref = "squareup-sqldelight" }
 sqldelight-coroutines-extensions = { module = "com.squareup.sqldelight:coroutines-extensions", version.ref = "squareup-sqldelight" }
@@ -131,48 +130,22 @@ androidx-viewmodel = ["androidx-lifecycle-viewmodel-compose", "androidx-lifecycl
 google-firebase = ["google-firebase-analytics", "google-firebase-common-ktx"]
 google-maps = ["google-android-maps", "google-maps-android-compose", "google-maps-android-compose-widgets"]
 jetbrains-kotlin-test = ["jetbrains-kotlin-test", "jetbrains-kotlin-test-annotations", "jetbrains-kotlin-test-common", "jetbrains-kotlin-test-junit", "jetbrains-kotlinx-coroutines-test"]
-
-jetbrains-kotlinx = [
-    "jetbrains-kotlinx-collections-immutable",
-    "jetbrains-kotlinx-coroutines-core",
-    "jetbrains-kotlinx-datetime",
-    "jetbrains-kotlinx-serialization-core",
-    "jetbrains-kotlinx-serialization-json",
-    "jetbrains-kotlinx-serialization-properties"
-]
-
+jetbrains-kotlinx = ["jetbrains-kotlinx-collections-immutable", "jetbrains-kotlinx-coroutines-core", "jetbrains-kotlinx-datetime", "jetbrains-kotlinx-serialization-core", "jetbrains-kotlinx-serialization-json", "jetbrains-kotlinx-serialization-properties"]
 ktor-client = ["ktor-client-content-negotiation", "ktor-client-core", "ktor-client-json", "ktor-client-logging", "ktor-client-okhttp3", "slf4j-simple"]
 ktor-serialization = ["ktor-serialization-json", "ktor-serialization-kotlinx"]
-
-ktor-server = [
-    "ktor-server-auth",
-    "ktor-server-call-logging",
-    "ktor-server-cio",
-    "ktor-server-compression",
-    "ktor-server-conditional-headers",
-    "ktor-server-content-negotiation",
-    "ktor-server-core",
-    "ktor-server-default-headers",
-    "ktor-server-request-validation",
-]
-
-slack-circuit = [
-    "slack-circuit-backstack",
-    "slack-circuit-core",
-    "slack-circuit-overlay",
-    "slack-circuit-retained",
-]
+ktor-server = ["ktor-server-auth", "ktor-server-call-logging", "ktor-server-cio", "ktor-server-compression", "ktor-server-conditional-headers", "ktor-server-content-negotiation", "ktor-server-core", "ktor-server-default-headers", "ktor-server-request-validation"]
+slack-circuit = ["slack-circuit-backstack", "slack-circuit-core", "slack-circuit-overlay", "slack-circuit-retained"]
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "google-android" }
 android-library = { id = "com.android.library", version.ref = "google-android" }
 apollo-graphql = { id = "com.apollographql.apollo", version.ref = "apollo-graphql" }
-benManes-versions = "com.github.ben-manes.versions:0.44.0"
+benManes-versions = "com.github.ben-manes.versions:0.45.0"
 cash-molecule = { id = "app.cash.molecule", version = "0.4.0" }
 catalog-update = "nl.littlerobots.version-catalog-update:0.7.0"
-diffplug-spotless = "com.diffplug.spotless:6.11.0"
+diffplug-spotless = "com.diffplug.spotless:6.15.0"
 google-cloud-jib = "com.google.cloud.tools.jib:3.3.1"
-google-services = "com.google.gms.google-services:4.3.14"
+google-services = "com.google.gms.google-services:4.3.15"
 gradle-doctor = "com.osacky.doctor:0.8.1"
 jetbrains-dokka = "org.jetbrains.dokka:0.10.0"
 jetbrains-terraform = "org.jetbrains.gradle.terraform:1.4.2"
