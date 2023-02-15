@@ -37,6 +37,10 @@ fun CommonExtension<*, *, *, *>.configure() {
         compose = true
     }
 
+    composeOptions {
+        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11

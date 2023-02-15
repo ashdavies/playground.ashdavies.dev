@@ -18,8 +18,9 @@ kotlin {
     }
 
     jvmMain.dependencies {
-        implementation("com.jakewharton.mosaic:mosaic-runtime:0.1.0") {
-            exclude("com.jakewharton.mosaic", "compose-runtime")
+        implementation(libs.jakeWharton.mosaic) {
+            check(group == "com.jakewharton.mosaic")
+            exclude(group, "compose-runtime")
         }
     }
 

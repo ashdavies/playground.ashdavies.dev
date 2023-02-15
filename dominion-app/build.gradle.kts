@@ -19,7 +19,8 @@ kotlin {
     }
 
     androidMain.dependencies {
-        implementation(platform(libs.google.firebase.bom))
+        implementation(dependencies.platform(libs.google.firebase.bom))
+
         implementation(libs.bundles.androidx.activity)
         implementation(libs.bundles.google.firebase)
 
