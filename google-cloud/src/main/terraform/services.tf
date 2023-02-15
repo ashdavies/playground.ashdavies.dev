@@ -52,3 +52,13 @@ resource "google_cloud_run_service_iam_policy" "noauth-endpoints" {
   policy_data = data.google_iam_policy.noauth.policy_data
   service     = google_cloud_run_service.endpoint.name
 }
+
+resource "google_project_service" "apikeys" {
+  service            = "apikeys.googleapis.com"
+  project            = var.project_id
+}
+
+resource "google_project_service" "identitytoolkit" {
+  service            = "identitytoolkit.googleapis.com"
+  project            = var.project_id
+}

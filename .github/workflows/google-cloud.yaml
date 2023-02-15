@@ -1,4 +1,4 @@
-name: Deploy Backend
+name: Configure Google Cloud
 
 on:
   push:
@@ -21,7 +21,7 @@ concurrency:
 
 jobs:
   build:
-    if: ${{ github.ref == 'refs/heads/main' || contains(github.event.pull_request.labels.*.name, 'backend') }}
+    if: ${{ github.ref == 'refs/heads/main' || contains(github.event.pull_request.labels.*.name, 'terraform') }}
     runs-on: ubuntu-latest
 
     permissions:
@@ -75,7 +75,7 @@ jobs:
 
       - name: Apply Terraform Config
         run: |
-          ./gradlew google-cloud:cloud-run:terraformApply \
+          ./gradlew google-cloud:terraformApply \
             --console=plain \
             -Ptf.apply \
             --info
