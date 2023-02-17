@@ -1,4 +1,8 @@
 moved {
+  from = module.gh-oidc
+  to   = module.github-workload-identity
+}
+moved {
   to   = module.gradle-build-cache.google_storage_bucket.bucket
   from = google_storage_bucket.cache
 }

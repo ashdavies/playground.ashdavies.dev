@@ -5,12 +5,12 @@ output "endpoint_url" {
 
 output "pool_name" {
   description = "Workload Identity Pool name"
-  value       = module.gh-oidc.pool_name
+  value       = module.github-workload-identity.pool_name
 }
 
 output "provider_name" {
   description = "Workload Identity Provider name"
-  value       = module.gh-oidc.provider_name
+  value       = module.github-workload-identity.provider_name
 }
 
 output "sa_email" {
