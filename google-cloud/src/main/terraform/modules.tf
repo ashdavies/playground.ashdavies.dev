@@ -5,8 +5,12 @@ module "github-service-account" {
   names         = ["oidc"]
   prefix        = "gh"
   project_roles = [
-    google_project_iam_custom_role.main.id,
-    "roles/viewer"
+    "${var.project_id}=>${google_project_iam_custom_role.main.id}",
+    "${var.project_id}=>roles/serviceusage.serviceUsageConsumer",
+    "${var.project_id}=>roles/iam.serviceAccountTokenCreator",
+    "${var.project_id}=>roles/iam.workloadIdentityPoolAdmin",
+    "${var.project_id}=>roles/storage.objectAdmin",
+    "${var.project_id}=>roles/viewer"
   ]
 }
 
