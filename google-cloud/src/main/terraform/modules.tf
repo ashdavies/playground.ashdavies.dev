@@ -3,6 +3,7 @@ module "endpoint-iam-binding" {
   project            = google_cloud_run_service.endpoint.project
   cloud_run_services = [google_cloud_run_service.endpoint.name]
   bindings           = { "roles/run.invoker" = ["allUsers"] }
+  location           = var.project_region
   mode               = "authoritative"
 }
 
