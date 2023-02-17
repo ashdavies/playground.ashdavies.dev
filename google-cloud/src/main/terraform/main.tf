@@ -1,35 +1,5 @@
 /* cloud-build */
 
-data "docker_registry_image" "service" {
-  name = format(
-    "%s-docker.pkg.dev/%s/cloud-run-source-deploy/%s",
-    var.project_region,
-    var.project_id,
-    var.service_name,
-  )
-}
-
-resource "google_cloud_run_service" "service" {
-  name                       = "${var.resource_prefix}-service"
-  location                   = var.project_region
-  autogenerate_revision_name = true
-
-  template {
-    spec {
-      containers {
-        image = "${data.docker_registry_image.service.name}@${data.docker_registry_image.service.sha256_digest}"
-      }
-    }
-  }
-
-  traffic {
-    latest_revision = true
-    percent         = 100
-  }
-
-  depends_on = [data.docker_registry_image.service]
-}
-
 resource "null_resource" "openapi_proxy_image" {
   triggers = {
     config_id = google_endpoints_service.endpoints.config_id
@@ -71,7 +41,7 @@ resource "google_endpoints_service" "endpoints" {
   service_name   = var.service_name
   project        = var.project_id
   openapi_config = templatefile(var.resources.openapi-v2_yaml.path, {
-    backend_service_name = google_cloud_run_service.service.status[0].url
+    backend_service_name = module.cloud-run-build.url
     cloud_run_hostname   = var.service_name
   })
 }

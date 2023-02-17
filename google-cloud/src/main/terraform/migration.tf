@@ -47,3 +47,8 @@ moved {
   to   = module.gradle-build-cache.google_storage_bucket_iam_member.members["roles/storage.admin serviceAccount:gh-oidc@playground-1a136.iam.gserviceaccount.com"]
   from = google_storage_bucket_iam_member.cache
 }
+
+moved {
+  to   = module.cloud-run-build.google_cloud_run_service.main
+  from = google_cloud_run_service.service
+}

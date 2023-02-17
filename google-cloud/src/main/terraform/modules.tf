@@ -1,3 +1,11 @@
+module "cloud-run-build" {
+  source   = "./modules/google/cloud-run-build"
+  image    = "playground.ashdavies.dev"
+  name     = "playground-service"
+  location = var.project_region
+  project  = var.project_id
+}
+
 module "endpoint-iam-binding" {
   source             = "terraform-google-modules/iam/google//modules/cloud_run_services_iam"
   project            = google_cloud_run_service.endpoint.project
