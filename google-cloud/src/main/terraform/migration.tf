@@ -4,6 +4,21 @@ moved {
 }
 
 moved {
+  to   = module.github-api-key.github_actions_secret.main
+  from = github_actions_secret.google_project_api_key
+}
+
+moved {
+  to   = module.github-api-key.google_apikeys_key.main
+  from = google_apikeys_key.integration
+}
+
+moved {
+  to   = module.github-api-key.google_project_service.main
+  from = google_project_service.apikeys
+}
+
+moved {
   to   = module.github-service-account.google_service_account.service_accounts["oidc"]
   from = google_service_account.main
 }

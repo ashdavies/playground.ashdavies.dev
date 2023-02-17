@@ -56,12 +56,6 @@ data "google_iam_policy" "noauth" {
   }
 }
 
-resource "github_actions_secret" "google_project_api_key" {
-  plaintext_value = google_apikeys_key.integration.key_string
-  secret_name     = "google_project_api_key"
-  repository      = var.gh_repo_name
-}
-
 resource "google_cloud_run_service" "endpoint" {
   depends_on = [null_resource.openapi_proxy_image]
   name       = "${var.resource_prefix}-endpoint"
@@ -135,25 +129,6 @@ resource "github_actions_secret" "google_workload_identity" {
   secret_name     = "mobile_sdk_app_id"
   repository      = var.gh_repo_name
 }*/
-
-resource "google_apikeys_key" "integration" {
-  display_name = "Integration key (managed by Terraform)"
-  depends_on   = [google_project_service.apikeys]
-  project      = var.project_id
-  name         = "integration"
-
-  restrictions {
-    api_targets {
-      // methods = ["accounts.signInWithCustomToken"]
-      service = "identitytoolkit.googleapis.com"
-    }
-  }
-}
-
-resource "google_project_service" "apikeys" {
-  service = "apikeys.googleapis.com"
-  project = var.project_id
-}
 
 /* cloud-run */
 

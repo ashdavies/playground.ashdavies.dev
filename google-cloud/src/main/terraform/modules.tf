@@ -1,3 +1,13 @@
+module "github-api-key" {
+  display_name = "Integration key (managed by Terraform)"
+  source       = "./modules/google/github-api-key"
+  service      = "identitytoolkit.googleapis.com"
+  secret_name  = "google_project_api_key"
+  repository   = var.gh_repo_name
+  project      = var.project_id
+  name         = "integration"
+}
+
 module "github-service-account" {
   source        = "terraform-google-modules/service-accounts/google"
   display_name  = "GitHub Service Account"
