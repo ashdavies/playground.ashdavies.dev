@@ -110,18 +110,10 @@ locals {
   )
 }
 
-/* gh-oidc (terraform-google-modules/github-actions-runners) */
-
-resource "google_service_account" "main" {
-  display_name = "GitHub Service Account"
-  project      = var.project_id
-  account_id   = "gh-oidc"
-}
-
 /* gh-actions */
 
 resource "github_actions_secret" "google_service_account_id" {
-  plaintext_value = google_service_account.main.email
+  plaintext_value = module.github-service-account.email
   secret_name     = "google_service_account_id"
   repository      = var.gh_repo_name
 }
@@ -180,18 +172,6 @@ resource "google_project_iam_custom_role" "main" {
     "storage.objects.delete",
     "storage.objects.list",
   ]
-}
-
-resource "google_project_iam_member" "main" {
-  member  = "serviceAccount:${google_service_account.main.email}"
-  role    = google_project_iam_custom_role.main.id
-  project = var.project_id
-}
-
-resource "google_project_iam_member" "viewer" {
-  member  = "serviceAccount:${google_service_account.main.email}"
-  project = var.project_id
-  role    = "roles/viewer"
 }
 
 resource "google_project_service" "apikeys" {

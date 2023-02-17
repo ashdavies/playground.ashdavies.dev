@@ -1,13 +1,29 @@
+module "github-service-account" {
+  source        = "terraform-google-modules/service-accounts/google"
+  display_name  = "GitHub Service Account"
+  project_id    = var.project_id
+  names         = ["oidc"]
+  prefix        = "gh"
+  project_roles = [
+    google_project_iam_custom_role.main.id,
+    "roles/viewer"
+  ]
+}
+
 module "github-workload-identity" {
   source      = "terraform-google-modules/github-actions-runners/google//modules/gh-oidc"
   provider_id = "gh-oidc-provider"
   project_id  = var.project_id
   pool_id     = "gh-oidc-pool"
   sa_mapping  = {
-    (google_service_account.main.account_id) = {
+    "gh-oidc" = {
+      sa_name   = "projects/playground-1a136/serviceAccounts/gh-oidc@playground-1a136.iam.gserviceaccount.com"
       attribute = "attribute.repository/${var.gh_owner}/${var.gh_repo_name}"
-      sa_name   = google_service_account.main.name
     }
+#   (module.github-service-account.service_account.account_id) = {
+#     attribute = "attribute.repository/${var.gh_owner}/${var.gh_repo_name}"
+#     sa_name   = module.github-service-account.service_account.name
+#   }
   }
 }
 
@@ -20,7 +36,8 @@ module "gradle-build-cache" {
   versioning               = false
   bucket_policy_only       = true
   iam_members              = [{
-    member = google_service_account.main.member
+    member = "serviceAccount:gh-oidc@playground-1a136.iam.gserviceaccount.com"
+#   member = module.github-service-account.iam_email
     role   = "roles/storage.admin"
   }]
 }

@@ -15,5 +15,5 @@ output "provider_name" {
 
 output "sa_email" {
   description = "Google Service Account email"
-  value       = google_service_account.main.email
+  value       = module.github-service-account.email
 }
