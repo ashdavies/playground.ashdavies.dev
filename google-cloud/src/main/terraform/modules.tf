@@ -20,14 +20,10 @@ module "github-workload-identity" {
   project_id  = var.project_id
   pool_id     = "gh-oidc-pool"
   sa_mapping  = {
-    "gh-oidc" = {
-      sa_name   = "projects/playground-1a136/serviceAccounts/gh-oidc@playground-1a136.iam.gserviceaccount.com"
-      attribute = "attribute.repository/${var.gh_owner}/${var.gh_repo_name}"
-    }
-#   (module.github-service-account.service_account.account_id) = {
-#     attribute = "attribute.repository/${var.gh_owner}/${var.gh_repo_name}"
-#     sa_name   = module.github-service-account.service_account.name
-#   }
+   (module.github-service-account.service_account.account_id) = {
+     attribute = "attribute.repository/${var.gh_owner}/${var.gh_repo_name}"
+     sa_name   = module.github-service-account.service_account.name
+   }
   }
 }
 
@@ -40,8 +36,7 @@ module "gradle-build-cache" {
   versioning               = false
   bucket_policy_only       = true
   iam_members              = [{
-    member = "serviceAccount:gh-oidc@playground-1a136.iam.gserviceaccount.com"
-#   member = module.github-service-account.iam_email
+    member = module.github-service-account.iam_email
     role   = "roles/storage.admin"
   }]
 }
