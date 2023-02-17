@@ -49,13 +49,6 @@ resource "null_resource" "openapi_proxy_image" {
 
 /* cloud-endpoints (terraform-google-iam/cloud_run_service_iam) */
 
-data "google_iam_policy" "noauth" {
-  binding {
-    role = "roles/run.invoker"
-    members = ["allUsers"]
-  }
-}
-
 resource "google_cloud_run_service" "endpoint" {
   depends_on = [null_resource.openapi_proxy_image]
   name       = "${var.resource_prefix}-endpoint"
@@ -72,13 +65,6 @@ resource "google_cloud_run_service" "endpoint" {
       }
     }
   }
-}
-
-resource "google_cloud_run_service_iam_policy" "noauth-endpoints" {
-  location    = google_cloud_run_service.endpoint.location
-  project     = google_cloud_run_service.endpoint.project
-  policy_data = data.google_iam_policy.noauth.policy_data
-  service     = google_cloud_run_service.endpoint.name
 }
 
 resource "google_endpoints_service" "endpoints" {
@@ -129,5 +115,3 @@ resource "github_actions_secret" "google_workload_identity" {
   secret_name     = "mobile_sdk_app_id"
   repository      = var.gh_repo_name
 }*/
-
-/* cloud-run */

@@ -1,3 +1,11 @@
+module "endpoint-iam-binding" {
+  source             = "terraform-google-modules/iam/google//modules/cloud_run_services_iam"
+  project            = google_cloud_run_service.endpoint.project
+  cloud_run_services = [google_cloud_run_service.endpoint.name]
+  bindings           = { "roles/run.invoker" = ["allUsers"] }
+  mode               = "authoritative"
+}
+
 module "github-api-key" {
   display_name = "Integration key (managed by Terraform)"
   source       = "./modules/google/github-api-key"
@@ -30,22 +38,22 @@ module "github-workload-identity" {
   project_id  = var.project_id
   pool_id     = "gh-oidc-pool"
   sa_mapping  = {
-   (module.github-service-account.service_account.account_id) = {
-     attribute = "attribute.repository/${var.gh_owner}/${var.gh_repo_name}"
-     sa_name   = module.github-service-account.service_account.name
-   }
+    (module.github-service-account.service_account.account_id) = {
+      attribute = "attribute.repository/${var.gh_owner}/${var.gh_repo_name}"
+      sa_name   = module.github-service-account.service_account.name
+    }
   }
 }
 
 module "gradle-build-cache" {
-  source                   = "terraform-google-modules/cloud-storage/google//modules/simple_bucket"
-  name                     = "playground-build-cache"
-  location                 = var.project_region
-  project_id               = var.project_id
+  source             = "terraform-google-modules/cloud-storage/google//modules/simple_bucket"
+  name               = "playground-build-cache"
+  location           = var.project_region
+  project_id         = var.project_id
 # public_access_prevention = "enforced"
-  versioning               = false
-  bucket_policy_only       = true
-  iam_members              = [{
+  versioning         = false
+  bucket_policy_only = true
+  iam_members        = [{
     member = module.github-service-account.iam_email
     role   = "roles/storage.admin"
   }]
