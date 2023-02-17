@@ -14,8 +14,13 @@ moved {
 }
 
 moved {
-  to   = module.github-api-key.google_project_service.main
+  to   = module.github-api-key.google_project_service.apikeys
   from = google_project_service.apikeys
+}
+
+moved {
+  to   = module.github-api-key.google_project_service.target["identitytoolkit.googleapis.com"]
+  from = google_project_service.identitytoolkit
 }
 
 moved {
