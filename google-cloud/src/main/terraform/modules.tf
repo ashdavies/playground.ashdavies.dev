@@ -1,9 +1,9 @@
 module "cloud-run-build" {
-  source   = "./modules/google/cloud-run-build"
-  image    = "playground.ashdavies.dev"
-  name     = "playground-service"
-  location = var.project_region
-  project  = var.project_id
+  docker_image = "${var.project_region}-docker.pkg.dev/${var.project_id}/cloud-run-source-deploy/playground.ashdavies.dev"
+  source       = "./modules/google/cloud-run-build"
+  service_name = "playground-service"
+  location     = var.project_region
+  project      = var.project_id
 }
 
 module "endpoint-iam-binding" {
