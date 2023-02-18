@@ -6,13 +6,25 @@ module "cloud-run-build" {
   project      = var.project_id
 }
 
+module "cloud-run-endpoint" {
+  container_image    = "${local.endpoints_registry}/endpoints-runtime-serverless:${var.esp_tag}-${var.service_name}-${google_endpoints_service.endpoints.config_id}"
+  config_id          = google_endpoints_service.endpoints.config_id
+  gcloud_build_image = var.resources.gcloud-build-image.path
+  source             = "./modules/google/cloud-run-endpoint"
+  image_repository   = local.endpoints_registry
+  service_name       = "playground-endpoint"
+  location           = var.project_region
+  project            = var.project_id
+  esp_tag            = var.esp_tag
+}
+
 module "endpoint-iam-binding" {
   source             = "terraform-google-modules/iam/google//modules/cloud_run_services_iam"
-  project            = google_cloud_run_service.endpoint.project
-  cloud_run_services = [google_cloud_run_service.endpoint.name]
   bindings           = { "roles/run.invoker" = ["allUsers"] }
+  cloud_run_services = [module.cloud-run-endpoint.name]
   location           = var.project_region
   mode               = "authoritative"
+  project            = var.project_id
 }
 
 module "github-api-key" {

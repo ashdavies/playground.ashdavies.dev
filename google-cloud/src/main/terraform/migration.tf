@@ -52,3 +52,13 @@ moved {
   to   = module.cloud-run-build.google_cloud_run_service.main
   from = google_cloud_run_service.service
 }
+
+moved {
+  to   = module.cloud-run-endpoint.google_cloud_run_service.main
+  from = google_cloud_run_service.endpoint
+}
+
+moved {
+  to   = module.cloud-run-endpoint.null_resource.main
+  from = null_resource.openapi_proxy_image
+}
