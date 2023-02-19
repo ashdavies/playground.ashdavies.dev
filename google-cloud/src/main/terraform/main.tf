@@ -1,15 +1,6 @@
-resource "google_endpoints_service" "endpoints" {
-  service_name   = var.service_name
-  project        = var.project_id
-  openapi_config = templatefile(var.resources.openapi-v2_yaml.path, {
-    backend_service_name = module.cloud-run-build.url
-    cloud_run_hostname   = var.service_name
-  })
-}
-
 resource "google_project_service" "main" {
-  service            = google_endpoints_service.endpoints.service_name
-  depends_on         = [google_endpoints_service.endpoints]
+  service            = module.cloud-run-endpoint.service_name
+  depends_on         = [module.cloud-run-endpoint]
   project            = var.project_id
 }
 

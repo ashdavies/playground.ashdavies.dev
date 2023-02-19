@@ -62,3 +62,8 @@ moved {
   to   = module.cloud-run-endpoint.null_resource.main
   from = null_resource.openapi_proxy_image
 }
+
+moved {
+  to   = module.cloud-run-endpoint.google_endpoints_service.main
+  from = google_endpoints_service.endpoints
+}

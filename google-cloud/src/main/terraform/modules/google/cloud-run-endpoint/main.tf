@@ -29,3 +29,12 @@ resource "google_cloud_run_service" "main" {
     }
   }
 }
+
+resource "google_endpoints_service" "main" {
+  service_name   = var.endpoint_name
+  project        = var.project
+  openapi_config = templatefile(var.openapi_config, {
+    backend_service_name = var.backend_service
+    cloud_run_hostname   = var.endpoint_name
+  })
+}

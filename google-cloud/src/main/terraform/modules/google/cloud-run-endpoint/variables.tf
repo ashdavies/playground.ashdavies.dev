@@ -1,3 +1,7 @@
+variable "backend_service" {
+  description = ""
+}
+
 variable "config_id" {
   description = "The id of the service configuration resource."
 }
@@ -8,6 +12,10 @@ variable "container_image" {
   registry, such as europe-west1-docker.pkg.dev/project/cloud-run-source-deploy/artifact.
   More info: https://kubernetes.io/docs/concepts/containers/images
   EOT
+}
+
+variable "endpoint_name" {
+  description = ""
 }
 
 variable "esp_tag" {
@@ -24,6 +32,10 @@ variable "image_repository" {
 
 variable "location" {
   description = "The location of the cloud run instance. e.g. europe-west1."
+}
+
+variable "openapi_config" {
+  description = ""
 }
 
 variable "service_name" {
