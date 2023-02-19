@@ -7,11 +7,11 @@ module "cloud-run-build" {
 }
 
 module "cloud-run-endpoint" {
-  container_image    = "${local.endpoints_registry}/endpoints-runtime-serverless:${var.esp_tag}-${var.service_name}-${google_endpoints_service.endpoints.config_id}"
+  container_image    = "${var.project_region}-docker.pkg.dev/${var.project_id}/endpoints-release/endpoints-runtime-serverless:${var.esp_tag}-${var.service_name}-${google_endpoints_service.endpoints.config_id}"
+  image_repository   = "${var.project_region}-docker.pkg.dev/${var.project_id}/endpoints-release"
   config_id          = google_endpoints_service.endpoints.config_id
   gcloud_build_image = var.resources.gcloud-build-image.path
   source             = "./modules/google/cloud-run-endpoint"
-  image_repository   = local.endpoints_registry
   service_name       = "playground-endpoint"
   location           = var.project_region
   project            = var.project_id

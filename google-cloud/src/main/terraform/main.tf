@@ -13,14 +13,6 @@ resource "google_project_service" "main" {
   project            = var.project_id
 }
 
-locals {
-  endpoints_registry = format(
-    "%s-docker.pkg.dev/%s/endpoints-release",
-    var.project_region,
-    var.project_id
-  )
-}
-
 resource "github_actions_secret" "google_service_account_id" {
   plaintext_value = module.github-service-account.email
   secret_name     = "google_service_account_id"
