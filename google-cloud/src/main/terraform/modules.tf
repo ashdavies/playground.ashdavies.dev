@@ -42,6 +42,7 @@ module "github-api-key" {
 
 module "github-service-account" {
   source        = "terraform-google-modules/service-accounts/google"
+  providers     = { google = google.impersonated }
   display_name  = "GitHub Service Account"
   project_id    = var.project_id
   names         = ["oidc"]
