@@ -18,8 +18,9 @@ jobs:
     runs-on: ubuntu-latest
 
     permissions:
-      contents: 'read'
-      id-token: 'write'
+      actions: write
+      contents: read
+      id-token: write
 
     steps:
       - name: Setup JDK
@@ -72,8 +73,6 @@ jobs:
       - name: Apply Terraform Config
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        permissions:
-          actions: write
         run: |
           ./gradlew google-cloud:terraformApply \
             --console=plain \
