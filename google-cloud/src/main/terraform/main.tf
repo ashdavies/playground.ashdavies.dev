@@ -16,6 +16,12 @@ resource "github_actions_secret" "google_workload_identity" {
   repository      = var.gh_repo_name
 }
 
+resource "github_issue_label" "test_repo" {
+  repository = var.gh_repo_name
+  name       = "Google Cloud"
+  color      = "3367d6"
+}
+
 resource "google_project_iam_custom_role" "main" {
   description = "Can create, update, and delete services necessary for the automatic deployment"
   title       = "GitHub Actions Publisher"
