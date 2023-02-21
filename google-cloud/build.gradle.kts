@@ -6,6 +6,6 @@ plugins {
 
 terraform {
     sourceSets.main {
-        planVariables = mapOf("gh_token" to System.getenv("GITHUB_TOKEN"))
+        planVariables = mapOf("gh_token" to System.getenv("GH_TOKEN"))
     }
 }
