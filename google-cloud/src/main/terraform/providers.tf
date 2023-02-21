@@ -22,9 +22,9 @@ provider "github" {
 }
 
 provider "google" {
-  region       = var.project_region
-  project      = var.project_id
-  alias        = "impersonated"
+  region  = var.project_region
+  project = var.project_id
+  alias   = "impersonated"
 }
 
 provider "google" {
@@ -32,4 +32,16 @@ provider "google" {
   region          = var.project_region
   project         = var.project_id
   request_timeout = "60s"
+}
+
+terraform {
+  required_providers {
+    docker = {
+      source = "kreuzwerker/docker"
+    }
+
+    github = {
+      source = "integrations/github"
+    }
+  }
 }
