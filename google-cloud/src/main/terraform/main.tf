@@ -1,3 +1,27 @@
+resource "google_project_service" "main" {
+  service            = module.cloud-run-endpoint.service_name
+  depends_on         = [module.cloud-run-endpoint]
+  project            = var.project_id
+}
+
+resource "github_actions_secret" "google_service_account_id" {
+  plaintext_value = module.github-service-account.email
+  secret_name     = "google_service_account_id"
+  repository      = var.gh_repo_name
+}
+
+resource "github_actions_secret" "google_workload_identity" {
+  plaintext_value = module.github-workload-identity.provider_name
+  secret_name     = "google_workload_identity"
+  repository      = var.gh_repo_name
+}
+
+resource "github_issue_label" "test_repo" {
+  repository = var.gh_repo_name
+  name       = "Google Cloud"
+  color      = "3367d6"
+}
+
 resource "google_project_iam_custom_role" "main" {
   description = "Can create, update, and delete services necessary for the automatic deployment"
   title       = "GitHub Actions Publisher"
@@ -20,22 +44,4 @@ resource "google_project_iam_custom_role" "main" {
     "storage.objects.delete",
     "storage.objects.list",
   ]
-}
-
-resource "google_project_iam_member" "main" {
-  member  = "serviceAccount:${google_service_account.main.email}"
-  role    = google_project_iam_custom_role.main.id
-  project = var.project_id
-}
-
-resource "google_project_iam_member" "viewer" {
-  member  = "serviceAccount:${google_service_account.main.email}"
-  project = var.project_id
-  role    = "roles/viewer"
-}
-
-resource "google_service_account" "main" {
-  display_name = "GitHub Service Account"
-  project      = var.project_id
-  account_id   = "gh-oidc"
 }
