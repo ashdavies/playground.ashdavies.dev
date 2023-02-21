@@ -33,15 +33,3 @@ provider "google" {
   project         = var.project_id
   request_timeout = "60s"
 }
-
-terraform {
-  required_providers {
-    docker = {
-      source = "kreuzwerker/docker"
-    }
-
-    github = {
-      source = "integrations/github"
-    }
-  }
-}
