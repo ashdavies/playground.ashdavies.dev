@@ -21,7 +21,7 @@ internal class AuthTest {
         val client = createClient { install(ContentNegotiation, ContentNegotiation.Config::json) }
         val apiKey = requireNotNull(System.getenv("GOOGLE_PROJECT_API_KEY"))
 
-        val authResult = client.post("/auth") {
+        val authResult = client.post("/firebase/auth") {
             setBody(mapOf("uid" to "jane.smith@example.com"))
             contentType(ContentType.Application.Json)
             header("X-API-Key", apiKey)

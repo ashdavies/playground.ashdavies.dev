@@ -10,14 +10,14 @@ import io.ktor.server.application.call
 import io.ktor.server.request.header
 import io.ktor.server.request.receive
 import io.ktor.server.response.respond
-import io.ktor.server.routing.Routing
+import io.ktor.server.routing.Route
 import io.ktor.server.routing.post
 import kotlinx.serialization.Serializable
 
 private const val SIGNUP_ENDPOINT =
     "https://identitytoolkit.googleapis.com/v1/accounts:signInWithCustomToken"
 
-internal fun Routing.auth(client: HttpClient) {
+internal fun Route.auth(client: HttpClient) {
     post("/auth") {
         val firebaseAuth = FirebaseAuth.getInstance(firebaseApp)
         val accountRequest = call.receive<SignInRequest>()

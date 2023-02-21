@@ -14,6 +14,7 @@ import io.ktor.server.plugins.compression.CompressionConfig
 import io.ktor.server.plugins.conditionalheaders.ConditionalHeaders
 import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.server.plugins.defaultheaders.DefaultHeaders
+import io.ktor.server.routing.route
 import io.ktor.server.routing.routing
 
 public fun main(args: Array<String>) {
@@ -34,9 +35,11 @@ internal fun Application.main(client: HttpClient = DefaultHttpClient()) {
     install(CallLogging)
 
     routing {
-        auth(client)
-        events()
+        route("/firebase") {
+            auth(client)
+            token(client)
+        }
+
         hello()
-        token(client)
     }
 }
