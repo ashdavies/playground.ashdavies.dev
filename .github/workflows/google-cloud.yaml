@@ -1,4 +1,4 @@
-name: Deploy Backend
+name: Configure Google Cloud
 
 on:
   push:
@@ -8,25 +8,17 @@ on:
   pull_request:
     types: [ labeled, opened, reopened, synchronize ]
 
-env:
-  GOOGLE_PROJECT_API_KEY: ${{ secrets.google_project_api_key }}
-  GOOGLE_SERVICE_ACCOUNT_ID: ${{ secrets.google_service_account_id }}
-  GOOGLE_SERVICES_PASSPHRASE: ${{ secrets.google_services_passphrase }}
-  GOOGLE_WORKLOAD_IDENTITY: ${{ secrets.google_workload_identity }}
-  MOBILE_SDK_APP_ID: ${{ secrets.mobile_sdk_app_id }}
-
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 jobs:
   build:
-    if: ${{ github.ref == 'refs/heads/main' || contains(github.event.pull_request.labels.*.name, 'backend') }}
+    if: ${{ github.ref == 'refs/heads/main' || contains(github.event.pull_request.labels.*.name, 'Google Cloud') }}
     runs-on: ubuntu-latest
 
     permissions:
-      contents: 'read'
-      id-token: 'write'
+      id-token: write
 
     steps:
       - name: Setup JDK
@@ -67,6 +59,9 @@ jobs:
             ~/.gradle/caches/
 
       - name: Containerize Cloud Run
+        env:
+          GOOGLE_PROJECT_API_KEY: ${{ secrets.google_project_api_key }}
+          MOBILE_SDK_APP_ID: ${{ secrets.mobile_sdk_app_id }}
         run: |
           ./gradlew cloud-run:jib \
             --image=europe-west1-docker.pkg.dev/${{ steps.google_cloud_auth.outputs.project_id }}/cloud-run-source-deploy/playground.ashdavies.dev \
@@ -74,8 +69,10 @@ jobs:
             --info
 
       - name: Apply Terraform Config
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
-          ./gradlew google-cloud:cloud-run:terraformApply \
+          ./gradlew google-cloud:terraformApply \
             --console=plain \
             -Ptf.apply \
             --info

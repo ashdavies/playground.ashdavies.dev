@@ -9,13 +9,6 @@ on:
     branches:
       - '*'
 
-env:
-  GOOGLE_PROJECT_API_KEY: ${{ secrets.google_project_api_key }}
-  GOOGLE_SERVICE_ACCOUNT_ID: ${{ secrets.google_service_account_id }}
-  GOOGLE_SERVICES_PASSPHRASE: ${{ secrets.google_services_passphrase }}
-  GOOGLE_WORKLOAD_IDENTITY: ${{ secrets.google_workload_identity }}
-  MOBILE_SDK_APP_ID: ${{ secrets.mobile_sdk_app_id }}
-
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
@@ -67,9 +60,14 @@ jobs:
         if: ${{ false }}
 
       - name: Decrypt Google Services
+        env:
+          GOOGLE_SERVICES_PASSPHRASE: ${{ secrets.google_services_passphrase }}
         run: find . -type f -name "google-services.aes" -exec sh -c 'openssl aes-256-cbc -md sha256 -d -in "$0" -out "${0%.aes*}.json" -k "${GOOGLE_SERVICES_PASSPHRASE}"' {} \;
 
       - name: Run Gradle Tasks
+        env:
+          GOOGLE_PROJECT_API_KEY: ${{ secrets.google_project_api_key }}
+          MOBILE_SDK_APP_ID: ${{ secrets.mobile_sdk_app_id }}
         run: ./gradlew build --console=plain --info
 
       - name: Produce Test Summary
