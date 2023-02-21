@@ -69,6 +69,8 @@ jobs:
             --info
 
       - name: Apply Terraform Config
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           ./gradlew google-cloud:terraformApply \
             --console=plain \

@@ -13,6 +13,10 @@ variable "gh_repo_name" {
   default     = "playground.ashdavies.dev"
 }
 
+variable "gh_token" {
+  description = "GitHub personal access token"
+}
+
 variable "service_name" {
   description = "Google Cloud Run service name"
   default     = "playground.ashdavies.dev"
