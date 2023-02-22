@@ -62,6 +62,7 @@ jobs:
         env:
           GOOGLE_PROJECT_API_KEY: ${{ secrets.google_project_api_key }}
           MOBILE_SDK_APP_ID: ${{ secrets.mobile_sdk_app_id }}
+          GOOGLE_SERVICE_ACCOUNT_ID: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
         run: |
           ./gradlew cloud-run:jib \
             --image=europe-west1-docker.pkg.dev/${{ steps.google_cloud_auth.outputs.project_id }}/cloud-run-source-deploy/playground.ashdavies.dev \

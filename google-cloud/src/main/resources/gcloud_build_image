@@ -96,6 +96,8 @@ tempdir="$(mktemp -d /tmp/docker.XXXX)"
 cd "${tempdir}"
 
 # Be careful about exposing the access token.
+echo "https://servicemanagement.googleapis.com/v1/services/${SERVICE}/configs/${CONFIG_ID}?view=FULL" <<EOF || error_exit "Failed to download service config"
+
 access_token="$(gcloud auth print-access-token)"
 curl --fail -o "service.json" -H @- \
   "https://servicemanagement.googleapis.com/v1/services/${SERVICE}/configs/${CONFIG_ID}?view=FULL" <<EOF || error_exit "Failed to download service config"
