@@ -3,7 +3,7 @@ resource "null_resource" "main" {
     command = <<EOS
     bash ${var.gcloud_build_image} \
       -g ${var.image_repository} \
-      -s ${var.service_name} \
+      -s ${var.endpoint_name} \
       -c ${var.config_id} \
       -p ${var.project} \
       -v ${var.esp_tag}
