@@ -40,4 +40,5 @@ tasks.withType<com.google.cloud.tools.jib.gradle.JibTask> {
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     kotlinOptions.freeCompilerArgs += "-Xexplicit-api=warning"
+    kotlinOptions.jvmTarget = "11"
 }

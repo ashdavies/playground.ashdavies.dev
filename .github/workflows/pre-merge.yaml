@@ -67,6 +67,7 @@ jobs:
       - name: Run Gradle Tasks
         env:
           GOOGLE_PROJECT_API_KEY: ${{ secrets.google_project_api_key }}
+          GOOGLE_SERVICE_ACCOUNT_ID: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
           MOBILE_SDK_APP_ID: ${{ secrets.mobile_sdk_app_id }}
         run: ./gradlew build --console=plain --info
 
