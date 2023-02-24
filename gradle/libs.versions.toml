@@ -140,9 +140,7 @@ slack-circuit = ["slack-circuit-backstack", "slack-circuit-core", "slack-circuit
 android-application = { id = "com.android.application", version.ref = "google-android" }
 android-library = { id = "com.android.library", version.ref = "google-android" }
 apollo-graphql = { id = "com.apollographql.apollo", version.ref = "apollo-graphql" }
-benManes-versions = "com.github.ben-manes.versions:0.45.0"
 cash-molecule = { id = "app.cash.molecule", version = "0.4.0" }
-catalog-update = "nl.littlerobots.version-catalog-update:0.7.0"
 diffplug-spotless = "com.diffplug.spotless:6.15.0"
 google-cloud-jib = "com.google.cloud.tools.jib:3.3.1"
 google-services = "com.google.gms.google-services:4.3.15"
