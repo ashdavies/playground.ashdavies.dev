@@ -1,8 +1,8 @@
 name: Renovate
 
 on:
-  schedule:
-    - cron: "0 8 * * *"
+#  schedule:
+#    - cron: "0 8 * * *"
 
   pull_request:
     branches:
@@ -27,3 +27,5 @@ jobs:
         with:
           configurationFile: .github/renovate.json
           token: '${{ steps.get_token.outputs.token }}'
+        env:
+          LOG_LEVEL: 'debug'
