@@ -7,7 +7,7 @@ import com.jakewharton.mosaic.Text
 import com.jakewharton.mosaic.runMosaic
 import kotlinx.coroutines.delay
 
-public fun main(args: Array<String>): Unit = runMosaic {
+public suspend fun main(args: Array<String>): Unit = runMosaic {
     var state by mutableStateOf<NotionState>(NotionState.Initialising)
     var elapsed by mutableStateOf(0)
 

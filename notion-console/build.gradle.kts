@@ -12,16 +12,10 @@ kotlin {
 
         implementation(libs.bundles.jetbrains.kotlinx)
         implementation(libs.bundles.ktor.client)
+        implementation(libs.jakeWharton.mosaic.runtime)
         implementation(libs.jetbrains.kotlinx.cli)
         implementation(libs.jraf.klibnotion)
         implementation(libs.qos.logbackClassic)
-    }
-
-    jvmMain.dependencies {
-        implementation(libs.jakeWharton.mosaic) {
-            check(group == "com.jakewharton.mosaic")
-            exclude(group, "compose-runtime")
-        }
     }
 
     tasks.withType<JavaExec> {
