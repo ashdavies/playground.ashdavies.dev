@@ -12,11 +12,18 @@ jobs:
   renovate:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+      - name: Get token
+        id: get_token
+        uses: tibdex/github-app-token@v1
+        with:
+          private_key: ${{ secrets.private_key }}
+          app_id: ${{ secrets.app_id }}
 
-      - name: Renovate
-        uses: renovatebot/github-action@v34.152.3
+      - name: Checkout
+        uses: actions/checkout@v3.3.0
+
+      - name: Self-hosted Renovate
+        uses: renovatebot/github-action@v34.82.0
         with:
           configurationFile: .github/renovate.json
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: '${{ steps.get_token.outputs.token }}'
