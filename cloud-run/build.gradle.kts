@@ -1,5 +1,3 @@
-@file:Suppress("DSL_SCOPE_VIOLATION") // https://github.com/gradle/gradle/issues/22797
-
 plugins {
     id("com.google.cloud.tools.jib")
     kotlin("plugin.serialization")
@@ -20,6 +18,8 @@ dependencies {
     implementation(libs.bundles.ktor.serialization)
     implementation(libs.bundles.ktor.server)
     implementation(libs.google.firebase.admin)
+    implementation(libs.ktor.server.openapi)
+    implementation(libs.swagger.codegen.generator)
 
     testImplementation(kotlin("test"))
 
