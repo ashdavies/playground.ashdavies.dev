@@ -1,7 +1,6 @@
 @file:Suppress("DSL_SCOPE_VIOLATION") // https://github.com/gradle/gradle/issues/22797
 
 import com.diffplug.gradle.spotless.FormatExtension
-import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 
 buildscript {
     dependencies {
@@ -18,8 +17,6 @@ plugins {
     alias(libs.plugins.kotlin.multiplatform) apply false
     alias(libs.plugins.kotlin.serialization) apply false
 
-    alias(libs.plugins.benManes.versions)
-    alias(libs.plugins.catalog.update)
     alias(libs.plugins.diffplug.spotless)
     alias(libs.plugins.gradle.doctor)
 
@@ -77,19 +74,4 @@ configure<com.diffplug.gradle.spotless.SpotlessExtension> {
     }
 
     ratchetFrom = "origin/main"
-}
-
-tasks.withType<DependencyUpdatesTask> {
-    fun isUnstable(version: String): Boolean {
-        val unstableKeywords = listOf("ALPHA", "BETA", "RC")
-        val upperVersion = version.toUpperCase()
-
-        return unstableKeywords.any {
-            upperVersion.contains(it)
-        }
-    }
-
-    rejectVersionIf {
-        isUnstable(candidate.version)
-    }
 }
