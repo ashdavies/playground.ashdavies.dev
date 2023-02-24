@@ -88,7 +88,8 @@ paths:
           description: "OK"
   /swagger.json:
     get:
-      summary: Get the swagger JSON
+      operationId: "swagger"
+      summary: "Get the swagger JSON"
       produces:
         - application/json
       responses:
