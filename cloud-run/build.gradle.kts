@@ -34,10 +34,6 @@ java {
     targetCompatibility = JavaVersion.VERSION_11
 }
 
-tasks.filter { it.name in setOf("jibDockerBuild", "jibBuildTar", "jib") }.onEach {
-    it.notCompatibleWithConfigurationCache("Jib is not compatible with configuration cache")
-}
-
 tasks.withType<com.google.cloud.tools.jib.gradle.JibTask> {
     dependsOn("build")
 }

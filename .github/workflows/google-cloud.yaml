@@ -73,6 +73,7 @@ jobs:
         run: |
           ./gradlew cloud-run:jib \
             --image=europe-west1-docker.pkg.dev/${{ steps.google_cloud_auth.outputs.project_id }}/cloud-run-source-deploy/playground.ashdavies.dev \
+            --no-configuration-cache \
             --console=plain \
             --info
 
@@ -81,6 +82,7 @@ jobs:
           GH_TOKEN: ${{ steps.generate_token.outputs.token }}
         run: |
           ./gradlew google-cloud:terraformApply \
+            --no-configuration-cache \
             --console=plain \
             -Ptf.apply \
             --info
