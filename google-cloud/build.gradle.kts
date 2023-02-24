@@ -1,5 +1,3 @@
-import org.jetbrains.gradle.plugins.terraform.tasks.AbstractTerraformExec
-
 plugins {
     id("io.ashdavies.terraform")
 }
