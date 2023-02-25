@@ -12,10 +12,9 @@ module "cloud-run-endpoint" {
   gcloud_build_image = var.resources.gcloud-build-image.path
   source             = "./modules/google/cloud-run-endpoint"
   config_id          = module.cloud-run-endpoint.config_id
-  openapi_config     = var.resources.openapi-v2_yaml.path
-  backend_service    = module.cloud-run-build.url
   endpoint_name      = "playground.ashdavies.dev"
   service_name       = "playground-endpoint"
+  openapi_config     = local.openapi_config
   location           = var.project_region
   project            = var.project_id
   esp_tag            = var.esp_tag
@@ -71,14 +70,28 @@ module "github-workload-identity" {
 }
 
 module "gradle-build-cache" {
-  source             = "terraform-google-modules/cloud-storage/google//modules/simple_bucket"
-  name               = "playground-build-cache"
-  location           = var.project_region
-  project_id         = var.project_id
+  source                   = "terraform-google-modules/cloud-storage/google//modules/simple_bucket"
+  name                     = "playground-build-cache"
+  location                 = var.project_region
+  project_id               = var.project_id
 # public_access_prevention = "enforced"
-  versioning         = false
-  bucket_policy_only = true
-  iam_members        = [{
+  versioning               = false
+  bucket_policy_only       = true
+  iam_members              = [{
+    member = module.github-service-account.iam_email
+    role   = "roles/storage.admin"
+  }]
+}
+
+module "runtime-resources" {
+  source                   = "terraform-google-modules/cloud-storage/google//modules/simple_bucket"
+  name                     = "playground-runtime"
+  location                 = var.project_region
+  project_id               = var.project_id
+# public_access_prevention = "enforced"
+  versioning               = false
+  bucket_policy_only       = true
+  iam_members              = [{
     member = module.github-service-account.iam_email
     role   = "roles/storage.admin"
   }]

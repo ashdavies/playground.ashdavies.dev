@@ -86,15 +86,6 @@ paths:
       responses:
         "200":
           description: "OK"
-  /swagger.json:
-    get:
-      operationId: "swagger"
-      summary: "Get the swagger JSON"
-      produces:
-        - application/json
-      responses:
-        200:
-          description: OK
 definitions:
   AppCheckToken:
     type: "object"

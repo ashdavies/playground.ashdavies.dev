@@ -25,6 +25,7 @@ resource "github_issue_label" "test_repo" {
 resource "google_project_iam_custom_role" "main" {
   description = "Can create, update, and delete services necessary for the automatic deployment"
   title       = "GitHub Actions Publisher"
+  provider    = google.impersonated
   role_id     = "actionsPublisher"
   permissions = [
     "artifactregistry.repositories.uploadArtifacts",
@@ -39,9 +40,18 @@ resource "google_project_iam_custom_role" "main" {
     "servicemanagement.services.get",
     "servicemanagement.services.update",
     "serviceusage.services.list",
+    "storage.buckets.create",
+    "storage.buckets.getIamPolicy",
+    "storage.buckets.setIamPolicy",
     "storage.buckets.list",
     "storage.objects.create",
     "storage.objects.delete",
     "storage.objects.list",
   ]
+}
+
+resource "google_storage_bucket_object" "openapi_config" {
+  bucket  = module.runtime-resources.bucket.name
+  content = local.openapi_config
+  name    = "openapi_config"
 }

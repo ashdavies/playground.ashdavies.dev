@@ -1,7 +1,3 @@
-variable "backend_service" {
-  description = ""
-}
-
 variable "config_id" {
   description = "The id of the service configuration resource."
 }
