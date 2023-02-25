@@ -1,0 +1,11 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:base"
+  ],
+  "gitAuthor": "Playground Manager <297574+playground-manager[bot]@users.noreply.github.enterprise.com>",
+  "repositories": [
+    "ashdavies/playground.ashdavies.dev"
+  ],
+  "username": "playground-manager[bot]"
+}
