@@ -17,9 +17,12 @@ dependencies {
     implementation(libs.bundles.jetbrains.kotlinx)
     implementation(libs.bundles.ktor.serialization)
     implementation(libs.bundles.ktor.server)
-    implementation(libs.google.firebase.admin)
     implementation(libs.ktor.server.openapi)
     implementation(libs.swagger.codegen.generator)
+
+    implementation(dependencies.platform(libs.google.cloud.bom))
+    implementation(libs.google.cloud.storage)
+    implementation(libs.google.firebase.admin)
 
     testImplementation(kotlin("test"))
 
