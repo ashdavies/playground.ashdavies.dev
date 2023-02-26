@@ -1,5 +1,8 @@
 # 🧪 Playground 
 
+# Warning
+None of this is up to date, I'm working on automating documentation, please stand by.
+
 [![Pre Merge Checks](https://img.shields.io/github/workflow/status/ashdavies/playground/pre-merge?logo=github&logoColor=%23969da4)](https://github.com/ashdavies/playground/actions/workflows/pre-merge.yaml)
 [![Scan with Detekt](https://img.shields.io/github/workflow/status/ashdavies/playground/detekt?logo=github&logoColor=%23969da4)](https://github.com/ashdavies/playground/actions/workflows/detekt.yaml)
 
