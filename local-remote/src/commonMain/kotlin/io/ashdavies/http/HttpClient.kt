@@ -20,11 +20,13 @@ import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.request.accept
+import io.ktor.client.request.header
 import io.ktor.client.request.request
 import io.ktor.http.ContentType
 import io.ktor.http.URLBuilder
 import io.ktor.http.contentType
 import io.ktor.http.takeFrom
+import io.ktor.http.userAgent
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.coroutineScope
@@ -36,10 +38,10 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.contextual
 
-private val DefaultUserAgent: String
+private val defaultUserAgent: String
     get() = "${Software.clientName} (${Software.productName}; ${Software.buildVersion})"
 
-private fun DefaultLogger(block: (message: String) -> Unit = ::println): Logger = object : Logger {
+private fun DefaultLogger(block: (message: String) -> Unit = ::println) = object : Logger {
     override fun log(message: String) = block(message)
 }
 
@@ -58,7 +60,8 @@ public fun DefaultHttpClient(block: HttpClientConfig<*>.() -> Unit = { }): HttpC
         install(DefaultRequest) {
             contentType(ContentType.Application.Json)
             accept(ContentType.Application.Json)
-            // userAgent(DefaultUserAgent)
+            userAgent(defaultUserAgent)
+            server()
         }
 
         install(HttpTimeout) {

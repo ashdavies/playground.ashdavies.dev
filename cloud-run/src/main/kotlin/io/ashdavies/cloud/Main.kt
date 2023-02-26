@@ -1,6 +1,7 @@
 package io.ashdavies.cloud
 
 import io.ashdavies.http.DefaultHttpClient
+import io.ashdavies.http.server
 import io.ktor.client.HttpClient
 import io.ktor.serialization.Configuration
 import io.ktor.serialization.kotlinx.json.json
@@ -14,6 +15,7 @@ import io.ktor.server.plugins.compression.CompressionConfig
 import io.ktor.server.plugins.conditionalheaders.ConditionalHeaders
 import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.server.plugins.defaultheaders.DefaultHeaders
+import io.ktor.server.plugins.defaultheaders.DefaultHeadersConfig
 import io.ktor.server.routing.route
 import io.ktor.server.routing.routing
 
@@ -28,10 +30,10 @@ public fun main(args: Array<String>) {
 }
 
 internal fun Application.main(client: HttpClient = DefaultHttpClient()) {
+    install(DefaultHeaders, DefaultHeadersConfig::headers)
     install(Compression, CompressionConfig::default)
     install(ContentNegotiation, Configuration::json)
     install(ConditionalHeaders)
-    install(DefaultHeaders)
     install(CallLogging)
 
     routing {
@@ -42,4 +44,8 @@ internal fun Application.main(client: HttpClient = DefaultHttpClient()) {
 
         hello()
     }
+}
+
+private fun DefaultHeadersConfig.headers() {
+    server(::header)
 }
