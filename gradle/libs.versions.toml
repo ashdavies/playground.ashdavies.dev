@@ -51,11 +51,13 @@ google-accompanist-systemuicontroller = { module = "com.google.accompanist:accom
 google-android-maps = "com.google.android.gms:play-services-maps:18.1.0"
 google-android-material = "com.google.android.material:material:1.8.0"
 
+google-cloud-bom = "com.google.cloud:libraries-bom:26.8.0"
+google-cloud-storage = { module = "com.google.cloud:google-cloud-storage" }
 google-cloud-functionsFrameworkApi = "com.google.cloud.functions:functions-framework-api:1.0.4"
 google-cloud-javaFunctionInvoker = "com.google.cloud.functions.invoker:java-function-invoker:1.2.0"
 
 google-firebase-admin = "com.google.firebase:firebase-admin:9.1.1"
-google-firebase-bom = "com.google.firebase:firebase-bom:31.2.1"
+google-firebase-bom = "com.google.firebase:firebase-bom:31.2.2"
 google-firebase-analytics = { module = "com.google.firebase:firebase-analytics-ktx" }
 google-firebase-appcheck = { module = "com.google.firebase:firebase-appcheck" }
 google-firebase-appcheck-debug = { module = "com.google.firebase:firebase-appcheck-debug" }
@@ -105,6 +107,7 @@ ktor-server-core = { module = "io.ktor:ktor-server-core", version.ref = "ktor" }
 ktor-server-default-headers = { module = "io.ktor:ktor-server-default-headers", version.ref = "ktor" }
 ktor-server-double-receive = { module = "io.ktor:ktor-server-double-receive", version.ref = "ktor" }
 ktor-server-html-builder = { module = "io.ktor:ktor-server-html-builder", version.ref = "ktor" }
+ktor-server-openapi = { module = "io.ktor:ktor-server-openapi", version.ref = "ktor" }
 ktor-server-request-validation = { module = "io.ktor:ktor-server-request-validation", version.ref = "ktor" }
 ktor-server-test-host = { module = "io.ktor:ktor-server-test-host", version.ref = "ktor" }
 
@@ -123,6 +126,8 @@ sqldelight-android-driver = { module = "com.squareup.sqldelight:android-driver",
 sqldelight-coroutines-extensions = { module = "com.squareup.sqldelight:coroutines-extensions", version.ref = "squareup-sqldelight" }
 sqldelight-runtime = { module = "com.squareup.sqldelight:runtime", version.ref = "squareup-sqldelight" }
 sqldelight-sqlite-driver = { module = "com.squareup.sqldelight:sqlite-driver", version.ref = "squareup-sqldelight" }
+
+swagger-codegen-generator = "io.swagger.codegen.v3:swagger-codegen-generators:1.0.38"
 
 [bundles]
 androidx-activity = ["androidx-activity-compose", "androidx-activity-ktx"]
@@ -152,4 +157,6 @@ kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrains-kotlin"
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "jetbrains-kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "jetbrains-kotlin" }
 kotlinx-kover = "org.jetbrains.kotlinx.kover:0.6.1"
-squareup-sqldelight = { id = "com.squareup.sqldelight", version.ref = "squareup-sqldelight" }
+openapi-generator = { id = "org.openapi.generator", version = "6.4.0" }
+squareup-sqldelight = { id = "com.squareup.sqldelight", version.ref =  "squareup-sqldelight" }
+undercouch-download = { id = "de.undercouch.download", version = "5.3.1" }

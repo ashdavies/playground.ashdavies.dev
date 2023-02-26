@@ -12,6 +12,8 @@
 *.db
 
 # Firebase
+**/.firebaserc
+**/firebase.json
 **/google-services.json
 **/.runtimeconfig.json
 **/*.log

@@ -43,6 +43,7 @@ internal fun Application.main(client: HttpClient = DefaultHttpClient()) {
         }
 
         hello()
+        openApi()
     }
 }
 
