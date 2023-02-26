@@ -157,4 +157,6 @@ kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrains-kotlin"
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "jetbrains-kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "jetbrains-kotlin" }
 kotlinx-kover = "org.jetbrains.kotlinx.kover:0.6.1"
-squareup-sqldelight = { id = "com.squareup.sqldelight", version.ref = "squareup-sqldelight" }
+openapi-generator = { id = "org.openapi.generator", version = "6.4.0" }
+squareup-sqldelight = { id = "com.squareup.sqldelight", version.ref =  "squareup-sqldelight" }
+undercouch-download = { id = "de.undercouch.download", version = "5.3.1" }
