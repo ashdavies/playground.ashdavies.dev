@@ -3,7 +3,7 @@
   "extends": [
     "config:base"
   ],
-  "gitAuthor": "Playground Manager <297574+playground-manager@users.noreply.github.com>",
+  "gitAuthor": "Playground Manager <126197455+playground-manager[bot]@users.noreply.github.com>",
   "repositories": [
     "ashdavies/playground.ashdavies.dev"
   ],
