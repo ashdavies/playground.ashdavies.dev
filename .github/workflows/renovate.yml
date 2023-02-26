@@ -4,6 +4,20 @@ on:
   schedule:
     - cron: "0 8 * * *"
 
+  workflow_dispatch:
+    inputs:
+      logLevel:
+        description: 'Log level'
+        required: false
+        default: 'INFO'
+        type: choice
+        options:
+          - DEBUG
+          - INFO
+          - WARN
+          - ERROR
+          - FATAL
+
 jobs:
   renovate:
     runs-on: ubuntu-latest
@@ -22,6 +36,7 @@ jobs:
         uses: renovatebot/github-action@v34.82.0
         env:
           RENOVATE_GIT_PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
+          LOG_LEVEL: ${{ inputs.logLevel }}
         with:
           configurationFile: .github/renovate.json
           token: '${{ steps.get_token.outputs.token }}'
