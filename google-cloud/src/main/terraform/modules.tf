@@ -43,6 +43,23 @@ module "github-repository" {
   source      = "./modules/github/repository"
   repository  = var.gh_repo_name
   description = "Playground"
+  labels      = [
+    {
+      description = "Trigger deployment to Google Cloud"
+      name        = "Google Cloud"
+      color       = "3367d6"
+    }
+  ]
+  secrets = [
+    {
+      plaintext_value = module.github-service-account.email
+      secret_name     = "google_service_account_id"
+    },
+    {
+      plaintext_value = module.github-workload-identity.provider_name
+      secret_name     = "google_workload_identity"
+    }
+  ]
 }
 
 module "github-service-account" {
