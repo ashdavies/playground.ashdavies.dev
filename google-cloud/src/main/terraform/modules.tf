@@ -39,6 +39,12 @@ module "github-api-key" {
   name         = "integration"
 }
 
+module "github-repository" {
+  source      = "./modules/github/repository"
+  repository  = var.gh_repo_name
+  description = "Playground"
+}
+
 module "github-service-account" {
   source        = "terraform-google-modules/service-accounts/google"
   providers     = { google = google.impersonated }
