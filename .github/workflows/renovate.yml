@@ -35,7 +35,7 @@ jobs:
       - name: Self-hosted Renovate
         uses: renovatebot/github-action@v34.152.5
         env:
-          LOG_LEVEL: ${{ inputs.logLevel }}
+          LOG_LEVEL: ${{ inputs.logLevel || 'INFO' }}
         with:
           configurationFile: .github/renovate.json
           token: '${{ steps.get_token.outputs.token }}'
