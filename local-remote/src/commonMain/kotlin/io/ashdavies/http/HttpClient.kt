@@ -61,7 +61,6 @@ public fun DefaultHttpClient(block: HttpClientConfig<*>.() -> Unit = { }): HttpC
             contentType(ContentType.Application.Json)
             accept(ContentType.Application.Json)
             userAgent(defaultUserAgent)
-            server()
         }
 
         install(HttpTimeout) {

@@ -3,6 +3,7 @@ info:
   title: "Playground Service"
   description: "Playground Service definition hosted by Cloud Endpoints with a Cloud Run backend"
   version: "1.0.0"
+  x-version-name: "${version_name}"
 host: "${cloud_run_hostname}"
 schemes:
   - "https"
