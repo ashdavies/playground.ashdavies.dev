@@ -1,6 +1,5 @@
 module "cloud-run-build" {
   docker_image = "${var.project_region}-docker.pkg.dev/${var.project_id}/cloud-run-source-deploy/playground.ashdavies.dev"
-  depends_on   = [google_storage_bucket_object.openapi_config]
   source       = "./modules/google/cloud-run-build"
   service_name = "playground-service"
   location     = var.project_region

@@ -17,7 +17,7 @@ dependencies {
     implementation(libs.bundles.jetbrains.kotlinx)
     implementation(libs.bundles.ktor.serialization)
     implementation(libs.bundles.ktor.server)
-    implementation(libs.ktor.server.openapi)
+    implementation(libs.ktor.server.swagger)
     implementation(libs.swagger.codegen.generator)
 
     implementation(dependencies.platform(libs.google.cloud.bom))
