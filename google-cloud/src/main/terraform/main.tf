@@ -36,8 +36,4 @@ resource "google_storage_bucket_object" "openapi_config" {
   bucket  = module.runtime-resources.bucket.name
   name    = "openapi_config.yaml"
   content = local.openapi_config
-
-  lifecycle {
-    prevent_destroy = true
-  }
 }
