@@ -1,8 +1,9 @@
 package io.ashdavies.cloud
 
 import io.ashdavies.http.DefaultHttpClient
-import io.ashdavies.http.server
+import io.ashdavies.http.Software
 import io.ktor.client.HttpClient
+import io.ktor.http.HttpHeaders
 import io.ktor.serialization.Configuration
 import io.ktor.serialization.kotlinx.json.json
 import io.ktor.server.application.Application
@@ -48,5 +49,5 @@ internal fun Application.main(client: HttpClient = DefaultHttpClient()) {
 }
 
 private fun DefaultHeadersConfig.headers() {
-    server(::header)
+    header(HttpHeaders.Server, Software.clientName)
 }
