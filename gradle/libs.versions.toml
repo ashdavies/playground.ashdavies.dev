@@ -128,7 +128,7 @@ sqldelight-coroutines-extensions = { module = "com.squareup.sqldelight:coroutine
 sqldelight-runtime = { module = "com.squareup.sqldelight:runtime", version.ref = "squareup-sqldelight" }
 sqldelight-sqlite-driver = { module = "com.squareup.sqldelight:sqlite-driver", version.ref = "squareup-sqldelight" }
 
-swagger-codegen-generator = "io.swagger.codegen.v3:swagger-codegen-generators:1.0.38"
+swagger-codegen-generators = "io.swagger.codegen.v3:swagger-codegen-generators:1.0.38"
 
 [bundles]
 androidx-activity = ["androidx-activity-compose", "androidx-activity-ktx"]

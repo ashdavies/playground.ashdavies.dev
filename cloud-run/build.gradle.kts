@@ -18,7 +18,7 @@ dependencies {
     implementation(libs.bundles.ktor.serialization)
     implementation(libs.bundles.ktor.server)
     implementation(libs.ktor.server.swagger)
-    implementation(libs.swagger.codegen.generator)
+    implementation(libs.swagger.codegen.generators)
 
     implementation(dependencies.platform(libs.google.cloud.bom))
     implementation(libs.google.cloud.storage)

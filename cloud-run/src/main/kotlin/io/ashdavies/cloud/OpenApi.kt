@@ -11,16 +11,17 @@ import kotlin.io.path.createTempFile
 import kotlin.io.path.pathString
 
 internal fun Route.openApi(path: String = "openapi") {
-    val openApiConfig = storage[BlobId.of("playground-runtime", "openapi_config.json")]
-    if (openApiConfig == null) get(path) { call.respond(HttpStatusCode.NotFound) }
-    else {
-        val swaggerFile = createTempFile()
-            .also(openApiConfig::downloadTo)
-            .pathString
+    when (val openApiConfig = storage[BlobId.of("playground-runtime", "openapi_config.json")]) {
+        null -> get(path) { call.respond(HttpStatusCode.NotFound) }
+        else -> {
+            val swaggerFile = createTempFile()
+                .also(openApiConfig::downloadTo)
+                .pathString
 
-        swaggerUI(
-            swaggerFile = swaggerFile,
-            path = path,
-        )
+            swaggerUI(
+                swaggerFile = swaggerFile,
+                path = path,
+            )
+        }
     }
 }
