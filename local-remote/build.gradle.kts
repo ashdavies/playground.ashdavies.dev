@@ -32,8 +32,10 @@ openApiGenerate {
     generatorName.set("kotlin")
 }
 
-val downloadOpenApiConfig by tasks.registering(Download::class) {
+val downloadOpenApiDocumentation by tasks.registering(Download::class) {
     header("X-API-KEY", System.getenv("GOOGLE_PROJECT_API_KEY"))
-    src("https://playground.ashdavies.dev/openapi")
-    dest("$buildDir/downloads/openapi_config.json")
+    src("https://playground.ashdavies.dev/openapi/documentation.yaml")
+    onlyIfModified(true)
+    dest(buildDir)
+    useETag(true)
 }
