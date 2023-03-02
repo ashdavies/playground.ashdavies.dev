@@ -8,8 +8,8 @@ import io.ktor.server.routing.Route
 import io.ktor.server.routing.get
 
 internal fun Route.openApi(path: String = "openapi") {
-    get("$path/documentation.yaml") {
-        val openApiConfig = storage[BlobId.of("playground-runtime", "openapi_config.yaml")]
+    get("$path/documentation.yml") {
+        val openApiConfig = storage[BlobId.of("playground-runtime", "openapi_config.yml")]
 
         when (openApiConfig != null) {
             true -> call.respond(String(openApiConfig.getContent()))

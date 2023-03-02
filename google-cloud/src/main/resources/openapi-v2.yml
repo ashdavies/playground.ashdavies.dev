@@ -87,6 +87,15 @@ paths:
       responses:
         "200":
           description: "OK"
+  /openapi/documentation.yml:
+    get:
+      tags: [ "openapi" ]
+      summary: "OpenAPI Documentation"
+      operationId: "openApiDocumentation"
+      responses:
+        "200":
+          description: "OK"
+
 definitions:
   AppCheckToken:
     type: "object"

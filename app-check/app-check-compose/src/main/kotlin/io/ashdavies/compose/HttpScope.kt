@@ -42,9 +42,10 @@ public fun HttpScope.VerifiedHttpEffect(block: suspend CoroutineScope.() -> Stri
 
         LaunchedEffect(Unit) {
             try {
-                val appCheckToken = httpRequest.appCheckToken ?: throw HttpException.InvalidToken()
-                appCheck.verifyToken(appCheckToken)
-                isVerified = true
+                appCheck.verifyToken(
+                    token = httpRequest.appCheckToken ?: throw HttpException.InvalidToken(),
+                    mapper = { _, _, _, _, _, _ -> isVerified = true },
+                )
             } catch (exception: HttpException) {
                 httpResponse.setStatusCode(Unauthorized.value, "Unauthorized")
                 applicationScope.exitApplication()

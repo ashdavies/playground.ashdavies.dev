@@ -1,8 +1,6 @@
 package io.ashdavies.cloud
 
-import io.ashdavies.check.AppCheckRequest
-import io.ashdavies.check.AppCheckToken
-import io.ashdavies.check.DecodedToken
+import io.ashdavies.playground.models.FirebaseApp
 import io.ktor.client.call.body
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.request.header
@@ -14,38 +12,36 @@ import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
 import io.ktor.serialization.kotlinx.json.json
 import io.ktor.server.testing.testApplication
+import kotlinx.serialization.Serializable
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 private val mobileSdkAppId = System.getenv("MOBILE_SDK_APP_ID")
-private val playgroundApiKey = System.getenv("PLAYGROUND_API_KEY")
 
 internal class TokenTest {
 
     @Test
     fun `should return app check token for request`() = testApplication {
-        val client = createClient { install(ContentNegotiation, ContentNegotiation.Config::json) }
+        val httpClient = createClient { install(ContentNegotiation, ContentNegotiation.Config::json) }
 
-        val httpResponse = client.post("/firebase/token") {
+        val tokenResponse = httpClient.post("/firebase/token") {
             // headers { append("X-API-Key", playgroundApiKey) }
             contentType(ContentType.Application.Json)
-            setBody(AppCheckRequest(mobileSdkAppId))
-        }
-
-        val appCheckToken = httpResponse.body<AppCheckToken.Response.Normalised>()
+            setBody(FirebaseApp(mobileSdkAppId))
+        }.body<TokenResponse>()
 
         assertEquals(
-            actual = appCheckToken.ttlMillis,
+            actual = tokenResponse.ttlMillis,
             expected = 3_600_000,
         )
 
-        val decodedToken = client.put("/firebase/token:verify") {
-            header("X-Firebase-AppCheck", appCheckToken.token)
-        }.body<DecodedToken>()
+        val verifyResponse = httpClient.put("/firebase/token:verify") {
+            header("X-Firebase-AppCheck", tokenResponse.token)
+        }.body<VerifyResponse>()
 
         assertEquals(
-            expected = decodedToken.appId,
-            actual = decodedToken.subject,
+            expected = verifyResponse.appId,
+            actual = verifyResponse.subject,
         )
     }
 
@@ -58,3 +54,19 @@ internal class TokenTest {
         assertEquals(HttpStatusCode.BadRequest, response.status)
     }
 }
+
+@Serializable
+private data class TokenResponse(
+    val ttlMillis: Long,
+    val token: String,
+)
+
+@Serializable
+private data class VerifyResponse(
+    val audience: List<String>,
+    val expiresAt: Long,
+    val subject: String,
+    val issuedAt: Long,
+    val issuer: String,
+    val appId: String,
+)

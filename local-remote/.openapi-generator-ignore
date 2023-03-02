@@ -1,0 +1,10 @@
+build/generated/openapi/main/.openapi-generator-ignore
+build/generated/openapi/main/README.md
+build/generated/openapi/main/build.gradle.kts
+build/generated/openapi/main/docs/*
+build/generated/openapi/main/gradle/wrapper/gradle-wrapper.jar
+build/generated/openapi/main/gradle/wrapper/gradle-wrapper.properties
+build/generated/openapi/main/gradlew
+build/generated/openapi/main/gradlew.bat
+build/generated/openapi/main/settings.gradle.kts
+build/generated/openapi/main/src/*Test/**/*
