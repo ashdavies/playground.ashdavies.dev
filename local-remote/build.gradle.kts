@@ -33,7 +33,7 @@ openApiGenerate {
 }
 
 val downloadOpenApiDocumentation by tasks.registering(Download::class) {
-    header("X-API-KEY", System.getenv("GOOGLE_PROJECT_API_KEY"))
+    header("X-API-KEY", System.getenv("PLAYGROUND_API_KEY"))
     src("https://playground.ashdavies.dev/openapi/documentation.yaml")
     onlyIfModified(true)
     dest(buildDir)
