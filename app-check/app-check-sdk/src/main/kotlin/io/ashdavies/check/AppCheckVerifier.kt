@@ -15,7 +15,7 @@ public interface AppCheckVerifier {
             subject: String,
             issuer: String,
             appId: String,
-        ) -> T
+        ) -> T,
     ): T
 }
 
