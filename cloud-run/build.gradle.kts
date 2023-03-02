@@ -1,8 +1,12 @@
+@file:Suppress("DSL_SCOPE_VIOLATION") // https://github.com/gradle/gradle/issues/22797
+
 plugins {
     id("com.google.cloud.tools.jib")
     kotlin("plugin.serialization")
     kotlin("jvm")
     application
+
+    alias(libs.plugins.openapi.generator)
 }
 
 application {
@@ -33,6 +37,20 @@ dependencies {
 java {
     sourceCompatibility = JavaVersion.VERSION_11
     targetCompatibility = JavaVersion.VERSION_11
+}
+
+sourceSets.main {
+    java.srcDir(tasks.openApiGenerate)
+}
+
+openApiGenerate {
+    generatorName.set("kotlin-server")
+    outputDir.set("$buildDir/generated/openapi/main")
+    remoteInputSpec.set("https://playground.ashdavies.dev/openapi/documentation.yml")
+    auth.set("X-API-KEY:${System.getenv("PLAYGROUND_API_KEY")}")
+    packageName.set("io.ashdavies.playground")
+    ignoreFileOverride.set("$projectDir/.openapi-generator-ignore")
+    configOptions.set(mapOf("library" to "ktor", "sourceFolder" to "."))
 }
 
 tasks.withType<com.google.cloud.tools.jib.gradle.JibTask> {

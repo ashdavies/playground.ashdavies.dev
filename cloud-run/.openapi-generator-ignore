@@ -1,0 +1,11 @@
+build/generated/openapi/main/.openapi-generator-ignore
+build/generated/openapi/main/Dockerfile
+build/generated/openapi/main/README.md
+build/generated/openapi/main/build.gradle
+build/generated/openapi/main/gradle.properties
+build/generated/openapi/main/io/ashdavies/playground/*
+build/generated/openapi/main/io/ashdavies/playground/apis/*
+build/generated/openapi/main/io/ashdavies/playground/infrastructure/*
+build/generated/openapi/main/settings.gradle
+build/generated/openapi/main/src/main/resources/application.conf
+build/generated/openapi/main/src/main/resources/logback.xml
