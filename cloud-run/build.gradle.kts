@@ -50,7 +50,10 @@ openApiGenerate {
     auth.set("X-API-KEY:${System.getenv("PLAYGROUND_API_KEY")}")
     packageName.set("io.ashdavies.playground")
     ignoreFileOverride.set("$projectDir/.openapi-generator-ignore")
-    configOptions.set(mapOf("library" to "ktor", "sourceFolder" to "."))
+    configOptions.put("additionalModelTypeAnnotations", "@kotlinx.serialization.Serializable")
+    configOptions.put("library", "jaxrs-spec")
+    // configOptions.put("library", "ktor")
+    configOptions.put("sourceFolder", ".")
 }
 
 tasks.withType<com.google.cloud.tools.jib.gradle.JibTask> {

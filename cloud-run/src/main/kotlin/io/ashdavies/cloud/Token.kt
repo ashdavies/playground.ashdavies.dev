@@ -17,13 +17,9 @@ internal fun Route.token(client: HttpClient) {
     post("/token") {
         val appCheck = firebaseApp.appCheck(client)
         val appCheckRequest = call.receive<FirebaseApp>()
-        val appCheckResponse = appCheck.createToken(
+        val appCheckToken = appCheck.createToken(
             appId = appCheckRequest.appId,
-        )
-
-        val appCheckToken = AppCheckToken(
-            ttlMillis = appCheckResponse.ttlMillis,
-            token = appCheckResponse.token,
+            mapper = ::AppCheckToken,
         )
 
         call.respond(appCheckToken)
@@ -35,14 +31,9 @@ internal fun Route.token(client: HttpClient) {
             "Request is missing app check token header"
         }
 
-        val appCheckResponse = appCheck.verifyToken(appCheckToken)
-        val decodedToken = DecodedToken(
-            audience = appCheckResponse.audience,
-            expiresAt = appCheckResponse.expiresAt,
-            subject = appCheckResponse.subject,
-            issuedAt = appCheckResponse.issuedAt,
-            issuer = appCheckResponse.issuer,
-            appId = appCheckResponse.appId,
+        val decodedToken = appCheck.verifyToken(
+            token = appCheckToken,
+            mapper = ::DecodedToken,
         )
 
         call.respond(decodedToken)

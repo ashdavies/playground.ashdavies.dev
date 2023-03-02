@@ -21,10 +21,21 @@ private const val SIGNUP_ENDPOINT =
 internal fun Route.auth(client: HttpClient) {
     post("/auth") {
         val firebaseAuth = FirebaseAuth.getInstance(firebaseApp)
-        val accountRequest = call.receive<SignInRequest>()
+        println("=== $firebaseAuth")
+
+        val accountRequest = try {
+            call.receive<SignInRequest>()
+        } catch (exception: Exception) {
+            exception.printStackTrace()
+            throw exception
+        }
+        println("=== $accountRequest")
+
         val customToken = firebaseAuth.createCustomToken(
             accountRequest.uid,
         )
+
+        println("=== $customToken")
 
         val authResponse = client.post(SIGNUP_ENDPOINT) {
             setBody(mapOf("token" to customToken, "returnSecureToken" to "true"))

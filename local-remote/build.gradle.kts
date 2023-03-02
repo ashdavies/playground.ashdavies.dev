@@ -28,16 +28,12 @@ kotlin.commonMain {
 }
 
 openApiGenerate {
-    val kotlinConfigOptions =mapOf(
-        "library" to "multiplatform",
-        "sourceFolder" to ".",
-    )
-
     generatorName.set("kotlin")
     outputDir.set("$buildDir/generated/openapi/main")
     remoteInputSpec.set("https://playground.ashdavies.dev/openapi/documentation.yml")
     auth.set("X-API-KEY:${System.getenv("PLAYGROUND_API_KEY")}")
     packageName.set("io.ashdavies.playground")
     ignoreFileOverride.set("$projectDir/.openapi-generator-ignore")
-    configOptions.set(kotlinConfigOptions)
+    configOptions.put("library", "multiplatform")
+    configOptions.put("sourceFolder", ".")
 }
