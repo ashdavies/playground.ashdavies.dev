@@ -1,8 +1,8 @@
 package io.ashdavies.cloud
 
-import io.ashdavies.check.AppCheckRequest
 import io.ashdavies.check.AppCheckToken
 import io.ashdavies.check.DecodedToken
+import io.ashdavies.playground.models.FirebaseApp
 import io.ktor.client.call.body
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.request.header
@@ -18,7 +18,6 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 
 private val mobileSdkAppId = System.getenv("MOBILE_SDK_APP_ID")
-private val playgroundApiKey = System.getenv("PLAYGROUND_API_KEY")
 
 internal class TokenTest {
 
@@ -29,7 +28,7 @@ internal class TokenTest {
         val httpResponse = client.post("/firebase/token") {
             // headers { append("X-API-Key", playgroundApiKey) }
             contentType(ContentType.Application.Json)
-            setBody(AppCheckRequest(mobileSdkAppId))
+            setBody(FirebaseApp(mobileSdkAppId))
         }
 
         val appCheckToken = httpResponse.body<AppCheckToken.Response.Normalised>()

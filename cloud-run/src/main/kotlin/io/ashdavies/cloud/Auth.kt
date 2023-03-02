@@ -1,6 +1,8 @@
 package io.ashdavies.cloud
 
 import com.google.firebase.auth.FirebaseAuth
+import io.ashdavies.playground.models.AuthResult
+import io.ashdavies.playground.models.SignInRequest
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.parameter
@@ -12,7 +14,6 @@ import io.ktor.server.request.receive
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.post
-import kotlinx.serialization.Serializable
 
 private const val SIGNUP_ENDPOINT =
     "https://identitytoolkit.googleapis.com/v1/accounts:signInWithCustomToken"
@@ -28,20 +29,8 @@ internal fun Route.auth(client: HttpClient) {
         val authResponse = client.post(SIGNUP_ENDPOINT) {
             setBody(mapOf("token" to customToken, "returnSecureToken" to "true"))
             parameter("key", call.request.header("X-API-Key"))
-        }.body<SignInResponse>()
+        }.body<AuthResult>()
 
         call.respond(authResponse)
     }
 }
-
-@Serializable
-internal data class SignInRequest(
-    val uid: String,
-)
-
-@Serializable
-internal data class SignInResponse(
-    val refreshToken: String,
-    val expiresIn: Long,
-    val idToken: String,
-)
