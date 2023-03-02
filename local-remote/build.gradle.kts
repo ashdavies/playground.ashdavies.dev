@@ -2,6 +2,7 @@
 
 import com.android.build.api.dsl.VariantDimension
 import de.undercouch.gradle.tasks.download.Download
+import org.openapitools.generator.gradle.plugin.tasks.GenerateTask
 
 plugins {
     id("io.ashdavies.default")
@@ -27,15 +28,16 @@ kotlin {
     }
 }
 
-openApiGenerate {
-    inputSpec.set("$buildDir/openapi/config.json")
-    generatorName.set("kotlin")
-}
-
 val downloadOpenApiDocumentation by tasks.registering(Download::class) {
     header("X-API-KEY", System.getenv("PLAYGROUND_API_KEY"))
     src("https://playground.ashdavies.dev/openapi/documentation.yml")
     dest("$buildDir/openapi/config.yml")
     onlyIfModified(true)
     useETag(true)
+}
+
+val generateOpenApiClasses by tasks.registering(GenerateTask::class) {
+    inputSpec.set("$buildDir/openapi/config.json")
+    dependsOn(downloadOpenApiDocumentation)
+    generatorName.set("kotlin")
 }
