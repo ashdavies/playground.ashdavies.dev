@@ -34,6 +34,6 @@ resource "google_project_iam_custom_role" "main" {
 
 resource "google_storage_bucket_object" "openapi_config" {
   bucket  = module.runtime-resources.bucket.name
-  name    = "openapi_config.yaml"
   content = local.openapi_config
+  name    = "openapi_config.yml"
 }

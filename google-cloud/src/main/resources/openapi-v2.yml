@@ -87,7 +87,7 @@ paths:
       responses:
         "200":
           description: "OK"
-  /openapi/documentation.yaml:
+  /openapi/documentation.yml:
     get:
       tags: [ "openapi" ]
       summary: "OpenAPI Documentation"

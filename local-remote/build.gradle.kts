@@ -28,14 +28,14 @@ kotlin {
 }
 
 openApiGenerate {
-    inputSpec.set("$buildDir/downloads/openapi_config.json")
+    inputSpec.set("$buildDir/openapi/config.json")
     generatorName.set("kotlin")
 }
 
 val downloadOpenApiDocumentation by tasks.registering(Download::class) {
     header("X-API-KEY", System.getenv("PLAYGROUND_API_KEY"))
-    src("https://playground.ashdavies.dev/openapi/documentation.yaml")
+    src("https://playground.ashdavies.dev/openapi/documentation.yml")
+    dest("$buildDir/openapi/config.yml")
     onlyIfModified(true)
-    dest(buildDir)
     useETag(true)
 }
