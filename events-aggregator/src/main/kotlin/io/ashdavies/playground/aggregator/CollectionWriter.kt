@@ -14,7 +14,7 @@ internal suspend fun <T : Any> CollectionWriter(provider: DocumentProvider, iden
     CollectionWriter<T> { oldValue, newValue ->
         val queue = OperationQueue(
             oldValue = oldValue.associateBy(identifier),
-            newValue = newValue.associateBy(identifier)
+            newValue = newValue.associateBy(identifier),
         )
 
         coroutineScope {

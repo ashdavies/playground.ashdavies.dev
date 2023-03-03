@@ -26,7 +26,7 @@ internal class AggregatorFunction : HttpFunction by HttpApplication({
         writer(reader(EventsSerializer), service.getEvents())
         OK
     }
-})
+},)
 
 private fun CollectionQuery(request: HttpRequest, defaults: CollectionQuery = CollectionQuery()) = CollectionQuery(
     limit = request.getFirstQueryParameter("limit").getOrNull()?.toInt() ?: defaults.limit,
