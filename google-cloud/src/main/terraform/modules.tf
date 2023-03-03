@@ -104,6 +104,10 @@ module "gradle-build-cache" {
     member = module.github-service-account.iam_email
     role   = "roles/storage.admin"
   }]
+  retention_policy = {
+    retention_period = 2678400
+    is_locked        = false
+  }
 }
 
 module "runtime-resources" {
