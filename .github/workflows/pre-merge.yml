@@ -64,12 +64,25 @@ jobs:
         run: find . -type f -name "google-services.aes" -exec sh -c 'openssl aes-256-cbc -md sha256 -d -in "$0" -out "${0%.aes*}.json" -k "${GOOGLE_SERVICES_PASSPHRASE}"' {} \;
 
       - name: Run Gradle Tasks
+        id: gradle_build
         env:
           GOOGLE_PROJECT_API_KEY: ${{ secrets.google_project_api_key }}
           GOOGLE_SERVICE_ACCOUNT_ID: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
           MOBILE_SDK_APP_ID: ${{ secrets.mobile_sdk_app_id }}
           PLAYGROUND_API_KEY: ${{ secrets.PLAYGROUND_API_KEY }}
         run: ./gradlew build --console=plain --info
+
+      - name: Gradle Scan Link
+        uses: actions/github-script@v5
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: 'Build scan published to ${{ steps.gradle_build.outputs.build-scan-url }}'
+            })
 
       - name: Produce Test Summary
         uses: test-summary/action@v2
