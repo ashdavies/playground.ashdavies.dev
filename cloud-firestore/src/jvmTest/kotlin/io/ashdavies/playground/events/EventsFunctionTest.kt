@@ -1,5 +1,6 @@
 package io.ashdavies.playground.events
 
+import io.ashdavies.cloud.EventsFunction
 import io.ashdavies.cloud.startServer
 import io.ktor.client.request.get
 import io.ktor.client.request.post

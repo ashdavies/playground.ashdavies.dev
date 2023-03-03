@@ -15,14 +15,17 @@ application {
 
 dependencies {
     implementation(projects.appCheck.appCheckSdk)
+    implementation(projects.cloudFirestore)
     implementation(projects.composeLocals)
     implementation(projects.localRemote)
+    implementation(projects.localStorage)
 
     implementation(libs.bundles.jetbrains.kotlinx)
     implementation(libs.bundles.ktor.serialization)
     implementation(libs.bundles.ktor.server)
 
     implementation(dependencies.platform(libs.google.cloud.bom))
+    implementation(libs.google.cloud.firestore)
     implementation(libs.google.cloud.storage)
     implementation(libs.google.firebase.admin)
 

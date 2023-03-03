@@ -4,8 +4,8 @@ plugins {
 }
 
 dependencies {
+    implementation(projects.cloudFirestore)
     implementation(projects.cloudFunctions)
-    implementation(projects.eventsFunction)
     implementation(projects.localStorage)
 
     testImplementation(testFixtures(projects.cloudFunctions))
