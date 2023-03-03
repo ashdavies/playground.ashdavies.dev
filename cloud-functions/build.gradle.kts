@@ -8,6 +8,7 @@ plugins {
 
 dependencies {
     implementation(projects.composeLocals)
+    implementation(projects.cloudFirestore)
     implementation(libs.ktor.http)
 
     testFixturesImplementation(compose.runtime)

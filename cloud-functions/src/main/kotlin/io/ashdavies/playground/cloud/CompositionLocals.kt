@@ -10,8 +10,8 @@ import com.google.cloud.functions.HttpRequest
 import com.google.cloud.functions.HttpResponse
 import com.google.firebase.FirebaseApp
 import com.google.firebase.cloud.FirestoreClient
+import io.ashdavies.cloud.DocumentProvider
 import io.ashdavies.compose.noLocalProvidedFor
-import io.ashdavies.playground.google.DocumentProvider
 
 public val LocalApplicationScope: ProvidableCompositionLocal<ApplicationScope> =
     staticCompositionLocalOf { noLocalProvidedFor("LocalApplicationScope") }
