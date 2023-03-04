@@ -3,6 +3,7 @@ plugins {
 }
 
 dependencies {
+    api(projects.appCheck.appCheckCommon)
     api(libs.ktor.client.core)
 
     implementation(projects.cloudFunctions)
