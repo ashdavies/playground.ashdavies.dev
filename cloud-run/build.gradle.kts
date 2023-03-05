@@ -50,13 +50,15 @@ openApiGenerate {
     generatorName.set("kotlin-server")
     outputDir.set("$buildDir/generated/openapi/main")
     remoteInputSpec.set("https://playground.ashdavies.dev/openapi/documentation.yml")
+    templateDir.set("$projectDir/src/main/resources/templates")
     auth.set("X-API-KEY:${System.getenv("PLAYGROUND_API_KEY")}")
     packageName.set("io.ashdavies.playground")
     ignoreFileOverride.set("$projectDir/.openapi-generator-ignore")
-    configOptions.put("additionalModelTypeAnnotations", "@kotlinx.serialization.Serializable")
-    configOptions.put("library", "jaxrs-spec")
-    // configOptions.put("library", "ktor")
+    configOptions.put("library", "ktor")
     configOptions.put("sourceFolder", ".")
+
+    importMappings.put("LocalDate", "kotlinx.datetime.LocalDate")
+    typeMappings.put("date", "LocalDate")
 }
 
 tasks.withType<com.google.cloud.tools.jib.gradle.JibTask> {
