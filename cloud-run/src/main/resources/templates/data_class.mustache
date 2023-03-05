@@ -15,7 +15,8 @@ import java.io.Serializable
 {{#parcelizeModels}}
 @Parcelize
 {{/parcelizeModels}}
-data class {{classname}}(
+@kotlinx.serialization.Serializable
+public data class {{classname}}(
 {{#requiredVars}}
 {{>data_class_req_var}}{{^-last}},
 {{/-last}}{{/requiredVars}}{{#hasRequired}}{{#hasOptional}},
@@ -26,7 +27,7 @@ data class {{classname}}(
 {
 {{/vendorExtensions.x-has-data-class-body}}
 {{#serializableModel}}
-    companion object {
+    public companion object {
         private const val serialVersionUID: Long = 123
     }
 {{/serializableModel}}
@@ -37,7 +38,7 @@ data class {{classname}}(
     * {{{description}}}
     * Values: {{#allowableValues}}{{#enumVars}}{{&name}}{{^-last}},{{/-last}}{{/enumVars}}{{/allowableValues}}
     */
-    enum class {{{nameInCamelCase}}}(val value: {{{dataType}}}){
+    public enum class {{{nameInCamelCase}}}(val value: {{{dataType}}}){
     {{#allowableValues}}
     {{#enumVars}}
         {{&name}}({{{value}}}){{^-last}},{{/-last}}{{#-last}};{{/-last}}

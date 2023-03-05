@@ -56,6 +56,9 @@ openApiGenerate {
     ignoreFileOverride.set("$projectDir/.openapi-generator-ignore")
     configOptions.put("library", "ktor")
     configOptions.put("sourceFolder", ".")
+
+    importMappings.put("LocalDate", "kotlinx.datetime.LocalDate")
+    typeMappings.put("date", "LocalDate")
 }
 
 tasks.withType<com.google.cloud.tools.jib.gradle.JibTask> {
