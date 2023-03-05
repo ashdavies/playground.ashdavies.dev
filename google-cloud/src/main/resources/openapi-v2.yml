@@ -19,25 +19,26 @@ paths:
       operationId: "getEvents"
       parameters:
         - name: "startAt"
+          in: "query"
           type: "string"
           format: "date"
           description: "The start date to start this query at."
-          example: "2023-03-01"
         - name: "orderBy"
+          in: "query"
           type: "string"
           description: "The field to sort by."
-          example: "dateStart"
         - name: "limit"
+          in: "query"
           type: "integer"
           format: "int32"
           description: "The maximum number of items to return."
-          example: 50
       responses:
         "200":
           description: "OK"
           schema:
             type: "array"
-            $ref: "#definitions/Event"
+            items:
+              $ref: "#/definitions/Event"
       security:
         - ApiKeyAuth: [ ]
           AppCheckAuth: [ ]
@@ -81,7 +82,7 @@ paths:
         "200":
           description: "OK"
           schema:
-            $ref: "#definitions/AuthResult"
+            $ref: "#/definitions/AuthResult"
   /firebase/token:
     post:
       tags: [ "firebase" ]
@@ -97,7 +98,7 @@ paths:
         "200":
           description: "OK"
           schema:
-            $ref: "#definitions/AppCheckToken"
+            $ref: "#/definitions/AppCheckToken"
   /firebase/token:verify:
     put:
       tags: [ "firebase" ]
@@ -116,7 +117,7 @@ paths:
         "200":
           description: "OK"
           schema:
-            $ref: "#definitions/DecodedToken"
+            $ref: "#/definitions/DecodedToken"
         "400":
           description: "Request is missing app check token header"
   /hello:
