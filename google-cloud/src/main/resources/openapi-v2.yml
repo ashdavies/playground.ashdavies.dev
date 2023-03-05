@@ -241,15 +241,17 @@ definitions:
       dateEnd:
         type: "string"
         format: "date"
-      cfpStart:
-        type: "string"
-        format: "date"
-      cfpEnd:
-        type: "string"
-        format: "date"
-      cfpSite:
-        type: "string"
-        format: "date"
+      cfp:
+        type: "object"
+        properties:
+          start:
+            type: "string"
+            format: "date"
+          end:
+            type: "string"
+            format: "date"
+          site:
+            type: "string"
   FirebaseApp:
     type: "object"
     required:
