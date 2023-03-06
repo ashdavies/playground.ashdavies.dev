@@ -31,6 +31,7 @@ gradleEnterprise {
 
 include(
     ":app-check:app-check-client",
+    ":app-check:app-check-common",
     ":app-check:app-check-compose",
     ":app-check:app-check-sdk",
     ":app-launcher:android",

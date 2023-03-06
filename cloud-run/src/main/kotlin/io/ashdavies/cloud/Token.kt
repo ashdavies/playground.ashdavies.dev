@@ -1,10 +1,12 @@
 package io.ashdavies.cloud
 
 import io.ashdavies.check.appCheck
+import io.ashdavies.http.AppCheckToken
 import io.ashdavies.playground.models.AppCheckToken
 import io.ashdavies.playground.models.DecodedToken
 import io.ashdavies.playground.models.FirebaseApp
 import io.ktor.client.HttpClient
+import io.ktor.http.HttpHeaders
 import io.ktor.server.application.call
 import io.ktor.server.request.header
 import io.ktor.server.request.receive
@@ -27,7 +29,7 @@ internal fun Route.token(client: HttpClient) {
 
     put("/token:verify") {
         val appCheck = firebaseApp.appCheck(client)
-        val appCheckToken = requireNotNull(call.request.header("X-Firebase-AppCheck")) {
+        val appCheckToken = requireNotNull(call.request.header(HttpHeaders.AppCheckToken)) {
             "Request is missing app check token header"
         }
 

@@ -9,6 +9,7 @@ import androidx.compose.runtime.setValue
 import com.google.cloud.functions.HttpMessage
 import io.ashdavies.check.AppCheck
 import io.ashdavies.check.appCheck
+import io.ashdavies.http.AppCheckToken
 import io.ashdavies.http.LocalHttpClient
 import io.ashdavies.playground.cloud.HttpEffect
 import io.ashdavies.playground.cloud.HttpException
@@ -17,13 +18,12 @@ import io.ashdavies.playground.cloud.LocalApplicationScope
 import io.ashdavies.playground.cloud.LocalFirebaseAdminApp
 import io.ashdavies.playground.cloud.LocalHttpRequest
 import io.ashdavies.playground.cloud.LocalHttpResponse
+import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode.Companion.Unauthorized
 import kotlinx.coroutines.CoroutineScope
 
-private const val APP_CHECK_HEADER = "X-Firebase-AppCheck"
-
 private val HttpMessage.appCheckToken: String?
-    get() = headers[APP_CHECK_HEADER]?.firstOrNull()
+    get() = headers[HttpHeaders.AppCheckToken]?.firstOrNull()
 
 @Composable
 public fun HttpScope.VerifiedHttpEffect(block: suspend CoroutineScope.() -> String) {

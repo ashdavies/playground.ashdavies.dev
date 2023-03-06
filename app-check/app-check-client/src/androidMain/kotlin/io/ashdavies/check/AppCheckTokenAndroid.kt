@@ -6,12 +6,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.produceState
 import com.google.firebase.appcheck.playintegrity.PlayIntegrityAppCheckProviderFactory
 import io.ashdavies.compose.LocalFirebaseAndroidApp
+import io.ashdavies.http.AppCheckToken
 import io.ashdavies.http.LocalHttpClient
 import io.ashdavies.http.header
 import io.ktor.client.HttpClient
+import io.ktor.http.HttpHeaders
 import com.google.firebase.appcheck.AppCheckToken as FirebaseAppCheckToken
-
-private const val X_FIREBASE_APP_CHECK = "X-Firebase-AppCheck"
 
 @Composable
 public actual fun ProvideAppCheckToken(client: HttpClient, content: @Composable () -> Unit) {
@@ -26,7 +26,7 @@ public actual fun ProvideAppCheckToken(client: HttpClient, content: @Composable 
     appCheck.installAppCheckProviderFactory(factory)
 
     CompositionLocalProvider(
-        LocalHttpClient provides client.header(X_FIREBASE_APP_CHECK, token),
+        LocalHttpClient provides client.header(HttpHeaders.AppCheckToken, token),
         content = content,
     )
 }
