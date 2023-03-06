@@ -39,7 +39,9 @@ paths:
             type: "array"
             items:
               $ref: "#/definitions/Event"
-
+      security:
+        - ApiKeyAuth: [ ]
+          AppCheckAuth: [ ]
   /events:aggregate:
     post:
       tags: [ "events" ]
@@ -48,7 +50,9 @@ paths:
       responses:
         "200":
           description: "OK"
-
+      security:
+        - ApiKeyAuth: [ ]
+          AppCheckAuth: [ ]
   /firebase/auth:
     post:
       tags: [ "firebase" ]
@@ -264,6 +268,10 @@ definitions:
 securityDefinitions:
   ApiKeyAuth:
     name: "X-API-Key"
+    type: "apiKey"
+    in: "header"
+  AppCheckAuth:
+    name: "X-Firebase-AppCheck"
     type: "apiKey"
     in: "header"
 security:
