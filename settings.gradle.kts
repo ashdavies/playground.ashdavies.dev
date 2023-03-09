@@ -58,3 +58,9 @@ include(
 includeBuild("build-plugins")
 
 rootProject.name = "playground"
+
+pluginManagement {
+    repositories {
+        google()
+    }
+}
