@@ -64,7 +64,7 @@ jobs:
         if: github.event_name == 'pull_request'
         with:
           arguments: |
-            ./gradlew google-cloud:terraformPlan
+            google-cloud:terraformPlan
               --no-configuration-cache
               --console=plain
               --info
