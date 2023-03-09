@@ -92,6 +92,3 @@ jobs:
           path: "**/build/reports/tests"
           if-no-files-found: error
         if: always()
-
-      - name: Stop Gradle
-        run: ./gradlew --stop

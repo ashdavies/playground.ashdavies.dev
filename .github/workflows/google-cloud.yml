@@ -83,6 +83,3 @@ jobs:
               --console=plain \
               -Ptf.apply \
               --info
-
-      - name: Stop Gradle
-        run: ./gradlew --stop

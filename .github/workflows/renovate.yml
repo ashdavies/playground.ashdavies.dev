@@ -22,7 +22,7 @@ jobs:
   renovate:
     runs-on: ubuntu-latest
     steps:
-      - name: Get token
+      - name: Get Token
         id: get_token
         uses: tibdex/github-app-token@v1
         with:
