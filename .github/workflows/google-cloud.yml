@@ -92,7 +92,7 @@ jobs:
         if: github.ref == 'refs/heads/main'
         with:
           arguments: |
-            ./gradlew google-cloud:terraformApply
+            google-cloud:terraformApply
               --no-configuration-cache
               --console=plain
               -Ptf.apply
