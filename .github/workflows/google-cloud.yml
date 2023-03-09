@@ -80,7 +80,7 @@ jobs:
         with:
           arguments: |
             cloud-run:jib
-              --image=europe-west1-docker.pkg.dev/${{ steps.google_cloud_auth.outputs.project_id }}/cloud-run-source-deploy/playground.ashdavies.dev \
+              --image=europe-west1-docker.pkg.dev/${{ steps.google_cloud_auth.outputs.project_id }}/cloud-run-source-deploy/playground.ashdavies.dev
               --no-configuration-cache
               --console=plain
               --info
