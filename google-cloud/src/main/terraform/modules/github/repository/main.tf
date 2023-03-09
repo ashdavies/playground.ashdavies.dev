@@ -15,6 +15,7 @@ resource "github_repository" "main" {
   allow_rebase_merge     = false
   delete_branch_on_merge = true
   allow_auto_merge       = true
+  has_issues             = true
   topics                 = [
     "android-development",
     "multiplatform",

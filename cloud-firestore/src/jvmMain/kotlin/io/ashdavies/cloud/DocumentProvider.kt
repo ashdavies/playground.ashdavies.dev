@@ -1,4 +1,4 @@
-package io.ashdavies.playground.google
+package io.ashdavies.cloud
 
 import com.google.api.core.ApiFuture
 import com.google.cloud.firestore.CollectionReference

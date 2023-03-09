@@ -9,7 +9,7 @@ google-accompanist = "0.28.0"
 google-android = "7.4.2"
 google-auto = "1.0.1"
 google-maps-compose = "2.11.0"
-jetbrains-compose = "1.3.0"
+jetbrains-compose = "1.3.1"
 jetbrains-kotlin = "1.8.0"
 kotlinx-coroutines = "1.6.4"
 kotlinx-serialization = "1.5.0"
@@ -52,6 +52,7 @@ google-android-maps = "com.google.android.gms:play-services-maps:18.1.0"
 google-android-material = "com.google.android.material:material:1.8.0"
 
 google-cloud-bom = "com.google.cloud:libraries-bom:26.9.0"
+google-cloud-firestore = { module = "com.google.cloud:google-cloud-firestore" }
 google-cloud-storage = { module = "com.google.cloud:google-cloud-storage" }
 google-cloud-functionsFrameworkApi = "com.google.cloud.functions:functions-framework-api:1.0.4"
 google-cloud-javaFunctionInvoker = "com.google.cloud.functions.invoker:java-function-invoker:1.2.0"
@@ -148,7 +149,7 @@ diffplug-spotless = "com.diffplug.spotless:6.16.0"
 google-cloud-jib = "com.google.cloud.tools.jib:3.3.1"
 google-services = "com.google.gms.google-services:4.3.15"
 gradle-doctor = "com.osacky.doctor:0.8.1"
-jetbrains-dokka = "org.jetbrains.dokka:0.10.1"
+jetbrains-dokka = "org.jetbrains.dokka:1.8.10"
 jetbrains-terraform = "org.jetbrains.gradle.terraform:1.5.2"
 kotlin-compose = { id = "org.jetbrains.compose", version.ref = "jetbrains-compose" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrains-kotlin" }

@@ -14,7 +14,7 @@ concurrency:
 
 jobs:
   build:
-    if: ${{ github.ref == 'refs/heads/main' || contains(github.event.pull_request.labels.*.name, 'Google Cloud') }}
+    if: github.ref == 'refs/heads/main' || contains(github.event.pull_request.labels.*.name, 'Google Cloud')
     runs-on: ubuntu-latest
 
     permissions:
@@ -48,7 +48,7 @@ jobs:
           token_format: access_token
 
       - name: Setup Cloud SDK
-        uses: google-github-actions/setup-gcloud@v0
+        uses: google-github-actions/setup-gcloud@v1
 
       - name: Docker Auth
         uses: docker/login-action@v2
@@ -57,6 +57,24 @@ jobs:
           password: ${{ steps.google_cloud_auth.outputs.access_token }}
           registry: europe-west1-docker.pkg.dev
 
+      - name: Setup Gradle Caches
+        uses: actions/cache@v3
+        with:
+          key: gradle-cache
+          path: |
+            ~/.gradle/wrapper/
+            ~/.gradle/caches/
+
+      - name: Create Terraform Plan
+        env:
+          GH_TOKEN: ${{ steps.generate_token.outputs.token }}
+        if: github.event_name == 'pull_request'
+        run: |
+          ./gradlew google-cloud:terraformPlan \
+            --no-configuration-cache \
+            --console=plain \
+            --info
+
       - name: Containerize Cloud Run
         uses: gradle/gradle-build-action@v2
         env:
@@ -64,6 +82,7 @@ jobs:
           GOOGLE_SERVICE_ACCOUNT_ID: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
           MOBILE_SDK_APP_ID: ${{ secrets.mobile_sdk_app_id }}
           PLAYGROUND_API_KEY: ${{ secrets.PLAYGROUND_API_KEY }}
+        if: github.ref == 'refs/heads/main'
         with:
           arguments: |
             ./gradlew cloud-run:jib \
@@ -76,6 +95,7 @@ jobs:
         uses: gradle/gradle-build-action@v2
         env:
           GH_TOKEN: ${{ steps.generate_token.outputs.token }}
+        if: github.ref == 'refs/heads/main'
         with:
           arguments: |
             ./gradlew google-cloud:terraformApply \

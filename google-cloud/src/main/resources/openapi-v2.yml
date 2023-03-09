@@ -12,6 +12,47 @@ consumes:
 produces:
   - "application/json"
 paths:
+  /events:
+    get:
+      tags: [ "events" ]
+      summary: "Return events by start date"
+      operationId: "getEvents"
+      parameters:
+        - name: "startAt"
+          in: "query"
+          type: "string"
+          format: "date"
+          description: "The start date to start this query at."
+        - name: "orderBy"
+          in: "query"
+          type: "string"
+          description: "The field to sort by."
+        - name: "limit"
+          in: "query"
+          type: "integer"
+          format: "int32"
+          description: "The maximum number of items to return."
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Event"
+      security:
+        - ApiKeyAuth: [ ]
+          AppCheckAuth: [ ]
+  /events:aggregate:
+    post:
+      tags: [ "events" ]
+      summary: "Aggregate events from data sources"
+      operationId: "aggregateEvents"
+      responses:
+        "200":
+          description: "OK"
+      security:
+        - ApiKeyAuth: [ ]
+          AppCheckAuth: [ ]
   /firebase/auth:
     post:
       tags: [ "firebase" ]
@@ -41,7 +82,7 @@ paths:
         "200":
           description: "OK"
           schema:
-            $ref: "#definitions/AuthResult"
+            $ref: "#/definitions/AuthResult"
   /firebase/token:
     post:
       tags: [ "firebase" ]
@@ -57,7 +98,7 @@ paths:
         "200":
           description: "OK"
           schema:
-            $ref: "#definitions/AppCheckToken"
+            $ref: "#/definitions/AppCheckToken"
   /firebase/token:verify:
     put:
       tags: [ "firebase" ]
@@ -76,7 +117,7 @@ paths:
         "200":
           description: "OK"
           schema:
-            $ref: "#definitions/DecodedToken"
+            $ref: "#/definitions/DecodedToken"
         "400":
           description: "Request is missing app check token header"
   /hello:
@@ -176,6 +217,45 @@ definitions:
           actually one of the JWT token claims. It is added as a convenience, and is set as the
           value of the | sub property.
         example: "1:1234567890:android:321abc456def7890"
+  Event:
+    type: "object"
+    required:
+      - "id"
+      - "name"
+      - "website"
+      - "location"
+      - "dateStart"
+      - "dateEnd"
+    properties:
+      id:
+        type: "string"
+      name:
+        type: "string"
+      website:
+        type: "string"
+      location:
+        type: "string"
+      status:
+        type: "string"
+      online:
+        type: "boolean"
+      dateStart:
+        type: "string"
+        format: "date"
+      dateEnd:
+        type: "string"
+        format: "date"
+      cfp:
+        type: "object"
+        properties:
+          start:
+            type: "string"
+            format: "date"
+          end:
+            type: "string"
+            format: "date"
+          site:
+            type: "string"
   FirebaseApp:
     type: "object"
     required:
@@ -188,6 +268,10 @@ definitions:
 securityDefinitions:
   ApiKeyAuth:
     name: "X-API-Key"
+    type: "apiKey"
+    in: "header"
+  AppCheckAuth:
+    name: "X-Firebase-AppCheck"
     type: "apiKey"
     in: "header"
 security:

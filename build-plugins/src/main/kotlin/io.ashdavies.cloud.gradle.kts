@@ -30,5 +30,5 @@ java {
 
 tasks.withType<KotlinCompile> {
     kotlinOptions.freeCompilerArgs += Playground.freeCompilerArgs
-    kotlinOptions.jvmTarget = Playground.jvmTarget
+    kotlinOptions.jvmTarget = "${Playground.jvmTarget}"
 }
