@@ -33,7 +33,7 @@ jobs:
         uses: actions/checkout@v3.3.0
 
       - name: Self-hosted Renovate
-        uses: renovatebot/github-action@v34.157.0
+        uses: renovatebot/github-action@v34.159.2
         env:
           LOG_LEVEL: ${{ inputs.logLevel || 'INFO' }}
         with:
