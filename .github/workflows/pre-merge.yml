@@ -43,14 +43,6 @@ jobs:
       - name: Setup Cloud SDK
         uses: google-github-actions/setup-gcloud@v0
 
-      - name: Setup Gradle Caches
-        uses: actions/cache@v3
-        with:
-          key: gradle-cache
-          path: |
-            ~/.gradle/wrapper/
-            ~/.gradle/caches/
-
       - name: Generate Encryption Passphrase
         run: openssl rand -base64 32
         if: ${{ false }}
