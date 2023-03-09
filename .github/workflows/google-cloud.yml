@@ -57,23 +57,17 @@ jobs:
           password: ${{ steps.google_cloud_auth.outputs.access_token }}
           registry: europe-west1-docker.pkg.dev
 
-      - name: Setup Gradle Caches
-        uses: actions/cache@v3
-        with:
-          key: gradle-cache
-          path: |
-            ~/.gradle/wrapper/
-            ~/.gradle/caches/
-
       - name: Create Terraform Plan
+        uses: gradle/gradle-build-action@v2
         env:
           GH_TOKEN: ${{ steps.generate_token.outputs.token }}
         if: github.event_name == 'pull_request'
-        run: |
-          ./gradlew google-cloud:terraformPlan \
-            --no-configuration-cache \
-            --console=plain \
-            --info
+        with:
+          arguments: |
+            ./gradlew google-cloud:terraformPlan
+              --no-configuration-cache
+              --console=plain
+              --info
 
       - name: Containerize Cloud Run
         uses: gradle/gradle-build-action@v2
@@ -85,10 +79,10 @@ jobs:
         if: github.ref == 'refs/heads/main'
         with:
           arguments: |
-            cloud-run:jib \
+            cloud-run:jib
               --image=europe-west1-docker.pkg.dev/${{ steps.google_cloud_auth.outputs.project_id }}/cloud-run-source-deploy/playground.ashdavies.dev \
-              --no-configuration-cache \
-              --console=plain \
+              --no-configuration-cache
+              --console=plain
               --info
 
       - name: Apply Terraform Config
@@ -98,8 +92,8 @@ jobs:
         if: github.ref == 'refs/heads/main'
         with:
           arguments: |
-            ./gradlew google-cloud:terraformApply \
-              --no-configuration-cache \
-              --console=plain \
-              -Ptf.apply \
+            ./gradlew google-cloud:terraformApply
+              --no-configuration-cache
+              --console=plain
+              -Ptf.apply
               --info
