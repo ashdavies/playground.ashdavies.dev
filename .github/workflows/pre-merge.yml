@@ -40,7 +40,7 @@ jobs:
           service_account: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
 
       - name: Setup Cloud SDK
-        uses: google-github-actions/setup-gcloud@v0
+        uses: google-github-actions/setup-gcloud@v1
 
       - name: Setup Gradle Caches
         uses: actions/cache@v3
@@ -68,6 +68,7 @@ jobs:
           GOOGLE_PROJECT_API_KEY: ${{ secrets.google_project_api_key }}
           GOOGLE_SERVICE_ACCOUNT_ID: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
           MOBILE_SDK_APP_ID: ${{ secrets.mobile_sdk_app_id }}
+          PLAYGROUND_API_KEY: ${{ secrets.PLAYGROUND_API_KEY }}
         run: ./gradlew build --console=plain --info
 
       - name: Produce Test Summary

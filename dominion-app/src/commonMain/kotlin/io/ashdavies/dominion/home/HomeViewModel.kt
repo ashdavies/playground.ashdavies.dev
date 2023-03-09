@@ -55,14 +55,10 @@ internal class HomeViewModel(private val client: HttpClient) {
             .also { println(it) }
             .links
 
-        println("=== HomeViewModel.getViewState() // $links")
-
         val files: String = links
             .map { it.substring(5, it.length - 4) }
             .filterNot { it in EXCLUSIONS || "File:${it}2.jpg" in links }
             .joinToString("|") { "File:$it.jpg" }
-
-        println("=== HomeViewModel.getViewState() // $files")
 
         return client
             .get(DOMINION_STRATEGY_URL) { parameter(DominionRequest.Query.Images(files)) }

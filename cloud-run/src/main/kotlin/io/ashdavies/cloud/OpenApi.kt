@@ -1,17 +1,19 @@
 package io.ashdavies.cloud
 
 import com.google.cloud.storage.BlobId
-import io.ktor.server.plugins.openapi.openAPI
+import io.ktor.http.HttpStatusCode
+import io.ktor.server.application.call
+import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
-import kotlin.io.path.createTempFile
-import kotlin.io.path.pathString
+import io.ktor.server.routing.get
 
-internal fun Route.openApi() {
-    val openApiConfigBlob = storage[BlobId.of("playground-runtime", "openapi_config.json")]
-    val openApiConfig = createTempFile().also(openApiConfigBlob::downloadTo)
+internal fun Route.openApi(path: String = "openapi") {
+    get("$path/documentation.yml") {
+        val openApiConfig = storage[BlobId.of("playground-runtime", "openapi_config.yml")]
 
-    openAPI(
-        swaggerFile = openApiConfig.pathString,
-        path = "openapi",
-    )
+        when (openApiConfig != null) {
+            true -> call.respond(String(openApiConfig.getContent()))
+            false -> call.respond(HttpStatusCode.NotFound)
+        }
+    }
 }

@@ -36,6 +36,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
+import kotlinx.serialization.modules.SerializersModuleBuilder
 import kotlinx.serialization.modules.contextual
 
 private val defaultUserAgent: String
@@ -45,36 +46,38 @@ private fun DefaultLogger(block: (message: String) -> Unit = ::println) = object
     override fun log(message: String) = block(message)
 }
 
-public fun DefaultHttpClient(block: HttpClientConfig<*>.() -> Unit = { }): HttpClient =
-    HttpClient {
-        install(ContentNegotiation) {
-            json(
-                Json {
-                    serializersModule = SerializersModule { contextual(EventsSerializer) }
-                    ignoreUnknownKeys = true
-                    encodeDefaults = true
-                },
-            )
-        }
-
-        install(DefaultRequest) {
-            contentType(ContentType.Application.Json)
-            accept(ContentType.Application.Json)
-            userAgent(defaultUserAgent)
-            server()
-        }
-
-        install(HttpTimeout) {
-            connectTimeoutMillis = INFINITE_TIMEOUT_MS
-        }
-
-        install(Logging) {
-            logger = DefaultLogger()
-            level = LogLevel.ALL
-        }
-
-        block()
+public fun DefaultHttpClient(configure: HttpClientConfig<*>.() -> Unit = { }): HttpClient = HttpClient {
+    install(ContentNegotiation) {
+        json(DefaultJson())
     }
+
+    install(DefaultRequest) {
+        contentType(ContentType.Application.Json)
+        accept(ContentType.Application.Json)
+        userAgent(defaultUserAgent)
+    }
+
+    install(HttpTimeout) {
+        connectTimeoutMillis = INFINITE_TIMEOUT_MS
+    }
+
+    install(Logging) {
+        logger = DefaultLogger()
+        level = LogLevel.ALL
+    }
+
+    configure()
+}
+
+private fun DefaultJson(serializers: SerializersModuleBuilder.() -> Unit = { }) = Json {
+    serializersModule = SerializersModule {
+        contextual(EventsSerializer)
+        serializers()
+    }
+
+    ignoreUnknownKeys = true
+    encodeDefaults = true
+}
 
 public val LocalHttpClient: ProvidableCompositionLocal<HttpClient> = staticCompositionLocalOf {
     DefaultHttpClient { install(HttpCache) }

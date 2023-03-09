@@ -14,7 +14,7 @@ concurrency:
 
 jobs:
   build:
-    if: ${{ github.ref == 'refs/heads/main' || contains(github.event.pull_request.labels.*.name, 'Google Cloud') }}
+    if: github.ref == 'refs/heads/main' || contains(github.event.pull_request.labels.*.name, 'Google Cloud')
     runs-on: ubuntu-latest
 
     permissions:
@@ -48,7 +48,7 @@ jobs:
           token_format: access_token
 
       - name: Setup Cloud SDK
-        uses: google-github-actions/setup-gcloud@v0
+        uses: google-github-actions/setup-gcloud@v1
 
       - name: Docker Auth
         uses: docker/login-action@v2
@@ -65,11 +65,23 @@ jobs:
             ~/.gradle/wrapper/
             ~/.gradle/caches/
 
+      - name: Create Terraform Plan
+        env:
+          GH_TOKEN: ${{ steps.generate_token.outputs.token }}
+        if: github.event_name == 'pull_request'
+        run: |
+          ./gradlew google-cloud:terraformPlan \
+            --no-configuration-cache \
+            --console=plain \
+            --info
+
       - name: Containerize Cloud Run
         env:
           GOOGLE_PROJECT_API_KEY: ${{ secrets.google_project_api_key }}
           GOOGLE_SERVICE_ACCOUNT_ID: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
           MOBILE_SDK_APP_ID: ${{ secrets.mobile_sdk_app_id }}
+          PLAYGROUND_API_KEY: ${{ secrets.PLAYGROUND_API_KEY }}
+        if: github.ref == 'refs/heads/main'
         run: |
           ./gradlew cloud-run:jib \
             --image=europe-west1-docker.pkg.dev/${{ steps.google_cloud_auth.outputs.project_id }}/cloud-run-source-deploy/playground.ashdavies.dev \
@@ -80,6 +92,7 @@ jobs:
       - name: Apply Terraform Config
         env:
           GH_TOKEN: ${{ steps.generate_token.outputs.token }}
+        if: github.ref == 'refs/heads/main'
         run: |
           ./gradlew google-cloud:terraformApply \
             --no-configuration-cache \

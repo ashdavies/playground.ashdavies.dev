@@ -39,6 +39,29 @@ module "github-api-key" {
   name         = "integration"
 }
 
+module "github-repository" {
+  source      = "./modules/github/repository"
+  repository  = var.gh_repo_name
+  description = "Playground"
+  labels      = [
+    {
+      description = "Trigger deployment to Google Cloud"
+      name        = "Google Cloud"
+      color       = "3367d6"
+    }
+  ]
+  secrets = [
+    {
+      plaintext_value = module.github-service-account.email
+      secret_name     = "google_service_account_id"
+    },
+    {
+      plaintext_value = module.github-workload-identity.provider_name
+      secret_name     = "google_workload_identity"
+    }
+  ]
+}
+
 module "github-service-account" {
   source        = "terraform-google-modules/service-accounts/google"
   providers     = { google = google.impersonated }
@@ -81,6 +104,10 @@ module "gradle-build-cache" {
     member = module.github-service-account.iam_email
     role   = "roles/storage.admin"
   }]
+  retention_policy = {
+    retention_period = 2678400
+    is_locked        = false
+  }
 }
 
 module "runtime-resources" {

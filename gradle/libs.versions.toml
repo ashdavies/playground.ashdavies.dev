@@ -6,14 +6,14 @@ apollo-graphql = "2.5.14"
 cash-paging = "3.1.1-0.1.1"
 compose-compiler = "1.4.2"
 google-accompanist = "0.28.0"
-google-android = "7.4.1"
+google-android = "7.4.2"
 google-auto = "1.0.1"
-google-maps-compose = "2.7.2"
+google-maps-compose = "2.11.0"
 jetbrains-compose = "1.3.0"
 jetbrains-kotlin = "1.8.0"
 kotlinx-coroutines = "1.6.4"
-kotlinx-serialization = "1.4.1"
-ktor = "2.2.3"
+kotlinx-serialization = "1.5.0"
+ktor = "2.2.4"
 pinterest-ktlint = "0.47.1"
 slack-circuit = "0.7.0"
 squareup-sqldelight = "1.5.5"
@@ -52,6 +52,7 @@ google-android-maps = "com.google.android.gms:play-services-maps:18.1.0"
 google-android-material = "com.google.android.material:material:1.8.0"
 
 google-cloud-bom = "com.google.cloud:libraries-bom:26.9.0"
+google-cloud-firestore = { module = "com.google.cloud:google-cloud-firestore" }
 google-cloud-storage = { module = "com.google.cloud:google-cloud-storage" }
 google-cloud-functionsFrameworkApi = "com.google.cloud.functions:functions-framework-api:1.0.4"
 google-cloud-javaFunctionInvoker = "com.google.cloud.functions.invoker:java-function-invoker:1.2.0"
@@ -127,8 +128,6 @@ sqldelight-coroutines-extensions = { module = "com.squareup.sqldelight:coroutine
 sqldelight-runtime = { module = "com.squareup.sqldelight:runtime", version.ref = "squareup-sqldelight" }
 sqldelight-sqlite-driver = { module = "com.squareup.sqldelight:sqlite-driver", version.ref = "squareup-sqldelight" }
 
-swagger-codegen-generator = "io.swagger.codegen.v3:swagger-codegen-generators:1.0.38"
-
 [bundles]
 androidx-activity = ["androidx-activity-compose", "androidx-activity-ktx"]
 androidx-viewmodel = ["androidx-lifecycle-viewmodel-compose", "androidx-lifecycle-viewmodel-ktx"]
@@ -145,18 +144,17 @@ slack-circuit = ["slack-circuit-backstack", "slack-circuit-core", "slack-circuit
 android-application = { id = "com.android.application", version.ref = "google-android" }
 android-library = { id = "com.android.library", version.ref = "google-android" }
 apollo-graphql = { id = "com.apollographql.apollo", version.ref = "apollo-graphql" }
-cash-molecule = { id = "app.cash.molecule", version = "0.4.0" }
-diffplug-spotless = "com.diffplug.spotless:6.15.0"
+cash-molecule = { id = "app.cash.molecule", version = "0.7.1" }
+diffplug-spotless = "com.diffplug.spotless:6.16.0"
 google-cloud-jib = "com.google.cloud.tools.jib:3.3.1"
 google-services = "com.google.gms.google-services:4.3.15"
 gradle-doctor = "com.osacky.doctor:0.8.1"
-jetbrains-dokka = "org.jetbrains.dokka:0.10.0"
-jetbrains-terraform = "org.jetbrains.gradle.terraform:1.4.2"
+jetbrains-dokka = "org.jetbrains.dokka:1.8.10"
+jetbrains-terraform = "org.jetbrains.gradle.terraform:1.5.2"
 kotlin-compose = { id = "org.jetbrains.compose", version.ref = "jetbrains-compose" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrains-kotlin" }
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "jetbrains-kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "jetbrains-kotlin" }
 kotlinx-kover = "org.jetbrains.kotlinx.kover:0.6.1"
-openapi-generator = { id = "org.openapi.generator", version = "6.4.0" }
+openapi-generator = "org.openapi.generator:6.4.0"
 squareup-sqldelight = { id = "com.squareup.sqldelight", version.ref =  "squareup-sqldelight" }
-undercouch-download = { id = "de.undercouch.download", version = "5.3.1" }

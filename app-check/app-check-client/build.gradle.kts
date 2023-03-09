@@ -8,6 +8,7 @@ android {
 
 kotlin {
     commonMain.dependencies {
+        implementation(projects.appCheck.appCheckCommon)
         implementation(projects.firebaseCompose)
         implementation(projects.localRemote)
 

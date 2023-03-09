@@ -1,13 +1,11 @@
 @file:Suppress("DSL_SCOPE_VIOLATION") // https://github.com/gradle/gradle/issues/22797
 
 import com.android.build.api.dsl.VariantDimension
-import de.undercouch.gradle.tasks.download.Download
 
 plugins {
     id("io.ashdavies.default")
 
     alias(libs.plugins.openapi.generator)
-    alias(libs.plugins.undercouch.download)
 }
 
 android {
@@ -18,22 +16,24 @@ android {
     }
 }
 
-kotlin {
-    commonMain.dependencies {
+kotlin.commonMain {
+    dependencies {
         implementation(projects.localStorage)
 
         implementation(libs.bundles.ktor.client)
         implementation(libs.bundles.ktor.serialization)
     }
+
+    kotlin.srcDir(tasks.openApiGenerate)
 }
 
 openApiGenerate {
-    inputSpec.set("$buildDir/downloads/openapi_config.json")
     generatorName.set("kotlin")
-}
-
-val downloadOpenApiConfig by tasks.registering(Download::class) {
-    header("X-API-KEY", System.getenv("GOOGLE_PROJECT_API_KEY"))
-    src("https://playground.ashdavies.dev/openapi")
-    dest("$buildDir/downloads/openapi_config.json")
+    outputDir.set("$buildDir/generated/openapi/main")
+    remoteInputSpec.set("https://playground.ashdavies.dev/openapi/documentation.yml")
+    auth.set("X-API-KEY:${System.getenv("PLAYGROUND_API_KEY")}")
+    packageName.set("io.ashdavies.playground")
+    ignoreFileOverride.set("$projectDir/.openapi-generator-ignore")
+    configOptions.put("library", "multiplatform")
+    configOptions.put("sourceFolder", ".")
 }

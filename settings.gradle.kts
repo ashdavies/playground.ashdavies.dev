@@ -6,7 +6,7 @@ apply(from = "repositories.gradle.kts")
 plugins {
     id("androidx.build.gradle.gcpbuildcache") version "1.0.0-beta01"
     id("com.google.cloud.tools.jib") version "3.3.1" apply false
-    id("com.gradle.enterprise") version "3.9"
+    id("com.gradle.enterprise") version "3.12.4"
 }
 
 buildCache {
@@ -31,19 +31,20 @@ gradleEnterprise {
 
 include(
     ":app-check:app-check-client",
+    ":app-check:app-check-common",
     ":app-check:app-check-compose",
     ":app-check:app-check-sdk",
     ":app-launcher:android",
     ":app-launcher:common",
     ":app-launcher:desktop",
     ":auth-oauth",
+    ":cloud-firestore",
     ":cloud-functions",
     ":cloud-run",
     ":compose-locals",
     ":dominion-app",
     ":events-aggregator",
     ":events-app",
-    ":events-function",
     ":firebase-compose",
     ":google-cloud",
     ":local-remote",

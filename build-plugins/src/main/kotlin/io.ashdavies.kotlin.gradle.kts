@@ -35,9 +35,11 @@ kotlin {
         implementation(compose.desktop.currentOs)
         implementation(libs.jetbrains.kotlinx.coroutines.swing)
     }
+
+    jvmToolchain(Playground.jvmTarget)
 }
 
 tasks.withType<KotlinCompile> {
     kotlinOptions.freeCompilerArgs += Playground.freeCompilerArgs
-    kotlinOptions.jvmTarget = Playground.jvmTarget
+    kotlinOptions.jvmTarget = "${Playground.jvmTarget}"
 }
