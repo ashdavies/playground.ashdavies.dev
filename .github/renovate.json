@@ -4,6 +4,12 @@
     "config:base"
   ],
   "gitAuthor": "Playground Manager <126197455+playground-manager[bot]@users.noreply.github.com>",
+  "registryUrls": [
+    "https://dl.google.com/android/maven2/",
+    "https://maven.pkg.jetbrains.space/public/p/compose/dev",
+    "https://plugins.gradle.org/m2/",
+    "https://repo.maven.apache.org/maven2"
+  ],
   "repositories": [
     "ashdavies/playground.ashdavies.dev"
   ],
