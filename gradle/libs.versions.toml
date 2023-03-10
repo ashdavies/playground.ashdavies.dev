@@ -58,7 +58,7 @@ google-cloud-functionsFrameworkApi = "com.google.cloud.functions:functions-frame
 google-cloud-javaFunctionInvoker = "com.google.cloud.functions.invoker:java-function-invoker:1.2.0"
 
 google-firebase-admin = "com.google.firebase:firebase-admin:9.1.1"
-google-firebase-bom = "com.google.firebase:firebase-bom:31.2.2"
+google-firebase-bom = "com.google.firebase:firebase-bom:31.2.3"
 google-firebase-analytics = { module = "com.google.firebase:firebase-analytics-ktx" }
 google-firebase-appcheck = { module = "com.google.firebase:firebase-appcheck" }
 google-firebase-appcheck-debug = { module = "com.google.firebase:firebase-appcheck-debug" }
