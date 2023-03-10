@@ -1,6 +1,5 @@
 package io.ashdavies.cloud
 
-import com.google.cloud.firestore.Query
 import io.ashdavies.playground.models.Event
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.call
@@ -8,34 +7,20 @@ import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.get
 import io.ktor.server.routing.post
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonElement
-import kotlinx.serialization.json.JsonNull
-import kotlinx.serialization.json.JsonPrimitive
-import kotlinx.serialization.json.buildJsonObject
+import kotlinx.datetime.Clock
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.todayIn
 
-private const val DEFAULT_LIMIT = 50
-
-internal fun Route.events(json: Json = Json { ignoreUnknownKeys = true }) {
+internal fun Route.events() {
     get("/events") {
-        val future = firestore
-            .collection("events")
-            .orderBy("dateStart", Query.Direction.DESCENDING)
-            .limit(call.request.queryParameters["limit"]?.toInt() ?: DEFAULT_LIMIT)
-            .get()
+        val startAt = call.request.queryParameters["startAt"] ?: todayAsString()
+        val limit = call.request.queryParameters["limit"]?.toInt() ?: 50
 
-        val snapshot = future.await()
-        val output = snapshot.map {
-            val data = it.data
-                .encode("cfp")
-                .asJsonElement()
+        val provider = DocumentProvider { firestore.collection("events") }
+        val query = CollectionQuery(orderBy = "dateStart", startAt, limit)
+        val reader = CollectionReader<Event>(provider, query)
 
-            json.decodeFromJsonElement(
-                deserializer = Event.serializer(),
-                element = data,
-            )
-        }
-
+        val output = reader(Event.serializer()) { it.encode("cfp") }
         call.respond(output)
     }
 
@@ -44,28 +29,20 @@ internal fun Route.events(json: Json = Json { ignoreUnknownKeys = true }) {
     }
 }
 
-private fun Map<*, *>.asJsonElement(): JsonElement = buildJsonObject {
-    forEach { (key, value) ->
-        when (value) {
-            is Map<*, *> -> put(key as String, value.asJsonElement())
-            is Boolean -> put(key as String, JsonPrimitive(value))
-            is Number -> put(key as String, JsonPrimitive(value))
-            is String -> put(key as String, JsonPrimitive(value))
-            null -> put(key as String, JsonNull)
-        }
-    }
-}
-
 @Suppress("UNCHECKED_CAST")
-private fun Map<String, Any?>.encode(prefix: String): Map<String, Any?> = buildMap {
+internal fun Map<String, Any?>.encode(prefix: String): Map<String, Any?> = buildMap {
     this@encode.forEach { entry ->
         when (entry.key.startsWith(prefix) && entry.value != null) {
             false -> put(entry.key, entry.value)
             true -> {
+                val value = getOrElse(prefix) { mutableMapOf<String, Any?>() } as Map<String, Any?>
                 val key = entry.key.drop(prefix.length).replaceFirstChar { it.lowercase() }
-                val value = get(prefix) as? Map<String, Any?> ?: mutableMapOf()
                 put(prefix, value + (key to entry.value))
             }
         }
     }
 }
+
+private fun todayAsString(): String = Clock.System
+    .todayIn(TimeZone.currentSystemDefault())
+    .toString()

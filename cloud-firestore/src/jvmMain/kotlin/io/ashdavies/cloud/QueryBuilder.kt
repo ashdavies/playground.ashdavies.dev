@@ -13,7 +13,7 @@ public interface QueryBuilder {
 }
 
 internal data class FirestoreQueryBuilder(private var query: Query) : QueryBuilder {
-    override var orderBy: String by setValue { query = query.orderBy(it, Query.Direction.ASCENDING) }
+    override var orderBy: String by setValue { query = query.orderBy(it, Query.Direction.DESCENDING) }
     override var startAt: Any by setValue { query = query.startAt(it) }
     override var limit: Int by setValue { query = query.limit(it) }
     fun get(): ApiFuture<QuerySnapshot> = query.get()
