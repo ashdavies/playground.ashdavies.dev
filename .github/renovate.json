@@ -7,8 +7,8 @@
   "packageRules": [
     {
       "groupName": "androidx.activity",
-      "matchPackageNames": [
-        "androidx.activity"
+      "matchPackagePatterns": [
+        "^androidx\\.activity:"
       ],
       "registryUrls": [
         "https://maven.google.com"
@@ -16,8 +16,8 @@
     },
     {
       "groupName": "androidx.lifecycle",
-      "matchPackageNames": [
-        "androidx.lifecycle"
+      "matchPackagePatterns": [
+        "^androidx\\.lifecycle:"
       ],
       "registryUrls": [
         "https://maven.google.com"
