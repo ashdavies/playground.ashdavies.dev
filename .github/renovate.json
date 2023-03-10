@@ -6,21 +6,23 @@
   "gitAuthor": "Playground Manager <126197455+playground-manager[bot]@users.noreply.github.com>",
   "packageRules": [
     {
-      "groupName": "androidx.activity",
-      "matchPackagePatterns": [
-        "^androidx\\.activity:"
+      "matchDatasources": [
+        "maven"
       ],
       "registryUrls": [
         "https://maven.google.com"
       ]
     },
     {
+      "groupName": "androidx.activity",
+      "matchPackagePatterns": [
+        "^androidx\\.activity:"
+      ]
+    },
+    {
       "groupName": "androidx.lifecycle",
       "matchPackagePatterns": [
         "^androidx\\.lifecycle:"
-      ],
-      "registryUrls": [
-        "https://maven.google.com"
       ]
     }
   ],
