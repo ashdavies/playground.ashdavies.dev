@@ -26,9 +26,13 @@ internal fun Route.events(json: Json = Json { ignoreUnknownKeys = true }) {
 
         val snapshot = future.await()
         val output = snapshot.map {
+            val data = it.data
+                .encode("cfp")
+                .asJsonElement()
+
             json.decodeFromJsonElement(
                 deserializer = Event.serializer(),
-                element = it.data.asJsonElement(),
+                element = data,
             )
         }
 
@@ -40,13 +44,28 @@ internal fun Route.events(json: Json = Json { ignoreUnknownKeys = true }) {
     }
 }
 
-private fun Map<String, Any?>.asJsonElement(): JsonElement = buildJsonObject {
+private fun Map<*, *>.asJsonElement(): JsonElement = buildJsonObject {
     forEach { (key, value) ->
         when (value) {
-            is Boolean -> put(key, JsonPrimitive(value))
-            is Number -> put(key, JsonPrimitive(value))
-            is String -> put(key, JsonPrimitive(value))
-            null -> put(key, JsonNull)
+            is Map<*, *> -> put(key as String, value.asJsonElement())
+            is Boolean -> put(key as String, JsonPrimitive(value))
+            is Number -> put(key as String, JsonPrimitive(value))
+            is String -> put(key as String, JsonPrimitive(value))
+            null -> put(key as String, JsonNull)
+        }
+    }
+}
+
+@Suppress("UNCHECKED_CAST")
+private fun Map<String, Any?>.encode(prefix: String): Map<String, Any?> = buildMap {
+    this@encode.forEach { entry ->
+        when (entry.key.startsWith(prefix) && entry.value != null) {
+            false -> put(entry.key, entry.value)
+            true -> {
+                val key = entry.key.drop(prefix.length).replaceFirstChar { it.lowercase() }
+                val value = get(prefix) as? Map<String, Any?> ?: mutableMapOf()
+                put(prefix, value + (key to entry.value))
+            }
         }
     }
 }
