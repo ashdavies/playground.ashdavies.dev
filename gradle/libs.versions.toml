@@ -68,7 +68,7 @@ google-firebase-auth-ktx = { module = "com.google.firebase:firebase-auth-ktx" }
 google-maps-android-compose = { module = "com.google.maps.android:maps-compose", version.ref = "google-maps-compose" }
 google-maps-android-compose-widgets = { module = "com.google.maps.android:maps-compose-widgets", version.ref = "google-maps-compose" }
 
-jakeWharton-mosaic-runtime = "com.jakewharton.mosaic:mosaic-runtime:0.4.0"
+jakeWharton-mosaic-runtime = "com.jakewharton.mosaic:mosaic-runtime:0.5.0"
 
 jetbrains-compose-runtime = { module = "org.jetbrains.compose.runtime:runtime", version.ref = "jetbrains-compose" }
 jetbrains-kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "jetbrains-kotlin" }
