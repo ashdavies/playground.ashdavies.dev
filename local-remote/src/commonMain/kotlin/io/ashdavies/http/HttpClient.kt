@@ -23,7 +23,6 @@ import io.ktor.client.request.accept
 import io.ktor.client.request.header
 import io.ktor.client.request.request
 import io.ktor.http.ContentType
-import io.ktor.http.HttpHeaders
 import io.ktor.http.URLBuilder
 import io.ktor.http.contentType
 import io.ktor.http.takeFrom
