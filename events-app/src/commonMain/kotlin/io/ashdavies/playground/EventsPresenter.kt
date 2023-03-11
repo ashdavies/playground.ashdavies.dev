@@ -37,8 +37,8 @@ internal fun EventsPresenter(navigator: Navigator, screen: EventsScreen): Events
 
 public class EventsPresenterFactory : Presenter.Factory {
     override fun create(screen: Screen, navigator: Navigator, context: CircuitContext): Presenter<*>? = when (screen) {
-        is EventsScreen.Profile -> presenterOf { EventsPresenter(navigator, EventsScreen.Home) }
-        is EventsScreen.Home -> presenterOf { EventsPresenter(navigator, EventsScreen.Profile) }
+        is EventsScreen.Profile -> presenterOf { EventsPresenter(navigator, EventsScreen.Profile) }
+        is EventsScreen.Home -> presenterOf { EventsPresenter(navigator, EventsScreen.Home) }
         else -> null
     }
 }

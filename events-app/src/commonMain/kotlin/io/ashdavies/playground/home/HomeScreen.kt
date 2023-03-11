@@ -50,7 +50,7 @@ private val <T : Any> LazyPagingItems<T>.isRefreshing: Boolean
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 internal fun HomeScreen(state: EventsState, modifier: Modifier = Modifier) {
-    val viewModel: EventsHomeViewModel = rememberEventsViewModel()
+    val viewModel: HomeViewModel = rememberEventsViewModel()
     val pagingItems: LazyPagingItems<Event> = viewModel
         .pagingData
         .collectAsLazyPagingItems()
