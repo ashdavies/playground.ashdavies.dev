@@ -45,7 +45,7 @@ public fun <T : Any> CollectionReader(
 
         json.decodeFromJsonElement(
             deserializer = deserializer,
-            element = data
+            element = data,
         )
     }
 }
