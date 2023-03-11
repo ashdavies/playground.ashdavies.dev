@@ -17,6 +17,7 @@ dependencies {
     implementation(projects.appCheck.appCheckSdk)
     implementation(projects.cloudFirestore)
     implementation(projects.composeLocals)
+    implementation(projects.eventsAggregator)
     implementation(projects.localRemote)
     implementation(projects.localStorage)
 

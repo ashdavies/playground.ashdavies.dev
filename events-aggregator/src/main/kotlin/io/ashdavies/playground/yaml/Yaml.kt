@@ -7,7 +7,7 @@ import kotlinx.serialization.StringFormat
 import kotlinx.serialization.modules.SerializersModule
 
 @OptIn(ExperimentalSerializationApi::class)
-internal sealed class Yaml(private val configuration: YamlConfig) : StringFormat {
+public sealed class Yaml(private val configuration: YamlConfig) : StringFormat {
 
     override val serializersModule: SerializersModule
         get() = configuration.serializersModule
@@ -18,5 +18,5 @@ internal sealed class Yaml(private val configuration: YamlConfig) : StringFormat
     override fun <T> decodeFromString(deserializer: DeserializationStrategy<T>, string: String): T =
         deserializer.deserialize(YamlDecoder(serializersModule, string))
 
-    companion object Default : Yaml(YamlConfig())
+    public companion object Default : Yaml(YamlConfig())
 }
