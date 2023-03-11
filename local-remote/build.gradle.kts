@@ -22,6 +22,8 @@ kotlin.commonMain {
 
         implementation(libs.bundles.ktor.client)
         implementation(libs.bundles.ktor.serialization)
+
+        implementation(libs.jetbrains.kotlinx.serialization.properties)
     }
 
     kotlin.srcDir(tasks.openApiGenerate)
