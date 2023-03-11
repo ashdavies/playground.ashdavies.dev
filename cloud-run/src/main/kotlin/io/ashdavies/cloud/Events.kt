@@ -1,5 +1,6 @@
 package io.ashdavies.cloud
 
+import io.ashdavies.playground.github.GitHubService
 import io.ashdavies.playground.models.Event
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.call
@@ -10,6 +11,8 @@ import io.ktor.server.routing.post
 import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.todayIn
+import io.ashdavies.playground.Event as LegacyEvent
+import io.ashdavies.playground.EventsSerializer as LegacyEventSerializer
 
 internal fun Route.events() {
     get("/events") {
@@ -20,12 +23,16 @@ internal fun Route.events() {
         val query = CollectionQuery(orderBy = "dateStart", startAt, limit)
         val reader = CollectionReader<Event>(provider, query)
 
-        val output = reader(Event.serializer()) { it.encode("cfp") }
-        call.respond(output)
+        call.respond(reader(Event.serializer()) { it.encode("cfp") })
     }
 
     post("/events:aggregate") {
-        call.respond(HttpStatusCode.NotImplemented)
+        val provider = DocumentProvider { firestore.collection("events") }
+        val reader = CollectionReader<LegacyEvent>(provider, CollectionQuery(limit = 0))
+        val writer = CollectionWriter(provider, LegacyEvent::id)
+
+        writer(reader.invoke(LegacyEventSerializer), GitHubService.getEvents(::LegacyEvent))
+        call.respond(HttpStatusCode.OK)
     }
 }
 

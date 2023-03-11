@@ -1,30 +1,34 @@
-package io.ashdavies.playground.aggregator
+package io.ashdavies.cloud
 
-import io.ashdavies.cloud.DocumentProvider
-import io.ashdavies.cloud.await
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 
-internal fun interface CollectionWriter<T : Any> {
-    suspend operator fun invoke(oldValue: Collection<T>, newValue: Collection<T>)
+public fun interface CollectionWriter<T : Any> {
+    public suspend operator fun invoke(
+        oldValue: Collection<T>,
+        newValue: Collection<T>,
+    )
 }
 
-internal suspend fun <T : Any> CollectionWriter(provider: DocumentProvider, identifier: (T) -> String) =
-    CollectionWriter<T> { oldValue, newValue ->
-        val queue = OperationQueue(
-            oldValue = oldValue.associateBy(identifier),
-            newValue = newValue.associateBy(identifier),
-        )
+@Suppress("NO_EXPLICIT_RETURN_TYPE_IN_API_MODE_WARNING")
+public suspend fun <T : Any> CollectionWriter(
+    provider: DocumentProvider,
+    identifier: (T) -> String,
+) = CollectionWriter<T> { oldValue, newValue ->
+    val queue = OperationQueue(
+        oldValue = oldValue.associateBy(identifier),
+        newValue = newValue.associateBy(identifier),
+    )
 
-        coroutineScope {
-            for (operation in queue) {
-                launch(Dispatchers.IO) {
-                    operation(provider)
-                }.join()
-            }
+    coroutineScope {
+        for (operation in queue) {
+            launch(Dispatchers.IO) {
+                operation(provider)
+            }.join()
         }
     }
+}
 
 private fun <T : Any> OperationQueue(oldValue: Map<String, T>, newValue: Map<String, T>) = buildList {
     val newEntries: Map<String, T> = log(newValue - oldValue.keys) { "Writing ${it.size} new entries..." }
