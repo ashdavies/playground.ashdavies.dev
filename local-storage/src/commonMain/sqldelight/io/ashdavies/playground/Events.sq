@@ -16,8 +16,8 @@ CREATE TABLE event(
 selectAll:
     SELECT *
     FROM event
-    WHERE dateStart >= :startAt
-    ORDER BY dateStart ASC
+    WHERE dateStart <= :startAt
+    ORDER BY dateStart DESC
     LIMIT :limit;
 
 selectById:
