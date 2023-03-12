@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -24,6 +25,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
@@ -58,7 +60,7 @@ internal fun HomeScreen(state: EventsState, modifier: Modifier = Modifier) {
         .collectAsLazyPagingItems()
 
     Scaffold(
-        topBar = { TopAppBar(title = { Text("Events") }) },
+        topBar = { HomeTopAppBar("Events") },
         bottomBar = { EventsBottomBar(state) },
     ) { contentPadding ->
         PlatformSwipeRefresh(
@@ -84,6 +86,28 @@ internal fun HomeScreen(state: EventsState, modifier: Modifier = Modifier) {
             }
         }
     }
+}
+
+@Composable
+@ExperimentalMaterial3Api
+private fun HomeTopAppBar(text: String = "Events", modifier: Modifier = Modifier) {
+    TopAppBar(
+        title = {
+            Row {
+                Text(
+                    modifier = modifier,
+                    text = text,
+                )
+
+                Icon(
+                    painter = rememberVectorPainter(Icons.Filled.ArrowDropDown),
+                    tint = MaterialTheme.colorScheme.onSurface,
+                    //modifier = Modifier.fillMaxHeight(),
+                    contentDescription = null,
+                )
+            }
+        }
+    )
 }
 
 @Composable
