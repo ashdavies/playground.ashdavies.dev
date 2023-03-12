@@ -7,6 +7,12 @@ android {
     namespace = "io.ashdavies.local.storage"
 }
 
+kotlin {
+    commonMain.dependencies {
+        implementation(projects.sqlDriver)
+    }
+}
+
 sqldelight {
     database("PlaygroundDatabase") {
         packageName = "io.ashdavies.playground"

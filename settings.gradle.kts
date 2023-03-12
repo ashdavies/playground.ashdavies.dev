@@ -53,6 +53,7 @@ include(
     ":paging-compose",
     ":parcelable-support",
     ":playground-app",
+    ":sql-driver",
 )
 
 includeBuild("build-plugins")
