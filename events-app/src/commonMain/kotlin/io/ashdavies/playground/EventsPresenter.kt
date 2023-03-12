@@ -16,11 +16,10 @@ import com.slack.circuit.ui
 import io.ashdavies.playground.details.DetailsScreen
 import io.ashdavies.playground.home.HomeScreen
 import io.ashdavies.playground.profile.ProfileScreen
-import io.ashdavies.playground.Event as LegacyEvent
 
 @Parcelize
 public sealed interface EventsScreen : Parcelable, Screen {
-    public data class Details(val event: LegacyEvent) : EventsScreen
+    public data class Details(val eventId: String) : EventsScreen
     public object Profile : EventsScreen
     public object Home : EventsScreen
 }

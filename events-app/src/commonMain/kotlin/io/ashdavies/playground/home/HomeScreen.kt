@@ -78,7 +78,7 @@ internal fun HomeScreen(state: EventsState, modifier: Modifier = Modifier) {
             ) {
                 items(pagingItems) {
                     EventSection(it) { event ->
-                        state.sink(EventsScreen.Details(event))
+                        state.sink(EventsScreen.Details(event.id))
                     }
                 }
             }

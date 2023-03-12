@@ -14,14 +14,23 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import io.ashdavies.playground.EventsEvent
+import io.ashdavies.playground.EventsQueries
 import io.ashdavies.playground.EventsScreen
 import io.ashdavies.playground.EventsState
+import io.ashdavies.playground.LocalPlaygroundDatabase
 
 @Composable
 @ExperimentalMaterial3Api
-internal fun DetailsScreen(state: EventsState, modifier: Modifier = Modifier) {
+internal fun DetailsScreen(
+    state: EventsState,
+    modifier: Modifier = Modifier,
+    queries: EventsQueries = LocalPlaygroundDatabase.current.eventsQueries,
+) {
     check(state.current is EventsScreen.Details)
-    val event = state.current.event
+
+    val event = queries
+        .selectById(state.current.eventId)
+        .executeAsOne()
 
     Scaffold(
         topBar = { DetailsTopAppBar(event.name) { state.sink(EventsEvent.PopEvent) } },
