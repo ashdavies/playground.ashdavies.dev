@@ -50,7 +50,7 @@ private val <T : Any> LazyPagingItems<T>.isRefreshing: Boolean
     get() = loadState.refresh is LoadStateLoading
 
 @Composable
-@OptIn(ExperimentalMaterial3Api::class)
+@ExperimentalMaterial3Api
 internal fun HomeScreen(state: EventsState, modifier: Modifier = Modifier) {
     val viewModel: HomeViewModel = rememberEventsViewModel()
     val pagingItems: LazyPagingItems<Event> = viewModel

@@ -1,5 +1,6 @@
 package io.ashdavies.playground
 
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import com.arkivanov.essenty.parcelable.Parcelable
 import com.arkivanov.essenty.parcelable.Parcelize
@@ -51,6 +52,7 @@ public class EventsPresenterFactory : Presenter.Factory {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 public class EventsUiFactory : Ui.Factory {
     override fun create(screen: Screen, context: CircuitContext): Ui<*>? = when (screen) {
         is EventsScreen.Details -> ui<EventsState> { state, modifier -> DetailsScreen(state, modifier) }

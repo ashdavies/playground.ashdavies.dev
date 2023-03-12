@@ -16,7 +16,7 @@ import io.ashdavies.playground.EventsScreen
 import io.ashdavies.playground.EventsState
 
 @Composable
-@OptIn(ExperimentalMaterial3Api::class)
+@ExperimentalMaterial3Api
 internal fun DetailsScreen(state: EventsState, modifier: Modifier = Modifier) {
     check(state.current is EventsScreen.Details)
     val event = state.current.event
@@ -25,7 +25,6 @@ internal fun DetailsScreen(state: EventsState, modifier: Modifier = Modifier) {
         topBar = { DetailsTopAppBar(event.name) { state.sink(EventsEvent.PopEvent) } },
         modifier = modifier,
     ) { contentPadding ->
-
     }
 }
 
@@ -34,7 +33,7 @@ internal fun DetailsScreen(state: EventsState, modifier: Modifier = Modifier) {
 private fun DetailsTopAppBar(title: String, onBack: () -> Unit) {
     TopAppBar(
         navigationIcon = { BackIconButton(onBack) },
-        title = { Text(title) }
+        title = { Text(title) },
     )
 }
 
