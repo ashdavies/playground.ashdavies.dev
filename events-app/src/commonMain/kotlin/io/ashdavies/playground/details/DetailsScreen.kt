@@ -5,11 +5,13 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import io.ashdavies.playground.EventsEvent
 import io.ashdavies.playground.EventsScreen
@@ -39,8 +41,9 @@ private fun DetailsTopAppBar(title: String, onBack: () -> Unit) {
 
 @Composable
 private fun BackIconButton(onClick: () -> Unit = { }) {
-    IconButton(onClick = onClick) {
+    IconButton(onClick) {
         Image(
+            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurface),
             painter = rememberVectorPainter(Icons.Filled.ArrowBack),
             contentDescription = null,
         )
