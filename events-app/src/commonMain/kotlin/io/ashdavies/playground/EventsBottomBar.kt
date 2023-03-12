@@ -9,6 +9,7 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ColorFilter
 
 @Composable
 internal fun EventsBottomBar(
@@ -35,15 +36,27 @@ internal fun EventsBottomBar(
         modifier = modifier,
     ) {
         NavigationBarItem(
-            icon = { Image(Icons.Default.Home, null) },
             onClick = { onClick(EventsScreen.Home) },
             selected = selected is EventsScreen.Home,
+            icon = {
+                Image(
+                    colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurface),
+                    imageVector = Icons.Default.Home,
+                    contentDescription = null,
+                )
+            },
         )
 
         NavigationBarItem(
-            icon = { Image(Icons.Default.Person, null) },
             onClick = { onClick(EventsScreen.Profile) },
             selected = selected is EventsScreen.Profile,
+            icon = {
+                Image(
+                    colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurface),
+                    imageVector = Icons.Default.Person,
+                    contentDescription = null,
+                )
+            },
         )
     }
 }
