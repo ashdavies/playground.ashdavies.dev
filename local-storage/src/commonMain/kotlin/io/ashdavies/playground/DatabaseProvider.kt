@@ -4,19 +4,22 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ProvidedValue
 import androidx.compose.runtime.compositionLocalOf
 
-public val LocalPlaygroundDatabase: ComposableCompositionLocal<PlaygroundDatabase> = composableCompositionLocalOf {
-    DatabaseFactory(PlaygroundDatabase.Schema) { PlaygroundDatabase(it) }
+@Suppress("NO_EXPLICIT_RETURN_TYPE_IN_API_MODE_WARNING")
+public val LocalPlaygroundDatabase = ComposableCompositionLocal {
+    DatabaseFactory(
+        factory = PlaygroundDatabase::invoke,
+        schema = PlaygroundDatabase.Schema,
+        config = getDriverConfig(),
+    )
 }
 
-public interface ComposableCompositionLocal<T> {
-    public infix fun provides(value: T?): ProvidedValue<T?>
-    @get:Composable public val current: T
-}
-
-private fun <T> composableCompositionLocalOf(factory: @Composable () -> T) = object : ComposableCompositionLocal<T> {
+public class ComposableCompositionLocal<T>(private val factory: @Composable () -> T) {
 
     private val local = compositionLocalOf<T?> { null }
-    override val current: T @Composable get() = local.current ?: factory()
 
-    override infix fun provides(value: T?): ProvidedValue<T?> = local.provides(value)
+    public val current: T @Composable get() = local.current ?: factory()
+
+    public infix fun provides(value: T?): ProvidedValue<T?> {
+        return local.provides(value)
+    }
 }
