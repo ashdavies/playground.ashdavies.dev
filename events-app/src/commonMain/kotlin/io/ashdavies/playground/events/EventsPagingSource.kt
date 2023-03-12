@@ -14,8 +14,6 @@ internal class EventsPagingSource(private val queries: EventsQueries) : PagingSo
             limit = params.loadSize.toLong(),
         ).executeAsList()
 
-        println("Loading Events source with ${query.size} entries...")
-
         val nextKey = query
             .lastOrNull()
             ?.dateStart

@@ -35,8 +35,10 @@ import io.ashdavies.paging.collectAsLazyPagingItems
 import io.ashdavies.paging.items
 import io.ashdavies.playground.Event
 import io.ashdavies.playground.EventsBottomBar
+import io.ashdavies.playground.EventsScreen
 import io.ashdavies.playground.EventsState
 import io.ashdavies.playground.android.fade
+import io.ashdavies.playground.invoke
 import io.ashdavies.playground.platform.PlatformSwipeRefresh
 
 private val <T : Any> LazyPagingItems<T>.errorMessage: String?
@@ -75,8 +77,8 @@ internal fun HomeScreen(state: EventsState, modifier: Modifier = Modifier) {
                     .padding(top = 12.dp),
             ) {
                 items(pagingItems) {
-                    EventSection(it) {
-                        println("Clicked ${it?.name}")
+                    EventSection(it) { event ->
+                        state.sink(EventsScreen.Details(event))
                     }
                 }
             }
@@ -85,11 +87,12 @@ internal fun HomeScreen(state: EventsState, modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun EventSection(event: Event?, onClick: () -> Unit) {
+private fun EventSection(event: Event?, onClick: (Event) -> Unit) {
     Box(Modifier.padding(horizontal = 16.dp, vertical = 8.dp)) {
         Button(
+            onClick = { if (event != null) onClick(event) },
             modifier = Modifier.fillMaxWidth(),
-            onClick = onClick,
+            enabled = event != null,
         ) {
             Row {
                 Icon(
