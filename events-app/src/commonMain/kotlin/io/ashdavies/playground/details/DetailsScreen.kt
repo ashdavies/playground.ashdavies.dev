@@ -1,6 +1,9 @@
 package io.ashdavies.playground.details
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -36,6 +39,16 @@ internal fun DetailsScreen(
         topBar = { DetailsTopAppBar(event.name) { state.sink(EventsEvent.PopEvent) } },
         modifier = modifier,
     ) { contentPadding ->
+        Column(modifier = modifier.padding(contentPadding)) {
+            Text(event.location)
+
+            Row {
+                Text(event.dateStart)
+                Text(event.dateEnd)
+            }
+
+            Text(event.website)
+        }
     }
 }
 
