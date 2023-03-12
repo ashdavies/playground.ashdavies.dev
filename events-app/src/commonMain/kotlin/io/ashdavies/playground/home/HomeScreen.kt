@@ -102,11 +102,11 @@ private fun HomeTopAppBar(text: String = "Events", modifier: Modifier = Modifier
                 Icon(
                     painter = rememberVectorPainter(Icons.Filled.ArrowDropDown),
                     tint = MaterialTheme.colorScheme.onSurface,
-                    //modifier = Modifier.fillMaxHeight(),
+                    // modifier = Modifier.fillMaxHeight(),
                     contentDescription = null,
                 )
             }
-        }
+        },
     )
 }
 
