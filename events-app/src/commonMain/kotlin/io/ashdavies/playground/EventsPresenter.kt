@@ -1,6 +1,5 @@
 package io.ashdavies.playground
 
-import io.ashdavies.playground.Event as LegacyEvent
 import androidx.compose.runtime.Composable
 import com.arkivanov.essenty.parcelable.Parcelable
 import com.arkivanov.essenty.parcelable.Parcelize
@@ -11,12 +10,12 @@ import com.slack.circuit.Navigator
 import com.slack.circuit.Presenter
 import com.slack.circuit.Screen
 import com.slack.circuit.Ui
-import com.slack.circuit.onNavEvent
 import com.slack.circuit.presenterOf
 import com.slack.circuit.ui
 import io.ashdavies.playground.details.DetailsScreen
 import io.ashdavies.playground.home.HomeScreen
 import io.ashdavies.playground.profile.ProfileScreen
+import io.ashdavies.playground.Event as LegacyEvent
 
 @Parcelize
 public sealed interface EventsScreen : Parcelable, Screen {
@@ -33,6 +32,7 @@ internal data class EventsState(
 internal sealed interface EventsEvent : CircuitUiEvent {
     data class BottomNav(val screen: EventsScreen) : EventsEvent
     data class NavEvent(val screen: EventsScreen) : EventsEvent
+    object PopEvent : EventsEvent
 }
 
 @Composable
@@ -40,6 +40,7 @@ internal fun EventsPresenter(navigator: Navigator, screen: EventsScreen): Events
     when (event) {
         is EventsEvent.BottomNav -> navigator.resetRoot(event.screen)
         is EventsEvent.NavEvent -> navigator.goTo(event.screen)
+        is EventsEvent.PopEvent -> navigator.pop()
     }
 }
 
