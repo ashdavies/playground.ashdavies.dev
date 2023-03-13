@@ -15,6 +15,10 @@
         "https://plugins.gradle.org/m2/",
         "https://repo.maven.apache.org/maven2"
       ]
+    },
+    {
+      "matchPackageNames": ["renovatebot/github-action"],
+      "extends": ["schedule:monthly"]
     }
   ],
   "repositories": [
