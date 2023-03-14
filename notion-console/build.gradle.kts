@@ -2,16 +2,25 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinJvmCompilation
 
 plugins {
     id("io.ashdavies.kotlin")
+    id("io.ashdavies.sql")
+
     application
+}
+
+application {
+    mainClass.set("io.ashdavies.notion.MainKt")
 }
 
 kotlin {
     commonMain.dependencies {
         implementation(projects.authOauth)
+        implementation(projects.composeLocals)
         implementation(projects.localStorage)
+        implementation(projects.sqlDriver)
 
         implementation(libs.bundles.jetbrains.kotlinx)
         implementation(libs.bundles.ktor.client)
+
         implementation(libs.jakeWharton.mosaic.runtime)
         implementation(libs.jetbrains.kotlinx.cli)
         implementation(libs.jraf.klibnotion)
@@ -38,6 +47,9 @@ configurations.all {
     }
 }
 
-application {
-    mainClass.set("io.ashdavies.notion.MainKt")
+sqldelight {
+    database("PlaygroundDatabase") {
+        dependency(projects.localStorage.dependencyProject)
+        packageName = "io.ashdavies.notion"
+    }
 }

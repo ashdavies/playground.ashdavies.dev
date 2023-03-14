@@ -14,5 +14,3 @@ INSERT INTO token VALUES ?;
 
 deleteAll:
 DELETE FROM token;
-
-
