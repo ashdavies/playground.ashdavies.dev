@@ -145,7 +145,7 @@ android-application = { id = "com.android.application", version.ref = "google-an
 android-library = { id = "com.android.library", version.ref = "google-android" }
 apollo-graphql = { id = "com.apollographql.apollo", version.ref = "apollo-graphql" }
 cash-molecule = { id = "app.cash.molecule", version = "0.8.0" }
-diffplug-spotless = "com.diffplug.spotless:6.16.0"
+diffplug-spotless = "com.diffplug.spotless:6.17.0"
 google-cloud-jib = "com.google.cloud.tools.jib:3.3.1"
 google-services = "com.google.gms.google-services:4.3.15"
 gradle-doctor = "com.osacky.doctor:0.8.1"
