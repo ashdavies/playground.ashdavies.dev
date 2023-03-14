@@ -3,6 +3,7 @@ import com.android.build.api.dsl.VariantDimension
 plugins {
     id("io.ashdavies.default")
     id("io.ashdavies.parcelable")
+    id("io.ashdavies.sql")
 }
 
 android {
@@ -17,6 +18,7 @@ android {
 kotlin {
     commonMain.dependencies {
         implementation(projects.appCheck.appCheckClient)
+        implementation(projects.composeLocals)
         implementation(projects.pagingCompose)
 
         implementation(projects.authOauth)
@@ -54,5 +56,12 @@ kotlin {
 
     androidDebug.dependencies {
         implementation(libs.google.firebase.appcheck.debug)
+    }
+}
+
+sqldelight {
+    database("PlaygroundDatabase") {
+        dependency(projects.localStorage.dependencyProject)
+        packageName = "io.ashdavies.events"
     }
 }
