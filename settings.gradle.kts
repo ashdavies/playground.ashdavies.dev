@@ -50,7 +50,6 @@ include(
     ":local-remote",
     ":local-storage",
     ":notion-console",
-    ":paging-compose",
     ":parcelable-support",
     ":playground-app",
     ":sql-driver",
