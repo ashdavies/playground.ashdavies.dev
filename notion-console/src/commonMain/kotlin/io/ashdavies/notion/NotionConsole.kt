@@ -7,7 +7,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.produceState
 import io.ashdavies.notion.compose.LocalArgParser
-import io.ashdavies.notion.compose.ProvideNotionClient
+import io.ashdavies.notion.compose.NotionCompositionLocals
 import io.ashdavies.notion.compose.rememberTokenQueries
 import io.ashdavies.playground.TokenQueries
 import kotlinx.cli.ArgParser
@@ -27,7 +27,7 @@ internal fun NotionConsole(args: Array<String>, onState: (NotionState) -> Unit =
             ?: Authentication()
     }
 
-    ProvideNotionClient(authentication) {
+    NotionCompositionLocals(authentication) {
         SearchCommand { onState(it) }
         AuthCommand { onState(it) }
     }

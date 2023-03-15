@@ -1,8 +1,5 @@
 package io.ashdavies.check
 
-import com.auth0.jwt.exceptions.JWTVerificationException
-import io.ashdavies.playground.cloud.HttpException
-
 private const val APP_CHECK_ENDPOINT = "https://firebaseappcheck.googleapis.com/"
 
 public interface AppCheckVerifier {
@@ -33,23 +30,18 @@ internal fun AppCheckVerifier(
             issuer: String,
             appId: String,
         ) -> T,
-    ): T = try {
+    ): T {
         val jwt = Jwt.verify(GoogleAlgorithm(cryptoSigner), token) {
             issuer = "$APP_CHECK_ENDPOINT$projectNumber"
         }
 
-        mapper(
+        return mapper(
             /* audience */ jwt.audience,
             /* expiresAt */ jwt.expiresAtAsInstant.epochSecond,
             /* issuedAt */ jwt.issuedAtAsInstant.epochSecond,
             /* subject */ jwt.subject,
             /* issuer */ jwt.issuer,
             /* appId */ jwt.subject,
-        )
-    } catch (exception: JWTVerificationException) {
-        throw HttpException.InvalidArgument(
-            message = requireNotNull(exception.message),
-            cause = exception,
         )
     }
 }

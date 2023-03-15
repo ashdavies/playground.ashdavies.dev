@@ -53,11 +53,19 @@ public class EventsPresenterFactory : Presenter.Factory {
 
 @OptIn(ExperimentalMaterial3Api::class)
 public class EventsUiFactory : Ui.Factory {
-    override fun create(screen: Screen, context: CircuitContext): Ui<*>? = when (screen) {
-        is EventsScreen.Details -> ui<EventsState> { state, modifier -> DetailsScreen(state, modifier) }
-        is EventsScreen.Profile -> ui<EventsState> { state, modifier -> ProfileScreen(state, modifier) }
-        is EventsScreen.Home -> ui<EventsState> { state, modifier -> HomeScreen(state, modifier) }
-        else -> null
+    override fun create(screen: Screen, context: CircuitContext): Ui<*>? {
+        val provider: Ui<EventsState> = when (screen) {
+            is EventsScreen.Details -> ui { state, modifier -> DetailsScreen(state, modifier) }
+            is EventsScreen.Profile -> ui { state, modifier -> ProfileScreen(state, modifier) }
+            is EventsScreen.Home -> ui { state, modifier -> HomeScreen(state, modifier) }
+            else -> return null
+        }
+
+        return ui<EventsState> { state, modifier ->
+            EventsCompositionLocals {
+                provider.Content(state, modifier)
+            }
+        }
     }
 }
 
