@@ -30,6 +30,9 @@ dependencies {
     implementation(libs.androidx.compose.foundation)
     implementation(libs.google.accompanist.systemuicontroller)
 
-    implementation(projects.appLauncher.common)
+    implementation(projects.appLauncher.common) {
+        exclude(libs.paging.compose.common)
+    }
+
     implementation(projects.firebaseCompose)
 }
