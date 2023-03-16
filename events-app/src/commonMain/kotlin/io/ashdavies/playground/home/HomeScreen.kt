@@ -30,11 +30,11 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
 import app.cash.paging.LoadStateError
 import app.cash.paging.LoadStateLoading
-import io.ashdavies.paging.LazyPagingItems
-import io.ashdavies.paging.collectAsLazyPagingItems
-import io.ashdavies.paging.items
+import app.cash.paging.items
 import io.ashdavies.playground.Event
 import io.ashdavies.playground.EventsBottomBar
 import io.ashdavies.playground.EventsScreen

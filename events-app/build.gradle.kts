@@ -19,7 +19,6 @@ kotlin {
     commonMain.dependencies {
         implementation(projects.appCheck.appCheckClient)
         implementation(projects.composeLocals)
-        implementation(projects.pagingCompose)
 
         implementation(projects.authOauth)
         implementation(projects.localRemote)
@@ -27,6 +26,7 @@ kotlin {
         implementation(projects.playgroundApp)
 
         implementation(libs.bundles.ktor.client)
+        implementation(libs.bundles.paging.compose)
         implementation(libs.bundles.slack.circuit)
 
         implementation(libs.arkivanov.parcelable)
