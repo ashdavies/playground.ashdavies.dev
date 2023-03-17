@@ -47,6 +47,7 @@ include(
     ":google-cloud",
     ":local-remote",
     ":local-storage",
+    ":micro-yaml",
     ":notion-console",
     ":parcelable-support",
     ":playground-app",
