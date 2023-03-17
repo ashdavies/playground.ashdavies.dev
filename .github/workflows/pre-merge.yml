@@ -85,26 +85,24 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
             })
+  
+            const message = "Build scan published to"
+            const url = /https:\/\/gradle\.com\/s\/\w+/
+            
+            const pattern = new RegExp(`${message} ${url.source}`)
             
             for (const it of comments.data) {
-              console.log(it)
-            }
-            
-            for (const it of comments.data.filter(it => it.user.login == "github-actions[bot]")) {
-              console.log(it)
-              console.log(it.body.startsWith("Build scan published to https://gradle.com/s/"))
-            
-              if (it.body.startsWith("Build scan published to https://gradle.com/s/")) {
+              if (it.user.login.endsWith("[bot]") && it.body.match(pattern)) {
                 await github.rest.issues.deleteComment({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
-                  comment_id: comment.id,
+                  comment_id: it.id,
                 })
               }
             }
             
             await github.rest.issues.createComment({
-              body: 'Build scan published to ${{ steps.gradle_build.outputs.build-scan-url }}',
+              body: `${message} ${{ steps.gradle_build.outputs.build-scan-url }}`,
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
