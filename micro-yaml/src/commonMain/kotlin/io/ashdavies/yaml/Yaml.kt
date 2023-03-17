@@ -33,7 +33,7 @@ public sealed class Yaml(configuration: YamlConfig) : StringFormat {
 
 @ExperimentalSerializationApi
 public data class YamlConfig(
-    val serializersModule: SerializersModule = EmptySerializersModule()
+    val serializersModule: SerializersModule = EmptySerializersModule(),
 )
 
 @ExperimentalSerializationApi
