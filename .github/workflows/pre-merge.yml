@@ -86,6 +86,10 @@ jobs:
               repo: context.repo.repo,
             })
             
+            for (const it in comments.data) {
+              console.log(it)
+            }
+            
             for (const it in comments.data.filter(it => it.user.login == "github-actions[bot]")) {
               console.log(it)
               console.log(it.body.startsWith("Build scan published to https://gradle.com/s/"))
