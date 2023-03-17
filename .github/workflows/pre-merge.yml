@@ -85,8 +85,11 @@ jobs:
               repo: context.repo.repo,
             })
             
-            for (const comment of comments.data) {
-              console.log("Found comment ${comment}")
+            const self = await github.rest.users.getAuthenticated()
+            const authored = comments.data.filter(it => it.user == self)
+            
+            for (const comment of authored) {
+              console.log("Found comment ${comment.body_text}")
             }
             
             await github.rest.issues.createComment({
