@@ -112,7 +112,7 @@ oolong = "org.oolong-kt:oolong:2.1.1"
 paging-compose-common = { module = "app.cash.paging:paging-compose-common", version.ref = "paging-compose" }
 paging-compose-runtime = { module = "app.cash.paging:paging-runtime-composeui", version.ref = "paging-compose" }
 
-qos-logbackClassic = "ch.qos.logback:logback-classic:1.4.5"
+qos-logbackClassic = "ch.qos.logback:logback-classic:1.4.6"
 
 slack-circuit-backstack = { module = "com.slack.circuit:circuit-backstack", version.ref = "slack-circuit" }
 slack-circuit-core = { module = "com.slack.circuit:circuit-core", version.ref = "slack-circuit" }
