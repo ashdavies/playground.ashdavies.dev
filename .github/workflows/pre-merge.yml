@@ -48,10 +48,11 @@ jobs:
         if: ${{ false }}
 
       - name: Encrypt Google Services config file
-        run: find . -type f -name "google-services.json" -exec sh -c 'openssl aes-256-cbc -md sha256 -salt -in "$0" -out "${0%.json*}.aes" -k "${GOOGLE_SERVICES_PASSPHRASE}"' {} \;
         if: ${{ false }}
+        run: find . -type f -name "google-services.json" -exec sh -c 'openssl aes-256-cbc -md sha256 -salt -in "$0" -out "${0%.json*}.aes" -k "${GOOGLE_SERVICES_PASSPHRASE}"' {} \;
 
       - name: Decrypt Google Services
+        if: ${{ !contains(github.event.pull_request.labels.*.name, 'Dry Run') }}
         env:
           GOOGLE_SERVICES_PASSPHRASE: ${{ secrets.google_services_passphrase }}
         run: find . -type f -name "google-services.aes" -exec sh -c 'openssl aes-256-cbc -md sha256 -d -in "$0" -out "${0%.aes*}.json" -k "${GOOGLE_SERVICES_PASSPHRASE}"' {} \;
@@ -67,7 +68,11 @@ jobs:
           PLAYGROUND_API_KEY: ${{ secrets.PLAYGROUND_API_KEY }}
         with:
           gradle-home-cache-cleanup: true
-          arguments: build --console=plain --info
+          arguments: |
+            build
+              ${{ (contains(github.event.pull_request.labels.*.name, 'Dry Run') && '--dry-run' || '') }}
+              --console=plain
+              --info
 
       - name: Gradle Scan Link
         uses: actions/github-script@v6
@@ -75,18 +80,39 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            github.rest.issues.createComment({
+            const comments = await github.rest.issues.listComments({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: 'Build scan published to ${{ steps.gradle_build.outputs.build-scan-url }}'
+            })
+  
+            const message = "Build scan published to"
+            const url = /https:\/\/gradle\.com\/s\/\w+/
+            
+            const pattern = new RegExp(`${message} ${url.source}`)
+            
+            for (const it of comments.data) {
+              if (it.user.login.endsWith("[bot]") && it.body.match(pattern)) {
+                await github.rest.issues.deleteComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  comment_id: it.id,
+                })
+              }
+            }
+            
+            await github.rest.issues.createComment({
+              body: `${message} ${{ steps.gradle_build.outputs.build-scan-url }}`,
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
             })
 
       - name: Produce Test Summary
         uses: test-summary/action@v2
         with:
           paths: "**/build/test-results/test/TEST-*.xml"
-        if: always()
+        if: ${{ !contains(github.event.pull_request.labels.*.name, 'Dry Run') }}
 
       - name: Upload Test Report
         uses: actions/upload-artifact@v3
@@ -94,4 +120,4 @@ jobs:
           name: test-report
           path: "**/build/reports/tests"
           if-no-files-found: error
-        if: always()
+        if: ${{ !contains(github.event.pull_request.labels.*.name, 'Dry Run') }}
