@@ -88,10 +88,13 @@ jobs:
             
             const authored = comments.data.filter(it => {
               // it.user.login == context.actor # "github-actions[bot]" != "ashdavies"
+              console.log(it.body.startsWith("Build scan published to https://gradle.com/s/"))
+              console.log(it.body)
+            
               it.body.startsWith("Build scan published to https://gradle.com/s/")
             })
             
-            console.log(github.auth())
+            console.log(github.rest.users.getAuthenticated())
             
             for (const comment of authored) {
               await github.rest.issues.deleteComment({
