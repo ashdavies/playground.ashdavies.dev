@@ -35,7 +35,6 @@ jobs:
 
       - name: Google Cloud Auth
         id: google_cloud_auth
-        if: ${{ !contains(github.event.pull_request.labels.*.name, 'Dry Run') }}
         uses: google-github-actions/auth@v1
         with:
           workload_identity_provider: ${{ secrets.GOOGLE_WORKLOAD_IDENTITY }}
