@@ -35,6 +35,7 @@ jobs:
 
       - name: Google Cloud Auth
         id: google_cloud_auth
+        if: ${{ !contains(github.event.pull_request.labels.*.name, 'Dry Run') }}
         uses: google-github-actions/auth@v1
         with:
           workload_identity_provider: ${{ secrets.GOOGLE_WORKLOAD_IDENTITY }}
@@ -48,10 +49,11 @@ jobs:
         if: ${{ false }}
 
       - name: Encrypt Google Services config file
-        run: find . -type f -name "google-services.json" -exec sh -c 'openssl aes-256-cbc -md sha256 -salt -in "$0" -out "${0%.json*}.aes" -k "${GOOGLE_SERVICES_PASSPHRASE}"' {} \;
         if: ${{ false }}
+        run: find . -type f -name "google-services.json" -exec sh -c 'openssl aes-256-cbc -md sha256 -salt -in "$0" -out "${0%.json*}.aes" -k "${GOOGLE_SERVICES_PASSPHRASE}"' {} \;
 
       - name: Decrypt Google Services
+        if: ${{ !contains(github.event.pull_request.labels.*.name, 'Dry Run') }}
         env:
           GOOGLE_SERVICES_PASSPHRASE: ${{ secrets.google_services_passphrase }}
         run: find . -type f -name "google-services.aes" -exec sh -c 'openssl aes-256-cbc -md sha256 -d -in "$0" -out "${0%.aes*}.json" -k "${GOOGLE_SERVICES_PASSPHRASE}"' {} \;
@@ -85,8 +87,9 @@ jobs:
               repo: context.repo.repo,
             })
             
-            const self = await github.rest.users.getAuthenticated()
-            const authored = comments.data.filter(it => it.user == self)
+            const authored = comments.data.filter(it => 
+              it.user.login == github.context.actor
+            )
             
             for (const comment of authored) {
               console.log("Found comment ${comment.body_text}")
