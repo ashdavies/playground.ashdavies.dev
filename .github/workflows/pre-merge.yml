@@ -100,7 +100,7 @@ jobs:
         uses: test-summary/action@v2
         with:
           paths: "**/build/test-results/test/TEST-*.xml"
-        if: always()
+        if: ${{ !contains(github.event.pull_request.labels.*.name, 'Dry Run') }}
 
       - name: Upload Test Report
         uses: actions/upload-artifact@v3
@@ -108,4 +108,4 @@ jobs:
           name: test-report
           path: "**/build/reports/tests"
           if-no-files-found: error
-        if: always()
+        if: ${{ !contains(github.event.pull_request.labels.*.name, 'Dry Run') }}
