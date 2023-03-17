@@ -86,7 +86,9 @@ jobs:
               repo: context.repo.repo,
             })
             
-            for (const comment of comments.data.filter(it => it.user.login == "github-actions[bot]")) {
+            const authored = comments.data.filter(it => it.user.login == "github-actions[bot]")
+            
+            authored.forEach(it => {
               console.log(it.body.startsWith("Build scan published to https://gradle.com/s/"))
               console.log(it)
             
@@ -97,7 +99,7 @@ jobs:
                   comment_id: comment.id,
                 })
               }
-            }
+            })
             
             await github.rest.issues.createComment({
               body: 'Build scan published to ${{ steps.gradle_build.outputs.build-scan-url }}',
