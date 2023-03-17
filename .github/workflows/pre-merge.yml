@@ -91,7 +91,7 @@ jobs:
               it.body.startsWith("Build scan published to https://gradle.com/s/")
             })
             
-            console.log(github)
+            console.log(github.auth())
             
             for (const comment of authored) {
               await github.rest.issues.deleteComment({
