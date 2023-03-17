@@ -87,7 +87,7 @@ jobs:
             })
             
             const authored = comments.data.filter(it => 
-              it.user.login == github.context.actor
+              it.user.login == context.actor
             )
             
             for (const comment of authored) {
