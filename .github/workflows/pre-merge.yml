@@ -85,7 +85,7 @@ jobs:
               repo: context.repo.repo,
             })
             
-            for (const comment.data of comments) {
+            for (const comment of comments.data) {
               console.log("Found comment ${comment}")
             }
             
