@@ -86,9 +86,7 @@ jobs:
               repo: context.repo.repo,
             })
             
-            const authored = comments.data.filter(it => it.user.login == "github-actions[bot]")
-            
-            authored.forEach(it => {
+            for (const it in comments.data.filter(it => it.user.login == "github-actions[bot]")) {
               console.log(it.body.startsWith("Build scan published to https://gradle.com/s/"))
               console.log(it)
             
