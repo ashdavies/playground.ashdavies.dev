@@ -97,7 +97,7 @@ jobs:
                   comment_id: comment.id,
                 })
               }
-            })
+            }
             
             await github.rest.issues.createComment({
               body: 'Build scan published to ${{ steps.gradle_build.outputs.build-scan-url }}',
