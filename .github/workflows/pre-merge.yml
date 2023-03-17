@@ -86,8 +86,10 @@ jobs:
               repo: context.repo.repo,
             })
             
+            console.log(context)
+            
             const authored = comments.data.filter(it => {
-              console.log("it.user.login [${it.user.login}] == context.actor [${context.actor}]")
+              console.log(`it.user.login [${it.user.login}] == context.actor [${context.actor}]`)  
               console.log(it)
               it.user.login == context.actor
             })
