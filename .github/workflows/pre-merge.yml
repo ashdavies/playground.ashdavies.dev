@@ -86,22 +86,17 @@ jobs:
               repo: context.repo.repo,
             })
             
-            const authored = comments.data.filter(it => {
-              // it.user.login == context.actor # "github-actions[bot]" != "ashdavies"
+            for (const comment of comments.data.filter(it => it.user.login == "github-actions[bot]")) {
               console.log(it.body.startsWith("Build scan published to https://gradle.com/s/"))
-              console.log(it.body)
+              console.log(it)
             
-              it.body.startsWith("Build scan published to https://gradle.com/s/")
-            })
-            
-            console.log(github.rest.users.getAuthenticated())
-            
-            for (const comment of authored) {
-              await github.rest.issues.deleteComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                comment_id: comment.id,
-              })
+              if (it.body.startsWith("Build scan published to https://gradle.com/s/")) {
+                await github.rest.issues.deleteComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  comment_id: comment.id,
+                })
+              }
             }
             
             await github.rest.issues.createComment({
