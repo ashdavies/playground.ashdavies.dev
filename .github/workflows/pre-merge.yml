@@ -58,7 +58,7 @@ jobs:
         run: find . -type f -name "google-services.aes" -exec sh -c 'openssl aes-256-cbc -md sha256 -d -in "$0" -out "${0%.aes*}.json" -k "${GOOGLE_SERVICES_PASSPHRASE}"' {} \;
 
       - name: Run Gradle Tasks
-        id: gradle_build
+        id: gradle
         uses: gradle/gradle-build-action@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -76,7 +76,7 @@ jobs:
 
       - name: Gradle Scan Link
         uses: actions/github-script@v6
-        if: github.event_name == 'pull_request'
+        if: ${{ steps.gradle.outputs.build-scan-url }}
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
@@ -92,8 +92,10 @@ jobs:
               await comments.delete(context, github, comment.id)
             }
             
-            const body = `${message} ${{ steps.gradle_build.outputs.build-scan-url }}` 
+            const body = `${message} ${{ steps.gradle.outputs.build-scan-url }}` 
             await comments.create(context, github, body)
+            
+            console.log(${{join(steps.gradle.outputs.*, '\n')}})
 
       - name: Produce Test Summary
         uses: test-summary/action@v2
