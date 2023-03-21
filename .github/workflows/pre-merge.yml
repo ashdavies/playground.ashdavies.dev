@@ -95,7 +95,7 @@ jobs:
             const body = `${message} ${{ steps.gradle.outputs.build-scan-url }}` 
             await comments.create(context, github, body)
             
-            console.log(${{join(steps.gradle.outputs.*, '\n')}})
+            // console.log(${{join(steps.gradle.outputs.*, ', ')}})
 
       - name: Produce Test Summary
         uses: test-summary/action@v2
