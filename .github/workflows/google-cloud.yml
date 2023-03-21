@@ -57,21 +57,23 @@ jobs:
           password: ${{ steps.google_cloud_auth.outputs.access_token }}
           registry: europe-west1-docker.pkg.dev
 
-      - name: Create Terraform Plan
+      - name: Setup Gradle Build
         uses: gradle/gradle-build-action@v2
+
+      - name: Create Terraform Plan
+        id: plan
         env:
           GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
         if: github.event_name == 'pull_request'
-        with:
-          gradle-home-cache-cleanup: true
-          arguments: |
-            google-cloud:terraformPlan
-              --no-configuration-cache
-              --console=plain
-              --info
+        run: |
+          output = $(./gradlew google-cloud:terraformPlan
+            --no-configuration-cache
+            --console=plain
+            --info)
+          
+          echo $output
 
       - name: Containerize Cloud Run
-        uses: gradle/gradle-build-action@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GOOGLE_PROJECT_API_KEY: ${{ secrets.google_project_api_key }}
@@ -79,25 +81,20 @@ jobs:
           MOBILE_SDK_APP_ID: ${{ secrets.mobile_sdk_app_id }}
           PLAYGROUND_API_KEY: ${{ secrets.PLAYGROUND_API_KEY }}
         if: github.ref == 'refs/heads/main'
-        with:
-          gradle-home-cache-cleanup: true
-          arguments: |
-            cloud-run:jib
-              --image=europe-west1-docker.pkg.dev/${{ steps.google_cloud_auth.outputs.project_id }}/cloud-run-source-deploy/playground.ashdavies.dev
-              --no-configuration-cache
-              --console=plain
-              --info
+        run: |
+          ./gradlew cloud-run:jib
+            --image=europe-west1-docker.pkg.dev/${{ steps.google_cloud_auth.outputs.project_id }}/cloud-run-source-deploy/playground.ashdavies.dev
+            --no-configuration-cache
+            --console=plain
+            --info
 
       - name: Apply Terraform Config
-        uses: gradle/gradle-build-action@v2
         env:
           GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
         if: github.ref == 'refs/heads/main'
-        with:
-          gradle-home-cache-cleanup: true
-          arguments: |
-            google-cloud:terraformApply
-              --no-configuration-cache
-              --console=plain
-              -Ptf.apply
-              --info
+        run: |
+          ./gradlew google-cloud:terraformApply
+            --no-configuration-cache
+            --console=plain
+            -Ptf.apply
+            --info
