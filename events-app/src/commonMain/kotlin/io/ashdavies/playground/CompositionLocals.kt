@@ -6,19 +6,29 @@ import androidx.compose.runtime.compositionLocalOf
 import io.ashdavies.compose.noLocalProvidedFor
 import io.ashdavies.events.PlaygroundDatabase
 
+@RequiresOptIn(
+    message = "The database and driver should only be created a single time.",
+    level = RequiresOptIn.Level.WARNING,
+)
+@Retention(AnnotationRetention.BINARY)
+internal annotation class MultipleReferenceWarning
+
 internal val LocalPlaygroundDatabase = compositionLocalOf<PlaygroundDatabase> {
     noLocalProvidedFor("LocalPlaygroundDatabase")
 }
 
 @Composable
+@OptIn(MultipleReferenceWarning::class)
 internal fun EventsCompositionLocals(content: @Composable () -> Unit) {
-    val database = rememberDatabase(
-        schema = PlaygroundDatabase.Schema,
-        factory = PlaygroundDatabase::invoke,
-    )
-
     CompositionLocalProvider(
-        LocalPlaygroundDatabase provides database,
+        LocalPlaygroundDatabase provides rememberPlaygroundDatabase(),
         content = content,
     )
 }
+
+@Composable
+@MultipleReferenceWarning
+internal fun rememberPlaygroundDatabase(): PlaygroundDatabase = rememberDatabase(
+    factory = PlaygroundDatabase::invoke,
+    schema = PlaygroundDatabase.Schema,
+)

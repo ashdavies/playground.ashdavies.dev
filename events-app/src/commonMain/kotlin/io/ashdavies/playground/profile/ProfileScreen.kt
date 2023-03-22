@@ -27,6 +27,8 @@ import androidx.compose.ui.unit.dp
 import io.ashdavies.http.isLoading
 import io.ashdavies.playground.EmptyPainter
 import io.ashdavies.playground.EventsBottomBar
+import io.ashdavies.playground.EventsEvent
+import io.ashdavies.playground.EventsScreen
 import io.ashdavies.playground.EventsState
 import io.ashdavies.playground.android.FlowRow
 import io.ashdavies.playground.android.fade
@@ -45,9 +47,11 @@ internal fun ProfileScreen(state: EventsState, modifier: Modifier = Modifier) {
         .viewState
         .collectAsState()
 
+    val eventSink = state.sink
+
     Scaffold(
         topBar = { TopAppBar(title = { Text("Profile") }) },
-        bottomBar = { EventsBottomBar(state) },
+        bottomBar = { EventsBottomBar(EventsScreen.Profile) { eventSink(EventsEvent.BottomNav(it)) } },
     ) { contentPadding ->
         ProfileScreen(
             modifier = modifier.padding(contentPadding),

@@ -10,34 +10,22 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
+import com.slack.circuit.Screen
+import io.ashdavies.playground.home.HomeScreen
 
 @Composable
 internal fun EventsBottomBar(
-    state: EventsState,
+    selected: Screen,
     modifier: Modifier = Modifier,
-) {
-    val sink = state.sink
-
-    EventsBottomBar(
-        onClick = { sink(EventsEvent.BottomNav(it)) },
-        selected = state.current,
-        modifier = modifier,
-    )
-}
-
-@Composable
-internal fun EventsBottomBar(
-    selected: EventsScreen,
-    modifier: Modifier = Modifier,
-    onClick: (EventsScreen) -> Unit = { },
+    onClick: (Screen) -> Unit = { },
 ) {
     NavigationBar(
         containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.95f),
         modifier = modifier,
     ) {
         NavigationBarItem(
-            onClick = { onClick(EventsScreen.Home) },
-            selected = selected is EventsScreen.Home,
+            onClick = { onClick(HomeScreen) },
+            selected = selected is HomeScreen,
             icon = {
                 Image(
                     colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurface),

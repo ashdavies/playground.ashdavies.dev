@@ -12,6 +12,7 @@ import com.slack.circuit.Screen
 import com.slack.circuit.presenterOf
 import io.ashdavies.dominion.DominionScreen
 import kotlinx.collections.immutable.persistentListOf
+import io.ashdavies.playground.home.HomeScreen as EventsHomeScreen
 
 @Parcelize
 public object LauncherScreen : Parcelable, Screen
@@ -26,7 +27,7 @@ public sealed interface LauncherEvent : CircuitUiEvent {
 @Composable
 internal fun LauncherPresenter(navigator: Navigator): LauncherState = LauncherState { event ->
     when (event) {
-        is LauncherEvent.Events -> navigator.goTo(EventsScreen.Home)
+        is LauncherEvent.Events -> navigator.goTo(EventsHomeScreen)
         is LauncherEvent.Dominion -> navigator.goTo(DominionScreen.Home)
     }
 }
@@ -40,7 +41,7 @@ public class LauncherPresenterFactory : Presenter.Factory {
 
 public fun buildInitialBackStack(initialScreen: String? = null): List<Screen> {
     return when (initialScreen) {
-        "events" -> persistentListOf(LauncherScreen, EventsScreen.Home)
+        "events" -> persistentListOf(LauncherScreen, EventsHomeScreen)
         "dominion" -> persistentListOf(LauncherScreen, DominionScreen.Home)
         else -> persistentListOf(LauncherScreen)
     }
