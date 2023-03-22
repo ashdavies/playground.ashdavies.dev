@@ -7,6 +7,7 @@ import androidx.paging.cachedIn
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.arkivanov.essenty.parcelable.Parcelable
+import com.arkivanov.essenty.parcelable.Parcelize
 import com.slack.circuit.CircuitUiState
 import com.slack.circuit.Navigator
 import com.slack.circuit.Screen
@@ -15,6 +16,7 @@ import io.ashdavies.playground.MultipleReferenceWarning
 import io.ashdavies.playground.events.rememberEventPager
 import io.ashdavies.playground.kotlin.asCloseableFlow
 
+@Parcelize
 public object HomeScreen : Parcelable, Screen {
     internal sealed interface Event {
         data class BottomNav(val screen: Screen) : Event
