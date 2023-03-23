@@ -16,7 +16,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
@@ -27,52 +26,44 @@ import androidx.compose.ui.unit.dp
 import io.ashdavies.http.isLoading
 import io.ashdavies.playground.EmptyPainter
 import io.ashdavies.playground.EventsBottomBar
-import io.ashdavies.playground.EventsEvent
-import io.ashdavies.playground.EventsScreen
-import io.ashdavies.playground.EventsState
 import io.ashdavies.playground.android.FlowRow
 import io.ashdavies.playground.android.fade
-import io.ashdavies.playground.network.OpenUri
 import io.ashdavies.playground.produceImagePainterState
-import io.ashdavies.playground.profile.ProfileViewState.LogIn
-import io.ashdavies.playground.profile.ProfileViewState.LoggedIn
-import io.ashdavies.playground.profile.ProfileViewState.LoggedOut
 import kotlin.random.Random.Default.nextInt
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-internal fun ProfileScreen(state: EventsState, modifier: Modifier = Modifier) {
-    val viewModel: ProfileViewModel = rememberProfileViewModel()
-    val viewState: ProfileViewState by viewModel
-        .viewState
-        .collectAsState()
-
-    val eventSink = state.sink
-
+internal fun ProfileScreen(
+    state: ProfileScreen.State,
+    modifier: Modifier = Modifier,
+    eventSink: (ProfileScreen.Event) -> Unit = state.eventSink,
+) {
     Scaffold(
+        bottomBar = { EventsBottomBar(ProfileScreen) { eventSink(ProfileScreen.Event.BottomNav(it)) } },
         topBar = { TopAppBar(title = { Text("Profile") }) },
-        bottomBar = { EventsBottomBar(EventsScreen.Profile) { eventSink(EventsEvent.BottomNav(it)) } },
     ) { contentPadding ->
         ProfileScreen(
+            onLogin = { eventSink(ProfileScreen.Event.Login) },
             modifier = modifier.padding(contentPadding),
-            onLogin = { viewModel.onLogin() },
-            viewState = viewState,
+            state = state,
         )
     }
 }
 
 @Composable
 @ExperimentalMaterial3Api
-private fun ProfileScreen(viewState: ProfileViewState, modifier: Modifier = Modifier, onLogin: () -> Unit = { }) {
-    val painter: Result<Painter> by produceImagePainterState((viewState as? LoggedIn)?.picture)
-
-    Box(modifier = modifier) {
-        Column(modifier = Modifier.padding(16.dp)) {
-            when (viewState) {
-                is LogIn -> OpenUri(viewState.uriString)
-                is LoggedOut -> LoggedOutScreen(onLogin)
+private fun ProfileScreen(
+    state: ProfileScreen.State,
+    modifier: Modifier = Modifier,
+    onLogin: () -> Unit,
+) {
+    Box(modifier) {
+        Column(Modifier.padding(16.dp)) {
+            when (state.profile) {
+                null -> LoggedOutScreen(onLogin)
                 else -> {
-                    ProfileHeader(painter, viewState as LoggedIn)
+                    val painter by produceImagePainterState(state.profile.picture)
+                    ProfileHeader(state.profile.name, painter)
                     StubLanyardFlow()
                 }
             }
@@ -83,8 +74,8 @@ private fun ProfileScreen(viewState: ProfileViewState, modifier: Modifier = Modi
 @Composable
 @ExperimentalMaterial3Api
 private fun ProfileHeader(
+    text: String,
     painter: Result<Painter>,
-    viewState: LoggedIn,
     modifier: Modifier = Modifier,
 ) {
     Card(
@@ -97,11 +88,11 @@ private fun ProfileHeader(
             modifier = Modifier.fillMaxWidth(),
         ) {
             Text(
+                style = MaterialTheme.typography.headlineSmall,
+                text = text,
                 modifier = Modifier
                     .padding(4.dp, 64.dp, 4.dp, 4.dp)
                     .fade(painter.isLoading),
-                style = MaterialTheme.typography.headlineSmall,
-                text = viewState.name,
             )
         }
     }

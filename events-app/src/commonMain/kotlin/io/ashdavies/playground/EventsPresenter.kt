@@ -16,17 +16,17 @@ import com.slack.circuit.ui
 import io.ashdavies.playground.details.DetailsScreen
 import io.ashdavies.playground.home.HomePresenter
 import io.ashdavies.playground.home.HomeScreen
+import io.ashdavies.playground.profile.ProfilePresenter
 import io.ashdavies.playground.profile.ProfileScreen
 
 @Parcelize
 public sealed interface EventsScreen : Parcelable, Screen {
     public data class Details(val eventId: String) : EventsScreen
-    public object Profile : EventsScreen
 }
 
 internal data class EventsState(
     val current: EventsScreen,
-    val sink: (EventsEvent) -> Unit = { },
+    val sink: (EventsEvent) -> Unit,
 ) : CircuitUiState
 
 internal sealed interface EventsEvent : CircuitUiEvent {
@@ -54,6 +54,7 @@ public class EventsPresenterFactory : Presenter.Factory {
         context: CircuitContext,
     ): Presenter<*>? = when (screen) {
         is EventsScreen -> presenterOf { EventsPresenter(navigator, screen) }
+        is ProfileScreen -> presenterOf { ProfilePresenter(navigator) }
         is HomeScreen -> presenterOf { HomePresenter(navigator) }
         else -> null
     }
@@ -66,18 +67,14 @@ public class EventsUiFactory : Ui.Factory {
             HomeScreen(state, modifier)
         }
 
+        is ProfileScreen -> ui<ProfileScreen.State> { state, modifier ->
+            ProfileScreen(state, modifier)
+        }
+
         is EventsScreen.Details -> ui<EventsState> { state, modifier ->
             EventsCompositionLocals { DetailsScreen(state, modifier) }
         }
 
-        is EventsScreen.Profile -> ui<EventsState> { state, modifier ->
-            EventsCompositionLocals { ProfileScreen(state, modifier) }
-        }
-
         else -> null
     }
-}
-
-internal operator fun ((EventsEvent) -> Unit).invoke(screen: EventsScreen) {
-    invoke(EventsEvent.NavEvent(screen))
 }

@@ -31,7 +31,7 @@ public object HomeScreen : Parcelable, Screen {
 
 @Composable
 @OptIn(ExperimentalPagingApi::class, MultipleReferenceWarning::class)
-internal fun HomePresenter(navigator: Navigator): CircuitUiState {
+internal fun HomePresenter(navigator: Navigator): HomeScreen.State {
     val eventPager = rememberEventPager()
     val pagingData = eventPager.flow
         .cachedIn(rememberCoroutineScope())

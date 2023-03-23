@@ -8,6 +8,7 @@ internal data class RandomUser(
     val location: Location,
     val email: String,
     val login: Login,
+    val registered: Registered,
     val picture: Picture,
 ) {
 
@@ -27,6 +28,11 @@ internal data class RandomUser(
     data class Login(
         val uuid: String,
         val username: String,
+    )
+
+    @Serializable
+    data class Registered(
+        val date: String,
     )
 
     @Serializable

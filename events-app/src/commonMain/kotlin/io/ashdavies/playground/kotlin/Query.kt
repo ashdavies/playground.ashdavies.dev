@@ -6,6 +6,8 @@ import com.squareup.sqldelight.runtime.coroutines.mapToOneOrNull
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-public fun <T : Any, R: Any> Query<T>.mapToOneOrNull(transform: (T?) -> R): Flow<R> = asFlow()
+public fun <T : Any, R : Any?> Query<T>.mapToOneOrNull(
+    transform: suspend (value: T?) -> R,
+): Flow<R> = asFlow()
     .mapToOneOrNull()
     .map(transform)
