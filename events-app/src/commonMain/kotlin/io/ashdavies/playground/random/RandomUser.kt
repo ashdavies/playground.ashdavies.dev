@@ -1,4 +1,4 @@
-package io.ashdavies.playground.profile
+package io.ashdavies.playground.random
 
 import kotlinx.serialization.Serializable
 
