@@ -10,53 +10,40 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.vector.ImageVector
+import com.slack.circuit.Screen
+import io.ashdavies.playground.home.HomeScreen
+import io.ashdavies.playground.profile.ProfileScreen
 
 @Composable
 internal fun EventsBottomBar(
-    state: EventsState,
+    selected: Screen,
     modifier: Modifier = Modifier,
-) {
-    val sink = state.sink
-
-    EventsBottomBar(
-        onClick = { sink(EventsEvent.BottomNav(it)) },
-        selected = state.current,
-        modifier = modifier,
-    )
-}
-
-@Composable
-internal fun EventsBottomBar(
-    selected: EventsScreen,
-    modifier: Modifier = Modifier,
-    onClick: (EventsScreen) -> Unit = { },
+    onClick: (Screen) -> Unit = { },
 ) {
     NavigationBar(
         containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.95f),
         modifier = modifier,
     ) {
         NavigationBarItem(
-            onClick = { onClick(EventsScreen.Home) },
-            selected = selected is EventsScreen.Home,
-            icon = {
-                Image(
-                    colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurface),
-                    imageVector = Icons.Default.Home,
-                    contentDescription = null,
-                )
-            },
+            icon = { NavigationBarImage(Icons.Default.Home) },
+            onClick = { onClick(HomeScreen) },
+            selected = selected is HomeScreen,
         )
 
         NavigationBarItem(
-            onClick = { onClick(EventsScreen.Profile) },
-            selected = selected is EventsScreen.Profile,
-            icon = {
-                Image(
-                    colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurface),
-                    imageVector = Icons.Default.Person,
-                    contentDescription = null,
-                )
-            },
+            icon = { NavigationBarImage(Icons.Default.Person) },
+            onClick = { onClick(ProfileScreen) },
+            selected = selected is ProfileScreen,
         )
     }
+}
+
+@Composable
+private fun NavigationBarImage(imageVector: ImageVector) {
+    Image(
+        colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurface),
+        contentDescription = null,
+        imageVector = imageVector,
+    )
 }

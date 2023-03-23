@@ -24,8 +24,6 @@ androidx-annotation = "androidx.annotation:annotation:1.6.0"
 androidx-compose-foundation = { module = "androidx.compose.foundation:foundation", version.ref = "jetbrains-compose" }
 androidx-core-ktx = "androidx.core:core-ktx:1.9.0"
 androidx-core-splashscreen = "androidx.core:core-splashscreen:1.0.0"
-androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "androidx-lifecycle" }
-androidx-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "androidx-lifecycle" }
 
 apollo-graphql-coroutines-support = { module = "com.apollographql.apollo:apollo-coroutines-support", version.ref = "apollo-graphql" }
 apollo-graphql-runtime = { module = "com.apollographql.apollo:apollo-runtime", version.ref = "apollo-graphql" }
@@ -129,7 +127,6 @@ sqldelight-sqlite-driver = { module = "com.squareup.sqldelight:sqlite-driver", v
 
 [bundles]
 androidx-activity = ["androidx-activity-compose", "androidx-activity-ktx"]
-androidx-viewmodel = ["androidx-lifecycle-viewmodel-compose", "androidx-lifecycle-viewmodel-ktx"]
 paging-compose = ["paging-compose-common", "paging-compose-runtime"]
 google-firebase = ["google-firebase-analytics", "google-firebase-common-ktx"]
 google-maps = ["google-android-maps", "google-maps-android-compose", "google-maps-android-compose-widgets"]

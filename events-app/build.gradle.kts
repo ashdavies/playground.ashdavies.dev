@@ -39,7 +39,6 @@ kotlin {
 
         with(libs.bundles) {
             implementation(androidx.activity)
-            implementation(androidx.viewmodel)
             implementation(google.firebase)
             implementation(google.maps)
         }

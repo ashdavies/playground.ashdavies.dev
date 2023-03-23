@@ -7,7 +7,10 @@ import com.slack.circuit.ui
 
 public class LauncherUiFactory : Ui.Factory {
     override fun create(screen: Screen, context: CircuitContext): Ui<*>? = when (screen) {
-        is LauncherScreen -> ui<LauncherState> { state, modifier -> LauncherScreen(state, modifier) }
+        is LauncherScreen -> ui<LauncherScreen.State> { state, modifier ->
+            LauncherScreen(state, modifier)
+        }
+
         else -> null
     }
 }

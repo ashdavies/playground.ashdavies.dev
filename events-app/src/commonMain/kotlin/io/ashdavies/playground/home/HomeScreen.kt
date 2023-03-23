@@ -31,16 +31,12 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.paging.compose.LazyPagingItems
-import androidx.paging.compose.collectAsLazyPagingItems
 import app.cash.paging.LoadStateError
 import app.cash.paging.LoadStateLoading
 import app.cash.paging.items
 import io.ashdavies.playground.Event
 import io.ashdavies.playground.EventsBottomBar
-import io.ashdavies.playground.EventsScreen
-import io.ashdavies.playground.EventsState
 import io.ashdavies.playground.android.fade
-import io.ashdavies.playground.invoke
 import io.ashdavies.playground.platform.PlatformSwipeRefresh
 
 private val <T : Any> LazyPagingItems<T>.errorMessage: String?
@@ -53,21 +49,19 @@ private val <T : Any> LazyPagingItems<T>.isRefreshing: Boolean
 
 @Composable
 @ExperimentalMaterial3Api
-internal fun HomeScreen(state: EventsState, modifier: Modifier = Modifier) {
-    val viewModel: HomeViewModel = rememberEventsViewModel()
-    val pagingItems: LazyPagingItems<Event> = viewModel
-        .pagingData
-        .collectAsLazyPagingItems()
+internal fun HomeScreen(state: HomeScreen.State, modifier: Modifier = Modifier) {
+    val eventSink = state.eventSink
 
     Scaffold(
+        bottomBar = { EventsBottomBar(HomeScreen) { eventSink(HomeScreen.Event.BottomNav(it)) } },
         topBar = { HomeTopAppBar("Events") },
-        bottomBar = { EventsBottomBar(state) },
+        modifier = modifier,
     ) { contentPadding ->
         PlatformSwipeRefresh(
-            isRefreshing = pagingItems.isRefreshing,
-            onRefresh = pagingItems::refresh,
+            isRefreshing = state.pagingItems.isRefreshing,
+            onRefresh = state.pagingItems::refresh,
         ) {
-            val errorMessage = pagingItems.errorMessage
+            val errorMessage = state.pagingItems.errorMessage
             if (errorMessage != null) {
                 EventFailure(errorMessage)
             }
@@ -78,9 +72,9 @@ internal fun HomeScreen(state: EventsState, modifier: Modifier = Modifier) {
                     .fillMaxSize()
                     .padding(top = 12.dp),
             ) {
-                items(pagingItems) {
+                items(state.pagingItems) {
                     EventSection(it) { event ->
-                        state.sink(EventsScreen.Details(event.id))
+                        eventSink(HomeScreen.Event.Details(event.id))
                     }
                 }
             }
