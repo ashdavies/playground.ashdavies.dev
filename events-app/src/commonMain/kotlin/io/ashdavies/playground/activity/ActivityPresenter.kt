@@ -1,4 +1,4 @@
-package io.ashdavies.playground.home
+package io.ashdavies.playground.activity
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
@@ -19,7 +19,7 @@ import io.ashdavies.playground.events.rememberEventPager
 import io.ashdavies.playground.kotlin.asCloseableFlow
 
 @Parcelize
-public object HomeScreen : Parcelable, Screen {
+public object ActivityScreen : Parcelable, Screen {
     internal sealed interface Event {
         data class BottomNav(val screen: Screen) : Event
         data class Details(val eventId: String) : Event
@@ -33,18 +33,18 @@ public object HomeScreen : Parcelable, Screen {
 
 @Composable
 @OptIn(ExperimentalPagingApi::class, MultipleReferenceWarning::class)
-internal fun HomePresenter(
+internal fun ActivityPresenter(
     navigator: Navigator,
     eventPager: Pager<String, Event> = rememberEventPager(),
-): HomeScreen.State {
+): ActivityScreen.State {
     val pagingData = eventPager.flow
         .cachedIn(rememberCoroutineScope())
         .asCloseableFlow()
 
-    return HomeScreen.State(pagingData.collectAsLazyPagingItems()) { event ->
+    return ActivityScreen.State(pagingData.collectAsLazyPagingItems()) { event ->
         when (event) {
-            is HomeScreen.Event.Details -> navigator.goTo(DetailsScreen(event.eventId))
-            is HomeScreen.Event.BottomNav -> navigator.resetRoot(event.screen)
+            is ActivityScreen.Event.Details -> navigator.goTo(DetailsScreen(event.eventId))
+            is ActivityScreen.Event.BottomNav -> navigator.resetRoot(event.screen)
         }
     }
 }
