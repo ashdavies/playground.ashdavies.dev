@@ -11,6 +11,6 @@ import io.ashdavies.playground.EventsState
 @Preview
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-private fun DetailsScreen(item: Event = DroidconBerlin) {
+internal fun DetailsScreen(item: Event = DroidconBerlin) {
     DetailsScreen(EventsState(EventsScreen.Details(item.id)) { })
 }

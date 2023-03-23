@@ -7,12 +7,12 @@ import io.ashdavies.playground.Profile
 
 @Preview
 @Composable
-private fun ProfileScreen(profile: Profile? = null) {
+internal fun ProfileScreen(profile: Profile? = null) {
     ProfileScreen(ProfileScreen.State(profile) { })
 }
 
 @Preview
 @Composable
-private fun ProfileScreen() {
+internal fun ProfileScreen() {
     ProfileScreen(KordulaLaube)
 }

@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.paging.compose.collectAsLazyPagingItems
 import app.cash.paging.PagingData
+import app.cash.paging.compose.LazyPagingItems
 import io.ashdavies.playground.AndroidMakers
 import io.ashdavies.playground.DroidconBerlin
 import io.ashdavies.playground.DroidconLondon
@@ -12,14 +13,16 @@ import io.ashdavies.playground.Event
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 
+private val DroidconEvents = listOf(AndroidMakers, DroidconBerlin, DroidconLondon)
+
 @Preview
 @Composable
-private fun HomeScreen(items: List<Event> = listOf(AndroidMakers, DroidconBerlin, DroidconLondon)) {
-    HomeScreen(flowOf(PagingData.from(items)))
+@OptIn(ExperimentalMaterial3Api::class)
+internal fun HomeScreen(data: List<Event> = DroidconEvents) {
+    HomeScreen(HomeScreen.State(lazyPagingItems(flowOf(PagingData.from(data)))) { })
 }
 
 @Composable
-@OptIn(ExperimentalMaterial3Api::class)
-private fun HomeScreen(pagingData: Flow<PagingData<Event>>) {
-    HomeScreen(HomeScreen.State(pagingData.collectAsLazyPagingItems()) { })
+private fun <T : Any> lazyPagingItems(value: Flow<PagingData<T>>): LazyPagingItems<T> {
+    return value.collectAsLazyPagingItems()
 }
