@@ -10,6 +10,7 @@ import io.ashdavies.playground.AndroidMakers
 import io.ashdavies.playground.DroidconBerlin
 import io.ashdavies.playground.DroidconLondon
 import io.ashdavies.playground.Event
+import io.ashdavies.playground.activity.ActivityScreen
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 
@@ -19,7 +20,7 @@ private val DroidconEvents = listOf(AndroidMakers, DroidconBerlin, DroidconLondo
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 internal fun HomeScreen(data: List<Event> = DroidconEvents) {
-    HomeScreen(HomeScreen.State(lazyPagingItems(flowOf(PagingData.from(data)))) { })
+    ActivityScreen(ActivityScreen.State(lazyPagingItems(flowOf(PagingData.from(data)))) { })
 }
 
 @Composable

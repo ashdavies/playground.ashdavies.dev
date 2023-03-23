@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.slack.circuit.Screen
-import io.ashdavies.playground.home.HomeScreen
+import io.ashdavies.playground.activity.ActivityScreen
 import io.ashdavies.playground.profile.ProfileScreen
 
 @Composable
@@ -27,8 +27,8 @@ internal fun EventsBottomBar(
     ) {
         NavigationBarItem(
             icon = { NavigationBarImage(Icons.Default.Home) },
-            onClick = { onClick(HomeScreen) },
-            selected = selected is HomeScreen,
+            onClick = { onClick(ActivityScreen) },
+            selected = selected is ActivityScreen,
         )
 
         NavigationBarItem(

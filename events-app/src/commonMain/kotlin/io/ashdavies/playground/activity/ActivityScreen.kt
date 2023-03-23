@@ -1,4 +1,4 @@
-package io.ashdavies.playground.home
+package io.ashdavies.playground.activity
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -49,12 +49,12 @@ private val <T : Any> LazyPagingItems<T>.isRefreshing: Boolean
 
 @Composable
 @ExperimentalMaterial3Api
-internal fun HomeScreen(state: HomeScreen.State, modifier: Modifier = Modifier) {
+internal fun ActivityScreen(state: ActivityScreen.State, modifier: Modifier = Modifier) {
     val eventSink = state.eventSink
 
     Scaffold(
-        bottomBar = { EventsBottomBar(HomeScreen) { eventSink(HomeScreen.Event.BottomNav(it)) } },
-        topBar = { HomeTopAppBar("Events") },
+        bottomBar = { EventsBottomBar(ActivityScreen) { eventSink(ActivityScreen.Event.BottomNav(it)) } },
+        topBar = { ActivityTopAppBar("Events") },
         modifier = modifier,
     ) { contentPadding ->
         PlatformSwipeRefresh(
@@ -74,7 +74,7 @@ internal fun HomeScreen(state: HomeScreen.State, modifier: Modifier = Modifier) 
             ) {
                 items(state.pagingItems) {
                     EventSection(it) { event ->
-                        eventSink(HomeScreen.Event.Details(event.id))
+                        eventSink(ActivityScreen.Event.Details(event.id))
                     }
                 }
             }
@@ -84,7 +84,7 @@ internal fun HomeScreen(state: HomeScreen.State, modifier: Modifier = Modifier) 
 
 @Composable
 @ExperimentalMaterial3Api
-private fun HomeTopAppBar(text: String = "Events", modifier: Modifier = Modifier) {
+private fun ActivityTopAppBar(text: String = "Events", modifier: Modifier = Modifier) {
     TopAppBar(
         title = {
             Row {
