@@ -25,7 +25,7 @@ internal val DroidconBerlin = Event(
     dateEnd = "2023-07-07",
     cfpStart = "2023-02-01",
     cfpEnd = "2023-05-07",
-    cfpSite = "https://sessionize.com/droidcon-berlin-2023"
+    cfpSite = "https://sessionize.com/droidcon-berlin-2023",
 )
 
 internal val DroidconLondon = Event(

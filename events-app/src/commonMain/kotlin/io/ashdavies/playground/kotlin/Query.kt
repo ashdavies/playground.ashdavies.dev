@@ -18,7 +18,7 @@ public fun <T : Any, R : Any?> Query<T>.mapToOneOrNull(
 
 public fun <T : Any, R : Any> Query<T>.mapToOne(
     context: CoroutineContext = Dispatchers.Default,
-    transform: suspend (value: T) -> R
+    transform: suspend (value: T) -> R,
 ): Flow<R> = asFlow()
     .mapToOne(context)
     .map(transform)

@@ -1,7 +1,6 @@
 package io.ashdavies.playground.random
 
 import io.ashdavies.playground.Profile
-import io.ashdavies.playground.random.RandomUser
 
 internal fun Profile(value: RandomUser) = Profile(
     name = "${value.name.first} ${value.name.last}",
