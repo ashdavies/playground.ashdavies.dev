@@ -8,13 +8,14 @@ import io.ashdavies.http.LegacyEvent
 import io.ashdavies.playground.Event
 import io.ashdavies.playground.EventsQueries
 import io.ashdavies.playground.apis.EventsApi
+import io.ktor.client.network.sockets.SocketTimeoutException
 
 private const val NETWORK_PAGE_SIZE = 100
 
 @OptIn(ExperimentalPagingApi::class)
 internal class EventsRemoteMediator(
-    private val queries: EventsQueries,
-    private val api: EventsApi,
+    private val eventsQueries: EventsQueries,
+    private val eventsApi: EventsApi,
 ) : RemoteMediator<String, Event>() {
 
     override suspend fun load(
@@ -22,31 +23,29 @@ internal class EventsRemoteMediator(
         state: PagingState<String, Event>,
     ): MediatorResult {
         val loadKey = when (loadType) {
+            LoadType.APPEND -> state.lastItemOrNull()?.id ?: return endOfPaginationReached()
             LoadType.PREPEND -> return endOfPaginationReached()
             LoadType.REFRESH -> null
-            LoadType.APPEND ->
-                state
-                    .lastItemOrNull()?.id
-                    ?: return endOfPaginationReached()
         }
 
-        val response = api.getEvents(
-            limit = NETWORK_PAGE_SIZE,
-            startAt = loadKey,
-        ).body()
+        val result = try {
+            eventsApi.getEvents(loadKey, limit = NETWORK_PAGE_SIZE)
+        } catch (exception: SocketTimeoutException) {
+            return MediatorResult.Error(exception)
+        }.body()
 
-        queries.transaction {
+        eventsQueries.transaction {
             if (loadType == LoadType.REFRESH) {
-                queries.deleteAll()
+                eventsQueries.deleteAll()
             }
 
-            response.forEach {
-                queries.insertOrReplace(LegacyEvent(it))
+            result.forEach {
+                eventsQueries.insertOrReplace(LegacyEvent(it))
             }
         }
 
         return MediatorResult.Success(
-            endOfPaginationReached = response.isEmpty(),
+            endOfPaginationReached = result.isEmpty(),
         )
     }
 
