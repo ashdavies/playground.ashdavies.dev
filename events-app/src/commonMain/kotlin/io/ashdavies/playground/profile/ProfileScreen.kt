@@ -33,11 +33,9 @@ import kotlin.random.Random.Default.nextInt
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-internal fun ProfileScreen(
-    state: ProfileScreen.State,
-    modifier: Modifier = Modifier,
-    eventSink: (ProfileScreen.Event) -> Unit = state.eventSink,
-) {
+internal fun ProfileScreen(state: ProfileScreen.State, modifier: Modifier = Modifier) {
+    val eventSink = state.eventSink
+
     Scaffold(
         bottomBar = { EventsBottomBar(ProfileScreen) { eventSink(ProfileScreen.Event.BottomNav(it)) } },
         topBar = { TopAppBar(title = { Text("Profile") }) },

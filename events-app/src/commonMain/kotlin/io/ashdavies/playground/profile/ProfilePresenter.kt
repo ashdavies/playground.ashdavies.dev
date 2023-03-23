@@ -35,10 +35,10 @@ internal fun ProfilePresenter(
         .getProfile(generateRandomIfEmpty = true)
         .collectAsState(initial = null)
 
-    return ProfileScreen.State(profile) {
-        when (it) {
+    return ProfileScreen.State(profile) { event ->
+        when (event) {
             ProfileScreen.Event.Login -> uriHandler.openUri("http://localhost:8080/callback")
-            is ProfileScreen.Event.BottomNav -> navigator.resetRoot(it.screen)
+            is ProfileScreen.Event.BottomNav -> navigator.resetRoot(event.screen)
         }
     }
 }

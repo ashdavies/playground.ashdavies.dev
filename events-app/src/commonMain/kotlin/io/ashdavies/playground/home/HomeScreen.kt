@@ -49,10 +49,7 @@ private val <T : Any> LazyPagingItems<T>.isRefreshing: Boolean
 
 @Composable
 @ExperimentalMaterial3Api
-internal fun HomeScreen(
-    state: HomeScreen.State,
-    modifier: Modifier = Modifier,
-) {
+internal fun HomeScreen(state: HomeScreen.State, modifier: Modifier = Modifier) {
     val eventSink = state.eventSink
 
     Scaffold(

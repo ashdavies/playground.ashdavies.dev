@@ -6,13 +6,15 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.cachedIn
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
+import app.cash.paging.Pager
 import com.arkivanov.essenty.parcelable.Parcelable
 import com.arkivanov.essenty.parcelable.Parcelize
 import com.slack.circuit.CircuitUiState
 import com.slack.circuit.Navigator
 import com.slack.circuit.Screen
-import io.ashdavies.playground.EventsScreen
+import io.ashdavies.playground.Event
 import io.ashdavies.playground.MultipleReferenceWarning
+import io.ashdavies.playground.details.DetailsScreen
 import io.ashdavies.playground.events.rememberEventPager
 import io.ashdavies.playground.kotlin.asCloseableFlow
 
@@ -31,15 +33,17 @@ public object HomeScreen : Parcelable, Screen {
 
 @Composable
 @OptIn(ExperimentalPagingApi::class, MultipleReferenceWarning::class)
-internal fun HomePresenter(navigator: Navigator): HomeScreen.State {
-    val eventPager = rememberEventPager()
+internal fun HomePresenter(
+    navigator: Navigator,
+    eventPager: Pager<String, Event> = rememberEventPager(),
+): HomeScreen.State {
     val pagingData = eventPager.flow
         .cachedIn(rememberCoroutineScope())
         .asCloseableFlow()
 
     return HomeScreen.State(pagingData.collectAsLazyPagingItems()) { event ->
         when (event) {
-            is HomeScreen.Event.Details -> navigator.goTo(EventsScreen.Details(event.eventId))
+            is HomeScreen.Event.Details -> navigator.goTo(DetailsScreen(event.eventId))
             is HomeScreen.Event.BottomNav -> navigator.resetRoot(event.screen)
         }
     }
