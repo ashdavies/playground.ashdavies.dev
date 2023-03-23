@@ -8,10 +8,10 @@ import com.slack.circuit.Screen
 import com.slack.circuit.Ui
 import com.slack.circuit.presenterOf
 import com.slack.circuit.ui
-import io.ashdavies.playground.details.DetailsPresenter
-import io.ashdavies.playground.details.DetailsScreen
 import io.ashdavies.playground.activity.ActivityPresenter
 import io.ashdavies.playground.activity.ActivityScreen
+import io.ashdavies.playground.details.DetailsPresenter
+import io.ashdavies.playground.details.DetailsScreen
 import io.ashdavies.playground.profile.ProfilePresenter
 import io.ashdavies.playground.profile.ProfileScreen
 
