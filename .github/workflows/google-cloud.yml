@@ -66,14 +66,19 @@ jobs:
           GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
         if: github.event_name == 'pull_request'
         run: |
-          OUT=$(cat << "EOM"
-            ./gradlew google-cloud:terraformPlan
-              --no-configuration-cache
-              --console=plain
-              --info
-          EOM)
+          OUTPUT=$(mktemp -t gradle) bash -c 'echo "build-log=$OUTPUT" >> $GITHUB_OUTPUT'
           
-          echo $(OUT)
+          cat << "EOF" | bash > OUTPUT
+          ./gradlew google-cloud:terraformPlan \
+            --no-configuration-cache \
+            --console=plain \
+            --info
+          EOF
+          
+      - name: Print Terraform Plan
+        if: ${{ steps.plan.outputs.build-log }}
+        run: |
+          echo ${{ steps.plan.outputs.build-log }}
 
       - name: Containerize Cloud Run
         env:
