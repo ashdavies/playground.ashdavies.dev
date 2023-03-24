@@ -79,7 +79,7 @@ jobs:
       - name: Print Terraform Plan
         if: ${{ steps.plan.outputs.build-log }}
         run: |
-          echo ${{ steps.plan.outputs.build-log }}
+          cat ${{ steps.plan.outputs.build-log }} | awk -nE '/Successfully/ {:a;n;/terraformMainShow/q;p;ba}'
 
       - name: Containerize Cloud Run
         env:
