@@ -67,7 +67,7 @@ jobs:
         if: github.event_name == 'pull_request'
         run: |
           DRY_RUN=${{ (contains(github.event.pull_request.labels.*.name, 'Dry Run') && '--dry-run' || '') }}
-          OUTPUT=$(mktemp -b gradle) bash -c 'echo "build-log=$OUTPUT" >> $GITHUB_OUTPUT'          
+          OUTPUT=$(mktemp -t gradle.XXX) bash -c 'echo "build-log=$OUTPUT" >> $GITHUB_OUTPUT'          
           
           cat << "EOF" | bash > OUTPUT
           ./gradlew terraformPlan $DRY_RUN \
