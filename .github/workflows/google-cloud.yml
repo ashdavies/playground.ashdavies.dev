@@ -66,10 +66,11 @@ jobs:
           GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
         if: github.event_name == 'pull_request'
         run: |
-          OUTPUT=$(mktemp -t gradle) bash -c 'echo "build-log=$OUTPUT" >> $GITHUB_OUTPUT'
+          DRY_RUN=${{ (contains(github.event.pull_request.labels.*.name, 'Dry Run') && '--dry-run' || '') }}
+          OUTPUT=$(mktemp -b gradle) bash -c 'echo "build-log=$OUTPUT" >> $GITHUB_OUTPUT'          
           
           cat << "EOF" | bash > OUTPUT
-          ./gradlew google-cloud:terraformPlan \
+          ./gradlew terraformPlan $DRY_RUN \
             --no-configuration-cache \
             --console=plain \
             --info
