@@ -27,7 +27,6 @@ dependencies {
     implementation(libs.bundles.google.firebase)
 
     implementation(libs.androidx.core.splashscreen)
-    implementation(libs.androidx.compose.foundation)
     implementation(libs.google.accompanist.systemuicontroller)
 
     implementation(projects.appLauncher.common) {
