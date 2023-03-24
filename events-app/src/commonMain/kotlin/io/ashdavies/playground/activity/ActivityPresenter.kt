@@ -19,13 +19,12 @@ import io.ashdavies.playground.events.rememberEventPager
 import io.ashdavies.playground.kotlin.asCloseableFlow
 
 @Parcelize
-public object ActivityScreen : Parcelable, Screen {
-    internal sealed interface Event {
-        data class BottomNav(val screen: Screen) : Event
+internal object ActivityScreen : Parcelable, Screen {
+    sealed interface Event {
         data class Details(val eventId: String) : Event
     }
 
-    internal data class State(
+    data class State(
         val pagingItems: LazyPagingItems<io.ashdavies.playground.Event>,
         val eventSink: (Event) -> Unit,
     ) : CircuitUiState
@@ -41,10 +40,7 @@ internal fun ActivityPresenter(
         .cachedIn(rememberCoroutineScope())
         .asCloseableFlow()
 
-    return ActivityScreen.State(pagingData.collectAsLazyPagingItems()) { event ->
-        when (event) {
-            is ActivityScreen.Event.Details -> navigator.goTo(DetailsScreen(event.eventId))
-            is ActivityScreen.Event.BottomNav -> navigator.resetRoot(event.screen)
-        }
+    return ActivityScreen.State(pagingData.collectAsLazyPagingItems()) {
+        if (it is ActivityScreen.Event.Details) navigator.goTo(DetailsScreen(it.eventId))
     }
 }

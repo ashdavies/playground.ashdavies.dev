@@ -15,7 +15,7 @@ import com.slack.circuit.Screen
 import com.slack.circuit.presenterOf
 import io.ashdavies.dominion.DominionScreen
 import kotlinx.collections.immutable.persistentListOf
-import io.ashdavies.playground.activity.ActivityScreen as EventsHomeScreen
+import io.ashdavies.playground.home.HomeScreen as EventsHomeScreen
 
 private val DominionEntry = LauncherScreen.Entry(
     event = LauncherScreen.Event.Dominion,

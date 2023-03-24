@@ -12,6 +12,8 @@ import io.ashdavies.playground.activity.ActivityPresenter
 import io.ashdavies.playground.activity.ActivityScreen
 import io.ashdavies.playground.details.DetailsPresenter
 import io.ashdavies.playground.details.DetailsScreen
+import io.ashdavies.playground.home.HomePresenter
+import io.ashdavies.playground.home.HomeScreen
 import io.ashdavies.playground.profile.ProfilePresenter
 import io.ashdavies.playground.profile.ProfileScreen
 
@@ -21,6 +23,7 @@ public class EventsPresenterFactory : Presenter.Factory {
         navigator: Navigator,
         context: CircuitContext,
     ): Presenter<*>? = when (screen) {
+        is HomeScreen -> presenterOf { HomePresenter(navigator) }
         is ActivityScreen -> presenterOf { ActivityPresenter(navigator) }
         is ProfileScreen -> presenterOf { ProfilePresenter(navigator) }
         is DetailsScreen -> presenterOf { DetailsPresenter(navigator, screen.eventId) }
@@ -31,6 +34,10 @@ public class EventsPresenterFactory : Presenter.Factory {
 @OptIn(ExperimentalMaterial3Api::class)
 public class EventsUiFactory : Ui.Factory {
     override fun create(screen: Screen, context: CircuitContext): Ui<*>? = when (screen) {
+        is HomeScreen -> ui<HomeScreen.State> { state, modifier ->
+            HomeScreen(state, modifier)
+        }
+
         is ActivityScreen -> ui<ActivityScreen.State> { state, modifier ->
             ActivityScreen(state, modifier)
         }

@@ -13,8 +13,6 @@ import com.slack.circuit.Screen
 @Parcelize
 internal data class DetailsScreen(val eventId: String) : Parcelable, Screen {
     sealed interface Event : CircuitUiEvent {
-        data class BottomNav(val screen: Screen) : Event
-
         sealed interface NavEvent : Event {
             object Pop : NavEvent
         }
@@ -36,10 +34,7 @@ internal fun DetailsPresenter(
         .getEvent(eventId)
         .collectAsState(initial = null)
 
-    return DetailsScreen.State(event) { event ->
-        when (event) {
-            is DetailsScreen.Event.BottomNav -> navigator.resetRoot(event.screen)
-            is DetailsScreen.Event.NavEvent.Pop -> navigator.pop()
-        }
+    return DetailsScreen.State(event) {
+        if (it is DetailsScreen.Event.NavEvent.Pop) navigator.pop()
     }
 }

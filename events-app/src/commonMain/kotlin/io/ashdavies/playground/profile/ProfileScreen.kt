@@ -25,7 +25,6 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.dp
 import io.ashdavies.http.isLoading
 import io.ashdavies.playground.EmptyPainter
-import io.ashdavies.playground.EventsBottomBar
 import io.ashdavies.playground.android.FlowRow
 import io.ashdavies.playground.android.fade
 import io.ashdavies.playground.produceImagePainterState
@@ -37,12 +36,12 @@ internal fun ProfileScreen(state: ProfileScreen.State, modifier: Modifier = Modi
     val eventSink = state.eventSink
 
     Scaffold(
-        bottomBar = { EventsBottomBar(ProfileScreen) { eventSink(ProfileScreen.Event.BottomNav(it)) } },
         topBar = { TopAppBar(title = { Text("Profile") }) },
+        modifier = modifier,
     ) { contentPadding ->
         ProfileScreen(
             onLogin = { eventSink(ProfileScreen.Event.Login) },
-            modifier = modifier.padding(contentPadding),
+            modifier = Modifier.padding(contentPadding),
             state = state,
         )
     }

@@ -15,7 +15,6 @@ import io.ashdavies.playground.Profile
 @Parcelize
 internal object ProfileScreen : Screen {
     sealed interface Event : CircuitUiEvent {
-        data class BottomNav(val screen: Screen) : Event
         object Login : Event
     }
 
@@ -35,10 +34,7 @@ internal fun ProfilePresenter(
         .getProfile(generateRandomIfEmpty = true)
         .collectAsState(initial = null)
 
-    return ProfileScreen.State(profile) { event ->
-        when (event) {
-            ProfileScreen.Event.Login -> uriHandler.openUri("http://localhost:8080/callback")
-            is ProfileScreen.Event.BottomNav -> navigator.resetRoot(event.screen)
-        }
+    return ProfileScreen.State(profile) {
+        if (it is ProfileScreen.Event.Login) uriHandler.openUri("http://localhost:8080/callback")
     }
 }
