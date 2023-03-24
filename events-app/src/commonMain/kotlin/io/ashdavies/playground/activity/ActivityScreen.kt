@@ -25,6 +25,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
@@ -35,7 +36,6 @@ import app.cash.paging.LoadStateError
 import app.cash.paging.LoadStateLoading
 import app.cash.paging.items
 import io.ashdavies.playground.Event
-import io.ashdavies.playground.EventsBottomBar
 import io.ashdavies.playground.android.fade
 import io.ashdavies.playground.platform.PlatformSwipeRefresh
 
@@ -53,7 +53,6 @@ internal fun ActivityScreen(state: ActivityScreen.State, modifier: Modifier = Mo
     val eventSink = state.eventSink
 
     Scaffold(
-        bottomBar = { EventsBottomBar(ActivityScreen) { eventSink(ActivityScreen.Event.BottomNav(it)) } },
         topBar = { ActivityTopAppBar("Events") },
         modifier = modifier,
     ) { contentPadding ->
@@ -67,10 +66,8 @@ internal fun ActivityScreen(state: ActivityScreen.State, modifier: Modifier = Mo
             }
 
             LazyColumn(
+                modifier = Modifier.fillMaxSize(),
                 contentPadding = contentPadding,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(top = 12.dp),
             ) {
                 items(state.pagingItems) {
                     EventSection(it) { event ->
@@ -88,19 +85,16 @@ private fun ActivityTopAppBar(text: String = "Events", modifier: Modifier = Modi
     TopAppBar(
         title = {
             Row {
-                Text(
-                    modifier = modifier,
-                    text = text,
-                )
+                Text(text = text)
 
                 Icon(
                     painter = rememberVectorPainter(Icons.Filled.ArrowDropDown),
                     tint = MaterialTheme.colorScheme.onSurface,
-                    // modifier = Modifier.fillMaxHeight(),
                     contentDescription = null,
                 )
             }
         },
+        modifier = modifier,
     )
 }
 
