@@ -20,7 +20,6 @@ kotlin {
     }
 
     androidMain.dependencies {
-        implementation(libs.androidx.compose.foundation)
         implementation(libs.bundles.google.firebase)
         implementation(libs.google.firebase.appcheck.playintegrity)
     }

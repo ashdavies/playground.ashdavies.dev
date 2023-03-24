@@ -20,7 +20,6 @@ kotlin {
     androidMain.dependencies {
         implementation(projects.firebaseCompose)
 
-        implementation(libs.androidx.compose.foundation)
         implementation(libs.bundles.androidx.activity)
         implementation(libs.jetbrains.kotlinx.coroutines.play)
 
