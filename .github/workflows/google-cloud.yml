@@ -91,7 +91,7 @@ jobs:
             }
             
             const path = "${{ steps.plan.outputs.build-log }}"
-            const content = await fs.readFile(path, 'utf8')
+            const content = await fs.readFileAsSync(path, {encoding: 'utf8'})
             
             const body = content.substring(content.indexOf(start), content.indexOf("───"))
             await comments.create(context, github, body)
