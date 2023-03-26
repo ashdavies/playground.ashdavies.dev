@@ -77,9 +77,24 @@ jobs:
           EOF
           
       - name: Print Terraform Plan
+        uses: actions/github-script@v6
         if: ${{ steps.plan.outputs.build-log }}
-        run: |
-          cat ${{ steps.plan.outputs.build-log }} | awk -nE '/Successfully/ {:a;n;/terraformMainShow/q;p;ba}'
+        with:
+          script: |
+            const comments = require('./.github/workflows/scripts/comments.js');
+            const comment = await comments.get(context, github);
+            const fs = require('fs');
+            
+            const start = "Terraform will perform the following actions:"
+            if (comment && comment.body.startsWith(start) {
+              await comments.delete(context, github, comment.id)
+            }
+            
+            const path = "${{ steps.plan.outputs.build-log }}"
+            const content = await fs.readFile(path, 'utf8')
+            
+            const body = content.substring(content.indexOf(start), content.indexOf("───"))
+            await comments.create(context, github, body)
 
       - name: Containerize Cloud Run
         env:
