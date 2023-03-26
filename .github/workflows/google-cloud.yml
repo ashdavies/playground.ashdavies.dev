@@ -86,7 +86,7 @@ jobs:
             const fs = require('fs');
             
             const start = "Terraform will perform the following actions:"
-            if (comment && comment.body.startsWith(start) {
+            if (comment && comment.body.startsWith(start)) {
               await comments.delete(context, github, comment.id)
             }
             
