@@ -12,8 +12,6 @@ android {
 
     defaultConfig {
         buildConfigString("CLIENT_NAME", "Ktor/${libs.versions.ktor.get()}")
-
-        buildConfigString("GOOGLE_CLIENT_ID")
         buildConfigString("PLAYGROUND_API_KEY")
 
         versionName = "1.0"
