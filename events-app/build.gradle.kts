@@ -1,5 +1,3 @@
-import com.android.build.api.dsl.VariantDimension
-
 plugins {
     id("io.ashdavies.default")
     id("io.ashdavies.parcelable")
@@ -7,11 +5,6 @@ plugins {
 }
 
 android {
-    defaultConfig {
-        val googleClientId by SystemProperty(VariantDimension::buildConfigField)
-        val playgroundApiKey by SystemProperty(VariantDimension::buildConfigField)
-    }
-
     namespace = "io.ashdavies.events"
 }
 

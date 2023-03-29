@@ -1,7 +1,5 @@
 @file:Suppress("DSL_SCOPE_VIOLATION") // https://github.com/gradle/gradle/issues/22797
 
-import com.android.build.api.dsl.VariantDimension
-
 plugins {
     id("io.ashdavies.default")
 
@@ -10,10 +8,6 @@ plugins {
 
 android {
     namespace = "io.ashdavies.local.remote"
-
-    defaultConfig {
-        val clientName by SystemProperty(VariantDimension::buildConfigField) { "Ktor/${libs.versions.ktor.get()}" }
-    }
 }
 
 kotlin.commonMain {
