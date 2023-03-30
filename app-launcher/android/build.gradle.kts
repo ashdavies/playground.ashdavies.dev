@@ -1,3 +1,5 @@
+import com.android.build.api.dsl.VariantDimension
+
 plugins {
     id("com.android.application")
     id("com.google.gms.google-services")
@@ -9,6 +11,9 @@ android {
     namespace = "io.ashdavies.playground"
 
     defaultConfig {
+        buildConfigString("CLIENT_NAME", "Ktor/${libs.versions.ktor.get()}")
+        buildConfigString("PLAYGROUND_API_KEY")
+
         versionName = "1.0"
         versionCode = 1
     }
@@ -34,4 +39,8 @@ dependencies {
     }
 
     implementation(projects.firebaseCompose)
+}
+
+fun VariantDimension.buildConfigString(name: String, value: String = System.getenv(name)) {
+    @Suppress("UnstableApiUsage") buildConfigField("String", name, "\"$value\"")
 }
