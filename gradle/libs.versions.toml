@@ -27,7 +27,7 @@ androidx-core-splashscreen = "androidx.core:core-splashscreen:1.0.0"
 apollo-graphql-coroutines-support = { module = "com.apollographql.apollo:apollo-coroutines-support", version.ref = "apollo-graphql" }
 apollo-graphql-runtime = { module = "com.apollographql.apollo:apollo-runtime", version.ref = "apollo-graphql" }
 
-app-cash-turbine = "app.cash.turbine:turbine:0.12.1"
+app-cash-turbine = "app.cash.turbine:turbine:0.12.3"
 arkivanov-parcelable = "com.arkivanov.essenty:parcelable:1.0.0"
 
 auth-java-jwt = "com.auth0:java-jwt:4.3.0"
