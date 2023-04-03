@@ -30,7 +30,7 @@ apollo-graphql-runtime = { module = "com.apollographql.apollo:apollo-runtime", v
 app-cash-turbine = "app.cash.turbine:turbine:0.12.3"
 arkivanov-parcelable = "com.arkivanov.essenty:parcelable:1.0.0"
 
-auth-java-jwt = "com.auth0:java-jwt:4.3.0"
+auth-java-jwt = "com.auth0:java-jwt:4.4.0"
 auth-jwks-rsa = "com.auth0:jwks-rsa:0.22.0"
 
 fusesource-jansi = "org.fusesource.jansi:jansi:2.4.0"
