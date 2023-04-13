@@ -3,6 +3,8 @@
   "extends": [
     "config:base"
   ],
+  "baseBranches": ["main", "alpha"],
+  "useBaseBranchConfig": "merge",
   "gitAuthor": "Playground Manager <126197455+playground-manager[bot]@users.noreply.github.com>",
   "packageRules": [
     {
