@@ -1,10 +1,13 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "baseBranches": [
+    "main",
+    "alpha"
+  ],
   "extends": [
     "config:base"
   ],
-  "baseBranches": ["main", "alpha"],
-  "useBaseBranchConfig": "merge",
+  "ignoreUnstable": true,
   "gitAuthor": "Playground Manager <126197455+playground-manager[bot]@users.noreply.github.com>",
   "packageRules": [
     {
@@ -19,12 +22,17 @@
       ]
     },
     {
-      "matchPackageNames": ["renovatebot/github-action"],
-      "extends": ["schedule:monthly"]
+      "matchPackageNames": [
+        "renovatebot/github-action"
+      ],
+      "extends": [
+        "schedule:monthly"
+      ]
     }
   ],
   "repositories": [
     "ashdavies/playground.ashdavies.dev"
   ],
+  "useBaseBranchConfig": "merge",
   "username": "playground-manager[bot]"
 }
