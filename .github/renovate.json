@@ -23,6 +23,14 @@
     },
     {
       "matchPackageNames": [
+        "actions/checkout"
+      ],
+      "extends": [
+        "schedule:monthly"
+      ]
+    },
+    {
+      "matchPackageNames": [
         "renovatebot/github-action"
       ],
       "extends": [
