@@ -11,6 +11,7 @@ kotlin {
 
     jvmMain.dependencies {
         implementation(libs.jetbrains.kotlinx.cli)
+        implementation(libs.slack.circuit.foundation)
         implementation(projects.appLauncher.common)
     }
 }
