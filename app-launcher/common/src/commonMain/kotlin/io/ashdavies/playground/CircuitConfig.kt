@@ -1,8 +1,8 @@
 package io.ashdavies.playground
 
-import com.slack.circuit.CircuitConfig
-import com.slack.circuit.Presenter
-import com.slack.circuit.Ui
+import com.slack.circuit.foundation.CircuitConfig
+import com.slack.circuit.runtime.presenter.Presenter
+import com.slack.circuit.runtime.ui.Ui
 import io.ashdavies.dominion.DominionPresenterFactory
 import io.ashdavies.dominion.DominionUiFactory
 

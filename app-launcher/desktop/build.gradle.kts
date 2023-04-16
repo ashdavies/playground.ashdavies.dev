@@ -10,7 +10,6 @@ kotlin {
     }
 
     jvmMain.dependencies {
-        implementation(libs.bundles.slack.circuit)
         implementation(libs.jetbrains.kotlinx.cli)
         implementation(projects.appLauncher.common)
     }

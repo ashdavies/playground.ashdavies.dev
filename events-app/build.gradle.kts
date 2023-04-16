@@ -20,9 +20,9 @@ kotlin {
 
         implementation(libs.bundles.ktor.client)
         implementation(libs.bundles.paging.compose)
-        implementation(libs.bundles.slack.circuit)
 
         implementation(libs.arkivanov.parcelable)
+        implementation(libs.slack.circuit.foundation)
         implementation(libs.sqldelight.coroutines.extensions)
     }
 
