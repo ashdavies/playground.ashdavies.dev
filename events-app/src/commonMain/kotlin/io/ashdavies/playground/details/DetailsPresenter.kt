@@ -5,10 +5,10 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import com.arkivanov.essenty.parcelable.Parcelable
 import com.arkivanov.essenty.parcelable.Parcelize
-import com.slack.circuit.CircuitUiEvent
-import com.slack.circuit.CircuitUiState
-import com.slack.circuit.Navigator
-import com.slack.circuit.Screen
+import com.slack.circuit.runtime.CircuitUiEvent
+import com.slack.circuit.runtime.CircuitUiState
+import com.slack.circuit.runtime.Navigator
+import com.slack.circuit.runtime.Screen
 
 @Parcelize
 internal data class DetailsScreen(val eventId: String) : Parcelable, Screen {

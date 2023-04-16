@@ -6,12 +6,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import com.arkivanov.essenty.parcelable.Parcelize
-import com.slack.circuit.CircuitUiEvent
-import com.slack.circuit.CircuitUiState
-import com.slack.circuit.NavEvent
-import com.slack.circuit.Navigator
-import com.slack.circuit.Screen
-import com.slack.circuit.onNavEvent
+import com.slack.circuit.foundation.NavEvent
+import com.slack.circuit.foundation.onNavEvent
+import com.slack.circuit.runtime.CircuitUiEvent
+import com.slack.circuit.runtime.CircuitUiState
+import com.slack.circuit.runtime.Navigator
+import com.slack.circuit.runtime.Screen
 import io.ashdavies.playground.activity.ActivityScreen
 
 @Parcelize

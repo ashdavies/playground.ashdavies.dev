@@ -13,7 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
-import com.slack.circuit.Screen
+import com.slack.circuit.runtime.Screen
 import io.ashdavies.playground.activity.ActivityScreen
 import io.ashdavies.playground.profile.ProfileScreen
 
