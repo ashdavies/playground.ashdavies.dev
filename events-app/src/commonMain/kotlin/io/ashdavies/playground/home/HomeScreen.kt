@@ -4,7 +4,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.slack.circuit.CircuitContent
+import com.slack.circuit.foundation.CircuitContent
 
 @Composable
 @ExperimentalMaterial3Api

@@ -28,11 +28,12 @@ dependencies {
     implementation(platform(libs.google.firebase.bom))
 
     implementation(libs.bundles.androidx.activity)
-    implementation(libs.bundles.slack.circuit)
     implementation(libs.bundles.google.firebase)
 
     implementation(libs.androidx.core.splashscreen)
     implementation(libs.google.accompanist.systemuicontroller)
+    implementation(libs.slack.circuit.foundation)
+    implementation(libs.slack.circuit.overlay)
 
     implementation(projects.appLauncher.common) {
         exclude(libs.paging.compose.common)

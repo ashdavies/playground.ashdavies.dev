@@ -9,9 +9,9 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import app.cash.paging.Pager
 import com.arkivanov.essenty.parcelable.Parcelable
 import com.arkivanov.essenty.parcelable.Parcelize
-import com.slack.circuit.CircuitUiState
-import com.slack.circuit.Navigator
-import com.slack.circuit.Screen
+import com.slack.circuit.runtime.CircuitUiState
+import com.slack.circuit.runtime.Navigator
+import com.slack.circuit.runtime.Screen
 import io.ashdavies.playground.Event
 import io.ashdavies.playground.MultipleReferenceWarning
 import io.ashdavies.playground.details.DetailsScreen

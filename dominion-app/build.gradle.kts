@@ -15,7 +15,7 @@ kotlin {
 
         implementation(libs.arkivanov.parcelable)
         implementation(libs.bundles.ktor.client)
-        implementation(libs.bundles.slack.circuit)
+        implementation(libs.slack.circuit.foundation)
     }
 
     androidMain.dependencies {

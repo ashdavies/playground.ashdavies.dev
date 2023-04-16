@@ -14,7 +14,7 @@ kotlinx-serialization = "1.5.0"
 ktor = "2.2.4"
 paging-compose = "3.2.0-alpha04-0.2.0"
 pinterest-ktlint = "0.47.1"
-slack-circuit = "0.7.0"
+slack-circuit = "0.8.0"
 squareup-sqldelight = "1.5.5"
 
 [libraries]
@@ -28,7 +28,7 @@ apollo-graphql-coroutines-support = { module = "com.apollographql.apollo:apollo-
 apollo-graphql-runtime = { module = "com.apollographql.apollo:apollo-runtime", version.ref = "apollo-graphql" }
 
 app-cash-turbine = "app.cash.turbine:turbine:0.12.3"
-arkivanov-parcelable = "com.arkivanov.essenty:parcelable:1.0.0"
+arkivanov-parcelable = "com.arkivanov.essenty:parcelable:1.1.0"
 
 auth-java-jwt = "com.auth0:java-jwt:4.4.0"
 auth-jwks-rsa = "com.auth0:jwks-rsa:0.22.0"
@@ -112,7 +112,7 @@ paging-compose-runtime = { module = "app.cash.paging:paging-runtime-composeui", 
 qos-logbackClassic = "ch.qos.logback:logback-classic:1.4.6"
 
 slack-circuit-backstack = { module = "com.slack.circuit:circuit-backstack", version.ref = "slack-circuit" }
-slack-circuit-core = { module = "com.slack.circuit:circuit-core", version.ref = "slack-circuit" }
+slack-circuit-foundation = { module = "com.slack.circuit:circuit-foundation", version.ref = "slack-circuit" }
 slack-circuit-overlay = { module = "com.slack.circuit:circuit-overlay", version.ref = "slack-circuit" }
 slack-circuit-retained = { module = "com.slack.circuit:circuit-retained", version.ref = "slack-circuit" }
 slack-circuit-test = { module = "com.slack.circuit:circuit-test", version.ref = "slack-circuit" }
@@ -134,7 +134,7 @@ jetbrains-kotlinx = ["jetbrains-kotlinx-collections-immutable", "jetbrains-kotli
 ktor-client = ["ktor-client-content-negotiation", "ktor-client-core", "ktor-client-json", "ktor-client-logging", "ktor-client-okhttp3", "slf4j-simple"]
 ktor-serialization = ["ktor-serialization-json", "ktor-serialization-kotlinx"]
 ktor-server = ["ktor-server-auth", "ktor-server-call-logging", "ktor-server-cio", "ktor-server-compression", "ktor-server-conditional-headers", "ktor-server-content-negotiation", "ktor-server-core", "ktor-server-default-headers", "ktor-server-request-validation"]
-slack-circuit = ["slack-circuit-backstack", "slack-circuit-core", "slack-circuit-overlay", "slack-circuit-retained"]
+slack-circuit = ["slack-circuit-backstack", "slack-circuit-foundation", "slack-circuit-overlay", "slack-circuit-retained"]
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "google-android" }

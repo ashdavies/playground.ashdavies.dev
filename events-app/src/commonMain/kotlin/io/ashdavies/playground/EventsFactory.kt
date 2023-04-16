@@ -1,13 +1,13 @@
 package io.ashdavies.playground
 
 import androidx.compose.material3.ExperimentalMaterial3Api
-import com.slack.circuit.CircuitContext
-import com.slack.circuit.Navigator
-import com.slack.circuit.Presenter
-import com.slack.circuit.Screen
-import com.slack.circuit.Ui
-import com.slack.circuit.presenterOf
-import com.slack.circuit.ui
+import com.slack.circuit.runtime.CircuitContext
+import com.slack.circuit.runtime.Navigator
+import com.slack.circuit.runtime.Screen
+import com.slack.circuit.runtime.presenter.Presenter
+import com.slack.circuit.runtime.presenter.presenterOf
+import com.slack.circuit.runtime.ui.Ui
+import com.slack.circuit.runtime.ui.ui
 import io.ashdavies.playground.activity.ActivityPresenter
 import io.ashdavies.playground.activity.ActivityScreen
 import io.ashdavies.playground.details.DetailsPresenter

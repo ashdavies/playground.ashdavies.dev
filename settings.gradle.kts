@@ -6,7 +6,7 @@ apply(from = "repositories.gradle.kts")
 plugins {
     id("androidx.build.gradle.gcpbuildcache") version "1.0.0-beta01"
     id("com.google.cloud.tools.jib") version "3.3.1" apply false
-    id("com.gradle.enterprise") version "3.12.6"
+    id("com.gradle.enterprise") version "3.13"
 }
 
 buildCache {

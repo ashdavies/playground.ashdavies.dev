@@ -6,11 +6,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
-import com.slack.circuit.CircuitCompositionLocals
-import com.slack.circuit.NavigableCircuitContent
 import com.slack.circuit.backstack.rememberSaveableBackStack
-import com.slack.circuit.push
-import com.slack.circuit.rememberCircuitNavigator
+import com.slack.circuit.foundation.CircuitCompositionLocals
+import com.slack.circuit.foundation.NavigableCircuitContent
+import com.slack.circuit.foundation.push
+import com.slack.circuit.foundation.rememberCircuitNavigator
 import kotlinx.cli.ArgParser
 import kotlinx.cli.ArgType
 
