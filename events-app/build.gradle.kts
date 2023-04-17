@@ -10,6 +10,8 @@ android {
 
 kotlin {
     commonMain.dependencies {
+        implementation(compose.material)
+
         implementation(projects.appCheck.appCheckClient)
         implementation(projects.composeLocals)
 

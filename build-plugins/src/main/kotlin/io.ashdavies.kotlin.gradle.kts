@@ -13,7 +13,6 @@ kotlin {
     explicitApiWarning()
     jvm()
 
-    @OptIn(ExperimentalComposeLibrary::class)
     commonMain.dependencies {
         implementation(compose.foundation)
         implementation(compose.material3)
