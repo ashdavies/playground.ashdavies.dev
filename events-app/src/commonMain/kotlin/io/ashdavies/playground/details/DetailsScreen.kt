@@ -23,7 +23,6 @@ import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import io.ashdavies.playground.Event
 
 @Composable
-@ExperimentalMaterial3Api
 internal fun DetailsScreen(state: DetailsScreen.State, modifier: Modifier = Modifier) {
     val eventSink = state.eventSink
 
@@ -41,7 +40,7 @@ internal fun DetailsScreen(state: DetailsScreen.State, modifier: Modifier = Modi
 }
 
 @Composable
-@ExperimentalMaterial3Api
+@OptIn(ExperimentalMaterial3Api::class)
 private fun DetailsScreen(event: Event, modifier: Modifier = Modifier, onBack: () -> Unit) {
     Scaffold(
         topBar = { DetailsTopAppBar(event.name, onBack) },

@@ -25,7 +25,6 @@ kotlin {
 
         with(libs.google) {
             implementation(accompanist.placeholderMaterial)
-            implementation(accompanist.swiperefresh)
             implementation(accompanist.systemuicontroller)
         }
     }
