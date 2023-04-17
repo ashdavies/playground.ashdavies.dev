@@ -11,9 +11,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material.pullrefresh.PullRefreshIndicator
+import androidx.compose.material.pullrefresh.pullRefresh
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -36,7 +40,6 @@ import app.cash.paging.LoadStateLoading
 import app.cash.paging.items
 import io.ashdavies.playground.Event
 import io.ashdavies.playground.android.fade
-import io.ashdavies.playground.platform.PlatformSwipeRefresh
 
 private val <T : Any> LazyPagingItems<T>.errorMessage: String?
     get() = (loadState.append as? LoadStateError)
@@ -47,7 +50,7 @@ private val <T : Any> LazyPagingItems<T>.isRefreshing: Boolean
     get() = loadState.refresh is LoadStateLoading
 
 @Composable
-@ExperimentalMaterial3Api
+@OptIn(ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class)
 internal fun ActivityScreen(state: ActivityScreen.State, modifier: Modifier = Modifier) {
     val eventSink = state.eventSink
 
@@ -55,14 +58,22 @@ internal fun ActivityScreen(state: ActivityScreen.State, modifier: Modifier = Mo
         topBar = { ActivityTopAppBar("Events") },
         modifier = modifier,
     ) { contentPadding ->
-        PlatformSwipeRefresh(
-            isRefreshing = state.pagingItems.isRefreshing,
-            onRefresh = state.pagingItems::refresh,
-        ) {
+        val pullRefreshState = rememberPullRefreshState(
+            refreshing = state.pagingItems.isRefreshing,
+            onRefresh = { state.pagingItems.refresh() },
+        )
+
+        Box(modifier = Modifier.pullRefresh(pullRefreshState)) {
             val errorMessage = state.pagingItems.errorMessage
             if (errorMessage != null) {
                 EventFailure(errorMessage)
             }
+
+            PullRefreshIndicator(
+                modifier = Modifier.align(Alignment.TopCenter),
+                refreshing = state.pagingItems.isRefreshing,
+                state = pullRefreshState,
+            )
 
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),

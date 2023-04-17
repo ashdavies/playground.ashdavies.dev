@@ -25,7 +25,6 @@ kotlin {
         implementation(libs.bundles.google.firebase)
 
         implementation(libs.google.accompanist.placeholderMaterial)
-        implementation(libs.google.accompanist.swiperefresh)
         implementation(libs.google.firebase.auth.ktx)
     }
 }

@@ -10,6 +10,8 @@ android {
 
 kotlin {
     commonMain.dependencies {
+        implementation(compose.material)
+
         implementation(projects.appCheck.appCheckClient)
         implementation(projects.composeLocals)
 
@@ -39,7 +41,6 @@ kotlin {
         with(libs.google) {
             implementation(accompanist.flowlayout)
             implementation(accompanist.placeholderMaterial)
-            implementation(accompanist.swiperefresh)
             implementation(firebase.appcheck.playintegrity)
             implementation(firebase.appcheck)
             implementation(firebase.auth.ktx)

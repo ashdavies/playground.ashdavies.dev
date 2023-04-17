@@ -1,6 +1,5 @@
 package io.ashdavies.playground
 
-import androidx.compose.material3.ExperimentalMaterial3Api
 import com.slack.circuit.runtime.CircuitContext
 import com.slack.circuit.runtime.Navigator
 import com.slack.circuit.runtime.Screen
@@ -31,7 +30,6 @@ public class EventsPresenterFactory : Presenter.Factory {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 public class EventsUiFactory : Ui.Factory {
     override fun create(screen: Screen, context: CircuitContext): Ui<*>? = when (screen) {
         is HomeScreen -> ui<HomeScreen.State> { state, modifier ->
