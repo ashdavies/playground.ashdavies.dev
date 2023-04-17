@@ -1,9 +1,9 @@
 package io.ashdavies.notion
 
+import androidx.compose.material3.Text
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import com.jakewharton.mosaic.Text
 import com.jakewharton.mosaic.runMosaic
 import kotlinx.coroutines.delay
 
@@ -14,8 +14,9 @@ public suspend fun main(args: Array<String>): Unit = runMosaic {
     setContent {
         Text("Time: $elapsed")
 
-        (state as? AuthState.Awaiting)?.also {
-            Text("Navigate to ${it.userPromptUri} to continue")
+        when (val it = state) {
+            is AuthState.Awaiting -> Text("Navigate to ${it.userPromptUri} to continue")
+            else -> Unit
         }
 
         NotionConsole(args) { state = it }
