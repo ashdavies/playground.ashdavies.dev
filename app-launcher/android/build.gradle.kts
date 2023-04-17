@@ -10,6 +10,10 @@ plugins {
 android {
     namespace = "io.ashdavies.playground"
 
+    buildFeatures {
+        buildConfig = true
+    }
+
     defaultConfig {
         buildConfigString("CLIENT_NAME", "Ktor/${libs.versions.ktor.get()}")
         buildConfigString("PLAYGROUND_API_KEY")
@@ -43,5 +47,5 @@ dependencies {
 }
 
 fun VariantDimension.buildConfigString(name: String, value: String = System.getenv(name)) {
-    @Suppress("UnstableApiUsage") buildConfigField("String", name, "\"$value\"")
+    buildConfigField("String", name, "\"$value\"")
 }
