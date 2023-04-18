@@ -3,13 +3,13 @@
 # Warning
 None of this is up to date, I'm working on automating documentation, please stand by.
 
-[![Google Cloud](https://img.shields.io/github/workflow/status/ashdavies/playground/google-cloud?logo=github&logoColor=%23969da4)](https://github.com/ashdavies/playground/actions/workflows/google-cloud.yaml)
-[![Pre Merge](https://img.shields.io/github/workflow/status/ashdavies/playground/pre-merge?logo=github&logoColor=%23969da4)](https://github.com/ashdavies/playground/actions/workflows/pre-merge.yaml)
-[![Renovate](https://img.shields.io/github/workflow/status/ashdavies/playground/renovate?logo=github&logoColor=%23969da4)](https://github.com/ashdavies/playground/actions/workflows/renovate.yaml)
+[![Google Cloud](https://img.shields.io/github/workflow/status/ashdavies/playground.ashdavies.dev/google-cloud?logo=github&logoColor=%23969da4)](https://github.com/ashdavies/playground.ashdavies.dev/actions/workflows/google-cloud.yaml)
+[![Pre Merge](https://img.shields.io/github/workflow/status/ashdavies/playground.ashdavies.dev/pre-merge?logo=github&logoColor=%23969da4)](https://github.com/ashdavies/playground.ashdavies.dev/actions/workflows/pre-merge.yaml)
+[![Renovate](https://img.shields.io/github/workflow/status/ashdavies/playground.ashdavies.dev/renovate?logo=github&logoColor=%23969da4)](https://github.com/ashdavies/playground.ashdavies.dev/actions/workflows/renovate.yaml)
 
-[![Last Commit](https://img.shields.io/github/last-commit/ashdavies/playground.svg)](https://github.com/ashdavies/playground/commits/main)
-[![Issues](https://img.shields.io/github/issues-pr/ashdavies/playground.svg)](https://github.com/ashdavies/playground/pulls)
-[![License](https://img.shields.io/github/license/ashdavies/playground.svg)](https://github.com/ashdavies/playground/blob/main/LICENSE)
+[![Last Commit](https://img.shields.io/github/last-commit/ashdavies/playground.ashdavies.dev.svg)](https://github.com/ashdavies/playground.ashdavies.dev/commits/main)
+[![Issues](https://img.shields.io/github/issues-pr/ashdavies/playground.ashdavies.dev.svg)](https://github.com/ashdavies/playground.ashdavies.dev/pulls)
+[![License](https://img.shields.io/github/license/ashdavies/playground.ashdavies.dev.svg)](https://github.com/ashdavies/playground.ashdavies.dev/blob/main/LICENSE)
 
 ![Android 8.0.0](https://img.shields.io/badge/android-8.0.0-version.svg?colorA=555555&colorB=3DDC84&label=&logo=android&logoColor=ffffff&logoWidth=10)
 ![Compose 1.4.0](https://img.shields.io/badge/compose-1.4.0-version.svg?colorA=555555&colorB=4285F4&label=&logo=jetpack-compose&logoColor=ffffff&logoWidth=10)
