@@ -1,4 +1,4 @@
-# 🧪 Playground 
+# 🧪 Playground
 
 # Warning
 None of this is up to date, I'm working on automating documentation, please stand by.
@@ -49,17 +49,17 @@ stateDiagram-v2
     AppLauncher --> DominionApp
     AppLauncher --> EventsApp
     AppLauncher --> FirebaseCompose
-    
+
     CloudRun --> AppCheckSdk
     CloudRun --> CloudFirestore
     CloudRun --> EventsAggregator
     CloudRun --> LocalRemote
     CloudRun --> LocalStorage
-    
+
     DominionApp --> AppCheckClient
     DominionApp --> LocalRemote
     DominionApp --> PlaygroundApp
-    
+
     EventsApp --> AppCheckClient
     EventsApp --> Auth0Auth
     EventsApp --> ComposeLocals
@@ -74,7 +74,7 @@ stateDiagram-v2
 ![Planned](https://img.shields.io/badge/project-planned-status.svg?colorA=555555&colorB=blue&label=&logo=kotlin&logoColor=ffffff&logoWidth=10)
 ![JVM](https://img.shields.io/badge/project-jvm-component.svg?colorA=555555&colorB=7F52FF&label=&logo=kotlin&logoColor=ffffff&logoWidth=10)
 
-Implements a custom app-check provider for multiplatform applications to verify client applications.  
+Implements a custom app-check provider for multiplatform applications to verify client applications.
 https://firebase.google.com/docs/app-check/custom-provider
 
 ### Auth Oauth [auth-oauth]
@@ -101,7 +101,7 @@ https://firebase.google.com/docs/app-check/custom-provider
 ![JVM](https://img.shields.io/badge/project-jvm-component.svg?colorA=555555&colorB=7F52FF&label=&logo=kotlin&logoColor=ffffff&logoWidth=10)
 
 ### Playground App [playground-app]
-![Deprecated](https://img.shields.io/badge/project-deprecated-status.svg?colorA=555555&colorB=grey&label=&logo=kotlin&logoColor=ffffff&logoWidth=10)  
+![Deprecated](https://img.shields.io/badge/project-deprecated-status.svg?colorA=555555&colorB=grey&label=&logo=kotlin&logoColor=ffffff&logoWidth=10)
 ![Desktop](https://img.shields.io/badge/project-desktop-component.svg?colorA=555555&colorB=7F52FF&label=&logo=kotlin&logoColor=ffffff&logoWidth=10)
 ![Android](https://img.shields.io/badge/project-android-component.svg?colorA=555555&colorB=3DDC84&label=&logo=android&logoColor=ffffff&logoWidth=10)
 
