@@ -1,8 +1,5 @@
 # 🧪 Playground
 
-# Warning
-None of this is up to date, I'm working on automating documentation, please stand by.
-
 [![Google Cloud](https://img.shields.io/github/actions/workflow/status/ashdavies/playground.ashdavies.dev/google-cloud.yml?logo=github&logoColor=%23969da4)](https://github.com/ashdavies/playground.ashdavies.dev/actions/workflows/google-cloud.yml)
 [![Pre Merge](https://img.shields.io/github/actions/workflow/status/ashdavies/playground.ashdavies.dev/pre-merge.yml?logo=github&logoColor=%23969da4)](https://github.com/ashdavies/playground.ashdavies.dev/actions/workflows/pre-merge.yml)
 [![Renovate](https://img.shields.io/github/actions/workflow/status/ashdavies/playground.ashdavies.dev/renovate.yml?logo=github&logoColor=%23969da4)](https://github.com/ashdavies/playground.ashdavies.dev/actions/workflows/renovate.yml)
