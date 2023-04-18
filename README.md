@@ -16,6 +16,7 @@ None of this is up to date, I'm working on automating documentation, please stan
 ![Kotlin 1.8.20](https://img.shields.io/badge/kotlin-1.8.20-version.svg?colorA=555555&colorB=7F52FF&label=&logo=kotlin&logoColor=ffffff&logoWidth=10)
 
 ## Projects
+
 <table>
     <tr>
         <td>
@@ -45,12 +46,29 @@ None of this is up to date, I'm working on automating documentation, please stan
 
 ```mermaid
 stateDiagram-v2
-    app-launcher --> dominion-app
-    app-launcher --> events-app
-    app-launcher --> firebase-compose
+    AppLauncher --> DominionApp
+    AppLauncher --> EventsApp
+    AppLauncher --> FirebaseCompose
     
+    CloudRun --> AppCheckSdk
+    CloudRun --> CloudFirestore
+    CloudRun --> EventsAggregator
+    CloudRun --> LocalRemote
+    CloudRun --> LocalStorage
     
+    DominionApp --> AppCheckClient
+    DominionApp --> LocalRemote
+    DominionApp --> PlaygroundApp
+    
+    EventsApp --> AppCheckClient
+    EventsApp --> Auth0Auth
+    EventsApp --> ComposeLocals
+    EventsApp --> LocalRemote
+    EventsApp --> LocalStorage
+    EventsApp --> PlaygroundApp
 ```
+
+## Modules
 
 ### App-Check [app-check]
 ![Planned](https://img.shields.io/badge/project-planned-status.svg?colorA=555555&colorB=blue&label=&logo=kotlin&logoColor=ffffff&logoWidth=10)
