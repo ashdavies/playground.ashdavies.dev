@@ -3,8 +3,9 @@
 # Warning
 None of this is up to date, I'm working on automating documentation, please stand by.
 
-[![Pre Merge Checks](https://img.shields.io/github/workflow/status/ashdavies/playground/pre-merge?logo=github&logoColor=%23969da4)](https://github.com/ashdavies/playground/actions/workflows/pre-merge.yaml)
-[![Scan with Detekt](https://img.shields.io/github/workflow/status/ashdavies/playground/detekt?logo=github&logoColor=%23969da4)](https://github.com/ashdavies/playground/actions/workflows/detekt.yaml)
+[![Google Cloud](https://img.shields.io/github/workflow/status/ashdavies/playground/google-cloud?logo=github&logoColor=%23969da4)](https://github.com/ashdavies/playground/actions/workflows/google-cloud.yaml)
+[![Pre Merge](https://img.shields.io/github/workflow/status/ashdavies/playground/pre-merge?logo=github&logoColor=%23969da4)](https://github.com/ashdavies/playground/actions/workflows/pre-merge.yaml)
+[![Renovate](https://img.shields.io/github/workflow/status/ashdavies/playground/renovate?logo=github&logoColor=%23969da4)](https://github.com/ashdavies/playground/actions/workflows/renovate.yaml)
 
 [![Last Commit](https://img.shields.io/github/last-commit/ashdavies/playground.svg)](https://github.com/ashdavies/playground/commits/main)
 [![Issues](https://img.shields.io/github/issues-pr/ashdavies/playground.svg)](https://github.com/ashdavies/playground/pulls)
@@ -61,6 +62,10 @@ https://firebase.google.com/docs/app-check/custom-provider
 ### Auth Oauth [auth-oauth]
 ![Experimental](https://img.shields.io/badge/project-experimental-status.svg?colorA=555555&colorB=red&label=&logo=kotlin&logoColor=ffffff&logoWidth=10)
 ![Multiplatform](https://img.shields.io/badge/project-multiplatform-component.svg?colorA=555555&colorB=7F52FF&label=&logo=kotlin&logoColor=ffffff&logoWidth=10)
+
+### Build Plugins [build-plugins]
+![Experimental](https://img.shields.io/badge/project-experimental-status.svg?colorA=555555&colorB=red&label=&logo=kotlin&logoColor=ffffff&logoWidth=10)
+![JVM](https://img.shields.io/badge/project-jvm-component.svg?colorA=555555&colorB=7F52FF&label=&logo=kotlin&logoColor=ffffff&logoWidth=10)
 
 ### Kotlin GB [kotlin-gb]
 ![Planned](https://img.shields.io/badge/project-planned-status.svg?colorA=555555&colorB=blue&label=&logo=kotlin&logoColor=ffffff&logoWidth=10)
