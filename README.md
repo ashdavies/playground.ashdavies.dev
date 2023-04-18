@@ -19,20 +19,20 @@ None of this is up to date, I'm working on automating documentation, please stan
     <tr>
         <td>
             ### Cloud Run [cloud-run]
-            ![Experimental](https://img.shields.io/badge/project-experimental-status.svg?colorA=555555&colorB=red&label=&logo=kotlin&logoColor=ffffff&logoWidth=10)
-            ![JVM](https://img.shields.io/badge/project-jvm-component.svg?colorA=555555&colorB=7F52FF&label=&logo=kotlin&logoColor=ffffff&logoWidth=10)
+            <img src="https://img.shields.io/badge/project-experimental-status.svg?colorA=555555&colorB=red&label=&logo=kotlin&logoColor=ffffff&logoWidth=10" alt="Experimental" />
+            <img src="https://img.shields.io/badge/project-jvm-component.svg?colorA=555555&colorB=7F52FF&label=&logo=kotlin&logoColor=ffffff&logoWidth=10" alt="JVM" />
         </td>
         <td>
             ### Dominion App [dominion-app]
-            ![Alpha](https://img.shields.io/badge/project-alpha-status.svg?colorA=555555&colorB=orange&label=&logo=kotlin&logoColor=ffffff&logoWidth=10)
-            ![Desktop](https://img.shields.io/badge/project-desktop-component.svg?colorA=555555&colorB=7F52FF&label=&logo=kotlin&logoColor=ffffff&logoWidth=10)
-            ![Android](https://img.shields.io/badge/project-android-component.svg?colorA=555555&colorB=3DDC84&label=&logo=android&logoColor=ffffff&logoWidth=10)
+            <img src="https://img.shields.io/badge/project-alpha-status.svg?colorA=555555&colorB=orange&label=&logo=kotlin&logoColor=ffffff&logoWidth=10" alt="Alpha" />
+            <img src="https://img.shields.io/badge/project-desktop-component.svg?colorA=555555&colorB=7F52FF&label=&logo=kotlin&logoColor=ffffff&logoWidth=10" alt="Desktop" />
+            <img src="https://img.shields.io/badge/project-android-component.svg?colorA=555555&colorB=3DDC84&label=&logo=android&logoColor=ffffff&logoWidth=10" alt="Android" />
         </td>
         <td>
             ### Events App [events-app]
-            ![Alpha](https://img.shields.io/badge/project-alpha-status.svg?colorA=555555&colorB=orange&label=&logo=kotlin&logoColor=ffffff&logoWidth=10)
-            ![Desktop](https://img.shields.io/badge/project-desktop-component.svg?colorA=555555&colorB=7F52FF&label=&logo=kotlin&logoColor=ffffff&logoWidth=10)
-            ![Android](https://img.shields.io/badge/project-android-component.svg?colorA=555555&colorB=3DDC84&label=&logo=android&logoColor=ffffff&logoWidth=10)
+            <img src="https://img.shields.io/badge/project-alpha-status.svg?colorA=555555&colorB=orange&label=&logo=kotlin&logoColor=ffffff&logoWidth=10" alt="Alpha" />
+            <img src="https://img.shields.io/badge/project-desktop-component.svg?colorA=555555&colorB=7F52FF&label=&logo=kotlin&logoColor=ffffff&logoWidth=10" alt="Desktop" />
+            <img src="https://img.shields.io/badge/project-android-component.svg?colorA=555555&colorB=3DDC84&label=&logo=android&logoColor=ffffff&logoWidth=10" alt="Android" />
             
             Original multiplatform application to demonstrate the capabilities of the included Kotlin libraries and tools.
             Formerly exclusively for Android, but now configured for Desktop application, and iOS soon to follow.
