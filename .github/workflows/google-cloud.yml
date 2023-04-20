@@ -81,6 +81,7 @@ jobs:
         uses: actions/github-script@v6
         if: ${{ steps.plan.outputs.build-log }}
         with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const comments = require('./.github/workflows/scripts/comments.js');
             const comment = await comments.get(context, github);
