@@ -11,7 +11,7 @@ kotlin {
     commonMain.dependencies {
         implementation(compose.materialIconsExtended)
         implementation(libs.arkivanov.parcelable)
-        implementation(libs.bundles.slack.circuit)
+        implementation(libs.slack.circuit.foundation)
         implementation(projects.dominionApp)
         implementation(projects.eventsApp)
     }

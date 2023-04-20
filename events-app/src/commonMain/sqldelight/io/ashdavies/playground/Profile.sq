@@ -1,0 +1,19 @@
+CREATE TABLE profile (
+    name TEXT NOT NULL,
+    location TEXT NOT NULL,
+    email TEXT NOT NULL,
+    uuid TEXT NOT NULL PRIMARY KEY,
+    username TEXT NOT NULL UNIQUE,
+    registered TEXT NOT NULL,
+    picture TEXT NOT NULL
+);
+
+selectAll:
+    SELECT *
+    FROM profile;
+
+insertOrReplace:
+    INSERT OR REPLACE INTO profile VALUES ?;
+
+deleteById:
+    DELETE FROM profile WHERE uuid = :uuid;

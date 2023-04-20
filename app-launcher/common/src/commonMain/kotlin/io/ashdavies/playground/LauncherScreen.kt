@@ -4,10 +4,11 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Code
-import androidx.compose.material.icons.filled.Event
-import androidx.compose.material.icons.filled.Grid4x4
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -25,15 +26,20 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-public fun LauncherScreen(state: LauncherState, modifier: Modifier = Modifier) {
+public fun LauncherScreen(
+    state: LauncherScreen.State,
+    modifier: Modifier = Modifier,
+) {
+    val eventSink = state.eventSink
+
     Scaffold(modifier, topBar = { LauncherTopAppBar() }) { padding ->
         Column(modifier = Modifier.padding(padding)) {
-            LauncherRow(Icons.Filled.Event, "Events") {
-                state.sink(LauncherEvent.Events)
-            }
-
-            LauncherRow(Icons.Filled.Grid4x4, "Dominion") {
-                state.sink(LauncherEvent.Dominion)
+            LazyVerticalGrid(columns = GridCells.Fixed(2)) {
+                items(state.entries) {
+                    LauncherRow(it.image, it.text) {
+                        eventSink(it.event)
+                    }
+                }
             }
         }
     }

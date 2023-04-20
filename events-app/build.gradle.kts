@@ -1,5 +1,3 @@
-import com.android.build.api.dsl.VariantDimension
-
 plugins {
     id("io.ashdavies.default")
     id("io.ashdavies.parcelable")
@@ -7,16 +5,13 @@ plugins {
 }
 
 android {
-    defaultConfig {
-        val googleClientId by SystemProperty(VariantDimension::buildConfigField)
-        val playgroundApiKey by SystemProperty(VariantDimension::buildConfigField)
-    }
-
     namespace = "io.ashdavies.events"
 }
 
 kotlin {
     commonMain.dependencies {
+        implementation(compose.material)
+
         implementation(projects.appCheck.appCheckClient)
         implementation(projects.composeLocals)
 
@@ -27,9 +22,9 @@ kotlin {
 
         implementation(libs.bundles.ktor.client)
         implementation(libs.bundles.paging.compose)
-        implementation(libs.bundles.slack.circuit)
 
         implementation(libs.arkivanov.parcelable)
+        implementation(libs.slack.circuit.foundation)
         implementation(libs.sqldelight.coroutines.extensions)
     }
 
@@ -39,7 +34,6 @@ kotlin {
 
         with(libs.bundles) {
             implementation(androidx.activity)
-            implementation(androidx.viewmodel)
             implementation(google.firebase)
             implementation(google.maps)
         }
@@ -47,7 +41,6 @@ kotlin {
         with(libs.google) {
             implementation(accompanist.flowlayout)
             implementation(accompanist.placeholderMaterial)
-            implementation(accompanist.swiperefresh)
             implementation(firebase.appcheck.playintegrity)
             implementation(firebase.appcheck)
             implementation(firebase.auth.ktx)

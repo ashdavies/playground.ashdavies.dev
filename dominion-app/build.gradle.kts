@@ -15,7 +15,7 @@ kotlin {
 
         implementation(libs.arkivanov.parcelable)
         implementation(libs.bundles.ktor.client)
-        implementation(libs.bundles.slack.circuit)
+        implementation(libs.slack.circuit.foundation)
     }
 
     androidMain.dependencies {
@@ -25,7 +25,6 @@ kotlin {
         implementation(libs.bundles.google.firebase)
 
         implementation(libs.google.accompanist.placeholderMaterial)
-        implementation(libs.google.accompanist.swiperefresh)
         implementation(libs.google.firebase.auth.ktx)
     }
 }
