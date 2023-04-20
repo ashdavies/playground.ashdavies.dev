@@ -1,7 +1,7 @@
 public object Playground {
 
     const val compileSdk = 33
-    const val jvmTarget = 11
+    const val jvmTarget = 17
     const val minSdk = 24
 
     val freeCompilerArgs = listOf(
