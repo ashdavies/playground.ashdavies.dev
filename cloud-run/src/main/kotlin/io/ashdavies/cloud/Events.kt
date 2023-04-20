@@ -27,17 +27,12 @@ internal fun Route.events() {
     }
 
     post("/events:aggregate") {
-        try {
-            val provider = DocumentProvider { firestore.collection("events") }
-            val reader = CollectionReader<LegacyEvent>(provider, CollectionQuery(limit = 0))
-            val writer = CollectionWriter(provider, LegacyEvent::id)
+        val provider = DocumentProvider { firestore.collection("events") }
+        val reader = CollectionReader<LegacyEvent>(provider, CollectionQuery(limit = 0))
+        val writer = CollectionWriter(provider, LegacyEvent::id)
 
-            writer(reader.invoke(LegacyEventSerializer), GitHubService.getEvents(::LegacyEvent))
-            call.respond(HttpStatusCode.OK)
-        } catch (exception: Exception) {
-            call.respond(HttpStatusCode.InternalServerError, exception.message ?: "Unknown Error")
-            exception.printStackTrace()
-        }
+        writer(reader.invoke(LegacyEventSerializer), GitHubService.getEvents(::LegacyEvent))
+        call.respond(HttpStatusCode.OK)
     }
 }
 
