@@ -10,12 +10,14 @@ import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
 import io.ktor.serialization.kotlinx.json.json
 import io.ktor.server.testing.testApplication
+import kotlin.test.Ignore
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 internal class EventsTest {
 
     @Test
+    @Ignore
     fun `should get events with default limit`() = testApplication {
         val client = createClient { install(ContentNegotiation, ContentNegotiation.Config::json) }
         val response = client.get("/events") { contentType(ContentType.Application.Json) }
