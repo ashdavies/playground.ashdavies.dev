@@ -34,7 +34,7 @@ internal fun Route.events() {
 
             writer(reader.invoke(LegacyEventSerializer), GitHubService.getEvents(::LegacyEvent))
             call.respond(HttpStatusCode.OK)
-        }catch (exception: Exception) {
+        } catch (exception: Exception) {
             call.respond(HttpStatusCode.InternalServerError, exception.message ?: "Unknown Error")
             exception.printStackTrace()
         }
