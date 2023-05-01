@@ -15,10 +15,7 @@ public val KotlinMultiplatformExtension.androidMain: KotlinSourceSet by SourceSe
 public val KotlinMultiplatformExtension.androidTest: KotlinSourceSet by SourceSetDelegate()
 
 public val KotlinMultiplatformExtension.jvmMain: KotlinSourceSet by SourceSetDelegate()
-
-/*public fun KotlinDependencyHandler.platform(provider: Provider<MinimalExternalModuleDependency>): Dependency {
-    return project.dependencies.platform("${provider.get()}")
-}*/
+public val KotlinMultiplatformExtension.jvmTest: KotlinSourceSet by SourceSetDelegate()
 
 private class SourceSetDelegate : ReadOnlyProperty<KotlinSourceSetContainer, KotlinSourceSet> {
     override fun getValue(thisRef: KotlinSourceSetContainer, property: KProperty<*>): KotlinSourceSet {
