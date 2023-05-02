@@ -2,6 +2,7 @@
 
 plugins {
     id("com.google.cloud.tools.jib")
+    id("io.ashdavies.integration")
     id("io.ashdavies.kotlin")
     application
 
@@ -31,8 +32,7 @@ kotlin {
         implementation(libs.google.firebase.admin)
     }
 
-    jvmTest.dependencies {
-        implementation(libs.jetbrains.kotlinx.coroutines.test)
+    integrationTest.dependencies {
         implementation(libs.ktor.client.content.negotiation)
         implementation(libs.ktor.client.core)
         implementation(libs.ktor.server.test.host)

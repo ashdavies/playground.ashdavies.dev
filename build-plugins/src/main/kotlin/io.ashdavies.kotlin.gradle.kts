@@ -14,9 +14,9 @@ kotlin {
     }
 
     commonTest.dependencies {
+        implementation(libs.app.cash.turbine)
         implementation(libs.bundles.jetbrains.kotlin.test)
         implementation(libs.bundles.jetbrains.kotlinx)
-        implementation(libs.app.cash.turbine)
     }
 
     jvmMain.dependencies {
