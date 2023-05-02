@@ -47,7 +47,7 @@ openApiGenerate {
     generatorName.set("kotlin-server")
     outputDir.set("$buildDir/generated/openapi/main")
     remoteInputSpec.set("https://playground.ashdavies.dev/openapi/documentation.yml")
-    templateDir.set("$projectDir/src/main/resources/templates")
+    templateDir.set("$projectDir/src/jvmMain/resources/templates")
     auth.set("X-API-KEY:${System.getenv("PLAYGROUND_API_KEY")}")
     packageName.set("io.ashdavies.playground")
     ignoreFileOverride.set("$projectDir/.openapi-generator-ignore")
