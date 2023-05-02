@@ -1,6 +1,7 @@
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinJvmCompilation
 
 plugins {
+    id("io.ashdavies.compose")
     id("io.ashdavies.kotlin")
     id("io.ashdavies.sql")
 
