@@ -40,7 +40,7 @@ google-accompanist-placeholderMaterial = { module = "com.google.accompanist:acco
 google-accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "google-accompanist" }
 
 google-android-maps = "com.google.android.gms:play-services-maps:18.1.0"
-google-android-material = "com.google.android.material:material:1.8.0"
+google-android-material = "com.google.android.material:material:1.9.0"
 
 google-cloud-bom = "com.google.cloud:libraries-bom:26.13.0"
 google-cloud-firestore = { module = "com.google.cloud:google-cloud-firestore" }
