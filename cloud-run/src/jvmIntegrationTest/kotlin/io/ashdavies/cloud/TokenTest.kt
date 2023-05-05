@@ -40,7 +40,6 @@ internal class TokenTest {
     }
 }
 
-
 @Serializable
 private data class TokenResponse(
     val ttlMillis: Long,
