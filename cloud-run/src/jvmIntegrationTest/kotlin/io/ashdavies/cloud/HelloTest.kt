@@ -5,6 +5,7 @@ import io.ktor.client.statement.bodyAsText
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.testing.testApplication
 import kotlin.test.Test
+import kotlin.test.fail
 import kotlin.test.assertEquals
 
 internal class HelloTest {
@@ -22,5 +23,10 @@ internal class HelloTest {
             actual = response.bodyAsText(),
             expected = "Hello, World!",
         )
+    }
+
+    @Test
+    fun `should fail`() = {
+        fail()
     }
 }

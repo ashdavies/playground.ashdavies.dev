@@ -12,7 +12,7 @@ public val KotlinMultiplatformExtension.androidDebug: KotlinSourceSet by SourceS
 public val KotlinMultiplatformExtension.androidMain: KotlinSourceSet by SourceSetDelegate()
 public val KotlinMultiplatformExtension.androidTest: KotlinSourceSet by SourceSetDelegate()
 
-public val KotlinMultiplatformExtension.integrationTest: KotlinSourceSet by SourceSetDelegate()
+public val KotlinMultiplatformExtension.jvmIntegrationTest: KotlinSourceSet by SourceSetDelegate()
 
 public val KotlinMultiplatformExtension.jvmMain: KotlinSourceSet by SourceSetDelegate()
 public val KotlinMultiplatformExtension.jvmTest: KotlinSourceSet by SourceSetDelegate()

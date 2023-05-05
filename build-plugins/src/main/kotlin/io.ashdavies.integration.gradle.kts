@@ -5,20 +5,19 @@ plugins {
 kotlin {
     jvm {
         compilations {
-            val main by getting
-
-            val integration by compilations.creating {
-                defaultSourceSet.dependencies {
-                    implementation(main.compileDependencyFiles + main.output.classesDirs)
+            val integrationTest by creating {
+                defaultSourceSet {
+                    dependsOn(sourceSets.getByName("jvmMain"))
+                    dependsOn(sourceSets.getByName("jvmTest"))
                 }
 
                 tasks.register<Test>("integrationTest") {
                     classpath = compileDependencyFiles + runtimeDependencyFiles + output.allOutputs
+                    group = LifecycleBasePlugin.VERIFICATION_GROUP
+                    description = "Runs integration tests"
                     testClassesDirs = output.classesDirs
                 }
             }
         }
     }
-
-    val integrationTest by sourceSets.creating
 }

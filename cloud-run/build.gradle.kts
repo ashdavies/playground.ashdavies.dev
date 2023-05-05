@@ -32,7 +32,7 @@ kotlin {
         implementation(libs.google.firebase.admin)
     }
 
-    integrationTest.dependencies {
+    jvmIntegrationTest.dependencies {
         implementation(libs.ktor.client.content.negotiation)
         implementation(libs.ktor.client.core)
         implementation(libs.ktor.server.test.host)
