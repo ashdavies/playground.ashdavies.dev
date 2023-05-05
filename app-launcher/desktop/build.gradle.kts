@@ -1,6 +1,7 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
 plugins {
+    id("io.ashdavies.compose")
     id("io.ashdavies.kotlin")
 }
 

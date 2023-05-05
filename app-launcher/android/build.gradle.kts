@@ -4,6 +4,7 @@ plugins {
     id("com.android.application")
     id("com.google.gms.google-services")
     id("io.ashdavies.android")
+    id("io.ashdavies.compose")
     id("io.ashdavies.kotlin")
 }
 

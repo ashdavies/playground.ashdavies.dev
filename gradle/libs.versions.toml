@@ -103,8 +103,6 @@ ktor-server-openapi = { module = "io.ktor:ktor-server-openapi", version.ref = "k
 ktor-server-request-validation = { module = "io.ktor:ktor-server-request-validation", version.ref = "ktor" }
 ktor-server-test-host = { module = "io.ktor:ktor-server-test-host", version.ref = "ktor" }
 
-oolong = "org.oolong-kt:oolong:2.1.1"
-
 paging-compose-common = { module = "app.cash.paging:paging-compose-common", version.ref = "paging-compose" }
 paging-compose-runtime = { module = "app.cash.paging:paging-runtime-composeui", version.ref = "paging-compose" }
 

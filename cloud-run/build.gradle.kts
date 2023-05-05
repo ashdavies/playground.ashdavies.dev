@@ -2,8 +2,8 @@
 
 plugins {
     id("com.google.cloud.tools.jib")
-    kotlin("plugin.serialization")
-    kotlin("jvm")
+    id("io.ashdavies.integration")
+    id("io.ashdavies.kotlin")
     application
 
     alias(libs.plugins.openapi.generator)
@@ -13,34 +13,30 @@ application {
     mainClass.set("io.ashdavies.cloud.MainKt")
 }
 
-dependencies {
-    implementation(projects.appCheck.appCheckSdk)
-    implementation(projects.cloudFirestore)
-    implementation(projects.composeLocals)
-    implementation(projects.eventsAggregator)
-    implementation(projects.localRemote)
-    implementation(projects.localStorage)
+kotlin {
+    jvmMain.dependencies {
+        implementation(projects.appCheck.appCheckSdk)
+        implementation(projects.cloudFirestore)
+        implementation(projects.composeLocals)
+        implementation(projects.eventsAggregator)
+        implementation(projects.localRemote)
+        implementation(projects.localStorage)
 
-    implementation(libs.bundles.jetbrains.kotlinx)
-    implementation(libs.bundles.ktor.serialization)
-    implementation(libs.bundles.ktor.server)
+        implementation(libs.bundles.jetbrains.kotlinx)
+        implementation(libs.bundles.ktor.serialization)
+        implementation(libs.bundles.ktor.server)
 
-    implementation(dependencies.platform(libs.google.cloud.bom))
-    implementation(libs.google.cloud.firestore)
-    implementation(libs.google.cloud.storage)
-    implementation(libs.google.firebase.admin)
+        implementation(dependencies.platform(libs.google.cloud.bom))
+        implementation(libs.google.cloud.firestore)
+        implementation(libs.google.cloud.storage)
+        implementation(libs.google.firebase.admin)
+    }
 
-    testImplementation(kotlin("test"))
-
-    testImplementation(libs.jetbrains.kotlinx.coroutines.test)
-    testImplementation(libs.ktor.client.content.negotiation)
-    testImplementation(libs.ktor.client.core)
-    testImplementation(libs.ktor.server.test.host)
-}
-
-java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
+    jvmIntegrationTest.dependencies {
+        implementation(libs.ktor.client.content.negotiation)
+        implementation(libs.ktor.client.core)
+        implementation(libs.ktor.server.test.host)
+    }
 }
 
 sourceSets.main {
@@ -51,7 +47,7 @@ openApiGenerate {
     generatorName.set("kotlin-server")
     outputDir.set("$buildDir/generated/openapi/main")
     remoteInputSpec.set("https://playground.ashdavies.dev/openapi/documentation.yml")
-    templateDir.set("$projectDir/src/main/resources/templates")
+    templateDir.set("$projectDir/src/jvmMain/resources/templates")
     auth.set("X-API-KEY:${System.getenv("PLAYGROUND_API_KEY")}")
     packageName.set("io.ashdavies.playground")
     ignoreFileOverride.set("$projectDir/.openapi-generator-ignore")
@@ -64,9 +60,4 @@ openApiGenerate {
 
 tasks.withType<com.google.cloud.tools.jib.gradle.JibTask> {
     dependsOn("build")
-}
-
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-    kotlinOptions.freeCompilerArgs += "-Xexplicit-api=warning"
-    kotlinOptions.jvmTarget = "17"
 }

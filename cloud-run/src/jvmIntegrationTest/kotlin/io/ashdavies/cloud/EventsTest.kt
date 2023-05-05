@@ -9,15 +9,13 @@ import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
 import io.ktor.serialization.kotlinx.json.json
-import io.ktor.server.testing.testApplication
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 internal class EventsTest {
 
     @Test
-    fun `should get events with default limit`() = testApplication {
-        val client = createClient { install(ContentNegotiation, ContentNegotiation.Config::json) }
+    fun `should get events with default limit`() = testMainApplication { client ->
         val response = client.get("/events") { contentType(ContentType.Application.Json) }
         val body = response.body<List<Event>>()
 
@@ -25,7 +23,7 @@ internal class EventsTest {
     }
 
     @Test
-    fun `should aggregate events`() = testApplication {
+    fun `should aggregate events`() = testMainApplication { client ->
         val client = createClient { install(ContentNegotiation, ContentNegotiation.Config::json) }
         val response = client.post("/events:aggregate")
 
