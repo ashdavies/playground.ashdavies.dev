@@ -13,6 +13,10 @@ application {
     mainClass.set("io.ashdavies.cloud.MainKt")
 }
 
+jib {
+    container.mainClass = "MainKt"
+}
+
 kotlin {
     jvmMain.dependencies {
         implementation(projects.appCheck.appCheckSdk)
