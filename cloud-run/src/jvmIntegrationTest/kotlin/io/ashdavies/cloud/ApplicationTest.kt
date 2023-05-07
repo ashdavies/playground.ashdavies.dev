@@ -104,7 +104,6 @@ internal class ApplicationTest {
     }
 }
 
-
 @KtorDsl
 private fun testMainApplication(
     configuration: HttpClientConfig<out HttpClientEngineConfig>.() -> Unit = DefaultHttpConfig,
