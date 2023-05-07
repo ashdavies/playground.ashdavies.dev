@@ -1,0 +1,98 @@
+name: Integration Tests
+
+on:
+  schedule:
+    - cron: "0 7 * * *"
+
+  workflow_dispatch:
+    inputs:
+      debug:
+        description: 'Debug'
+        required: false
+        default: false
+        type: boolean
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    permissions:
+      pull-requests: 'write'
+      id-token: 'write'
+
+    steps:
+      - name: Setup JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Run Gradle Tasks
+        id: gradle_build
+        uses: gradle/gradle-build-action@v2
+        env:
+          GOOGLE_PROJECT_API_KEY: ${{ secrets.google_project_api_key }}
+          MOBILE_SDK_APP_ID: ${{ secrets.mobile_sdk_app_id }}
+          PLAYGROUND_API_KEY: ${{ secrets.PLAYGROUND_API_KEY }}
+        with:
+          gradle-home-cache-cleanup: true
+          arguments: |
+            cloud-run:integrationTest
+              ${{ (contains(github.event.pull_request.labels.*.name, 'Dry Run') && '--dry-run' || '') }}
+              ${{ inputs.debug && '--debug' || '--info' }}
+              --console=plain
+
+      - name: Gradle Scan Link
+        uses: actions/github-script@v6
+        if: github.event_name == 'pull_request'
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const comments = await github.rest.issues.listComments({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+            })
+            
+            const message = "Build scan published to"
+            const url = /https:\/\/gradle\.com\/s\/\w+/
+            
+            const pattern = new RegExp(`${message} ${url.source}`)
+            
+            for (const it of comments.data) {
+              if (it.user.login.endsWith("[bot]") && it.body.match(pattern)) {
+                await github.rest.issues.deleteComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  comment_id: it.id,
+                })
+              }
+            }
+            
+            await github.rest.issues.createComment({
+              body: `${message} ${{ steps.gradle_build.outputs.build-scan-url }}`,
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+            })
+
+      - name: Produce Test Summary
+        uses: test-summary/action@v2
+        with:
+          paths: "**/build/test-results/test/TEST-*.xml"
+        if: ${{ !contains(github.event.pull_request.labels.*.name, 'Dry Run') }}
+
+      - name: Upload Test Report
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-report
+          path: "**/build/reports/tests"
+          if-no-files-found: error
+        if: ${{ !contains(github.event.pull_request.labels.*.name, 'Dry Run') }}
