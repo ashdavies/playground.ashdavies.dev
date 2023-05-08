@@ -76,7 +76,7 @@ jobs:
 
       - name: Gradle Scan Link
         uses: actions/github-script@v6
-        if: ${{ steps.gradle.outputs.build-scan-url }}
+        if: ${{ github.event_name == 'pull_request' && steps.gradle.outputs.build-scan-url }}
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
