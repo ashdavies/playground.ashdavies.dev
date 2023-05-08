@@ -58,7 +58,7 @@ jobs:
         run: find . -type f -name "google-services.aes" -exec sh -c 'openssl aes-256-cbc -md sha256 -d -in "$0" -out "${0%.aes*}.json" -k "${GOOGLE_SERVICES_PASSPHRASE}"' {} \;
 
       - name: Run Gradle Tasks
-        id: gradle_build
+        id: gradle
         uses: gradle/gradle-build-action@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -76,37 +76,24 @@ jobs:
 
       - name: Gradle Scan Link
         uses: actions/github-script@v6
-        if: github.event_name == 'pull_request'
+        if: ${{ steps.gradle.outputs.build-scan-url }}
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const comments = await github.rest.issues.listComments({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-            })
-  
-            const message = "Build scan published to"
-            const url = /https:\/\/gradle\.com\/s\/\w+/
+            const comments = require('./.github/workflows/scripts/comments.js');
+            const comment = await comments.get(context, github);
             
-            const pattern = new RegExp(`${message} ${url.source}`)
+            const message = "Build scan published to";
+            const url = /https:\/\/gradle\.com\/s\/\w+/;
             
-            for (const it of comments.data) {
-              if (it.user.login.endsWith("[bot]") && it.body.match(pattern)) {
-                await github.rest.issues.deleteComment({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  comment_id: it.id,
-                })
-              }
+            const pattern = new RegExp(`${message} ${url.source}`);
+            
+            if (comment && comment.body.match(pattern)) {
+              await comments.delete(context, github, comment.id)
             }
             
-            await github.rest.issues.createComment({
-              body: `${message} ${{ steps.gradle_build.outputs.build-scan-url }}`,
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-            })
+            const body = `${message} ${{ steps.gradle.outputs.build-scan-url }}` 
+            await comments.create(context, github, body)
 
       - name: Produce Test Summary
         uses: test-summary/action@v2

@@ -45,6 +45,11 @@ module "github-repository" {
   description = "Playground"
   labels      = [
     {
+      description = "Run Gradle with all task actions disabled"
+      name        = "Dry Run"
+      color       = "6AFD9F"
+    },
+    {
       description = "Trigger deployment to Google Cloud"
       name        = "Google Cloud"
       color       = "3367d6"

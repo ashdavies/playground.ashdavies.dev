@@ -18,6 +18,7 @@ jobs:
     runs-on: ubuntu-latest
 
     permissions:
+      pull-requests: 'write'
       id-token: write
 
     steps:
@@ -57,21 +58,48 @@ jobs:
           password: ${{ steps.google_cloud_auth.outputs.access_token }}
           registry: europe-west1-docker.pkg.dev
 
-      - name: Create Terraform Plan
+      - name: Setup Gradle Build
         uses: gradle/gradle-build-action@v2
+
+      - name: Create Terraform Plan
+        id: plan
         env:
           GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
+          PLAYGROUND_API_KEY: ${{ secrets.PLAYGROUND_API_KEY }}
         if: github.event_name == 'pull_request'
+        run: |
+          DRY_RUN=${{ (contains(github.event.pull_request.labels.*.name, 'Dry Run') && '--dry-run' || '') }}
+          OUTPUT=$(mktemp -t gradle.XXX) bash -c 'echo "build-log=$OUTPUT" >> $GITHUB_OUTPUT'          
+          
+          cat << "EOF" | bash > OUTPUT
+          ./gradlew terraformPlan $DRY_RUN \
+            --no-configuration-cache \
+            --console=plain \
+            --info
+          EOF
+          
+      - name: Print Terraform Plan
+        uses: actions/github-script@v6
+        if: ${{ steps.plan.outputs.build-log }}
         with:
-          gradle-home-cache-cleanup: true
-          arguments: |
-            google-cloud:terraformPlan
-              --no-configuration-cache
-              --console=plain
-              --info
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const comments = require('./.github/workflows/scripts/comments.js');
+            const comment = await comments.get(context, github);
+            const fs = require('fs').promises;
+            
+            const start = "Terraform will perform the following actions:"
+            if (comment && comment.body.startsWith(start)) {
+              await comments.delete(context, github, comment.id)
+            }
+            
+            const path = "${{ steps.plan.outputs.build-log }}"
+            const content = await fs.readFile(path, 'utf8')
+            
+            const body = content.substring(content.indexOf(start), content.indexOf("───"))
+            await comments.create(context, github, content)
 
       - name: Containerize Cloud Run
-        uses: gradle/gradle-build-action@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GOOGLE_PROJECT_API_KEY: ${{ secrets.google_project_api_key }}
@@ -79,25 +107,20 @@ jobs:
           MOBILE_SDK_APP_ID: ${{ secrets.mobile_sdk_app_id }}
           PLAYGROUND_API_KEY: ${{ secrets.PLAYGROUND_API_KEY }}
         if: github.ref == 'refs/heads/main'
-        with:
-          gradle-home-cache-cleanup: true
-          arguments: |
-            cloud-run:jib
-              --image=europe-west1-docker.pkg.dev/${{ steps.google_cloud_auth.outputs.project_id }}/cloud-run-source-deploy/playground.ashdavies.dev
-              --no-configuration-cache
-              --console=plain
-              --info
+        run: |
+          ./gradlew cloud-run:jib
+            --image=europe-west1-docker.pkg.dev/${{ steps.google_cloud_auth.outputs.project_id }}/cloud-run-source-deploy/playground.ashdavies.dev
+            --no-configuration-cache
+            --console=plain
+            --info
 
       - name: Apply Terraform Config
-        uses: gradle/gradle-build-action@v2
         env:
           GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
         if: github.ref == 'refs/heads/main'
-        with:
-          gradle-home-cache-cleanup: true
-          arguments: |
-            google-cloud:terraformApply
-              --no-configuration-cache
-              --console=plain
-              -Ptf.apply
-              --info
+        run: |
+          ./gradlew google-cloud:terraformApply
+            --no-configuration-cache
+            --console=plain
+            -Ptf.apply
+            --info
