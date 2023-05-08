@@ -107,20 +107,20 @@ jobs:
           MOBILE_SDK_APP_ID: ${{ secrets.mobile_sdk_app_id }}
           PLAYGROUND_API_KEY: ${{ secrets.PLAYGROUND_API_KEY }}
         if: github.ref == 'refs/heads/main'
-        run: >
-          ./gradlew cloud-run:jib
-            --image=europe-west1-docker.pkg.dev/${{ steps.google_cloud_auth.outputs.project_id }}/cloud-run-source-deploy/playground.ashdavies.dev
-            --no-configuration-cache
-            --console=plain
+        run: |
+          ./gradlew cloud-run:jib \
+            --image=europe-west1-docker.pkg.dev/${{ steps.google_cloud_auth.outputs.project_id }}/cloud-run-source-deploy/playground.ashdavies.dev \ 
+            --no-configuration-cache \
+            --console=plain \
             --info
 
       - name: Apply Terraform Config
         env:
           GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
         if: github.ref == 'refs/heads/main'
-        run: >
-          ./gradlew google-cloud:terraformApply
-            --no-configuration-cache
-            --console=plain
-            -Ptf.apply
+        run: |
+          ./gradlew google-cloud:terraformApply \
+            --no-configuration-cache \
+            --console=plain \
+            -Ptf.apply \
             --info
