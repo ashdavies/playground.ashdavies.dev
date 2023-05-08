@@ -76,33 +76,20 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const comments = await github.rest.issues.listComments({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-            })
+            const comments = require('./.github/workflows/scripts/comments.js');
+            const comment = await comments.get(context, github);
             
-            const message = "Build scan published to"
-            const url = /https:\/\/gradle\.com\/s\/\w+/
+            const message = "Build scan published to";
+            const url = /https:\/\/gradle\.com\/s\/\w+/;
             
-            const pattern = new RegExp(`${message} ${url.source}`)
+            const pattern = new RegExp(`${message} ${url.source}`);
             
-            for (const it of comments.data) {
-              if (it.user.login.endsWith("[bot]") && it.body.match(pattern)) {
-                await github.rest.issues.deleteComment({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  comment_id: it.id,
-                })
-              }
+            if (comment && comment.body.match(pattern)) {
+              await comments.delete(context, github, comment.id)
             }
             
-            await github.rest.issues.createComment({
-              body: `${message} ${{ steps.gradle_build.outputs.build-scan-url }}`,
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-            })
+            const body = `${message} ${{ steps.gradle.outputs.build-scan-url }}` 
+            await comments.create(context, github, body)
 
       - name: Produce Test Summary
         uses: test-summary/action@v2
