@@ -58,6 +58,9 @@ jobs:
           password: ${{ steps.google_cloud_auth.outputs.access_token }}
           registry: europe-west1-docker.pkg.dev
 
+      - name: Setup Gradle Build
+        uses: gradle/gradle-build-action@v2
+
       - name: Create Terraform Plan
         id: plan
         env:
