@@ -58,6 +58,14 @@ jobs:
           password: ${{ steps.google_cloud_auth.outputs.access_token }}
           registry: europe-west1-docker.pkg.dev
 
+      - name: Set the value in bash
+        id: step_one
+        run: |
+          EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
+          echo "JSON_RESPONSE<<$EOF" >> "$GITHUB_ENV"
+          curl https://example.com >> "$GITHUB_ENV"
+          echo "$EOF" >> "$GITHUB_ENV"
+
       - name: Debug Containerize Cloud Run
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
