@@ -61,13 +61,11 @@ jobs:
       - name: Set the value in bash
         id: step_one
         run: >-
-          echo "Several lines of text \
-            with some "quotes" of various 'types' \
-            and also a blank line: \
-            and some text with \
-            extra indentation \
-            on the next line, \
-            plus another line at the end."
+          echo "cloud-run:jib \
+            --image=europe-west1-docker.pkg.dev/${{ steps.google_cloud_auth.outputs.project_id }}/cloud-run-source-deploy/playground.ashdavies.dev \ 
+            --no-configuration-cache \
+            --console=plain \
+            --info"
 
       - name: Debug Containerize Cloud Run
         env:
