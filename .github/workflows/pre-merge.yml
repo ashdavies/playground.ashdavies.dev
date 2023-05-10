@@ -87,14 +87,10 @@ jobs:
             const url = /https:\/\/gradle\.com\/s\/\w+/;
             
             const pattern = new RegExp(`${message} ${url.source}`);
-            for (const item in comments) {
-              console.log(`Processing existing comment ${comment.body}`)
-            
-              if (item.body.match(pattern)) {
-                console.log(`Deleting comment with id ${comment.id}`)
-                await comments.delete(context, github, comment.id)
-              }
-            })
+            for (const item in comments) if (item.body.match(pattern)) {
+              console.log(`Deleting comment with id ${comment.id}`)
+              await comments.delete(context, github, comment.id)
+            }
             
             const body = `${message} ${{ steps.gradle.outputs.build-scan-url }}` 
             await comments.create(context, github, body)

@@ -5,7 +5,7 @@ exports.list = async function (context, github) {
     repo: context.repo.repo,
   });
 
-  return comments.data.find(comment =>
+  return comments.data.filter(comment =>
    comment.user.login.endsWith('[bot]') && comment.user.type === 'Bot'
   );
 };
