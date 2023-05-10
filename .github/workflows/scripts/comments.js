@@ -30,7 +30,7 @@ exports.delete = function (context, github, id) {
 };
 
 exports.deleteAll = function (context, github, predicate = it => true) {
-  for (const item in findAll(context, github, predicate)) {
+  for (const item in exports.findAll(context, github, predicate)) {
     delete (context, github, item.id)
   }
 };
