@@ -52,7 +52,6 @@ jobs:
           gradle-home-cache-cleanup: true
           arguments: |
             cloud-run:integrationTest
-              ${{ (contains(github.event.pull_request.labels.*.name, 'Dry Run') && '--dry-run' || '') }}
               ${{ inputs.debug && '--debug' || '--info' }}
               --console=plain
 
@@ -60,7 +59,6 @@ jobs:
         uses: test-summary/action@v2
         with:
           paths: "**/build/test-results/test/TEST-*.xml"
-        if: ${{ !contains(github.event.pull_request.labels.*.name, 'Dry Run') }}
 
       - name: Upload Test Report
         uses: actions/upload-artifact@v3
@@ -68,4 +66,3 @@ jobs:
           name: test-report
           path: "**/build/reports/tests"
           if-no-files-found: error
-        if: ${{ !contains(github.event.pull_request.labels.*.name, 'Dry Run') }}

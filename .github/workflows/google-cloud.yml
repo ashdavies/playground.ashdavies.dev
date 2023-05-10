@@ -85,21 +85,18 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const comments = require('./.github/workflows/scripts/comments.js');
-            const comment = await comments.find(context, github);
-            const fs = require('fs').promises;
-            
+            await comments.deleteAll(context, github, { it =>
+              it.body.startsWith("Terraform")
+            });
+
             const start = "Terraform will perform the following actions:"
-            if (comment && comment.body.startsWith(start)) {
-              await comments.delete(context, github, comment.id)
-            }
+            const fs = require('fs').promises;
             
             const path = "${{ steps.plan.outputs.build-log }}"
             const content = await fs.readFile(path, 'utf8')
             
             const body = content.substring(content.indexOf(start), content.indexOf("───"))
-            console.log(body)
-
-            await comments.create(context, github, content ? content : "Empty")
+            await comments.create(context, github, content ? content : "Build log empty")
 
       - name: Containerize Cloud Run
         env:

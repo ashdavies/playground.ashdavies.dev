@@ -1,12 +1,14 @@
-exports.find = async function (context, github) {
+exports.findAll = async function (context, github, predicate = it => true) {
   const comments = await github.rest.issues.listComments({
     issue_number: context.issue.number,
     owner: context.repo.owner,
     repo: context.repo.repo,
   });
 
-  return comments.data.find(comment =>
-   comment.user.login.endsWith('[bot]') && comment.user.type === 'Bot'
+  return comments.data.filter(comment =>
+    comment.user.login.endsWith('[bot]')
+    && comment.user.type === 'Bot'
+    && predicate(comment)
   );
 };
 
@@ -25,4 +27,10 @@ exports.delete = function (context, github, id) {
     repo: context.repo.repo,
     comment_id: id,
   });
+};
+
+exports.deleteAll = function (context, github, predicate = it => true) {
+  for (const item in findAll(context, github, predicate)) {
+    delete (context, github, item.id)
+  }
 };
