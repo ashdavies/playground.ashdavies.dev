@@ -1,10 +1,6 @@
 name: Integration Tests
 
 on:
-  pull_request:
-    branches:
-      - '*'
-
   workflow_dispatch:
     inputs:
       debug:
@@ -14,7 +10,7 @@ on:
         type: boolean
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
