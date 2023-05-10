@@ -86,9 +86,11 @@ jobs:
               repo: context.repo.repo,
             });
           
-            console.log(comments)
+            console.log(comments.data)
 
-            for (const comment in comments.data) {
+            for (const comment of comments.data) {
+              console.log(comment.user)
+
               if (comment.user.login.endsWith('[bot]') && comment.user.type === 'Bot') {
                 await github.rest.issues.deleteComment({
                   owner: context.repo.owner,
