@@ -81,16 +81,20 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const comments = require('./.github/workflows/scripts/comments.js');
-            const comment = await comments.get(context, github);
+            const existing = await comments.list(context, github);
             
             const message = "Build scan published to";
             const url = /https:\/\/gradle\.com\/s\/\w+/;
             
             const pattern = new RegExp(`${message} ${url.source}`);
+            existing.forEach(item => {
+              console.log(`Processing existing comment ${comment.body}`)
             
-            if (comment && comment.body.match(pattern)) {
-              await comments.delete(context, github, comment.id)
-            }
+              if (item.body.match(pattern)) {
+                console.log(`Deleting comment with id ${comment.id}`)
+                await comments.delete(context, github, comment.id)
+              }
+            })
             
             const body = `${message} ${{ steps.gradle.outputs.build-scan-url }}` 
             await comments.create(context, github, body)

@@ -1,4 +1,4 @@
-exports.get = async function (context, github) {
+exports.list = async function (context, github) {
   const comments = await github.rest.issues.listComments({
     issue_number: context.issue.number,
     owner: context.repo.owner,
