@@ -82,7 +82,7 @@ jobs:
           script: |
             const comments = require('./.github/workflows/scripts/comments.js');
             const comment = await comments.find(context, github);
-            console.log(`Existing: ${existing}`)
+            console.log(`Comment: ${comment}`)
 
             const message = "Build scan published to";
             const url = /https:\/\/gradle\.com\/s\/\w+/;
