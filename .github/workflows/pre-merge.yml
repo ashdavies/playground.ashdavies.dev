@@ -86,7 +86,7 @@ jobs:
               repo: context.repo.repo,
             });
           
-            for (const comment in comments) {
+            for (const comment in comments.data) {
               console.log(comment)
 
               if (comment.user.login.endsWith('[bot]') && comment.user.type === 'Bot') {
