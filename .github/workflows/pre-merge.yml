@@ -87,7 +87,7 @@ jobs:
             const url = /https:\/\/gradle\.com\/s\/\w+/;
             
             const pattern = new RegExp(`${message} ${url.source}`);
-            existing.forEach(item => {
+            for (const item in comments) {
               console.log(`Processing existing comment ${comment.body}`)
             
               if (item.body.match(pattern)) {
