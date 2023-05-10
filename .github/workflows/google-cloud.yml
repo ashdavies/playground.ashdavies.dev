@@ -85,11 +85,11 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const comments = require('./.github/workflows/scripts/comments.js');
-            const existing = await comments.list(context, github);
+            const comment = await comments.find(context, github);
             const fs = require('fs').promises;
             
             const start = "Terraform will perform the following actions:"
-            for (const item in existing) if (item.body.startsWith(start)) {
+            if (comment && comment.body.startsWith(start)) {
               await comments.delete(context, github, comment.id)
             }
             

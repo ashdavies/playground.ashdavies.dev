@@ -1,11 +1,11 @@
-exports.list = async function (context, github) {
+exports.find = async function (context, github) {
   const comments = await github.rest.issues.listComments({
     issue_number: context.issue.number,
     owner: context.repo.owner,
     repo: context.repo.repo,
   });
 
-  return comments.data.filter(comment =>
+  return comments.data.find(comment =>
    comment.user.login.endsWith('[bot]') && comment.user.type === 'Bot'
   );
 };

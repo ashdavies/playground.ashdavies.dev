@@ -81,14 +81,16 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const comments = require('./.github/workflows/scripts/comments.js');
-            const existing = await comments.list(context, github);
-            
+            const comment = await comments.find(context, github);
+            console.log(`Existing: ${existing}`)
+
             const message = "Build scan published to";
             const url = /https:\/\/gradle\.com\/s\/\w+/;
             
             const pattern = new RegExp(`${message} ${url.source}`);
-            for (const item in comments) if (item.body.match(pattern)) {
-              console.log(`Deleting comment with id ${comment.id}`)
+
+            console.log(comment)
+            if (comment && comment.body.match(pattern)) {
               await comments.delete(context, github, comment.id)
             }
             
