@@ -92,7 +92,7 @@ jobs:
             const comments = require('./.github/workflows/scripts/comments.js');
             const url = ${{ steps.gradle.outputs.build-scan-url }};
             const message = `Build scan published to ${url}`;
-            await comments.create(context, github, message)
+            await comments.create(context, github, message);
 
       - name: Produce Test Summary
         uses: test-summary/action@v2
