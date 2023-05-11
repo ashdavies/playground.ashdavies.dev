@@ -5,15 +5,11 @@ exports.findAll = async function (context, github, predicate = (it) => true) {
     repo: context.repo.repo,
   });
 
-  const filtered = comments.data.filter((comment) => {
-    comment.user.login.endsWith("[bot]") &&
+  return comments.data.filter((comment) => {
+    comment.user.login.endsWith("[bot]")/* &&
       comment.user.type === "Bot" &&
-      predicate(comment);
+      predicate(comment);*/
   });
-
-  console.log("Filtered Result");
-  console.log(filtered)
-  return filtered
 };
 
 exports.create = function (context, github, body) {
