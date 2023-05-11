@@ -31,6 +31,11 @@ doctor {
 }
 
 configure<com.diffplug.gradle.spotless.SpotlessExtension> {
+    javascript {
+        target("**/*.js")
+        prettier()
+    }
+
     val ktLintVersion = libs.versions.pinterest.ktlint.get()
     fun FormatExtension.kotlinDefault(extension: String = "kt") {
         target("**/src/**/*.$extension")

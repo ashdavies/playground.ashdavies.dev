@@ -16,6 +16,7 @@ kotlin {
                     group = LifecycleBasePlugin.VERIFICATION_GROUP
                     description = "Runs integration tests"
                     testClassesDirs = output.classesDirs
+                    outputs.upToDateWhen { false }
                 }
             }
         }

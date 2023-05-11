@@ -68,12 +68,21 @@ jobs:
           PLAYGROUND_API_KEY: ${{ secrets.PLAYGROUND_API_KEY }}
         with:
           gradle-home-cache-cleanup: true
-          arguments: |
+          arguments: >
             build
               ${{ (contains(github.event.pull_request.labels.*.name, 'Dry Run') && '--dry-run' || '') }}
               --console=plain
               --info
 
+      - name: Delete Bot Comments
+        uses: actions/github-script@v6
+        if: ${{ github.event_name == 'pull_request' && steps.gradle.outputs.build-scan-url }}
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const comments = require('./.github/workflows/scripts/comments.js');
+            await comments.deleteAll(context, github)
+            
       - name: Gradle Scan Link
         uses: actions/github-script@v6
         if: ${{ github.event_name == 'pull_request' && steps.gradle.outputs.build-scan-url }}
@@ -81,19 +90,9 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const comments = require('./.github/workflows/scripts/comments.js');
-            const comment = await comments.get(context, github);
-            
-            const message = "Build scan published to";
-            const url = /https:\/\/gradle\.com\/s\/\w+/;
-            
-            const pattern = new RegExp(`${message} ${url.source}`);
-            
-            if (comment && comment.body.match(pattern)) {
-              await comments.delete(context, github, comment.id)
-            }
-            
-            const body = `${message} ${{ steps.gradle.outputs.build-scan-url }}` 
-            await comments.create(context, github, body)
+            const url = `${{ steps.gradle.outputs.build-scan-url }}`;
+            const message = `Build scan published to ${url}`;
+            await comments.create(context, github, message);
 
       - name: Produce Test Summary
         uses: test-summary/action@v2
