@@ -1,10 +1,6 @@
 name: Integration Tests
 
 on:
-  pull_request:
-    branches:
-      - '*'
-
   workflow_dispatch:
     inputs:
       debug:
@@ -58,7 +54,6 @@ jobs:
             cloud-run:integrationTest
               ${{ inputs.debug && '--debug' || '--info' }}
               --console=plain
-              --rerun
 
       - name: Produce Test Summary
         uses: test-summary/action@v2
