@@ -6,9 +6,9 @@ exports.findAll = async function (context, github, predicate = (it) => true) {
   });
 
   return comments.data.filter((comment) => {
-    comment.user.login.endsWith("[bot]")/* &&
+    return comment.user.login.endsWith("[bot]") &&
       comment.user.type === "Bot" &&
-      predicate(comment);*/
+      predicate(comment);
   });
 };
 
