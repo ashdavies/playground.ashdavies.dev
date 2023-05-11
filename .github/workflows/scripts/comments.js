@@ -6,14 +6,9 @@ exports.findAll = async function (context, github, predicate = (it) => true) {
   });
 
   return comments.data.filter((comment) => {
-    const result = comment.user.login.endsWith("[bot]") &&
+    comment.user.login.endsWith("[bot]") &&
       comment.user.type === "Bot" &&
       predicate(comment);
-    
-    console.log(`Filter comment result ${result}`)
-    console.log(comment.user)
-    console.log(comment)
-    result
   });
 };
 
@@ -34,13 +29,8 @@ exports.delete = function (context, github, id) {
   });
 };
 
-exports.deleteAll = function (context, github, predicate = (it) => true) {
-  console.log("Invoking exports.deleteAll()")
-  const comments = exports.findAll(context, github, predicate)
-  console.log(comments)
-
-  //for (const item in exports.findAll(context, github, predicate)) {
-  for (const item in comments) {
+exports.deleteAll = async function (context, github, predicate = (it) => true) {
+  for (const item in await exports.findAll(context, github, predicate)) {
     console.log(`Deleting comment ${item.id}`);
     exports.delete(context, github, item.id);
   }

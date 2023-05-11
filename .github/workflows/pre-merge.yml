@@ -81,7 +81,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const comments = require('./.github/workflows/scripts/comments.js');
-            comments.deleteAll(context, github)
+            await comments.deleteAll(context, github)
             
       - name: Gradle Scan Link
         uses: actions/github-script@v6
