@@ -88,9 +88,9 @@ jobs:
         if: ${{ github.event_name == 'pull_request' && steps.gradle.outputs.build-scan-url }}
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
+          script: |-12
             const comments = require('./.github/workflows/scripts/comments.js');
-            const url = ${{ steps.gradle.outputs.build-scan-url }};
+            const url = `${{ steps.gradle.outputs.build-scan-url }}`;
             const message = `Build scan published to ${url}`;
             await comments.create(context, github, message);
 
