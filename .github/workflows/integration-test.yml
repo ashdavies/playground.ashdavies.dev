@@ -54,7 +54,7 @@ jobs:
           PLAYGROUND_API_KEY: ${{ secrets.PLAYGROUND_API_KEY }}
         with:
           gradle-home-cache-cleanup: true
-          arguments: |
+          arguments: >
             cloud-run:integrationTest
               ${{ inputs.debug && '--debug' || '--info' }}
               --console=plain

@@ -68,7 +68,7 @@ jobs:
           PLAYGROUND_API_KEY: ${{ secrets.PLAYGROUND_API_KEY }}
         with:
           gradle-home-cache-cleanup: true
-          arguments: |
+          arguments: >
             build
               ${{ (contains(github.event.pull_request.labels.*.name, 'Dry Run') && '--dry-run' || '') }}
               --console=plain

@@ -30,13 +30,9 @@ exports.delete = function (context, github, id) {
 };
 
 exports.deleteAll = async function (context, github, predicate = (it) => true) {
-  console.log("Invoking exports.deleteAll()")
-  const comments = await exports.findAll(context, github, predicate)
-  console.log(comments)
-
-  //for (const item in await exports.findAll(context, github, predicate)) {
-  for (const item in comments) {
-    console.log(`Deleting comment ${item.id}`);
+  for (const item in await exports.findAll(context, github, predicate)) {
+    console.log(`Deleting comment {item.id}`);
+    console.log(item)
     await exports.delete(context, github, item.id);
   }
 };
