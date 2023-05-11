@@ -31,6 +31,7 @@ exports.delete = function (context, github, id) {
 
 exports.deleteAll = function (context, github, predicate = (it) => true) {
   for (const item in exports.findAll(context, github, predicate)) {
-    delete (context, github, item.id);
+    console.log(`Deleting comment ${item.id}`);
+    exports.delete(context, github, item.id);
   }
 };
