@@ -1,6 +1,10 @@
 name: Renovate
 
 on:
+  pull_request:
+    branches:
+      - '*'
+
   schedule:
     - cron: "0 8 * * *"
 
@@ -32,10 +36,27 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3.5.2
 
-      - name: Self-hosted Renovate
-        uses: renovatebot/github-action@v35.2.0
-        env:
-          LOG_LEVEL: ${{ inputs.logLevel || 'INFO' }}
+      - name: Verify
+        uses: actions/github-script@v6
         with:
-          configurationFile: .github/renovate.json
-          token: '${{ steps.get_token.outputs.token }}'
+#         github-token: ${{ steps.get_token.outputs.token }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const pulls = await github.rest.pulls.list({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: "open"
+            })
+
+            for (const pull of pulls) {
+              console.log("=== Open Pull Request ===")
+              console.log(pull)
+            }
+
+#     - name: Self-hosted Renovate
+#       uses: renovatebot/github-action@v35.2.0
+#       env:
+#         LOG_LEVEL: ${{ inputs.logLevel || 'INFO' }}
+#       with:
+#         configurationFile: .github/renovate.json
+#         token: '${{ steps.get_token.outputs.token }}'
