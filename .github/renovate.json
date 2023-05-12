@@ -38,6 +38,7 @@
       ]
     }
   ],
+  "platformCommit": true,
   "repositories": [
     "ashdavies/playground.ashdavies.dev"
   ],

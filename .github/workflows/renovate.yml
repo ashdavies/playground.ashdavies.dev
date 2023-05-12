@@ -22,13 +22,6 @@ jobs:
   renovate:
     runs-on: ubuntu-latest
     steps:
-      - name: Get Token
-        id: get_token
-        uses: tibdex/github-app-token@v1
-        with:
-          private_key: ${{ secrets.PRIVATE_KEY }}
-          app_id: ${{ secrets.APP_ID }}
-
       - name: Checkout
         uses: actions/checkout@v3.5.2
 
@@ -38,4 +31,4 @@ jobs:
           LOG_LEVEL: ${{ inputs.logLevel || 'INFO' }}
         with:
           configurationFile: .github/renovate.json
-          token: '${{ steps.get_token.outputs.token }}'
+          token: '${{ secrets.GITHUB_TOKEN }}'
