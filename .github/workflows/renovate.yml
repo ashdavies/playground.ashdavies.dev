@@ -46,7 +46,7 @@ jobs:
             const pulls = require('./.github/workflows/scripts/pulls.js');
 
             const open = await pulls.findAll(context, github, (it) => {
-              it.head.ref.startsWith("renovate")
+              return it.head.ref.startsWith("renovate")
             })
 
             console.log("=== Open Pull Requests")
@@ -54,7 +54,7 @@ jobs:
 
             for (const pull of open) {
               const unverified = await commits.findAll(context, github, pull.number, (it) => {
-                it.commit.verification.verified == false && it.commit.verification.reason == "unsigned"
+                return it.commit.verification.verified == false && it.commit.verification.reason == "unsigned"
               })
 
               for (const commit of unverified) {
