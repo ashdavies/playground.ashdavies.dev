@@ -42,15 +42,8 @@ jobs:
 #         github-token: ${{ steps.get_token.outputs.token }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const pulls = await github.rest.pulls.list({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              state: "open"
-            })
-
-            console.log(pulls)
-            
-            for (const pull of pulls.data) {
+            const pulls = require('./.github/workflows/scripts/pulls.js');
+            for (const pull in await pulls.findAll(context, github, it => it.head.ref.startsWith("renovate"))) {
               console.log("=== Open Pull Request ===")
               console.log(pull)
             }
