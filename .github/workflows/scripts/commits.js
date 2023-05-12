@@ -1,8 +1,8 @@
-exports.findAll = async function (context, github, predicate = (it) => true) {
-    const values = await github.rest.pulls.list({
+exports.findAll = async function (context, github, pull, predicate = (it) => true) {
+    const values = await github.rest.pulls.listCommits({
         owner: context.repo.owner,
         repo: context.repo.repo,
-        state: "open",
+        pull_number: pull,
     });
 
     return values.data.filter((it) => {

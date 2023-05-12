@@ -42,10 +42,14 @@ jobs:
 #         github-token: ${{ steps.get_token.outputs.token }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
+            const commits = require('./.github/workflows/scripts/commits.js');
             const pulls = require('./.github/workflows/scripts/pulls.js');
-            for (const pull in await pulls.findAll(context, github, it => it.head.ref.startsWith("renovate"))) {
-              console.log("=== Open Pull Request ===")
-              console.log(pull)
+
+            for (const pull of await pulls.findAll(context, github, it => it.head.ref.startsWith("renovate"))) {
+              for (const commit of await commits.findAll(context, github, it.id)) {
+                console.log("=== Bot Commit ===")
+                console.log(commit)
+              }
             }
 
 #     - name: Self-hosted Renovate
