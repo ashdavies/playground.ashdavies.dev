@@ -45,10 +45,11 @@ jobs:
             const module = require('./.github/workflows/scripts/renovate.js');
             await module.invoke(context, github)
 
-#     - name: Self-hosted Renovate
-#       uses: renovatebot/github-action@v35.2.0
-#       env:
-#         LOG_LEVEL: ${{ inputs.logLevel || 'INFO' }}
-#       with:
-#         configurationFile: .github/renovate.json
-#         token: '${{ steps.get_token.outputs.token }}'
+      - name: Self-hosted Renovate
+        uses: renovatebot/github-action@v35.2.0
+        env:
+          LOG_LEVEL: ${{ inputs.logLevel || 'INFO' }}
+        with:
+          configurationFile: .github/renovate.json
+          token: '${{ steps.get_token.outputs.token }}'
+#         token: '${{ secrets.GITHUB_TOKEN }}'
