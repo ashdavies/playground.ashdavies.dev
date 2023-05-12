@@ -6,6 +6,9 @@ exports.invoke = async function (context, github) {
         return it.head.ref.startsWith("renovate")
     })
 
+    console.log("=== Open Pull Request")
+    console.log(open)
+    
     for (const pull of open) {
         const head = await github.rest.git.getCommit({
             commit_sha: pull.head.sha,
