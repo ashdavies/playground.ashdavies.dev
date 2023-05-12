@@ -5,11 +5,11 @@ exports.invoke = async function (context, github) {
     const open = await pulls.findAll(context, github, (it) => {
         return it.head.ref.startsWith("renovate")
     })
-
-    console.log("=== Open Pull Request")
-    console.log(open)
     
     for (const pull of open) {
+        console.log("=== Open Pull Request")
+        console.log(open)
+
         const head = await github.rest.git.getCommit({
             commit_sha: pull.head.sha,
             owner: context.repo.owner,
@@ -20,7 +20,7 @@ exports.invoke = async function (context, github) {
         console.log(head)
 
         const isUnsigned = !head.data.verification.verified && head.data.verification.reason == "unsigned"
-        const isBot = pull.author.login.endsWith("[bot]") && pull.author.type == "Bot"
+        const isBot = pull.user.login.endsWith("[bot]") && pull.user.type == "Bot"
 
         if (isBot && isUnsigned) {
             const payload = {
