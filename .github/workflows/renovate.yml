@@ -49,8 +49,8 @@ jobs:
 
               console.log("=== Open Pull Request ===")
               console.log(pull)
-              
-              for (const commit of await commits.findAll(context, github, pull.id)) {
+
+              for (const commit of await commits.findAll(context, github, pull.number)) {
                 console.log("=== Bot Commit ===")
                 console.log(commit)
               }
