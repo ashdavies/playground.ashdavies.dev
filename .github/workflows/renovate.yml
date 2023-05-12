@@ -43,7 +43,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const module = require('./.github/workflows/scripts/renovate.js');
-            await renovate.invoke(context, github)
+            await module.invoke(context, github)
 
 #     - name: Self-hosted Renovate
 #       uses: renovatebot/github-action@v35.2.0
