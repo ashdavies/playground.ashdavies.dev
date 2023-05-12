@@ -6,8 +6,8 @@ exports.findAll = async function (context, github, pull, predicate = (it) => tru
     });
 
     return values.data.filter((it) => {
-        return it.user.login.endsWith("[bot]") &&
-            it.user.type === "Bot" &&
+        return it.author.login.endsWith("[bot]") &&
+            it.author.type === "Bot" &&
             predicate(it);
     });
 };
