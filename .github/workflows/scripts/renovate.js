@@ -1,6 +1,4 @@
 exports.invoke = async function (context, github) {
-    console.log("Current directory:", __dirname);
-    
     const commits = require('./commits.js');
     const pulls = require('./pulls.js');
 
@@ -18,17 +16,17 @@ exports.invoke = async function (context, github) {
         console.log("=== Pull Request Head Commit")
         console.log(head)
 
-        const isUnsigned = !head.verification.verified && head.verification.reason == "unsigned"
+        const isUnsigned = !head.data.verification.verified && head.data.verification.reason == "unsigned"
         const isBot = pull.author.login.endsWith("[bot]") && pull.author.type == "Bot"
 
         if (isBot && isUnsigned) {
             const payload = {
                 parents: head.parents.map(it => it.sha),
+                message: head.data.message,
                 owner: context.repo.owner,
+                author: head.data.author,
+                tree: head.data.tree.sha,
                 repo: context.repo.repo,
-                message: head.message,
-                author: head.author,
-                tree: head.tree.sha,
             };
 
             console.log("=== Commit Payload ===")
