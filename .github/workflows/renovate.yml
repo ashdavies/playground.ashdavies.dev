@@ -48,7 +48,9 @@ jobs:
               state: "open"
             })
 
-            for (const pull of pulls) {
+            console.log(pulls)
+            
+            for (const pull of pulls.data) {
               console.log("=== Open Pull Request ===")
               console.log(pull)
             }
