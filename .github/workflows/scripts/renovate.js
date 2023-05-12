@@ -8,6 +8,7 @@ exports.invoke = async function (context, github) {
 
     for (const pull of open) {
         const head = await github.rest.git.getCommit({
+            commit_sha: pull.head.sha,
             owner: context.repo.owner,
             repo: context.repo.repo,
         })
