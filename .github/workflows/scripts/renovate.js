@@ -1,6 +1,6 @@
 exports.invoke = async function (context, github) {
-    const commits = require('./.github/workflows/scripts/commits.js');
-    const pulls = require('./.github/workflows/scripts/pulls.js');
+    const commits = require('commits.js');
+    const pulls = require('pulls.js');
 
     const open = await pulls.findAll(context, github, (it) => {
         return it.head.ref.startsWith("renovate")
