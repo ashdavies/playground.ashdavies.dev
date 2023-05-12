@@ -1,6 +1,7 @@
 @file:Suppress("DSL_SCOPE_VIOLATION") // https://github.com/gradle/gradle/issues/22797
 
 import com.diffplug.gradle.spotless.FormatExtension
+import com.diffplug.gradle.spotless.SpotlessTask
 
 buildscript {
     dependencies {
@@ -79,4 +80,8 @@ configure<com.diffplug.gradle.spotless.SpotlessExtension> {
     }
 
     ratchetFrom = "origin/main"
+}
+
+tasks.withType<SpotlessTask> {
+    notCompatibleWithConfigurationCache("https://github.com/diffplug/spotless/issues/1644")
 }
