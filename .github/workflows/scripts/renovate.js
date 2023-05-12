@@ -1,6 +1,8 @@
 exports.invoke = async function (context, github) {
-    const commits = require('commits.js');
-    const pulls = require('pulls.js');
+    console.log("Current directory:", __dirname);
+    
+    const commits = require('./commits.js');
+    const pulls = require('./pulls.js');
 
     const open = await pulls.findAll(context, github, (it) => {
         return it.head.ref.startsWith("renovate")
