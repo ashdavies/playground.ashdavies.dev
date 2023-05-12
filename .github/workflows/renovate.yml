@@ -46,6 +46,10 @@ jobs:
             const pulls = require('./.github/workflows/scripts/pulls.js');
 
             for (const pull of await pulls.findAll(context, github, it => it.head.ref.startsWith("renovate"))) {
+
+              console.log("=== Open Pull Request ===")
+              console.log(pull)
+              
               for (const commit of await commits.findAll(context, github, pull.id)) {
                 console.log("=== Bot Commit ===")
                 console.log(commit)
