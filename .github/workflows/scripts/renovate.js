@@ -24,7 +24,7 @@ exports.invoke = async function (context, github) {
 
         if (isBot && isUnsigned) {
             const payload = {
-                parents: head.parents.map(it => it.sha),
+                parents: head.data.parents.map(it => it.sha),
                 message: head.data.message,
                 owner: context.repo.owner,
                 author: head.data.author,
@@ -35,9 +35,9 @@ exports.invoke = async function (context, github) {
             console.log("=== Commit Payload ===")
             console.log(payload)
 
-            const response = await github.rest.git.createCommit(payload)
-            console.log(response)
-            break
+            //const response = await github.rest.git.createCommit(payload)
+            //console.log(response)
+            //break
         }
     }
 }
