@@ -9,7 +9,7 @@ google-auto = "1.0.1"
 google-maps-compose = "2.11.4"
 jetbrains-compose = "1.4.0"
 jetbrains-kotlin = "1.8.20"
-kotlinx-coroutines = "1.7.0"
+kotlinx-coroutines = "1.7.1"
 kotlinx-serialization = "1.5.1"
 ktor = "2.3.0"
 paging-compose = "3.2.0-alpha05-0.2.1"
@@ -27,7 +27,7 @@ androidx-core-splashscreen = "androidx.core:core-splashscreen:1.0.1"
 apollo-graphql-coroutines-support = { module = "com.apollographql.apollo:apollo-coroutines-support", version.ref = "apollo-graphql" }
 apollo-graphql-runtime = { module = "com.apollographql.apollo:apollo-runtime", version.ref = "apollo-graphql" }
 
-app-cash-turbine = "app.cash.turbine:turbine:0.12.3"
+app-cash-turbine = "app.cash.turbine:turbine:0.13.0"
 arkivanov-parcelable = "com.arkivanov.essenty:parcelable:1.1.0"
 
 auth-java-jwt = "com.auth0:java-jwt:4.4.0"
@@ -149,5 +149,5 @@ kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrains-kotlin"
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "jetbrains-kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "jetbrains-kotlin" }
 kotlinx-kover = "org.jetbrains.kotlinx.kover:0.6.1"
-openapi-generator = "org.openapi.generator:6.5.0"
+openapi-generator = "org.openapi.generator:6.6.0"
 squareup-sqldelight = { id = "com.squareup.sqldelight", version.ref =  "squareup-sqldelight" }
