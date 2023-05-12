@@ -11,3 +11,11 @@ exports.findAll = async function (context, github, pull, predicate = (it) => tru
             predicate(it);
     });
 };
+
+exports.get = function (context, github, sha) {
+    return github.rest.git.getCommit({
+        owner: context.repo.owner,
+        repo: context.repo.repo,
+        commit_sha: sha,
+    })
+}
