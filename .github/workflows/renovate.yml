@@ -49,6 +49,9 @@ jobs:
               it.head.ref.startsWith("renovate")
             })
 
+            console.log("=== Open Pull Requests")
+            console.log(open)
+
             for (const pull of open) {
               const unverified = await commits.findAll(context, github, pull.number, (it) => {
                 it.commit.verification.verified == false && it.commit.verification.reason == "unsigned"
