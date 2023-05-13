@@ -29,7 +29,7 @@ env:
 
 jobs:
   build:
-    if: ${{ github.ref == 'refs/heads/main' || $env.GOOGLE_CLOUD }}
+    if: ${{ github.ref == 'refs/heads/main' || env.GOOGLE_CLOUD }}
     runs-on: ubuntu-latest
 
     permissions:
