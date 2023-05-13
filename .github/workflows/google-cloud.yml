@@ -8,13 +8,26 @@ on:
   pull_request:
     types: [ labeled, opened, reopened, synchronize ]
 
+  workflow_dispatch:
+    inputs:
+      debug:
+        description: 'Debug'
+        required: false
+        default: false
+        type: boolean
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
+env:
+  GOOGLE_CLOUD: ${{ contains(github.event.pull_request.labels.*.name, 'Google Cloud') }}
+  DRY_RUN: ${{ contains(github.event.pull_request.labels.*.name, 'Dry Run') }}
+  DEBUG: ${{ inputs.debug }}
+
 jobs:
   build:
-    if: github.ref == 'refs/heads/main' || contains(github.event.pull_request.labels.*.name, 'Google Cloud')
+    if: github.ref == 'refs/heads/main' || $GOOGLE_CLOUD
     runs-on: ubuntu-latest
 
     permissions:
@@ -37,8 +50,6 @@ jobs:
 
       - name: Checkout Repository
         uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
 
       - name: Google Cloud Auth
         id: google_cloud_auth
@@ -68,19 +79,20 @@ jobs:
           PLAYGROUND_API_KEY: ${{ secrets.PLAYGROUND_API_KEY }}
         if: github.event_name == 'pull_request'
         run: |
-          DRY_RUN=${{ (contains(github.event.pull_request.labels.*.name, 'Dry Run') && '--dry-run' || '') }}
-          OUTPUT=$(mktemp -t gradle.XXX) bash -c 'echo "build-log=$OUTPUT" >> $GITHUB_OUTPUT'          
+          OUTPUT=$(mktemp -t gradle.XXX) bash -c 'echo "build-log=$OUTPUT" >> $GITHUB_OUTPUT'
           
           cat << "EOF" | bash > OUTPUT
-          ./gradlew terraformPlan $DRY_RUN \
+            $([ DEBUG ] && '--debug' || '--info') \
+            $([ DRY_RUN ] && '--dry-run' || '') \
             --no-configuration-cache \
             --console=plain \
-            --info
           EOF
           
       - name: Print Terraform Plan
         uses: actions/github-script@v6
         if: ${{ steps.plan.outputs.build-log }}
+        env:
+          TF_LOG: ${{ DEBUG && 'DEBUG' || 'INFO' }}
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
@@ -107,9 +119,10 @@ jobs:
         run: |
           ./gradlew cloud-run:jib \
             --image=europe-west1-docker.pkg.dev/${{ steps.google_cloud_auth.outputs.project_id }}/cloud-run-source-deploy/playground.ashdavies.dev \
+            $([ DEBUG ] && '--debug' || '--info') \
+            $([ DRY_RUN ] && '--dry-run' || '') \
             --no-configuration-cache \
             --console=plain \
-            --info
 
       - name: Apply Terraform Config
         env:
@@ -117,7 +130,8 @@ jobs:
         if: github.ref == 'refs/heads/main'
         run: |
           ./gradlew google-cloud:terraformApply \
+            $([ DEBUG ] && '--debug' || '--info') \
+            $([ DRY_RUN ] && '--dry-run' || '') \
             --no-configuration-cache \
             --console=plain \
             -Ptf.apply \
-            --info
