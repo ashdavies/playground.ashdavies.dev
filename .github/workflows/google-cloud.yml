@@ -83,6 +83,7 @@ jobs:
           OUTPUT=$(mktemp -t gradle.XXX) bash -c 'echo "build-log=$OUTPUT" >> $GITHUB_OUTPUT'
           
           cat << "EOF" | bash > OUTPUT
+          ./gradlew terraformPlan \
             $([ DEBUG ] && '--debug' || '--info') \
             $([ DRY_RUN ] && '--dry-run' || '') \
             --no-configuration-cache \
