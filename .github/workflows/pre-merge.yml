@@ -9,9 +9,21 @@ on:
     branches:
       - '*'
 
+  workflow_dispatch:
+    inputs:
+      debug:
+        description: 'Debug'
+        required: false
+        default: false
+        type: boolean
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
+
+env:
+  DRY_RUN: ${{ contains(github.event.pull_request.labels.*.name, 'Dry Run') }}
+  DEBUG: ${{ inputs.debug }}
 
 jobs:
   build:

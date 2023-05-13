@@ -7,6 +7,8 @@ on:
 
   pull_request:
     types: [ labeled, opened, reopened, synchronize ]
+    branches:
+      - '*'
 
   workflow_dispatch:
     inputs:
@@ -92,7 +94,7 @@ jobs:
         uses: actions/github-script@v6
         if: ${{ steps.plan.outputs.build-log }}
         env:
-          TF_LOG: ${{ DEBUG && 'DEBUG' || 'INFO' }}
+          TF_LOG: ${{ env.DEBUG && 'DEBUG' || 'INFO' }}
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
