@@ -140,7 +140,7 @@ android-library = { id = "com.android.library", version.ref = "google-android" }
 apollo-graphql = { id = "com.apollographql.apollo", version.ref = "apollo-graphql" }
 cash-molecule = { id = "app.cash.molecule", version = "0.9.0" }
 diffplug-spotless = "com.diffplug.spotless:6.18.0"
-google-cloud-jib = "com.google.cloud.tools.jib:3.3.1"
+google-cloud-jib = "com.google.cloud.tools.jib:3.3.2"
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
 gradle-doctor = "com.osacky.doctor:0.8.1"
 jetbrains-dokka = "org.jetbrains.dokka:1.8.10"
