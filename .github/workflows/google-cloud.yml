@@ -23,13 +23,12 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  GOOGLE_CLOUD: ${{ contains(github.event.pull_request.labels.*.name, 'Google Cloud') }}
   DRY_RUN: ${{ contains(github.event.pull_request.labels.*.name, 'Dry Run') }}
   DEBUG: ${{ inputs.debug }}
 
 jobs:
   build:
-    if: github.ref == 'refs/heads/main' || env.GOOGLE_CLOUD == true
+    if: ${{ contains(github.event.pull_request.labels.*.name, 'Google Cloud') }}
     runs-on: ubuntu-latest
 
     permissions:
