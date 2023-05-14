@@ -104,10 +104,13 @@ jobs:
             const fs = require('fs').promises;
             
             const path = "${{ steps.plan.outputs.build-log }}"
+            console.log("Terraform Plan Build Log here $path")
+
             const content = await fs.readFile(path, 'utf8')
+            console.log("Read content $content")
             
             const body = content.substring(content.indexOf(start), content.indexOf("───"))
-            await comments.create(context, github, content ? content : "Build log empty")
+            await comments.create(context, github, body ? body : "Build log empty")
 
       - name: Containerize Cloud Run
         env:
