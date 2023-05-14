@@ -34,6 +34,15 @@ jobs:
       id-token: 'write'
 
     steps:
+      - name: Delete Bot Comments
+        uses: actions/github-script@v6
+        if: ${{ github.event_name == 'pull_request' }}
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const comments = require('./.github/workflows/scripts/comments.js');
+            await comments.deleteAll(context, github)
+
       - name: Setup JDK
         uses: actions/setup-java@v3
         with:
@@ -85,15 +94,6 @@ jobs:
               ${{ (contains(github.event.pull_request.labels.*.name, 'Dry Run') && '--dry-run' || '') }}
               --console=plain
               --info
-
-      - name: Delete Bot Comments
-        uses: actions/github-script@v6
-        if: ${{ github.event_name == 'pull_request' && steps.gradle.outputs.build-scan-url }}
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const comments = require('./.github/workflows/scripts/comments.js');
-            await comments.deleteAll(context, github)
             
       - name: Gradle Scan Link
         uses: actions/github-script@v6
