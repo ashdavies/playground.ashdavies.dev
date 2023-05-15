@@ -90,7 +90,15 @@ jobs:
             --no-configuration-cache \
             --console=plain
           EOF
-          
+
+      - name: Upload Terraform Plan
+        uses: actions/upload-artifact@v3
+        if: ${{ steps.plan.outputs.build-log }}
+        with:
+          name: test-report
+          path: '${{ steps.plan.outputs.build-log }}'
+          if-no-files-found: error
+
       - name: Print Terraform Plan
         uses: actions/github-script@v6
         if: ${{ steps.plan.outputs.build-log }}
