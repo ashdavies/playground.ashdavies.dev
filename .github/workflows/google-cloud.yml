@@ -95,7 +95,7 @@ jobs:
         uses: actions/upload-artifact@v3
         if: ${{ steps.plan.outputs.build-log }}
         with:
-          name: test-report
+          name: terraform-build-log
           path: '${{ steps.plan.outputs.build-log }}'
           if-no-files-found: error
 
@@ -113,7 +113,6 @@ jobs:
             
             const path = "${{ steps.plan.outputs.build-log }}"
             const content = await fs.readFile(path, 'utf8')
-            console.log(`Read content ${content}`)
             
             const body = content.substring(content.indexOf(start), content.indexOf("───"))
             await comments.create(context, github, body ? body : "Build log empty")
