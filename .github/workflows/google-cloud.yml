@@ -85,13 +85,15 @@ jobs:
           TF_LOG: ${{ env.DEBUG && 'DEBUG' || 'INFO' }}
         if: github.event_name == 'pull_request'
         run: |
-          bash << EOF | tee -a "${{ steps.tmpfile.outputs.path }}"
+          bash << EOF | tee "${{ steps.tmpfile.outputs.path }}"
           ./gradlew terraformPlan \
             $([ DEBUG == true ] && echo '--debug' || echo '--info') \
             $([ DRY_RUN == true ] && echo '--dry-run') \
             --no-configuration-cache \
             --console=plain
           EOF
+
+          echo "End of Execution" >> "${{ steps.tmpfile.outputs.path }}"
 
       - name: Print Terraform Plan
         uses: actions/github-script@v6
