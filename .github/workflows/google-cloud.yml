@@ -29,6 +29,18 @@ env:
   WORKFLOW_DISPATCH: ${{ github.event_name == 'workflow_dispatch' || null }}
 
 jobs:
+  debug:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Test
+        run: |
+          echo "Debug: ${{ env.DEBUG }}"
+          echo "Dry Run: ${{ env.DRY_RUN }}"
+          echo "Label: ${{ env.LABEL }}"
+          echo "Workflow Dispatch: ${{ env.WORKFLOW_DISPATCH }}"
+          echo "Pull Request: ${{ github.event.pull_request.number }}"
+          echo "Branch: ${{ github.ref }}"
+
   build:
     if: ${{ github.env.LABEL == 'Google Cloud' || github.env.WORKFLOW_DISPATCH }}
     runs-on: ubuntu-latest
