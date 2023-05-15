@@ -85,13 +85,13 @@ jobs:
           TF_LOG: ${{ env.DEBUG && 'DEBUG' || 'INFO' }}
         if: github.event_name == 'pull_request'
         run: |
-          bash << EOE | tee -a "${{ steps.tmpfile.outputs.path }}"
+          bash << EOF | tee -a "${{ steps.tmpfile.outputs.path }}"
           ./gradlew terraformPlan \
             $([ DEBUG == true ] && echo '--debug' || echo '--info') \
             $([ DRY_RUN == true ] && echo '--dry-run') \
             --no-configuration-cache \
             --console=plain
-          EOE
+          EOF
 
       - name: Print Terraform Plan
         uses: actions/github-script@v6
@@ -104,8 +104,9 @@ jobs:
             
             const start = "Terraform will perform the following actions:"
             const content = plan.substring(plan.indexOf(start), plan.indexOf("───"))
-            
-            await comments.create(context, github, content.substring(0, 65000))
+            const body = content ? content.substring(0, 65000) : "No changes"
+
+            await comments.create(context, github, body)
 
       - name: Containerize Cloud Run
         env:
