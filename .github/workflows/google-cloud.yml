@@ -81,7 +81,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
           PLAYGROUND_API_KEY: ${{ secrets.PLAYGROUND_API_KEY }}
-          TF_LOG: ${{ env.DEBUG && 'DEBUG' || 'INFO' }}
+          TF_LOG: ${{ env.DEBUG && 'DEBUG' || 'ERROR' }}
         if: github.event_name == 'pull_request'
         run: |
           OUTPUT_PATH=$(mktemp)
