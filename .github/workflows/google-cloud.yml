@@ -89,15 +89,13 @@ jobs:
           echo "path=$OUTPUT_PATH" >> $GITHUB_OUTPUT
           echo "Start of Execution" >> $OUTPUT_PATH
 
-          bash << EOF | tee -a "$OUTPUT_PATH"
-          ./gradlew terraformPlan \
-            $([ DEBUG == true ] && echo '--debug' || echo '--quiet') \
-            $([ DRY_RUN == true ] && echo '--dry-run') \
-            --no-configuration-cache \
-            --console=plain
-          EOF
-
-          echo "=== Finished Execution ==="
+          #bash << EOF | tee -a "$OUTPUT_PATH"
+          #./gradlew terraformPlan \
+          #  $([ DEBUG == true ] && echo '--debug' || echo '--quiet') \
+          #  $([ DRY_RUN == true ] && echo '--dry-run') \
+          #  --no-configuration-cache \
+          #  --console=plain
+          #EOF
 
           bash << EOF > test.txt
           ./gradlew terraformPlan \
@@ -127,7 +125,7 @@ jobs:
 
             const test = fs.readFileSync('test.txt', 'utf8')
             console.log(test)
-            
+
             await comments.create(context, github, body)
 
       - name: Containerize Cloud Run
