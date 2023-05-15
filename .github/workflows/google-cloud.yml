@@ -8,6 +8,14 @@ on:
   pull_request:
     types: [ labeled, opened, reopened, synchronize ]
 
+  workflow_dispatch:
+    inputs:
+      debug:
+        description: 'Debug'
+        required: false
+        default: false
+        type: boolean
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
@@ -73,9 +81,9 @@ jobs:
           
           cat << "EOF" | bash > OUTPUT
           ./gradlew terraformPlan $DRY_RUN \
+            $([ inputs.debug ] && echo '--debug' || echo '--info') \
             --no-configuration-cache \
-            --console=plain \
-            --info
+            --console=plain
           EOF
           
       - name: Print Terraform Plan
@@ -107,9 +115,9 @@ jobs:
         run: |
           ./gradlew cloud-run:jib \
             --image=europe-west1-docker.pkg.dev/${{ steps.google_cloud_auth.outputs.project_id }}/cloud-run-source-deploy/playground.ashdavies.dev \
+            $([ inputs.debug ] && echo '--debug' || echo '--info') \
             --no-configuration-cache \
-            --console=plain \
-            --info
+            --console=plain
 
       - name: Apply Terraform Config
         env:
@@ -117,7 +125,7 @@ jobs:
         if: github.ref == 'refs/heads/main'
         run: |
           ./gradlew google-cloud:terraformApply \
+            $([ inputs.debug ] && echo '--debug' || echo '--info') \
             --no-configuration-cache \
             --console=plain \
-            -Ptf.apply \
-            --info
+            -Ptf.apply
