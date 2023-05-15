@@ -105,7 +105,7 @@ jobs:
             await comments.deleteAll(context, github, it => it.body.startsWith("Terraform"));
 
             const start = "Terraform will perform the following actions:"
-            const log = "${{ steps.plan.outputs.TERRAFORM_LOG }}"
+            const log = `${{ steps.plan.outputs.TERRAFORM_LOG }}`
             
             const content = log.substring(log.indexOf(start), log.indexOf("───"))
             await comments.create(context, github, content ? content : "Build log empty")
