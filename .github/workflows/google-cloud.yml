@@ -23,12 +23,14 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  DRY_RUN: ${{ contains(github.event.pull_request.labels.*.name, 'Dry Run') }}
   DEBUG: ${{ inputs.debug }}
+  DRY_RUN: ${{ contains(github.event.pull_request.labels.*.name, 'Dry Run') }}
+  LABEL: ${{ github.event.action == 'labeled' && github.event.label.name || null }}
+  WORKFLOW_DISPATCH: ${{ github.event_name == 'workflow_dispatch' || null }}
 
 jobs:
   build:
-    if: ${{ contains(github.event.pull_request.labels.*.name, 'Google Cloud') }}
+    if: ${{ github.env.LABEL == 'Google Cloud' || github.env.WORKFLOW_DISPATCH }}
     runs-on: ubuntu-latest
 
     permissions:
