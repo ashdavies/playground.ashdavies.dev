@@ -73,6 +73,10 @@ jobs:
       - name: Setup Gradle Build
         uses: gradle/gradle-build-action@v2
 
+      - name: Create Temporary File
+        id: tmpfile
+        run: echo "path=$(mktemp -t gradle.XXX)" >> $GITHUB_OUTPUT
+
       - name: Create Terraform Plan
         id: plan
         env:
@@ -81,10 +85,7 @@ jobs:
           TF_LOG: ${{ env.DEBUG && 'DEBUG' || 'INFO' }}
         if: github.event_name == 'pull_request'
         run: |
-          EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
-          echo "TERRAFORM_LOG<<$EOF" >> $GITHUB_OUTPUT
-
-          bash << EOE | tee -a "${GITHUB_OUTPUT}"
+          bash << EOE | tee -a "${{ steps.tmpfile.outputs.path }}"
           ./gradlew terraformPlan \
             $([ DEBUG == true ] && echo '--debug' || echo '--info') \
             $([ DRY_RUN == true ] && echo '--dry-run') \
@@ -92,23 +93,19 @@ jobs:
             --console=plain
           EOE
 
-          echo "End of Terraform Execution" >> terraform.log
-          echo "$EOF" >> $GITHUB_OUTPUT
-
       - name: Print Terraform Plan
         uses: actions/github-script@v6
         if: ${{ steps.plan.outputs.TERRAFORM_LOG }}
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const comments = require('./.github/workflows/scripts/comments.js');
-            await comments.deleteAll(context, github, it => it.body.startsWith("Terraform"));
-
-            const start = "Terraform will perform the following actions:"
-            const log = `${{ steps.plan.outputs.TERRAFORM_LOG }}`
+            const plan = require('fs').readFileSync('${{ steps.tmpfile.outputs.path }}', 'utf8')
+            const comments = require('./.github/workflows/scripts/comments.js')
             
+            const start = "Terraform will perform the following actions:"
             const content = log.substring(log.indexOf(start), log.indexOf("───"))
-            await comments.create(context, github, content ? content : "Build log empty")
+            
+            await comments.create(context, github, content.substring(0, 65000))
 
       - name: Containerize Cloud Run
         env:
