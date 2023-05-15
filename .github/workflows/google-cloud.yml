@@ -86,10 +86,11 @@ jobs:
         run: |
           OUTPUT_PATH=$(mktemp)
           
+          echo "This is a test" >> test.txt
           echo "path=$OUTPUT_PATH" >> $GITHUB_OUTPUT
           echo "Start of Execution" >> $OUTPUT_PATH
 
-          bash << EOF | tee "$OUTPUT_PATH"
+          bash << EOF | tee -a "$OUTPUT_PATH"
           ./gradlew terraformPlan \
             $([ DEBUG == true ] && echo '--debug' || echo '--info') \
             $([ DRY_RUN == true ] && echo '--dry-run') \
@@ -98,6 +99,7 @@ jobs:
           EOF
 
           echo "End of Execution" >> $OUTPUT_PATH
+          echo $(cat test.txt)
 
       - name: Print Terraform Plan
         uses: actions/github-script@v6
