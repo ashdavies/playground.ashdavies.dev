@@ -73,10 +73,6 @@ jobs:
       - name: Setup Gradle Build
         uses: gradle/gradle-build-action@v2
 
-      - name: Create Temporary File
-        id: tmpfile
-        run: echo "path=$(mktemp -t gradle.XXX)" >> $GITHUB_OUTPUT
-
       - name: Create Terraform Plan
         id: plan
         env:
@@ -85,7 +81,12 @@ jobs:
           TF_LOG: ${{ env.DEBUG && 'DEBUG' || 'INFO' }}
         if: github.event_name == 'pull_request'
         run: |
-          bash << EOF | tee "${{ steps.tmpfile.outputs.path }}"
+          OUTPUT_PATH=$(mktemp)
+          
+          echo "path=$OUTPUT_PATH" >> $GITHUB_OUTPUT
+          echo "Start of Execution" >> $OUTPUT_PATH
+
+          bash << EOF | tee "$OUTPUT_PATH"
           ./gradlew terraformPlan \
             $([ DEBUG == true ] && echo '--debug' || echo '--info') \
             $([ DRY_RUN == true ] && echo '--dry-run') \
@@ -93,15 +94,15 @@ jobs:
             --console=plain
           EOF
 
-          echo "End of Execution" >> "${{ steps.tmpfile.outputs.path }}"
+          echo "End of Execution" >> $OUTPUT_PATH
 
       - name: Print Terraform Plan
         uses: actions/github-script@v6
-        if: ${{ steps.tmpfile.outputs.path }}
+        if: ${{ steps.plan.outputs.path }}
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const plan = require('fs').readFileSync('${{ steps.tmpfile.outputs.path }}', 'utf8')
+            const plan = require('fs').readFileSync('${{ steps.plan.outputs.path }}', 'utf8')
             const comments = require('./.github/workflows/scripts/comments.js')
             
             const start = "Terraform will perform the following actions:"
