@@ -81,9 +81,7 @@ jobs:
           TF_LOG: ${{ env.DEBUG && 'DEBUG' || 'INFO' }}
         if: github.event_name == 'pull_request'
         run: |
-          OUTPUT=$(mktemp -t gradle.XXX) bash -c 'echo "build-log=$OUTPUT" >> $GITHUB_OUTPUT'
-          
-          bash << EOF | tee OUTPUT
+          bash << EOF | tee terraform.log
           ./gradlew terraformPlan \
             $([ DEBUG == true ] && echo '--debug' || echo '--info') \
             $([ DRY_RUN == true ] && echo '--dry-run') \
@@ -91,17 +89,20 @@ jobs:
             --console=plain
           EOF
 
+          echo "End of Terraform Execution" >> terraform.log
+          echo "TERRAFORM_LOG<<$(cat terraform.log)" >> "$GITHUB_OUTPUT"
+
       - name: Upload Terraform Plan
         uses: actions/upload-artifact@v3
-        if: ${{ steps.plan.outputs.build-log }}
+        if: ${{ steps.plan.outputs.TERRAFORM_LOG }}
         with:
           name: terraform-build-log
-          path: '${{ steps.plan.outputs.build-log }}'
+          path: '${{ steps.plan.outputs.TERRAFORM_LOG }}'
           if-no-files-found: error
 
       - name: Print Terraform Plan
         uses: actions/github-script@v6
-        if: ${{ steps.plan.outputs.build-log }}
+        if: ${{ steps.plan.outputs.TERRAFORM_LOG }}
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
@@ -111,7 +112,7 @@ jobs:
             const start = "Terraform will perform the following actions:"
             const fs = require('fs').promises;
             
-            const path = "${{ steps.plan.outputs.build-log }}"
+            const path = "${{ steps.plan.outputs.TERRAFORM_LOG }}"
             const content = await fs.readFile(path, 'utf8')
             
             const body = content.substring(content.indexOf(start), content.indexOf("───"))
