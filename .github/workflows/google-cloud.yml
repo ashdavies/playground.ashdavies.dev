@@ -81,24 +81,19 @@ jobs:
           TF_LOG: ${{ env.DEBUG && 'DEBUG' || 'INFO' }}
         if: github.event_name == 'pull_request'
         run: |
-          bash << EOF | tee terraform.log
+          EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
+          echo "TERRAFORM_LOG<<$EOF" >> $GITHUB_OUTPUT
+
+          bash << EOE | tee -a "${GITHUB_OUTPUT}"
           ./gradlew terraformPlan \
             $([ DEBUG == true ] && echo '--debug' || echo '--info') \
             $([ DRY_RUN == true ] && echo '--dry-run') \
             --no-configuration-cache \
             --console=plain
-          EOF
+          EOE
 
           echo "End of Terraform Execution" >> terraform.log
-          echo "TERRAFORM_LOG<<$(cat terraform.log)" >> "$GITHUB_OUTPUT"
-
-      - name: Upload Terraform Plan
-        uses: actions/upload-artifact@v3
-        if: ${{ steps.plan.outputs.TERRAFORM_LOG }}
-        with:
-          name: terraform-build-log
-          path: '${{ steps.plan.outputs.TERRAFORM_LOG }}'
-          if-no-files-found: error
+          echo "$EOF" >> $GITHUB_OUTPUT
 
       - name: Print Terraform Plan
         uses: actions/github-script@v6
@@ -110,13 +105,10 @@ jobs:
             await comments.deleteAll(context, github, it => it.body.startsWith("Terraform"));
 
             const start = "Terraform will perform the following actions:"
-            const fs = require('fs').promises;
+            const log = "${{ steps.plan.outputs.TERRAFORM_LOG }}"
             
-            const path = "${{ steps.plan.outputs.TERRAFORM_LOG }}"
-            const content = await fs.readFile(path, 'utf8')
-            
-            const body = content.substring(content.indexOf(start), content.indexOf("───"))
-            await comments.create(context, github, body ? body : "Build log empty")
+            const content = log.substring(log.indexOf(start), log.indexOf("───"))
+            await comments.create(context, github, content ? content : "Build log empty")
 
       - name: Containerize Cloud Run
         env:
