@@ -27,18 +27,6 @@ env:
   DEBUG: ${{ inputs.debug }}
 
 jobs:
-  debug:
-    runs-on: ubuntu-latest
-    steps:
-      - run: |
-          echo "github.event_name = ${{ github.event_name }}"
-          echo "contains() = ${{ contains(github.event.pull_request.labels.*.name, 'Google Cloud') }}"
-          echo "github.event.pull_request.labels.*.name"
-
-          echo "github.event.action = ${{ github.event.action }}"
-          echo "github.event.label.name = ${{ github.event.label.name }}"
-          echo "github.event_name = ${{ github.event_name }}"
-
   build:
     runs-on: ubuntu-latest
     if: |
