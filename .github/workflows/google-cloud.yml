@@ -86,13 +86,22 @@ jobs:
         run: |
           OUTPUT_PATH=$(mktemp)
           
-          echo "This is a test" >> test.txt
           echo "path=$OUTPUT_PATH" >> $GITHUB_OUTPUT
           echo "Start of Execution" >> $OUTPUT_PATH
 
           bash << EOF | tee -a "$OUTPUT_PATH"
           ./gradlew terraformPlan \
-            $([ DEBUG == true ] && echo '--debug' || echo '--info') \
+            $([ DEBUG == true ] && echo '--debug' || echo '--quiet') \
+            $([ DRY_RUN == true ] && echo '--dry-run') \
+            --no-configuration-cache \
+            --console=plain
+          EOF
+
+          echo "=== Finished Execution ==="
+
+          bash << EOF > test.txt
+          ./gradlew terraformPlan \
+            $([ DEBUG == true ] && echo '--debug' || echo '--quiet') \
             $([ DRY_RUN == true ] && echo '--dry-run') \
             --no-configuration-cache \
             --console=plain
@@ -107,13 +116,18 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const plan = require('fs').readFileSync('${{ steps.plan.outputs.path }}', 'utf8')
+            const fs = require('fs')
+
+            const plan = fs.readFileSync('${{ steps.plan.outputs.path }}', 'utf8')
             const comments = require('./.github/workflows/scripts/comments.js')
             
             const start = "Terraform will perform the following actions:"
             const content = plan.substring(plan.indexOf(start), plan.indexOf("───"))
             const body = content ? content.substring(0, 65000) : "No changes"
 
+            const test = fs.readFileSync('test.txt', 'utf8')
+            console.log(test)
+            
             await comments.create(context, github, body)
 
       - name: Containerize Cloud Run
