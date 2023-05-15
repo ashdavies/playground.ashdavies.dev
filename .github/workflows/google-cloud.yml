@@ -23,27 +23,16 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  DEBUG: ${{ inputs.debug }}
   DRY_RUN: ${{ contains(github.event.pull_request.labels.*.name, 'Dry Run') }}
-  GOOGLE_CLOUD: ${{ contains(github.event.pull_request.labels.*.name, 'Google Cloud') }}
-  LABEL: ${{ github.event.action == 'labeled' && github.event.label.name || null }}
-  PULL_REQUEST: ${{ github.event_name == 'pull_request' }}
-  WORKFLOW_DISPATCH: ${{ github.event_name == 'workflow_dispatch' }}
+  DEBUG: ${{ inputs.debug }}
 
 jobs:
-  debug:
-    runs-on: ubuntu-latest
-    steps:
-      - run: |
-          echo ${{ github.env.PULL_REQUEST }}
-          echo ${{ github.env.PULL_REQUEST && github.env.GOOGLE_CLOUD }}
-          echo ${{ github.env.LABEL == 'Google Cloud' }}
-          echo ${{ github.env.WORKFLOW_DISPATCH }}
-          echo ${{ (github.env.PULL_REQUEST && github.env.GOOGLE_CLOUD) || github.env.LABEL == 'Google Cloud' || github.env.WORKFLOW_DISPATCH }}
-
   build:
-    if: ${{ (github.env.PULL_REQUEST && github.env.GOOGLE_CLOUD) || github.env.LABEL == 'Google Cloud' || github.env.WORKFLOW_DISPATCH }}
     runs-on: ubuntu-latest
+    if: |
+      (github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'Google Cloud'))
+      && (github.event.action == 'labeled' && github.event.label.name == 'Google Cloud')
+      && github.event_name == 'workflow_dispatch'
 
     permissions:
       pull-requests: 'write'
