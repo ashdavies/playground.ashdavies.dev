@@ -43,8 +43,8 @@ jobs:
     runs-on: ubuntu-latest
     if: |
       (github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'Google Cloud'))
-      && (github.event.action == 'labeled' && github.event.label.name == 'Google Cloud')
-      && github.event_name == 'workflow_dispatch'
+      || (github.event.action == 'labeled' && github.event.label.name == 'Google Cloud')
+      || github.event_name == 'workflow_dispatch'
 
     permissions:
       pull-requests: 'write'
