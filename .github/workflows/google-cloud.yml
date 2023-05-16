@@ -22,10 +22,6 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
-env:
-  DRY_RUN: ${{ contains(github.event.pull_request.labels.*.name, 'Dry Run') }}
-  DEBUG: ${{ inputs.debug }}
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -87,8 +83,8 @@ jobs:
         run: |
           ./gradlew cloud-run:jib \
             --image=europe-west1-docker.pkg.dev/${{ steps.google_cloud_auth.outputs.project_id }}/cloud-run-source-deploy/playground.ashdavies.dev \
-            $([ DEBUG == true ] && echo '--debug' || echo '--info') \
-            $([ DRY_RUN == true ] && echo '--dry-run') \
+            ${{ contains(github.event.pull_request.labels.*.name, 'Dry Run') && '--debug' || '--info' }} \
+            ${{ inputs.debug && '--debug' || '--info' }} \
             --no-configuration-cache \
             --console=plain \
 
@@ -96,11 +92,11 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
           PLAYGROUND_API_KEY: ${{ secrets.PLAYGROUND_API_KEY }}
-          TF_LOG: ${{ env.DEBUG && 'DEBUG' || 'ERROR' }}
+          TF_LOG: ${{ inputs.debug && 'DEBUG' || 'ERROR' }}
         run: |
           ./gradlew terraformPlan \
-            $([ DEBUG == true ] && echo '--debug' || echo '--info') \
-            $([ DRY_RUN == true ] && echo '--dry-run') \
+            ${{ contains(github.event.pull_request.labels.*.name, 'Dry Run') && '--debug' || '--info' }} \
+            ${{ inputs.debug && '--debug' || '--info' }} \
             --no-configuration-cache \
             --console=plain
 
@@ -115,8 +111,8 @@ jobs:
         if: github.ref == 'refs/heads/main'
         run: |
           ./gradlew google-cloud:terraformApply \
-            $([ DEBUG == true ] && echo '--debug' || echo '--info') \
-            $([ DRY_RUN == true ] && echo '--dry-run') \
+            ${{ contains(github.event.pull_request.labels.*.name, 'Dry Run') && '--debug' || '--info' }} \
+            ${{ inputs.debug && '--debug' || '--info' }} \
             --no-configuration-cache \
             --console=plain \
             -Ptf.apply \
