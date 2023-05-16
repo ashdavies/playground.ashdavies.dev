@@ -103,7 +103,9 @@ jobs:
             const path = 'terraform.log'
             const fs = require('fs')
 
-            // const plan = require('fs').readFileSync('terraform.log', 'utf8')
+            const plan = fs.readFileSync(path, 'utf8')
+            console.log(plan)
+            
             // const comments = require('./.github/workflows/scripts/comments.js')
             
             // const start = "Terraform will perform the following actions:"
