@@ -84,10 +84,20 @@ jobs:
           TF_LOG: ${{ env.DEBUG && 'DEBUG' || 'ERROR' }}
         if: github.event_name == 'pull_request'
         run: |
-          ./gradlew terraformPlan --no-configuration-cache --console=plain --dry-run --quiet | tee -a terraform.log
+          FLAGS='$([ DEBUG == true ] && echo '--debug' || echo '--quiet')'
+          echo $FLAGS
 
-          # echo "path=$(mktemp)" >> $GITHUB_OUTPUT
-          # bash << EOF | tee -a terraform.log
+          OUTPUT=$(mktemp)
+          echo "path=$OUTPUT" >> $GITHUB_OUTPUT
+
+          ./gradlew terraformPlan \
+            --no-configuration-cache \
+            --console=plain \
+            --dry-run \
+            --quiet \
+            | tee $OUTPUT
+
+          # bash << EOF | tee $OUT
           # ./gradlew terraformPlan \
           #   $([ DEBUG == true ] && echo '--debug' || echo '--quiet') \
           #   $([ DRY_RUN == true ] && echo '--dry-run') \
@@ -101,7 +111,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const content = require('fs').readFileSync('./terraform.log', 'utf8')
+            const content = require('fs').readFileSync('${{ steps.plan.outputs.path }}', 'utf8')
             // const start = "Terraform will perform the following actions:"
             // const body = plan.substring(plan.indexOf(start), plan.indexOf("───"))
             const body = content ? content.substring(0, 65000) : "No changes"
