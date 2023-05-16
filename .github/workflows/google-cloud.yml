@@ -114,7 +114,7 @@ jobs:
 
               const contents = fs.readFileSync(path, 'utf8')
               console.log(contents)
-            }
+            })
 
             // const comments = require('./.github/workflows/scripts/comments.js')
             // const start = "Terraform will perform the following actions:"
