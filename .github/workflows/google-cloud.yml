@@ -76,38 +76,6 @@ jobs:
       - name: Setup Gradle Build
         uses: gradle/gradle-build-action@v2
 
-      - name: Create Terraform Plan
-        id: plan
-        env:
-          GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
-          PLAYGROUND_API_KEY: ${{ secrets.PLAYGROUND_API_KEY }}
-          TF_LOG: ${{ env.DEBUG && 'DEBUG' || 'ERROR' }}
-        if: github.event_name == 'pull_request'
-        run: |
-          OUTPUT=$(mktemp); echo "path=$OUTPUT" >> $GITHUB_OUTPUT
-
-          bash << EOF > $OUTPUT
-          ./gradlew terraformPlan \
-            --no-configuration-cache \
-            --console=plain \
-            --dry-run \
-            --quiet
-          EOF
-
-      - name: Print Terraform Plan
-        uses: actions/github-script@v6
-        # if: ${{ steps.plan.outputs.path }}
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const content = require('fs').readFileSync('${{ steps.plan.outputs.path }}', 'utf8')
-            // const start = "Terraform will perform the following actions:"
-            // const body = plan.substring(plan.indexOf(start), plan.indexOf("───"))
-            const body = content ? content.substring(0, 65000) : "No changes"
-
-            const comments = require('./.github/workflows/scripts/comments.js')
-            await comments.create(context, github, body)
-
       - name: Containerize Cloud Run
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -124,9 +92,26 @@ jobs:
             --no-configuration-cache \
             --console=plain \
 
-      - name: Apply Terraform Config
+      - name: Generate Terraform Plan
         env:
           GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
+          PLAYGROUND_API_KEY: ${{ secrets.PLAYGROUND_API_KEY }}
+          TF_LOG: ${{ env.DEBUG && 'DEBUG' || 'ERROR' }}
+        run: |
+          ./gradlew terraformPlan \
+            $([ DEBUG == true ] && echo '--debug' || echo '--info') \
+            $([ DRY_RUN == true ] && echo '--dry-run') \
+            --no-configuration-cache \
+            --console=plain
+
+      - name: Upload Terraform Plan
+        uses: actions/upload-artifact@v3
+        with:
+          name: terraform-plan
+          path: "**/build/terraform/main/plan.bin"
+          if-no-files-found: error
+
+      - name: Apply Terraform Plan
         if: github.ref == 'refs/heads/main'
         run: |
           ./gradlew google-cloud:terraformApply \
