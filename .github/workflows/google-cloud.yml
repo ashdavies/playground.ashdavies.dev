@@ -84,26 +84,15 @@ jobs:
           TF_LOG: ${{ env.DEBUG && 'DEBUG' || 'ERROR' }}
         if: github.event_name == 'pull_request'
         run: |
-          FLAGS='$([ DEBUG == true ] && echo '--debug' || echo '--quiet')'
-          echo $FLAGS
+          OUTPUT=$(mktemp); echo "path=$OUTPUT" >> $GITHUB_OUTPUT
 
-          OUTPUT=$(mktemp)
-          echo "path=$OUTPUT" >> $GITHUB_OUTPUT
-
+          bash << EOF > $OUTPUT
           ./gradlew terraformPlan \
             --no-configuration-cache \
             --console=plain \
             --dry-run \
-            --quiet \
-            | tee $OUTPUT
-
-          # bash << EOF | tee $OUT
-          # ./gradlew terraformPlan \
-          #   $([ DEBUG == true ] && echo '--debug' || echo '--quiet') \
-          #   $([ DRY_RUN == true ] && echo '--dry-run') \
-          #   --no-configuration-cache \
-          #   --console=plain
-          # EOF
+            --quiet
+          EOF
 
       - name: Print Terraform Plan
         uses: actions/github-script@v6
