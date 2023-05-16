@@ -21,10 +21,6 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
-env:
-  DRY_RUN: ${{ contains(github.event.pull_request.labels.*.name, 'Dry Run') }}
-  DEBUG: ${{ inputs.debug }}
-
 jobs:
   build:
     runs-on: ubuntu-latest
