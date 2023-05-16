@@ -84,13 +84,9 @@ jobs:
           TF_LOG: ${{ env.DEBUG && 'DEBUG' || 'ERROR' }}
         if: github.event_name == 'pull_request'
         run: |
-          OUTPUT_PATH=$(mktemp)
-          
-          echo "This is a test" | tee -a test.txt
-          echo "path=$OUTPUT_PATH" >> $GITHUB_OUTPUT
-          echo "Start of Execution" >> $OUTPUT_PATH
+          # echo "path=$(mktemp)" >> $GITHUB_OUTPUT
 
-          bash << EOF | tee -a "$OUTPUT_PATH"
+          bash << EOF | tee -a terraform.log
           ./gradlew terraformPlan \
             $([ DEBUG == true ] && echo '--debug' || echo '--quiet') \
             $([ DRY_RUN == true ] && echo '--dry-run') \
@@ -98,16 +94,14 @@ jobs:
             --console=plain
           EOF
 
-          echo "End of Execution" >> $OUTPUT_PATH
-          echo $(cat test.txt)
-
       - name: Print Terraform Plan
         uses: actions/github-script@v6
-        if: ${{ steps.plan.outputs.path }}
+        # if: ${{ steps.plan.outputs.path }}
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const plan = require('fs').readFileSync('${{ steps.plan.outputs.path }}', 'utf8')
+            # const plan = require('fs').readFileSync('${{ steps.plan.outputs.path }}', 'utf8')
+            const plan = require('fs').readFileSync('terraform.log', 'utf8')
             const comments = require('./.github/workflows/scripts/comments.js')
             
             const start = "Terraform will perform the following actions:"
