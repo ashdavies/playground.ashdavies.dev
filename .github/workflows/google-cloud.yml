@@ -7,6 +7,16 @@ on:
 
   pull_request:
     types: [ labeled, opened, reopened, synchronize ]
+    branches:
+      - '*'
+
+  workflow_dispatch:
+    inputs:
+      debug:
+        description: 'Debug'
+        required: false
+        default: false
+        type: boolean
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -14,8 +24,11 @@ concurrency:
 
 jobs:
   build:
-    if: github.ref == 'refs/heads/main' || contains(github.event.pull_request.labels.*.name, 'Google Cloud')
     runs-on: ubuntu-latest
+    if: |
+      (github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'Google Cloud'))
+      || (github.event.action == 'labeled' && github.event.label.name == 'Google Cloud')
+      || github.event_name == 'workflow_dispatch'
 
     permissions:
       pull-requests: 'write'
@@ -37,8 +50,6 @@ jobs:
 
       - name: Checkout Repository
         uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
 
       - name: Google Cloud Auth
         id: google_cloud_auth
@@ -61,41 +72,6 @@ jobs:
       - name: Setup Gradle Build
         uses: gradle/gradle-build-action@v2
 
-      - name: Create Terraform Plan
-        id: plan
-        env:
-          GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
-          PLAYGROUND_API_KEY: ${{ secrets.PLAYGROUND_API_KEY }}
-        if: github.event_name == 'pull_request'
-        run: |
-          DRY_RUN=${{ (contains(github.event.pull_request.labels.*.name, 'Dry Run') && '--dry-run' || '') }}
-          OUTPUT=$(mktemp -t gradle.XXX) bash -c 'echo "build-log=$OUTPUT" >> $GITHUB_OUTPUT'          
-          
-          cat << "EOF" | bash > OUTPUT
-          ./gradlew terraformPlan $DRY_RUN \
-            --no-configuration-cache \
-            --console=plain \
-            --info
-          EOF
-          
-      - name: Print Terraform Plan
-        uses: actions/github-script@v6
-        if: ${{ steps.plan.outputs.build-log }}
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const comments = require('./.github/workflows/scripts/comments.js');
-            await comments.deleteAll(context, github, it => it.body.startsWith("Terraform"));
-
-            const start = "Terraform will perform the following actions:"
-            const fs = require('fs').promises;
-            
-            const path = "${{ steps.plan.outputs.build-log }}"
-            const content = await fs.readFile(path, 'utf8')
-            
-            const body = content.substring(content.indexOf(start), content.indexOf("───"))
-            await comments.create(context, github, content ? content : "Build log empty")
-
       - name: Containerize Cloud Run
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -107,17 +83,36 @@ jobs:
         run: |
           ./gradlew cloud-run:jib \
             --image=europe-west1-docker.pkg.dev/${{ steps.google_cloud_auth.outputs.project_id }}/cloud-run-source-deploy/playground.ashdavies.dev \
+            ${{ contains(github.event.pull_request.labels.*.name, 'Dry Run') && '--debug' || '--info' }} \
+            ${{ inputs.debug && '--debug' || '--info' }} \
             --no-configuration-cache \
             --console=plain \
-            --info
 
-      - name: Apply Terraform Config
+      - name: Generate Terraform Plan
         env:
           GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
+          PLAYGROUND_API_KEY: ${{ secrets.PLAYGROUND_API_KEY }}
+          TF_LOG: ${{ inputs.debug && 'DEBUG' || 'ERROR' }}
+        run: |
+          ./gradlew terraformPlan \
+            ${{ contains(github.event.pull_request.labels.*.name, 'Dry Run') && '--debug' || '--info' }} \
+            ${{ inputs.debug && '--debug' || '--info' }} \
+            --no-configuration-cache \
+            --console=plain
+
+      - name: Upload Terraform Plan
+        uses: actions/upload-artifact@v3
+        with:
+          name: terraform-plan
+          path: "**/build/terraform/main/plan.bin"
+          if-no-files-found: error
+
+      - name: Apply Terraform Plan
         if: github.ref == 'refs/heads/main'
         run: |
           ./gradlew google-cloud:terraformApply \
+            ${{ contains(github.event.pull_request.labels.*.name, 'Dry Run') && '--debug' || '--info' }} \
+            ${{ inputs.debug && '--debug' || '--info' }} \
             --no-configuration-cache \
             --console=plain \
             -Ptf.apply \
-            --info
