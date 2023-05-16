@@ -84,12 +84,7 @@ jobs:
           TF_LOG: ${{ env.DEBUG && 'DEBUG' || 'ERROR' }}
         if: github.event_name == 'pull_request'
         run: |
-          ./gradlew terraformPlan \
-            $([ DEBUG == true ] && echo '--debug' || echo '--quiet') \
-            $([ DRY_RUN == true ] && echo '--dry-run') \
-            --no-configuration-cache \
-            --console=plain \
-            | tee -a terraform.log
+          ./gradlew terraformPlan --no-configuration-cache --console=plain --dry-run --quiet | tee -a terraform.log
 
           # echo "path=$(mktemp)" >> $GITHUB_OUTPUT
           # bash << EOF | tee -a terraform.log
