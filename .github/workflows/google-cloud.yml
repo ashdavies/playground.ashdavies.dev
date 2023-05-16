@@ -101,28 +101,13 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const path = './terraform.log'
-            const fs = require('fs')
-
-            fs.access(path, fs.F_OK, (err) => {
-              if (err) {
-                console.error(err)
-                return
-              }
-
-              const stats = fs.statSync(path)
-              console.log(`File size in bytes: ${stats.size}`)
-
-              const contents = fs.readFileSync(path, 'utf8')
-              console.log(contents)
-            })
-
-            // const comments = require('./.github/workflows/scripts/comments.js')
+            const content = require('fs').readFileSync('./terraform.log', 'utf8')
             // const start = "Terraform will perform the following actions:"
-            // const content = plan.substring(plan.indexOf(start), plan.indexOf("───"))
-            // const body = content ? content.substring(0, 65000) : "No changes"
+            // const body = plan.substring(plan.indexOf(start), plan.indexOf("───"))
+            const body = content ? content.substring(0, 65000) : "No changes"
 
-            // await comments.create(context, github, body)
+            const comments = require('./.github/workflows/scripts/comments.js')
+            await comments.create(context, github, body)
 
       - name: Containerize Cloud Run
         env:
