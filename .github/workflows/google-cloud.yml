@@ -111,7 +111,7 @@ jobs:
             const fs = require('fs/promises');
             
             const body = await fs.readFile('google-cloud/build/terraform/main/plan.txt', 'utf8');
-            await comments.create(context, github, `\`\`\`\n${body}\n\`\`\``);
+            await comments.create(context, github, `\`\`\`${body}\`\`\``);
 
       - name: Apply Terraform Plan
         if: github.ref == 'refs/heads/main'
