@@ -96,7 +96,7 @@ jobs:
         if: github.event_name == 'pull_request'
         run: |
           ./gradlew google-cloud:terraformShowText \
-            ${{ contains(github.event.pull_request.labels.*.name, 'Dry Run') && '--dry-run' }} \
+            ${{ contains(github.event.pull_request.labels.*.name, 'Dry Run') && '--dry-run' || '' }} \
             ${{ inputs.debug && '--debug' || '--info' }} \
             --no-configuration-cache \
             --console=plain
@@ -117,7 +117,7 @@ jobs:
         if: github.ref == 'refs/heads/main'
         run: |
           ./gradlew google-cloud:terraformApply \
-            ${{ contains(github.event.pull_request.labels.*.name, 'Dry Run') && '--dry-run' }} \
+            ${{ contains(github.event.pull_request.labels.*.name, 'Dry Run') && '--dry-run' || '' }} \
             ${{ inputs.debug && '--debug' || '--info' }} \
             --no-configuration-cache \
             --console=plain \
