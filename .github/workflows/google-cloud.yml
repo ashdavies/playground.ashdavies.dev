@@ -115,6 +115,10 @@ jobs:
             await comments.create(context, github, `\`\`\`${body}\`\`\``);
 
       - name: Apply Terraform Plan
+        env:
+          GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
+          PLAYGROUND_API_KEY: ${{ secrets.PLAYGROUND_API_KEY }}
+          TF_LOG: ${{ inputs.debug && 'DEBUG' || 'ERROR' }}
         if: ${{ github.ref == 'refs/heads/main' }}
         run: |
           ./gradlew google-cloud:terraformApply \
