@@ -84,7 +84,7 @@ jobs:
         run: |
           ./gradlew cloud-run:jib \
             --image=europe-west1-docker.pkg.dev/${{ steps.google_cloud_auth.outputs.project_id }}/cloud-run-source-deploy/playground.ashdavies.dev \
-            ${{ contains(github.event.pull_request.labels.*.name, 'Dry Run') && '--debug' || '--info' }} \
+            ${{ contains(github.event.pull_request.labels.*.name, 'Dry Run') && '--dry-run' }} \
             ${{ inputs.debug && '--debug' || '--info' }} \
             --no-configuration-cache \
             --console=plain \
@@ -94,26 +94,40 @@ jobs:
           GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
           PLAYGROUND_API_KEY: ${{ secrets.PLAYGROUND_API_KEY }}
           TF_LOG: ${{ inputs.debug && 'DEBUG' || 'ERROR' }}
+        if: github.event_name == 'pull_request'
         run: |
-          ./gradlew terraformPlan \
-            ${{ contains(github.event.pull_request.labels.*.name, 'Dry Run') && '--debug' || '--info' }} \
+          ./gradlew google-cloud:terraformShowText \
+            ${{ contains(github.event.pull_request.labels.*.name, 'Dry Run') && '--dry-run' || '' }} \
             ${{ inputs.debug && '--debug' || '--info' }} \
             --no-configuration-cache \
             --console=plain
 
-      - name: Upload Terraform Plan
-        uses: actions/upload-artifact@v3
+      - name: Show Terraform Plan
+        uses: actions/github-script@v6
+        if: github.event_name == 'pull_request'
         with:
-          name: terraform-plan
-          path: "**/build/terraform/main/plan.bin"
-          if-no-files-found: error
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const comments = require('./.github/workflows/scripts/comments.js');
+            const fs = require('fs/promises');
+            
+            const body = await fs.readFile('google-cloud/build/terraform/main/plan.txt', 'utf8');
+            await comments.create(context, github, `\`\`\`${body}\`\`\``);
 
       - name: Apply Terraform Plan
         if: github.ref == 'refs/heads/main'
         run: |
           ./gradlew google-cloud:terraformApply \
-            ${{ contains(github.event.pull_request.labels.*.name, 'Dry Run') && '--debug' || '--info' }} \
+            ${{ contains(github.event.pull_request.labels.*.name, 'Dry Run') && '--dry-run' || '' }} \
             ${{ inputs.debug && '--debug' || '--info' }} \
             --no-configuration-cache \
             --console=plain \
-            -Ptf.apply \
+            -Ptf.apply
+
+      - name: Upload Terraform Plan
+        uses: actions/upload-artifact@v3
+        with:
+          name: terraform-plan
+          path: "**/build/terraform/main/plan.txt"
+          if-no-files-found: error
+        if: github.ref == 'refs/heads/main'
