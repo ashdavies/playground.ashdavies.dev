@@ -103,7 +103,7 @@ jobs:
 
       - name: Show Terraform Plan
         uses: actions/github-script@v6
-        if: ${{ github.event_name == 'pull_request' }}
+        if: github.event_name == 'pull_request'
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
@@ -111,7 +111,7 @@ jobs:
             const fs = require('fs/promises');
             
             const body = await fs.readFile('google-cloud/build/terraform/main/plan.txt', 'utf8');
-            await comments.create(context, github, ````${body}````);
+            await comments.create(context, github, `\`\`\`\n${body}\n\`\`\``);
 
       - name: Apply Terraform Plan
         if: github.ref == 'refs/heads/main'
@@ -121,4 +121,12 @@ jobs:
             ${{ inputs.debug && '--debug' || '--info' }} \
             --no-configuration-cache \
             --console=plain \
-            -Ptf.apply \
+            -Ptf.apply
+
+      - name: Upload Terraform Plan
+        uses: actions/upload-artifact@v3
+        with:
+          name: terraform-plan
+          path: "**/build/terraform/main/plan.txt"
+          if-no-files-found: error
+        if: github.ref == 'refs/heads/main'

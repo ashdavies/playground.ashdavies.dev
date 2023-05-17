@@ -41,7 +41,7 @@ jobs:
 
       - name: Delete Bot Comments
         uses: actions/github-script@v6
-        if: ${{ github.event_name == 'pull_request' }}
+        if: github.event_name == 'pull_request'
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
@@ -73,7 +73,7 @@ jobs:
         run: find . -type f -name "google-services.json" -exec sh -c 'openssl aes-256-cbc -md sha256 -salt -in "$0" -out "${0%.json*}.aes" -k "${GOOGLE_SERVICES_PASSPHRASE}"' {} \;
 
       - name: Decrypt Google Services
-        if: ${{ !contains(github.event.pull_request.labels.*.name, 'Dry Run') }}
+        if: !contains(github.event.pull_request.labels.*.name, 'Dry Run')
         env:
           GOOGLE_SERVICES_PASSPHRASE: ${{ secrets.google_services_passphrase }}
         run: find . -type f -name "google-services.aes" -exec sh -c 'openssl aes-256-cbc -md sha256 -d -in "$0" -out "${0%.aes*}.json" -k "${GOOGLE_SERVICES_PASSPHRASE}"' {} \;
@@ -97,7 +97,7 @@ jobs:
             
       - name: Gradle Scan Link
         uses: actions/github-script@v6
-        if: ${{ github.event_name == 'pull_request' && steps.gradle.outputs.build-scan-url }}
+        if: github.event_name == 'pull_request' && steps.gradle.outputs.build-scan-url
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
@@ -110,7 +110,7 @@ jobs:
         uses: test-summary/action@v2
         with:
           paths: "**/build/test-results/test/TEST-*.xml"
-        if: ${{ !contains(github.event.pull_request.labels.*.name, 'Dry Run') }}
+        if: !contains(github.event.pull_request.labels.*.name, 'Dry Run')
 
       - name: Upload Test Report
         uses: actions/upload-artifact@v3
@@ -118,4 +118,4 @@ jobs:
           name: test-report
           path: "**/build/reports/tests"
           if-no-files-found: error
-        if: ${{ !contains(github.event.pull_request.labels.*.name, 'Dry Run') }}
+        if: !contains(github.event.pull_request.labels.*.name, 'Dry Run')
