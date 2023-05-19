@@ -20,10 +20,10 @@ jib {
 kotlin {
     jvmMain.dependencies {
         implementation(projects.appCheck.appCheckSdk)
-        implementation(projects.cloudFirestore)
+        implementation(projects.cloudBackend.cloudFirestore)
         implementation(projects.composeLocals)
         implementation(projects.eventsAggregator)
-        implementation(projects.localRemote)
+        implementation(projects.cloudBackend.localRemote)
         implementation(projects.localStorage)
 
         implementation(libs.bundles.jetbrains.kotlinx)

@@ -16,7 +16,7 @@ kotlin {
         implementation(projects.composeLocals)
 
         implementation(projects.authOauth)
-        implementation(projects.localRemote)
+        implementation(projects.cloudBackend.localRemote)
         implementation(projects.localStorage)
         implementation(projects.playgroundApp)
 
