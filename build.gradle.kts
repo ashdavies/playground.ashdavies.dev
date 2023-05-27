@@ -4,7 +4,8 @@ import com.diffplug.gradle.spotless.FormatExtension
 
 buildscript {
     dependencies {
-        classpath("com.google.gms:google-services:4.3.15")
+        val googleServicesVersion = libs.versions.google.services.get()
+        classpath("com.google.gms:google-services:$googleServicesVersion")
     }
 }
 

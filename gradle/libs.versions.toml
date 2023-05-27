@@ -1,18 +1,19 @@
 [versions]
-androidx-activity = "1.7.1"
+androidx-activity = "1.7.2"
 androidx-lifecycle = "2.6.1"
 apollo-graphql = "2.5.14"
 compose-compiler = "1.4.2"
 google-accompanist = "0.30.1"
-google-android = "8.0.1"
+google-android = "8.0.2"
 google-auto = "1.0.1"
 google-maps-compose = "2.11.4"
+google-services = "4.3.15"
 jetbrains-compose = "1.4.0"
 jetbrains-kotlin = "1.8.21"
-kotlinx-coroutines = "1.7.0"
-kotlinx-serialization = "1.5.0"
+kotlinx-coroutines = "1.7.1"
+kotlinx-serialization = "1.5.1"
 ktor = "2.3.0"
-paging-compose = "3.2.0-alpha05-0.2.1"
+paging-compose = "3.2.0-alpha05-0.2.2"
 pinterest-ktlint = "0.47.1"
 slack-circuit = "0.8.0"
 squareup-sqldelight = "1.5.5"
@@ -28,7 +29,7 @@ androidx-core-splashscreen = "androidx.core:core-splashscreen:1.0.1"
 apollo-graphql-coroutines-support = { module = "com.apollographql.apollo:apollo-coroutines-support", version.ref = "apollo-graphql" }
 apollo-graphql-runtime = { module = "com.apollographql.apollo:apollo-runtime", version.ref = "apollo-graphql" }
 
-app-cash-turbine = "app.cash.turbine:turbine:0.12.3"
+app-cash-turbine = "app.cash.turbine:turbine:0.13.0"
 arkivanov-parcelable = "com.arkivanov.essenty:parcelable:1.1.0"
 
 auth-java-jwt = "com.auth0:java-jwt:4.4.0"
@@ -43,14 +44,14 @@ google-accompanist-systemuicontroller = { module = "com.google.accompanist:accom
 google-android-maps = "com.google.android.gms:play-services-maps:18.1.0"
 google-android-material = "com.google.android.material:material:1.9.0"
 
-google-cloud-bom = "com.google.cloud:libraries-bom:26.14.0"
+google-cloud-bom = "com.google.cloud:libraries-bom:26.15.0"
 google-cloud-firestore = { module = "com.google.cloud:google-cloud-firestore" }
 google-cloud-storage = { module = "com.google.cloud:google-cloud-storage" }
 google-cloud-functionsFrameworkApi = "com.google.cloud.functions:functions-framework-api:1.0.4"
 google-cloud-javaFunctionInvoker = "com.google.cloud.functions.invoker:java-function-invoker:1.2.1"
 
 google-firebase-admin = "com.google.firebase:firebase-admin:9.1.1"
-google-firebase-bom = "com.google.firebase:firebase-bom:32.0.0"
+google-firebase-bom = "com.google.firebase:firebase-bom:32.1.0"
 google-firebase-analytics = { module = "com.google.firebase:firebase-analytics-ktx" }
 google-firebase-appcheck = { module = "com.google.firebase:firebase-appcheck" }
 google-firebase-appcheck-debug = { module = "com.google.firebase:firebase-appcheck-debug" }
@@ -139,9 +140,9 @@ android-application = { id = "com.android.application", version.ref = "google-an
 android-library = { id = "com.android.library", version.ref = "google-android" }
 apollo-graphql = { id = "com.apollographql.apollo", version.ref = "apollo-graphql" }
 cash-molecule = { id = "app.cash.molecule", version = "0.9.0" }
-diffplug-spotless = "com.diffplug.spotless:6.18.0"
-google-cloud-jib = "com.google.cloud.tools.jib:3.3.1"
-google-services = "com.google.gms.google-services:4.3.15"
+diffplug-spotless = "com.diffplug.spotless:6.19.0"
+google-cloud-jib = "com.google.cloud.tools.jib:3.3.2"
+google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
 gradle-doctor = "com.osacky.doctor:0.8.1"
 jetbrains-dokka = "org.jetbrains.dokka:1.8.10"
 jetbrains-terraform = "org.jetbrains.gradle.terraform:1.5.2"
@@ -149,6 +150,6 @@ kotlin-compose = { id = "org.jetbrains.compose", version.ref = "jetbrains-compos
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrains-kotlin" }
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "jetbrains-kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "jetbrains-kotlin" }
-kotlinx-kover = "org.jetbrains.kotlinx.kover:0.6.1"
-openapi-generator = "org.openapi.generator:6.5.0"
+kotlinx-kover = "org.jetbrains.kotlinx.kover:0.7.0"
+openapi-generator = "org.openapi.generator:6.6.0"
 squareup-sqldelight = { id = "com.squareup.sqldelight", version.ref =  "squareup-sqldelight" }

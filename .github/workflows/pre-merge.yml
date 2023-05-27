@@ -9,6 +9,14 @@ on:
     branches:
       - '*'
 
+  workflow_dispatch:
+    inputs:
+      debug:
+        description: 'Debug'
+        required: false
+        default: false
+        type: boolean
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
@@ -22,16 +30,25 @@ jobs:
       id-token: 'write'
 
     steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Delete Bot Comments
+        uses: actions/github-script@v6
+        if: ${{ github.event_name == 'pull_request' }}
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const comments = require('./.github/workflows/scripts/comments.js');
+            await comments.deleteAll(context, github)
+
       - name: Setup JDK
         uses: actions/setup-java@v3
         with:
           distribution: temurin
           java-version: 17
-
-      - name: Checkout Repository
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
 
       - name: Google Cloud Auth
         id: google_cloud_auth
@@ -70,18 +87,9 @@ jobs:
           gradle-home-cache-cleanup: true
           arguments: >
             build
-              ${{ (contains(github.event.pull_request.labels.*.name, 'Dry Run') && '--dry-run' || '') }}
+              ${{ contains(github.event.pull_request.labels.*.name, 'Dry Run') && '--dry-run' || '' }}
               --console=plain
               --info
-
-      - name: Delete Bot Comments
-        uses: actions/github-script@v6
-        if: ${{ github.event_name == 'pull_request' && steps.gradle.outputs.build-scan-url }}
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const comments = require('./.github/workflows/scripts/comments.js');
-            await comments.deleteAll(context, github)
             
       - name: Gradle Scan Link
         uses: actions/github-script@v6
