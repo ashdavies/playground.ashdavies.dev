@@ -22,6 +22,10 @@ terraform {
         group = TerraformPlugin.TASK_GROUP
         dataDir = main.dataDir
     }
+
+    val terraformApply by tasks.getting {
+        dependsOn(terraformShowText)
+    }
 }
 
 abstract class TerraformShowText : AbstractTerraformExec() {
