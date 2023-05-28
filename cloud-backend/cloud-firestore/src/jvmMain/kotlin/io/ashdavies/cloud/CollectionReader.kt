@@ -18,11 +18,10 @@ public suspend operator fun <T : Any> CollectionReader<T>.invoke(
     deserializer: DeserializationStrategy<T>,
 ): List<T> = invoke(deserializer) { it }
 
-@Suppress("NO_EXPLICIT_RETURN_TYPE_IN_API_MODE_WARNING")
 public fun <T : Any> CollectionReader(
     provider: DocumentProvider,
     request: CollectionQuery,
-) = CollectionReader<T> { deserializer, transform ->
+): CollectionReader<T> = CollectionReader { deserializer, transform ->
     val reference = provider.invoke {
         orderBy = request.orderBy
 

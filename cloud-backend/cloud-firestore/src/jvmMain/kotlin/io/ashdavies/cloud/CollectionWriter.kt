@@ -11,11 +11,10 @@ public fun interface CollectionWriter<T : Any> {
     )
 }
 
-@Suppress("NO_EXPLICIT_RETURN_TYPE_IN_API_MODE_WARNING")
 public suspend fun <T : Any> CollectionWriter(
     provider: DocumentProvider,
     identifier: (T) -> String,
-) = CollectionWriter<T> { oldValue, newValue ->
+): CollectionWriter<T> = CollectionWriter { oldValue, newValue ->
     val queue = OperationQueue(
         oldValue = oldValue.associateBy(identifier),
         newValue = newValue.associateBy(identifier),

@@ -18,6 +18,8 @@ jib {
 }
 
 kotlin {
+    explicitApiWarning()
+
     jvmMain.dependencies {
         implementation(projects.appCheck.appCheckSdk)
         implementation(projects.cloudBackend.cloudFirestore)
@@ -50,9 +52,8 @@ sourceSets.main {
 openApiGenerate {
     generatorName.set("kotlin-server")
     outputDir.set("$buildDir/generated/openapi/main")
-    remoteInputSpec.set("https://playground.ashdavies.dev/openapi/documentation.yml")
+    inputSpec.set("$projectDir/../google-cloud/src/main/resources/openapi-v2.yml")
     templateDir.set("$projectDir/src/jvmMain/resources/templates")
-    auth.set("X-API-KEY:${System.getenv("PLAYGROUND_API_KEY")}")
     packageName.set("io.ashdavies.playground")
     ignoreFileOverride.set("$projectDir/.openapi-generator-ignore")
     configOptions.put("library", "ktor")

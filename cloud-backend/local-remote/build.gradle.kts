@@ -10,24 +10,27 @@ android {
     namespace = "io.ashdavies.local.remote"
 }
 
-kotlin.commonMain {
-    dependencies {
-        implementation(projects.localStorage)
+kotlin {
+    explicitApiWarning()
 
-        implementation(libs.bundles.ktor.client)
-        implementation(libs.bundles.ktor.serialization)
+    commonMain {
+        dependencies {
+            implementation(projects.localStorage)
 
-        implementation(libs.jetbrains.kotlinx.serialization.properties)
+            implementation(libs.bundles.ktor.client)
+            implementation(libs.bundles.ktor.serialization)
+
+            implementation(libs.jetbrains.kotlinx.serialization.properties)
+        }
+
+        kotlin.srcDir(tasks.openApiGenerate)
     }
-
-    kotlin.srcDir(tasks.openApiGenerate)
 }
 
 openApiGenerate {
     generatorName.set("kotlin")
     outputDir.set("$buildDir/generated/openapi/main")
-    remoteInputSpec.set("https://playground.ashdavies.dev/openapi/documentation.yml")
-    auth.set("X-API-KEY:${System.getenv("PLAYGROUND_API_KEY")}")
+    inputSpec.set("$projectDir/../google-cloud/src/main/resources/openapi-v2.yml")
     packageName.set("io.ashdavies.playground")
     ignoreFileOverride.set("$projectDir/.openapi-generator-ignore")
     configOptions.put("library", "multiplatform")

@@ -36,12 +36,10 @@ jobs:
           fetch-depth: 0
 
       - name: Google Cloud Auth
-        id: google_cloud_auth
         uses: google-github-actions/auth@v1
         with:
           workload_identity_provider: ${{ secrets.GOOGLE_WORKLOAD_IDENTITY }}
           service_account: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
-          token_format: access_token
 
       - name: Run Gradle Tasks
         id: gradle_build
