@@ -10,7 +10,7 @@ android {
 kotlin {
     commonMain.dependencies {
         implementation(projects.appCheck.appCheckClient)
-        implementation(projects.localRemote)
+        implementation(projects.cloudBackend.localRemote)
         implementation(projects.playgroundApp)
 
         implementation(libs.arkivanov.parcelable)

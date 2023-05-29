@@ -6,7 +6,7 @@ plugins {
 }
 
 kotlin {
-    explicitApiWarning()
+    explicitApi()
     jvm()
 
     commonMain.dependencies {
