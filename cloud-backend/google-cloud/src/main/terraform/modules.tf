@@ -12,9 +12,9 @@ module "cloud-run-endpoint" {
   gcloud_build_image = var.resources.gcloud-build-image.path
   source             = "./modules/google/cloud-run-endpoint"
   config_id          = module.cloud-run-endpoint.config_id
+  openapi_config     = local_file.openapi_config.content
   endpoint_name      = "playground.ashdavies.dev"
   service_name       = "playground-endpoint"
-  openapi_config     = local.openapi_config
   location           = var.project_region
   project            = var.project_id
   esp_tag            = var.esp_tag

@@ -32,8 +32,11 @@ resource "google_project_iam_custom_role" "main" {
   ]
 }
 
-resource "google_storage_bucket_object" "openapi_config" {
-  bucket  = module.runtime-resources.bucket.name
-  content = local.openapi_config
-  name    = "openapi_config.yml"
+resource "local_file" "openapi_config" {
+  content  = templatefile(var.resources.openapi-v2_yml.path, {
+    version_name         = substr(module.github-repository.sha, 0, 7)
+    backend_service_name = module.cloud-run-build.url
+    cloud_run_hostname   = "playground.ashdavies.dev"
+  })
+  filename = basename(var.resources.openapi-v2_yml.path)
 }

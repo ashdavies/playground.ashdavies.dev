@@ -31,7 +31,7 @@ variable "location" {
 }
 
 variable "openapi_config" {
-  description = ""
+  description = "The full text of the OpenAPI YAML configuration."
 }
 
 variable "service_name" {

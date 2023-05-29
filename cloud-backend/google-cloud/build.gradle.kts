@@ -7,9 +7,6 @@ plugins {
 }
 
 terraform {
-    showPlanOutputInConsole = false
-    showInitOutputInConsole = false
-
     val main by sourceSets.getting {
         planVariables = mapOf("gh_token" to System.getenv("GITHUB_TOKEN"))
     }

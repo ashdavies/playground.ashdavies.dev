@@ -1,5 +1,7 @@
 @file:Suppress("DSL_SCOPE_VIOLATION") // https://github.com/gradle/gradle/issues/22797
 
+import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode
+
 plugins {
     id("io.ashdavies.default")
 
@@ -11,7 +13,7 @@ android {
 }
 
 kotlin {
-    explicitApiWarning()
+    explicitApi = ExplicitApiMode.Disabled
 
     commonMain {
         dependencies {
@@ -32,6 +34,7 @@ openApiGenerate {
     outputDir.set("$buildDir/generated/openapi/main")
     inputSpec.set("$projectDir/../google-cloud/src/main/resources/openapi-v2.yml")
     packageName.set("io.ashdavies.playground")
+    serverVariables.put("cloud_run_hostname", String())
     ignoreFileOverride.set("$projectDir/.openapi-generator-ignore")
     configOptions.put("library", "multiplatform")
     configOptions.put("sourceFolder", ".")
