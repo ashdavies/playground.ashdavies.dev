@@ -48,6 +48,7 @@ include(
     ":events-app",
     ":firebase-compose",
     ":local-storage",
+    ":notion-client",
     ":notion-console",
     ":parcelable-support",
     ":playground-app",

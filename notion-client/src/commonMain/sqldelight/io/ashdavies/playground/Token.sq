@@ -1,0 +1,16 @@
+CREATE TABLE token(
+    accessToken TEXT PRIMARY KEY NOT NULL,
+    workspaceId TEXT NOT NULL,
+    workspaceName TEXT,
+    workspaceIcon TEXT,
+    botId TEXT NOT NULL
+);
+
+select:
+SELECT * FROM token;
+
+insert:
+INSERT INTO token VALUES ?;
+
+deleteAll:
+DELETE FROM token;

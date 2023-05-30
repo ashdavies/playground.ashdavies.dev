@@ -1,25 +1,23 @@
-package io.ashdavies.notion.compose
+package io.ashdavies.notion
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.compositionLocalOf
 import io.ashdavies.compose.noLocalProvidedFor
-import io.ashdavies.notion.PlaygroundDatabase
 import io.ashdavies.playground.rememberDatabase
 import org.jraf.klibnotion.client.Authentication
 import org.jraf.klibnotion.client.ClientConfiguration
 import org.jraf.klibnotion.client.NotionClient
 
-internal val LocalNotionClient = compositionLocalOf<NotionClient> {
-    noLocalProvidedFor("LocalNotionClient")
-}
+public val LocalNotionClient: ProvidableCompositionLocal<NotionClient> =
+    compositionLocalOf { noLocalProvidedFor("LocalNotionClient") }
 
-internal val LocalPlaygroundDatabase = compositionLocalOf<PlaygroundDatabase> {
-    noLocalProvidedFor("LocalPlaygroundDatabase")
-}
+public val LocalPlaygroundDatabase: ProvidableCompositionLocal<PlaygroundDatabase> =
+    compositionLocalOf { noLocalProvidedFor("LocalPlaygroundDatabase") }
 
 @Composable
-internal fun NotionCompositionLocals(auth: Authentication, content: @Composable () -> Unit) {
+public fun NotionCompositionLocals(auth: Authentication, content: @Composable () -> Unit) {
     val configuration = ClientConfiguration(auth)
     val client = NotionClient.newInstance(configuration)
 

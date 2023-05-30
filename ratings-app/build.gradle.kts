@@ -4,11 +4,12 @@ plugins {
 }
 
 android {
-    namespace = "io.ashdavies.notion"
+    namespace = "io.ashdavies.ratings"
 }
 
 kotlin {
     commonMain.dependencies {
+        implementation(projects.notionClient)
         implementation(projects.playgroundApp)
 
         implementation(libs.arkivanov.parcelable)
