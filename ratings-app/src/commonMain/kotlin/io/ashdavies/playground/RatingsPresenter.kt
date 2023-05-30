@@ -3,28 +3,34 @@ package io.ashdavies.playground
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.produceState
+import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.platform.UriHandler
 import com.arkivanov.essenty.parcelable.Parcelable
 import com.arkivanov.essenty.parcelable.Parcelize
 import com.slack.circuit.runtime.CircuitUiEvent
 import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.Navigator
 import com.slack.circuit.runtime.Screen
-import java.net.URL
 
-private const val DefaultSize = 3
+private const val NotionPath = "https://www.notion.so/ashdavies/%s"
+private const val DEFAULT_PATH_SIZE = 3
 
 @Composable
-internal fun RatingsPresenter(navigator: Navigator): RatingsScreen.State {
-    val state by produceState<RatingsScreen.State>(RatingsScreen.State.Loading(DefaultSize)) {
-        val title = { _: String -> URL("https://api.github.com/zen").readText() }
-        val items = List(DefaultSize) { RatingsScreen.State.Item("$it", title("$it")) }
+internal fun RatingsPresenter(
+    navigator: Navigator,
+    service: RatingsService<String> = RatingsService { emptyList() },
+    provider: RatingsProvider<String> = RatingsProvider(),
+    handler: UriHandler = LocalUriHandler.current,
+): RatingsScreen.State {
+    val state by produceState<RatingsScreen.State>(RatingsScreen.State.Loading(DEFAULT_PATH_SIZE)) {
+        val page = service.next(DEFAULT_PATH_SIZE)
 
-        value = RatingsScreen.State.Idle(items) { event ->
+        value = RatingsScreen.State.Idle(page) { event ->
             when (event) {
+                is RatingsScreen.Event.Vote -> provider.vote(page.sortedBy { it == event.item })
+                is RatingsScreen.Event.Details -> handler.openUri(NotionPath.format(event.item))
+                is RatingsScreen.Event.Ignore -> provider.ignore(event.item)
                 RatingsScreen.Event.Pop -> navigator.pop()
-                is RatingsScreen.Event.Details -> TODO()
-                is RatingsScreen.Event.Ignore -> TODO()
-                is RatingsScreen.Event.Vote -> TODO()
             }
         }
     }
@@ -34,17 +40,25 @@ internal fun RatingsPresenter(navigator: Navigator): RatingsScreen.State {
 
 @Parcelize
 public object RatingsScreen : Parcelable, Screen {
+
     internal sealed interface Event : CircuitUiEvent {
-        data class Details(val id: Int) : Event
-        data class Ignore(val id: Int) : Event
-        data class Vote(val id: Int) : Event
+
+        data class Details(val item: RatingsItem) : Event
+        data class Ignore(val item: RatingsItem) : Event
+        data class Vote(val item: RatingsItem) : Event
+
         object Pop : Event
     }
 
     internal sealed interface State : CircuitUiState {
-        data class Idle(val items: List<Item>, val eventSink: (Event) -> Unit) : State
-        data class Item(val id: String, val title: String)
+
+        data class Idle(
+            val items: List<RatingsItem>,
+            val eventSink: (Event) -> Unit,
+        ) : State
+
         data class Loading(val size: Int) : State
+
         companion object
     }
 }

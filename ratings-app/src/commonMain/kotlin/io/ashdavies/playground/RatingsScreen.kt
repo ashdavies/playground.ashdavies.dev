@@ -44,7 +44,7 @@ internal fun RatingsScreen(
 @Composable
 @OptIn(ExperimentalFoundationApi::class)
 internal fun ColumnScope.RatingsItem(
-    item: RatingsScreen.State.Item,
+    item: RatingsItem,
     onClick: () -> Unit,
     onLongClick: () -> Unit,
     onDismiss: () -> Unit,
@@ -64,7 +64,7 @@ internal fun ColumnScope.RatingsItem(
             contentAlignment = Alignment.Center,
             modifier = Modifier.fillMaxSize(),
         ) {
-            Text(item.title)
+            Text(item.name)
         }
     }
 }
