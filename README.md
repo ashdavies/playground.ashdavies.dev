@@ -17,7 +17,7 @@
 <table>
     <tr>
         <td>
-            <h3>Cloud Run [cloud-run]</h3>
+            <h3>Cloud Run [cloud-backend:cloud-run]</h3>
             <img src="https://img.shields.io/badge/project-experimental-status.svg?colorA=555555&colorB=red&label=&logo=kotlin&logoColor=ffffff&logoWidth=10" alt="Experimental" />
             <img src="https://img.shields.io/badge/project-jvm-component.svg?colorA=555555&colorB=7F52FF&label=&logo=kotlin&logoColor=ffffff&logoWidth=10" alt="JVM" />
         </td>
@@ -50,17 +50,17 @@ stateDiagram-v2
     CloudRun --> AppCheckSdk
     CloudRun --> CloudFirestore
     CloudRun --> EventsAggregator
-    CloudRun --> LocalRemote
+    CloudRun --> HttpClient
     CloudRun --> LocalStorage
 
     DominionApp --> AppCheckClient
-    DominionApp --> LocalRemote
+    DominionApp --> HttpClient
     DominionApp --> PlaygroundApp
 
     EventsApp --> AppCheckClient
     EventsApp --> Auth0Auth
     EventsApp --> ComposeLocals
-    EventsApp --> LocalRemote
+    EventsApp --> HttpClient
     EventsApp --> LocalStorage
     EventsApp --> PlaygroundApp
 ```

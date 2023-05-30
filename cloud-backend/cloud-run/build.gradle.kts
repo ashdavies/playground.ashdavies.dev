@@ -25,7 +25,7 @@ kotlin {
         implementation(projects.cloudBackend.cloudFirestore)
         implementation(projects.composeLocals)
         implementation(projects.eventsAggregator)
-        implementation(projects.cloudBackend.localRemote)
+        implementation(projects.cloudBackend.httpClient)
         implementation(projects.localStorage)
 
         implementation(libs.bundles.jetbrains.kotlinx)

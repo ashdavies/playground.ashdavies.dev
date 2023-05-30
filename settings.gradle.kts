@@ -40,7 +40,7 @@ include(
     ":cloud-backend:cloud-firestore",
     ":cloud-backend:cloud-run",
     ":cloud-backend:google-cloud",
-    ":cloud-backend:local-remote",
+    ":cloud-backend:http-client",
     ":cloud-backend:micro-yaml",
     ":compose-locals",
     ":dominion-app",
