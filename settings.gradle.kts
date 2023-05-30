@@ -51,6 +51,7 @@ include(
     ":notion-console",
     ":parcelable-support",
     ":playground-app",
+    ":ratings-app",
     ":sql-driver",
 )
 
