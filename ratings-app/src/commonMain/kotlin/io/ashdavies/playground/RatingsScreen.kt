@@ -1,5 +1,7 @@
 package io.ashdavies.playground
 
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
@@ -21,19 +23,39 @@ internal fun RatingsScreen(
 ) {
     Column(modifier.fillMaxSize()) {
         when (state) {
-            is RatingsScreen.State.Loading -> for (index in 0..state.size) RatingsPlaceholder()
-            is RatingsScreen.State.Idle -> for (item in state.items) RatingsItem(item)
+            is RatingsScreen.State.Loading -> {
+                repeat(state.size) {
+                    RatingsPlaceholder()
+                }
+            }
+
+            is RatingsScreen.State.Idle -> {
+                for (item in state.items) RatingsItem(
+                    onLongClick = { },
+                    onDismiss = { },
+                    onClick = { },
+                    item = item
+                )
+            }
         }
     }
 }
 
 @Composable
+@OptIn(ExperimentalFoundationApi::class)
 internal fun ColumnScope.RatingsItem(
     item: RatingsScreen.State.Item,
+    onClick: () -> Unit,
+    onLongClick: () -> Unit,
+    onDismiss: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Card(
         modifier = modifier
+            .combinedClickable(
+                onLongClick = onLongClick,
+                onClick = onClick,
+            )
             .fillMaxWidth()
             .padding(4.dp)
             .weight(1f),
