@@ -96,7 +96,7 @@ jobs:
           TF_LOG: ${{ inputs.debug && 'DEBUG' || 'ERROR' }}
         if: ${{ github.event_name == 'pull_request' }}
         run: |
-          ./gradlew google-cloud:terraformShowText \
+          ./gradlew cloud-backend:google-cloud:terraformShowText \
             ${{ contains(github.event.pull_request.labels.*.name, 'Dry Run') && '--dry-run' || '' }} \
             ${{ inputs.debug && '--debug' || '--info' }} \
             --no-configuration-cache \
@@ -121,7 +121,7 @@ jobs:
           TF_LOG: ${{ inputs.debug && 'DEBUG' || 'ERROR' }}
         if: ${{ github.ref == 'refs/heads/main' }}
         run: |
-          ./gradlew google-cloud:terraformApply \
+          ./gradlew cloud-backend:google-cloud:terraformApply \
             ${{ contains(github.event.pull_request.labels.*.name, 'Dry Run') && '--dry-run' || '' }} \
             ${{ inputs.debug && '--debug' || '--info' }} \
             --no-configuration-cache \
