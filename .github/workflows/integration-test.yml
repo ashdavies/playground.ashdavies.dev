@@ -52,7 +52,7 @@ jobs:
         with:
           gradle-home-cache-cleanup: true
           arguments: >
-            cloud-run:integrationTest
+            cloud-backend:cloud-run:integrationTest
               ${{ inputs.debug && '--debug' || '--info' }}
               --console=plain
 

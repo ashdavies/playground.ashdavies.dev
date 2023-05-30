@@ -10,7 +10,7 @@ kotlin {
     commonMain.dependencies {
         implementation(projects.appCheck.appCheckClient)
 
-        implementation(projects.cloudBackend.localRemote)
+        implementation(projects.cloudBackend.httpClient)
         implementation(projects.localStorage)
 
         implementation(libs.bundles.ktor.client)
