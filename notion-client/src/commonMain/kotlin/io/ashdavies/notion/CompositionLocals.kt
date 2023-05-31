@@ -7,7 +7,6 @@ import androidx.compose.runtime.compositionLocalOf
 import io.ashdavies.compose.noLocalProvidedFor
 import io.ashdavies.playground.rememberDatabase
 import org.jraf.klibnotion.client.Authentication
-import org.jraf.klibnotion.client.ClientConfiguration
 import org.jraf.klibnotion.client.NotionClient
 
 public val LocalNotionClient: ProvidableCompositionLocal<NotionClient> =
@@ -18,17 +17,12 @@ public val LocalPlaygroundDatabase: ProvidableCompositionLocal<PlaygroundDatabas
 
 @Composable
 public fun NotionCompositionLocals(auth: Authentication, content: @Composable () -> Unit) {
-    val configuration = ClientConfiguration(auth)
-    val client = NotionClient.newInstance(configuration)
-
-    val database = rememberDatabase(
-        schema = PlaygroundDatabase.Schema,
-        factory = PlaygroundDatabase::invoke,
-    )
-
     CompositionLocalProvider(
-        LocalNotionClient provides client,
-        LocalPlaygroundDatabase provides database,
+        LocalNotionClient provides NotionClient(auth),
+        LocalPlaygroundDatabase provides rememberDatabase(
+            schema = PlaygroundDatabase.Schema,
+            factory = PlaygroundDatabase::invoke,
+        ),
         content = content,
     )
 }

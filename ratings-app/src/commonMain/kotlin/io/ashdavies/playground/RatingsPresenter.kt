@@ -18,8 +18,8 @@ private const val DEFAULT_PATH_SIZE = 3
 @Composable
 internal fun RatingsPresenter(
     navigator: Navigator,
-    service: RatingsService<String> = RatingsService { emptyList() },
-    provider: RatingsProvider<String> = RatingsProvider(),
+    service: RatingsService = NotionRatingsService(),
+    provider: RatingsProvider = RatingsProvider(),
     handler: UriHandler = LocalUriHandler.current,
 ): RatingsScreen.State {
     val state by produceState<RatingsScreen.State>(RatingsScreen.State.Loading(DEFAULT_PATH_SIZE)) {
