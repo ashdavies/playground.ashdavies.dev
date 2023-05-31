@@ -25,7 +25,7 @@ internal fun Subcommand(
     name: String,
     actionDescription: String = name.replaceFirstChar { it.titlecase() },
     onExecute: suspend CoroutineScope.(Subcommand) -> Unit = { },
-    content: @Composable () -> Unit = { }
+    content: @Composable () -> Unit = { },
 ) {
     val coroutineScope: CoroutineScope = rememberCoroutineScope()
     val argParser: ArgParser = LocalArgParser.current
@@ -40,7 +40,7 @@ internal fun Subcommand(
 
     CompositionLocalProvider(
         LocalArgParser provides subcommand,
-        content = content
+        content = content,
     )
 }
 
@@ -49,7 +49,7 @@ internal fun Subcommand(
 private fun rememberSubcommand(
     name: String,
     actionDescription: String,
-    block: (Subcommand) -> Unit
+    block: (Subcommand) -> Unit,
 ): Subcommand = remember(name, actionDescription) {
     object : Subcommand(name, actionDescription) {
         override fun execute() = block(this)

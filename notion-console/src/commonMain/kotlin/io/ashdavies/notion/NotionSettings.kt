@@ -15,11 +15,11 @@ private val NotionClientSecret: String
 public object NotionSettings : () -> OAuthServerSettings {
     override fun invoke(): OAuthServerSettings = OAuthServerSettings.OAuth2ServerSettings(
         accessTokenInterceptor = { basicAuth(NotionClientId, NotionClientSecret) },
-        authorizeUrl = "${DEFAULT_HOST}/authorize",
-        accessTokenUrl = "${DEFAULT_HOST}/token",
+        authorizeUrl = "$DEFAULT_HOST/authorize",
+        accessTokenUrl = "$DEFAULT_HOST/token",
         clientSecret = NotionClientSecret,
         requestMethod = HttpMethod.Post,
         clientId = NotionClientId,
-        name = "notion"
+        name = "notion",
     )
 }

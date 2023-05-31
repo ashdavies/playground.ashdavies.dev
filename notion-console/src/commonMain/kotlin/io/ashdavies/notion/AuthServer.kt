@@ -59,7 +59,7 @@ private fun AuthenticationConfig.configure(provider: OAuthProvider) {
 
 private fun Routing.oauth(callback: (AccessToken) -> Unit) {
     authenticate("auth-oauth-google") {
-        get("/login") {/* Redirects to "authorizeUrl" automatically */ }
+        get("/login") { /* Redirects to "authorizeUrl" automatically */ }
         get("/callback") { callback(callback) }
     }
 }

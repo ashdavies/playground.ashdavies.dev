@@ -13,27 +13,28 @@ internal fun AuthCommand(
     onAuthState: (AuthState) -> Unit = { },
 ) = Subcommand(
     actionDescription = "Run notion auth login to authenticate with your Notion account.",
-    name = "auth"
+    name = "auth",
 ) {
     Subcommand(
         actionDescription = "Run notion auth login to authenticate with your Notion account.",
         onExecute = {
             val token = tokenQueries.select().executeAsOneOrNull()
-            if (token != null) onAuthState(AuthState.Authenticated(token))
-            else {
+            if (token != null) {
+                onAuthState(AuthState.Authenticated(token))
+            } else {
                 onAuthState(AuthState.Awaiting("http://localhost:8080/callback"))
                 val result = Token(getAccessToken(OAuthProvider.Notion))
                 onAuthState(AuthState.Authenticated(result))
                 tokenQueries.insert(result)
             }
         },
-        name = "login"
+        name = "login",
     )
 
     Subcommand(
         actionDescription = "Run notion auth logout to remove authentication with your Notion account.",
         onExecute = { tokenQueries.deleteAll() },
-        name = "logout"
+        name = "logout",
     )
 }
 

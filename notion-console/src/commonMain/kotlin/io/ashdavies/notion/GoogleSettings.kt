@@ -13,7 +13,7 @@ public object GoogleSettings : () -> OAuthServerSettings {
         accessTokenUrl = "$DEFAULT_HOST/token",
         authorizeUrl = "$DEFAULT_HOST/auth",
         requestMethod = HttpMethod.Post,
-        name = "google"
+        name = "google",
     )
 }
 
