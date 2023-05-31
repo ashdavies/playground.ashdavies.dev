@@ -1,10 +1,9 @@
-package io.ashdavies.notion.compose
+package io.ashdavies.notion
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.compositionLocalOf
 import io.ashdavies.compose.noLocalProvidedFor
-import io.ashdavies.notion.PlaygroundDatabase
 import io.ashdavies.playground.rememberDatabase
 import org.jraf.klibnotion.client.Authentication
 import org.jraf.klibnotion.client.ClientConfiguration

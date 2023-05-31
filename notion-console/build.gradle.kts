@@ -5,6 +5,8 @@ plugins {
     id("io.ashdavies.kotlin")
     id("io.ashdavies.sql")
 
+    id("com.jakewharton.mosaic")
+
     application
 }
 
@@ -14,15 +16,15 @@ application {
 
 kotlin {
     commonMain.dependencies {
-        implementation(projects.authOauth)
         implementation(projects.composeLocals)
         implementation(projects.localStorage)
         implementation(projects.sqlDriver)
 
-        implementation(libs.bundles.jetbrains.kotlinx)
         implementation(libs.bundles.ktor.client)
+        implementation(libs.bundles.ktor.serialization)
+        implementation(libs.bundles.ktor.server)
 
-        implementation(libs.jakeWharton.mosaic.runtime)
+        //implementation(libs.jakeWharton.mosaic.runtime)
         implementation(libs.jetbrains.kotlinx.cli)
         implementation(libs.jraf.klibnotion)
         implementation(libs.qos.logbackClassic)

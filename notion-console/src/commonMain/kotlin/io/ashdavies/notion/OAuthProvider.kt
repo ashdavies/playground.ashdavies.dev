@@ -1,4 +1,4 @@
-package io.ashdavies.playground
+package io.ashdavies.notion
 
 public sealed interface OAuthProvider {
     public object Google : OAuthProvider
