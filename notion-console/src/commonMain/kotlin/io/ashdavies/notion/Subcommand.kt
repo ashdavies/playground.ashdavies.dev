@@ -1,4 +1,4 @@
-package io.ashdavies.notion.compose
+package io.ashdavies.notion
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -6,7 +6,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.staticCompositionLocalOf
-import io.ashdavies.notion.kotlin.NotionScopeMarker
 import kotlinx.cli.ArgParser
 import kotlinx.cli.ExperimentalCli
 import kotlinx.cli.Subcommand
@@ -26,7 +25,7 @@ internal fun Subcommand(
     name: String,
     actionDescription: String = name.replaceFirstChar { it.titlecase() },
     onExecute: suspend CoroutineScope.(Subcommand) -> Unit = { },
-    content: @Composable () -> Unit = { }
+    content: @Composable () -> Unit = { },
 ) {
     val coroutineScope: CoroutineScope = rememberCoroutineScope()
     val argParser: ArgParser = LocalArgParser.current
@@ -41,7 +40,7 @@ internal fun Subcommand(
 
     CompositionLocalProvider(
         LocalArgParser provides subcommand,
-        content = content
+        content = content,
     )
 }
 
@@ -50,7 +49,7 @@ internal fun Subcommand(
 private fun rememberSubcommand(
     name: String,
     actionDescription: String,
-    block: (Subcommand) -> Unit
+    block: (Subcommand) -> Unit,
 ): Subcommand = remember(name, actionDescription) {
     object : Subcommand(name, actionDescription) {
         override fun execute() = block(this)

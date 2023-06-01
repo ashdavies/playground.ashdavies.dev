@@ -1,4 +1,4 @@
-package io.ashdavies.playground
+package io.ashdavies.notion
 
 import io.ktor.http.HttpMethod
 import io.ktor.server.auth.OAuthServerSettings
@@ -13,7 +13,7 @@ public object GoogleSettings : () -> OAuthServerSettings {
         accessTokenUrl = "$DEFAULT_HOST/token",
         authorizeUrl = "$DEFAULT_HOST/auth",
         requestMethod = HttpMethod.Post,
-        name = "google"
+        name = "google",
     )
 }
 

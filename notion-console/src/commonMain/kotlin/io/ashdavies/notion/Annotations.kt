@@ -1,4 +1,4 @@
-package io.ashdavies.notion.kotlin
+package io.ashdavies.notion
 
 @DslMarker
 internal annotation class NotionScopeMarker
