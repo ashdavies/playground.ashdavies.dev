@@ -18,18 +18,24 @@ internal val LocalPlaygroundDatabase = compositionLocalOf<PlaygroundDatabase> {
 }
 
 @Composable
-internal fun NotionCompositionLocals(auth: Authentication, content: @Composable () -> Unit) {
-    val configuration = ClientConfiguration(auth)
-    val client = NotionClient.newInstance(configuration)
-
-    val database = rememberDatabase(
-        schema = PlaygroundDatabase.Schema,
-        factory = PlaygroundDatabase::invoke,
-    )
-
+internal fun ProvidePlaygroundDatabase(content: @Composable () -> Unit) {
     CompositionLocalProvider(
-        LocalNotionClient provides client,
-        LocalPlaygroundDatabase provides database,
+        LocalPlaygroundDatabase provides rememberDatabase(
+            factory = PlaygroundDatabase::invoke,
+            schema = PlaygroundDatabase.Schema,
+        ),
+        content = content,
+    )
+}
+
+@Composable
+internal fun ProvideNotionClient(authentication: Authentication, content: @Composable () -> Unit) {
+    CompositionLocalProvider(
+        LocalNotionClient provides NotionClient.newInstance(
+            configuration = ClientConfiguration(
+                authentication = authentication,
+            ),
+        ),
         content = content,
     )
 }

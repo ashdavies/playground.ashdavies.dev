@@ -6,7 +6,6 @@ buildscript {
     dependencies {
         val googleServicesVersion = libs.versions.google.services.get()
         classpath("com.google.gms:google-services:$googleServicesVersion")
-        classpath("com.jakewharton.mosaic:mosaic-gradle-plugin:0.6.0")
     }
 }
 
