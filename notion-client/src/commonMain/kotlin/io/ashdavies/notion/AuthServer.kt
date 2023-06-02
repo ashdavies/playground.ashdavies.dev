@@ -1,6 +1,5 @@
 package io.ashdavies.notion
 
-
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.DefaultRequest
@@ -81,7 +80,7 @@ internal fun getNotionHttpClient(onBrowse: (String) -> Unit) = applicationHttpCl
                 val tokenResponse = applicationHttpClient.post(tokenUrlString) {
                     basicAuth(
                         username = System.getenv("NOTION_CLIENT_ID"),
-                        password = System.getenv("NOTION_CLIENT_SECRET")
+                        password = System.getenv("NOTION_CLIENT_SECRET"),
                     )
 
                     headers {
@@ -92,7 +91,7 @@ internal fun getNotionHttpClient(onBrowse: (String) -> Unit) = applicationHttpCl
                     val payload = mapOf(
                         "redirect_uri" to "http://localhost:8080/callback",
                         "grant_type" to "authorization_code",
-                        "code" to authorizationCode
+                        "code" to authorizationCode,
                     )
 
                     setBody(payload)
@@ -127,7 +126,7 @@ internal fun getNotionHttpClient(onBrowse: (String) -> Unit) = applicationHttpCl
     }
 }
 
-internal suspend fun getAccessToken(onBrowse: (String) -> Unit): AccessToken {
+public suspend fun getAccessToken(onBrowse: (String) -> Unit): String {
     val notionHttpClient = getNotionHttpClient(onBrowse)
     val response = notionHttpClient.get("users/me")
 
@@ -136,17 +135,10 @@ internal suspend fun getAccessToken(onBrowse: (String) -> Unit): AccessToken {
         throw RuntimeException(error.message)
     }
 
-    val accessToken = response.request
+    return response.request
         .headers[HttpHeaders.Authorization]!!
         .substringAfter(" ")
-
-    return AccessToken(
-        extraParameters = emptyMap(),
-        refreshToken = null,
-        accessToken = accessToken,
-        tokenType = "bearer",
-        expiresIn = -0L
-    )
+        .also { println(it) }
 }
 
 internal object Notion {
