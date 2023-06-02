@@ -25,6 +25,7 @@ kotlin {
         implementation(libs.jakeWharton.mosaic.runtime)
         implementation(libs.jetbrains.kotlinx.cli)
         implementation(libs.jraf.klibnotion)
+        implementation(libs.ktor.client.auth)
         implementation(libs.qos.logbackClassic)
     }
 
