@@ -36,7 +36,6 @@ include(
     ":app-launcher:android",
     ":app-launcher:common",
     ":app-launcher:desktop",
-    ":auth-oauth",
     ":cloud-backend:cloud-firestore",
     ":cloud-backend:cloud-run",
     ":cloud-backend:google-cloud",

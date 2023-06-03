@@ -13,14 +13,18 @@ application {
 
 kotlin {
     commonMain.dependencies {
-        implementation(projects.authOauth)
+        implementation(projects.composeLocals)
+        implementation(projects.localStorage)
         implementation(projects.notionClient)
 
         implementation(libs.bundles.ktor.client)
+        implementation(libs.bundles.ktor.serialization)
+        implementation(libs.bundles.ktor.server)
 
         implementation(libs.jakeWharton.mosaic.runtime)
         implementation(libs.jetbrains.kotlinx.cli)
         implementation(libs.jraf.klibnotion)
+        implementation(libs.ktor.client.auth)
         implementation(libs.qos.logbackClassic)
     }
 

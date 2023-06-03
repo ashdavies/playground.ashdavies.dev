@@ -9,11 +9,14 @@ android {
 
 kotlin {
     commonMain.dependencies {
-        implementation(projects.composeLocals)
         implementation(projects.localStorage)
         implementation(projects.sqlDriver)
 
-        api(libs.jraf.klibnotion)
+        implementation(libs.bundles.ktor.client)
+        implementation(libs.bundles.ktor.serialization)
+        implementation(libs.bundles.ktor.server)
+
+        implementation(libs.ktor.client.auth)
     }
 }
 
