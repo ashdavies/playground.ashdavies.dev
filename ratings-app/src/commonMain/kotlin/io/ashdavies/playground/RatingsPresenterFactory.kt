@@ -12,7 +12,7 @@ public class RatingsPresenterFactory : Presenter.Factory {
     override fun create(
         screen: Screen,
         navigator: Navigator,
-        context: CircuitContext
+        context: CircuitContext,
     ): Presenter<*>? = when (screen) {
         is RatingsScreen -> presenterOf { RatingsPresenter(navigator) }
         else -> null

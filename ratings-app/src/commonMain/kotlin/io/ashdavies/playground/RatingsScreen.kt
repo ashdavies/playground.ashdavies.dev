@@ -34,7 +34,7 @@ internal fun RatingsScreen(
                     onLongClick = { },
                     onDismiss = { },
                     onClick = { },
-                    item = item
+                    item = item,
                 )
             }
         }
@@ -48,7 +48,7 @@ internal fun ColumnScope.RatingsItem(
     onClick: () -> Unit,
     onLongClick: () -> Unit,
     onDismiss: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Card(
         modifier = modifier

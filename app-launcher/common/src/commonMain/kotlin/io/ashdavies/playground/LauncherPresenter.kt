@@ -33,7 +33,7 @@ private val EventsEntry = LauncherScreen.Entry(
 private val RatingsEntry = LauncherScreen.Entry(
     event = LauncherScreen.Event.Ratings,
     image = Icons.Filled.Stars,
-    text = "Ratings"
+    text = "Ratings",
 )
 
 @Parcelize
