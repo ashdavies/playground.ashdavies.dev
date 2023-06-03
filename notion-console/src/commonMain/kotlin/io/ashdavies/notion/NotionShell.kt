@@ -15,7 +15,7 @@ public suspend fun MosaicScope.NotionShell(args: Array<String>) {
         Text("Time: $elapsed")
 
         when (val it = state) {
-            is AuthState.Awaiting -> Text("Navigate to ${it.userPromptUri} to continue")
+            is AuthState.Awaiting -> Text("Awaiting...")
             else -> Unit
         }
 
