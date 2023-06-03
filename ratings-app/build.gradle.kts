@@ -13,7 +13,6 @@ kotlin {
         implementation(projects.playgroundApp)
 
         implementation(libs.arkivanov.parcelable)
-        implementation(libs.jraf.klibnotion)
         implementation(libs.slack.circuit.foundation)
     }
 
