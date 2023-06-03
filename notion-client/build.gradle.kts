@@ -1,8 +1,10 @@
-import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinJvmCompilation
-
 plugins {
-    id("io.ashdavies.kotlin")
+    id("io.ashdavies.default")
     id("io.ashdavies.sql")
+}
+
+android {
+    namespace = "io.ashdavies.notion"
 }
 
 kotlin {
