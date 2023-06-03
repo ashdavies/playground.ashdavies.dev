@@ -7,6 +7,11 @@ plugins {
     kotlin("jvm")
 }
 
+compose {
+    val composeCompiler = libs.androidx.compose.compiler.get()
+    kotlinCompilerPlugin.set("$composeCompiler")
+}
+
 configurations.create("invoker")
 
 dependencies {

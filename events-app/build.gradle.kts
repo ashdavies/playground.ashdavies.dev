@@ -15,8 +15,7 @@ kotlin {
         implementation(projects.appCheck.appCheckClient)
         implementation(projects.composeLocals)
 
-        implementation(projects.authOauth)
-        implementation(projects.localRemote)
+        implementation(projects.cloudBackend.httpClient)
         implementation(projects.localStorage)
         implementation(projects.playgroundApp)
 

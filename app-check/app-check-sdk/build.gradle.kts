@@ -6,7 +6,7 @@ dependencies {
     api(projects.appCheck.appCheckCommon)
     api(libs.ktor.client.core)
 
-    implementation(projects.localRemote)
+    implementation(projects.cloudBackend.httpClient)
 
     implementation(libs.auth.java.jwt)
     implementation(libs.auth.jwks.rsa)

@@ -87,7 +87,7 @@ jobs:
           gradle-home-cache-cleanup: true
           arguments: >
             build
-              ${{ (contains(github.event.pull_request.labels.*.name, 'Dry Run') && '--dry-run' || '') }}
+              ${{ contains(github.event.pull_request.labels.*.name, 'Dry Run') && '--dry-run' || '' }}
               --configuration-cache
               --console=plain
               --info

@@ -4,6 +4,11 @@ plugins {
     kotlin("multiplatform")
 }
 
+compose {
+    val composeCompiler = libs.androidx.compose.compiler.get()
+    kotlinCompilerPlugin.set("$composeCompiler")
+}
+
 kotlin {
     jvm()
 

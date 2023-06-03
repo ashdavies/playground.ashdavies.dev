@@ -1,16 +1,10 @@
 package io.ashdavies.notion
 
 import androidx.compose.runtime.Composable
-import io.ashdavies.notion.compose.Subcommand
-import io.ashdavies.notion.compose.rememberTokenQueries
-import io.ashdavies.notion.kotlin.NotionScopeMarker
-import io.ashdavies.playground.AccessToken
-import io.ashdavies.playground.OAuthProvider
-import io.ashdavies.playground.Token
 import io.ashdavies.playground.TokenQueries
-import io.ashdavies.playground.firstOrThrow
-import io.ashdavies.playground.getAccessToken
 import kotlinx.cli.ExperimentalCli
+import java.awt.Desktop
+import java.net.URI
 
 @Composable
 @ExperimentalCli
@@ -20,39 +14,31 @@ internal fun AuthCommand(
     onAuthState: (AuthState) -> Unit = { },
 ) = Subcommand(
     actionDescription = "Run notion auth login to authenticate with your Notion account.",
-    name = "auth"
+    name = "auth",
 ) {
     Subcommand(
         actionDescription = "Run notion auth login to authenticate with your Notion account.",
         onExecute = {
             val token = tokenQueries.select().executeAsOneOrNull()
-            if (token != null) onAuthState(AuthState.Authenticated(token))
-            else {
+            if (token != null) {
+                onAuthState(AuthState.Authenticated)
+            } else {
                 onAuthState(AuthState.Awaiting("http://localhost:8080/callback"))
-                val result = Token(getAccessToken(OAuthProvider.Notion))
-                onAuthState(AuthState.Authenticated(result))
-                tokenQueries.insert(result)
+                getAccessToken { Desktop.getDesktop().browse(URI(it)) }
+                onAuthState(AuthState.Authenticated)
             }
         },
-        name = "login"
+        name = "login",
     )
 
     Subcommand(
         actionDescription = "Run notion auth logout to remove authentication with your Notion account.",
         onExecute = { tokenQueries.deleteAll() },
-        name = "logout"
+        name = "logout",
     )
 }
 
 internal sealed interface AuthState : NotionState {
     data class Awaiting(val userPromptUri: String) : AuthState
-    data class Authenticated(val token: Token) : AuthState
+    object Authenticated : AuthState
 }
-
-private fun Token(value: AccessToken) = Token(
-    workspaceIcon = value.firstOrThrow("workspaceIcon"),
-    workspaceName = value.firstOrThrow("workspaceName"),
-    workspaceId = value.firstOrThrow("workspaceId"),
-    botId = value.firstOrThrow("botId"),
-    accessToken = value.accessToken,
-)

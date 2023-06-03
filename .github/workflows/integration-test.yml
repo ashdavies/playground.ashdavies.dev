@@ -36,12 +36,10 @@ jobs:
           fetch-depth: 0
 
       - name: Google Cloud Auth
-        id: google_cloud_auth
         uses: google-github-actions/auth@v1
         with:
           workload_identity_provider: ${{ secrets.GOOGLE_WORKLOAD_IDENTITY }}
           service_account: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
-          token_format: access_token
 
       - name: Run Gradle Tasks
         id: gradle_build
@@ -54,7 +52,7 @@ jobs:
         with:
           gradle-home-cache-cleanup: true
           arguments: >
-            cloud-run:integrationTest
+            cloud-backend:cloud-run:integrationTest
               ${{ inputs.debug && '--debug' || '--info' }}
               --console=plain
 
@@ -62,6 +60,7 @@ jobs:
         uses: test-summary/action@v2
         with:
           paths: "**/build/test-results/test/TEST-*.xml"
+        if: ${{ always() }}
 
       - name: Upload Test Report
         uses: actions/upload-artifact@v3
@@ -69,3 +68,4 @@ jobs:
           name: test-report
           path: "**/build/reports/tests"
           if-no-files-found: error
+        if: ${{ always() }}
