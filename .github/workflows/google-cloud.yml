@@ -86,7 +86,6 @@ jobs:
             --image=europe-west1-docker.pkg.dev/${{ steps.google_cloud_auth.outputs.project_id }}/cloud-run-source-deploy/playground.ashdavies.dev \
             ${{ contains(github.event.pull_request.labels.*.name, 'Dry Run') && '--debug' || '--info' }} \
             ${{ inputs.debug && '--debug' || '--info' }} \
-            --no-configuration-cache \
             --console=plain \
 
       - name: Generate Terraform Plan
@@ -98,7 +97,6 @@ jobs:
           ./gradlew terraformPlan \
             ${{ contains(github.event.pull_request.labels.*.name, 'Dry Run') && '--debug' || '--info' }} \
             ${{ inputs.debug && '--debug' || '--info' }} \
-            --no-configuration-cache \
             --console=plain
 
       - name: Upload Terraform Plan
@@ -114,6 +112,5 @@ jobs:
           ./gradlew google-cloud:terraformApply \
             ${{ contains(github.event.pull_request.labels.*.name, 'Dry Run') && '--debug' || '--info' }} \
             ${{ inputs.debug && '--debug' || '--info' }} \
-            --no-configuration-cache \
             --console=plain \
             -Ptf.apply \
