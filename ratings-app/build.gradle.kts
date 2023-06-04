@@ -9,10 +9,12 @@ android {
 
 kotlin {
     commonMain.dependencies {
+        implementation(projects.cloudBackend.httpClient)
         implementation(projects.notionClient)
         implementation(projects.playgroundApp)
 
         implementation(libs.arkivanov.parcelable)
+        implementation(libs.ktor.client.core)
         implementation(libs.slack.circuit.foundation)
     }
 

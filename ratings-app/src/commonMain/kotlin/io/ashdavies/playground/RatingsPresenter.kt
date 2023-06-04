@@ -1,8 +1,12 @@
 package io.ashdavies.playground
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.produceState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.platform.UriHandler
 import com.arkivanov.essenty.parcelable.Parcelable
@@ -11,31 +15,57 @@ import com.slack.circuit.runtime.CircuitUiEvent
 import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.Navigator
 import com.slack.circuit.runtime.Screen
+import io.ashdavies.http.LocalHttpClient
 
 private const val NotionPath = "https://www.notion.so/ashdavies/%s"
-private const val DEFAULT_PATH_SIZE = 3
+private const val DEFAULT_PAGE_SIZE = 3
 
 @Composable
 internal fun RatingsPresenter(
     navigator: Navigator,
-    service: RatingsService = RatingsService { emptyList() },
+    service: RatingsService = RatingsService(LocalHttpClient.current),
     provider: RatingsProvider = RatingsProvider(),
     handler: UriHandler = LocalUriHandler.current,
 ): RatingsScreen.State {
-    val state by produceState<RatingsScreen.State>(RatingsScreen.State.Loading(DEFAULT_PATH_SIZE)) {
-        val page = service.next(DEFAULT_PATH_SIZE)
+    var items by remember { mutableStateOf(List<RatingsScreen.State.Item>(DEFAULT_PAGE_SIZE) { RatingsScreen.State.Item.Loading }) }
+    val loading by derivedStateOf { items.count { it is RatingsScreen.State.Item.Loading } }
 
-        value = RatingsScreen.State.Idle(page) { event ->
-            when (event) {
-                is RatingsScreen.Event.Vote -> provider.vote(page.sortedBy { it == event.item })
-                is RatingsScreen.Event.Details -> handler.openUri(NotionPath.format(event.item))
-                is RatingsScreen.Event.Ignore -> provider.ignore(event.item)
-                RatingsScreen.Event.Pop -> navigator.pop()
+    LaunchedEffect(loading) {
+        if (loading > 0) {
+            val next = ArrayDeque(service.next(loading))
+
+            items = items.map {
+                when (it) {
+                    is RatingsScreen.State.Item.Loading -> RatingsScreen.State.Item.Complete(next.removeFirst())
+                    else -> it
+                }
             }
         }
     }
 
-    return state
+    return RatingsScreen.State(items) { event ->
+        when (event) {
+            is RatingsScreen.Event.Details -> handler.openUri(NotionPath.format(event.item))
+            is RatingsScreen.Event.Ignore -> provider.ignore(event.item)
+            is RatingsScreen.Event.Vote -> {
+                val sorted = items
+                    .filterIsInstance<RatingsScreen.State.Item.Complete>()
+                    .sortedBy { it.item == event.item }
+                    .map { it.item }
+
+                provider.vote(sorted)
+
+                items = items.map {
+                    when {
+                        it is RatingsScreen.State.Item.Complete && it.item == event.item -> RatingsScreen.State.Item.Loading
+                        else -> it
+                    }
+                }
+            }
+
+            RatingsScreen.Event.Pop -> navigator.pop()
+        }
+    }
 }
 
 @Parcelize
@@ -50,15 +80,16 @@ public object RatingsScreen : Parcelable, Screen {
         object Pop : Event
     }
 
-    internal sealed interface State : CircuitUiState {
+    internal data class State(
+        val itemList: List<Item>,
+        val eventSink: (Event) -> Unit,
+    ) : CircuitUiState {
 
-        data class Idle(
-            val items: List<RatingsItem>,
-            val eventSink: (Event) -> Unit,
-        ) : State
+        sealed interface Item {
 
-        data class Loading(val size: Int) : State
+            data class Complete(val item: RatingsItem) : Item
 
-        companion object
+            object Loading : Item
+        }
     }
 }

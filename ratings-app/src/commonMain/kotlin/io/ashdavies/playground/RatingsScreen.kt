@@ -2,6 +2,7 @@ package io.ashdavies.playground
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
@@ -10,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
 import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -21,20 +23,18 @@ internal fun RatingsScreen(
     state: RatingsScreen.State,
     modifier: Modifier = Modifier,
 ) {
-    Column(modifier.fillMaxSize()) {
-        when (state) {
-            is RatingsScreen.State.Loading -> {
-                repeat(state.size) {
-                    RatingsPlaceholder()
-                }
-            }
+    val eventSink = state.eventSink
+    println("=== $state ===")
 
-            is RatingsScreen.State.Idle -> {
-                for (item in state.items) RatingsItem(
-                    onLongClick = { },
-                    onDismiss = { },
-                    onClick = { },
-                    item = item,
+    Column(modifier.fillMaxSize()) {
+        state.itemList.onEach { item ->
+            when (item) {
+                is RatingsScreen.State.Item.Loading -> RatingsPlaceholder()
+                is RatingsScreen.State.Item.Complete -> RatingsItem(
+                    item = item.item,
+                    onClick = { eventSink(RatingsScreen.Event.Vote(item.item)) },
+                    onLongClick = { eventSink(RatingsScreen.Event.Details(item.item)) },
+                    onDismiss = { eventSink(RatingsScreen.Event.Ignore(item.item)) },
                 )
             }
         }
@@ -45,10 +45,10 @@ internal fun RatingsScreen(
 @OptIn(ExperimentalFoundationApi::class)
 internal fun ColumnScope.RatingsItem(
     item: RatingsItem,
+    modifier: Modifier = Modifier,
     onClick: () -> Unit,
     onLongClick: () -> Unit,
     onDismiss: () -> Unit,
-    modifier: Modifier = Modifier,
 ) {
     Card(
         modifier = modifier
@@ -60,18 +60,32 @@ internal fun ColumnScope.RatingsItem(
             .padding(4.dp)
             .weight(1f),
     ) {
-        Box(
-            contentAlignment = Alignment.Center,
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
             modifier = Modifier.fillMaxSize(),
         ) {
-            Text(item.name)
+            Text(
+                style = MaterialTheme.typography.bodyLarge,
+                text = item.name,
+            )
+
+            Text(
+                style = MaterialTheme.typography.bodySmall,
+                text = item.id,
+            )
         }
     }
 }
 
 @Composable
-internal fun RatingsPlaceholder(modifier: Modifier = Modifier) {
-    Card(modifier.fillMaxSize()) {
-        LinearProgressIndicator(modifier.fillMaxWidth())
+internal fun ColumnScope.RatingsPlaceholder(modifier: Modifier = Modifier) {
+    Card(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(4.dp)
+            .weight(1f),
+    ) {
+        LinearProgressIndicator(modifier.fillMaxSize())
     }
 }
