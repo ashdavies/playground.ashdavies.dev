@@ -17,7 +17,9 @@ import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.Navigator
 import com.slack.circuit.runtime.Screen
 import io.ashdavies.http.LocalHttpClient
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 private const val DEFAULT_PAGE_SIZE = 3
 
@@ -28,31 +30,22 @@ internal fun RatingsPresenter(
     registry: RatingsRegistry = RatingsRegistry(),
     handler: UriHandler = LocalUriHandler.current,
 ): RatingsScreen.State {
+
     var itemList by remember { mutableStateOf(initialItemList(DEFAULT_PAGE_SIZE)) }
     val loading by derivedStateOf { itemList.count { it is RatingsScreen.State.Item.Loading } }
     val coroutineScope = rememberCoroutineScope()
 
-    LaunchedEffect(loading) {
-        if (loading > 0) {
-            val itemDeque = ArrayDeque(service.next(DEFAULT_PAGE_SIZE))
+    if (loading > 0) LaunchedEffect(loading) {
+        val itemDeque = ArrayDeque(service.next(DEFAULT_PAGE_SIZE))
 
-            itemList = itemList.map {
-                if (it is RatingsScreen.State.Item.Loading) {
-                    RatingsScreen.State.Item.Complete(itemDeque.removeFirst())
-                } else {
-                    it
-                }
-            }
+        itemList = itemList.mapIsInstance { _: RatingsScreen.State.Item.Loading ->
+            RatingsScreen.State.Item.Complete(itemDeque.removeFirst())
         }
     }
 
     fun dismiss(item: RatingsItem) {
-        itemList = itemList.map {
-            if (it is RatingsScreen.State.Item.Complete && it.value == item) {
-                RatingsScreen.State.Item.Loading
-            } else {
-                it
-            }
+        itemList = itemList.mapIsInstance { it: RatingsScreen.State.Item.Complete ->
+            if (it.value == item) RatingsScreen.State.Item.Loading else it
         }
     }
 
@@ -109,4 +102,8 @@ public object RatingsScreen : Parcelable, Screen {
 
 private fun initialItemList(size: Int): List<RatingsScreen.State.Item> {
     return List(size) { RatingsScreen.State.Item.Loading }
+}
+
+private inline fun <T, reified R> List<T>.mapIsInstance(transform: (R) -> T): List<T> = map {
+    if (it is R) transform(it) else it
 }
