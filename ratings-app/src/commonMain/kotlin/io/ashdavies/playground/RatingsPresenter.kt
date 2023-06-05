@@ -16,30 +16,30 @@ import com.slack.circuit.runtime.CircuitUiEvent
 import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.Navigator
 import com.slack.circuit.runtime.Screen
-import io.ashdavies.http.LocalHttpClient
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 private const val DEFAULT_PAGE_SIZE = 3
 
 @Composable
 internal fun RatingsPresenter(
     navigator: Navigator,
-    service: RatingsService = RatingsService(LocalHttpClient.current),
-    registry: RatingsRegistry = RatingsRegistry(),
+    service: RatingsService = rememberRatingsService(),
     handler: UriHandler = LocalUriHandler.current,
 ): RatingsScreen.State {
-
     var itemList by remember { mutableStateOf(initialItemList(DEFAULT_PAGE_SIZE)) }
-    val loading by derivedStateOf { itemList.count { it is RatingsScreen.State.Item.Loading } }
     val coroutineScope = rememberCoroutineScope()
 
-    if (loading > 0) LaunchedEffect(loading) {
-        val itemDeque = ArrayDeque(service.next(DEFAULT_PAGE_SIZE))
+    val loading by remember(itemList) {
+        derivedStateOf { itemList.count { it is RatingsScreen.State.Item.Loading } }
+    }
 
-        itemList = itemList.mapIsInstance { _: RatingsScreen.State.Item.Loading ->
-            RatingsScreen.State.Item.Complete(itemDeque.removeFirst())
+    if (loading > 0) {
+        LaunchedEffect(loading) {
+            val itemDeque = ArrayDeque(service.next(loading))
+
+            itemList = itemList.mapIsInstance { _: RatingsScreen.State.Item.Loading ->
+                RatingsScreen.State.Item.Complete(itemDeque.removeFirst())
+            }
         }
     }
 
@@ -56,16 +56,16 @@ internal fun RatingsPresenter(
             }
 
             is RatingsScreen.Event.Ignore -> coroutineScope.launch {
-                registry.ignore(event.item)
+                service.ignore(event.item)
                 dismiss(event.item)
             }
 
             is RatingsScreen.Event.Vote -> coroutineScope.launch {
                 val sorted = itemList.filterIsInstance<RatingsScreen.State.Item.Complete>()
-                    .sortedBy { it.value == event.item }
+                    .sortedBy { it.value != event.item }
                     .map { it.value }
 
-                registry.vote(sorted)
+                service.vote(sorted)
                 dismiss(event.item)
             }
 

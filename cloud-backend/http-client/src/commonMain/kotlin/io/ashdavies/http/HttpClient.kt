@@ -63,7 +63,7 @@ public fun DefaultHttpClient(configure: HttpClientConfig<*>.() -> Unit = { }): H
 
     install(Logging) {
         logger = DefaultLogger()
-        level = LogLevel.ALL
+        level = LogLevel.INFO
     }
 
     configure()
