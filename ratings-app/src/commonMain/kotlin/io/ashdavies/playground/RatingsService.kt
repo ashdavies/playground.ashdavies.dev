@@ -6,18 +6,16 @@ import io.ktor.client.statement.bodyAsText
 
 private const val GITHUB_ZEN = "https://api.github.com/zen"
 
-internal interface RatingsProvider {
-    fun vote(items: List<RatingsItem>)
-    fun ignore(item: RatingsItem)
-}
-
-internal fun RatingsProvider() = object : RatingsProvider {
-    override fun vote(items: List<RatingsItem>) = Unit
-    override fun ignore(item: RatingsItem) = Unit
-}
-
 internal fun interface RatingsService {
     suspend fun next(count: Int): List<RatingsItem>
+}
+
+internal suspend fun <T> RatingsService.next(count: Int, transform: (RatingsItem) -> T): List<T> {
+    return next(count).map(transform)
+}
+
+internal suspend fun RatingsService.next(): RatingsItem {
+    return next(1).first()
 }
 
 internal fun RatingsService(client: HttpClient) = RatingsService { size ->
@@ -35,12 +33,3 @@ internal fun RatingsService(client: HttpClient) = RatingsService { size ->
         }
     }
 }
-
-internal data class RatingsItem(
-    val id: String,
-    val name: String,
-    val url: String,
-    val score: Long,
-)
-
-internal expect fun randomUuid(): String

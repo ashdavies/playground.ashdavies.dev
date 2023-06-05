@@ -9,6 +9,7 @@ private val SAMPLE_ITEM = RatingsItem(
     id = randomUuid(),
     score = 1500L,
 )
+
 @Preview
 @Composable
 internal fun RatingsScreen() {

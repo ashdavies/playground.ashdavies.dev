@@ -3,7 +3,6 @@ package io.ashdavies.playground
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.fillMaxSize
@@ -24,17 +23,16 @@ internal fun RatingsScreen(
     modifier: Modifier = Modifier,
 ) {
     val eventSink = state.eventSink
-    println("=== $state ===")
 
     Column(modifier.fillMaxSize()) {
         state.itemList.onEach { item ->
             when (item) {
                 is RatingsScreen.State.Item.Loading -> RatingsPlaceholder()
                 is RatingsScreen.State.Item.Complete -> RatingsItem(
-                    item = item.item,
-                    onClick = { eventSink(RatingsScreen.Event.Vote(item.item)) },
-                    onLongClick = { eventSink(RatingsScreen.Event.Details(item.item)) },
-                    onDismiss = { eventSink(RatingsScreen.Event.Ignore(item.item)) },
+                    item = item.value,
+                    onClick = { eventSink(RatingsScreen.Event.Vote(item.value)) },
+                    onLongClick = { eventSink(RatingsScreen.Event.Details(item.value)) },
+                    onDismiss = { eventSink(RatingsScreen.Event.Ignore(item.value)) },
                 )
             }
         }

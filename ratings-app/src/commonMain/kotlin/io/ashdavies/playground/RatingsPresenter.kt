@@ -6,6 +6,7 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.platform.UriHandler
@@ -16,51 +17,63 @@ import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.Navigator
 import com.slack.circuit.runtime.Screen
 import io.ashdavies.http.LocalHttpClient
+import kotlinx.coroutines.launch
 
-private const val NotionPath = "https://www.notion.so/ashdavies/%s"
 private const val DEFAULT_PAGE_SIZE = 3
 
 @Composable
 internal fun RatingsPresenter(
     navigator: Navigator,
     service: RatingsService = RatingsService(LocalHttpClient.current),
-    provider: RatingsProvider = RatingsProvider(),
+    registry: RatingsRegistry = RatingsRegistry(),
     handler: UriHandler = LocalUriHandler.current,
 ): RatingsScreen.State {
-    var items by remember { mutableStateOf(List<RatingsScreen.State.Item>(DEFAULT_PAGE_SIZE) { RatingsScreen.State.Item.Loading }) }
-    val loading by derivedStateOf { items.count { it is RatingsScreen.State.Item.Loading } }
+    var itemList by remember { mutableStateOf(initialItemList(DEFAULT_PAGE_SIZE)) }
+    val loading by derivedStateOf { itemList.count { it is RatingsScreen.State.Item.Loading } }
+    val coroutineScope = rememberCoroutineScope()
 
     LaunchedEffect(loading) {
         if (loading > 0) {
-            val next = ArrayDeque(service.next(loading))
+            val itemDeque = ArrayDeque(service.next(DEFAULT_PAGE_SIZE))
 
-            items = items.map {
-                when (it) {
-                    is RatingsScreen.State.Item.Loading -> RatingsScreen.State.Item.Complete(next.removeFirst())
-                    else -> it
+            itemList = itemList.map {
+                if (it is RatingsScreen.State.Item.Loading) {
+                    RatingsScreen.State.Item.Complete(itemDeque.removeFirst())
+                } else {
+                    it
                 }
             }
         }
     }
 
-    return RatingsScreen.State(items) { event ->
+    fun dismiss(item: RatingsItem) {
+        itemList = itemList.map {
+            if (it is RatingsScreen.State.Item.Complete && it.value == item) {
+                RatingsScreen.State.Item.Loading
+            } else {
+                it
+            }
+        }
+    }
+
+    return RatingsScreen.State(itemList) { event ->
         when (event) {
-            is RatingsScreen.Event.Details -> handler.openUri(NotionPath.format(event.item))
-            is RatingsScreen.Event.Ignore -> provider.ignore(event.item)
-            is RatingsScreen.Event.Vote -> {
-                val sorted = items
-                    .filterIsInstance<RatingsScreen.State.Item.Complete>()
-                    .sortedBy { it.item == event.item }
-                    .map { it.item }
+            is RatingsScreen.Event.Details -> {
+                handler.openUri(event.item.url)
+            }
 
-                provider.vote(sorted)
+            is RatingsScreen.Event.Ignore -> coroutineScope.launch {
+                registry.ignore(event.item)
+                dismiss(event.item)
+            }
 
-                items = items.map {
-                    when {
-                        it is RatingsScreen.State.Item.Complete && it.item == event.item -> RatingsScreen.State.Item.Loading
-                        else -> it
-                    }
-                }
+            is RatingsScreen.Event.Vote -> coroutineScope.launch {
+                val sorted = itemList.filterIsInstance<RatingsScreen.State.Item.Complete>()
+                    .sortedBy { it.value == event.item }
+                    .map { it.value }
+
+                registry.vote(sorted)
+                dismiss(event.item)
             }
 
             RatingsScreen.Event.Pop -> navigator.pop()
@@ -87,9 +100,13 @@ public object RatingsScreen : Parcelable, Screen {
 
         sealed interface Item {
 
-            data class Complete(val item: RatingsItem) : Item
+            data class Complete(val value: RatingsItem) : Item
 
             object Loading : Item
         }
     }
+}
+
+private fun initialItemList(size: Int): List<RatingsScreen.State.Item> {
+    return List(size) { RatingsScreen.State.Item.Loading }
 }
