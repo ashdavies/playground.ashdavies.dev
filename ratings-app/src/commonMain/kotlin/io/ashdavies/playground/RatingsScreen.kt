@@ -1,6 +1,5 @@
 package io.ashdavies.playground
 
-import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
@@ -9,12 +8,15 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -27,21 +29,22 @@ internal fun RatingsScreen(
 
     Column(modifier.fillMaxSize()) {
         state.itemList.onEach { item ->
-            AnimatedContent(
+            /*AnimatedContent(
                 modifier = Modifier.weight(1f),
                 targetState = item,
-            ) { item ->
+            ) { item ->*/
                 RatingsItem(
                     item = item,
-                    modifier = modifier,
+                    modifier = modifier.weight(1f),
                     eventSink = eventSink,
                 )
-            }
+            /*}*/
         }
     }
 }
 
 @Composable
+@OptIn(ExperimentalFoundationApi::class)
 internal fun RatingsItem(
     item: RatingsScreen.State.Item,
     modifier: Modifier = Modifier,
@@ -51,30 +54,25 @@ internal fun RatingsItem(
         is RatingsScreen.State.Item.Loading -> RatingsPlaceholder(modifier)
         is RatingsScreen.State.Item.Complete -> RatingsItem(
             item = item.value,
-            modifier = modifier,
-            onClick = { eventSink(RatingsScreen.Event.Vote(item.value)) },
-            onLongClick = { eventSink(RatingsScreen.Event.Details(item.value)) },
+            modifier = modifier.combinedClickable(
+                onLongClick = { eventSink(RatingsScreen.Event.Details(item.value)) },
+                onClick = { eventSink(RatingsScreen.Event.Rate(item.value)) },
+                enabled = item.rank == -1
+            ).alpha(if (item.rank == -1) 1f else 0.75f),
             onDismiss = { eventSink(RatingsScreen.Event.Ignore(item.value)) },
         )
     }
 }
 
 @Composable
-@OptIn(ExperimentalFoundationApi::class)
 internal fun RatingsItem(
     item: RatingsItem,
     modifier: Modifier = Modifier,
-    onClick: () -> Unit,
-    onLongClick: () -> Unit,
     onDismiss: () -> Unit,
 ) {
     Card(
-        modifier = modifier
-            .combinedClickable(
-                onLongClick = onLongClick,
-                onClick = onClick,
-            )
-            .padding(4.dp),
+        colors = CardDefaults.cardColors(),
+        modifier = modifier.padding(4.dp),
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -82,13 +80,15 @@ internal fun RatingsItem(
             modifier = Modifier.fillMaxSize(),
         ) {
             Text(
-                style = MaterialTheme.typography.bodyLarge,
                 text = item.name,
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.bodyLarge,
             )
 
             Text(
-                style = MaterialTheme.typography.bodySmall,
                 text = item.id,
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.bodySmall,
             )
         }
     }

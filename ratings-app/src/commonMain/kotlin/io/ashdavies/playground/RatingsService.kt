@@ -8,13 +8,13 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import kotlin.math.pow
 
-private const val GITHUB_ZEN = "https://api.github.com/zen"
+private const val GENERATOR_URL = "https://whatthecommit.com/index.txt"
 private const val DEFAULT_SCORE = 1500L
 private const val K_FACTOR = 32L
 
 internal interface RatingsService {
     suspend fun next(count: Int): List<RatingsItem>
-    suspend fun vote(items: List<RatingsItem>)
+    suspend fun rate(items: List<RatingsItem>)
     suspend fun ignore(item: RatingsItem)
 }
 
@@ -22,22 +22,22 @@ internal fun RatingsService(client: HttpClient): RatingsService = object : Ratin
 
     private val registry = mutableMapOf<String, RatingsItem>()
     private var previous = emptyMap<String, RatingsItem>()
-    private val cache = mutableListOf<String>()
+    private val messages = mutableListOf<String>()
 
     override suspend fun next(count: Int): List<RatingsItem> = withContext(Dispatchers.IO) {
-        List(count) { RatingsItem(zen()) }
+        List(count) { RatingsItem(message()) }
     }
 
-    private suspend fun zen(): String {
+    private suspend fun message(): String {
         var backoff = 10L
 
         while (true) {
             val text = client
-                .get(GITHUB_ZEN)
+                .get(GENERATOR_URL)
                 .bodyAsText()
 
-            if (text !in cache) {
-                cache += text
+            if (text !in messages) {
+                messages += text
                 return text
             }
 
@@ -46,7 +46,7 @@ internal fun RatingsService(client: HttpClient): RatingsService = object : Ratin
         }
     }
 
-    override suspend fun vote(items: List<RatingsItem>) {
+    override suspend fun rate(items: List<RatingsItem>) {
         println("\n=== RatingService Vote ===")
         items.forEach { println("${it.id}: ${it.name} [${it.score}]") }
 
@@ -99,5 +99,5 @@ private fun RatingsItem(name: String) = RatingsItem(
     name = name,
     ignored = false,
     score = DEFAULT_SCORE,
-    url = GITHUB_ZEN,
+    url = GENERATOR_URL,
 )

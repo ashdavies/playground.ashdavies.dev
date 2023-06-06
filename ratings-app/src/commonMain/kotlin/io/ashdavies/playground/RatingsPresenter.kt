@@ -20,6 +20,9 @@ import kotlinx.coroutines.launch
 
 private const val DEFAULT_PAGE_SIZE = 3
 
+private val List<RatingsScreen.State.Item>.loading: Int
+    get() = count { it is RatingsScreen.State.Item.Loading }
+
 @Composable
 internal fun RatingsPresenter(
     navigator: Navigator,
@@ -27,26 +30,27 @@ internal fun RatingsPresenter(
     handler: UriHandler = LocalUriHandler.current,
 ): RatingsScreen.State {
     var itemList by remember { mutableStateOf(initialItemList(DEFAULT_PAGE_SIZE)) }
+    val loading by remember(itemList) { derivedStateOf { itemList.loading } }
     val coroutineScope = rememberCoroutineScope()
-
-    val loading by remember(itemList) {
-        derivedStateOf { itemList.count { it is RatingsScreen.State.Item.Loading } }
-    }
+    var index by remember { mutableStateOf(0) }
 
     if (loading > 0) {
         LaunchedEffect(loading) {
-            val itemDeque = ArrayDeque(service.next(loading))
-
+            val itemDeque: ArrayDeque<RatingsItem> = ArrayDeque(service.next(loading))
             itemList = itemList.mapIsInstance { _: RatingsScreen.State.Item.Loading ->
                 RatingsScreen.State.Item.Complete(itemDeque.removeFirst())
             }
         }
     }
 
-    fun dismiss(item: RatingsItem) {
-        itemList = itemList.mapIsInstance { it: RatingsScreen.State.Item.Complete ->
-            if (it.value == item) RatingsScreen.State.Item.Loading else it
-        }
+    if (index == DEFAULT_PAGE_SIZE) LaunchedEffect(Unit) {
+        val sorted = itemList.filterIsInstance<RatingsScreen.State.Item.Complete>()
+            .sortedBy { it.rank }
+            .map { it.value }
+
+        itemList = initialItemList(DEFAULT_PAGE_SIZE)
+        service.rate(sorted)
+        index = 0
     }
 
     return RatingsScreen.State(itemList) { event ->
@@ -55,18 +59,20 @@ internal fun RatingsPresenter(
                 handler.openUri(event.item.url)
             }
 
-            is RatingsScreen.Event.Ignore -> coroutineScope.launch {
-                service.ignore(event.item)
-                dismiss(event.item)
+            is RatingsScreen.Event.Ignore -> {
+                itemList = itemList.mapIsInstance { it: RatingsScreen.State.Item.Complete ->
+                    if (it.value == event.item) RatingsScreen.State.Item.Loading else it
+                }
+
+                coroutineScope.launch {
+                    service.ignore(event.item)
+                }
             }
 
-            is RatingsScreen.Event.Vote -> coroutineScope.launch {
-                val sorted = itemList.filterIsInstance<RatingsScreen.State.Item.Complete>()
-                    .sortedBy { it.value != event.item }
-                    .map { it.value }
-
-                service.vote(sorted)
-                dismiss(event.item)
+            is RatingsScreen.Event.Rate -> {
+                itemList = itemList.mapIsInstance { it: RatingsScreen.State.Item.Complete ->
+                    if (it.value == event.item) it.copy(rank = index++) else it
+                }
             }
 
             RatingsScreen.Event.Pop -> navigator.pop()
@@ -81,7 +87,7 @@ public object RatingsScreen : Parcelable, Screen {
 
         data class Details(val item: RatingsItem) : Event
         data class Ignore(val item: RatingsItem) : Event
-        data class Vote(val item: RatingsItem) : Event
+        data class Rate(val item: RatingsItem) : Event
 
         object Pop : Event
     }
@@ -93,7 +99,10 @@ public object RatingsScreen : Parcelable, Screen {
 
         sealed interface Item {
 
-            data class Complete(val value: RatingsItem) : Item
+            data class Complete(
+                val value: RatingsItem,
+                val rank: Int = -1
+            ) : Item
 
             object Loading : Item
         }
