@@ -43,14 +43,16 @@ internal fun RatingsPresenter(
         }
     }
 
-    if (index == DEFAULT_PAGE_SIZE) LaunchedEffect(Unit) {
-        val sorted = itemList.filterIsInstance<RatingsScreen.State.Item.Complete>()
-            .sortedBy { it.rank }
-            .map { it.value }
+    if (index == DEFAULT_PAGE_SIZE) {
+        LaunchedEffect(Unit) {
+            val sorted = itemList.filterIsInstance<RatingsScreen.State.Item.Complete>()
+                .sortedBy { it.rank }
+                .map { it.value }
 
-        itemList = initialItemList(DEFAULT_PAGE_SIZE)
-        service.rate(sorted)
-        index = 0
+            itemList = initialItemList(DEFAULT_PAGE_SIZE)
+            service.rate(sorted)
+            index = 0
+        }
     }
 
     return RatingsScreen.State(itemList) { event ->
@@ -101,7 +103,7 @@ public object RatingsScreen : Parcelable, Screen {
 
             data class Complete(
                 val value: RatingsItem,
-                val rank: Int = -1
+                val rank: Int = -1,
             ) : Item
 
             object Loading : Item

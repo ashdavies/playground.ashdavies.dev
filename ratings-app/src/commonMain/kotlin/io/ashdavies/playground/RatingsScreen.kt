@@ -33,11 +33,11 @@ internal fun RatingsScreen(
                 modifier = Modifier.weight(1f),
                 targetState = item,
             ) { item ->*/
-                RatingsItem(
-                    item = item,
-                    modifier = modifier.weight(1f),
-                    eventSink = eventSink,
-                )
+            RatingsItem(
+                item = item,
+                modifier = modifier.weight(1f),
+                eventSink = eventSink,
+            )
             /*}*/
         }
     }
@@ -57,7 +57,7 @@ internal fun RatingsItem(
             modifier = modifier.combinedClickable(
                 onLongClick = { eventSink(RatingsScreen.Event.Details(item.value)) },
                 onClick = { eventSink(RatingsScreen.Event.Rate(item.value)) },
-                enabled = item.rank == -1
+                enabled = item.rank == -1,
             ).alpha(if (item.rank == -1) 1f else 0.75f),
             onDismiss = { eventSink(RatingsScreen.Event.Ignore(item.value)) },
         )
