@@ -8,6 +8,9 @@ import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
 import kotlin.collections.set
 import kotlin.math.pow
 
@@ -16,7 +19,7 @@ private const val K_FACTOR = 32L
 
 private val SEARCH_DATABASES_FILTER = """
 {
-    "query": "Inbox",
+    "query": "%s",
     "filter": {
         "value": "database",
         "property": "object"
@@ -47,6 +50,19 @@ private val SEARCH_PAGES_FILTER = """
 }
 """.trimIndent()
 
+private val UPDATE_PAGE_SCORE = """
+    "properties": {
+        "Score": {
+            "number": %f
+        }
+    }
+""".trimIndent()
+
+private val Notion.Object.Page.title: String
+    get() = (properties["Name"] as Notion.Property.Title)
+        .title[0]
+        .plainText
+
 internal interface RatingsService : ItemPager<RatingsItem> {
     suspend fun rate(items: List<RatingsItem>)
     suspend fun ignore(item: RatingsItem)
@@ -56,6 +72,7 @@ internal fun RatingsService(client: HttpClient): RatingsService = object :
     ItemPager<RatingsItem> by ItemPager(RatingsItemGenerator(client)),
     RatingsService {
 
+    private val backgroundScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
     private val registry = mutableMapOf<String, RatingsItem>()
     private var previous = emptyMap<String, RatingsItem>()
 
@@ -75,6 +92,10 @@ internal fun RatingsService(client: HttpClient): RatingsService = object :
 
             println("$uuid: { index = $index, expected = $expected, actual = $actual, score = $score })")
             registry[it.id] = it.copy(score = score)
+
+            backgroundScope
+                .launch { client.updatePageScore(it.id, score) }
+                .join()
         }
 
         print()
@@ -114,37 +135,45 @@ private fun RatingsItemGenerator(client: HttpClient) = object : ItemGenerator<Ra
     private lateinit var databaseId: String
 
     override suspend fun invoke(scope: CoroutineScope): List<RatingsItem> {
-        if (!::databaseId.isInitialized) {
-            val databaseList = client.post("search") {
-                contentType(ContentType.Application.Json)
-                setBody(SEARCH_DATABASES_FILTER)
-            }.body<Notion.Object.Search>()
+        if (!::databaseId.isInitialized) databaseId = client.getDatabaseId()
 
-            databaseId = databaseList.results
-                .run { first() as Notion.Object.Database }
-                .id
-        }
-
-        val firstPage = client.post("databases/$databaseId/query") {
-            contentType(ContentType.Application.Json)
-            setBody(SEARCH_PAGES_FILTER)
-        }.body<Notion.Object.Search>()
-
-        return firstPage.results.map { page ->
-            check(page is Notion.Object.Page)
-
-            val name = page
-                .let { it.properties["Name"] as Notion.Property.Title }
-                .title[0]
-                .plainText
-
+        return client.getDatabasePages(databaseId).map {
             RatingsItem(
-                id = page.id,
-                name = name,
+                id = it.id,
+                name = it.title,
                 ignored = false,
                 score = DEFAULT_SCORE,
-                url = page.url,
+                url = it.url,
             )
         }
+    }
+}
+
+private suspend fun HttpClient.getDatabaseId(name: String = "Inbox"): String {
+    val databaseList = post("search") {
+        setBody(SEARCH_DATABASES_FILTER.format(name))
+        contentType(ContentType.Application.Json)
+    }.body<Notion.Object.Search>()
+
+    return databaseList.results
+        .run { first() as Notion.Object.Database }
+        .id
+}
+
+private suspend fun HttpClient.getDatabasePages(id: String): List<Notion.Object.Page> {
+    val pages = post("databases/$id/query") {
+        contentType(ContentType.Application.Json)
+        setBody(SEARCH_PAGES_FILTER)
+    }.body<Notion.Object.Search>()
+
+    return pages.results.map {
+        it as Notion.Object.Page
+    }
+}
+
+private suspend fun HttpClient.updatePageScore(id: String, value: Double) {
+    post("pages/$id") {
+        contentType(ContentType.Application.Json)
+        setBody(UPDATE_PAGE_SCORE.format(value))
     }
 }

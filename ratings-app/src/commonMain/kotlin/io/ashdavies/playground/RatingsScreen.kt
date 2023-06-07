@@ -70,12 +70,14 @@ internal fun RatingsItem(
     onDismiss: () -> Unit,
 ) {
     Card(
-        modifier = modifier.padding(12.dp),
+        modifier = modifier.padding(4.dp),
         colors = CardDefaults.cardColors(),
     ) {
         Box(
             contentAlignment = Alignment.Center,
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(12.dp),
         ) {
             Text(
                 text = item.name,
