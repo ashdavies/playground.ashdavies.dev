@@ -1,17 +1,51 @@
 package io.ashdavies.playground
 
+import io.ashdavies.notion.Notion
 import io.ktor.client.HttpClient
-import io.ktor.client.request.get
-import io.ktor.client.statement.bodyAsText
+import io.ktor.client.call.body
+import io.ktor.client.request.post
+import io.ktor.client.request.setBody
+import io.ktor.http.ContentType
+import io.ktor.http.contentType
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.delay
+import kotlin.collections.set
 import kotlin.math.pow
 
-private const val GENERATOR_URL = "https://whatthecommit.com/index.txt"
-private const val NOTION_URL = "https://notion.so/%s/%s"
-
-private const val DEFAULT_SCORE = 1500L
+private const val DEFAULT_SCORE = 1500.0
 private const val K_FACTOR = 32L
+
+private val SEARCH_DATABASES_FILTER = """
+{
+    "query": "Inbox",
+    "filter": {
+        "value": "database",
+        "property": "object"
+    },
+    "page_size": 1
+}
+""".trimIndent()
+
+private val SEARCH_PAGES_FILTER = """
+{
+    "filter": {
+        "and": [
+            {
+                "property": "Status",
+                "status": {
+                    "equals": "Backlog"
+                }
+            },
+            {
+                "property": "Tags",
+                "multi_select": {
+                    "is_empty": true
+                }
+            }
+        ]
+    },
+    "page_size": 3
+}
+""".trimIndent()
 
 internal interface RatingsService : ItemPager<RatingsItem> {
     suspend fun rate(items: List<RatingsItem>)
@@ -40,7 +74,7 @@ internal fun RatingsService(client: HttpClient): RatingsService = object :
             val uuid = it.id.take(5)
 
             println("$uuid: { index = $index, expected = $expected, actual = $actual, score = $score })")
-            registry[it.id] = it.copy(score = score.toLong())
+            registry[it.id] = it.copy(score = score)
         }
 
         print()
@@ -77,31 +111,40 @@ private typealias ItemGenerator<T> = suspend CoroutineScope.() -> List<T>
 
 private fun RatingsItemGenerator(client: HttpClient) = object : ItemGenerator<RatingsItem> {
 
-    private val generated = mutableListOf<String>()
+    private lateinit var databaseId: String
 
     override suspend fun invoke(scope: CoroutineScope): List<RatingsItem> {
-        return RatingsItem(
-            id = randomUuid(),
-            name = message(),
-            ignored = false,
-            score = DEFAULT_SCORE,
-            url = GENERATOR_URL,
-        ).let(::listOf)
-    }
+        if (!::databaseId.isInitialized) {
+            val databaseList = client.post("search") {
+                contentType(ContentType.Application.Json)
+                setBody(SEARCH_DATABASES_FILTER)
+            }.body<Notion.Object.Search>()
 
-    private suspend fun message(): String {
-        var backoff = 10L; while (true) {
-            val text = client
-                .get(GENERATOR_URL)
-                .bodyAsText()
+            databaseId = databaseList.results
+                .run { first() as Notion.Object.Database }
+                .id
+        }
 
-            if (text !in generated) {
-                generated += text
-                return text
-            }
+        val firstPage = client.post("databases/$databaseId/query") {
+            contentType(ContentType.Application.Json)
+            setBody(SEARCH_PAGES_FILTER)
+        }.body<Notion.Object.Search>()
 
-            delay(backoff)
-            backoff *= 2
+        return firstPage.results.map { page ->
+            check(page is Notion.Object.Page)
+
+            val name = page
+                .let { it.properties["Name"] as Notion.Property.Title }
+                .title[0]
+                .plainText
+
+            RatingsItem(
+                id = page.id,
+                name = name,
+                ignored = false,
+                score = DEFAULT_SCORE,
+                url = page.url,
+            )
         }
     }
 }

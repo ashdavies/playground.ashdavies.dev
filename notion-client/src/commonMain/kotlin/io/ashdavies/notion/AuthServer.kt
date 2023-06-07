@@ -31,9 +31,11 @@ import io.ktor.server.response.respond
 import io.ktor.server.routing.get
 import io.ktor.server.routing.routing
 import kotlinx.coroutines.CompletableDeferred
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonClassDiscriminator
 import java.awt.Desktop
 import java.io.File
 import java.net.URI
@@ -156,7 +158,8 @@ public suspend fun getAccessToken(): String {
 public object Notion {
 
     @Serializable
-    @SerialName("type")
+    @OptIn(ExperimentalSerializationApi::class)
+    @JsonClassDiscriminator("type")
     public sealed class Envelope {
 
         @Serializable
@@ -173,7 +176,8 @@ public object Notion {
     }
 
     @Serializable
-    @SerialName("object")
+    @OptIn(ExperimentalSerializationApi::class)
+    @JsonClassDiscriminator("object")
     public sealed class Object {
 
         @Serializable
@@ -197,6 +201,14 @@ public object Notion {
         ) : Object()
 
         @Serializable
+        @SerialName("page")
+        public data class Page(
+            @SerialName("id") val id: String,
+            @SerialName("properties") val properties: Map<String, Property>,
+            @SerialName("url") val url: String,
+        ) : Object()
+
+        @Serializable
         @SerialName("person")
         public data class Person(
             @SerialName("email") val email: String,
@@ -206,7 +218,9 @@ public object Notion {
         @SerialName("search")
         public data class Search(
             @SerialName("results") val results: List<Object>,
-        )
+            @SerialName("next_cursor") val nextCursor: String?,
+            @SerialName("has_more") val hasMore: Boolean,
+        ) : Object()
 
         @Serializable
         @SerialName("user")
@@ -216,6 +230,72 @@ public object Notion {
             @SerialName("avatar_url") val avatarUrl: String? = null,
             @SerialName("bot") val bot: Bot? = null,
         ) : Object()
+    }
+
+    @Serializable
+    @OptIn(ExperimentalSerializationApi::class)
+    @JsonClassDiscriminator("type")
+    public sealed class Property {
+
+        @Serializable
+        @SerialName("date")
+        public data class Date(
+            @SerialName("date") val date: String?,
+        ) : Property()
+
+        @Serializable
+        @SerialName("formula")
+        public data class Formula(
+            @SerialName("formula") val formula: Property,
+        ) : Property()
+
+        @Serializable
+        @SerialName("last_edited_time")
+        public data class LastEditedTime(
+            @SerialName("last_edited_time") val lastEditedTime: String,
+        ) : Property()
+
+        @Serializable
+        @SerialName("multi_select")
+        public data class MultiSelect(
+            @SerialName("multi_select") val multiSelect: List<String>,
+        ) : Property()
+
+        @Serializable
+        @SerialName("number")
+        public data class Number(
+            @SerialName("number") val number: Double?,
+        ) : Property()
+
+        @Serializable
+        @SerialName("status")
+        public data class Status(
+            @SerialName("status") val status: Label,
+        ) : Property() {
+
+            @Serializable
+            public data class Label(
+                @SerialName("name") val label: String,
+            ) : Property()
+        }
+
+        @Serializable
+        @SerialName("text")
+        public data class Text(
+            @SerialName("plain_text") val plainText: String,
+        ) : Property()
+
+        @Serializable
+        @SerialName("title")
+        public data class Title(
+            @SerialName("title") val title: List<Text>,
+        ) : Property()
+
+        @Serializable
+        @SerialName("url")
+        public data class Url(
+            @SerialName("url") val url: String?,
+        ) : Property()
     }
 
     @Serializable
