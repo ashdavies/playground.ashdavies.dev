@@ -3,14 +3,13 @@ package io.ashdavies.playground
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.LinearProgressIndicator
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -71,24 +70,16 @@ internal fun RatingsItem(
     onDismiss: () -> Unit,
 ) {
     Card(
+        modifier = modifier.padding(12.dp),
         colors = CardDefaults.cardColors(),
-        modifier = modifier.padding(4.dp),
     ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
+        Box(
+            contentAlignment = Alignment.Center,
             modifier = Modifier.fillMaxSize(),
         ) {
             Text(
                 text = item.name,
                 textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.bodyLarge,
-            )
-
-            Text(
-                text = item.id,
-                textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.bodySmall,
             )
         }
     }
