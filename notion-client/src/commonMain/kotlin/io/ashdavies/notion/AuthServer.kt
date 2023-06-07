@@ -35,6 +35,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import java.awt.Desktop
+import java.io.File
 import java.net.URI
 
 private val applicationHttpClient = HttpClient {
@@ -51,6 +52,12 @@ public val notionHttpClient: HttpClient = applicationHttpClient.config {
     install(Auth) {
         bearer {
             loadTokens {
+                val accessTokenFile = File("tokens.db")
+                if (accessTokenFile.exists()) return@loadTokens BearerTokens(
+                    accessToken = accessTokenFile.readText(),
+                    refreshToken = String(),
+                )
+
                 val deferredAuthorizationCode = CompletableDeferred<String>()
                 val applicationEngine = embeddedServer(CIO, port = 8080) {
                     routing {
@@ -100,13 +107,17 @@ public val notionHttpClient: HttpClient = applicationHttpClient.config {
                 }
 
                 if (tokenResponse.status != HttpStatusCode.OK) {
-                    val error = tokenResponse.body<Notion.Error>()
+                    val error = tokenResponse.body<Notion.Object.Error>()
                     println("Error: ${error.message}")
                     return@loadTokens null
                 }
 
-                val token = tokenResponse.body<Notion.Token>()
-                BearerTokens(token.accessToken, String())
+                val accessToken = tokenResponse
+                    .body<Notion.Token>()
+                    .accessToken
+
+                accessTokenFile.writeText(accessToken)
+                BearerTokens(accessToken, String())
             }
 
             sendWithoutRequest { request ->
@@ -130,9 +141,9 @@ public val notionHttpClient: HttpClient = applicationHttpClient.config {
 
 public suspend fun getAccessToken(): String {
     val response = notionHttpClient.get("users/me")
-    
+
     if (response.status != HttpStatusCode.OK) {
-        val error = response.body<Notion.Error>()
+        val error = response.body<Notion.Object.Error>()
         throw RuntimeException(error.message)
     }
 
@@ -142,73 +153,79 @@ public suspend fun getAccessToken(): String {
         .also { println(it) }
 }
 
-internal object Notion {
+public object Notion {
 
     @Serializable
-    data class Bot(
-        @SerialName("owner") val owner: Owner,
-        @SerialName("workspace_name") val workspaceName: String,
-    )
-
-    @Serializable
-    data class Error(
-        @SerialName("object") val `object`: String,
-        @SerialName("status") val status: Int,
-        @SerialName("code") val code: String,
-        @SerialName("message") val message: String,
-    )
-
-    @Serializable
-    data class Person(
-        @SerialName("email") val email: String,
-    )
-
-    @Serializable
-    data class Token(
-        @SerialName("access_token") val accessToken: String,
-        @SerialName("token_type") val tokenType: String,
-        @SerialName("bot_id") val botId: String,
-        @SerialName("owner") val owner: Owner,
-        @SerialName("workspace_icon") val workspaceIcon: String,
-        @SerialName("workspace_id") val workspaceId: String,
-        @SerialName("workspace_name") val workspaceName: String,
-    ) {
-
-        @Serializable
-        data class Owner(
-            @SerialName("type") val type: String,
-            @SerialName("user") val user: User,
-        )
-    }
-
-    @Serializable
-    sealed class Owner {
-
-        @Serializable
-        @SerialName("bot")
-        data class Bot(
-            @SerialName("bot") val bot: Notion.Bot,
-        ) : Owner()
+    @SerialName("type")
+    public sealed class Envelope {
 
         @Serializable
         @SerialName("person")
-        data class Person(
-            @SerialName("person") val person: Notion.Person,
-        ) : Owner()
+        public data class Person(
+            @SerialName("person") val person: Object.Person,
+        ) : Envelope()
 
         @Serializable
         @SerialName("user")
-        data class User(
-            @SerialName("user") val user: Notion.User,
-        ) : Owner()
+        public data class User(
+            @SerialName("user") val user: Object.User,
+        ) : Envelope()
     }
 
     @Serializable
-    data class User(
-        @SerialName("object") val `object`: String,
-        @SerialName("id") val id: String,
-        @SerialName("name") val name: String,
-        @SerialName("avatar_url") val avatarUrl: String? = null,
-        @SerialName("bot") val bot: Bot? = null,
+    @SerialName("object")
+    public sealed class Object {
+
+        @Serializable
+        public data class Bot(
+            @SerialName("owner") val owner: Object,
+            @SerialName("workspace_name") val workspaceName: String,
+        )
+
+        @Serializable
+        @SerialName("database")
+        public data class Database(
+            @SerialName("id") val id: String,
+        ) : Object()
+
+        @Serializable
+        @SerialName("error")
+        public data class Error(
+            @SerialName("status") val status: Int,
+            @SerialName("code") val code: String,
+            @SerialName("message") val message: String,
+        ) : Object()
+
+        @Serializable
+        @SerialName("person")
+        public data class Person(
+            @SerialName("email") val email: String,
+        ) : Object()
+
+        @Serializable
+        @SerialName("search")
+        public data class Search(
+            @SerialName("results") val results: List<Object>,
+        )
+
+        @Serializable
+        @SerialName("user")
+        public data class User(
+            @SerialName("id") val id: String,
+            @SerialName("name") val name: String,
+            @SerialName("avatar_url") val avatarUrl: String? = null,
+            @SerialName("bot") val bot: Bot? = null,
+        ) : Object()
+    }
+
+    @Serializable
+    public data class Token(
+        @SerialName("access_token") val accessToken: String,
+        @SerialName("token_type") val tokenType: String,
+        @SerialName("bot_id") val botId: String,
+        @SerialName("workspace_icon") val workspaceIcon: String,
+        @SerialName("workspace_id") val workspaceId: String,
+        @SerialName("workspace_name") val workspaceName: String,
+        @SerialName("owner") val owner: Envelope,
     )
 }
