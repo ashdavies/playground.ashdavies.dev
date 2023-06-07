@@ -55,10 +55,12 @@ public val notionHttpClient: HttpClient = applicationHttpClient.config {
         bearer {
             loadTokens {
                 val accessTokenFile = File("tokens.db")
-                if (accessTokenFile.exists()) return@loadTokens BearerTokens(
-                    accessToken = accessTokenFile.readText(),
-                    refreshToken = String(),
-                )
+                if (accessTokenFile.exists()) {
+                    return@loadTokens BearerTokens(
+                        accessToken = accessTokenFile.readText(),
+                        refreshToken = String(),
+                    )
+                }
 
                 val deferredAuthorizationCode = CompletableDeferred<String>()
                 val applicationEngine = embeddedServer(CIO, port = 8080) {
