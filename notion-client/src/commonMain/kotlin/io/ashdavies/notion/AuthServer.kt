@@ -34,6 +34,8 @@ import kotlinx.coroutines.CompletableDeferred
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
+import java.awt.Desktop
+import java.net.URI
 
 private val applicationHttpClient = HttpClient {
     install(ContentNegotiation) {
@@ -45,7 +47,7 @@ private val applicationHttpClient = HttpClient {
     }
 }
 
-internal fun getNotionHttpClient(onBrowse: (String) -> Unit) = applicationHttpClient.config {
+public val notionHttpClient: HttpClient = applicationHttpClient.config {
     install(Auth) {
         bearer {
             loadTokens {
@@ -70,7 +72,7 @@ internal fun getNotionHttpClient(onBrowse: (String) -> Unit) = applicationHttpCl
 
                 val authorizationBaseUrl = "https://api.notion.com/v1/oauth/authorize"
                 val authorizationUrl = "$authorizationBaseUrl?$authorizationUrlQuery"
-                onBrowse(authorizationUrl)
+                Desktop.getDesktop().browse(URI(authorizationUrl))
 
                 val authorizationCode = deferredAuthorizationCode.await()
                 applicationEngine.stop()
@@ -126,10 +128,9 @@ internal fun getNotionHttpClient(onBrowse: (String) -> Unit) = applicationHttpCl
     }
 }
 
-public suspend fun getAccessToken(onBrowse: (String) -> Unit): String {
-    val notionHttpClient = getNotionHttpClient(onBrowse)
+public suspend fun getAccessToken(): String {
     val response = notionHttpClient.get("users/me")
-
+    
     if (response.status != HttpStatusCode.OK) {
         val error = response.body<Notion.Error>()
         throw RuntimeException(error.message)

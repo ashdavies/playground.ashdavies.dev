@@ -3,8 +3,6 @@ package io.ashdavies.notion
 import androidx.compose.runtime.Composable
 import io.ashdavies.playground.TokenQueries
 import kotlinx.cli.ExperimentalCli
-import java.awt.Desktop
-import java.net.URI
 
 @Composable
 @ExperimentalCli
@@ -23,8 +21,8 @@ internal fun AuthCommand(
             if (token != null) {
                 onAuthState(AuthState.Authenticated)
             } else {
-                onAuthState(AuthState.Awaiting("http://localhost:8080/callback"))
-                getAccessToken { Desktop.getDesktop().browse(URI(it)) }
+                onAuthState(AuthState.Awaiting)
+                val accessToken = getAccessToken()
                 onAuthState(AuthState.Authenticated)
             }
         },
@@ -39,6 +37,6 @@ internal fun AuthCommand(
 }
 
 internal sealed interface AuthState : NotionState {
-    data class Awaiting(val userPromptUri: String) : AuthState
+    object Awaiting : AuthState
     object Authenticated : AuthState
 }
