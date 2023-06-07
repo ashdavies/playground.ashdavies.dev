@@ -2,7 +2,6 @@ package io.ashdavies.playground
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -30,15 +29,13 @@ internal fun RatingsPresenter(
     handler: UriHandler = LocalUriHandler.current,
 ): RatingsScreen.State {
     var itemList by remember { mutableStateOf(initialItemList(DEFAULT_PAGE_SIZE)) }
-    val loading by remember(itemList) { derivedStateOf { itemList.loading } }
     val coroutineScope = rememberCoroutineScope()
     var index by remember { mutableStateOf(0) }
 
-    if (loading > 0) {
-        LaunchedEffect(loading) {
-            val itemDeque: ArrayDeque<RatingsItem> = ArrayDeque(service.next(loading))
+    if (itemList.any { it is RatingsScreen.State.Item.Loading }) {
+        LaunchedEffect(Unit) {
             itemList = itemList.mapIsInstance { _: RatingsScreen.State.Item.Loading ->
-                RatingsScreen.State.Item.Complete(itemDeque.removeFirst())
+                RatingsScreen.State.Item.Complete(service.next())
             }
         }
     }
