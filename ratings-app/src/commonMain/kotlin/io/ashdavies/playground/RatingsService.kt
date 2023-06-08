@@ -13,7 +13,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import kotlin.collections.set
+import kotlin.math.floor
 import kotlin.math.pow
+
+private const val ANSI_GREEN = "\u001B[32m"
+private const val ANSI_RED = "\u001B[31m"
+private const val ANSI_RESET = "\u001B[0m"
 
 private const val DEFAULT_SCORE = 1500.0
 private const val K_FACTOR = 32L
@@ -63,7 +68,7 @@ private val SEARCH_PAGES_FILTER = """
             }
         ]
     },
-    "page_size": 3
+    "page_size": 12
 }
 """.trimIndent()
 
@@ -96,20 +101,18 @@ internal fun RatingsService(client: HttpClient): RatingsService = object :
     private var previous = emptyMap<String, RatingsItem>()
 
     override suspend fun rate(items: List<RatingsItem>) {
-        println("\n=== RatingService Vote ===")
-        items.forEach { println("${it.id}: ${it.name} [${it.score}]") }
-
         val total = items.sumOf { 10.0.pow(it.score / 400.0) }
         println("\n=== RatingsService Calculation (Total: $total) ===")
 
         items.forEachIndexed { index, it ->
             val expected = 10.0.pow(it.score / 400.0) / total
-            val actual = (1.0 / items.size) * (items.size - index)
-
+            val actual = (1.0 / items.size) * (items.size - index - 1)
             val score = it.score + (K_FACTOR * (actual - expected))
-            val uuid = it.id.take(5)
 
-            println("$uuid: { index = $index, expected = $expected, actual = $actual, score = $score })")
+            println("${it.id.take(5)}: { index = $index, expected = ${expected.round()}, " +
+                "actual = ${actual.round()}, previous = ${it.score.round()}, " +
+                "score = ${score.round()} })")
+
             registry[it.id] = it.copy(score = score)
 
             backgroundScope
@@ -132,11 +135,12 @@ internal fun RatingsService(client: HttpClient): RatingsService = object :
         val sorted = registry.values.sortedByDescending { it.score }
 
         sorted.forEach {
-            val change = it.score - (previous[it.id]?.score ?: DEFAULT_SCORE)
+            val change = floor(it.score - (previous[it.id]?.score ?: DEFAULT_SCORE))
+
             val text = when {
-                change > 0 -> "$change 🔺"
-                change < 0 -> "$change 🔻"
-                else -> "⚪️ No Change"
+                change > 0 -> "$ANSI_GREEN$change ⬆$ANSI_RESET"
+                change < 0 -> "$ANSI_RED$change ⬇$ANSI_RESET"
+                else -> "No Change ⏺"
             }
 
             println("${it.id}: ${it.name} [${it.score}: $text]")
@@ -195,4 +199,8 @@ private suspend fun HttpClient.updatePageScore(id: String, value: Double) {
         contentType(ContentType.Application.Json)
         setBody(UPDATE_PAGE_SCORE.format(value))
     }
+}
+
+private fun Double.round(scale: Int = 2): Double {
+    return floor(this * 10.0.pow(scale)) / 10.0.pow(scale)
 }
