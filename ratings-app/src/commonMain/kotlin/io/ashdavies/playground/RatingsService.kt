@@ -193,6 +193,6 @@ private suspend fun HttpClient.getDatabasePages(id: String): List<Notion.Object.
 private suspend fun HttpClient.updatePageScore(id: String, value: Double) {
     patch("pages/$id") {
         contentType(ContentType.Application.Json)
-        setBody(UPDATE_PAGE_SCORE.format(1500))
+        setBody(UPDATE_PAGE_SCORE.format(value))
     }
 }

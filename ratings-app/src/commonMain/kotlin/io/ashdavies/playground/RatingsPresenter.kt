@@ -19,9 +19,6 @@ import kotlinx.coroutines.launch
 
 private const val DEFAULT_PAGE_SIZE = 3
 
-private val List<RatingsScreen.State.Item>.loading: Int
-    get() = count { it is RatingsScreen.State.Item.Loading }
-
 @Composable
 internal fun RatingsPresenter(
     navigator: Navigator,

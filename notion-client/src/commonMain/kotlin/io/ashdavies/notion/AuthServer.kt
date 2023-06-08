@@ -48,8 +48,6 @@ private val applicationHttpClient = HttpClient {
     }
 }
 
-public val notionHttpClient: HttpClient = getNotionHttpClient { }
-
 public fun getNotionHttpClient(
     openUri: (String) -> Unit,
 ): HttpClient = applicationHttpClient.config {
