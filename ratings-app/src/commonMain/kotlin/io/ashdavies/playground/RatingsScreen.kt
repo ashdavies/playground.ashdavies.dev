@@ -77,7 +77,7 @@ internal fun RatingsItem(
             contentAlignment = Alignment.Center,
             modifier = Modifier
                 .fillMaxSize()
-                .padding(12.dp),
+                .padding(24.dp),
         ) {
             Text(
                 text = item.name,

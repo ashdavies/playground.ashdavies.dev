@@ -3,6 +3,7 @@ package io.ashdavies.playground
 import io.ashdavies.notion.Notion
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
+import io.ktor.client.request.patch
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
@@ -43,6 +44,22 @@ private val SEARCH_PAGES_FILTER = """
                 "multi_select": {
                     "is_empty": true
                 }
+            },
+            {
+                "or": [
+                    {
+                        "property": "Score",
+                        "number": {
+                            "is_empty": true
+                        }
+                    },
+                    {
+                        "property": "Score",
+                        "number": {
+                            "less_than": $DEFAULT_SCORE
+                        }
+                    }
+                ]
             }
         ]
     },
@@ -51,11 +68,13 @@ private val SEARCH_PAGES_FILTER = """
 """.trimIndent()
 
 private val UPDATE_PAGE_SCORE = """
+{
     "properties": {
         "Score": {
             "number": %f
         }
     }
+}
 """.trimIndent()
 
 private val Notion.Object.Page.title: String
@@ -172,8 +191,8 @@ private suspend fun HttpClient.getDatabasePages(id: String): List<Notion.Object.
 }
 
 private suspend fun HttpClient.updatePageScore(id: String, value: Double) {
-    post("pages/$id") {
+    patch("pages/$id") {
         contentType(ContentType.Application.Json)
-        setBody(UPDATE_PAGE_SCORE.format(value))
+        setBody(UPDATE_PAGE_SCORE.format(1500))
     }
 }
