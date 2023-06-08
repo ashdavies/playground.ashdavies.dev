@@ -102,22 +102,17 @@ internal fun RatingsService(client: HttpClient): RatingsService = object :
 
     override suspend fun rate(items: List<RatingsItem>) {
         val total = items.sumOf { 10.0.pow(it.score / 400.0) }
-        println("\n=== RatingsService Calculation (Total: $total) ===")
 
         items.forEachIndexed { index, it ->
             val expected = 10.0.pow(it.score / 400.0) / total
             val actual = (1.0 / items.size) * (items.size - index - 1)
             val score = it.score + (K_FACTOR * (actual - expected))
 
-            println("${it.id.take(5)}: { index = $index, expected = ${expected.round()}, " +
-                "actual = ${actual.round()}, previous = ${it.score.round()}, " +
-                "score = ${score.round()} })")
-
             registry[it.id] = it.copy(score = score)
 
-            backgroundScope
-                .launch { client.updatePageScore(it.id, score) }
-                .join()
+            backgroundScope.launch {
+                client.updatePageScore(it.id, score)
+            }.join()
         }
 
         print()
