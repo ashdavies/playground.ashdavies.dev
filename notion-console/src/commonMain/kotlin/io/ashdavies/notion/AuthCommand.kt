@@ -1,6 +1,8 @@
 package io.ashdavies.notion
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.platform.UriHandler
 import io.ashdavies.playground.TokenQueries
 import kotlinx.cli.ExperimentalCli
 
@@ -9,6 +11,7 @@ import kotlinx.cli.ExperimentalCli
 @NotionScopeMarker
 internal fun AuthCommand(
     tokenQueries: TokenQueries = rememberTokenQueries(),
+    uriHandler: UriHandler = LocalUriHandler.current,
     onAuthState: (AuthState) -> Unit = { },
 ) = Subcommand(
     actionDescription = "Run notion auth login to authenticate with your Notion account.",
@@ -22,7 +25,7 @@ internal fun AuthCommand(
                 onAuthState(AuthState.Authenticated)
             } else {
                 onAuthState(AuthState.Awaiting)
-                val accessToken = getAccessToken()
+                getAccessToken(uriHandler::openUri)
                 onAuthState(AuthState.Authenticated)
             }
         },
