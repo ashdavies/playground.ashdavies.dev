@@ -75,8 +75,8 @@ public fun getNotionHttpClient(
                 }.start()
 
                 val authorizationUrlQuery = parameters {
-                    append("client_id", System.getenv("NOTION_CLIENT_ID"))
                     append("redirect_uri", "http://localhost:8080/callback")
+                    append("client_id", NotionClientId)
                     append("response_type", "code")
                     append("owner", "user")
                 }.formUrlEncode()
@@ -91,8 +91,8 @@ public fun getNotionHttpClient(
                 val tokenUrlString = "https://api.notion.com/v1/oauth/token"
                 val tokenResponse = applicationHttpClient.post(tokenUrlString) {
                     basicAuth(
-                        username = System.getenv("NOTION_CLIENT_ID"),
-                        password = System.getenv("NOTION_CLIENT_SECRET"),
+                        username = NotionClientId,
+                        password = NotionClientSecret,
                     )
 
                     headers {
