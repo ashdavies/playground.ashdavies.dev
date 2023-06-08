@@ -4,6 +4,6 @@ internal data class RatingsItem(
     val id: String,
     val name: String,
     val ignored: Boolean,
-    val score: Long,
+    val score: Double,
     val url: String,
 )
