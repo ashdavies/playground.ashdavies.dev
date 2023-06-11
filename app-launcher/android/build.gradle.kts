@@ -17,7 +17,7 @@ android {
 
     defaultConfig {
         buildConfigString("CLIENT_NAME", "Ktor/${libs.versions.ktor.get()}")
-        buildConfigString("PLAYGROUND_API_KEY")
+        buildConfigString("PLAYGROUND_API_KEY", "AIzaSyAq4aV6fszZG6CudbbAnOSFy--GD7vjJwA")
 
         versionName = "1.0"
         versionCode = 1
@@ -47,6 +47,6 @@ dependencies {
     implementation(projects.firebaseCompose)
 }
 
-fun VariantDimension.buildConfigString(name: String, value: String = System.getenv(name)) {
+fun VariantDimension.buildConfigString(name: String, value: String) {
     buildConfigField("String", name, "\"$value\"")
 }
