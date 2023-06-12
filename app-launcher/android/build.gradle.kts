@@ -46,11 +46,3 @@ dependencies {
 
     implementation(projects.firebaseCompose)
 }
-
-fun VariantDimension.buildConfigString(key: String, block: () -> String?) {
-    buildConfigField("String", key, "\"${block()}\"")
-}
-
-fun Project.getStringExtraOrNull(key: String): String? {
-    return if (extra.has(key)) extra[key] as String else null
-}
