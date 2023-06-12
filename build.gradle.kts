@@ -10,20 +10,22 @@ buildscript {
 }
 
 plugins {
-    alias(libs.plugins.android.application) apply false
-    alias(libs.plugins.android.library) apply false
-    alias(libs.plugins.apollo.graphql) apply false
-    alias(libs.plugins.google.services) apply false
-    alias(libs.plugins.kotlin.compose) apply false
-    alias(libs.plugins.kotlin.multiplatform) apply false
-    alias(libs.plugins.kotlin.serialization) apply false
+    with(libs.plugins) {
+        alias(android.application) apply false
+        alias(android.library) apply false
+        alias(apollo.graphql) apply false
+        alias(google.services) apply false
+        alias(kotlin.compose) apply false
+        alias(kotlin.multiplatform) apply false
+        alias(kotlin.serialization) apply false
 
-    alias(libs.plugins.dependency.analysis)
-    alias(libs.plugins.diffplug.spotless)
-    alias(libs.plugins.gradle.doctor)
+        alias(dependency.analysis)
+        alias(diffplug.spotless)
+        alias(gradle.doctor)
 
-    // alias(libs.plugins.cash.molecule)
-    // alias(libs.plugins.kotlinx.kover)
+        // alias(cash.molecule)
+        // alias(kotlinx.kover)
+    }
 }
 
 doctor {
