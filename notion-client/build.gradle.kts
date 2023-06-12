@@ -1,5 +1,3 @@
-import com.android.build.api.dsl.VariantDimension
-
 plugins {
     id("io.ashdavies.default")
     id("io.ashdavies.sql")
@@ -13,8 +11,8 @@ android {
     }
 
     defaultConfig {
-        buildConfigString("NOTION_CLIENT_ID")
-        buildConfigString("NOTION_CLIENT_SECRET")
+        buildConfigString("NOTION_CLIENT_ID") { getStringExtraOrNull("notion.client.id") }
+        buildConfigString("NOTION_CLIENT_SECRET") { getStringExtraOrNull("notion.client.secret") }
     }
 }
 
@@ -36,8 +34,4 @@ sqldelight {
         dependency(projects.localStorage.dependencyProject)
         packageName = "io.ashdavies.notion"
     }
-}
-
-fun VariantDimension.buildConfigString(name: String, value: String = System.getenv(name)) {
-    buildConfigField("String", name, "\"$value\"")
 }
