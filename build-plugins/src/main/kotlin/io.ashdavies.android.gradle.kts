@@ -1,7 +1,6 @@
 import com.android.build.api.dsl.CommonExtension
 import com.android.build.gradle.LibraryExtension
 import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
-import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
 plugins {
     kotlin("multiplatform")
@@ -15,16 +14,6 @@ kotlin {
         implementation(libs.androidx.core.ktx)
         implementation(libs.google.android.material) // Necessary?
         implementation(libs.jetbrains.kotlinx.coroutines.android) // Necessary?
-    }
-
-    androidTest {
-        dependsOn(androidAndroidTestRelease)
-    }
-}
-
-afterEvaluate {
-    extensions.withType<KotlinMultiplatformExtension> {
-        sourceSets.removeAll { it.name.startsWith("androidTestFixtures") }
     }
 }
 

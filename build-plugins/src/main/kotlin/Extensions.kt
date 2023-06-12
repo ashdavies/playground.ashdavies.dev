@@ -13,6 +13,10 @@ public fun NamedDomainObjectCollection<KotlinSourceSet>.dependencies(
     configure: KotlinDependencyHandler.() -> Unit,
 ) = getting { dependencies(configure) }
 
+public fun SourceSetInvoker.dependencies(
+    configure: KotlinDependencyHandler.() -> Unit,
+) = invoke { dependencies(configure) }
+
 public fun KotlinDependencyHandler.implementation(
     provider: Provider<MinimalExternalModuleDependency>,
     configure: ExternalModuleDependency.() -> Unit,
