@@ -16,7 +16,7 @@ android {
     }
 
     defaultConfig {
-        buildConfigString("PLAYGROUND_API_KEY") { getStringExtra("playground.api.key") }
+        buildConfigString("PLAYGROUND_API_KEY") { getStringExtraOrNull("playground.api.key") }
 
         versionName = "1.0"
         versionCode = 1
@@ -46,10 +46,10 @@ dependencies {
     implementation(projects.firebaseCompose)
 }
 
-fun VariantDimension.buildConfigString(key: String, block: () -> String) {
+fun VariantDimension.buildConfigString(key: String, block: () -> String?) {
     buildConfigField("String", key, "\"${block()}\"")
 }
 
-fun Project.getStringExtra(key: String): String {
-    return extra[key] as String
+fun Project.getStringExtraOrNull(key: String): String? {
+    return if (extra.has(key)) extra[key] as String else null
 }
