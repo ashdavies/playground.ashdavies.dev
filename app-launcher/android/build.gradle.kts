@@ -16,8 +16,7 @@ android {
     }
 
     defaultConfig {
-        buildConfigString("CLIENT_NAME", "Ktor/${libs.versions.ktor.get()}")
-        buildConfigString("PLAYGROUND_API_KEY", "AIzaSyAq4aV6fszZG6CudbbAnOSFy--GD7vjJwA")
+        buildConfigString("PLAYGROUND_API_KEY") { getStringExtraOrNull("playground.api.key") }
 
         versionName = "1.0"
         versionCode = 1
@@ -37,6 +36,7 @@ dependencies {
 
     implementation(libs.androidx.core.splashscreen)
     implementation(libs.google.accompanist.systemuicontroller)
+    implementation(libs.google.android.material)
     implementation(libs.slack.circuit.foundation)
     implementation(libs.slack.circuit.overlay)
 
@@ -45,8 +45,4 @@ dependencies {
     }
 
     implementation(projects.firebaseCompose)
-}
-
-fun VariantDimension.buildConfigString(name: String, value: String) {
-    buildConfigField("String", name, "\"$value\"")
 }
