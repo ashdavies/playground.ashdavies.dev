@@ -36,6 +36,7 @@ dependencies {
 
     implementation(libs.androidx.core.splashscreen)
     implementation(libs.google.accompanist.systemuicontroller)
+    implementation(libs.google.android.material)
     implementation(libs.slack.circuit.foundation)
     implementation(libs.slack.circuit.overlay)
 

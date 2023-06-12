@@ -12,8 +12,6 @@ kotlin {
     androidMain.dependencies {
         implementation(libs.androidx.annotation)
         implementation(libs.androidx.core.ktx)
-        implementation(libs.google.android.material) // Necessary?
-        implementation(libs.jetbrains.kotlinx.coroutines.android) // Necessary?
     }
 }
 
