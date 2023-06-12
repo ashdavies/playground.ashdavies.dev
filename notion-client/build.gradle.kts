@@ -5,6 +5,15 @@ plugins {
 
 android {
     namespace = "io.ashdavies.notion"
+
+    buildFeatures {
+        buildConfig = true
+    }
+
+    defaultConfig {
+        buildConfigString("NOTION_CLIENT_ID") { getStringExtraOrNull("notion.client.id") }
+        buildConfigString("NOTION_CLIENT_SECRET") { getStringExtraOrNull("notion.client.secret") }
+    }
 }
 
 kotlin {
