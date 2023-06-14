@@ -11,8 +11,8 @@ android {
     }
 
     defaultConfig {
-        buildConfigString("NOTION_CLIENT_ID") { getStringExtraOrNull("notion.client.id") }
-        buildConfigString("NOTION_CLIENT_SECRET") { getStringExtraOrNull("notion.client.secret") }
+        buildConfigString("NOTION_CLIENT_ID") { stringPropertyOrNull("notion.client.id") }
+        buildConfigString("NOTION_CLIENT_SECRET") { stringPropertyOrNull("notion.client.secret") }
     }
 }
 
