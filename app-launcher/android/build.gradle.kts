@@ -1,5 +1,3 @@
-import com.android.build.api.dsl.VariantDimension
-
 plugins {
     id("com.android.application")
     id("com.google.gms.google-services")
@@ -16,7 +14,7 @@ android {
     }
 
     defaultConfig {
-        buildConfigString("PLAYGROUND_API_KEY") { getStringExtraOrNull("playground.api.key") }
+        buildConfigString("PLAYGROUND_API_KEY") { stringPropertyOrNull("playground.api.key") }
 
         versionName = "1.0"
         versionCode = 1
