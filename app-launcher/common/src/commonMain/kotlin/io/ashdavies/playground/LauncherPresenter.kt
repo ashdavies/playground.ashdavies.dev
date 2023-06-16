@@ -3,6 +3,7 @@ package io.ashdavies.playground
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Event
 import androidx.compose.material.icons.filled.Grid4x4
+import androidx.compose.material.icons.filled.Stars
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.arkivanov.essenty.parcelable.Parcelable
@@ -29,6 +30,12 @@ private val EventsEntry = LauncherScreen.Entry(
     text = "Events",
 )
 
+private val RatingsEntry = LauncherScreen.Entry(
+    event = LauncherScreen.Event.Ratings,
+    image = Icons.Filled.Stars,
+    text = "Ratings",
+)
+
 @Parcelize
 public object LauncherScreen : Parcelable, Screen {
     public data class Entry(
@@ -40,6 +47,7 @@ public object LauncherScreen : Parcelable, Screen {
     public sealed interface Event : CircuitUiEvent {
         public object Dominion : Event
         public object Events : Event
+        public object Ratings : Event
     }
 
     public data class State(
@@ -49,12 +57,15 @@ public object LauncherScreen : Parcelable, Screen {
 }
 
 @Composable
-internal fun LauncherPresenter(
-    navigator: Navigator,
-) = LauncherScreen.State(listOf(DominionEntry, EventsEntry)) { event ->
-    when (event) {
-        is LauncherScreen.Event.Events -> navigator.goTo(EventsHomeScreen)
-        is LauncherScreen.Event.Dominion -> navigator.goTo(DominionScreen.Home)
+internal fun LauncherPresenter(navigator: Navigator): LauncherScreen.State {
+    val entries = listOf(DominionEntry, EventsEntry, RatingsEntry)
+
+    return LauncherScreen.State(entries) { event ->
+        when (event) {
+            LauncherScreen.Event.Events -> navigator.goTo(EventsHomeScreen)
+            LauncherScreen.Event.Dominion -> navigator.goTo(DominionScreen.Home)
+            LauncherScreen.Event.Ratings -> navigator.goTo(RatingsScreen)
+        }
     }
 }
 
@@ -69,6 +80,7 @@ public fun buildInitialBackStack(initialScreen: String? = null): List<Screen> {
     return when (initialScreen) {
         "events" -> persistentListOf(LauncherScreen, EventsHomeScreen)
         "dominion" -> persistentListOf(LauncherScreen, DominionScreen.Home)
+        "ratings" -> persistentListOf(LauncherScreen, RatingsScreen)
         else -> persistentListOf(LauncherScreen)
     }
 }

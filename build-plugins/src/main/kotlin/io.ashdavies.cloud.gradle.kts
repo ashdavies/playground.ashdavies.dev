@@ -19,13 +19,10 @@ dependencies {
     implementation(compose.runtime)
 
     implementation(libs.bundles.jetbrains.kotlinx)
-    implementation(libs.google.cloud.functionsFrameworkApi)
     implementation(libs.google.firebase.admin)
 
     testImplementation(kotlin("test"))
     testImplementation(libs.jetbrains.kotlinx.coroutines.test)
-
-    add("invoker", libs.google.cloud.javaFunctionInvoker)
 }
 
 java {

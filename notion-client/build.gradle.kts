@@ -1,8 +1,19 @@
-import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinJvmCompilation
-
 plugins {
-    id("io.ashdavies.kotlin")
+    id("io.ashdavies.default")
     id("io.ashdavies.sql")
+}
+
+android {
+    namespace = "io.ashdavies.notion"
+
+    buildFeatures {
+        buildConfig = true
+    }
+
+    defaultConfig {
+        buildConfigString("NOTION_CLIENT_ID") { stringPropertyOrNull("notion.client.id") }
+        buildConfigString("NOTION_CLIENT_SECRET") { stringPropertyOrNull("notion.client.secret") }
+    }
 }
 
 kotlin {

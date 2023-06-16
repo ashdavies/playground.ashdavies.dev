@@ -15,10 +15,12 @@ private fun getPresenterFactories(): List<Presenter.Factory> = listOf(
     LauncherPresenterFactory(),
     EventsPresenterFactory(),
     DominionPresenterFactory(),
+    RatingsPresenterFactory(),
 )
 
 private fun getUiFactories(): List<Ui.Factory> = listOf(
     LauncherUiFactory(),
     EventsUiFactory(),
     DominionUiFactory(),
+    RatingsUiFactory(),
 )
