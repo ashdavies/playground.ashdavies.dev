@@ -90,6 +90,7 @@ jobs:
               ${{ contains(github.event.pull_request.labels.*.name, 'Dry Run') && '--dry-run' || '' }}
               --configuration-cache
               --console=plain
+              --stacktrace
               --info
             
       - name: Gradle Scan Link
