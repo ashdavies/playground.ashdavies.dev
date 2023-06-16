@@ -1,6 +1,7 @@
 @file:Suppress("DSL_SCOPE_VIOLATION") // https://github.com/gradle/gradle/issues/22797
 
 import com.diffplug.gradle.spotless.FormatExtension
+import com.diffplug.spotless.LineEnding
 
 buildscript {
     dependencies {
@@ -34,7 +35,7 @@ doctor {
     javaHome { failOnError.set(false) }
 }
 
-configure<com.diffplug.gradle.spotless.SpotlessExtension> {
+spotless {
     javascript {
         target("**/*.js")
         prettier()
@@ -82,5 +83,6 @@ configure<com.diffplug.gradle.spotless.SpotlessExtension> {
         target("src/main/terraform/**/*.tf")
     }
 
+    lineEndings = LineEnding.PLATFORM_NATIVE
     ratchetFrom = "origin/main"
 }
