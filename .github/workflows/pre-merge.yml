@@ -104,16 +104,16 @@ jobs:
             const message = `Build scan published to ${url}`;
             await comments.create(context, github, message);
 
-      - name: Produce Test Summary
+      - name: Test Summary
         uses: test-summary/action@v2
         with:
           paths: "**/build/test-results/test/TEST-*.xml"
         if: ${{ !contains(github.event.pull_request.labels.*.name, 'Dry Run') }}
 
-      - name: Upload Test Report
+      - name: Upload Reports
         uses: actions/upload-artifact@v3
         with:
           name: test-report
-          path: "**/build/reports/tests"
+          path: "**/build/reports"
           if-no-files-found: error
         if: ${{ !contains(github.event.pull_request.labels.*.name, 'Dry Run') }}

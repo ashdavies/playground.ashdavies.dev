@@ -90,4 +90,5 @@ spotless {
 
 tasks.withType<SpotlessTask> {
     notCompatibleWithConfigurationCache("https://github.com/diffplug/spotless/issues/1644")
+    onlyIf { !gradle.startParameter.isConfigurationCacheRequested }
 }
