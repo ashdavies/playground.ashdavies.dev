@@ -10,14 +10,16 @@ buildscript {
 }
 
 plugins {
+    fun classpath(notation: Provider<PluginDependency>) = alias(notation) apply false
+
     with(libs.plugins) {
-        alias(android.application) apply false
-        alias(android.library) apply false
-        alias(apollo.graphql) apply false
-        alias(google.services) apply false
-        alias(kotlin.compose) apply false
-        alias(kotlin.multiplatform) apply false
-        alias(kotlin.serialization) apply false
+        classpath(android.application)
+        classpath(android.library)
+        classpath(apollo.graphql)
+        classpath(google.services)
+        classpath(kotlin.compose)
+        classpath(kotlin.multiplatform)
+        classpath(kotlin.serialization)
 
         alias(dependency.analysis)
         alias(diffplug.spotless)
