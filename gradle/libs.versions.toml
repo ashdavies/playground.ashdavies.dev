@@ -48,7 +48,7 @@ google-cloud-bom = "com.google.cloud:libraries-bom:26.17.0"
 google-cloud-firestore = { module = "com.google.cloud:google-cloud-firestore" }
 google-cloud-storage = { module = "com.google.cloud:google-cloud-storage" }
 
-google-firebase-admin = "com.google.firebase:firebase-admin:9.1.1"
+google-firebase-admin = "com.google.firebase:firebase-admin:9.2.0"
 google-firebase-bom = "com.google.firebase:firebase-bom:32.1.1"
 google-firebase-analytics = { module = "com.google.firebase:firebase-analytics-ktx" }
 google-firebase-appcheck = { module = "com.google.firebase:firebase-appcheck" }
