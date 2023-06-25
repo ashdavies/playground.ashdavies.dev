@@ -17,9 +17,12 @@ plugins {
         classpath(android.library)
         classpath(apollo.graphql)
         classpath(google.services)
-        classpath(kotlin.compose)
-        classpath(kotlin.multiplatform)
-        classpath(kotlin.serialization)
+
+        with(kotlin) {
+            classpath(compose)
+            classpath(multiplatform)
+            classpath(serialization)
+        }
 
         alias(dependency.analysis)
         alias(diffplug.spotless)
