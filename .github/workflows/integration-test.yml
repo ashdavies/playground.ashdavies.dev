@@ -24,16 +24,19 @@ jobs:
       id-token: 'write'
 
     steps:
-      - name: Setup JDK
-        uses: actions/setup-java@v3
-        with:
-          distribution: temurin
-          java-version: 17
+      - name: Permissions Monitor
+        uses: GitHubSecurityLab/actions-permissions/monitor@v1
 
       - name: Checkout Repository
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
+
+      - name: Setup JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: 17
 
       - name: Google Cloud Auth
         uses: google-github-actions/auth@v1
