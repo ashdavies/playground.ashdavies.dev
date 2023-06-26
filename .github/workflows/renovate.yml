@@ -1,4 +1,4 @@
-name: Renovate
+name: Self-Hosted Renovate
 
 on:
   schedule:
