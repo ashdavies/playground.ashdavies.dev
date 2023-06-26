@@ -88,7 +88,6 @@ jobs:
           arguments: >
             build
               ${{ contains(github.event.pull_request.labels.*.name, 'Dry Run') && '--dry-run' || '' }}
-              --configuration-cache
               --console=plain
               --stacktrace
               --info
