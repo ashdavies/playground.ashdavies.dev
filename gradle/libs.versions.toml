@@ -121,18 +121,6 @@ sqldelight-coroutines-extensions = { module = "com.squareup.sqldelight:coroutine
 sqldelight-runtime = { module = "com.squareup.sqldelight:runtime", version.ref = "squareup-sqldelight" }
 sqldelight-sqlite-driver = { module = "com.squareup.sqldelight:sqlite-driver", version.ref = "squareup-sqldelight" }
 
-[bundles]
-androidx-activity = ["androidx-activity-compose", "androidx-activity-ktx"]
-paging-compose = ["paging-compose-common", "paging-compose-runtime"]
-google-firebase = ["google-firebase-analytics", "google-firebase-common-ktx"]
-google-maps = ["google-android-maps", "google-maps-android-compose", "google-maps-android-compose-widgets"]
-jetbrains-kotlin-test = ["jetbrains-kotlin-test", "jetbrains-kotlin-test-annotations", "jetbrains-kotlin-test-common", "jetbrains-kotlin-test-junit", "jetbrains-kotlinx-coroutines-test"]
-jetbrains-kotlinx = ["jetbrains-kotlinx-collections-immutable", "jetbrains-kotlinx-coroutines-core", "jetbrains-kotlinx-datetime", "jetbrains-kotlinx-serialization-core", "jetbrains-kotlinx-serialization-json"]
-ktor-client = ["ktor-client-content-negotiation", "ktor-client-core", "ktor-client-json", "ktor-client-logging", "ktor-client-okhttp3", "slf4j-simple"]
-ktor-serialization = ["ktor-serialization-json", "ktor-serialization-kotlinx"]
-ktor-server = ["ktor-server-auth", "ktor-server-call-logging", "ktor-server-cio", "ktor-server-compression", "ktor-server-conditional-headers", "ktor-server-content-negotiation", "ktor-server-core", "ktor-server-default-headers", "ktor-server-request-validation"]
-slack-circuit = ["slack-circuit-backstack", "slack-circuit-foundation", "slack-circuit-overlay", "slack-circuit-retained"]
-
 [plugins]
 android-application = { id = "com.android.application", version.ref = "google-android" }
 android-library = { id = "com.android.library", version.ref = "google-android" }

@@ -9,9 +9,11 @@ android {
 
 kotlin {
     commonMain.dependencies {
-        implementation(projects.cloudBackend.httpClient)
-        implementation(projects.notionClient)
-        implementation(projects.playgroundApp)
+        with(projects) {
+            implementation(cloudBackend.httpClient)
+            implementation(notionClient)
+            implementation(playgroundApp)
+        }
 
         implementation(libs.arkivanov.parcelable)
         implementation(libs.ktor.client.core)
@@ -19,6 +21,7 @@ kotlin {
     }
 
     androidMain.dependencies {
-        implementation(libs.bundles.androidx.activity)
+        implementation(libs.androidx.activity.compose)
+        implementation(libs.androidx.activity.ktx)
     }
 }
