@@ -21,21 +21,45 @@ kotlin {
     explicitApiWarning()
 
     jvmMain.dependencies {
-        implementation(projects.appCheck.appCheckSdk)
-        implementation(projects.cloudBackend.cloudFirestore)
-        implementation(projects.composeLocals)
-        implementation(projects.eventsAggregator)
-        implementation(projects.cloudBackend.httpClient)
-        implementation(projects.localStorage)
+        with(projects) {
+            implementation(appCheck.appCheckSdk)
+            implementation(cloudBackend.cloudFirestore)
+            implementation(composeLocals)
+            implementation(eventsAggregator)
+            implementation(cloudBackend.httpClient)
+            implementation(localStorage)
+        }
 
-        implementation(libs.bundles.jetbrains.kotlinx)
-        implementation(libs.bundles.ktor.serialization)
-        implementation(libs.bundles.ktor.server)
+        with(libs.google) {
+            implementation(dependencies.platform(cloud.bom))
+            implementation(cloud.firestore)
+            implementation(cloud.storage)
 
-        implementation(dependencies.platform(libs.google.cloud.bom))
-        implementation(libs.google.cloud.firestore)
-        implementation(libs.google.cloud.storage)
-        implementation(libs.google.firebase.admin)
+            implementation(firebase.admin)
+        }
+
+        with(libs.jetbrains.kotlinx) {
+            implementation(collections.immutable)
+            implementation(coroutines.core)
+            implementation(datetime)
+            implementation(serialization.core)
+            implementation(serialization.json)
+        }
+
+        implementation(libs.ktor.serialization.json)
+        implementation(libs.ktor.serialization.kotlinx)
+
+        with(libs.ktor.server) {
+            implementation(auth)
+            implementation(call.logging)
+            implementation(cio)
+            implementation(compression)
+            implementation(conditional.headers)
+            implementation(content.negotiation)
+            implementation(core)
+            implementation(default.headers)
+            implementation(request.validation)
+        }
     }
 
     jvmIntegrationTest.dependencies {

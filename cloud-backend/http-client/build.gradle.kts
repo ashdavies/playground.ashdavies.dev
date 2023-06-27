@@ -19,10 +19,19 @@ kotlin {
         dependencies {
             implementation(projects.localStorage)
 
-            implementation(libs.bundles.ktor.client)
-            implementation(libs.bundles.ktor.serialization)
-
             implementation(libs.jetbrains.kotlinx.serialization.properties)
+
+            with(libs.ktor.client) {
+                implementation(content.negotiation)
+                implementation(core)
+                implementation(json)
+                implementation(logging)
+                implementation(okhttp3)
+            }
+
+            implementation(libs.ktor.serialization.json)
+            implementation(libs.ktor.serialization.kotlinx)
+            implementation(libs.slf4j.simple)
         }
 
         kotlin.srcDir(tasks.openApiGenerate)
