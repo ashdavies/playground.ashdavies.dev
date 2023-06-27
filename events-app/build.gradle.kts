@@ -12,37 +12,53 @@ kotlin {
     commonMain.dependencies {
         implementation(compose.material)
 
-        implementation(projects.appCheck.appCheckClient)
-        implementation(projects.composeLocals)
-
-        implementation(projects.cloudBackend.httpClient)
-        implementation(projects.localStorage)
-        implementation(projects.playgroundApp)
-
-        implementation(libs.bundles.ktor.client)
-        implementation(libs.bundles.paging.compose)
+        with(projects) {
+            implementation(appCheck.appCheckClient)
+            implementation(composeLocals)
+            implementation(cloudBackend.httpClient)
+            implementation(localStorage)
+            implementation(playgroundApp)
+        }
 
         implementation(libs.arkivanov.parcelable)
+
+        with(libs.ktor.client) {
+            implementation(content.negotiation)
+            implementation(core)
+            implementation(json)
+            implementation(logging)
+            implementation(okhttp3)
+        }
+
+        implementation(libs.paging.compose.common)
+        implementation(libs.paging.compose.runtime)
+        implementation(libs.slf4j.simple)
         implementation(libs.slack.circuit.foundation)
         implementation(libs.sqldelight.coroutines.extensions)
     }
 
     androidMain.dependencies {
-        implementation(dependencies.platform(libs.google.firebase.bom))
         implementation(projects.firebaseCompose)
 
-        with(libs.bundles) {
-            implementation(androidx.activity)
-            implementation(google.firebase)
-            implementation(google.maps)
-        }
+        implementation(libs.androidx.activity.compose)
+        implementation(libs.androidx.activity.ktx)
 
         with(libs.google) {
+            implementation(android.maps)
             implementation(accompanist.flowlayout)
             implementation(accompanist.placeholderMaterial)
-            implementation(firebase.appcheck.playintegrity)
-            implementation(firebase.appcheck)
-            implementation(firebase.auth.ktx)
+
+            with(firebase) {
+                implementation(dependencies.platform(bom))
+                implementation(analytics)
+                implementation(appcheck.playintegrity)
+                implementation(appcheck)
+                implementation(auth.ktx)
+                implementation(common.ktx)
+            }
+
+            implementation(maps.android.compose)
+            implementation(maps.android.compose.widgets)
         }
     }
 

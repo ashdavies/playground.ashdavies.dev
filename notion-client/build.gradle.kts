@@ -5,6 +5,15 @@ plugins {
 
 android {
     namespace = "io.ashdavies.notion"
+
+    buildFeatures {
+        buildConfig = true
+    }
+
+    defaultConfig {
+        buildConfigString("NOTION_CLIENT_ID") { stringPropertyOrNull("notion.client.id") }
+        buildConfigString("NOTION_CLIENT_SECRET") { stringPropertyOrNull("notion.client.secret") }
+    }
 }
 
 kotlin {
@@ -12,11 +21,31 @@ kotlin {
         implementation(projects.localStorage)
         implementation(projects.sqlDriver)
 
-        implementation(libs.bundles.ktor.client)
-        implementation(libs.bundles.ktor.serialization)
-        implementation(libs.bundles.ktor.server)
+        with(libs.ktor.client) {
+            implementation(auth)
+            implementation(content.negotiation)
+            implementation(core)
+            implementation(json)
+            implementation(logging)
+            implementation(okhttp3)
+        }
 
-        implementation(libs.ktor.client.auth)
+        implementation(libs.ktor.serialization.json)
+        implementation(libs.ktor.serialization.kotlinx)
+
+        with(libs.ktor.server) {
+            implementation(auth)
+            implementation(call.logging)
+            implementation(cio)
+            implementation(compression)
+            implementation(conditional.headers)
+            implementation(content.negotiation)
+            implementation(core)
+            implementation(default.headers)
+            implementation(request.validation)
+        }
+
+        implementation(libs.slf4j.simple)
     }
 }
 
