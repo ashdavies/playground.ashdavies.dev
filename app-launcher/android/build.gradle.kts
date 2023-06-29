@@ -27,20 +27,27 @@ android {
 }
 
 dependencies {
-    implementation(platform(libs.google.firebase.bom))
-
-    implementation(libs.bundles.androidx.activity)
-    implementation(libs.bundles.google.firebase)
-
-    implementation(libs.androidx.core.splashscreen)
-    implementation(libs.google.accompanist.systemuicontroller)
-    implementation(libs.google.android.material)
-    implementation(libs.slack.circuit.foundation)
-    implementation(libs.slack.circuit.overlay)
-
     implementation(projects.appLauncher.common) {
         exclude(libs.paging.compose.common)
     }
 
     implementation(projects.firebaseCompose)
+
+    with(libs.androidx) {
+        implementation(libs.androidx.core.splashscreen)
+        implementation(libs.androidx.activity.compose)
+        implementation(libs.androidx.activity.ktx)
+    }
+
+    with(libs.google) {
+        implementation(accompanist.systemuicontroller)
+        implementation(android.material)
+
+        implementation(platform(firebase.bom))
+        implementation(firebase.analytics)
+        implementation(firebase.common.ktx)
+    }
+
+    implementation(libs.slack.circuit.foundation)
+    implementation(libs.slack.circuit.overlay)
 }

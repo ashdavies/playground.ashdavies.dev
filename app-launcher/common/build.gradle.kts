@@ -10,14 +10,23 @@ android {
 kotlin {
     commonMain.dependencies {
         implementation(compose.materialIconsExtended)
+
+        with(projects) {
+            implementation(dominionApp)
+            implementation(eventsApp)
+            implementation(ratingsApp)
+        }
+
         implementation(libs.arkivanov.parcelable)
         implementation(libs.slack.circuit.foundation)
-        implementation(projects.dominionApp)
-        implementation(projects.eventsApp)
-        implementation(projects.ratingsApp)
+    }
+
+    commonTest.dependencies {
+        implementation(libs.slack.circuit.test)
     }
 
     androidMain.dependencies {
-        implementation(libs.bundles.androidx.activity)
+        implementation(libs.androidx.activity.compose)
+        implementation(libs.androidx.activity.ktx)
     }
 }

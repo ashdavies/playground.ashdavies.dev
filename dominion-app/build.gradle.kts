@@ -14,17 +14,30 @@ kotlin {
         implementation(projects.playgroundApp)
 
         implementation(libs.arkivanov.parcelable)
-        implementation(libs.bundles.ktor.client)
+
+        with(libs.ktor.client) {
+            implementation(libs.ktor.client.content.negotiation)
+            implementation(libs.ktor.client.core)
+            implementation(libs.ktor.client.json)
+            implementation(libs.ktor.client.logging)
+            implementation(libs.ktor.client.okhttp3)
+        }
+
         implementation(libs.slack.circuit.foundation)
+        implementation(libs.slf4j.simple)
     }
 
     androidMain.dependencies {
-        implementation(dependencies.platform(libs.google.firebase.bom))
+        implementation(libs.androidx.activity.compose)
+        implementation(libs.androidx.activity.ktx)
 
-        implementation(libs.bundles.androidx.activity)
-        implementation(libs.bundles.google.firebase)
+        with(libs.google) {
+            implementation(accompanist.placeholderMaterial)
 
-        implementation(libs.google.accompanist.placeholderMaterial)
-        implementation(libs.google.firebase.auth.ktx)
+            implementation(dependencies.platform(firebase.bom))
+            implementation(firebase.analytics)
+            implementation(firebase.auth.ktx)
+            implementation(firebase.common.ktx)
+        }
     }
 }

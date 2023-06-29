@@ -17,6 +17,7 @@ plugins {
         classpath(android.library)
         classpath(apollo.graphql)
         classpath(google.services)
+        classpath(kotlinx.kover)
 
         with(kotlin) {
             classpath(compose)
@@ -27,9 +28,6 @@ plugins {
         alias(dependency.analysis)
         alias(diffplug.spotless)
         alias(gradle.doctor)
-
-        // alias(cash.molecule)
-        // alias(kotlinx.kover)
     }
 }
 
@@ -39,7 +37,7 @@ doctor {
     javaHome { failOnError.set(false) }
 }
 
-configure<com.diffplug.gradle.spotless.SpotlessExtension> {
+spotless {
     javascript {
         target("**/*.js")
         prettier()
