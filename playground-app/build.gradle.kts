@@ -8,19 +8,30 @@ android {
 
 kotlin {
     commonMain.dependencies {
-        implementation(projects.appCheck.appCheckClient)
+        with(projects) {
+            implementation(appCheck.appCheckClient)
+            implementation(cloudBackend.httpClient)
+            implementation(localStorage)
+        }
 
-        implementation(projects.cloudBackend.httpClient)
-        implementation(projects.localStorage)
-
-        implementation(libs.bundles.ktor.client)
         implementation(libs.jetbrains.kotlinx.collections.immutable)
+
+        with(libs.ktor.client) {
+            implementation(content.negotiation)
+            implementation(core)
+            implementation(json)
+            implementation(logging)
+            implementation(okhttp3)
+        }
+
+        implementation(libs.slf4j.simple)
     }
 
     androidMain.dependencies {
         implementation(projects.firebaseCompose)
 
-        implementation(libs.bundles.androidx.activity)
+        implementation(libs.androidx.activity.compose)
+        implementation(libs.androidx.activity.ktx)
         implementation(libs.jetbrains.kotlinx.coroutines.play)
 
         with(libs.google) {

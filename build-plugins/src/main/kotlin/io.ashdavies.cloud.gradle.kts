@@ -18,7 +18,14 @@ dependencies {
     implementation(compose.foundation)
     implementation(compose.runtime)
 
-    implementation(libs.bundles.jetbrains.kotlinx)
+    with(libs.jetbrains.kotlinx) {
+        implementation(collections.immutable)
+        implementation(coroutines.core)
+        implementation(datetime)
+        implementation(serialization.core)
+        implementation(serialization.json)
+    }
+
     implementation(libs.google.firebase.admin)
 
     testImplementation(kotlin("test"))

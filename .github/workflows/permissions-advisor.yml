@@ -1,4 +1,4 @@
-name: Permissions Advisor
+name: GitHub Permissions Advisor
 
 permissions:
   actions: read

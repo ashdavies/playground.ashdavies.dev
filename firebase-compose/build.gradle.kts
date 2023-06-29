@@ -12,7 +12,10 @@ kotlin {
     }
 
     androidMain.dependencies {
-        implementation(dependencies.platform(libs.google.firebase.bom))
-        implementation(libs.bundles.google.firebase)
+        with(libs.google.firebase) {
+            implementation(dependencies.platform(bom))
+            implementation(analytics)
+            implementation(common.ktx)
+        }
     }
 }
