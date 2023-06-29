@@ -59,8 +59,6 @@ google-firebase-auth-ktx = { module = "com.google.firebase:firebase-auth-ktx" }
 google-maps-android-compose = { module = "com.google.maps.android:maps-compose", version.ref = "google-maps-compose" }
 google-maps-android-compose-widgets = { module = "com.google.maps.android:maps-compose-widgets", version.ref = "google-maps-compose" }
 
-jakeWharton-mosaic-runtime = "com.jakewharton.mosaic:mosaic-runtime:0.6.0"
-
 jetbrains-compose-runtime = { module = "org.jetbrains.compose.runtime:runtime", version.ref = "jetbrains-compose" }
 jetbrains-kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "jetbrains-kotlin" }
 jetbrains-kotlin-test-annotations = { module = "org.jetbrains.kotlin:kotlin-test-annotations-common", version.ref = "jetbrains-kotlin" }
@@ -103,6 +101,9 @@ ktor-server-openapi = { module = "io.ktor:ktor-server-openapi", version.ref = "k
 ktor-server-request-validation = { module = "io.ktor:ktor-server-request-validation", version.ref = "ktor" }
 ktor-server-test-host = { module = "io.ktor:ktor-server-test-host", version.ref = "ktor" }
 
+molecule-runtime = "app.cash.molecule:molecule-runtime:0.10.0"
+mosaic-runtime = "com.jakewharton.mosaic:mosaic-runtime:0.6.0"
+
 paging-compose-common = { module = "app.cash.paging:paging-compose-common", version.ref = "paging-compose" }
 paging-compose-runtime = { module = "app.cash.paging:paging-runtime-composeui", version.ref = "paging-compose" }
 
@@ -125,7 +126,6 @@ sqldelight-sqlite-driver = { module = "com.squareup.sqldelight:sqlite-driver", v
 android-application = { id = "com.android.application", version.ref = "google-android" }
 android-library = { id = "com.android.library", version.ref = "google-android" }
 apollo-graphql = { id = "com.apollographql.apollo", version.ref = "apollo-graphql" }
-cash-molecule = { id = "app.cash.molecule", version = "0.10.0" }
 dependency-analysis = { id = "com.autonomousapps.dependency-analysis", version = "1.20.0" }
 diffplug-spotless = "com.diffplug.spotless:6.19.0"
 google-cloud-jib = "com.google.cloud.tools.jib:3.3.2"
