@@ -16,7 +16,6 @@ import io.ashdavies.playground.Event
 import io.ashdavies.playground.MultipleReferenceWarning
 import io.ashdavies.playground.details.DetailsScreen
 import io.ashdavies.playground.events.rememberEventPager
-import io.ashdavies.playground.kotlin.asCloseableFlow
 
 @Parcelize
 internal object ActivityScreen : Parcelable, Screen {
@@ -36,10 +35,7 @@ internal fun ActivityPresenter(
     navigator: Navigator,
     eventPager: Pager<String, Event> = rememberEventPager(),
 ): ActivityScreen.State {
-    val pagingData = eventPager.flow
-        .cachedIn(rememberCoroutineScope())
-        .asCloseableFlow()
-
+    val pagingData = eventPager.flow.cachedIn(rememberCoroutineScope())
     return ActivityScreen.State(pagingData.collectAsLazyPagingItems()) {
         if (it is ActivityScreen.Event.Details) navigator.goTo(DetailsScreen(it.eventId))
     }
