@@ -19,7 +19,6 @@ kotlin {
             implementation(notionClient)
         }
 
-        implementation(libs.jakeWharton.mosaic.runtime)
         implementation(libs.jetbrains.kotlinx.cli)
         implementation(libs.jraf.klibnotion)
 
@@ -47,6 +46,7 @@ kotlin {
             implementation(request.validation)
         }
 
+        implementation(libs.mosaic.runtime)
         implementation(libs.qos.logbackClassic)
     }
 

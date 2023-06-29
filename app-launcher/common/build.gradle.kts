@@ -21,6 +21,10 @@ kotlin {
         implementation(libs.slack.circuit.foundation)
     }
 
+    commonTest.dependencies {
+        implementation(libs.slack.circuit.test)
+    }
+
     androidMain.dependencies {
         implementation(libs.androidx.activity.compose)
         implementation(libs.androidx.activity.ktx)

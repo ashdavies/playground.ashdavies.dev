@@ -70,10 +70,7 @@ internal fun LauncherPresenter(navigator: Navigator): LauncherScreen.State {
 }
 
 internal fun LauncherPresenterFactory() = Presenter.Factory { screen, navigator, _ ->
-    when (screen) {
-        is LauncherScreen -> presenterOf { LauncherPresenter(navigator) }
-        else -> null
-    }
+    if (screen is LauncherScreen) presenterOf { LauncherPresenter(navigator) } else null
 }
 
 public fun buildInitialBackStack(initialScreen: String? = null): List<Screen> {
