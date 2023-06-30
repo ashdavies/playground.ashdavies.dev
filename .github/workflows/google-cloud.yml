@@ -41,6 +41,8 @@ jobs:
 
       - name: Checkout Repository
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
       - name: Setup JDK
         uses: actions/setup-java@v3
@@ -101,7 +103,8 @@ jobs:
           ./gradlew cloud-backend:google-cloud:terraformShowText \
             ${{ contains(github.event.pull_request.labels.*.name, 'Dry Run') && '--dry-run' || '' }} \
             ${{ inputs.debug && '--debug' || '--info' }} \
-            --console=plain
+            --console=plain \
+            --stacktrace
 
       - name: Show Terraform Plan
         uses: actions/github-script@v6
