@@ -13,6 +13,16 @@ jobs:
     - name: Setup Gradle
       uses: gradle/gradle-build-action@v2
 
+    - name: Google Cloud Auth
+      id: google_cloud_auth
+      uses: google-github-actions/auth@v1
+      with:
+        workload_identity_provider: ${{ secrets.GOOGLE_WORKLOAD_IDENTITY }}
+        service_account: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
+
+    - name: Setup Cloud SDK
+      uses: google-github-actions/setup-gcloud@v1
+
     - name: Setup JDK
       uses: actions/setup-java@v3
       with:
