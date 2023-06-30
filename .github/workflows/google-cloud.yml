@@ -36,11 +36,13 @@ jobs:
       id-token: write
 
     steps:
-      - name: Permissions Monitor
-        uses: GitHubSecurityLab/actions-permissions/monitor@v1
+#     - name: Permissions Monitor
+#       uses: GitHubSecurityLab/actions-permissions/monitor@v1
 
       - name: Checkout Repository
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
       - name: Setup JDK
         uses: actions/setup-java@v3
@@ -89,7 +91,6 @@ jobs:
             --image=europe-west1-docker.pkg.dev/${{ steps.google_cloud_auth.outputs.project_id }}/cloud-run-source-deploy/playground.ashdavies.dev \
             ${{ contains(github.event.pull_request.labels.*.name, 'Dry Run') && '--dry-run' || '' }} \
             ${{ inputs.debug && '--debug' || '--info' }} \
-            --no-configuration-cache \
             --console=plain \
 
       - name: Generate Terraform Plan
@@ -102,8 +103,8 @@ jobs:
           ./gradlew cloud-backend:google-cloud:terraformShowText \
             ${{ contains(github.event.pull_request.labels.*.name, 'Dry Run') && '--dry-run' || '' }} \
             ${{ inputs.debug && '--debug' || '--info' }} \
-            --no-configuration-cache \
-            --console=plain
+            --console=plain \
+            --stacktrace
 
       - name: Show Terraform Plan
         uses: actions/github-script@v6
@@ -114,7 +115,7 @@ jobs:
             const comments = require('./.github/workflows/scripts/comments.js');
             const fs = require('fs/promises');
             
-            const body = await fs.readFile('google-cloud/build/terraform/main/plan.txt', 'utf8');
+            const body = await fs.readFile('cloud-backend/google-cloud/build/terraform/main/plan.txt', 'utf8');
             await comments.create(context, github, `\`\`\`${body}\`\`\``);
 
       - name: Apply Terraform Plan
@@ -127,7 +128,6 @@ jobs:
           ./gradlew cloud-backend:google-cloud:terraformApply \
             ${{ contains(github.event.pull_request.labels.*.name, 'Dry Run') && '--dry-run' || '' }} \
             ${{ inputs.debug && '--debug' || '--info' }} \
-            --no-configuration-cache \
             --console=plain \
             -Ptf.apply
 
