@@ -92,7 +92,6 @@ jobs:
             build -p app-launcher
               ${{ contains(github.event.pull_request.labels.*.name, 'Dry Run') && '--dry-run' || '' }}
               --console=plain
-              --stacktrace
               --info
             
       - name: Gradle Scan Link
@@ -106,16 +105,16 @@ jobs:
             const message = `Build scan published to ${url}`;
             await comments.create(context, github, message);
 
-      - name: Test Summary
+      - name: Produce Test Summary
         uses: test-summary/action@v2
         with:
           paths: "**/build/test-results/test/TEST-*.xml"
         if: ${{ !contains(github.event.pull_request.labels.*.name, 'Dry Run') }}
 
-      - name: Upload Reports
+      - name: Upload Test Report
         uses: actions/upload-artifact@v3
         with:
           name: test-report
-          path: "**/build/reports"
+          path: "**/build/reports/tests"
           if-no-files-found: error
         if: ${{ !contains(github.event.pull_request.labels.*.name, 'Dry Run') }}

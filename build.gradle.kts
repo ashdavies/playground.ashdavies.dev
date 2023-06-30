@@ -1,8 +1,6 @@
 @file:Suppress("DSL_SCOPE_VIOLATION") // https://github.com/gradle/gradle/issues/22797
 
 import com.diffplug.gradle.spotless.FormatExtension
-import com.diffplug.gradle.spotless.SpotlessTask
-import com.diffplug.spotless.LineEnding
 
 buildscript {
     dependencies {
@@ -87,11 +85,5 @@ spotless {
         target("src/main/terraform/**/*.tf")
     }
 
-    lineEndings = LineEnding.PLATFORM_NATIVE
     ratchetFrom = "origin/main"
-}
-
-tasks.withType<SpotlessTask> {
-    notCompatibleWithConfigurationCache("https://github.com/diffplug/spotless/issues/1644")
-    onlyIf { !gradle.startParameter.isConfigurationCacheRequested }
 }
