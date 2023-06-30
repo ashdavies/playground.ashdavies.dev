@@ -11,5 +11,9 @@ jobs:
       uses: actions/checkout@v2
     - name: Setup Gradle
       uses: gradle/gradle-build-action@v2
+    - name: Decrypt Google Services
+      env:
+        GOOGLE_SERVICES_PASSPHRASE: ${{ secrets.google_services_passphrase }}
+      run: find . -type f -name "google-services.aes" -exec sh -c 'openssl aes-256-cbc -md sha256 -d -in "$0" -out "${0%.aes*}.json" -k "${GOOGLE_SERVICES_PASSPHRASE}"' {} \;
     - name: Run build with Gradle Wrapper
       run: ./gradlew build
