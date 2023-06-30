@@ -91,7 +91,7 @@ jobs:
           MOBILE_SDK_APP_ID: ${{ secrets.mobile_sdk_app_id }}
           PLAYGROUND_API_KEY: ${{ secrets.PLAYGROUND_API_KEY }}
         run: |-
-          build -p app-launcher
+          ./gradlew build -p app-launcher
             ${{ contains(github.event.pull_request.labels.*.name, 'Dry Run') && '--dry-run' || '' }}
             --console=plain
             --info
