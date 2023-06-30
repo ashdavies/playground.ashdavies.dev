@@ -11,8 +11,13 @@ jobs:
       id-token: 'write'
 
     steps:
-    - name: Checkout project sources
-      uses: actions/checkout@v2
+    - name: Permissions Monitor
+      uses: GitHubSecurityLab/actions-permissions/monitor@v1
+
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
 
     - name: Setup Gradle
       uses: gradle/gradle-build-action@v2
