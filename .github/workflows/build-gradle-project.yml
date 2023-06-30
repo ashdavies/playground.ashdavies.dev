@@ -6,6 +6,10 @@ on:
 jobs:
   build-gradle-project:
     runs-on: ubuntu-latest
+
+    permissions:
+      id-token: 'write'
+
     steps:
     - name: Checkout project sources
       uses: actions/checkout@v2
