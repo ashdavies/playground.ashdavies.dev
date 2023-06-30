@@ -115,7 +115,7 @@ jobs:
             const comments = require('./.github/workflows/scripts/comments.js');
             const fs = require('fs/promises');
             
-            const body = await fs.readFile('google-cloud/build/terraform/main/plan.txt', 'utf8');
+            const body = await fs.readFile('cloud-backend/google-cloud/build/terraform/main/plan.txt', 'utf8');
             await comments.create(context, github, `\`\`\`${body}\`\`\``);
 
       - name: Apply Terraform Plan
