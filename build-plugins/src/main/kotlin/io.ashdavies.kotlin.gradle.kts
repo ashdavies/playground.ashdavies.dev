@@ -10,13 +10,33 @@ kotlin {
     jvm()
 
     commonMain.dependencies {
-        implementation(libs.bundles.jetbrains.kotlinx)
+        with(libs.jetbrains.kotlinx) {
+            implementation(collections.immutable)
+            implementation(coroutines.core)
+            implementation(datetime)
+            implementation(serialization.core)
+            implementation(serialization.json)
+        }
     }
 
     commonTest.dependencies {
         implementation(libs.app.cash.turbine)
-        implementation(libs.bundles.jetbrains.kotlin.test)
-        implementation(libs.bundles.jetbrains.kotlinx)
+
+        with(libs.jetbrains.kotlin) {
+            implementation(test)
+            implementation(test.annotations)
+            implementation(test.common)
+            implementation(test.junit)
+        }
+
+        with(libs.jetbrains.kotlinx) {
+            implementation(collections.immutable)
+            implementation(coroutines.core)
+            implementation(coroutines.test)
+            implementation(datetime)
+            implementation(serialization.core)
+            implementation(serialization.json)
+        }
     }
 
     jvmMain.dependencies {
@@ -30,3 +50,5 @@ tasks.withType<KotlinCompile> {
     kotlinOptions.freeCompilerArgs += Playground.freeCompilerArgs
     kotlinOptions.jvmTarget = "${Playground.jvmTarget}"
 }
+
+apply(plugin = "org.jetbrains.kotlinx.kover")

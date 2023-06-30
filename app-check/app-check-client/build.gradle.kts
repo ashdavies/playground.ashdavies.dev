@@ -8,11 +8,21 @@ android {
 
 kotlin {
     commonMain.dependencies {
-        implementation(projects.appCheck.appCheckCommon)
-        implementation(projects.firebaseCompose)
-        implementation(projects.cloudBackend.httpClient)
+        with(projects) {
+            implementation(appCheck.appCheckCommon)
+            implementation(firebaseCompose)
+            implementation(cloudBackend.httpClient)
+        }
 
-        implementation(libs.bundles.ktor.client)
+        with(libs.ktor.client) {
+            implementation(content.negotiation)
+            implementation(core)
+            implementation(json)
+            implementation(logging)
+            implementation(okhttp3)
+        }
+
+        implementation(libs.slf4j.simple)
     }
 
     androidDebug.dependencies {
@@ -20,7 +30,10 @@ kotlin {
     }
 
     androidMain.dependencies {
-        implementation(libs.bundles.google.firebase)
-        implementation(libs.google.firebase.appcheck.playintegrity)
+        with(libs.google.firebase) {
+            implementation(analytics)
+            implementation(common.ktx)
+            implementation(appcheck.playintegrity)
+        }
     }
 }

@@ -30,6 +30,9 @@ jobs:
       id-token: 'write'
 
     steps:
+      - name: Permissions Monitor
+        uses: GitHubSecurityLab/actions-permissions/monitor@v1
+
       - name: Checkout Repository
         uses: actions/checkout@v3
         with:
@@ -86,7 +89,7 @@ jobs:
         with:
           gradle-home-cache-cleanup: true
           arguments: >
-            build
+            build -p app-launcher
               ${{ contains(github.event.pull_request.labels.*.name, 'Dry Run') && '--dry-run' || '' }}
               --console=plain
               --stacktrace

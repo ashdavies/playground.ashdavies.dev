@@ -1,4 +1,4 @@
-name: Renovate
+name: Self-Hosted Renovate
 
 on:
   schedule:
@@ -22,6 +22,9 @@ jobs:
   renovate:
     runs-on: ubuntu-latest
     steps:
+      - name: Permissions Monitor
+        uses: GitHubSecurityLab/actions-permissions/monitor@v1
+
       - name: Checkout
         uses: actions/checkout@v3.5.2
 

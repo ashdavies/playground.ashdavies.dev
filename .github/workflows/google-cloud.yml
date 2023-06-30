@@ -36,6 +36,12 @@ jobs:
       id-token: write
 
     steps:
+      - name: Permissions Monitor
+        uses: GitHubSecurityLab/actions-permissions/monitor@v1
+
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
       - name: Setup JDK
         uses: actions/setup-java@v3
         with:
@@ -48,9 +54,6 @@ jobs:
         with:
           private_key: ${{ secrets.PRIVATE_KEY }}
           app_id: ${{ secrets.APP_ID }}
-
-      - name: Checkout Repository
-        uses: actions/checkout@v3
 
       - name: Google Cloud Auth
         id: google_cloud_auth

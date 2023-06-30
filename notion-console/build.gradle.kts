@@ -13,18 +13,40 @@ application {
 
 kotlin {
     commonMain.dependencies {
-        implementation(projects.composeLocals)
-        implementation(projects.localStorage)
-        implementation(projects.notionClient)
+        with(projects) {
+            implementation(composeLocals)
+            implementation(localStorage)
+            implementation(notionClient)
+        }
 
-        implementation(libs.bundles.ktor.client)
-        implementation(libs.bundles.ktor.serialization)
-        implementation(libs.bundles.ktor.server)
-
-        implementation(libs.jakeWharton.mosaic.runtime)
         implementation(libs.jetbrains.kotlinx.cli)
         implementation(libs.jraf.klibnotion)
-        implementation(libs.ktor.client.auth)
+
+        with(libs.ktor.client) {
+            implementation(auth)
+            implementation(content.negotiation)
+            implementation(core)
+            implementation(json)
+            implementation(logging)
+            implementation(okhttp3)
+        }
+
+        implementation(libs.ktor.serialization.json)
+        implementation(libs.ktor.serialization.kotlinx)
+
+        with(libs.ktor.server) {
+            implementation(auth)
+            implementation(call.logging)
+            implementation(cio)
+            implementation(compression)
+            implementation(conditional.headers)
+            implementation(content.negotiation)
+            implementation(core)
+            implementation(default.headers)
+            implementation(request.validation)
+        }
+
+        implementation(libs.mosaic.runtime)
         implementation(libs.qos.logbackClassic)
     }
 
