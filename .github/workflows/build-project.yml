@@ -1,4 +1,4 @@
-name: Pre Merge Checks
+name: Build Project Modules
 
 on:
   push:
@@ -35,8 +35,6 @@ jobs:
 
       - name: Checkout Repository
         uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
 
       - name: Delete Bot Comments
         uses: actions/github-script@v6
@@ -77,31 +75,34 @@ jobs:
           GOOGLE_SERVICES_PASSPHRASE: ${{ secrets.google_services_passphrase }}
         run: find . -type f -name "google-services.aes" -exec sh -c 'openssl aes-256-cbc -md sha256 -d -in "$0" -out "${0%.aes*}.json" -k "${GOOGLE_SERVICES_PASSPHRASE}"' {} \;
 
-      - name: Run Gradle Tasks
-        id: gradle
+      - name: Setup Gradle Build
         uses: gradle/gradle-build-action@v2
+        with:
+          gradle-home-cache-cleanup: true
+
+      - name: Run Gradle Tasks
+        id: gradle_build
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GOOGLE_PROJECT_API_KEY: ${{ secrets.google_project_api_key }}
           GOOGLE_SERVICE_ACCOUNT_ID: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
           MOBILE_SDK_APP_ID: ${{ secrets.mobile_sdk_app_id }}
           PLAYGROUND_API_KEY: ${{ secrets.PLAYGROUND_API_KEY }}
-        with:
-          gradle-home-cache-cleanup: true
-          arguments: >
-            build -p app-launcher
-              ${{ contains(github.event.pull_request.labels.*.name, 'Dry Run') && '--dry-run' || '' }}
-              --console=plain
-              --info
+        run: |-
+          ./gradlew build -p app-launcher \
+            ${{ contains(github.event.pull_request.labels.*.name, 'Dry Run') && '--dry-run' || '' }} \
+            -x spotlessCheck `# https://github.com/diffplug/spotless/issues/1644` \
+            --console=plain \
+            --info
             
       - name: Gradle Scan Link
         uses: actions/github-script@v6
-        if: ${{ github.event_name == 'pull_request' && steps.gradle.outputs.build-scan-url }}
+        if: ${{ github.event_name == 'pull_request' && steps.gradle_build.outputs.build-scan-url }}
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const comments = require('./.github/workflows/scripts/comments.js');
-            const url = `${{ steps.gradle.outputs.build-scan-url }}`;
+            const url = `${{ steps.gradle_build.outputs.build-scan-url }}`;
             const message = `Build scan published to ${url}`;
             await comments.create(context, github, message);
 
@@ -118,3 +119,29 @@ jobs:
           path: "**/build/reports/tests"
           if-no-files-found: error
         if: ${{ !contains(github.event.pull_request.labels.*.name, 'Dry Run') }}
+
+  spotless:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Setup JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Setup Gradle Build
+        uses: gradle/gradle-build-action@v2
+        with:
+          gradle-home-cache-cleanup: true
+
+      - name: Run Gradle Tasks
+        run: |-
+          ./gradlew spotlessCheck \
+            ${{ contains(github.event.pull_request.labels.*.name, 'Dry Run') && '--dry-run' || '' }} \
+            --console=plain \
+            --info

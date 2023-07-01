@@ -41,8 +41,6 @@ jobs:
 
       - name: Checkout Repository
         uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
 
       - name: Setup JDK
         uses: actions/setup-java@v3
@@ -77,6 +75,8 @@ jobs:
 
       - name: Setup Gradle Build
         uses: gradle/gradle-build-action@v2
+        with:
+          gradle-home-cache-cleanup: true
 
       - name: Containerize Cloud Run
         env:
@@ -86,10 +86,11 @@ jobs:
           MOBILE_SDK_APP_ID: ${{ secrets.mobile_sdk_app_id }}
           PLAYGROUND_API_KEY: ${{ secrets.PLAYGROUND_API_KEY }}
         if: ${{ github.ref == 'refs/heads/main' }}
-        run: |
+        run: |-
           ./gradlew cloud-backend:cloud-run:jib \
             --image=europe-west1-docker.pkg.dev/${{ steps.google_cloud_auth.outputs.project_id }}/cloud-run-source-deploy/playground.ashdavies.dev \
             ${{ contains(github.event.pull_request.labels.*.name, 'Dry Run') && '--dry-run' || '' }} \
+            -x spotlessCheck `# https://github.com/diffplug/spotless/issues/1644` \
             ${{ inputs.debug && '--debug' || '--info' }} \
             --console=plain \
 
@@ -102,6 +103,7 @@ jobs:
         run: |
           ./gradlew cloud-backend:google-cloud:terraformShowText \
             ${{ contains(github.event.pull_request.labels.*.name, 'Dry Run') && '--dry-run' || '' }} \
+            -x spotlessCheck `# https://github.com/diffplug/spotless/issues/1644` \
             ${{ inputs.debug && '--debug' || '--info' }} \
             --console=plain \
             --stacktrace
@@ -127,6 +129,7 @@ jobs:
         run: |
           ./gradlew cloud-backend:google-cloud:terraformApply \
             ${{ contains(github.event.pull_request.labels.*.name, 'Dry Run') && '--dry-run' || '' }} \
+            -x spotlessCheck `# https://github.com/diffplug/spotless/issues/1644` \
             ${{ inputs.debug && '--debug' || '--info' }} \
             --console=plain \
             -Ptf.apply
