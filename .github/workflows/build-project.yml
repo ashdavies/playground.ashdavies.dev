@@ -143,5 +143,6 @@ jobs:
         run: |-
           ./gradlew spotlessCheck \
             ${{ contains(github.event.pull_request.labels.*.name, 'Dry Run') && '--dry-run' || '' }} \
+            --no-configuration-cache \
             --console=plain \
             --info
