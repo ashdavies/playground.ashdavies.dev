@@ -134,6 +134,13 @@ jobs:
           distribution: temurin
           java-version: 17
 
+      - name: Google Cloud Auth
+        id: google_cloud_auth
+        uses: google-github-actions/auth@v1
+        with:
+          workload_identity_provider: ${{ secrets.GOOGLE_WORKLOAD_IDENTITY }}
+          service_account: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
+
       - name: Setup Gradle Build
         uses: gradle/gradle-build-action@v2
         with:
