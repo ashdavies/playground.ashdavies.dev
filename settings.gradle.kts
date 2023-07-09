@@ -46,11 +46,11 @@ include(
     ":events-aggregator",
     ":events-app",
     ":firebase-compose",
+    ":image-loader",
     ":local-storage",
     ":notion-client",
     ":notion-console",
     ":parcelable-support",
-    ":playground-app",
     ":ratings-app",
     ":sql-driver",
 )

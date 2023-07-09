@@ -16,8 +16,8 @@ kotlin {
             implementation(appCheck.appCheckClient)
             implementation(composeLocals)
             implementation(cloudBackend.httpClient)
+            implementation(imageLoader)
             implementation(localStorage)
-            implementation(playgroundApp)
         }
 
         implementation(libs.arkivanov.parcelable)
