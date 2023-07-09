@@ -16,7 +16,8 @@ internal class LauncherActivity : KotlinActivity({
     val circuitConfig = CircuitConfig()
 
     setContent {
-        val systemUiController = rememberSystemUiController()
+        val systemUiController =
+            rememberSystemUiController()
         val colorScheme = dynamicColorScheme()
 
         val primaryContainer = colorScheme.primaryContainer
