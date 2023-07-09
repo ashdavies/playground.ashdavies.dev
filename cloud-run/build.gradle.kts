@@ -23,10 +23,10 @@ kotlin {
     jvmMain.dependencies {
         with(projects) {
             implementation(appCheck.appCheckSdk)
-            implementation(cloudBackend.cloudFirestore)
+            implementation(cloudFirestore)
             implementation(composeLocals)
+            implementation(httpClient)
             implementation(eventsAggregator)
-            implementation(cloudBackend.httpClient)
             implementation(localStorage)
         }
 

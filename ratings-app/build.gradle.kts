@@ -10,7 +10,7 @@ android {
 kotlin {
     commonMain.dependencies {
         with(projects) {
-            implementation(cloudBackend.httpClient)
+            implementation(httpClient)
             implementation(imageLoader)
             implementation(notionClient)
         }
