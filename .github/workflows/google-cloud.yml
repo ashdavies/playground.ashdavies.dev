@@ -87,7 +87,7 @@ jobs:
           PLAYGROUND_API_KEY: ${{ secrets.PLAYGROUND_API_KEY }}
         if: ${{ github.ref == 'refs/heads/main' }}
         run: |
-          ./gradlew cloud-backend:cloud-run:jib \
+          ./gradlew cloud-run:jib \
             --image=europe-west1-docker.pkg.dev/${{ steps.google_cloud_auth.outputs.project_id }}/cloud-run-source-deploy/playground.ashdavies.dev \
             ${{ contains(github.event.pull_request.labels.*.name, 'Dry Run') && '--dry-run' || '' }} \
             ${{ inputs.debug && '--debug' || '--info' }} \
@@ -100,7 +100,7 @@ jobs:
           TF_LOG: ${{ inputs.debug && 'DEBUG' || 'ERROR' }}
         if: ${{ github.event_name == 'pull_request' }}
         run: |
-          ./gradlew cloud-backend:google-cloud:terraformShowText \
+          ./gradlew google-cloud:terraformShowText \
             ${{ contains(github.event.pull_request.labels.*.name, 'Dry Run') && '--dry-run' || '' }} \
             ${{ inputs.debug && '--debug' || '--info' }} \
             --console=plain \
@@ -115,7 +115,7 @@ jobs:
             const comments = require('./.github/workflows/scripts/comments.js');
             const fs = require('fs/promises');
             
-            const body = await fs.readFile('cloud-backend/google-cloud/build/terraform/main/plan.txt', 'utf8');
+            const body = await fs.readFile('google-cloud/build/terraform/main/plan.txt', 'utf8');
             await comments.create(context, github, `\`\`\`${body}\`\`\``);
 
       - name: Apply Terraform Plan
@@ -125,7 +125,7 @@ jobs:
           TF_LOG: ${{ inputs.debug && 'DEBUG' || 'ERROR' }}
         if: ${{ github.ref == 'refs/heads/main' }}
         run: |
-          ./gradlew cloud-backend:google-cloud:terraformApply \
+          ./gradlew google-cloud:terraformApply \
             ${{ contains(github.event.pull_request.labels.*.name, 'Dry Run') && '--dry-run' || '' }} \
             ${{ inputs.debug && '--debug' || '--info' }} \
             --console=plain \
