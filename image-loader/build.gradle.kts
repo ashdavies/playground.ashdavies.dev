@@ -8,7 +8,7 @@ android {
 
 kotlin {
     commonMain.dependencies {
-        implementation(projects.cloudBackend.httpClient)
+        implementation(projects.httpClient)
         implementation(libs.ktor.client.core)
     }
 }

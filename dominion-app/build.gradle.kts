@@ -10,7 +10,7 @@ android {
 kotlin {
     commonMain.dependencies {
         implementation(projects.appCheck.appCheckClient)
-        implementation(projects.cloudBackend.httpClient)
+        implementation(projects.httpClient)
         implementation(projects.imageLoader)
 
         implementation(libs.arkivanov.parcelable)
