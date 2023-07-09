@@ -55,14 +55,14 @@ stateDiagram-v2
 
     DominionApp --> AppCheckClient
     DominionApp --> HttpClient
-    DominionApp --> PlaygroundApp
+    DominionApp --> ImageLoader
 
     EventsApp --> AppCheckClient
     EventsApp --> Auth0Auth
     EventsApp --> ComposeLocals
     EventsApp --> HttpClient
+    EventsApp --> ImageLoader
     EventsApp --> LocalStorage
-    EventsApp --> PlaygroundApp
 ```
 
 ## Modules

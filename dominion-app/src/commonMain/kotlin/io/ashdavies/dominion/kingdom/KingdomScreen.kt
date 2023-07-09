@@ -33,10 +33,10 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
 import io.ashdavies.dominion.DominionCard
 import io.ashdavies.dominion.DominionExpansion
+import io.ashdavies.dominion.layout.windowInsetsPadding
 import io.ashdavies.http.onLoading
 import io.ashdavies.http.produceStateInline
 import io.ashdavies.playground.RemoteImage
-import io.ashdavies.playground.windowInsetsPadding
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)

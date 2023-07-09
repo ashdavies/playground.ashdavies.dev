@@ -11,8 +11,8 @@ kotlin {
     commonMain.dependencies {
         with(projects) {
             implementation(cloudBackend.httpClient)
+            implementation(imageLoader)
             implementation(notionClient)
-            implementation(playgroundApp)
         }
 
         implementation(libs.arkivanov.parcelable)
