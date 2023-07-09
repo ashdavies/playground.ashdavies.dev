@@ -89,11 +89,11 @@ jobs:
         with:
           gradle-home-cache-cleanup: true
           arguments: >
-            build -p app-launcher
+            build
               ${{ contains(github.event.pull_request.labels.*.name, 'Dry Run') && '--dry-run' || '' }}
               --console=plain
               --info
-            
+
       - name: Gradle Scan Link
         uses: actions/github-script@v6
         if: ${{ github.event_name == 'pull_request' && steps.gradle.outputs.build-scan-url }}
