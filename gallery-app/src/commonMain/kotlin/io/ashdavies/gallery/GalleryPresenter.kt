@@ -3,7 +3,6 @@ package io.ashdavies.gallery
 import androidx.compose.runtime.Composable
 import com.arkivanov.essenty.parcelable.Parcelable
 import com.arkivanov.essenty.parcelable.Parcelize
-import com.slack.circuit.runtime.CircuitContext
 import com.slack.circuit.runtime.CircuitUiEvent
 import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.Navigator
@@ -37,45 +36,31 @@ internal object CameraScreen : Parcelable, Screen {
     ) : CircuitUiState
 }
 
-public class GalleryPresenterFactory : Presenter.Factory {
-    override fun create(
-        screen: Screen,
-        navigator: Navigator,
-        context: CircuitContext,
-    ): Presenter<*>? = when (screen) {
+public fun GalleryPresenterFactory(): Presenter.Factory = Presenter.Factory { screen, navigator, _ ->
+    when (screen) {
         is GalleryScreen -> presenterOf { GalleryPresenter(navigator) }
         is CameraScreen -> presenterOf { CameraPresenter(navigator) }
         else -> null
     }
 }
 
-public class GalleryUiFactory : Ui.Factory {
-    override fun create(screen: Screen, context: CircuitContext): Ui<*>? = when (screen) {
-        is GalleryScreen -> ui<GalleryScreen.State> { state, modifier ->
-            GalleryScreen(state, modifier)
-        }
-
-        is CameraScreen -> ui<CameraScreen.State> { state, modifier ->
-            CameraScreen(state, modifier)
-        }
-
+public fun GalleryUiFactory(): Ui.Factory = Ui.Factory { screen, _ ->
+    when (screen) {
+        is GalleryScreen -> ui<GalleryScreen.State> { state, modifier -> GalleryScreen(state, modifier) }
+        is CameraScreen -> ui<CameraScreen.State> { state, modifier -> CameraScreen(state, modifier) }
         else -> null
     }
 }
 
 @Composable
-internal fun GalleryPresenter(
-    navigator: Navigator,
-) = GalleryScreen.State {
+internal fun GalleryPresenter(navigator: Navigator) = GalleryScreen.State {
     when (it) {
         is GalleryScreen.Event.Capture -> navigator.goTo(CameraScreen)
         is GalleryScreen.Event.Pop -> navigator.pop()
     }
 }
 
-internal fun CameraPresenter(
-    navigator: Navigator,
-) = CameraScreen.State {
+internal fun CameraPresenter(navigator: Navigator) = CameraScreen.State {
     when (it) {
         is CameraScreen.Event.Result -> TODO()
         is CameraScreen.Event.Pop -> navigator.pop()

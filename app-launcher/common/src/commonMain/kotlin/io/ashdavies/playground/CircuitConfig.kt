@@ -8,23 +8,25 @@ import io.ashdavies.dominion.DominionUiFactory
 import io.ashdavies.gallery.GalleryPresenterFactory
 import io.ashdavies.gallery.GalleryUiFactory
 
+private val presenterFactories: List<Presenter.Factory>
+    get() = listOf(
+        DominionPresenterFactory(),
+        EventsPresenterFactory(),
+        GalleryPresenterFactory(),
+        LauncherPresenterFactory(),
+        RatingsPresenterFactory(),
+    )
+
+private val uiFactories: List<Ui.Factory>
+    get() = listOf(
+        DominionUiFactory(),
+        EventsUiFactory(),
+        GalleryUiFactory(),
+        LauncherUiFactory(),
+        RatingsUiFactory(),
+    )
+
 public fun CircuitConfig(): CircuitConfig = CircuitConfig.Builder()
-    .addPresenterFactories(getPresenterFactories())
-    .addUiFactories(getUiFactories())
+    .addPresenterFactories(presenterFactories)
+    .addUiFactories(uiFactories)
     .build()
-
-private fun getPresenterFactories(): List<Presenter.Factory> = listOf(
-    DominionPresenterFactory(),
-    EventsPresenterFactory(),
-    GalleryPresenterFactory(),
-    LauncherPresenterFactory(),
-    RatingsPresenterFactory(),
-)
-
-private fun getUiFactories(): List<Ui.Factory> = listOf(
-    DominionUiFactory(),
-    EventsUiFactory(),
-    GalleryUiFactory(),
-    LauncherUiFactory(),
-    RatingsUiFactory(),
-)

@@ -1,8 +1,5 @@
 package io.ashdavies.playground
 
-import com.slack.circuit.runtime.CircuitContext
-import com.slack.circuit.runtime.Navigator
-import com.slack.circuit.runtime.Screen
 import com.slack.circuit.runtime.presenter.Presenter
 import com.slack.circuit.runtime.presenter.presenterOf
 import com.slack.circuit.runtime.ui.Ui
@@ -16,12 +13,8 @@ import io.ashdavies.playground.home.HomeScreen
 import io.ashdavies.playground.profile.ProfilePresenter
 import io.ashdavies.playground.profile.ProfileScreen
 
-public class EventsPresenterFactory : Presenter.Factory {
-    override fun create(
-        screen: Screen,
-        navigator: Navigator,
-        context: CircuitContext,
-    ): Presenter<*>? = when (screen) {
+public fun EventsPresenterFactory(): Presenter.Factory = Presenter.Factory { screen, navigator, _ ->
+    when (screen) {
         is HomeScreen -> presenterOf { HomePresenter(navigator) }
         is ActivityScreen -> presenterOf { ActivityPresenter(navigator) }
         is ProfileScreen -> presenterOf { ProfilePresenter(navigator) }
@@ -30,24 +23,12 @@ public class EventsPresenterFactory : Presenter.Factory {
     }
 }
 
-public class EventsUiFactory : Ui.Factory {
-    override fun create(screen: Screen, context: CircuitContext): Ui<*>? = when (screen) {
-        is HomeScreen -> ui<HomeScreen.State> { state, modifier ->
-            HomeScreen(state, modifier)
-        }
-
-        is ActivityScreen -> ui<ActivityScreen.State> { state, modifier ->
-            ActivityScreen(state, modifier)
-        }
-
-        is ProfileScreen -> ui<ProfileScreen.State> { state, modifier ->
-            ProfileScreen(state, modifier)
-        }
-
-        is DetailsScreen -> ui<DetailsScreen.State> { state, modifier ->
-            DetailsScreen(state, modifier)
-        }
-
+public fun EventsUiFactory(): Ui.Factory = Ui.Factory { screen, _ ->
+    when (screen) {
+        is HomeScreen -> ui<HomeScreen.State> { state, modifier -> HomeScreen(state, modifier) }
+        is ActivityScreen -> ui<ActivityScreen.State> { state, modifier -> ActivityScreen(state, modifier) }
+        is ProfileScreen -> ui<ProfileScreen.State> { state, modifier -> ProfileScreen(state, modifier) }
+        is DetailsScreen -> ui<DetailsScreen.State> { state, modifier -> DetailsScreen(state, modifier) }
         else -> null
     }
 }
