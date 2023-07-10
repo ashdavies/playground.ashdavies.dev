@@ -79,7 +79,7 @@ internal fun LauncherPresenter(navigator: Navigator): LauncherScreen.State {
     }
 }
 
-internal fun LauncherPresenterFactory() = Presenter.Factory { screen, navigator, _ ->
+internal fun LauncherPresenterFactory(): Presenter.Factory = Presenter.Factory { screen, navigator, _ ->
     if (screen is LauncherScreen) presenterOf { LauncherPresenter(navigator) } else null
 }
 
