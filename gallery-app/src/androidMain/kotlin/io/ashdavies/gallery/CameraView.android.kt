@@ -14,7 +14,7 @@ public actual typealias Uri = java.net.URI
 @Composable
 public actual fun CameraView(
     modifier: Modifier,
-    onCapture: (Uri) -> Unit
+    onCapture: (Uri) -> Unit,
 ) {
     val context = LocalContext.current
     val target = FileProvider.getUriForFile(
@@ -26,7 +26,7 @@ public actual fun CameraView(
                 /* child = */ "images",
             ),
             /* child = */ "capture.jpg",
-        )
+        ),
     )
 
     val singlePhotoPickerLauncher = rememberLauncherForActivityResult(

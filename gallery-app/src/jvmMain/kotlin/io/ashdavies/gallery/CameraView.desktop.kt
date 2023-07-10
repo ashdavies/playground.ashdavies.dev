@@ -9,8 +9,7 @@ public actual typealias Uri = java.net.URI
 @Composable
 public actual fun CameraView(
     modifier: Modifier,
-    onCapture: (Uri) -> Unit
+    onCapture: (Uri) -> Unit,
 ) {
     Text("Unsupported")
 }
-
