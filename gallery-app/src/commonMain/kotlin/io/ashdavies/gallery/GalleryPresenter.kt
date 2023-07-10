@@ -3,7 +3,11 @@ package io.ashdavies.gallery
 import androidx.compose.runtime.Composable
 import com.arkivanov.essenty.parcelable.Parcelable
 import com.arkivanov.essenty.parcelable.Parcelize
-import com.slack.circuit.runtime.*
+import com.slack.circuit.runtime.CircuitContext
+import com.slack.circuit.runtime.CircuitUiEvent
+import com.slack.circuit.runtime.CircuitUiState
+import com.slack.circuit.runtime.Navigator
+import com.slack.circuit.runtime.Screen
 import com.slack.circuit.runtime.presenter.Presenter
 import com.slack.circuit.runtime.presenter.presenterOf
 import com.slack.circuit.runtime.ui.Ui
@@ -46,5 +50,7 @@ public class GalleryUiFactory : Ui.Factory {
 internal fun GalleryPresenter(
     navigator: Navigator,
 ) = GalleryScreen.State {
-
+    when (it) {
+        is GalleryScreen.Event.Pop -> navigator.pop()
+    }
 }
