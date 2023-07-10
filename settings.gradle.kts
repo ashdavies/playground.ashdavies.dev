@@ -43,6 +43,7 @@ include(
     ":events-aggregator",
     ":events-app",
     ":firebase-compose",
+    ":gallery-app",
     ":google-cloud",
     ":http-client",
     ":image-loader",
