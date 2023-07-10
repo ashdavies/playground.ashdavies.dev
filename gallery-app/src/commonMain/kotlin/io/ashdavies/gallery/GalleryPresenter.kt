@@ -15,12 +15,24 @@ import com.slack.circuit.runtime.ui.ui
 
 @Parcelize
 public object GalleryScreen : Parcelable, Screen {
-
     internal sealed interface Event : CircuitUiEvent {
+        object Capture : Event
         object Pop : Event
     }
 
     internal data class State(
+        val eventSink: (Event) -> Unit,
+    ) : CircuitUiState
+}
+
+@Parcelize
+internal object CameraScreen : Parcelable, Screen {
+    sealed interface Event : CircuitUiEvent {
+        data class Result(val value: Uri) : Event
+        object Pop : Event
+    }
+
+    data class State(
         val eventSink: (Event) -> Unit,
     ) : CircuitUiState
 }
@@ -32,6 +44,7 @@ public class GalleryPresenterFactory : Presenter.Factory {
         context: CircuitContext,
     ): Presenter<*>? = when (screen) {
         is GalleryScreen -> presenterOf { GalleryPresenter(navigator) }
+        is CameraScreen -> presenterOf { CameraPresenter(navigator) }
         else -> null
     }
 }
@@ -40,6 +53,10 @@ public class GalleryUiFactory : Ui.Factory {
     override fun create(screen: Screen, context: CircuitContext): Ui<*>? = when (screen) {
         is GalleryScreen -> ui<GalleryScreen.State> { state, modifier ->
             GalleryScreen(state, modifier)
+        }
+
+        is CameraScreen -> ui<CameraScreen.State> { state, modifier ->
+            CameraScreen(state, modifier)
         }
 
         else -> null
@@ -51,6 +68,16 @@ internal fun GalleryPresenter(
     navigator: Navigator,
 ) = GalleryScreen.State {
     when (it) {
+        is GalleryScreen.Event.Capture -> navigator.goTo(CameraScreen)
         is GalleryScreen.Event.Pop -> navigator.pop()
+    }
+}
+
+internal fun CameraPresenter(
+    navigator: Navigator,
+) = CameraScreen.State {
+    when (it) {
+        is CameraScreen.Event.Result -> TODO()
+        is CameraScreen.Event.Pop -> navigator.pop()
     }
 }

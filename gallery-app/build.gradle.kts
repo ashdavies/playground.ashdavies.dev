@@ -11,6 +11,7 @@ kotlin {
     commonMain.dependencies {
         implementation(projects.httpClient)
 
+        implementation(libs.androidx.activity.compose)
         implementation(libs.arkivanov.parcelable)
         implementation(libs.slack.circuit.foundation)
     }
