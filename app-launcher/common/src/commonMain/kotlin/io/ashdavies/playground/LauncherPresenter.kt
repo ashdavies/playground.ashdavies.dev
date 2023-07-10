@@ -67,7 +67,7 @@ public object LauncherScreen : Parcelable, Screen {
 
 @Composable
 internal fun LauncherPresenter(navigator: Navigator): LauncherScreen.State {
-    val entries = listOf(DominionEntry, EventsEntry, RatingsEntry)
+    val entries = listOf(DominionEntry, GalleryEntry, EventsEntry, RatingsEntry)
 
     return LauncherScreen.State(entries) { event ->
         when (event) {

@@ -14,4 +14,8 @@ kotlin {
         implementation(libs.arkivanov.parcelable)
         implementation(libs.slack.circuit.foundation)
     }
+
+    androidMain.dependencies {
+        implementation(libs.androidx.activity.compose)
+    }
 }
