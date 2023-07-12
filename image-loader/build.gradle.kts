@@ -11,4 +11,8 @@ kotlin {
         implementation(projects.httpClient)
         implementation(libs.ktor.client.core)
     }
+
+    androidMain.dependencies {
+        implementation(libs.coil.compose)
+    }
 }
