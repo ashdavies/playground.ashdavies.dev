@@ -2,6 +2,7 @@
 androidx-activity = "1.7.2"
 androidx-lifecycle = "2.6.1"
 apollo-graphql = "2.5.14"
+coil-kt = "2.4.0"
 compose-compiler = "1.4.2"
 google-accompanist = "0.30.1"
 google-android = "8.0.2"
@@ -34,6 +35,9 @@ arkivanov-parcelable = "com.arkivanov.essenty:parcelable:1.1.0"
 
 auth-java-jwt = "com.auth0:java-jwt:4.4.0"
 auth-jwks-rsa = "com.auth0:jwks-rsa:0.22.0"
+
+coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil-kt" }
+coil-core = { module = "io.coil-kt:coil", version.ref = "coil-kt" }
 
 fusesource-jansi = "org.fusesource.jansi:jansi:2.4.0"
 

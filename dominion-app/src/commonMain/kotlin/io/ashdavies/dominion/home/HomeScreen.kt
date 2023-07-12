@@ -20,9 +20,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.ashdavies.dominion.DominionExpansion
+import io.ashdavies.graphics.AsyncImage
 import io.ashdavies.http.onLoading
 import io.ashdavies.http.produceStateInline
-import io.ashdavies.playground.RemoteImage
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
@@ -82,10 +82,14 @@ private fun ExpansionCard(
 ) {
     Box(Modifier.padding(4.dp)) {
         Card(
-            content = { RemoteImage(value.image) },
             modifier = modifier
                 .clickable(onClick = onClick)
                 .aspectRatio(1.0f),
-        )
+        ) {
+            AsyncImage(
+                model = value.image,
+                contentDescription = value.name,
+            )
+        }
     }
 }
