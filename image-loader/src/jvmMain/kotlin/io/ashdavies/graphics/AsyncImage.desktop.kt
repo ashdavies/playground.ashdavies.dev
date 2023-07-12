@@ -29,12 +29,12 @@ import org.jetbrains.skia.Image as SkiaImage
 
 @Composable
 public fun produceImagePainterState(
-    urlString: String? = null
+    urlString: String? = null,
 ): State<Result<Painter>> = when (urlString) {
     null -> mutableStateOf(Result.success<Painter>(EmptyPainter))
     else -> produceImagePainterState(
         client = LocalHttpClient.current,
-        urlString = urlString
+        urlString = urlString,
     )
 }
 
