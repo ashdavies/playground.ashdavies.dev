@@ -4,9 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
 @Composable
-public expect fun CameraView(
+internal expect fun CameraOverlay(
+    paths: FileProvider,
     modifier: Modifier = Modifier,
     onCapture: (Uri) -> Unit,
 )
-
-public expect class Uri

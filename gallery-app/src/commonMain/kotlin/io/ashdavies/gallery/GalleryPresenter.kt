@@ -20,78 +20,69 @@ import com.slack.circuit.runtime.ui.ui
 @Parcelize
 public object GalleryScreen : Parcelable, Screen {
     internal sealed interface Event : CircuitUiEvent {
+        data class Result(val value: Uri) : Event
+        data class Toggle(val index: Int) : Event
         object Capture : Event
+        object Delete : Event
         object Pop : Event
     }
 
     internal sealed interface State : CircuitUiState {
-        data class Success(
-            val itemList: List<Uri>,
-            val eventSink: (Event) -> Unit,
-        ) : State
+        data class Capture(val eventSink: (Event) -> Unit) : State
+        data class Empty(val eventSink: (Event) -> Unit) : State
 
-        data class Empty(
-            val eventSink: (Event) -> Unit,
-        ) : State
+        data class Success(val itemList: List<Item>, val eventSink: (Event) -> Unit) : State {
+            data class Item(val value: Uri, val selected: Boolean)
+        }
 
         object Loading : State
     }
 }
 
-@Parcelize
-internal object CameraScreen : Parcelable, Screen {
-    sealed interface Event : CircuitUiEvent {
-        data class Result(val value: Uri) : Event
-        object Pop : Event
-    }
-
-    data class State(
-        val eventSink: (Event) -> Unit,
-    ) : CircuitUiState
-}
-
-public fun GalleryPresenterFactory(): Presenter.Factory {
-    val storage = GalleryStorage()
-
-    return Presenter.Factory { screen, navigator, _ ->
-        when (screen) {
-            is GalleryScreen -> presenterOf { GalleryPresenter(storage, navigator) }
-            is CameraScreen -> presenterOf { CameraPresenter(storage, navigator) }
-            else -> null
-        }
+public fun GalleryPresenterFactory(): Presenter.Factory = Presenter.Factory { screen, navigator, _ ->
+    when (screen) {
+        is GalleryScreen -> presenterOf { GalleryPresenter(rememberStorageProvider(), navigator) }
+        else -> null
     }
 }
 
 public fun GalleryUiFactory(): Ui.Factory = Ui.Factory { screen, _ ->
     when (screen) {
         is GalleryScreen -> ui<GalleryScreen.State> { state, modifier -> GalleryScreen(state, modifier) }
-        is CameraScreen -> ui<CameraScreen.State> { state, modifier -> CameraScreen(state, modifier) }
         else -> null
     }
 }
 
 @Composable
-internal fun GalleryPresenter(
-    storage: GalleryStorage,
-    navigator: Navigator,
-): GalleryScreen.State {
-    val itemList by storage.items().collectAsState(emptyList())
+internal fun GalleryPresenter(provider: StorageProvider, navigator: Navigator): GalleryScreen.State {
+    val itemList by provider.images.collectAsState(emptyList())
+    var selected by remember { mutableStateOf(mapOf<Int, Boolean>()) }
+    var takePhoto by remember { mutableStateOf(false) }
 
-    return GalleryScreen.State.Success(itemList) {
+    val eventSink: (GalleryScreen.Event) -> Unit = {
         when (it) {
-            is GalleryScreen.Event.Capture -> navigator.goTo(CameraScreen)
+            is GalleryScreen.Event.Capture -> takePhoto = true
+            is GalleryScreen.Event.Delete -> selected.forEach { (index, value) ->
+                if (value) provider.delete(itemList[index])
+            }
+
             is GalleryScreen.Event.Pop -> navigator.pop()
+            is GalleryScreen.Event.Result -> takePhoto = false
+            is GalleryScreen.Event.Toggle -> selected += (it.index to !(selected[it.index] ?: false))
         }
     }
-}
 
-@Composable
-internal fun CameraPresenter(
-    storage: GalleryStorage,
-    navigator: Navigator,
-) = CameraScreen.State {
-    when (it) {
-        is CameraScreen.Event.Result -> storage.store(it.value)
-        is CameraScreen.Event.Pop -> navigator.pop()
+    return when (takePhoto) {
+        false -> GalleryScreen.State.Success(
+            itemList = itemList.mapIndexed { index, item ->
+                GalleryScreen.State.Success.Item(
+                    value = item,
+                    selected = selected[index] ?: false,
+                )
+            },
+            eventSink = eventSink,
+        )
+
+        true -> GalleryScreen.State.Capture(eventSink)
     }
 }

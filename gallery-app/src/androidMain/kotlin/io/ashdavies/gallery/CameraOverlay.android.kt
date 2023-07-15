@@ -11,19 +11,17 @@ import androidx.core.content.FileProvider
 import java.io.File
 import java.util.UUID
 
-public actual typealias Uri = java.net.URI
-
 @Composable
-public actual fun CameraView(
+internal actual fun CameraOverlay(
+    paths: io.ashdavies.gallery.FileProvider,
     modifier: Modifier,
     onCapture: (Uri) -> Unit,
 ) {
     val context = LocalContext.current
 
     val target = remember(context) {
+        val file = createNewFile(File(paths.images), "${UUID.randomUUID()}.jpg")
         val authority = "${context.packageName}.files"
-        val path = File(context.filesDir, "images")
-        val file = File(path, "${UUID.randomUUID()}.jpg")
 
         FileProvider.getUriForFile(context, authority, file)
     }
@@ -36,4 +34,8 @@ public actual fun CameraView(
     LaunchedEffect(Unit) {
         singlePhotoPickerLauncher.launch(target)
     }
+}
+
+private fun createNewFile(parent: File, child: String): File {
+    return File(parent, child).apply { createNewFile() }
 }
