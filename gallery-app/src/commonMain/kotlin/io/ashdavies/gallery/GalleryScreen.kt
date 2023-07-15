@@ -146,23 +146,15 @@ private fun GalleryGrid(
         contentPadding = PaddingValues(12.dp),
     ) {
         itemsIndexed(itemList) { index, item ->
-            val itemPadding by animateDpAsState(
-                targetValue = if (item.selected) 12.dp else 0.dp,
-            )
+            val itemBorderRadius by animateDpAsState(if (item.selected) 12.dp else 8.dp)
+            val itemPadding by animateDpAsState(if (item.selected) 12.dp else 0.dp)
 
             Box {
-                val highlight = when (item.selected) {
-                    false -> Modifier
-                    true ->
-                        Modifier
-                            .padding(itemPadding)
-                            .clip(RoundedCornerShape(itemPadding))
-                }
-
                 AsyncImage(
                     model = item.value.getPath(),
                     contentDescription = null,
-                    modifier = highlight
+                    modifier = Modifier.padding(itemPadding)
+                        .clip(RoundedCornerShape(itemBorderRadius))
                         .background(Color.DarkGray)
                         .combinedClickable(
                             interactionSource = remember { MutableInteractionSource() },
@@ -211,7 +203,7 @@ private fun GalleryCapture(
 ) {
     CameraOverlay(
         paths = paths,
-        onCapture = { eventSink(GalleryScreen.Event.Capture) },
+        onCapture = { eventSink(GalleryScreen.Event.Result(it)) },
         modifier = modifier,
     )
 }
