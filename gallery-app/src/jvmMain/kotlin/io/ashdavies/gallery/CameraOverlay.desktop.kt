@@ -8,7 +8,7 @@ import androidx.compose.ui.Modifier
 internal actual fun CameraOverlay(
     manager: StorageManager,
     modifier: Modifier,
-    onCapture: (Uri) -> Unit,
+    onCapture: (File) -> Unit,
 ) {
     Text("Unsupported")
 }

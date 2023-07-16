@@ -6,9 +6,7 @@ import androidx.compose.ui.platform.LocalContext
 import java.io.File
 
 internal actual fun PathProvider(context: Context): PathProvider = object : PathProvider {
-    override val images: Uri = File(context.filesDir, "images")
-        .also { it.mkdirs() }
-        .let(Uri::fromFile)
+    override val images: File = File(context.filesDir, "images").apply(File::mkdirs)
 }
 
 @Composable

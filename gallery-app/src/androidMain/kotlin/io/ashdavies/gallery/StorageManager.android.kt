@@ -1,25 +1,23 @@
 package io.ashdavies.gallery
 
-import androidx.core.content.FileProvider
-import androidx.core.net.toFile
-import androidx.core.net.toUri
 import java.io.File
 import java.util.UUID
 
-internal actual fun StorageManager(paths: PathProvider): StorageManager = object : StorageManager {
+internal actual fun StorageManager(parent: File): StorageManager = object : StorageManager {
 
-    override fun createFileUri(context: Context): Uri {
-        val file = File(paths.images.toFile(), "${UUID.randomUUID()}.jpg").apply { createNewFile() }
-        val authority = "${context.packageName}.files"
-
-        return FileProvider.getUriForFile(context, authority, file)
+    override fun create(context: Context): File {
+        val file = File(parent, "${UUID.randomUUID()}.jpg")
+        if (!file.createNewFile()) throw IllegalStateException()
+        return file
     }
 
-    override fun listFilesAsUri(): List<Uri> = with(paths.images.toFile()) {
-        return listFiles()?.map { it.toUri() } ?: emptyList()
+    override fun list(): List<File> {
+        val files = parent.listFiles() ?: return emptyList()
+        return files.toList()
     }
 
-    override fun delete(value: Uri): Boolean = with(value.toFile()) {
-        if (exists()) delete() else throw IllegalArgumentException()
+    override fun delete(file: File): Boolean {
+        if (!file.exists()) throw IllegalArgumentException()
+        return file.delete()
     }
 }

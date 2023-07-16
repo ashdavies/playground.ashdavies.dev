@@ -19,7 +19,7 @@ import com.slack.circuit.runtime.ui.ui
 @Parcelize
 public object GalleryScreen : Parcelable, Screen {
     internal sealed interface Event : CircuitUiEvent {
-        data class Result(val value: Uri) : Event
+        data class Result(val value: File) : Event
         data class Toggle(val index: Int) : Event
         object Capture : Event
         object Delete : Event
@@ -31,7 +31,7 @@ public object GalleryScreen : Parcelable, Screen {
         data class Empty(val eventSink: (Event) -> Unit) : State
 
         data class Success(val itemList: List<Item>, val eventSink: (Event) -> Unit) : State {
-            data class Item(val value: Uri, val selected: Boolean)
+            data class Item(val value: File, val selected: Boolean)
         }
 
         object Loading : State
@@ -54,8 +54,8 @@ public fun GalleryUiFactory(): Ui.Factory = Ui.Factory { screen, _ ->
 
 @Composable
 internal fun GalleryPresenter(manager: StorageManager, navigator: Navigator): GalleryScreen.State {
-    var itemList by remember { mutableStateOf(manager.listFilesAsUri()) }
-    var selected by remember { mutableStateOf(emptyList<Uri>()) }
+    var itemList by remember { mutableStateOf(manager.list()) }
+    var selected by remember { mutableStateOf(emptyList<File>()) }
     var takePhoto by remember { mutableStateOf(false) }
 
     val eventSink: (GalleryScreen.Event) -> Unit = { event ->

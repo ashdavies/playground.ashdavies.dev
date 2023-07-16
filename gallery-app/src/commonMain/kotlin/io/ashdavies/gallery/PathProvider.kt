@@ -3,7 +3,7 @@ package io.ashdavies.gallery
 import androidx.compose.runtime.Composable
 
 internal interface PathProvider {
-    val images: Uri
+    val images: File
 }
 
 internal expect fun PathProvider(
