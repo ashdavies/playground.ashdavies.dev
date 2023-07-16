@@ -149,7 +149,7 @@ private fun GalleryGrid(
             val itemBorderRadius by animateDpAsState(if (item.selected) 12.dp else 8.dp)
             val itemPadding by animateDpAsState(if (item.selected) 12.dp else 0.dp)
 
-            Box {
+            Box(Modifier.animateItemPlacement()) {
                 AsyncImage(
                     model = item.value,
                     contentDescription = null,
