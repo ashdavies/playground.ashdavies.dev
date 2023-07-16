@@ -5,18 +5,18 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import java.io.File
 
-internal actual fun FileProvider(context: Context): FileProvider = object : FileProvider {
-    override val images: Uri = Uri
-        .create("file://${context.filesDir}/images")
-        .also { File(it).mkdirs() }
+internal actual fun PathProvider(context: Context): PathProvider = object : PathProvider {
+    override val images: Uri = File(context.filesDir, "images")
+        .also { it.mkdirs() }
+        .let(Uri::fromFile)
 }
 
 @Composable
-internal actual fun rememberFileProvider(): FileProvider {
+internal actual fun rememberPathProvider(): PathProvider {
     return rememberPathProvider(LocalContext.current)
 }
 
 @Composable
 internal fun rememberPathProvider(context: Context) = remember {
-    FileProvider(context)
+    PathProvider(context)
 }

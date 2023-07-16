@@ -2,4 +2,4 @@ package io.ashdavies.gallery
 
 public actual typealias Context = android.content.Context
 
-public actual typealias Uri = java.net.URI
+public actual typealias Uri = android.net.Uri

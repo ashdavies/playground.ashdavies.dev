@@ -1,7 +1,6 @@
 package io.ashdavies.gallery
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -41,7 +40,7 @@ public object GalleryScreen : Parcelable, Screen {
 
 public fun GalleryPresenterFactory(): Presenter.Factory = Presenter.Factory { screen, navigator, _ ->
     when (screen) {
-        is GalleryScreen -> presenterOf { GalleryPresenter(rememberStorageProvider(), navigator) }
+        is GalleryScreen -> presenterOf { GalleryPresenter(rememberStorageManager(), navigator) }
         else -> null
     }
 }
@@ -54,32 +53,38 @@ public fun GalleryUiFactory(): Ui.Factory = Ui.Factory { screen, _ ->
 }
 
 @Composable
-internal fun GalleryPresenter(provider: StorageProvider, navigator: Navigator): GalleryScreen.State {
-    val itemList by provider.images.collectAsState(emptyList())
-    var selected by remember { mutableStateOf(mapOf<Int, Boolean>()) }
+internal fun GalleryPresenter(manager: StorageManager, navigator: Navigator): GalleryScreen.State {
+    var itemList by remember { mutableStateOf(manager.listFilesAsUri()) }
+    var selected by remember { mutableStateOf(emptyList<Uri>()) }
     var takePhoto by remember { mutableStateOf(false) }
 
-    val eventSink: (GalleryScreen.Event) -> Unit = {
-        when (it) {
+    val eventSink: (GalleryScreen.Event) -> Unit = { event ->
+        when (event) {
             is GalleryScreen.Event.Capture -> takePhoto = true
-            is GalleryScreen.Event.Delete -> selected.forEach { (index, value) ->
-                if (value) provider.delete(itemList[index])
+
+            is GalleryScreen.Event.Delete -> {
+                selected.forEach { manager.delete(it) }
+                itemList = itemList - selected.toSet()
+                selected = emptyList()
             }
 
             is GalleryScreen.Event.Pop -> navigator.pop()
-            is GalleryScreen.Event.Result -> takePhoto = false
-            is GalleryScreen.Event.Toggle -> selected += (it.index to !(selected[it.index] ?: false))
+
+            is GalleryScreen.Event.Result -> {
+                println("Result: ${event.value}")
+                itemList += event.value
+                takePhoto = false
+            }
+
+            is GalleryScreen.Event.Toggle -> itemList[event.index].also {
+                if (it in selected) selected -= it else selected += it
+            }
         }
     }
 
     return when (takePhoto) {
         false -> GalleryScreen.State.Success(
-            itemList = itemList.mapIndexed { index, item ->
-                GalleryScreen.State.Success.Item(
-                    value = item,
-                    selected = selected[index] ?: false,
-                )
-            },
+            itemList = itemList.map { GalleryScreen.State.Success.Item(it, it in selected) },
             eventSink = eventSink,
         )
 

@@ -151,7 +151,7 @@ private fun GalleryGrid(
 
             Box {
                 AsyncImage(
-                    model = item.value.getPath(),
+                    model = item.value,
                     contentDescription = null,
                     modifier = Modifier.padding(itemPadding)
                         .clip(RoundedCornerShape(itemBorderRadius))
@@ -198,11 +198,11 @@ private fun GalleryGrid(
 @Composable
 private fun GalleryCapture(
     eventSink: (GalleryScreen.Event) -> Unit,
-    paths: FileProvider = rememberFileProvider(),
+    manager: StorageManager = rememberStorageManager(),
     modifier: Modifier = Modifier,
 ) {
     CameraOverlay(
-        paths = paths,
+        manager = manager,
         onCapture = { eventSink(GalleryScreen.Event.Result(it)) },
         modifier = modifier,
     )

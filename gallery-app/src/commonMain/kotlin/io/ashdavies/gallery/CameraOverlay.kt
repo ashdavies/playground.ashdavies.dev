@@ -5,7 +5,7 @@ import androidx.compose.ui.Modifier
 
 @Composable
 internal expect fun CameraOverlay(
-    paths: FileProvider,
+    manager: StorageManager,
     modifier: Modifier = Modifier,
     onCapture: (Uri) -> Unit,
 )
