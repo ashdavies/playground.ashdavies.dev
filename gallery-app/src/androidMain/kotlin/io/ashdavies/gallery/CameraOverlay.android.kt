@@ -4,37 +4,35 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.FileProvider
-import java.io.File
-
-public actual typealias Uri = java.net.URI
 
 @Composable
-public actual fun CameraView(
+internal actual fun CameraOverlay(
+    manager: StorageManager,
     modifier: Modifier,
-    onCapture: (Uri) -> Unit,
+    onCapture: (File) -> Unit,
 ) {
     val context = LocalContext.current
-    val target = FileProvider.getUriForFile(
-        /* context = */ context,
-        /* authority = */ "${context.packageName}.files",
-        /* file = */ File(
-            /* parent = */ File(
-                /* parent = */ context.cacheDir,
-                /* child = */ "images",
-            ),
-            /* child = */ "capture.jpg",
-        ),
-    )
+    val file = remember(context) {
+        manager.create(context)
+    }
 
     val singlePhotoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.TakePicture(),
-        onResult = { onCapture(Uri.create("$target")) },
+        onResult = { onCapture(file) },
     )
 
     LaunchedEffect(Unit) {
+        val authority = "${context.packageName}.files"
+        val target = FileProvider.getUriForFile(
+            /* context = */ context,
+            /* authority = */ authority,
+            /* file = */ file,
+        )
+
         singlePhotoPickerLauncher.launch(target)
     }
 }

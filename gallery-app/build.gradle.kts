@@ -9,7 +9,9 @@ android {
 
 kotlin {
     commonMain.dependencies {
+        implementation(projects.composeLocals)
         implementation(projects.httpClient)
+        implementation(projects.imageLoader)
 
         implementation(libs.arkivanov.parcelable)
         implementation(libs.slack.circuit.foundation)

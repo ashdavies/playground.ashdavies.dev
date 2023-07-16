@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.toComposeImageBitmap
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.ContentScale.Companion.FillWidth
 import androidx.compose.ui.unit.dp
 import io.ashdavies.http.LocalHttpClient
@@ -62,6 +63,7 @@ public actual fun AsyncImage(
     model: Any?,
     contentDescription: String?,
     modifier: Modifier,
+    contentScale: ContentScale,
 ) {
     val modelString = model as? String ?: throw IllegalStateException("Unsupported model '$model'")
     val resource by produceImagePainterState(modelString)
