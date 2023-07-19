@@ -2,27 +2,28 @@
 androidx-activity = "1.7.2"
 androidx-lifecycle = "2.6.1"
 apollo-graphql = "2.5.14"
-compose-compiler = "1.4.2"
+coil-kt = "2.4.0"
+compose-compiler = "1.5.0"
 google-accompanist = "0.30.1"
 google-android = "8.0.2"
 google-auto = "1.0.1"
 google-maps-compose = "2.11.4"
 google-services = "4.3.15"
 jetbrains-compose = "1.4.1"
-jetbrains-kotlin = "1.8.22"
+jetbrains-kotlin = "1.9.0"
 kotlinx-coroutines = "1.7.2"
 kotlinx-serialization = "1.5.1"
 ktor = "2.3.2"
-paging-compose = "3.2.0-alpha05-0.2.2"
+paging-compose = "3.2.0-alpha05-0.2.3"
 pinterest-ktlint = "0.47.1"
-slack-circuit = "0.9.1"
+slack-circuit = "0.10.1"
 squareup-sqldelight = "1.5.5"
 
 [libraries]
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity" }
 androidx-activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "androidx-activity" }
 androidx-annotation = "androidx.annotation:annotation:1.6.0"
-androidx-compose-compiler = "androidx.compose.compiler:compiler:1.4.8"
+androidx-compose-compiler = { module = "androidx.compose.compiler:compiler", version.ref = "compose-compiler" }
 androidx-core-ktx = "androidx.core:core-ktx:1.10.1"
 androidx-core-splashscreen = "androidx.core:core-splashscreen:1.0.1"
 
@@ -34,6 +35,9 @@ arkivanov-parcelable = "com.arkivanov.essenty:parcelable:1.1.0"
 
 auth-java-jwt = "com.auth0:java-jwt:4.4.0"
 auth-jwks-rsa = "com.auth0:jwks-rsa:0.22.0"
+
+coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil-kt" }
+coil-core = { module = "io.coil-kt:coil", version.ref = "coil-kt" }
 
 fusesource-jansi = "org.fusesource.jansi:jansi:2.4.0"
 
@@ -49,7 +53,7 @@ google-cloud-firestore = { module = "com.google.cloud:google-cloud-firestore" }
 google-cloud-storage = { module = "com.google.cloud:google-cloud-storage" }
 
 google-firebase-admin = "com.google.firebase:firebase-admin:9.2.0"
-google-firebase-bom = "com.google.firebase:firebase-bom:32.1.1"
+google-firebase-bom = "com.google.firebase:firebase-bom:32.2.0"
 google-firebase-analytics = { module = "com.google.firebase:firebase-analytics-ktx" }
 google-firebase-appcheck = { module = "com.google.firebase:firebase-appcheck" }
 google-firebase-appcheck-debug = { module = "com.google.firebase:firebase-appcheck-debug" }
@@ -101,8 +105,8 @@ ktor-server-openapi = { module = "io.ktor:ktor-server-openapi", version.ref = "k
 ktor-server-request-validation = { module = "io.ktor:ktor-server-request-validation", version.ref = "ktor" }
 ktor-server-test-host = { module = "io.ktor:ktor-server-test-host", version.ref = "ktor" }
 
-molecule-runtime = "app.cash.molecule:molecule-runtime:0.10.0"
-mosaic-runtime = "com.jakewharton.mosaic:mosaic-runtime:0.6.0"
+molecule-runtime = "app.cash.molecule:molecule-runtime:0.11.0"
+mosaic-runtime = "com.jakewharton.mosaic:mosaic-runtime:0.7.1"
 
 paging-compose-common = { module = "app.cash.paging:paging-compose-common", version.ref = "paging-compose" }
 paging-compose-runtime = { module = "app.cash.paging:paging-runtime-composeui", version.ref = "paging-compose" }
@@ -127,7 +131,7 @@ android-application = { id = "com.android.application", version.ref = "google-an
 android-library = { id = "com.android.library", version.ref = "google-android" }
 apollo-graphql = { id = "com.apollographql.apollo", version.ref = "apollo-graphql" }
 dependency-analysis = { id = "com.autonomousapps.dependency-analysis", version = "1.20.0" }
-diffplug-spotless = "com.diffplug.spotless:6.19.0"
+diffplug-spotless = "com.diffplug.spotless:6.20.0"
 google-cloud-jib = "com.google.cloud.tools.jib:3.3.2"
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
 gradle-doctor = "com.osacky.doctor:0.8.1"

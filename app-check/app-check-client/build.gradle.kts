@@ -11,7 +11,7 @@ kotlin {
         with(projects) {
             implementation(appCheck.appCheckCommon)
             implementation(firebaseCompose)
-            implementation(cloudBackend.httpClient)
+            implementation(httpClient)
         }
 
         with(libs.ktor.client) {

@@ -1,6 +1,6 @@
 public object Playground {
 
-    const val compileSdk = 33
+    const val compileSdk = 34
     const val jvmTarget = 17
     const val minSdk = 24
 

@@ -6,7 +6,7 @@ apply(from = "repositories.gradle.kts")
 plugins {
     id("androidx.build.gradle.gcpbuildcache") version "1.0.0-beta01"
     id("com.google.cloud.tools.jib") version "3.3.2" apply false
-    id("com.gradle.enterprise") version "3.13.4"
+    id("com.gradle.enterprise") version "3.14"
 }
 
 buildCache {
@@ -36,21 +36,22 @@ include(
     ":app-launcher:android",
     ":app-launcher:common",
     ":app-launcher:desktop",
-    ":cloud-backend:cloud-firestore",
-    ":cloud-backend:cloud-run",
-    ":cloud-backend:google-cloud",
-    ":cloud-backend:http-client",
-    ":cloud-backend:micro-yaml",
+    ":cloud-firestore",
+    ":cloud-run",
     ":compose-locals",
     ":dominion-app",
     ":events-aggregator",
     ":events-app",
     ":firebase-compose",
+    ":gallery-app",
+    ":google-cloud",
+    ":http-client",
+    ":image-loader",
     ":local-storage",
+    ":micro-yaml",
     ":notion-client",
     ":notion-console",
     ":parcelable-support",
-    ":playground-app",
     ":ratings-app",
     ":sql-driver",
 )

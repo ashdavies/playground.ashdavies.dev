@@ -16,18 +16,15 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.dp
-import io.ashdavies.http.isLoading
-import io.ashdavies.playground.EmptyPainter
+import io.ashdavies.graphics.AsyncImage
+import io.ashdavies.graphics.EmptyPainter
 import io.ashdavies.playground.android.FlowRow
 import io.ashdavies.playground.android.fade
-import io.ashdavies.playground.produceImagePainterState
 import kotlin.random.Random.Default.nextInt
 
 @Composable
@@ -59,8 +56,7 @@ private fun ProfileScreen(
             when (state.profile) {
                 null -> LoggedOutScreen(onLogin)
                 else -> {
-                    val painter by produceImagePainterState(state.profile.picture)
-                    ProfileHeader(state.profile.name, painter)
+                    ProfileHeader(state.profile.name)
                     StubLanyardFlow()
                 }
             }
@@ -72,7 +68,6 @@ private fun ProfileScreen(
 @ExperimentalMaterial3Api
 private fun ProfileHeader(
     text: String,
-    painter: Result<Painter>,
     modifier: Modifier = Modifier,
 ) {
     Card(
@@ -85,11 +80,9 @@ private fun ProfileHeader(
             modifier = Modifier.fillMaxWidth(),
         ) {
             Text(
-                style = MaterialTheme.typography.headlineSmall,
                 text = text,
-                modifier = Modifier
-                    .padding(4.dp, 64.dp, 4.dp, 4.dp)
-                    .fade(painter.isLoading),
+                modifier = Modifier.padding(4.dp, 64.dp, 4.dp, 4.dp),
+                style = MaterialTheme.typography.headlineSmall,
             )
         }
     }
@@ -131,18 +124,17 @@ private fun LoggedOutScreen(onLogin: () -> Unit) {
 }
 
 @Composable
-private fun LoggedInFooter(painter: Result<Painter>) {
+private fun LoggedInFooter(model: Any? = null) {
     Column(
         horizontalAlignment = CenterHorizontally,
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp),
     ) {
-        Image(
-            painter = painter.getOrElse { EmptyPainter },
+        AsyncImage(
+            model = model,
             contentDescription = null,
             modifier = Modifier
-                .fade(painter.isLoading)
                 .align(CenterHorizontally)
                 .border(2.dp, Color.LightGray, CircleShape)
                 .clip(CircleShape)

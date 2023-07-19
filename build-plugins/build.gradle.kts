@@ -12,6 +12,7 @@ dependencies {
     with(libs.plugins) {
         implementation(plugin(android.library))
         implementation(plugin(apollo.graphql))
+        implementation(plugin(diffplug.spotless))
         implementation(plugin(kotlin.compose))
         implementation(plugin(kotlin.multiplatform))
         implementation(plugin(kotlin.serialization))
