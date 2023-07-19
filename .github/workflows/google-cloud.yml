@@ -129,6 +129,7 @@ jobs:
           ./gradlew google-cloud:terraformApply \
             ${{ contains(github.event.pull_request.labels.*.name, 'Dry Run') && '--dry-run' || '' }} \
             ${{ inputs.debug && '--debug' || '--info' }} \
+            --no-configuration-cache \
             --console=plain \
             -Ptf.apply
 
