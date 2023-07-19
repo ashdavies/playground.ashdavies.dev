@@ -22,14 +22,14 @@ spotless {
         val editorConfig = mapOf(
             "ij_kotlin_allow_trailing_comma_on_call_site" to "true",
             "ij_kotlin_allow_trailing_comma" to "true",
+            "ktlint_experimental" to "enabled",
             "disabled_rules" to "filename",
-            "experimental" to "true",
             "android" to "true",
         )
 
         ktlint(ktLintVersion)
             .editorConfigOverride(editorConfig)
-            .setUseExperimental(true)
+            //.setUseExperimental(true)
 
         kotlinDefault()
     }
