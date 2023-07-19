@@ -27,10 +27,7 @@ spotless {
             "android" to "true",
         )
 
-        ktlint(ktLintVersion)
-            .editorConfigOverride(editorConfig)
-            //.setUseExperimental(true)
-
+        ktlint(ktLintVersion).editorConfigOverride(editorConfig)
         kotlinDefault()
     }
 
