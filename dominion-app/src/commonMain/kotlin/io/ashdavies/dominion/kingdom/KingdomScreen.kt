@@ -33,10 +33,10 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
 import io.ashdavies.dominion.DominionCard
 import io.ashdavies.dominion.DominionExpansion
+import io.ashdavies.dominion.layout.windowInsetsPadding
+import io.ashdavies.graphics.AsyncImage
 import io.ashdavies.http.onLoading
 import io.ashdavies.http.produceStateInline
-import io.ashdavies.playground.RemoteImage
-import io.ashdavies.playground.windowInsetsPadding
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
@@ -141,8 +141,9 @@ private fun KingdomCard(
         Card(modifier.clickable(onClick = onClick)) {
             when (val image = value.image) {
                 null -> Text(value.name, color = Color.White)
-                else -> RemoteImage(
-                    urlString = image,
+                else -> AsyncImage(
+                    model = image,
+                    contentDescription = value.name,
                     modifier = Modifier
                         .aspectRatio(0.62F)
                         .height(300.dp),

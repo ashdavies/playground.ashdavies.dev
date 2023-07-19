@@ -14,6 +14,7 @@ kotlin {
         with(projects) {
             implementation(dominionApp)
             implementation(eventsApp)
+            implementation(galleryApp)
             implementation(ratingsApp)
         }
 

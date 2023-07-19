@@ -3,7 +3,6 @@ package io.ashdavies.dominion
 import androidx.compose.runtime.Composable
 import com.arkivanov.essenty.parcelable.Parcelable
 import com.arkivanov.essenty.parcelable.Parcelize
-import com.slack.circuit.runtime.CircuitContext
 import com.slack.circuit.runtime.CircuitUiEvent
 import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.Navigator
@@ -43,20 +42,14 @@ internal fun DominionPresenter(navigator: Navigator): DominionState = DominionSt
     }
 }
 
-public class DominionPresenterFactory : Presenter.Factory {
-    override fun create(screen: Screen, navigator: Navigator, context: CircuitContext): Presenter<*>? = when (screen) {
-        is DominionScreen -> presenterOf { DominionPresenter(navigator) }
-        else -> null
-    }
+public fun DominionPresenterFactory(): Presenter.Factory = Presenter.Factory { screen, navigator, _ ->
+    if (screen is DominionScreen) presenterOf { DominionPresenter(navigator) } else null
 }
 
-public class DominionUiFactory : Ui.Factory {
-    override fun create(screen: Screen, context: CircuitContext): Ui<*>? = when (screen) {
+public fun DominionUiFactory(): Ui.Factory = Ui.Factory { screen, _ ->
+    when (screen) {
         is DominionScreen.Home -> ui<DominionState> { state, modifier ->
-            HomeScreen(
-                onClick = { state.sink(DominionEvent.NavEvent.GoTo(DominionScreen.Kingdom(it))) },
-                modifier = modifier,
-            )
+            HomeScreen(modifier) { state.sink(DominionEvent.NavEvent.GoTo(DominionScreen.Kingdom(it))) }
         }
 
         is DominionScreen.Kingdom -> ui<DominionState> { state, modifier ->
@@ -69,11 +62,7 @@ public class DominionUiFactory : Ui.Factory {
         }
 
         is DominionScreen.Card -> ui<DominionState> { state, modifier ->
-            CardScreen(
-                onBack = { state.sink(DominionEvent.NavEvent.Pop) },
-                modifier = modifier,
-                card = screen.card,
-            )
+            CardScreen(screen.card, modifier) { state.sink(DominionEvent.NavEvent.Pop) }
         }
 
         else -> null
