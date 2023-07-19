@@ -25,7 +25,8 @@ fun CommonExtension<*, *, *, *>.configure() {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
+        val composeCompilerVersion = libs.versions.compose.compiler.get()
+        kotlinCompilerExtensionVersion = composeCompilerVersion
     }
 
     compileOptions {
