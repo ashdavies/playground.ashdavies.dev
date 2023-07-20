@@ -10,7 +10,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.FileProvider
 
 @Composable
-internal actual fun CameraOverlay(
+internal actual fun ImageCapture(
     manager: StorageManager,
     modifier: Modifier,
     onCapture: (File) -> Unit,

@@ -19,7 +19,7 @@ kotlin {
 
 compose.desktop {
     application {
-        mainClass = "io.ashdavies.playground.MainKt"
+        mainClass = "io.ashdavies.playground.LauncherMainKt"
 
         nativeDistributions {
             targetFormats(TargetFormat.Deb, TargetFormat.Dmg, TargetFormat.Msi)
