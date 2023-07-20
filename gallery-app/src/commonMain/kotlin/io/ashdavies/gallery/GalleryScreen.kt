@@ -73,14 +73,19 @@ internal fun GalleryScreen(
     ) { paddingValues ->
         when (state) {
             GalleryScreen.State.Loading -> GalleryProgressIndicator()
-            is GalleryScreen.State.Capture -> GalleryCapture(state.eventSink)
             is GalleryScreen.State.Empty -> GalleryEmpty()
-            is GalleryScreen.State.Success -> GalleryGrid(
-                itemList = state.itemList,
-                isSelecting = isSelecting,
-                modifier = Modifier.padding(paddingValues),
-                onSelect = { state.eventSink(GalleryScreen.Event.Toggle(it)) },
-            )
+            is GalleryScreen.State.Success -> {
+                GalleryGrid(
+                    itemList = state.itemList,
+                    isSelecting = isSelecting,
+                    modifier = Modifier.padding(paddingValues),
+                    onSelect = { state.eventSink(GalleryScreen.Event.Toggle(it)) },
+                )
+
+                if (state.showCapture) {
+                    GalleryCapture(state.eventSink)
+                }
+            }
         }
     }
 }

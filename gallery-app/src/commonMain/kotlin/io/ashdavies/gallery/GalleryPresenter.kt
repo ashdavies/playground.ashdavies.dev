@@ -26,16 +26,28 @@ public object GalleryScreen : Parcelable, Screen {
     }
 
     internal sealed interface State : CircuitUiState {
-        data class Capture(val eventSink: (Event) -> Unit) : State
         data class Empty(val eventSink: (Event) -> Unit) : State
 
-        data class Success(val itemList: List<Item>, val eventSink: (Event) -> Unit) : State {
-            constructor(itemList: List<File>, isSelected: (File) -> Boolean, eventSink: (Event) -> Unit) : this(
+        data class Success(
+            val itemList: List<Item>,
+            val showCapture: Boolean,
+            val eventSink: (Event) -> Unit,
+        ) : State {
+            constructor(
+                itemList: List<File>,
+                isSelected: (File) -> Boolean,
+                showCapture: Boolean,
+                eventSink: (Event) -> Unit,
+            ) : this(
                 itemList = itemList.map { Item(it, isSelected(it)) },
+                showCapture = showCapture,
                 eventSink = eventSink
             )
 
-            data class Item(val value: File, val isSelected: Boolean)
+            data class Item(
+                val value: File,
+                val isSelected: Boolean,
+            )
         }
 
         object Loading : State
@@ -62,15 +74,11 @@ internal fun GalleryPresenter(manager: StorageManager, navigator: Navigator): Ga
     var selected by remember { mutableStateOf(emptyList<File>()) }
     var takePhoto by remember { mutableStateOf(false) }
 
-    if (takePhoto) {
-        return GalleryScreen.State.Capture { event ->
-            check(event is GalleryScreen.Event.Result)
-            itemList += event.value
-            takePhoto = false
-        }
-    }
-
-    return GalleryScreen.State.Success(itemList, { it in selected }) { event ->
+    return GalleryScreen.State.Success(
+        itemList = itemList,
+        isSelected = { it in selected },
+        showCapture = takePhoto
+    ) { event ->
         when (event) {
             is GalleryScreen.Event.Capture -> takePhoto = true
 
@@ -80,11 +88,14 @@ internal fun GalleryPresenter(manager: StorageManager, navigator: Navigator): Ga
                 selected = emptyList()
             }
 
+            is GalleryScreen.Event.Result -> {
+                itemList += event.value
+                takePhoto = false
+            }
+
             is GalleryScreen.Event.Toggle -> itemList[event.index].also {
                 if (it in selected) selected -= it else selected += it
             }
-
-            else -> throw IllegalArgumentException("$event")
         }
     }
 }
