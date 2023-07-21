@@ -16,6 +16,7 @@ import androidx.compose.ui.graphics.toComposeImageBitmap
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.ContentScale.Companion.FillWidth
+import androidx.compose.ui.res.loadImageBitmap
 import androidx.compose.ui.unit.dp
 import io.ashdavies.http.LocalHttpClient
 import io.ashdavies.http.fold
@@ -25,24 +26,14 @@ import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.onDownload
 import io.ktor.client.request.get
+import java.io.File
 import androidx.compose.foundation.Image as ComposeImage
 import org.jetbrains.skia.Image as SkiaImage
 
 @Composable
-public fun produceImagePainterState(
-    urlString: String? = null,
-): State<Result<Painter>> = when (urlString) {
-    null -> mutableStateOf(Result.success<Painter>(EmptyPainter))
-    else -> produceImagePainterState(
-        client = LocalHttpClient.current,
-        urlString = urlString,
-    )
-}
-
-@Composable
-internal fun produceImagePainterState(
+private fun produceAsyncRemoteImagePainter(
     urlString: String,
-    client: HttpClient = HttpClient(),
+    client: HttpClient = LocalHttpClient.current,
 ): State<Result<Painter>> = produceState {
     val response = client.get(urlString) {
         onDownload { bytesSentTotal, contentLength ->
@@ -65,8 +56,11 @@ public actual fun AsyncImage(
     modifier: Modifier,
     contentScale: ContentScale,
 ) {
-    val modelString = model as? String ?: throw IllegalStateException("Unsupported model '$model'")
-    val resource by produceImagePainterState(modelString)
+    val resource by when {
+        model is File && model.isFile -> mutableStateOf(Result.success(BitmapPainter(loadImageBitmap(model.inputStream()))))
+        model is String && model.startsWith("https://") -> produceAsyncRemoteImagePainter(model)
+        else -> throw IllegalArgumentException("Unsupported model '$model' with type '{${model?.javaClass}}'")
+    }
 
     resource.fold(
         onSuccess = { ComposeImage(it, contentDescription, modifier, contentScale = FillWidth) },

@@ -10,7 +10,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.FileProvider
 
 @Composable
-internal actual fun CameraOverlay(
+internal actual fun ImageCapture(
     manager: StorageManager,
     modifier: Modifier,
     onCapture: (File) -> Unit,
@@ -28,9 +28,12 @@ internal actual fun CameraOverlay(
     LaunchedEffect(Unit) {
         val authority = "${context.packageName}.files"
         val target = FileProvider.getUriForFile(
-            /* context = */ context,
-            /* authority = */ authority,
-            /* file = */ file,
+            /* context = */
+            context,
+            /* authority = */
+            authority,
+            /* file = */
+            file,
         )
 
         singlePhotoPickerLauncher.launch(target)

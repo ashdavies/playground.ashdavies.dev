@@ -63,7 +63,7 @@ internal fun GalleryScreen(
     state: GalleryScreen.State,
     modifier: Modifier = Modifier,
 ) {
-    val isSelecting = state is GalleryScreen.State.Success && state.itemList.any { it.selected }
+    val isSelecting = state is GalleryScreen.State.Success && state.itemList.any { it.isSelected }
     val scrollBehavior = enterAlwaysScrollBehavior(rememberTopAppBarState())
 
     Scaffold(
@@ -73,14 +73,19 @@ internal fun GalleryScreen(
     ) { paddingValues ->
         when (state) {
             GalleryScreen.State.Loading -> GalleryProgressIndicator()
-            is GalleryScreen.State.Capture -> GalleryCapture(state.eventSink)
             is GalleryScreen.State.Empty -> GalleryEmpty()
-            is GalleryScreen.State.Success -> GalleryGrid(
-                itemList = state.itemList,
-                isSelecting = isSelecting,
-                modifier = Modifier.padding(paddingValues),
-                onSelect = { state.eventSink(GalleryScreen.Event.Toggle(it)) },
-            )
+            is GalleryScreen.State.Success -> {
+                GalleryGrid(
+                    itemList = state.itemList,
+                    isSelecting = isSelecting,
+                    modifier = Modifier.padding(paddingValues),
+                    onSelect = { state.eventSink(GalleryScreen.Event.Toggle(it)) },
+                )
+
+                if (state.showCapture) {
+                    GalleryCapture(state.eventSink)
+                }
+            }
         }
     }
 }
@@ -146,8 +151,8 @@ private fun GalleryGrid(
         contentPadding = PaddingValues(12.dp),
     ) {
         itemsIndexed(itemList) { index, item ->
-            val itemBorderRadius by animateDpAsState(if (item.selected) 12.dp else 8.dp)
-            val itemPadding by animateDpAsState(if (item.selected) 12.dp else 0.dp)
+            val itemBorderRadius by animateDpAsState(if (item.isSelected) 12.dp else 8.dp)
+            val itemPadding by animateDpAsState(if (item.isSelected) 12.dp else 0.dp)
 
             Box(Modifier.animateItemPlacement()) {
                 AsyncImage(
@@ -168,7 +173,7 @@ private fun GalleryGrid(
                 )
 
                 if (isSelecting) {
-                    if (item.selected) {
+                    if (item.isSelected) {
                         Icon(
                             imageVector = Icons.Filled.CheckCircle,
                             contentDescription = null,
@@ -182,11 +187,11 @@ private fun GalleryGrid(
                             .size(24.dp),
                     ) {
                         drawCircle(
-                            color = if (item.selected) Color.DarkGray else Color.White,
-                            radius = (size.minDimension / 2) - if (item.selected) 0 else 8,
+                            color = if (item.isSelected) Color.DarkGray else Color.White,
+                            radius = (size.minDimension / 2) - if (item.isSelected) 0 else 8,
                             center = Offset(x = size.width / 2, y = size.height / 2),
-                            alpha = if (item.selected) 1.0f else 0.5f,
-                            style = Stroke(if (item.selected) 8f else 6f),
+                            alpha = if (item.isSelected) 1.0f else 0.5f,
+                            style = Stroke(if (item.isSelected) 8f else 6f),
                         )
                     }
                 }
@@ -201,7 +206,7 @@ private fun GalleryCapture(
     manager: StorageManager = rememberStorageManager(),
     modifier: Modifier = Modifier,
 ) {
-    CameraOverlay(
+    ImageCapture(
         manager = manager,
         onCapture = { eventSink(GalleryScreen.Event.Result(it)) },
         modifier = modifier,
