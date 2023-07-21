@@ -25,6 +25,6 @@ internal fun FileDialog(
                 }
             }.also(onCreate)
         },
-        dispose = FileDialog::dispose
+        dispose = FileDialog::dispose,
     )
 }

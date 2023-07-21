@@ -41,7 +41,7 @@ public object GalleryScreen : Parcelable, Screen {
             ) : this(
                 itemList = itemList.map { Item(it, isSelected(it)) },
                 showCapture = showCapture,
-                eventSink = eventSink
+                eventSink = eventSink,
             )
 
             data class Item(
@@ -77,7 +77,7 @@ internal fun GalleryPresenter(manager: StorageManager, navigator: Navigator): Ga
     return GalleryScreen.State.Success(
         itemList = itemList,
         isSelected = { it in selected },
-        showCapture = takePhoto
+        showCapture = takePhoto,
     ) { event ->
         when (event) {
             is GalleryScreen.Event.Capture -> takePhoto = true

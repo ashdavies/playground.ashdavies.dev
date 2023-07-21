@@ -28,9 +28,12 @@ internal actual fun ImageCapture(
     LaunchedEffect(Unit) {
         val authority = "${context.packageName}.files"
         val target = FileProvider.getUriForFile(
-            /* context = */ context,
-            /* authority = */ authority,
-            /* file = */ file,
+            /* context = */
+            context,
+            /* authority = */
+            authority,
+            /* file = */
+            file,
         )
 
         singlePhotoPickerLauncher.launch(target)
