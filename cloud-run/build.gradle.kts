@@ -13,6 +13,12 @@ application {
     mainClass.set("io.ashdavies.cloud.MainKt")
 }
 
+configurations.all {
+    resolutionStrategy.capabilitiesResolution.withCapability("${libs.google.guava.listenablefuture.get()}") {
+        select(candidates.first { !it.id.displayName.contains("empty") })
+    }
+}
+
 jib {
     container.mainClass = "MainKt"
 }
