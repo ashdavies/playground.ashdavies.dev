@@ -34,7 +34,6 @@ kotlin {
         implementation(libs.paging.compose.runtime)
         implementation(libs.slf4j.simple)
         implementation(libs.slack.circuit.foundation)
-        implementation(libs.sqldelight.coroutines.extensions)
     }
 
     androidMain.dependencies {

@@ -21,5 +21,3 @@ internal actual fun StorageManager(parent: File): StorageManager = object : Stor
         return file.delete()
     }
 }
-
-internal fun StorageManager.create(): File = create(Context.Default)
