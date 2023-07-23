@@ -13,6 +13,7 @@ import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
@@ -155,22 +156,30 @@ private fun GalleryGrid(
             val itemPadding by animateDpAsState(if (item.isSelected) 12.dp else 0.dp)
 
             Box(Modifier.animateItemPlacement()) {
-                AsyncImage(
-                    model = item.value,
-                    contentDescription = null,
-                    modifier = Modifier.padding(itemPadding)
-                        .clip(RoundedCornerShape(itemBorderRadius))
-                        .background(Color.DarkGray)
-                        .combinedClickable(
-                            interactionSource = remember { MutableInteractionSource() },
-                            indication = rememberRipple(bounded = false),
-                            onLongClick = { onSelect(index) },
-                            onClick = { if (isSelecting) onSelect(index) },
-                        )
-                        .fillMaxWidth()
-                        .aspectRatio(1f),
-                    contentScale = ContentScale.Crop,
-                )
+                Column {
+                    AsyncImage(
+                        model = item.file,
+                        contentDescription = item.name,
+                        modifier = Modifier.padding(itemPadding)
+                            .clip(RoundedCornerShape(itemBorderRadius))
+                            .background(Color.DarkGray)
+                            .combinedClickable(
+                                interactionSource = remember { MutableInteractionSource() },
+                                indication = rememberRipple(bounded = false),
+                                onLongClick = { onSelect(index) },
+                                onClick = { if (isSelecting) onSelect(index) },
+                            )
+                            .fillMaxWidth()
+                            .aspectRatio(1f),
+                        contentScale = ContentScale.Crop,
+                    )
+
+                    Text(
+                        text = item.name,
+                        modifier = Modifier.fillMaxWidth(),
+                        style = MaterialTheme.typography.labelSmall,
+                    )
+                }
 
                 if (isSelecting) {
                     if (item.isSelected) {

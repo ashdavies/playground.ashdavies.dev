@@ -1,0 +1,15 @@
+CREATE TABLE image (
+    uuid TEXT NOT NULL PRIMARY KEY,
+    name TEXT NOT NULL,
+    path TEXT NOT NULL
+);
+
+selectAll:
+    SELECT *
+    FROM image;
+
+insertOrReplace:
+    INSERT OR REPLACE INTO image VALUES ?;
+
+deleteById:
+    DELETE FROM image WHERE uuid = :uuid;

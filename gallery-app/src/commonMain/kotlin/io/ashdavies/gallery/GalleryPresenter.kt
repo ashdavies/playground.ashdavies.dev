@@ -1,6 +1,7 @@
 package io.ashdavies.gallery
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -9,7 +10,6 @@ import com.arkivanov.essenty.parcelable.Parcelable
 import com.arkivanov.essenty.parcelable.Parcelize
 import com.slack.circuit.runtime.CircuitUiEvent
 import com.slack.circuit.runtime.CircuitUiState
-import com.slack.circuit.runtime.Navigator
 import com.slack.circuit.runtime.Screen
 import com.slack.circuit.runtime.presenter.Presenter
 import com.slack.circuit.runtime.presenter.presenterOf
@@ -21,8 +21,8 @@ public object GalleryScreen : Parcelable, Screen {
     internal sealed interface Event : CircuitUiEvent {
         data class Result(val value: File) : Event
         data class Toggle(val index: Int) : Event
-        object Capture : Event
-        object Delete : Event
+        data object Capture : Event
+        data object Delete : Event
     }
 
     internal sealed interface State : CircuitUiState {
@@ -34,8 +34,8 @@ public object GalleryScreen : Parcelable, Screen {
             val eventSink: (Event) -> Unit,
         ) : State {
             constructor(
-                itemList: List<File>,
-                isSelected: (File) -> Boolean,
+                itemList: List<Image>,
+                isSelected: (Image) -> Boolean,
                 showCapture: Boolean,
                 eventSink: (Event) -> Unit,
             ) : this(
@@ -45,18 +45,25 @@ public object GalleryScreen : Parcelable, Screen {
             )
 
             data class Item(
-                val value: File,
+                val name: String,
+                val file: File,
                 val isSelected: Boolean,
-            )
+            ) {
+                constructor(image: Image, isSelected: Boolean) : this(
+                    name = image.name,
+                    file = File(image.path),
+                    isSelected = isSelected,
+                )
+            }
         }
 
-        object Loading : State
+        data object Loading : State
     }
 }
 
-public fun GalleryPresenterFactory(): Presenter.Factory = Presenter.Factory { screen, navigator, _ ->
+public fun GalleryPresenterFactory(): Presenter.Factory = Presenter.Factory { screen, _, _ ->
     when (screen) {
-        is GalleryScreen -> presenterOf { GalleryPresenter(rememberStorageManager(), navigator) }
+        is GalleryScreen -> presenterOf { GalleryPresenter(rememberImageManager()) }
         else -> null
     }
 }
@@ -69,9 +76,9 @@ public fun GalleryUiFactory(): Ui.Factory = Ui.Factory { screen, _ ->
 }
 
 @Composable
-internal fun GalleryPresenter(manager: StorageManager, navigator: Navigator): GalleryScreen.State {
-    var itemList by remember { mutableStateOf(manager.list()) }
-    var selected by remember { mutableStateOf(emptyList<File>()) }
+internal fun GalleryPresenter(manager: ImageManager): GalleryScreen.State {
+    var selected by remember { mutableStateOf(emptyList<Image>()) }
+    val itemList by manager.list().collectAsState(emptyList())
     var takePhoto by remember { mutableStateOf(false) }
 
     return GalleryScreen.State.Success(
@@ -83,13 +90,12 @@ internal fun GalleryPresenter(manager: StorageManager, navigator: Navigator): Ga
             is GalleryScreen.Event.Capture -> takePhoto = true
 
             is GalleryScreen.Event.Delete -> {
-                selected.forEach { manager.delete(it) }
-                itemList = itemList - selected.toSet()
+                selected.forEach { manager.remove(it) }
                 selected = emptyList()
             }
 
             is GalleryScreen.Event.Result -> {
-                itemList += event.value
+                manager.add(event.value)
                 takePhoto = false
             }
 

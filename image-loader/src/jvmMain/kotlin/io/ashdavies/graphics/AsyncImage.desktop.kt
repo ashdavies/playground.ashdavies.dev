@@ -1,10 +1,12 @@
 package io.ashdavies.graphics
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
@@ -13,9 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.toComposeImageBitmap
-import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.layout.ContentScale.Companion.FillWidth
 import androidx.compose.ui.res.loadImageBitmap
 import androidx.compose.ui.unit.dp
 import io.ashdavies.http.LocalHttpClient
@@ -59,17 +59,33 @@ public actual fun AsyncImage(
     val resource by when {
         model is File && model.isFile -> mutableStateOf(Result.success(BitmapPainter(loadImageBitmap(model.inputStream()))))
         model is String && model.startsWith("https://") -> produceAsyncRemoteImagePainter(model)
-        else -> throw IllegalArgumentException("Unsupported model '$model' with type '{${model?.javaClass}}'")
+        else -> mutableStateOf(Result.failure(IllegalArgumentException("Unsupported model '$model'")))
     }
 
     resource.fold(
-        onSuccess = { ComposeImage(it, contentDescription, modifier, contentScale = FillWidth) },
-        onLoading = { Box { CircularProgressIndicator(it, modifier.padding(48.dp)) } },
-        onFailure = {
+        onSuccess = {
             ComposeImage(
-                painter = rememberVectorPainter(Icons.Filled.Close),
-                modifier = modifier.padding(48.dp),
+                painter = it,
+                contentDescription = contentDescription,
+                modifier = modifier,
+                contentScale = contentScale,
+            )
+        },
+        onLoading = {
+            Box {
+                CircularProgressIndicator(
+                    progress = it,
+                    modifier = modifier.padding(48.dp),
+                )
+            }
+        },
+        onFailure = {
+            Icon(
+                imageVector = Icons.Filled.Warning,
                 contentDescription = it.message,
+                modifier = modifier
+                    .fillMaxSize()
+                    .padding(32.dp),
             )
         },
     )
