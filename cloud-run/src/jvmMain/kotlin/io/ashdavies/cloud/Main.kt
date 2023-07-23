@@ -37,6 +37,7 @@ internal fun Application.main(client: HttpClient = DefaultHttpClient()) {
     install(CallLogging)
 
     routing {
+        android()
         events()
         firebase(client)
         hello()

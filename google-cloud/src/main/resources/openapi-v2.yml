@@ -12,6 +12,14 @@ consumes:
 produces:
   - "application/json"
 paths:
+  /.well-known/assetlinks.json:
+    get:
+      tags: [ "static" ]
+      summary: "Returns AssetLinks protocol file"
+      operationId: "getAssetLinks"
+      responses:
+        "200":
+          description: "OK"
   /events:
     get:
       tags: [ "events" ]
@@ -128,7 +136,6 @@ paths:
       responses:
         "200":
           description: "OK"
-
 definitions:
   AppCheckToken:
     type: "object"
