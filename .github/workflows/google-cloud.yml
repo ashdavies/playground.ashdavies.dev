@@ -104,6 +104,7 @@ jobs:
           ./gradlew google-cloud:terraformShowText \
             ${{ contains(github.event.pull_request.labels.*.name, 'Dry Run') && '--dry-run' || '' }} \
             ${{ inputs.debug && '--debug' || '--info' }} \
+            --no-configuration-cache \
             --console=plain \
             --stacktrace
 
