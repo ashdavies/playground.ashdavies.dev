@@ -14,7 +14,7 @@ application {
 }
 
 jib {
-    container.mainClass = "MainKt"
+    container.mainClass = application.mainClass.get()
 }
 
 kotlin {
