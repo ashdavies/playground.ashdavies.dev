@@ -16,7 +16,11 @@ internal fun rememberRatingsService(
 
 @Composable
 private fun rememberNotionHttpClient(
+    accessTokenFileString: String = "${getFilesDir()}/tokens.db",
     uriHandler: UriHandler = LocalUriHandler.current,
 ): HttpClient = remember(uriHandler) {
-    getNotionHttpClient(uriHandler::openUri)
+    getNotionHttpClient(
+        accessTokenFileString = accessTokenFileString,
+        openUri = uriHandler::openUri,
+    )
 }

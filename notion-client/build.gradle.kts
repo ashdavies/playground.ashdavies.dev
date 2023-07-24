@@ -32,13 +32,7 @@ kotlin {
 
         implementation(libs.ktor.serialization.json)
         implementation(libs.ktor.serialization.kotlinx)
-    }
 
-    androidMain.dependencies {
-        implementation(libs.androidx.activity.ktx)
-    }
-
-    jvmMain.dependencies {
         with(libs.ktor.server) {
             implementation(auth)
             implementation(call.logging)
