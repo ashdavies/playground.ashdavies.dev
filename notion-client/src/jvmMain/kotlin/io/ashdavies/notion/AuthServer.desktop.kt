@@ -26,3 +26,8 @@ internal actual suspend fun awaitAuthorizationCode(): String = suspendCancellabl
 
     applicationEngine.start()
 }
+
+
+internal actual fun getRedirectUrlString(): String {
+    return "http://localhost:8080/callback"
+}

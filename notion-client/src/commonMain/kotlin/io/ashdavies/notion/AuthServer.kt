@@ -24,8 +24,10 @@ import io.ktor.http.encodedPath
 import io.ktor.http.formUrlEncode
 import io.ktor.http.parameters
 import io.ktor.serialization.kotlinx.json.json
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.cancel
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -55,22 +57,25 @@ public fun getNotionHttpClient(openUri: (String) -> Unit): HttpClient = APPLICAT
                     )
                 }
 
-                val deferredAuthorizationCode = coroutineScope {
-                    async { awaitAuthorizationCode() }
+                val coroutineScope = CoroutineScope(Dispatchers.Default)
+                val deferredAuthorizationCode = coroutineScope.async {
+                    awaitAuthorizationCode()
                 }
 
+                val redirectUrlString = getRedirectUrlString()
                 val authorizationUrlQuery = parameters {
-                    append("redirect_uri", "http://localhost:8080/callback")
+                    append("redirect_uri", redirectUrlString)
                     append("client_id", NotionClientId)
                     append("response_type", "code")
                     append("owner", "user")
                 }.formUrlEncode()
 
+                println("=== Preparing authorization query... ($authorizationUrlQuery)")
                 val authorizationBaseUrl = "https://api.notion.com/v1/oauth/authorize"
                 val authorizationUrl = "$authorizationBaseUrl?$authorizationUrlQuery"
                 openUri(authorizationUrl)
 
-                val authorizationCode = deferredAuthorizationCode.await()
+
                 val tokenUrlString = "https://api.notion.com/v1/oauth/token"
                 val tokenResponse = APPLICATION_HTTP_CLIENT.post(tokenUrlString) {
                     basicAuth(
@@ -84,18 +89,19 @@ public fun getNotionHttpClient(openUri: (String) -> Unit): HttpClient = APPLICAT
                     }
 
                     val payload = mapOf(
-                        "redirect_uri" to "http://localhost:8080/callback",
+                        "code" to deferredAuthorizationCode.await(),
                         "grant_type" to "authorization_code",
-                        "code" to authorizationCode,
+                        "redirect_uri" to redirectUrlString,
                     )
 
+                    coroutineScope.cancel()
+                    println("=== Payload = $payload")
                     setBody(payload)
                 }
 
                 if (tokenResponse.status != HttpStatusCode.OK) {
                     val error = tokenResponse.body<Notion.Object.Error>()
-                    println("Error: ${error.message}")
-                    return@loadTokens null
+                    throw IllegalStateException(error.message)
                 }
 
                 val accessToken = tokenResponse
@@ -127,6 +133,8 @@ public fun getNotionHttpClient(openUri: (String) -> Unit): HttpClient = APPLICAT
 
 internal expect suspend fun awaitAuthorizationCode(): String
 
+internal expect fun getRedirectUrlString(): String
+
 @Deprecated("Do not call this method directly")
 public suspend fun getAccessToken(openUri: (String) -> Unit): String {
     val notionHttpClient = getNotionHttpClient(openUri)
@@ -140,7 +148,6 @@ public suspend fun getAccessToken(openUri: (String) -> Unit): String {
     return response.request
         .headers[HttpHeaders.Authorization]!!
         .substringAfter(" ")
-        .also { println(it) }
 }
 
 public object Notion {

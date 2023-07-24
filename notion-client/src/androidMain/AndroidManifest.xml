@@ -15,7 +15,6 @@
                     android:host="playground.ashdavies.dev"
                     android:path="/notion"
                     android:scheme="https" />
-
             </intent-filter>
         </activity>
     </application>
