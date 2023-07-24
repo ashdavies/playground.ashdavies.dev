@@ -19,6 +19,7 @@ jib {
 
 kotlin {
     explicitApiWarning()
+    jvm { withJava() }
 
     jvmMain.dependencies {
         with(projects) {
