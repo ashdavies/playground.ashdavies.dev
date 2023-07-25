@@ -26,6 +26,7 @@ import androidx.compose.material3.TopAppBarDefaults.enterAlwaysScrollBehavior
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
@@ -35,6 +36,7 @@ import io.ashdavies.dominion.DominionCard
 import io.ashdavies.dominion.DominionExpansion
 import io.ashdavies.dominion.layout.windowInsetsPadding
 import io.ashdavies.graphics.AsyncImage
+import io.ashdavies.http.LocalHttpClient
 import io.ashdavies.http.onLoading
 import io.ashdavies.http.produceStateInline
 
@@ -47,10 +49,13 @@ internal fun KingdomScreen(
     modifier: Modifier = Modifier,
 ) {
     val scrollBehavior = enterAlwaysScrollBehavior()
+    val httpClient = LocalHttpClient.current
+    val cardService = remember(httpClient) {
+        CardService(httpClient)
+    }
 
-    val viewModel = rememberKingdomViewModel()
     val viewState by produceStateInline {
-        viewModel.getViewState(expansion)
+        cardService.getCardList(expansion)
     }
 
     Scaffold(

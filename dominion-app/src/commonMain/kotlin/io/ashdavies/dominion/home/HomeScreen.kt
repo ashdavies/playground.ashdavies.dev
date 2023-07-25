@@ -17,19 +17,25 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.ashdavies.dominion.DominionExpansion
 import io.ashdavies.graphics.AsyncImage
+import io.ashdavies.http.LocalHttpClient
 import io.ashdavies.http.onLoading
 import io.ashdavies.http.produceStateInline
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 internal fun HomeScreen(modifier: Modifier = Modifier, onClick: (DominionExpansion) -> Unit = { }) {
-    val viewModel = rememberHomeViewModel()
+    val httpClient = LocalHttpClient.current
+    val expansionService = remember(httpClient) {
+        ExpansionService(httpClient)
+    }
+
     val state by produceStateInline {
-        viewModel.getViewState()
+        expansionService.getExpansionList()
     }
 
     Scaffold(

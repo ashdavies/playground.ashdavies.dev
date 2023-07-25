@@ -1,13 +1,10 @@
 package io.ashdavies.dominion.home
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import io.ashdavies.dominion.DOMINION_STRATEGY_URL
 import io.ashdavies.dominion.DominionExpansion
 import io.ashdavies.dominion.DominionRequest
 import io.ashdavies.dominion.serialization.getContent
 import io.ashdavies.dominion.serialization.getOrThrow
-import io.ashdavies.http.LocalHttpClient
 import io.ashdavies.http.parameter
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -33,7 +30,7 @@ private inline val JsonElement.imageInfoUrl: String
  * http://wiki.dominionstrategy.com/api.php?action=parse&format=json&page=Dominion_(Base_Set)&section=3&prop=links
  * http://wiki.dominionstrategy.com/api.php?action=parse&format=json&page=Dominion_(Base_Set)&section=9
  */
-internal class HomeViewModel(private val client: HttpClient) {
+internal class ExpansionService(private val client: HttpClient) {
 
     private val JsonObject.links: Set<String>
         get() = getOrThrow<JsonObject>("query", "pages", "157")
@@ -48,7 +45,7 @@ internal class HomeViewModel(private val client: HttpClient) {
             .values
             .toList()
 
-    suspend fun getViewState(): List<DominionExpansion> {
+    suspend fun getExpansionList(): List<DominionExpansion> {
         val links: Set<String> = client
             .get(DOMINION_STRATEGY_URL) { parameter(DominionRequest.Query.Expansions()) }
             .body<JsonObject>()
@@ -71,10 +68,3 @@ internal fun DominionExpansion(element: JsonElement) = DominionExpansion(
     name = element.title.let { it.substring(5, it.length - 4) },
     image = element.imageInfoUrl,
 )
-
-@Composable
-internal fun rememberHomeViewModel(
-    client: HttpClient = LocalHttpClient.current,
-): HomeViewModel = remember(client) {
-    HomeViewModel(client)
-}
