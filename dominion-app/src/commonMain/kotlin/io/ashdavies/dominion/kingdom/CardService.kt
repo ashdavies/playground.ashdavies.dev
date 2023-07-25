@@ -1,14 +1,11 @@
 package io.ashdavies.dominion.kingdom
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import io.ashdavies.dominion.DOMINION_STRATEGY_URL
 import io.ashdavies.dominion.DominionCard
 import io.ashdavies.dominion.DominionExpansion
 import io.ashdavies.dominion.DominionRequest
 import io.ashdavies.dominion.serialization.getContent
 import io.ashdavies.dominion.serialization.getOrThrow
-import io.ashdavies.http.LocalHttpClient
 import io.ashdavies.http.parameter
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
