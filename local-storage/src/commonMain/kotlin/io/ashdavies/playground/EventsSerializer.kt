@@ -6,6 +6,6 @@ import kotlinx.serialization.Serializer
 /**
  * TODO: Move to events domain
  */
-@OptIn(ExperimentalSerializationApi::class)
+@ExperimentalSerializationApi
 @Serializer(forClass = Event::class)
 public object EventsSerializer

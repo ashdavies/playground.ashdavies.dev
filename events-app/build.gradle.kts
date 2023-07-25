@@ -20,7 +20,7 @@ kotlin {
             implementation(localStorage)
         }
 
-        implementation(libs.arkivanov.parcelable)
+        implementation(libs.essenty.parcelable)
 
         with(libs.ktor.client) {
             implementation(content.negotiation)

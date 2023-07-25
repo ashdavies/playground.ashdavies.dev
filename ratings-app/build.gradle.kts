@@ -15,7 +15,7 @@ kotlin {
             implementation(notionClient)
         }
 
-        implementation(libs.arkivanov.parcelable)
+        implementation(libs.essenty.parcelable)
         implementation(libs.ktor.client.core)
         implementation(libs.slack.circuit.foundation)
     }
