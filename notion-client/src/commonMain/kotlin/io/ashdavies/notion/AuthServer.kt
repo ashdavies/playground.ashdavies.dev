@@ -24,8 +24,13 @@ import io.ktor.http.encodedPath
 import io.ktor.http.formUrlEncode
 import io.ktor.http.parameters
 import io.ktor.serialization.kotlinx.json.json
-import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
+import io.ktor.server.application.call
+import io.ktor.server.cio.CIO
+import io.ktor.server.engine.embeddedServer
+import io.ktor.server.response.respondText
+import io.ktor.server.routing.get
+import io.ktor.server.routing.routing
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -43,11 +48,26 @@ private val APPLICATION_HTTP_CLIENT = HttpClient {
     }
 }
 
-public fun getNotionHttpClient(openUri: (String) -> Unit): HttpClient = APPLICATION_HTTP_CLIENT.config {
+private val CALLBACK_RESPONSE_BODY = """
+<HTML>
+<HEAD><script language="javascript" type="text/javascript">
+function closeWindow() {
+  window.open('','_parent','');
+  window.close();
+}
+</script></HEAD>
+<BODY><a href="javascript:closeWindow();">Close Window</a></BODY>
+</HTML>
+""".trimIndent()
+
+public fun getNotionHttpClient(
+    accessTokenFileString: String,
+    openUri: (String) -> Unit,
+): HttpClient = APPLICATION_HTTP_CLIENT.config {
     install(Auth) {
         bearer {
             loadTokens {
-                val accessTokenFile = File("tokens.db")
+                val accessTokenFile = File(accessTokenFileString)
                 if (accessTokenFile.exists()) {
                     return@loadTokens BearerTokens(
                         accessToken = accessTokenFile.readText(),
@@ -55,9 +75,16 @@ public fun getNotionHttpClient(openUri: (String) -> Unit): HttpClient = APPLICAT
                     )
                 }
 
-                val deferredAuthorizationCode = coroutineScope {
-                    async { awaitAuthorizationCode() }
-                }
+                val deferredAuthorizationCode = CompletableDeferred<String>()
+                val applicationEngine = embeddedServer(CIO, port = 8080) {
+                    routing {
+                        get("/callback") {
+                            val authorizationCode = requireNotNull(call.parameters["code"])
+                            call.respondText(CALLBACK_RESPONSE_BODY, ContentType.Text.Html)
+                            deferredAuthorizationCode.complete(authorizationCode)
+                        }
+                    }
+                }.start()
 
                 val authorizationUrlQuery = parameters {
                     append("redirect_uri", "http://localhost:8080/callback")
@@ -71,6 +98,8 @@ public fun getNotionHttpClient(openUri: (String) -> Unit): HttpClient = APPLICAT
                 openUri(authorizationUrl)
 
                 val authorizationCode = deferredAuthorizationCode.await()
+                applicationEngine.stop()
+
                 val tokenUrlString = "https://api.notion.com/v1/oauth/token"
                 val tokenResponse = APPLICATION_HTTP_CLIENT.post(tokenUrlString) {
                     basicAuth(
@@ -94,8 +123,7 @@ public fun getNotionHttpClient(openUri: (String) -> Unit): HttpClient = APPLICAT
 
                 if (tokenResponse.status != HttpStatusCode.OK) {
                     val error = tokenResponse.body<Notion.Object.Error>()
-                    println("Error: ${error.message}")
-                    return@loadTokens null
+                    throw IllegalStateException(error.message)
                 }
 
                 val accessToken = tokenResponse
@@ -125,11 +153,9 @@ public fun getNotionHttpClient(openUri: (String) -> Unit): HttpClient = APPLICAT
     }
 }
 
-internal expect suspend fun awaitAuthorizationCode(): String
-
 @Deprecated("Do not call this method directly")
 public suspend fun getAccessToken(openUri: (String) -> Unit): String {
-    val notionHttpClient = getNotionHttpClient(openUri)
+    val notionHttpClient = getNotionHttpClient("tokens.db", openUri)
     val response = notionHttpClient.get("users/me")
 
     if (response.status != HttpStatusCode.OK) {
@@ -140,7 +166,6 @@ public suspend fun getAccessToken(openUri: (String) -> Unit): String {
     return response.request
         .headers[HttpHeaders.Authorization]!!
         .substringAfter(" ")
-        .also { println(it) }
 }
 
 public object Notion {
@@ -291,9 +316,23 @@ public object Notion {
         @SerialName("access_token") val accessToken: String,
         @SerialName("token_type") val tokenType: String,
         @SerialName("bot_id") val botId: String,
+        @SerialName("workspace_name") val workspaceName: String,
         @SerialName("workspace_icon") val workspaceIcon: String,
         @SerialName("workspace_id") val workspaceId: String,
-        @SerialName("workspace_name") val workspaceName: String,
-        @SerialName("owner") val owner: Envelope,
-    )
+        @SerialName("owner") val owner: Owner,
+    ) {
+
+        @Serializable
+        public data class Owner(
+            @SerialName("type") val type: String,
+            @SerialName("user") val user: User,
+        ) {
+
+            @Serializable
+            public data class User(
+                @SerialName("object") val `object`: String,
+                @SerialName("id") val id: String,
+            )
+        }
+    }
 }
