@@ -83,7 +83,9 @@ https://firebase.google.com/docs/app-check/custom-provider
 ![JVM](https://img.shields.io/badge/project-jvm-component.svg?colorA=555555&colorB=7F52FF&label=&logo=kotlin&logoColor=ffffff&logoWidth=10)
 
 ### Kotlin GB [kotlin-gb]
-![Planned](https://img.shields.io/badge/project-planned-status.svg?colorA=555555&colorB=blue&label=&logo=kotlin&logoColor=ffffff&logoWidth=10)
+![Experimental](https://img.shields.io/badge/project-experimental-status.svg?colorA=555555&colorB=red&label=&logo=kotlin&logoColor=ffffff&logoWidth=10)
+![Multiplatform](https://img.shields.io/badge/project-multiplatform-component.svg?colorA=555555&colorB=7F52FF&label=&logo=kotlin&logoColor=ffffff&logoWidth=10)
+Offers a set of Traditional English aliases for Simplified English Kotlin APIs, largely a parody, thus does not comply to the same level of modularisation.  
 
 ### Local Storage [local-storage]
 ![Experimental](https://img.shields.io/badge/project-experimental-status.svg?colorA=555555&colorB=red&label=&logo=kotlin&logoColor=ffffff&logoWidth=10)

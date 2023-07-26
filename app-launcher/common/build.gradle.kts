@@ -18,7 +18,7 @@ kotlin {
             implementation(ratingsApp)
         }
 
-        implementation(libs.arkivanov.parcelable)
+        implementation(libs.essenty.parcelable)
         implementation(libs.slack.circuit.foundation)
     }
 

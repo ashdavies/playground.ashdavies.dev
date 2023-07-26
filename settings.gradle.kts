@@ -47,6 +47,7 @@ include(
     ":google-cloud",
     ":http-client",
     ":image-loader",
+    ":kotlin-gb",
     ":local-storage",
     ":micro-yaml",
     ":notion-client",

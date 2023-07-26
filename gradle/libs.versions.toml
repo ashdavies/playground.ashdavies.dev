@@ -30,7 +30,6 @@ apollo-graphql-coroutines-support = { module = "com.apollographql.apollo:apollo-
 apollo-graphql-runtime = { module = "com.apollographql.apollo:apollo-runtime", version.ref = "apollo-graphql" }
 
 app-cash-turbine = "app.cash.turbine:turbine:1.0.0"
-arkivanov-parcelable = "com.arkivanov.essenty:parcelable:1.1.0"
 
 auth-java-jwt = "com.auth0:java-jwt:4.4.0"
 auth-jwks-rsa = "com.auth0:jwks-rsa:0.22.0"
@@ -38,6 +37,7 @@ auth-jwks-rsa = "com.auth0:jwks-rsa:0.22.0"
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil-kt" }
 coil-core = { module = "io.coil-kt:coil", version.ref = "coil-kt" }
 
+essenty-parcelable = "com.arkivanov.essenty:parcelable:1.1.0"
 fusesource-jansi = "org.fusesource.jansi:jansi:2.4.0"
 
 google-accompanist-flowlayout = { module = "com.google.accompanist:accompanist-flowlayout", version.ref = "google-accompanist" }

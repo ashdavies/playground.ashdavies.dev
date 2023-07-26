@@ -13,7 +13,7 @@ kotlin {
         implementation(projects.httpClient)
         implementation(projects.imageLoader)
 
-        implementation(libs.arkivanov.parcelable)
+        implementation(libs.essenty.parcelable)
 
         with(libs.ktor.client) {
             implementation(libs.ktor.client.content.negotiation)

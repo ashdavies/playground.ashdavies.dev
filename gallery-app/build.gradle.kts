@@ -15,7 +15,7 @@ kotlin {
         implementation(projects.imageLoader)
         implementation(projects.localStorage)
 
-        implementation(libs.arkivanov.parcelable)
+        implementation(libs.essenty.parcelable)
         implementation(libs.slack.circuit.foundation)
     }
 
