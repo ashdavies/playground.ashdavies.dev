@@ -1,8 +1,10 @@
 package io.ashdavies.playground
 
 import android.content.Context
-import com.squareup.sqldelight.android.AndroidSqliteDriver
-import com.squareup.sqldelight.db.SqlDriver
+import app.cash.sqldelight.db.QueryResult
+import app.cash.sqldelight.db.SqlDriver
+import app.cash.sqldelight.db.SqlSchema
+import app.cash.sqldelight.driver.android.AndroidSqliteDriver
 
 public actual class DriverConfig(
     public val context: Context,
@@ -10,7 +12,7 @@ public actual class DriverConfig(
 
 public actual object DriverFactory {
     public actual operator fun invoke(
-        schema: SqlDriver.Schema,
+        schema: SqlSchema<QueryResult.Value<Unit>>,
         config: DriverConfig,
     ): SqlDriver = AndroidSqliteDriver(
         context = config.context,

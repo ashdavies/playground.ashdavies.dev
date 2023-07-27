@@ -14,7 +14,9 @@ kotlin {
 }
 
 sqldelight {
-    database("PlaygroundDatabase") {
-        packageName = "io.ashdavies.playground"
+    databases {
+        create("PlaygroundDatabase") {
+            packageName.set("io.ashdavies.playground")
+        }
     }
 }

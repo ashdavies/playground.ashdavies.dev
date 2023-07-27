@@ -50,8 +50,10 @@ kotlin {
 }
 
 sqldelight {
-    database("PlaygroundDatabase") {
-        dependency(projects.localStorage.dependencyProject)
-        packageName = "io.ashdavies.notion"
+    databases {
+        create("PlaygroundDatabase") {
+            packageName.set("io.ashdavies.notion")
+            dependency(projects.localStorage)
+        }
     }
 }

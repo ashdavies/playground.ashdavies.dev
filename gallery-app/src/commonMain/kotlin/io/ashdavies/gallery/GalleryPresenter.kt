@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import com.arkivanov.essenty.parcelable.Parcelable
@@ -62,9 +63,9 @@ public object GalleryScreen : Parcelable, Screen {
 }
 
 public fun GalleryPresenterFactory(): Presenter.Factory = Presenter.Factory { screen, _, _ ->
-    when (screen) {
+        when (screen) {
         is GalleryScreen -> presenterOf { GalleryPresenter(rememberImageManager()) }
-        else -> null
+            else -> null
     }
 }
 

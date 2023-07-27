@@ -1,5 +1,5 @@
 plugins {
-    id("com.squareup.sqldelight")
+    id("app.cash.sqldelight")
     kotlin("multiplatform")
 }
 

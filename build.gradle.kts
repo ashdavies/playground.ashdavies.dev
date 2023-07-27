@@ -14,6 +14,7 @@ plugins {
         classpath(android.application)
         classpath(android.library)
         classpath(apollo.graphql)
+        classpath(cash.sqldelight)
         classpath(diffplug.spotless)
         classpath(google.services)
         classpath(kotlinx.kover)

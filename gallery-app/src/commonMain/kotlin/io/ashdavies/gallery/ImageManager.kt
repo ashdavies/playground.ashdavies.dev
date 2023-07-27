@@ -1,11 +1,8 @@
 package io.ashdavies.gallery
 
 import androidx.compose.runtime.Composable
+import io.ashdavies.playground.mapToList
 import androidx.compose.runtime.remember
-import com.squareup.sqldelight.Query
-import com.squareup.sqldelight.Transacter
-import com.squareup.sqldelight.runtime.coroutines.asFlow
-import com.squareup.sqldelight.runtime.coroutines.mapToList
 import io.ashdavies.playground.rememberDatabase
 import kotlinx.coroutines.flow.Flow
 
@@ -21,7 +18,7 @@ internal fun ImageManager(
 ): ImageManager = object : ImageManager {
 
     override fun list(): Flow<List<Image>> {
-        return queries.mapToFlowList { selectAll() }
+        return queries.selectAll().mapToList()
     }
 
     override fun add(file: File) {
@@ -39,12 +36,6 @@ internal fun ImageManager(
         queries.deleteById(image.uuid)
     }
 }
-
-private fun <T : Transacter, R : Any> T.mapToFlowList(
-    producer: T.() -> Query<R>,
-): Flow<List<R>> = producer()
-    .asFlow()
-    .mapToList()
 
 @Composable
 internal fun rememberImageManager(
