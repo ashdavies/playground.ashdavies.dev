@@ -14,7 +14,6 @@ application {
 kotlin {
     commonMain.dependencies {
         with(projects) {
-            implementation(composeLocals)
             implementation(localStorage)
             implementation(notionClient)
         }

@@ -10,7 +10,7 @@ import com.google.android.gms.common.util.ProcessUtils
 import com.google.firebase.FirebaseApp
 
 public val LocalFirebaseAndroidApp: ProvidableCompositionLocal<FirebaseApp> = staticCompositionLocalOf {
-    noLocalProvidedFor("LocalFirebaseAndroidApp")
+    error("CompositionLocal LocalFirebaseAndroidApp not present")
 }
 
 @Composable

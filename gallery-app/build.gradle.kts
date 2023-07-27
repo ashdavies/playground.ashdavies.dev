@@ -10,7 +10,6 @@ android {
 
 kotlin {
     commonMain.dependencies {
-        implementation(projects.composeLocals)
         implementation(projects.httpClient)
         implementation(projects.imageLoader)
         implementation(projects.localStorage)

@@ -14,7 +14,6 @@ kotlin {
 
         with(projects) {
             implementation(appCheck.appCheckClient)
-            implementation(composeLocals)
             implementation(httpClient)
             implementation(imageLoader)
             implementation(localStorage)

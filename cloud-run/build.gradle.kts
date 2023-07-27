@@ -31,7 +31,6 @@ kotlin {
         with(projects) {
             implementation(appCheck.appCheckSdk)
             implementation(cloudFirestore)
-            implementation(composeLocals)
             implementation(httpClient)
             implementation(eventsAggregator)
             implementation(localStorage)
