@@ -20,7 +20,7 @@ internal val LocalPlaygroundDatabase = compositionLocalOf<PlaygroundDatabase> {
 @Composable
 @OptIn(MultipleReferenceWarning::class)
 public fun EventsCompositionLocals(content: @Composable () -> Unit) {
-    CompositionLoca   3lProvider(
+    CompositionLocalProvider(
         LocalPlaygroundDatabase provides rememberPlaygroundDatabase(),
         content = content,
     )
