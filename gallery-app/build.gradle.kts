@@ -24,10 +24,11 @@ kotlin {
     }
 }
 
-
 sqldelight {
-    database("PlaygroundDatabase") {
-        dependency(projects.localStorage.dependencyProject)
-        packageName = "io.ashdavies.gallery"
+    databases {
+        create("PlaygroundDatabase") {
+            packageName.set("io.ashdavies.gallery")
+            dependency(projects.localStorage)
+        }
     }
 }

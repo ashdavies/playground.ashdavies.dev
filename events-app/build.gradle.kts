@@ -67,8 +67,10 @@ kotlin {
 }
 
 sqldelight {
-    database("PlaygroundDatabase") {
-        dependency(projects.localStorage.dependencyProject)
-        packageName = "io.ashdavies.events"
+    databases {
+        create("PlaygroundDatabase") {
+            packageName.set("io.ashdavies.events")
+            dependency(projects.localStorage)
+        }
     }
 }

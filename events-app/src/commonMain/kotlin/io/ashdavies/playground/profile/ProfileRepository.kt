@@ -6,7 +6,7 @@ import io.ashdavies.http.LocalHttpClient
 import io.ashdavies.playground.MultipleReferenceWarning
 import io.ashdavies.playground.Profile
 import io.ashdavies.playground.ProfileQueries
-import io.ashdavies.playground.kotlin.mapToOneOrNull
+import io.ashdavies.playground.mapToOneOrNull
 import io.ashdavies.playground.random.Profile
 import io.ashdavies.playground.random.RandomProvider
 import io.ashdavies.playground.random.getRandomUser

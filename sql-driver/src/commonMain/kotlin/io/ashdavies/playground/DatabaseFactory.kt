@@ -1,10 +1,12 @@
 package io.ashdavies.playground
 
-import com.squareup.sqldelight.Transacter
-import com.squareup.sqldelight.db.SqlDriver
+import app.cash.sqldelight.Transacter
+import app.cash.sqldelight.db.QueryResult
+import app.cash.sqldelight.db.SqlDriver
+import app.cash.sqldelight.db.SqlSchema
 
 public object DatabaseFactory {
-    public operator fun <S : SqlDriver.Schema, T : Transacter> invoke(
+    public operator fun <S : SqlSchema<QueryResult.Value<Unit>>, T : Transacter> invoke(
         schema: S,
         config: DriverConfig,
         factory: (SqlDriver) -> T,
