@@ -1,8 +1,8 @@
 package io.ashdavies.playground
 
+import app.cash.sqldelight.db.QueryResult
 import app.cash.sqldelight.db.SqlDriver
 import app.cash.sqldelight.db.SqlSchema
-import app.cash.sqldelight.db.QueryResult
 
 public expect class DriverConfig
 

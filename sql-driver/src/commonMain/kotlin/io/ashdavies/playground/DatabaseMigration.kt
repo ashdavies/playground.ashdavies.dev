@@ -5,7 +5,7 @@ import app.cash.sqldelight.db.SqlCursor
 import app.cash.sqldelight.db.SqlDriver
 import app.cash.sqldelight.db.SqlSchema
 
-private const val VersionPragma = "user_version"
+private const val VERSION_PRAGMA = "user_version"
 
 internal class DatabaseMigration(
     private val driver: SqlDriver,
@@ -15,7 +15,7 @@ internal class DatabaseMigration(
     private var SqlDriver.oldVersion: Long
         get() = executeQuery(
             identifier = null,
-            sql = "PRAGMA $VersionPragma;",
+            sql = "PRAGMA $VERSION_PRAGMA;",
             mapper = { QueryResult.Value(it.nextOrNull { getLong(0) } ?: 0L) },
             parameters = 0,
             binders = null,
@@ -23,7 +23,7 @@ internal class DatabaseMigration(
         set(value) {
             execute(
                 identifier = null,
-                sql = "PRAGMA $VersionPragma = $value",
+                sql = "PRAGMA $VERSION_PRAGMA = $value",
                 parameters = 0,
             )
         }
@@ -33,7 +33,10 @@ internal class DatabaseMigration(
         newVersion: Long = schema.version,
     ) {
         driver.oldVersion = when (oldVersion) {
-            0L -> run { schema.create(driver); 1 }
+            0L -> run {
+                schema.create(driver)
+                1
+            }
             else -> {
                 schema.migrate(driver, oldVersion, newVersion)
                 schema.version

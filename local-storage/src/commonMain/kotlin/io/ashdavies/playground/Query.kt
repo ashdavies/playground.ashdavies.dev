@@ -22,7 +22,7 @@ public fun <T : Any, R : Any?> Query<T>.mapToList(
     .mapList(transform)
 
 private fun <T : Any, R : Any?> Flow<List<T>>.mapList(
-    transform: suspend (value: T) -> R
+    transform: suspend (value: T) -> R,
 ): Flow<List<R>> = map { list ->
     list.map { transform(it) }
 }
