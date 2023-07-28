@@ -59,7 +59,7 @@ google-firebase-appcheck-debug = { module = "com.google.firebase:firebase-appche
 google-firebase-appcheck-playintegrity = { module = "com.google.firebase:firebase-appcheck-playintegrity" }
 google-firebase-common-ktx = { module = "com.google.firebase:firebase-common-ktx" }
 google-firebase-auth-ktx = { module = "com.google.firebase:firebase-auth-ktx" }
-google-guava-listenablefuture = "com.google.guava:listenablefuture:1.0"
+google-guava-listenablefuture = "com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava"
 google-maps-android-compose = { module = "com.google.maps.android:maps-compose", version.ref = "google-maps-compose" }
 google-maps-android-compose-widgets = { module = "com.google.maps.android:maps-compose-widgets", version.ref = "google-maps-compose" }
 
