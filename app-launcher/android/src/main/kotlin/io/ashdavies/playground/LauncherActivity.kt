@@ -34,4 +34,4 @@ internal class LauncherActivity : KotlinActivity({
             }
         }
     }
-},)
+})
