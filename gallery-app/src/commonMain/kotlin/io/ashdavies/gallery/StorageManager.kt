@@ -2,9 +2,10 @@ package io.ashdavies.gallery
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import io.ashdavies.content.PlatformContext
 
 internal interface StorageManager {
-    fun create(context: Context): File
+    fun create(context: PlatformContext): File
     fun list(): List<File>
     fun delete(file: File): Boolean
 }

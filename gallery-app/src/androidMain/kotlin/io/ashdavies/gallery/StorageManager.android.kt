@@ -1,12 +1,12 @@
 package io.ashdavies.gallery
 
+import io.ashdavies.content.PlatformContext
 import java.io.File
-import java.util.UUID
 
 internal actual fun StorageManager(parent: File): StorageManager = object : StorageManager {
 
-    override fun create(context: Context): File {
-        val file = File(parent, "${UUID.randomUUID()}.jpg")
+    override fun create(context: PlatformContext): File {
+        val file = File(parent, "${randomUuid()}.jpg")
         if (!file.createNewFile()) throw IllegalStateException()
         return file
     }

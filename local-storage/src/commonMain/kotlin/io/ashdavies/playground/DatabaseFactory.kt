@@ -12,12 +12,12 @@ public fun <T : Transacter> rememberDatabase(
     schema: SqlSchema<QueryResult.Value<Unit>>,
     factory: (SqlDriver) -> T,
 ): T {
-    val config = getDriverConfig()
-    return remember(schema, config) {
+    val context = getPlatformContext()
+    return remember(schema, context) {
         DatabaseFactory(
-            factory = factory,
             schema = schema,
-            config = config,
+            context = context,
+            factory = factory,
         )
     }
 }

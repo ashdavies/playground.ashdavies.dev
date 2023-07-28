@@ -8,6 +8,7 @@ android {
 
 kotlin {
     commonMain.dependencies {
+        implementation(projects.platformSupport)
         implementation(libs.sqldelight.runtime)
     }
 
