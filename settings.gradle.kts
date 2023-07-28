@@ -52,6 +52,7 @@ include(
     ":notion-client",
     ":notion-console",
     ":parcelable-support",
+    ":platform-support",
     ":ratings-app",
     ":sql-driver",
 )

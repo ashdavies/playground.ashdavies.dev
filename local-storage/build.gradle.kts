@@ -9,6 +9,7 @@ android {
 
 kotlin {
     commonMain.dependencies {
+        implementation(projects.platformSupport)
         implementation(projects.sqlDriver)
     }
 }

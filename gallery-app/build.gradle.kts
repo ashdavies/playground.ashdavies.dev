@@ -13,6 +13,7 @@ kotlin {
         implementation(projects.httpClient)
         implementation(projects.imageLoader)
         implementation(projects.localStorage)
+        implementation(projects.platformSupport)
 
         implementation(libs.essenty.parcelable)
         implementation(libs.slack.circuit.foundation)
