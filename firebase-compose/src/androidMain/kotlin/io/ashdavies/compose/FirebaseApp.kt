@@ -22,12 +22,15 @@ public fun ProvideFirebaseApp(context: Context = LocalContext.current, content: 
 }
 
 private fun requireFirebaseApp(context: Context): FirebaseApp {
-    val firebaseApp = if (FirebaseApp.getApps(context).size > 0) FirebaseApp.getInstance()
-    else FirebaseApp.initializeApp(context)
+    val firebaseApp = if (FirebaseApp.getApps(context).size > 0) {
+        FirebaseApp.getInstance()
+    } else {
+        FirebaseApp.initializeApp(context)
+    }
 
     return requireNotNull(firebaseApp) {
         "Default FirebaseApp is not initialized in this " +
-                "process ${ProcessUtils.getMyProcessName()}. Make sure " +
-                "to call FirebaseApp.initializeApp(Context) first."
+            "process ${ProcessUtils.getMyProcessName()}. Make sure " +
+            "to call FirebaseApp.initializeApp(Context) first."
     }
 }
