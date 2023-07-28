@@ -3,7 +3,6 @@ package io.ashdavies.playground
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.compositionLocalOf
-import io.ashdavies.compose.noLocalProvidedFor
 import io.ashdavies.events.PlaygroundDatabase
 
 @RequiresOptIn(
@@ -14,7 +13,7 @@ import io.ashdavies.events.PlaygroundDatabase
 internal annotation class MultipleReferenceWarning
 
 internal val LocalPlaygroundDatabase = compositionLocalOf<PlaygroundDatabase> {
-    noLocalProvidedFor("LocalPlaygroundDatabase")
+    error("CompositionLocal LocalPlaygroundDatabase not present")
 }
 
 @Composable

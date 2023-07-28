@@ -38,7 +38,6 @@ include(
     ":app-launcher:desktop",
     ":cloud-firestore",
     ":cloud-run",
-    ":compose-locals",
     ":dominion-app",
     ":events-aggregator",
     ":events-app",

@@ -59,7 +59,6 @@ stateDiagram-v2
 
     EventsApp --> AppCheckClient
     EventsApp --> Auth0Auth
-    EventsApp --> ComposeLocals
     EventsApp --> HttpClient
     EventsApp --> ImageLoader
     EventsApp --> LocalStorage

@@ -3,18 +3,17 @@ package io.ashdavies.notion
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.compositionLocalOf
-import io.ashdavies.compose.noLocalProvidedFor
 import io.ashdavies.playground.rememberDatabase
 import org.jraf.klibnotion.client.Authentication
 import org.jraf.klibnotion.client.ClientConfiguration
 import org.jraf.klibnotion.client.NotionClient
 
 internal val LocalNotionClient = compositionLocalOf<NotionClient> {
-    noLocalProvidedFor("LocalNotionClient")
+    error("CompositionLocal LocalNotionClient not present")
 }
 
 internal val LocalPlaygroundDatabase = compositionLocalOf<PlaygroundDatabase> {
-    noLocalProvidedFor("LocalPlaygroundDatabase")
+    error("CompositionLocal LocalPlaygroundDatabase not present")
 }
 
 @Composable

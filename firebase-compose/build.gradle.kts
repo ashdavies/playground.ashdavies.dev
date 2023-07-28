@@ -7,10 +7,6 @@ android {
 }
 
 kotlin {
-    commonMain.dependencies {
-        implementation(projects.composeLocals)
-    }
-
     androidMain.dependencies {
         with(libs.google.firebase) {
             implementation(dependencies.platform(bom))
