@@ -10,8 +10,10 @@ public actual object DriverFactory {
     public actual operator fun invoke(
         schema: SqlSchema<QueryResult.Value<Unit>>,
         context: PlatformContext,
+        name: String,
     ): SqlDriver = AndroidSqliteDriver(
-        context = context,
         schema = schema,
+        context = context,
+        name = name,
     )
 }

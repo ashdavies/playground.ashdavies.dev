@@ -13,7 +13,7 @@ import io.ashdavies.compose.ProvideFirebaseApp
 
 internal class LauncherActivity : KotlinActivity({
     val initialBackStack = buildInitialBackStack(intent.getStringExtra("route"))
-    val circuitConfig = CircuitConfig()
+    val circuitConfig = CircuitConfig(applicationContext)
 
     setContent {
         val systemUiController =
@@ -34,4 +34,4 @@ internal class LauncherActivity : KotlinActivity({
             }
         }
     }
-},)
+})

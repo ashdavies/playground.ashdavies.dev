@@ -9,5 +9,6 @@ public expect object DriverFactory {
     public operator fun invoke(
         schema: SqlSchema<QueryResult.Value<Unit>>,
         context: PlatformContext,
+        name: String,
     ): SqlDriver
 }

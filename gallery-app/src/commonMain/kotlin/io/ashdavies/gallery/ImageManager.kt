@@ -1,9 +1,6 @@
 package io.ashdavies.gallery
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import io.ashdavies.playground.mapToList
-import io.ashdavies.playground.rememberDatabase
 import kotlinx.coroutines.flow.Flow
 
 internal interface ImageManager {
@@ -35,22 +32,4 @@ internal fun ImageManager(
         storage.delete(File(image.path))
         queries.deleteById(image.uuid)
     }
-}
-
-@Composable
-internal fun rememberImageManager(
-    storage: StorageManager = rememberStorageManager(),
-    queries: ImageQueries = rememberImageQueries(),
-): ImageManager = remember(storage, queries) {
-    ImageManager(storage, queries)
-}
-
-@Composable
-private fun rememberImageQueries(
-    database: PlaygroundDatabase = rememberDatabase(
-        factory = PlaygroundDatabase::invoke,
-        schema = PlaygroundDatabase.Schema,
-    ),
-): ImageQueries = remember(database) {
-    database.imageQueries
 }

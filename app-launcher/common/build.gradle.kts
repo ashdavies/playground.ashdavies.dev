@@ -9,6 +9,8 @@ android {
 
 kotlin {
     commonMain.dependencies {
+        api(projects.platformSupport)
+
         implementation(compose.materialIconsExtended)
 
         with(projects) {
