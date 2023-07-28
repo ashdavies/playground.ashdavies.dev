@@ -11,6 +11,7 @@ import com.slack.circuit.foundation.CircuitCompositionLocals
 import com.slack.circuit.foundation.NavigableCircuitContent
 import com.slack.circuit.foundation.push
 import com.slack.circuit.foundation.rememberCircuitNavigator
+import io.ashdavies.content.PlatformContext
 import kotlinx.cli.ArgParser
 import kotlinx.cli.ArgType
 
@@ -20,7 +21,7 @@ public fun main(args: Array<String>) {
     val argResult = argParser.parse(args)
 
     val initialBackStack = buildInitialBackStack(routerArgOption)
-    val circuitConfig = CircuitConfig()
+    val circuitConfig = CircuitConfig(PlatformContext.Default)
 
     application {
         val windowState = rememberWindowState(size = DpSize(450.dp, 975.dp))

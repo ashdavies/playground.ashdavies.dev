@@ -11,11 +11,9 @@ public object DatabaseFactory {
         schema: S,
         context: PlatformContext,
         factory: (SqlDriver) -> T,
-    ): T {
-        val driver = DriverFactory(schema, context)
-        val migration = DatabaseMigration(driver, schema)
-
-        migration.migrate()
-        return factory(driver)
-    }
+    ): T = DriverFactory(
+        schema = schema,
+        context = context,
+        name = "database.db",
+    ).let(factory)
 }

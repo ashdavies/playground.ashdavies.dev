@@ -1,9 +1,9 @@
 package io.ashdavies.gallery
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import com.arkivanov.essenty.parcelable.Parcelable
@@ -15,6 +15,8 @@ import com.slack.circuit.runtime.presenter.Presenter
 import com.slack.circuit.runtime.presenter.presenterOf
 import com.slack.circuit.runtime.ui.Ui
 import com.slack.circuit.runtime.ui.ui
+import io.ashdavies.content.PlatformContext
+import io.ashdavies.playground.DatabaseFactory
 
 @Parcelize
 public object GalleryScreen : Parcelable, Screen {
@@ -61,24 +63,44 @@ public object GalleryScreen : Parcelable, Screen {
     }
 }
 
-public fun GalleryPresenterFactory(): Presenter.Factory = Presenter.Factory { screen, _, _ ->
-    when (screen) {
-        is GalleryScreen -> presenterOf { GalleryPresenter(rememberImageManager()) }
-        else -> null
+public fun GalleryPresenterFactory(context: PlatformContext): Presenter.Factory {
+    val database = DatabaseFactory(PlaygroundDatabase.Schema, context) { PlaygroundDatabase(it) }
+    val storage = StorageManager(PathProvider(context).images)
+    val images = ImageManager(storage, database.imageQueries)
+
+    return Presenter.Factory { screen, _, _ ->
+        when (screen) {
+            is GalleryScreen -> presenterOf { GalleryPresenter(images) }
+            else -> null
+        }
     }
 }
 
-public fun GalleryUiFactory(): Ui.Factory = Ui.Factory { screen, _ ->
-    when (screen) {
-        is GalleryScreen -> ui<GalleryScreen.State> { state, modifier -> GalleryScreen(state, modifier) }
-        else -> null
+public fun GalleryUiFactory(context: PlatformContext): Ui.Factory {
+    val storage = StorageManager(PathProvider(context).images)
+
+    return Ui.Factory { screen, _ ->
+        when (screen) {
+            is GalleryScreen -> ui<GalleryScreen.State> { state, modifier ->
+                GalleryScreen(
+                    state = state,
+                    manager = storage,
+                    modifier = modifier,
+                )
+            }
+
+            else -> null
+        }
     }
 }
 
 @Composable
 internal fun GalleryPresenter(manager: ImageManager): GalleryScreen.State {
+    val itemList by produceState(emptyList<Image>(), manager) {
+        manager.list().collect { value = it }
+    }
+
     var selected by remember { mutableStateOf(emptyList<Image>()) }
-    val itemList by manager.list().collectAsState(emptyList())
     var takePhoto by remember { mutableStateOf(false) }
 
     return GalleryScreen.State.Success(

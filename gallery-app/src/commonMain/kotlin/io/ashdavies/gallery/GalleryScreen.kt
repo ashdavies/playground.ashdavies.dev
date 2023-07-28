@@ -62,6 +62,7 @@ import io.ashdavies.graphics.AsyncImage
 @OptIn(ExperimentalMaterial3Api::class)
 internal fun GalleryScreen(
     state: GalleryScreen.State,
+    manager: StorageManager,
     modifier: Modifier = Modifier,
 ) {
     val isSelecting = state is GalleryScreen.State.Success && state.itemList.any { it.isSelected }
@@ -84,7 +85,10 @@ internal fun GalleryScreen(
                 )
 
                 if (state.showCapture) {
-                    GalleryCapture(state.eventSink)
+                    GalleryCapture(
+                        manager = manager,
+                        eventSink = state.eventSink,
+                    )
                 }
             }
         }
@@ -211,14 +215,14 @@ private fun GalleryGrid(
 
 @Composable
 private fun GalleryCapture(
-    eventSink: (GalleryScreen.Event) -> Unit,
-    manager: StorageManager = rememberStorageManager(),
+    manager: StorageManager,
     modifier: Modifier = Modifier,
+    eventSink: (GalleryScreen.Event) -> Unit,
 ) {
     ImageCapture(
         manager = manager,
-        onCapture = { eventSink(GalleryScreen.Event.Result(it)) },
         modifier = modifier,
+        onCapture = { eventSink(GalleryScreen.Event.Result(it)) },
     )
 }
 

@@ -14,6 +14,7 @@ kotlin {
         implementation(projects.imageLoader)
         implementation(projects.localStorage)
         implementation(projects.platformSupport)
+        implementation(projects.sqlDriver)
 
         implementation(libs.essenty.parcelable)
         implementation(libs.slack.circuit.foundation)
@@ -27,7 +28,7 @@ kotlin {
 sqldelight {
     databases {
         create("PlaygroundDatabase") {
-            packageName.set("io.ashdavies.gallery")
+            packageName.set(android.namespace)
             dependency(projects.localStorage)
         }
     }
