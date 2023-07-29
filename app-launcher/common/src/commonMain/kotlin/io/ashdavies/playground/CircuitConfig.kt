@@ -1,13 +1,13 @@
 package io.ashdavies.playground
 
-import com.slack.circuit.foundation.CircuitConfig
+import com.slack.circuit.foundation.Circuit
 import io.ashdavies.content.PlatformContext
 import io.ashdavies.dominion.DominionPresenterFactory
 import io.ashdavies.dominion.DominionUiFactory
 import io.ashdavies.gallery.GalleryPresenterFactory
 import io.ashdavies.gallery.GalleryUiFactory
 
-public fun CircuitConfig(context: PlatformContext): CircuitConfig = CircuitConfig.Builder()
+public fun CircuitConfig(context: PlatformContext): Circuit = Circuit.Builder()
     .addPresenterFactories(getPresenterFactories(context))
     .addUiFactories(getUiFactories(context))
     .build()
