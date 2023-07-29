@@ -19,7 +19,7 @@ extensions.withType<BaseAppModuleExtension> { configure() }
 
 extensions.withType<LibraryExtension> { configure() }
 
-fun CommonExtension<*, *, *, *>.configure() {
+fun CommonExtension<*, *, *, *, *>.configure() {
     buildFeatures {
         compose = true
     }
