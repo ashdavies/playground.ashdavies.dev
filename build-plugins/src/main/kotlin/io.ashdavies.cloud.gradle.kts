@@ -12,8 +12,6 @@ compose {
     kotlinCompilerPlugin.set("$composeCompiler")
 }
 
-configurations.create("invoker")
-
 dependencies {
     implementation(compose.foundation)
     implementation(compose.runtime)

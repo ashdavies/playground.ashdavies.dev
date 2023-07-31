@@ -4,9 +4,11 @@ plugins {
 }
 
 dependencies {
-    implementation(projects.cloudFirestore)
-    implementation(projects.localStorage)
-    implementation(projects.microYaml)
+    with(projects) {
+        implementation(cloudFirestore)
+        implementation(localStorage)
+        implementation(microYaml)
+    }
 
-    testImplementation(libs.ktor.client.core)
+    implementation(libs.google.guava.jre)
 }
