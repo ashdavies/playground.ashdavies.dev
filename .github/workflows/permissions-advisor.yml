@@ -18,6 +18,7 @@ on:
 
 jobs:
   advisor:
+    name: GitHub Permissions Advisor
     runs-on: ubuntu-latest
     steps:
       - uses: GitHubSecurityLab/actions-permissions/advisor@v1
