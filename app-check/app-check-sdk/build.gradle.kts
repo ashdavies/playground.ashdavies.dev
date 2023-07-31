@@ -10,6 +10,7 @@ dependencies {
 
     implementation(libs.auth.java.jwt)
     implementation(libs.auth.jwks.rsa)
+    implementation(libs.google.guava.jre)
 
     with(libs.ktor.client) {
         implementation(auth)
