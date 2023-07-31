@@ -20,6 +20,7 @@ on:
 
 jobs:
   renovate:
+    name: Self-Hosted
     runs-on: ubuntu-latest
     steps:
 #     - name: Permissions Monitor

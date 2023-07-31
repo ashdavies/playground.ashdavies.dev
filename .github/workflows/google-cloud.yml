@@ -24,6 +24,7 @@ concurrency:
 
 jobs:
   build:
+    name: Configure Google Cloud
     runs-on: ubuntu-latest
     if: |
       (github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'Google Cloud'))

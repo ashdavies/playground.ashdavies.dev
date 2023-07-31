@@ -18,6 +18,7 @@ concurrency:
 
 jobs:
   build:
+    name: Run Integration Tests
     runs-on: ubuntu-latest
 
     permissions:
