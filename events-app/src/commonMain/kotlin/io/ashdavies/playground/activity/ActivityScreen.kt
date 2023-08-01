@@ -34,10 +34,9 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.paging.compose.LazyPagingItems
 import app.cash.paging.LoadStateError
 import app.cash.paging.LoadStateLoading
-import app.cash.paging.items
+import app.cash.paging.compose.LazyPagingItems
 import io.ashdavies.playground.Event
 import io.ashdavies.playground.android.fade
 
@@ -79,8 +78,8 @@ internal fun ActivityScreen(state: ActivityScreen.State, modifier: Modifier = Mo
                 modifier = Modifier.fillMaxSize(),
                 contentPadding = contentPadding,
             ) {
-                items(state.pagingItems) {
-                    EventSection(it) { event ->
+                items(state.pagingItems.itemCount) {
+                    EventSection(state.pagingItems[it]) { event ->
                         eventSink(ActivityScreen.Event.Details(event.id))
                     }
                 }

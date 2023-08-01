@@ -1,8 +1,8 @@
 package io.ashdavies.playground.events
 
-import androidx.paging.ExperimentalPagingApi
-import androidx.paging.LoadType
-import androidx.paging.PagingState
+import app.cash.paging.ExperimentalPagingApi
+import app.cash.paging.LoadType
+import app.cash.paging.PagingState
 import app.cash.paging.RemoteMediator
 import io.ashdavies.http.LegacyEvent
 import io.ashdavies.playground.Event

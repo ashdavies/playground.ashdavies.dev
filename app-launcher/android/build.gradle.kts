@@ -28,10 +28,7 @@ android {
 }
 
 dependencies {
-    implementation(projects.appLauncher.common) {
-        exclude(libs.paging.compose.common)
-    }
-
+    implementation(projects.appLauncher.common)
     implementation(projects.firebaseCompose)
 
     with(libs.androidx) {

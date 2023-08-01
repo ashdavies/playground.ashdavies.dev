@@ -1,7 +1,7 @@
 package io.ashdavies.playground.events
 
-import androidx.paging.PagingState
 import app.cash.paging.PagingSource
+import app.cash.paging.PagingState
 import io.ashdavies.playground.Event
 import io.ashdavies.playground.EventsQueries
 import io.ashdavies.playground.network.todayAsString
