@@ -45,6 +45,11 @@ module "github-repository" {
   description = "Playground"
   labels      = [
     {
+      description = "Indicates an unexpected problem or unintended behavior",
+      color       = "D73A4A"
+      name        = "Bug",
+    },
+    {
       description = "Run Gradle with all task actions disabled"
       name        = "Dry Run"
       color       = "6AFD9F"
