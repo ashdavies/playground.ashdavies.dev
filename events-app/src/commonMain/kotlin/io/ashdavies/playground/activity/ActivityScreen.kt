@@ -78,8 +78,8 @@ internal fun ActivityScreen(state: ActivityScreen.State, modifier: Modifier = Mo
                 modifier = Modifier.fillMaxSize(),
                 contentPadding = contentPadding,
             ) {
-                items(state.pagingItems) {
-                    EventSection(it) { event ->
+                items(state.pagingItems.itemCount) {
+                    EventSection(state.pagingItems[it]) { event ->
                         eventSink(ActivityScreen.Event.Details(event.id))
                     }
                 }
