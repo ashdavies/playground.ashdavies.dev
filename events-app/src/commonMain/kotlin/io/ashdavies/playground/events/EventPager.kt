@@ -2,7 +2,7 @@ package io.ashdavies.playground.events
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import androidx.paging.ExperimentalPagingApi
+import app.cash.paging.ExperimentalPagingApi
 import app.cash.paging.Pager
 import app.cash.paging.PagingConfig
 import io.ashdavies.http.buildApi
@@ -25,9 +25,9 @@ internal fun rememberEventPager(
     pageSize: Int = DEFAULT_PAGE_SIZE,
 ): Pager<String, Event> = remember(eventsQueries, eventsApi) {
     Pager(
-        remoteMediator = EventsRemoteMediator(eventsQueries, eventsApi),
-        pagingSourceFactory = { EventsPagingSource(eventsQueries) },
         config = PagingConfig(pageSize),
         initialKey = initialKey,
+        remoteMediator = EventsRemoteMediator(eventsQueries, eventsApi),
+        pagingSourceFactory = { EventsPagingSource(eventsQueries) },
     )
 }
