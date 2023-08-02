@@ -17,6 +17,10 @@ variable "gh_token" {
   description = "GitHub personal access token"
 }
 
+variable "openapi_config" {
+  description = "The full path of the OpenAPI configuration."
+}
+
 variable "service_name" {
   description = "Google Cloud Run service name"
   default     = "playground.ashdavies.dev"
