@@ -26,6 +26,7 @@ resource "github_repository" "main" {
   ]
 }
 
+# github_branch.main is deprecated
 resource "github_branch" "main" {
   branch     = github_repository.main.default_branch
   repository = github_repository.main.name

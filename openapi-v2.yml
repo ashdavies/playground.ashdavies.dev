@@ -1,6 +1,6 @@
 swagger: "2.0"
 info:
-  title: "Playground Service"
+  title: "playground-api Playground Service"
   description: "Playground Service definition hosted by Cloud Endpoints with a Cloud Run backend"
   version: "1.0.0"
   x-version-name: "${version_name}"
