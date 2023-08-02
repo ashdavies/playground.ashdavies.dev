@@ -20,7 +20,10 @@ spotless {
 
 terraform {
     val main by sourceSets.getting {
-        planVariables = mapOf("gh_token" to System.getenv("GITHUB_TOKEN"))
+        planVariables = mapOf(
+            "openapi_config" to "$rootDir/${stringProperty("openapi.generator.inputSpec")}",
+            "gh_token" to System.getenv("GITHUB_TOKEN"),
+        )
     }
 
     val terraformShowText by tasks.registering(TerraformShowText::class) {

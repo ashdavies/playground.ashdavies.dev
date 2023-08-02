@@ -76,7 +76,7 @@ sourceSets.main {
 openApiGenerate {
     generatorName.set("kotlin-server")
     outputDir.set("$buildDir/generated/openapi/main")
-    inputSpec.set("$projectDir/../google-cloud/src/main/resources/openapi-v2.yml")
+    inputSpec.set("$rootDir/${stringProperty("openapi.generator.inputSpec")}")
     templateDir.set("$projectDir/src/jvmMain/resources/templates")
     packageName.set("io.ashdavies.playground")
     ignoreFileOverride.set("$projectDir/.openapi-generator-ignore")

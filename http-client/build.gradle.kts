@@ -41,7 +41,7 @@ kotlin {
 openApiGenerate {
     generatorName.set("kotlin")
     outputDir.set("$buildDir/generated/openapi/main")
-    inputSpec.set("$projectDir/../google-cloud/src/main/resources/openapi-v2.yml")
+    inputSpec.set("$rootDir/${stringProperty("openapi.generator.inputSpec")}")
     packageName.set("io.ashdavies.playground")
     serverVariables.put("cloud_run_hostname", String())
     ignoreFileOverride.set("$projectDir/.openapi-generator-ignore")
