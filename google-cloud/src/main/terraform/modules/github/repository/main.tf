@@ -26,12 +26,6 @@ resource "github_repository" "main" {
   ]
 }
 
-# github_branch.main is deprecated
-resource "github_branch" "main" {
-  branch     = github_repository.main.default_branch
-  repository = github_repository.main.name
-}
-
 resource "github_issue_label" "main" {
   for_each    = {
     for label in var.labels : label.name => label
