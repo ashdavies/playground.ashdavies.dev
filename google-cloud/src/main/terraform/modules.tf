@@ -1,3 +1,13 @@
+module "api-gateway" {
+  openapi_contents = base64encode(local_file.openapi_config.content)
+  openapi_path     = local_file.openapi_config.filename
+  source           = "./modules/google/api-gateway"
+  gateway_id       = "playground-api-gateway"
+  region           = var.project_region
+  api_id           = "playground-api"
+  project          = var.project_id
+}
+
 module "cloud-run-build" {
   docker_image = "${var.project_region}-docker.pkg.dev/${var.project_id}/cloud-run-source-deploy/playground.ashdavies.dev"
   source       = "./modules/google/cloud-run-build"
@@ -6,6 +16,7 @@ module "cloud-run-build" {
   project      = var.project_id
 }
 
+# module.cloud-run-endpoint is deprecated
 module "cloud-run-endpoint" {
   container_image    = "${var.project_region}-docker.pkg.dev/${var.project_id}/endpoints-release/endpoints-runtime-serverless:${var.esp_tag}-${var.service_name}-${module.cloud-run-endpoint.config_id}"
   image_repository   = "${var.project_region}-docker.pkg.dev/${var.project_id}/endpoints-release"
@@ -20,6 +31,7 @@ module "cloud-run-endpoint" {
   esp_tag            = var.esp_tag
 }
 
+# module endpoint-iam-binding is deprecated
 module "endpoint-iam-binding" {
   source             = "terraform-google-modules/iam/google//modules/cloud_run_services_iam"
   bindings           = { "roles/run.invoker" = ["allUsers"] }

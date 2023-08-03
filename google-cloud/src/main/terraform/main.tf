@@ -1,3 +1,4 @@
+# google_project_service.main is deprecated
 resource "google_project_service" "main" {
   service            = module.cloud-run-endpoint.service_name
   depends_on         = [module.cloud-run-endpoint]
