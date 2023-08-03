@@ -1,3 +1,4 @@
+# variable.esp_tag is deprecated
 variable "esp_tag" {
   description = "ESPv2 version"
   default     = "2.40.0"
