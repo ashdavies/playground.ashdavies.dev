@@ -12,6 +12,7 @@ resource "google_project_iam_custom_role" "main" {
   role_id     = "actionsPublisher"
   permissions = [
     "apigateway.apiconfigs.create",
+    "apigateway.gateways.update",
     "artifactregistry.repositories.uploadArtifacts",
     "cloudbuild.builds.create",
     "iam.serviceAccounts.actAs",
