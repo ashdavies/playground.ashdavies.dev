@@ -11,6 +11,7 @@ resource "google_project_iam_custom_role" "main" {
   provider    = google.impersonated
   role_id     = "actionsPublisher"
   permissions = [
+    "apigateway.apiconfigs.create",
     "artifactregistry.repositories.uploadArtifacts",
     "cloudbuild.builds.create",
     "iam.serviceAccounts.actAs",
