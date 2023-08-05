@@ -39,9 +39,7 @@ import io.ashdavies.graphics.AsyncImage
 import io.ashdavies.http.LocalHttpClient
 import io.ashdavies.http.onLoading
 import io.ashdavies.http.produceStateInline
-
-
- import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 
 @Composable
