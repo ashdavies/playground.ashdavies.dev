@@ -17,7 +17,6 @@ dependencies {
     implementation(compose.runtime)
 
     with(libs.jetbrains.kotlinx) {
-        implementation(collections.immutable)
         implementation(coroutines.core)
         implementation(datetime)
         implementation(serialization.core)

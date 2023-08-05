@@ -30,7 +30,6 @@ kotlin {
         }
 
         with(libs.jetbrains.kotlinx) {
-            implementation(collections.immutable)
             implementation(coroutines.core)
             implementation(coroutines.test)
             implementation(datetime)

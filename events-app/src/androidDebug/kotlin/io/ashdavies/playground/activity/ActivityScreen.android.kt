@@ -1,4 +1,4 @@
-package io.ashdavies.playground.home
+package io.ashdavies.playground.activity
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
@@ -9,7 +9,6 @@ import io.ashdavies.playground.AndroidMakers
 import io.ashdavies.playground.DroidconBerlin
 import io.ashdavies.playground.DroidconLondon
 import io.ashdavies.playground.Event
-import io.ashdavies.playground.activity.ActivityScreen
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 
@@ -17,7 +16,7 @@ private val DroidconEvents = listOf(AndroidMakers, DroidconBerlin, DroidconLondo
 
 @Preview
 @Composable
-internal fun HomeScreen(data: List<Event> = DroidconEvents) {
+internal fun ActivityScreenPreview(data: List<Event> = DroidconEvents) {
     ActivityScreen(ActivityScreen.State(lazyPagingItems(flowOf(PagingData.from(data)))) { })
 }
 

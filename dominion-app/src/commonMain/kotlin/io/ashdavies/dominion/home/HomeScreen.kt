@@ -25,6 +25,8 @@ import io.ashdavies.graphics.AsyncImage
 import io.ashdavies.http.LocalHttpClient
 import io.ashdavies.http.onLoading
 import io.ashdavies.http.produceStateInline
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
@@ -44,9 +46,9 @@ internal fun HomeScreen(modifier: Modifier = Modifier, onClick: (DominionExpansi
     ) { contentPadding ->
         state.onSuccess {
             HomeScreen(
+                expansions = it.toImmutableList(),
                 contentPadding = contentPadding,
                 onClick = onClick,
-                expansions = it,
             )
         }
 
@@ -63,7 +65,7 @@ internal fun HomeScreen(modifier: Modifier = Modifier, onClick: (DominionExpansi
 @Composable
 @ExperimentalMaterial3Api
 private fun HomeScreen(
-    expansions: List<DominionExpansion>,
+    expansions: ImmutableList<DominionExpansion>,
     contentPadding: PaddingValues,
     onClick: (DominionExpansion) -> Unit = { },
     modifier: Modifier = Modifier,

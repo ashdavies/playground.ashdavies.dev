@@ -57,6 +57,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import io.ashdavies.graphics.AsyncImage
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
@@ -78,7 +80,7 @@ internal fun GalleryScreen(
             is GalleryScreen.State.Empty -> GalleryEmpty()
             is GalleryScreen.State.Success -> {
                 GalleryGrid(
-                    itemList = state.itemList,
+                    itemList = state.itemList.toImmutableList(),
                     isSelecting = isSelecting,
                     modifier = Modifier.padding(paddingValues),
                     onSelect = { state.eventSink(GalleryScreen.Event.Toggle(it)) },
@@ -143,7 +145,7 @@ private fun GalleryEmpty(modifier: Modifier = Modifier) {
 @Composable
 @OptIn(ExperimentalFoundationApi::class)
 private fun GalleryGrid(
-    itemList: List<GalleryScreen.State.Success.Item>,
+    itemList: ImmutableList<GalleryScreen.State.Success.Item>,
     isSelecting: Boolean = false,
     modifier: Modifier = Modifier,
     onSelect: (Int) -> Unit,
