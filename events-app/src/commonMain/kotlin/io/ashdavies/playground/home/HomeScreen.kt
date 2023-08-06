@@ -8,7 +8,7 @@ import com.slack.circuit.foundation.CircuitContent
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-internal fun HomeScreen(state: HomeScreen.State, modifier: Modifier) {
+internal fun HomeScreen(state: HomeScreen.State, modifier: Modifier = Modifier) {
     val eventSink = state.eventSink
 
     Scaffold(

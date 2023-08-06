@@ -39,6 +39,8 @@ import io.ashdavies.graphics.AsyncImage
 import io.ashdavies.http.LocalHttpClient
 import io.ashdavies.http.onLoading
 import io.ashdavies.http.produceStateInline
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
@@ -64,9 +66,9 @@ internal fun KingdomScreen(
     ) { contentPadding ->
         viewState.onSuccess {
             KingdomScreen(
+                kingdom = it.toImmutableList(),
                 contentPadding = contentPadding,
                 onClick = onClick,
-                kingdom = it,
             )
         }
 
@@ -119,7 +121,7 @@ private fun BackIconButton(onClick: () -> Unit) {
 @Composable
 @ExperimentalMaterial3Api
 private fun KingdomScreen(
-    kingdom: List<DominionCard>,
+    kingdom: ImmutableList<DominionCard>,
     contentPadding: PaddingValues,
     onClick: (DominionCard) -> Unit = { },
     modifier: Modifier = Modifier,
