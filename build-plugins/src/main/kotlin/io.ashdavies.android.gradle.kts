@@ -7,7 +7,7 @@ plugins {
 }
 
 kotlin {
-    android()
+    androidTarget()
 
     androidMain.dependencies {
         implementation(libs.androidx.annotation)
