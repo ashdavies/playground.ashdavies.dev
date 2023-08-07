@@ -1,11 +1,10 @@
 module "api-gateway" {
-  openapi_contents = base64encode(local_file.openapi_config.content)
-  openapi_path     = local_file.openapi_config.filename
   source           = "./modules/google/api-gateway"
-  gateway_id       = "playground-api-gateway"
-  region           = var.project_region
   api_id           = "playground-api"
+  gateway_id       = "playground-api-gateway"
+  openapi_contents = base64encode(local.openapi_config)
   project          = var.project_id
+  region           = var.project_region
 }
 
 module "cloud-run-build" {
@@ -18,17 +17,17 @@ module "cloud-run-build" {
 
 # module.cloud-run-endpoint is deprecated
 module "cloud-run-endpoint" {
-  container_image    = "${var.project_region}-docker.pkg.dev/${var.project_id}/endpoints-release/endpoints-runtime-serverless:${var.esp_tag}-${var.service_name}-${module.cloud-run-endpoint.config_id}"
-  image_repository   = "${var.project_region}-docker.pkg.dev/${var.project_id}/endpoints-release"
-  gcloud_build_image = var.resources.gcloud-build-image.path
   source             = "./modules/google/cloud-run-endpoint"
   config_id          = module.cloud-run-endpoint.config_id
-  openapi_config     = local_file.openapi_config.content
+  container_image    = "${var.project_region}-docker.pkg.dev/${var.project_id}/endpoints-release/endpoints-runtime-serverless:${var.esp_tag}-${var.service_name}-${module.cloud-run-endpoint.config_id}"
   endpoint_name      = "playground.ashdavies.dev"
-  service_name       = "playground-endpoint"
-  location           = var.project_region
-  project            = var.project_id
   esp_tag            = var.esp_tag
+  gcloud_build_image = var.resources.gcloud-build-image.path
+  image_repository   = "${var.project_region}-docker.pkg.dev/${var.project_id}/endpoints-release"
+  location           = var.project_region
+  openapi_config     = local.openapi_config
+  project            = var.project_id
+  service_name       = "playground-endpoint"
 }
 
 # module endpoint-iam-binding is deprecated
@@ -65,11 +64,6 @@ module "github-repository" {
       description = "Run Gradle with all task actions disabled"
       name        = "Dry Run"
       color       = "6AFD9F"
-    },
-    {
-      description = "Trigger deployment to Google Cloud"
-      name        = "Google Cloud"
-      color       = "3367d6"
     }
   ]
   secrets = [
