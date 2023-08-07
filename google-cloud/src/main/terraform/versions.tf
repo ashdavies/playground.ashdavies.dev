@@ -14,11 +14,6 @@ terraform {
       source  = "hashicorp/google"
       version = "~> 4.0"
     }
-
-    # usage local_file is deprecated
-    local = {
-      source = "hashicorp/local"
-    }
   }
 
   required_version = ">= 0.13"
