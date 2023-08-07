@@ -1,3 +1,9 @@
+locals {
+  openapi_config = templatefile(var.openapi_config, {
+    backend_service_name = module.cloud-run-build.url
+  })
+}
+
 # google_project_service.main is deprecated
 resource "google_project_service" "main" {
   service            = module.cloud-run-endpoint.service_name
@@ -33,11 +39,4 @@ resource "google_project_iam_custom_role" "main" {
     "storage.objects.delete",
     "storage.objects.list",
   ]
-}
-
-resource "local_file" "openapi_config" {
-  content  = templatefile(var.openapi_config, {
-    backend_service_name = module.cloud-run-build.url
-  })
-  filename = basename(var.openapi_config)
 }
