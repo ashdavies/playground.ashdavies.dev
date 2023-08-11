@@ -18,10 +18,14 @@ public fun ArgParser.Subcommand(
     onExecute: suspend CoroutineScope.() -> Unit = { },
     content: @Composable () -> Unit = { },
 ) {
-    val coroutineScope: CoroutineScope = rememberCoroutineScope()
+    val coroutineScope = rememberCoroutineScope()
 
-    val subcommand: Subcommand = rememberSubcommand(name, actionDescription) {
-        coroutineScope.launch { onExecute() }
+    val subcommand = remember(name, actionDescription) {
+        object : Subcommand(name, actionDescription) {
+            override fun execute() {
+                coroutineScope.launch { onExecute() }
+            }
+        }
     }
 
     LaunchedEffect(subcommand) {
@@ -29,16 +33,4 @@ public fun ArgParser.Subcommand(
     }
 
     content()
-}
-
-@Composable
-@ExperimentalCli
-private fun rememberSubcommand(
-    name: String,
-    actionDescription: String,
-    block: (Subcommand) -> Unit,
-): Subcommand = remember(name, actionDescription) {
-    object : Subcommand(name, actionDescription) {
-        override fun execute() = block(this)
-    }
 }
