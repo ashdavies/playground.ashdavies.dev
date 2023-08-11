@@ -4,12 +4,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.platform.UriHandler
 import io.ashdavies.playground.TokenQueries
+import kotlinx.cli.ArgParser
 import kotlinx.cli.ExperimentalCli
 
 @Composable
 @ExperimentalCli
 @NotionScopeMarker
-internal fun AuthCommand(
+internal fun ArgParser.AuthCommand(
     tokenQueries: TokenQueries = rememberTokenQueries(),
     uriHandler: UriHandler = LocalUriHandler.current,
     onAuthState: (AuthState) -> Unit = { },
@@ -40,6 +41,6 @@ internal fun AuthCommand(
 }
 
 internal sealed interface AuthState : NotionState {
-    object Awaiting : AuthState
-    object Authenticated : AuthState
+    data object Awaiting : AuthState
+    data object Authenticated : AuthState
 }
