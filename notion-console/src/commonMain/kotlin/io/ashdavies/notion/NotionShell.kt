@@ -19,7 +19,7 @@ public suspend fun MosaicScope.NotionShell(args: Array<String>) {
             else -> Unit
         }
 
-        NotionConsole(args) { state = it }
+        NotionCli(args) { state = it }
     }
 
     while (state !is AuthState.Authenticated && state !is SearchState.Complete) {
