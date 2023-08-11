@@ -14,11 +14,11 @@ application {
 kotlin {
     commonMain.dependencies {
         with(projects) {
+            implementation(composeCli)
             implementation(localStorage)
             implementation(notionClient)
         }
 
-        implementation(libs.jetbrains.kotlinx.cli)
         implementation(libs.jraf.klibnotion)
 
         with(libs.ktor.client) {

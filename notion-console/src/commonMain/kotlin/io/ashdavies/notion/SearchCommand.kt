@@ -1,6 +1,7 @@
 package io.ashdavies.notion
 
 import androidx.compose.runtime.Composable
+import kotlinx.cli.ArgParser
 import kotlinx.cli.ArgType
 import kotlinx.cli.ExperimentalCli
 import org.jraf.klibnotion.client.NotionClient
@@ -12,31 +13,31 @@ import org.jraf.klibnotion.model.property.sort.PropertySort
 @Composable
 @ExperimentalCli
 @NotionScopeMarker
-internal fun SearchCommand(
+internal fun ArgParser.SearchCommand(
     notionClient: NotionClient = LocalNotionClient.current,
     onSearchState: (SearchState) -> Unit = { },
 ) = Subcommand(
     actionDescription = "Searches all pages and child pages that are shared with the integration.",
     onExecute = {
-        val sortTimestamp: SortTimestamp? by it.option(
+        val sortTimestamp: SortTimestamp? by option(
             description = "The name of the timestamp to sort against.",
             fullName = "sort_timestamp",
             type = ArgType.Choice(),
         )
 
-        val sortDirection: SortDirection? by it.option(
+        val sortDirection: SortDirection? by option(
             description = "Sorts the results based on the provided criteria.",
             fullName = "sort_direction",
             type = ArgType.Choice(),
         )
 
-        val startCursor: String? by it.option(
+        val startCursor: String? by option(
             description = "Returns the results starting after the cursor provided.",
             fullName = "start_cursor",
             type = ArgType.String,
         )
 
-        val query: String? by it.option(
+        val query: String? by option(
             description = "Limits which pages are returned by comparing the query to the page title.",
             type = ArgType.String,
             fullName = "query",

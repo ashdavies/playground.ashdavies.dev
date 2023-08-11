@@ -11,8 +11,8 @@ spotless {
         "ktlint_standard_function-naming" to "disabled",
         "ktlint_standard_property-naming" to "disabled",
         "ij_kotlin_allow_trailing_comma" to "true",
+        "ktlint_standard_filename" to "disabled",
         "ktlint_experimental" to "enabled",
-        "ktlint_filename" to "disabled",
         "android" to "true",
     )
 
