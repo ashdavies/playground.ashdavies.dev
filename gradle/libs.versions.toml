@@ -106,7 +106,7 @@ ktor-server-request-validation = { module = "io.ktor:ktor-server-request-validat
 ktor-server-test-host = { module = "io.ktor:ktor-server-test-host", version.ref = "ktor" }
 
 molecule-runtime = "app.cash.molecule:molecule-runtime:1.2.0"
-mosaic-runtime = "com.jakewharton.mosaic:mosaic-runtime:0.8.0"
+mosaic-runtime = "com.jakewharton.mosaic:mosaic-runtime:0.9.0"
 
 paging-compose-common = { module = "app.cash.paging:paging-compose-common", version.ref = "paging-compose" }
 paging-compose-runtime = { module = "app.cash.paging:paging-runtime-composeui", version.ref = "paging-compose" }
