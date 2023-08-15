@@ -1,7 +1,15 @@
 package io.ashdavies.gallery
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.LinearOutSlowInEasing
+import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideIn
@@ -15,6 +23,7 @@ import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -28,6 +37,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Sync
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -44,11 +54,16 @@ import androidx.compose.material3.TopAppBarDefaults.enterAlwaysScrollBehavior
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
@@ -59,6 +74,13 @@ import androidx.compose.ui.unit.dp
 import io.ashdavies.graphics.AsyncImage
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import kotlin.math.abs
+
+private val Color.Companion.LightGreen: Color
+    get() = Color(0xFFA5FFA5)
+
+private val Color.Companion.Orange: Color
+    get() = Color(0xFFFFA500)
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
@@ -187,14 +209,17 @@ private fun GalleryGrid(
                     )
                 }
 
-                if (isSelecting) {
-                    if (item.isSelected) {
-                        Icon(
-                            imageVector = Icons.Filled.CheckCircle,
-                            contentDescription = null,
-                            modifier = Modifier.padding(4.dp),
-                        )
-                    }
+                AnimatedVisibility(
+                    visible = item.isSelected,
+                    modifier = Modifier.align(Alignment.TopStart),
+                    enter = fadeIn(),
+                    exit = fadeOut(),
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.CheckCircle,
+                        contentDescription = null,
+                        modifier = Modifier.padding(4.dp),
+                    )
 
                     Canvas(
                         modifier = Modifier
@@ -210,9 +235,67 @@ private fun GalleryGrid(
                         )
                     }
                 }
+
+                AnimatedVisibility(
+                    visible = item.state != SyncState.NOT_SYNCED,
+                    modifier = Modifier.align(Alignment.TopEnd),
+                    enter = fadeIn(),
+                    exit = fadeOut(),
+                ) {
+                    SyncIndicator(item.state == SyncState.SYNCING)
+                }
             }
         }
     }
+}
+
+@Composable
+private fun SyncIndicator(isSyncing: Boolean, modifier: Modifier = Modifier) {
+    val tint by animateColorAsState(if (isSyncing) Color.Orange else Color.LightGreen)
+    val scale by animateFloatAsState(if (isSyncing) 0.75f else 1f)
+
+    var currentRotation by remember { mutableStateOf(0f) }
+    val rotation = remember { Animatable(currentRotation) }
+
+    LaunchedEffect(isSyncing) {
+        if (isSyncing) {
+            rotation.animateTo(
+                targetValue = currentRotation - 360f,
+                animationSpec = infiniteRepeatable(
+                    animation = tween(
+                        durationMillis = 3_600,
+                        easing = LinearEasing,
+                    ),
+                    repeatMode = RepeatMode.Restart,
+                ),
+                block = { currentRotation = value },
+            )
+        } else {
+            if (currentRotation < 0f) {
+                val rotationRemaining = 360 % abs(currentRotation)
+                val targetValue = currentRotation - rotationRemaining
+
+                rotation.animateTo(
+                    targetValue = targetValue,
+                    animationSpec = tween(
+                        durationMillis = rotationRemaining.toInt() * 10,
+                        easing = LinearOutSlowInEasing,
+                    ),
+                    block = { currentRotation = value },
+                )
+            }
+        }
+    }
+
+    Icon(
+        imageVector = Icons.Filled.Sync,
+        contentDescription = null,
+        modifier = modifier
+            .rotate(rotation.value)
+            .padding(4.dp)
+            .scale(scale),
+        tint = tint,
+    )
 }
 
 @Composable
@@ -247,11 +330,26 @@ private fun GalleryBottomBar(
                 enter = slideIn(initialOffset = { IntOffset(0, 200) }),
                 exit = slideOut(targetOffset = { IntOffset(0, 200) }),
             ) {
-                IconButton(onClick = { eventSink!!(GalleryScreen.Event.Delete) }) {
-                    Icon(
-                        imageVector = Icons.Filled.Delete,
-                        contentDescription = "Delete",
-                    )
+                check(eventSink != null) { "Event sink cannot be null" }
+
+                Row {
+                    Box(modifier = Modifier.padding(horizontal = 4.dp)) {
+                        IconButton(onClick = { eventSink(GalleryScreen.Event.Sync) }) {
+                            Icon(
+                                imageVector = Icons.Filled.Sync,
+                                contentDescription = "Sync",
+                            )
+                        }
+                    }
+
+                    Box(modifier = Modifier.padding(horizontal = 4.dp)) {
+                        IconButton(onClick = { eventSink(GalleryScreen.Event.Delete) }) {
+                            Icon(
+                                imageVector = Icons.Filled.Delete,
+                                contentDescription = "Delete",
+                            )
+                        }
+                    }
                 }
             }
         },
@@ -262,7 +360,9 @@ private fun GalleryBottomBar(
                 enter = fadeIn(),
                 exit = fadeOut(),
             ) {
-                FloatingActionButton(onClick = { eventSink!!(GalleryScreen.Event.Capture) }) {
+                check(eventSink != null) { "Event sink cannot be null" }
+
+                FloatingActionButton(onClick = { eventSink(GalleryScreen.Event.Capture) }) {
                     Icon(
                         imageVector = Icons.Filled.Add,
                         contentDescription = "Add",

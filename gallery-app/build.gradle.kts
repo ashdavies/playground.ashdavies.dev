@@ -10,6 +10,8 @@ android {
 
 kotlin {
     commonMain.dependencies {
+        implementation(compose.materialIconsExtended)
+
         implementation(projects.httpClient)
         implementation(projects.imageLoader)
         implementation(projects.localStorage)
