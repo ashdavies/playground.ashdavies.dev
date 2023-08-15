@@ -17,7 +17,6 @@ internal actual fun StorageManager(parent: File): StorageManager = object : Stor
     }
 
     override fun delete(file: File): Boolean {
-        if (!file.exists()) throw IllegalArgumentException()
         return file.delete()
     }
 }
