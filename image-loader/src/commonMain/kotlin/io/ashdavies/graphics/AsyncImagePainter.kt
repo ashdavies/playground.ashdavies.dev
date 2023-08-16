@@ -1,13 +1,11 @@
 package io.ashdavies.graphics
 
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 
 @Composable
-public expect fun AsyncImage(
+public expect fun rememberAsyncImagePainter(
     model: Any?,
-    contentDescription: String?,
-    modifier: Modifier = Modifier,
     contentScale: ContentScale = ContentScale.Fit,
-)
+): Painter
