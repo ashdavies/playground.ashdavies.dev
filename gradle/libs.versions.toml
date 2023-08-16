@@ -1,5 +1,5 @@
 [versions]
-androidx-activity = "1.7.2"
+androidx-activity = "1.8.0-alpha06"
 apollo-graphql = "2.5.14"
 cash-sqldelight = "2.0.0"
 coil-kt = "2.4.0"
@@ -42,7 +42,6 @@ fusesource-jansi = "org.fusesource.jansi:jansi:2.4.0"
 
 google-accompanist-flowlayout = { module = "com.google.accompanist:accompanist-flowlayout", version.ref = "google-accompanist" }
 google-accompanist-placeholderMaterial = { module = "com.google.accompanist:accompanist-placeholder-material", version.ref = "google-accompanist" }
-google-accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "google-accompanist" }
 
 google-android-maps = "com.google.android.gms:play-services-maps:18.1.0"
 google-android-material = "com.google.android.material:material:1.9.0"
