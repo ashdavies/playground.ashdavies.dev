@@ -5,18 +5,24 @@ plugins {
 
 android {
     namespace = "io.ashdavies.common"
+
+    sourceSets["main"].apply {
+        res.srcDirs(
+            "src/androidMain/res",
+            "src/commonMain/resources",
+        )
+    }
 }
 
 kotlin {
     commonMain.dependencies {
         api(projects.platformSupport)
 
-        implementation(compose.materialIconsExtended)
-
         with(projects) {
             implementation(dominionApp)
             implementation(eventsApp)
             implementation(galleryApp)
+            implementation(imageLoader)
             implementation(ratingsApp)
         }
 

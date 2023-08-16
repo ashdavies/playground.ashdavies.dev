@@ -1,3 +1,5 @@
+@file:Suppress("INLINE_FROM_HIGHER_PLATFORM")
+
 package io.ashdavies.dominion
 
 import androidx.compose.runtime.Composable
@@ -26,7 +28,7 @@ public sealed class DominionScreen : Parcelable, Screen {
 internal sealed interface DominionEvent : CircuitUiEvent {
     sealed interface NavEvent : DominionEvent {
         data class GoTo(val screen: DominionScreen) : NavEvent
-        object Pop : NavEvent
+        data object Pop : NavEvent
     }
 }
 

@@ -1,12 +1,8 @@
+@file:Suppress("INLINE_FROM_HIGHER_PLATFORM")
+
 package io.ashdavies.playground
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Event
-import androidx.compose.material.icons.filled.Grid4x4
-import androidx.compose.material.icons.filled.PhotoAlbum
-import androidx.compose.material.icons.filled.Stars
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.vector.ImageVector
 import com.arkivanov.essenty.parcelable.Parcelable
 import com.arkivanov.essenty.parcelable.Parcelize
 import com.slack.circuit.runtime.CircuitUiEvent
@@ -21,42 +17,42 @@ import kotlinx.collections.immutable.persistentListOf
 import io.ashdavies.playground.home.HomeScreen as EventsHomeScreen
 
 private val DominionEntry = LauncherScreen.Entry(
+    image = LauncherDrawableTokens.dominion,
+    title = "Dominion",
     event = LauncherScreen.Event.Dominion,
-    image = Icons.Filled.Grid4x4,
-    text = "Dominion",
 )
 
 private val EventsEntry = LauncherScreen.Entry(
+    image = LauncherDrawableTokens.events,
+    title = "Events",
     event = LauncherScreen.Event.Events,
-    image = Icons.Filled.Event,
-    text = "Events",
 )
 
 private val GalleryEntry = LauncherScreen.Entry(
+    image = LauncherDrawableTokens.gallery,
+    title = "Gallery",
     event = LauncherScreen.Event.Gallery,
-    image = Icons.Filled.PhotoAlbum,
-    text = "Gallery",
 )
 
 private val RatingsEntry = LauncherScreen.Entry(
+    image = LauncherDrawableTokens.ratings,
+    title = "Ratings",
     event = LauncherScreen.Event.Ratings,
-    image = Icons.Filled.Stars,
-    text = "Ratings",
 )
 
 @Parcelize
 public object LauncherScreen : Parcelable, Screen {
     public data class Entry(
-        val image: ImageVector,
+        val image: Any,
+        val title: String,
         val event: Event,
-        val text: String,
     )
 
     public sealed interface Event : CircuitUiEvent {
-        public object Dominion : Event
-        public object Events : Event
-        public object Gallery : Event
-        public object Ratings : Event
+        public data object Dominion : Event
+        public data object Events : Event
+        public data object Gallery : Event
+        public data object Ratings : Event
     }
 
     public data class State(

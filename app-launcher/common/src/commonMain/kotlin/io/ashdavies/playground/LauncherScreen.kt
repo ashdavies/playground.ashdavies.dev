@@ -1,59 +1,82 @@
 package io.ashdavies.playground
 
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Code
+import androidx.compose.material.icons.filled.ArrowForward
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
+import io.ashdavies.graphics.rememberAsyncImagePainter
 
 @Composable
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(
+    ExperimentalFoundationApi::class,
+    ExperimentalMaterial3Api::class,
+)
 public fun LauncherScreen(
     state: LauncherScreen.State,
     modifier: Modifier = Modifier,
 ) {
+    val pagerState = rememberPagerState()
     val eventSink = state.eventSink
 
-    Scaffold(modifier, topBar = { LauncherTopAppBar() }) { padding ->
-        Column(modifier = Modifier.padding(padding)) {
-            LazyVerticalGrid(columns = GridCells.Fixed(2)) {
-                items(state.entries) {
-                    LauncherRow(it.image, it.text) {
-                        eventSink(it.event)
-                    }
-                }
-            }
+    Scaffold(
+        topBar = { LauncherTopAppBar() },
+        modifier = modifier,
+    ) { contentPadding ->
+        HorizontalPager(
+            pageCount = state.entries.size,
+            state = pagerState,
+            contentPadding = contentPadding,
+        ) { index ->
+            val entry = state.entries[index]
+            LauncherItem(
+                entry = entry,
+                modifier = modifier.padding(24.dp),
+                onClick = { eventSink(entry.event) },
+            )
         }
     }
 }
 
 @Composable
 @ExperimentalMaterial3Api
-private fun LauncherTopAppBar() {
+private fun LauncherTopAppBar(modifier: Modifier = Modifier) {
     TopAppBar(
-        title = { Text("Playground") },
+        title = { Text("Launcher") },
+        modifier = modifier,
         navigationIcon = {
-            IconButton(onClick = { }) {
+            Box(
+                modifier = Modifier.size(40.dp),
+                contentAlignment = Alignment.Center,
+            ) {
                 Icon(
-                    imageVector = Icons.Filled.Code,
+                    imageVector = Icons.Filled.ArrowForward,
                     contentDescription = null,
                 )
             }
@@ -63,30 +86,42 @@ private fun LauncherTopAppBar() {
 
 @Composable
 @ExperimentalMaterial3Api
-private fun LauncherRow(
-    image: ImageVector,
-    text: String,
+private fun LauncherItem(
+    entry: LauncherScreen.Entry,
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
 ) {
-    TextButton(
-        modifier = Modifier.fillMaxWidth(),
-        onClick = { onClick() },
-    ) {
-        Card(modifier = modifier.fillMaxWidth()) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.padding(16.dp),
-            ) {
-                Icon(
-                    modifier = Modifier.padding(end = 12.dp),
-                    contentDescription = text,
-                    imageVector = image,
-                )
+    Card(modifier = modifier.fillMaxHeight()) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxHeight()
+                .width(IntrinsicSize.Max),
+        ) {
+            Image(
+                painter = rememberAsyncImagePainter(
+                    model = entry.image,
+                    contentScale = ContentScale.FillHeight,
+                ),
+                contentDescription = entry.title,
+                modifier = Modifier
+                    .padding(bottom = 12.dp)
+                    .weight(1f)
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(8.dp))
+                    .background(MaterialTheme.colorScheme.background),
+            )
 
+            Button(
+                onClick = onClick,
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(8.dp),
+            ) {
                 Text(
-                    style = MaterialTheme.typography.titleMedium,
-                    text = text,
+                    style = MaterialTheme.typography.titleLarge,
+                    text = "Launch",
                 )
             }
         }
