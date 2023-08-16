@@ -1,5 +1,6 @@
 package io.ashdavies.dominion.home
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -21,7 +22,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.ashdavies.dominion.DominionExpansion
-import io.ashdavies.graphics.AsyncImage
+import io.ashdavies.graphics.rememberAsyncImagePainter
 import io.ashdavies.http.LocalHttpClient
 import io.ashdavies.http.onLoading
 import io.ashdavies.http.produceStateInline
@@ -94,8 +95,8 @@ private fun ExpansionCard(
                 .clickable(onClick = onClick)
                 .aspectRatio(1.0f),
         ) {
-            AsyncImage(
-                model = value.image,
+            Image(
+                painter = rememberAsyncImagePainter(value.image),
                 contentDescription = value.name,
             )
         }

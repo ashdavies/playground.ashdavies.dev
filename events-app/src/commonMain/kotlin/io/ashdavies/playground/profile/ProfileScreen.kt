@@ -21,8 +21,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import io.ashdavies.graphics.AsyncImage
 import io.ashdavies.graphics.EmptyPainter
+import io.ashdavies.graphics.rememberAsyncImagePainter
 import io.ashdavies.playground.android.FlowRow
 import io.ashdavies.playground.android.fade
 import kotlin.random.Random.Default.nextInt
@@ -131,8 +131,8 @@ private fun LoggedInFooter(model: Any? = null) {
             .fillMaxWidth()
             .padding(16.dp),
     ) {
-        AsyncImage(
-            model = model,
+        Image(
+            painter = rememberAsyncImagePainter(model),
             contentDescription = null,
             modifier = Modifier
                 .align(CenterHorizontally)

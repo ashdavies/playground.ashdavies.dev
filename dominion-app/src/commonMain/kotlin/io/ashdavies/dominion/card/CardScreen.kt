@@ -14,7 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import io.ashdavies.dominion.DominionCard
-import io.ashdavies.graphics.AsyncImage
+import io.ashdavies.graphics.rememberAsyncImagePainter
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
@@ -54,8 +54,8 @@ private fun CardScreen(card: DominionCard, modifier: Modifier = Modifier) {
             text = card.name,
         )
     } else {
-        AsyncImage(
-            model = card.image,
+        Image(
+            painter = rememberAsyncImagePainter(card.image),
             contentDescription = card.name,
             modifier = modifier.fillMaxSize(),
         )

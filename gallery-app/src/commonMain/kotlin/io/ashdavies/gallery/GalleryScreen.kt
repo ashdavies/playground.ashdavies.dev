@@ -16,6 +16,7 @@ import androidx.compose.animation.slideIn
 import androidx.compose.animation.slideOut
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -71,7 +72,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import io.ashdavies.graphics.AsyncImage
+import io.ashdavies.graphics.rememberAsyncImagePainter
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 
@@ -184,8 +185,8 @@ private fun GalleryGrid(
 
             Box(Modifier.animateItemPlacement()) {
                 Column {
-                    AsyncImage(
-                        model = item.file,
+                    Image(
+                        painter = rememberAsyncImagePainter(item.file),
                         contentDescription = item.name,
                         modifier = Modifier.padding(itemPadding)
                             .clip(RoundedCornerShape(itemBorderRadius))

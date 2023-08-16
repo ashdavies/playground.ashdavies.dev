@@ -35,7 +35,7 @@ import androidx.compose.ui.unit.dp
 import io.ashdavies.dominion.DominionCard
 import io.ashdavies.dominion.DominionExpansion
 import io.ashdavies.dominion.layout.windowInsetsPadding
-import io.ashdavies.graphics.AsyncImage
+import io.ashdavies.graphics.rememberAsyncImagePainter
 import io.ashdavies.http.LocalHttpClient
 import io.ashdavies.http.onLoading
 import io.ashdavies.http.produceStateInline
@@ -148,8 +148,8 @@ private fun KingdomCard(
         Card(modifier.clickable(onClick = onClick)) {
             when (val image = value.image) {
                 null -> Text(value.name, color = Color.White)
-                else -> AsyncImage(
-                    model = image,
+                else -> Image(
+                    painter = rememberAsyncImagePainter(image),
                     contentDescription = value.name,
                     modifier = Modifier
                         .aspectRatio(0.62F)
