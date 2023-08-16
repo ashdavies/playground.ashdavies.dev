@@ -335,7 +335,7 @@ private fun GalleryBottomBar(
                     Box(modifier = Modifier.padding(horizontal = 4.dp)) {
                         IconButton(
                             onClick = { eventSink(GalleryScreen.Event.Sync) },
-                            enabled = state is GalleryScreen.State.Success && state.itemList.any {
+                            enabled = state is GalleryScreen.State.Success && state.itemList.none {
                                 it.state == SyncState.SYNCING
                             },
                         ) {
