@@ -38,7 +38,6 @@ dependencies {
     }
 
     with(libs.google) {
-        implementation(accompanist.systemuicontroller)
         implementation(android.material)
 
         implementation(platform(firebase.bom))
