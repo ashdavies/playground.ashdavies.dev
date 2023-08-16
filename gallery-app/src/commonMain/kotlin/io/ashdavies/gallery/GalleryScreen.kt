@@ -74,7 +74,6 @@ import androidx.compose.ui.unit.dp
 import io.ashdavies.graphics.AsyncImage
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import kotlin.math.abs
 
 private val Color.Companion.LightGreen: Color
     get() = Color(0xFFA5FFA5)
@@ -260,7 +259,7 @@ private fun SyncIndicator(isSyncing: Boolean, modifier: Modifier = Modifier) {
     LaunchedEffect(isSyncing) {
         if (isSyncing) {
             rotation.animateTo(
-                targetValue = currentRotation - 360f,
+                targetValue = currentRotation + 360f,
                 animationSpec = infiniteRepeatable(
                     animation = tween(
                         durationMillis = 3_600,
@@ -271,19 +270,18 @@ private fun SyncIndicator(isSyncing: Boolean, modifier: Modifier = Modifier) {
                 block = { currentRotation = value },
             )
         } else {
-            if (currentRotation < 0f) {
-                val rotationRemaining = 360 % abs(currentRotation)
-                val targetValue = currentRotation - rotationRemaining
+            val rotationRemaining = 180 - (currentRotation % 180)
+            val targetValue = currentRotation + rotationRemaining
+            val durationMillis = (rotationRemaining * 10).toInt()
 
-                rotation.animateTo(
-                    targetValue = targetValue,
-                    animationSpec = tween(
-                        durationMillis = rotationRemaining.toInt() * 10,
-                        easing = LinearOutSlowInEasing,
-                    ),
-                    block = { currentRotation = value },
-                )
-            }
+            rotation.animateTo(
+                targetValue = targetValue,
+                animationSpec = tween(
+                    durationMillis = durationMillis,
+                    easing = LinearOutSlowInEasing,
+                ),
+                block = { currentRotation = value },
+            )
         }
     }
 
@@ -291,7 +289,7 @@ private fun SyncIndicator(isSyncing: Boolean, modifier: Modifier = Modifier) {
         imageVector = Icons.Filled.Sync,
         contentDescription = null,
         modifier = modifier
-            .rotate(rotation.value)
+            .rotate(-rotation.value)
             .padding(4.dp)
             .scale(scale),
         tint = tint,
@@ -334,7 +332,12 @@ private fun GalleryBottomBar(
 
                 Row {
                     Box(modifier = Modifier.padding(horizontal = 4.dp)) {
-                        IconButton(onClick = { eventSink(GalleryScreen.Event.Sync) }) {
+                        IconButton(
+                            onClick = { eventSink(GalleryScreen.Event.Sync) },
+                            enabled = state is GalleryScreen.State.Success && state.itemList.any {
+                                it.state == SyncState.SYNCING
+                            },
+                        ) {
                             Icon(
                                 imageVector = Icons.Filled.Sync,
                                 contentDescription = "Sync",
