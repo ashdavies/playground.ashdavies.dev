@@ -14,14 +14,7 @@ kotlin {
             implementation(httpClient)
         }
 
-        with(libs.ktor.client) {
-            implementation(content.negotiation)
-            implementation(core)
-            implementation(json)
-            implementation(logging)
-            implementation(okhttp3)
-        }
-
+        implementation(libs.ktor.client.core)
         implementation(libs.slf4j.simple)
     }
 

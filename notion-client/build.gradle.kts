@@ -24,10 +24,7 @@ kotlin {
         with(libs.ktor.client) {
             implementation(auth)
             implementation(content.negotiation)
-            implementation(core)
-            implementation(json)
             implementation(logging)
-            implementation(okhttp3)
         }
 
         implementation(libs.ktor.serialization.json)

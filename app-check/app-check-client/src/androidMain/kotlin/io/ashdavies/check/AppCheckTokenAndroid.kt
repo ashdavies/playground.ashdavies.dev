@@ -8,8 +8,9 @@ import com.google.firebase.appcheck.playintegrity.PlayIntegrityAppCheckProviderF
 import io.ashdavies.compose.LocalFirebaseAndroidApp
 import io.ashdavies.http.AppCheckToken
 import io.ashdavies.http.LocalHttpClient
-import io.ashdavies.http.header
 import io.ktor.client.HttpClient
+import io.ktor.client.plugins.DefaultRequest
+import io.ktor.client.request.header
 import io.ktor.http.HttpHeaders
 import com.google.firebase.appcheck.AppCheckToken as FirebaseAppCheckToken
 
@@ -26,7 +27,11 @@ public actual fun ProvideAppCheckToken(client: HttpClient, content: @Composable 
     appCheck.installAppCheckProviderFactory(factory)
 
     CompositionLocalProvider(
-        LocalHttpClient provides client.header(HttpHeaders.AppCheckToken, token),
+        LocalHttpClient provides client.config {
+            install(DefaultRequest) {
+                header(HttpHeaders.AppCheckToken, token?.token)
+            }
+        },
         content = content,
     )
 }

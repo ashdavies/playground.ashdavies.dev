@@ -20,15 +20,6 @@ kotlin {
         }
 
         implementation(libs.essenty.parcelable)
-
-        with(libs.ktor.client) {
-            implementation(content.negotiation)
-            implementation(core)
-            implementation(json)
-            implementation(logging)
-            implementation(okhttp3)
-        }
-
         implementation(libs.paging.compose.common)
         implementation(libs.paging.compose.runtime)
         implementation(libs.slf4j.simple)
