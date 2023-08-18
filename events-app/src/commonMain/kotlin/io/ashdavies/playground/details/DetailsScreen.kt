@@ -15,11 +15,13 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import io.ashdavies.playground.Event
 
 @Composable
@@ -41,10 +43,16 @@ internal fun DetailsScreen(state: DetailsScreen.State, modifier: Modifier = Modi
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-private fun DetailsScreen(event: Event, modifier: Modifier = Modifier, onBack: () -> Unit) {
+private fun DetailsScreen(
+    event: Event,
+    modifier: Modifier = Modifier,
+    onBack: () -> Unit,
+) {
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
+
     Scaffold(
+        modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = { DetailsTopAppBar(event.name, onBack) },
-        modifier = modifier,
     ) { contentPadding ->
         Column(modifier = modifier.padding(contentPadding)) {
             Text(event.location)

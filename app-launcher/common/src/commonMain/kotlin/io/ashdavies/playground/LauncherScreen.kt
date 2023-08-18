@@ -25,10 +25,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import io.ashdavies.graphics.rememberAsyncImagePainter
@@ -42,12 +44,13 @@ public fun LauncherScreen(
     state: LauncherScreen.State,
     modifier: Modifier = Modifier,
 ) {
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     val pagerState = rememberPagerState()
     val eventSink = state.eventSink
 
     Scaffold(
+        modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = { LauncherTopAppBar() },
-        modifier = modifier,
     ) { contentPadding ->
         HorizontalPager(
             pageCount = state.entries.size,

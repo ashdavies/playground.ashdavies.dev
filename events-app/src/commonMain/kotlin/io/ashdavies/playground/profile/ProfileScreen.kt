@@ -15,11 +15,13 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
 import io.ashdavies.graphics.EmptyPainter
 import io.ashdavies.graphics.rememberAsyncImagePainter
@@ -30,11 +32,12 @@ import kotlin.random.Random.Default.nextInt
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 internal fun ProfileScreen(state: ProfileScreen.State, modifier: Modifier = Modifier) {
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     val eventSink = state.eventSink
 
     Scaffold(
+        modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = { TopAppBar(title = { Text("Profile") }) },
-        modifier = modifier,
     ) { contentPadding ->
         ProfileScreen(
             onLogin = { eventSink(ProfileScreen.Event.Login) },
