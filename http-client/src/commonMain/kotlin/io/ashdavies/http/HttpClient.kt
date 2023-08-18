@@ -24,16 +24,17 @@ public val LocalHttpClient: ProvidableCompositionLocal<HttpClient> = staticCompo
 private val defaultUserAgent: String
     get() = "${Software.clientName} (${Software.productName}; ${Software.buildVersion})"
 
-
 public fun DefaultHttpClient(
     logLevel: LogLevel = LogLevel.INFO,
     configure: HttpClientConfig<*>.() -> Unit = { },
 ): HttpClient = HttpClient {
     install(ContentNegotiation) {
-        json(Json {
-            ignoreUnknownKeys = true
-            encodeDefaults = true
-        })
+        json(
+            Json {
+                ignoreUnknownKeys = true
+                encodeDefaults = true
+            },
+        )
     }
 
     install(DefaultRequest) {
