@@ -2,38 +2,41 @@ package io.ashdavies.http
 
 import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.staticCompositionLocalOf
-import io.ashdavies.playground.EventsSerializer
 import io.ktor.client.HttpClient
 import io.ktor.client.HttpClientConfig
+import io.ktor.client.engine.cio.CIO
+import io.ktor.client.engine.cio.CIOEngineConfig
 import io.ktor.client.plugins.DefaultRequest
-import io.ktor.client.plugins.HttpTimeout
-import io.ktor.client.plugins.HttpTimeout.Plugin.INFINITE_TIMEOUT_MS
 import io.ktor.client.plugins.cache.HttpCache
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.request.accept
-import io.ktor.client.request.header
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import io.ktor.http.userAgent
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.modules.SerializersModule
-import kotlinx.serialization.modules.SerializersModuleBuilder
-import kotlinx.serialization.modules.contextual
+
+public val LocalHttpClient: ProvidableCompositionLocal<HttpClient> = staticCompositionLocalOf {
+    DefaultHttpClient { install(HttpCache) }
+}
 
 private val defaultUserAgent: String
     get() = "${Software.clientName} (${Software.productName}; ${Software.buildVersion})"
 
-private fun DefaultLogger(block: (message: String) -> Unit = ::println) = object : Logger {
-    override fun log(message: String) = block(message)
-}
-
-public fun DefaultHttpClient(configure: HttpClientConfig<*>.() -> Unit = { }): HttpClient = HttpClient {
+public fun DefaultHttpClient(
+    logLevel: LogLevel = LogLevel.INFO,
+    configure: HttpClientConfig<CIOEngineConfig>.() -> Unit = { },
+): HttpClient = HttpClient(CIO) {
     install(ContentNegotiation) {
-        json(DefaultJson())
+        json(
+            Json {
+                ignoreUnknownKeys = true
+                encodeDefaults = true
+            },
+        )
     }
 
     install(DefaultRequest) {
@@ -42,41 +45,14 @@ public fun DefaultHttpClient(configure: HttpClientConfig<*>.() -> Unit = { }): H
         userAgent(defaultUserAgent)
     }
 
-    install(HttpTimeout) {
-        connectTimeoutMillis = INFINITE_TIMEOUT_MS
-    }
-
     install(Logging) {
         logger = DefaultLogger()
-        level = LogLevel.INFO
+        level = logLevel
     }
 
     configure()
 }
 
-private fun DefaultJson(serializers: SerializersModuleBuilder.() -> Unit = { }) = Json {
-    serializersModule = SerializersModule {
-        contextual(EventsSerializer)
-        serializers()
-    }
-
-    ignoreUnknownKeys = true
-    encodeDefaults = true
-}
-
-public val LocalHttpClient: ProvidableCompositionLocal<HttpClient> = staticCompositionLocalOf {
-    DefaultHttpClient { install(HttpCache) }
-}
-
-private fun HttpClient.defaultRequest(
-    configure: DefaultRequest.DefaultRequestBuilder.() -> Unit,
-): HttpClient = config {
-    install(DefaultRequest, configure)
-}
-
-public fun HttpClient.header(
-    key: String,
-    value: Any?,
-): HttpClient = defaultRequest {
-    header(key, value)
+private fun DefaultLogger(block: (message: String) -> Unit = ::println) = object : Logger {
+    override fun log(message: String) = block(message)
 }

@@ -14,15 +14,6 @@ kotlin {
         implementation(projects.imageLoader)
 
         implementation(libs.essenty.parcelable)
-
-        with(libs.ktor.client) {
-            implementation(libs.ktor.client.content.negotiation)
-            implementation(libs.ktor.client.core)
-            implementation(libs.ktor.client.json)
-            implementation(libs.ktor.client.logging)
-            implementation(libs.ktor.client.okhttp3)
-        }
-
         implementation(libs.slack.circuit.foundation)
         implementation(libs.slf4j.simple)
     }
