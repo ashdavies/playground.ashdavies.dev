@@ -26,10 +26,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
@@ -51,11 +53,12 @@ private val <T : Any> LazyPagingItems<T>.isRefreshing: Boolean
 @Composable
 @OptIn(ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class)
 internal fun ActivityScreen(state: ActivityScreen.State, modifier: Modifier = Modifier) {
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     val eventSink = state.eventSink
 
     Scaffold(
+        modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = { ActivityTopAppBar("Events") },
-        modifier = modifier,
     ) { contentPadding ->
         val pullRefreshState = rememberPullRefreshState(
             refreshing = state.pagingItems.isRefreshing,
