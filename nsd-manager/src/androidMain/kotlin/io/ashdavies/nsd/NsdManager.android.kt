@@ -94,8 +94,6 @@ public actual fun NsdManager.resolveService(
         return resolveServiceApi34(serviceInfo, coroutineDispatcher)
     }
 
-    serviceInfo.hostAddresses
-
     return flow {
         withContext(coroutineDispatcher) {
             emit(resolveServiceApi16(serviceInfo))
