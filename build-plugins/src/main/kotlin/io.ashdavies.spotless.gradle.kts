@@ -8,6 +8,7 @@ spotless {
     val ktLintVersion = libs.versions.pinterest.ktlint.get()
     val editorConfig = mapOf(
         "ij_kotlin_allow_trailing_comma_on_call_site" to "true",
+        "ktlint_standard_comment-wrapping" to "disabled",
         "ktlint_standard_function-naming" to "disabled",
         "ktlint_standard_property-naming" to "disabled",
         "ij_kotlin_allow_trailing_comma" to "true",

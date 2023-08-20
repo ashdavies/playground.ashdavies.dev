@@ -52,6 +52,7 @@ include(
     ":local-storage",
     ":micro-yaml",
     ":notion-client",
+    ":nsd-manager",
     ":notion-console",
     ":parcelable-support",
     ":platform-support",
