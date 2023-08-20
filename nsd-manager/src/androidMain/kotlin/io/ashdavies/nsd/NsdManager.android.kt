@@ -27,15 +27,21 @@ public actual fun NsdServiceInfo.getHostAddressOrNull(
 ): NsdHostAddress? {
     val hostAddressList = when {
         Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE -> hostAddresses
-        else -> @Suppress("DEPRECATION") listOf(host)
+        else -> {
+            @Suppress("DEPRECATION")
+            listOf(host)
+        }
     }
 
-    return hostAddressList.firstOrNull {
-        when (type) {
-            NsdHostAddress.Type.IPv4 -> it is Inet4Address
-            NsdHostAddress.Type.IPv6 -> it is Inet6Address
+    return hostAddressList
+        .firstOrNull {
+            when (type) {
+                NsdHostAddress.Type.IPv4 -> it is Inet4Address
+                NsdHostAddress.Type.IPv6 -> it is Inet6Address
+            }
         }
-    }?.hostAddress?.let { NsdHostAddress(it, type) }
+        ?.hostAddress
+        ?.let { NsdHostAddress(it, type) }
 }
 
 public actual fun NsdManager.discoverServices(
