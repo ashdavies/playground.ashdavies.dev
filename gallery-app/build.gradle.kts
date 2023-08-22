@@ -22,6 +22,14 @@ kotlin {
         implementation(libs.slack.circuit.foundation)
     }
 
+    commonTest.dependencies {
+        with(libs.ktor) {
+            implementation(client.content.negotiation)
+            implementation(serialization.json)
+            implementation(client.mock)
+        }
+    }
+
     androidMain.dependencies {
         implementation(libs.androidx.activity.compose)
     }
