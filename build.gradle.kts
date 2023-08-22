@@ -17,7 +17,6 @@ plugins {
         classpath(cash.sqldelight)
         classpath(diffplug.spotless)
         classpath(google.services)
-        classpath(kotlinx.kover)
 
         with(kotlin) {
             classpath(compose)
@@ -27,6 +26,7 @@ plugins {
 
         alias(dependency.analysis)
         alias(gradle.doctor)
+        alias(kotlinx.kover)
     }
 }
 
@@ -34,4 +34,35 @@ doctor {
     allowBuildingAllAndroidAppsSimultaneously.set(true)
     disallowCleanTaskDependencies.set(false)
     javaHome { failOnError.set(false) }
+}
+
+val targetProject = project
+
+subprojects {
+    pluginManager.withPlugin("io.ashdavies.kotlin") {
+        project.apply(plugin = "org.jetbrains.kotlinx.kover")
+        targetProject.dependencies.kover(project)
+
+        pluginManager.withPlugin("io.ashdavies.android") {
+            koverReport.defaults { mergeWith("debug") }
+        }
+    }
+}
+
+koverReport {
+    defaults {
+        verify {
+            rule {
+                minBound(3)
+            }
+        }
+    }
+
+    filters {
+        excludes {
+            classes("*.BuildConfig")
+            classes("*.PlaygroundDatabase*")
+            packages("io.ashdavies.generated.*")
+        }
+    }
 }

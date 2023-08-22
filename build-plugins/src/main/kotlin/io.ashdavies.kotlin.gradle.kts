@@ -49,5 +49,3 @@ tasks.withType<KotlinCompile> {
     kotlinOptions.freeCompilerArgs += Playground.freeCompilerArgs
     kotlinOptions.jvmTarget = "${Playground.jvmTarget}"
 }
-
-apply(plugin = "org.jetbrains.kotlinx.kover")
