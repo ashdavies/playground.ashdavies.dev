@@ -27,7 +27,6 @@ kotlin {
 
             implementation(libs.jetbrains.kotlinx.serialization.properties)
             implementation(libs.ktor.client.content.negotiation)
-            implementation(libs.ktor.client.json)
             implementation(libs.ktor.serialization.json)
             implementation(libs.ktor.serialization.kotlinx)
             implementation(libs.slf4j.simple)

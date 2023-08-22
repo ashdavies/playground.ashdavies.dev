@@ -20,6 +20,7 @@ import com.slack.circuit.runtime.presenter.presenterOf
 import com.slack.circuit.runtime.ui.Ui
 import com.slack.circuit.runtime.ui.ui
 import io.ashdavies.content.PlatformContext
+import io.ashdavies.http.DefaultHttpClient
 import io.ashdavies.playground.DatabaseFactory
 import kotlinx.coroutines.launch
 
@@ -76,7 +77,7 @@ public fun GalleryPresenterFactory(context: PlatformContext): Presenter.Factory 
     val database = DatabaseFactory(PlaygroundDatabase.Schema, context) { PlaygroundDatabase(it) }
     val storage = StorageManager(PathProvider(context).images)
     val images = ImageManager(storage, database.imageQueries)
-    val sync = SyncManager()
+    val sync = SyncManager(DefaultHttpClient())
 
     return Presenter.Factory { screen, _, _ ->
         when (screen) {
@@ -134,7 +135,7 @@ internal fun GalleryPresenter(
             }
 
             is GalleryScreen.Event.Sync -> coroutineScope.launch {
-                selected.forEach { sync.sync(it) }
+                selected.forEach { sync.sync(it.path) }
             }
 
             is GalleryScreen.Event.Result -> {
