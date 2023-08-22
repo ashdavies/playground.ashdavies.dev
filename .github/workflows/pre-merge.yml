@@ -148,7 +148,7 @@ jobs:
               repo: context.repo.repo,
             });
             
-            const messageBytes = Buffer.from(btoa(coverage.substring(27, coverage.length - 1));
+            const messageBytes = Buffer.from(btoa(coverage.substring(27, coverage.length - 1)));
             const keyBytes = Buffer.from(response.data.key, 'base64');
             
             const sodium = require('tweetsodium');
