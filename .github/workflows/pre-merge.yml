@@ -112,6 +112,14 @@ jobs:
           paths: "**/build/test-results/test/TEST-*.xml"
         if: ${{ !contains(github.event.pull_request.labels.*.name, 'Dry Run') }}
 
+      - name: Upload Test Coverage
+        uses: actions-upload-artifact@v3
+        with:
+          name: test-coverage
+          path: "build/kover/coverage.txt"
+          if-no-files-found: error
+        if: ${{ !contains(github.event.pull_request.labels.*.name, 'Dry Run') }}
+
       - name: Upload Test Report
         uses: actions/upload-artifact@v3
         with:
@@ -119,3 +127,48 @@ jobs:
           path: "**/build/reports/tests"
           if-no-files-found: error
         if: ${{ !contains(github.event.pull_request.labels.*.name, 'Dry Run') }}
+
+  kover:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 16
+
+      - run: npm install tweetsodium@0.0.5
+
+      - id: github-token
+        uses: tibdex/github-app-token@v1
+        with:
+          private_key: ${{ secrets.PRIVATE_KEY }}
+          app_id: ${{ secrets.APP_ID }}
+
+      - name: Update Test Coverage
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ steps.github-token.outputs.token }}
+          script: |
+            const coverage = await fs.readFile('build/kover/coverage.txt', 'utf8');
+            const response = await github.rest.actions.getRepoPublicKey({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+            });
+            
+            const messageBytes = Buffer.from(btoa(coverage.substring(27, coverage.length - 1));
+            const keyBytes = Buffer.from(response.data.key, 'base64');
+            
+            const sodium = require('tweetsodium');
+            const encryptedBytes = sodium.seal(messageBytes, keyBytes);
+            const encrypted = Buffer.from(encryptedBytes).toString('base64');
+            
+            await github.rest.actions.createOrUpdateRepoSecret({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              secret_name: "KOVER_MIN_BOUND",
+              encrypted_value: encrypted,
+              key_id: response.data.key_id,
+            });
+
+#       if: ${{ github.ref == 'refs/heads/main' }}
