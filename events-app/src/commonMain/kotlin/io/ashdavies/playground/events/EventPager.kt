@@ -5,11 +5,11 @@ import androidx.compose.runtime.remember
 import app.cash.paging.ExperimentalPagingApi
 import app.cash.paging.Pager
 import app.cash.paging.PagingConfig
+import io.ashdavies.generated.apis.EventsApi
 import io.ashdavies.http.buildApi
 import io.ashdavies.playground.Event
 import io.ashdavies.playground.EventsQueries
 import io.ashdavies.playground.MultipleReferenceWarning
-import io.ashdavies.playground.apis.EventsApi
 import io.ashdavies.playground.network.todayAsString
 import io.ashdavies.playground.rememberPlaygroundDatabase
 

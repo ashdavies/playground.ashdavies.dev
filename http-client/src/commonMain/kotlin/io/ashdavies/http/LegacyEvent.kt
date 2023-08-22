@@ -1,6 +1,6 @@
 package io.ashdavies.http
 
-import io.ashdavies.playground.models.Event
+import io.ashdavies.generated.models.Event
 import io.ashdavies.playground.Event as LegacyEvent
 
 public fun LegacyEvent(event: Event): LegacyEvent = LegacyEvent(
