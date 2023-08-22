@@ -142,6 +142,9 @@ jobs:
         with:
           github-token: ${{ steps.github-token.outputs.token }}
           script: |
+            const fs = require('fs/promises');
+            const sodium = require('tweetsodium');
+            
             const coverage = await fs.readFile('build/kover/coverage.txt', 'utf8');
             const response = await github.rest.actions.getRepoPublicKey({
               owner: context.repo.owner,
@@ -151,7 +154,6 @@ jobs:
             const messageBytes = Buffer.from(btoa(coverage.substring(27, coverage.length - 1)));
             const keyBytes = Buffer.from(response.data.key, 'base64');
             
-            const sodium = require('tweetsodium');
             const encryptedBytes = sodium.seal(messageBytes, keyBytes);
             const encrypted = Buffer.from(encryptedBytes).toString('base64');
             
