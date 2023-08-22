@@ -4,10 +4,10 @@ import app.cash.paging.ExperimentalPagingApi
 import app.cash.paging.LoadType
 import app.cash.paging.PagingState
 import app.cash.paging.RemoteMediator
+import io.ashdavies.generated.apis.EventsApi
 import io.ashdavies.http.LegacyEvent
 import io.ashdavies.playground.Event
 import io.ashdavies.playground.EventsQueries
-import io.ashdavies.playground.apis.EventsApi
 import io.ktor.client.network.sockets.SocketTimeoutException
 
 private const val NETWORK_PAGE_SIZE = 100
