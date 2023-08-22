@@ -14,10 +14,10 @@ dependencies {
         implementation(plugin(apollo.graphql))
         implementation(plugin(cash.sqldelight))
         implementation(plugin(diffplug.spotless))
+        implementation(plugin(jetbrains.terraform))
         implementation(plugin(kotlin.compose))
         implementation(plugin(kotlin.multiplatform))
         implementation(plugin(kotlin.serialization))
-        implementation(plugin(jetbrains.terraform))
     }
 }
 

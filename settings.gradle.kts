@@ -48,7 +48,6 @@ include(
     ":http-client",
     ":image-loader",
     ":kotlin-gb",
-    ":lint-cli",
     ":local-storage",
     ":micro-yaml",
     ":notion-client",
