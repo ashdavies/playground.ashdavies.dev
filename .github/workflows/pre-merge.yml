@@ -113,7 +113,7 @@ jobs:
         if: ${{ !contains(github.event.pull_request.labels.*.name, 'Dry Run') }}
 
       - name: Upload Test Coverage
-        uses: actions-upload-artifact@v3
+        uses: actions/upload-artifact@v3
         with:
           name: test-coverage
           path: "build/kover/coverage.txt"
