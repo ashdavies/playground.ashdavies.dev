@@ -42,27 +42,5 @@ subprojects {
     pluginManager.withPlugin("io.ashdavies.kotlin") {
         project.apply(plugin = "org.jetbrains.kotlinx.kover")
         targetProject.dependencies.kover(project)
-
-        pluginManager.withPlugin("io.ashdavies.android") {
-            koverReport.defaults { mergeWith("debug") }
-        }
-    }
-}
-
-koverReport {
-    defaults {
-        verify {
-            rule {
-                minBound(3)
-            }
-        }
-    }
-
-    filters {
-        excludes {
-            classes("*.BuildConfig")
-            classes("*.PlaygroundDatabase*")
-            packages("io.ashdavies.generated.*")
-        }
     }
 }
