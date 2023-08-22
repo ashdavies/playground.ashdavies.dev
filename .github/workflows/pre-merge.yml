@@ -33,15 +33,6 @@ jobs:
 #     - name: Permissions Monitor
 #       uses: GitHubSecurityLab/actions-permissions/monitor@v1
 
-      - name: Delete Bot Comments
-        uses: actions/github-script@v6
-        if: ${{ github.event_name == 'pull_request' }}
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const comments = require('./.github/workflows/scripts/comments.js');
-            await comments.deleteAll(context, github)
-
       - name: Setup JDK
         uses: actions/setup-java@v3
         with:
@@ -70,6 +61,15 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
+
+      - name: Delete Bot Comments
+        uses: actions/github-script@v6
+        if: ${{ github.event_name == 'pull_request' }}
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const comments = require('./.github/workflows/scripts/comments.js');
+            await comments.deleteAll(context, github)
 
       - name: Decrypt Google Services
         if: ${{ !contains(github.event.pull_request.labels.*.name, 'Dry Run') }}
