@@ -17,7 +17,6 @@ private fun getPresenterFactories(context: PlatformContext) = listOf(
     EventsPresenterFactory(),
     GalleryPresenterFactory(context),
     LauncherPresenterFactory(),
-    RatingsPresenterFactory(),
 )
 
 private fun getUiFactories(context: PlatformContext) = listOf(
@@ -25,5 +24,4 @@ private fun getUiFactories(context: PlatformContext) = listOf(
     EventsUiFactory(),
     GalleryUiFactory(context),
     LauncherUiFactory(),
-    RatingsUiFactory(),
 )

@@ -34,12 +34,6 @@ private val GalleryEntry = LauncherScreen.Entry(
     event = LauncherScreen.Event.Gallery,
 )
 
-private val RatingsEntry = LauncherScreen.Entry(
-    image = LauncherDrawableTokens.ratings,
-    title = "Ratings",
-    event = LauncherScreen.Event.Ratings,
-)
-
 @Parcelize
 public object LauncherScreen : Parcelable, Screen {
     public data class Entry(
@@ -52,7 +46,6 @@ public object LauncherScreen : Parcelable, Screen {
         public data object Dominion : Event
         public data object Events : Event
         public data object Gallery : Event
-        public data object Ratings : Event
     }
 
     public data class State(
@@ -63,14 +56,13 @@ public object LauncherScreen : Parcelable, Screen {
 
 @Composable
 internal fun LauncherPresenter(navigator: Navigator): LauncherScreen.State {
-    val entries = listOf(DominionEntry, GalleryEntry, EventsEntry, RatingsEntry)
+    val entries = listOf(DominionEntry, GalleryEntry, EventsEntry)
 
     return LauncherScreen.State(entries) { event ->
         when (event) {
             LauncherScreen.Event.Dominion -> navigator.goTo(DominionScreen.Home)
             LauncherScreen.Event.Events -> navigator.goTo(EventsHomeScreen)
             LauncherScreen.Event.Gallery -> navigator.goTo(GalleryScreen)
-            LauncherScreen.Event.Ratings -> navigator.goTo(RatingsScreen)
         }
     }
 }
@@ -84,7 +76,6 @@ public fun buildInitialBackStack(initialScreen: String? = null): List<Screen> {
         "dominion" -> persistentListOf(LauncherScreen, DominionScreen.Home)
         "events" -> persistentListOf(LauncherScreen, EventsHomeScreen)
         "gallery" -> persistentListOf(LauncherScreen, GalleryScreen)
-        "ratings" -> persistentListOf(LauncherScreen, RatingsScreen)
         else -> persistentListOf(LauncherScreen)
     }
 }

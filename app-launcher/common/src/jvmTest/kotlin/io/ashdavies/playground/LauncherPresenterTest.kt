@@ -29,13 +29,4 @@ internal class LauncherPresenterTest {
             assertEquals(navigator.awaitNextScreen(), EventsHomeScreen)
         }
     }
-
-    @Test
-    fun `should navigate to ratings screen`() = runTest {
-        presenterTestOf({ LauncherPresenter(navigator) }) {
-            awaitItem().eventSink(LauncherScreen.Event.Ratings)
-
-            assertEquals(navigator.awaitNextScreen(), RatingsScreen)
-        }
-    }
 }

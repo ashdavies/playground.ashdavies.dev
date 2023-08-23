@@ -23,7 +23,6 @@ kotlin {
             implementation(eventsApp)
             implementation(galleryApp)
             implementation(imageLoader)
-            implementation(ratingsApp)
         }
 
         implementation(libs.essenty.parcelable)
