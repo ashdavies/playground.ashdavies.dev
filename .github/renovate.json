@@ -15,6 +15,13 @@
       ]
     },
     {
+      "matchPackagePrefixes": [
+        "androidx.compose.compiler",
+        "org.jetbrains.compose.compiler",
+        "org.jetbrains.kotlin:kotlin"
+      ]
+    },
+    {
       "matchPackageNames": [
         "renovatebot/github-action"
       ],
