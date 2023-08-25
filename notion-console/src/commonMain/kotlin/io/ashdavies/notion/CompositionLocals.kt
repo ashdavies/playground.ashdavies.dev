@@ -8,6 +8,10 @@ import org.jraf.klibnotion.client.Authentication
 import org.jraf.klibnotion.client.ClientConfiguration
 import org.jraf.klibnotion.client.NotionClient
 
+internal val LocalAuthCredentials = compositionLocalOf<AuthCredentials> {
+    error("CompositionLocal LocalAuthCredentials not present")
+}
+
 internal val LocalNotionClient = compositionLocalOf<NotionClient> {
     error("CompositionLocal LocalNotionClient not present")
 }
@@ -28,13 +32,18 @@ internal fun ProvidePlaygroundDatabase(content: @Composable () -> Unit) {
 }
 
 @Composable
-internal fun ProvideNotionClient(authentication: Authentication, content: @Composable () -> Unit) {
+internal fun NotionCompositionLocals(
+    authentication: Authentication,
+    credentials: AuthCredentials,
+    content: @Composable () -> Unit,
+) {
     CompositionLocalProvider(
         LocalNotionClient provides NotionClient.newInstance(
             configuration = ClientConfiguration(
                 authentication = authentication,
             ),
         ),
+        LocalAuthCredentials provides credentials,
         content = content,
     )
 }

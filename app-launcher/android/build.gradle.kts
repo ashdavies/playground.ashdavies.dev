@@ -8,18 +8,17 @@ plugins {
 }
 
 android {
-    namespace = "io.ashdavies.playground"
-
-    buildFeatures {
-        buildConfig = true
-    }
-
     defaultConfig {
-        buildConfigString("PLAYGROUND_API_KEY") { stringPropertyOrNull("playground.api.key") }
+        resValue("firebase_database_url") { stringProperty("firebase.database.url") }
+        resValue("google_app_id") { stringProperty("google.app.id") }
+        resValue("google_api_key") { stringProperty("google.api.key") }
+        resValue("playground_api_key") { stringPropertyOrNull("playground.api.key") }
 
         versionName = "1.0"
         versionCode = 1
     }
+
+    namespace = "io.ashdavies.playground"
 
     val main by sourceSets.getting {
         // Overwrite manifest.srcFile io.ashdavies.android.gradle.kts:56

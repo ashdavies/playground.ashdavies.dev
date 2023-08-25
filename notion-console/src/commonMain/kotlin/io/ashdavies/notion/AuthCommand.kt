@@ -11,6 +11,7 @@ import kotlinx.cli.ExperimentalCli
 @ExperimentalCli
 @NotionScopeMarker
 internal fun ArgParser.AuthCommand(
+    authCredentials: AuthCredentials = LocalAuthCredentials.current,
     tokenQueries: TokenQueries = rememberTokenQueries(),
     uriHandler: UriHandler = LocalUriHandler.current,
     onAuthState: (AuthState) -> Unit = { },
@@ -26,7 +27,13 @@ internal fun ArgParser.AuthCommand(
                 onAuthState(AuthState.Authenticated)
             } else {
                 onAuthState(AuthState.Awaiting)
-                getAccessToken(uriHandler::openUri)
+
+                getAccessToken(
+                    notionClientId = { authCredentials.clientId },
+                    notionClientSecret = { authCredentials.clientSecret },
+                    openUri = uriHandler::openUri,
+                )
+
                 onAuthState(AuthState.Authenticated)
             }
         },
@@ -39,6 +46,11 @@ internal fun ArgParser.AuthCommand(
         name = "logout",
     )
 }
+
+internal data class AuthCredentials(
+    val clientId: String,
+    val clientSecret: String,
+)
 
 internal sealed interface AuthState : NotionState {
     data object Awaiting : AuthState
