@@ -1,7 +1,18 @@
 import androidx.build.gradle.gcpbuildcache.GcpBuildCache
 import androidx.build.gradle.gcpbuildcache.GcpBuildCacheServiceFactory
 
-apply(from = "repositories.gradle.kts")
+pluginManagement.repositories {
+    gradlePluginPortal()
+    google()
+    mavenCentral()
+}
+
+@Suppress("UnstableApiUsage")
+dependencyResolutionManagement.repositories {
+    // repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    google()
+    mavenCentral()
+}
 
 plugins {
     id("androidx.build.gradle.gcpbuildcache") version "1.0.0-beta04"
