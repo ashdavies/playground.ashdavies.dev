@@ -8,18 +8,14 @@ plugins {
 }
 
 android {
-    namespace = "io.ashdavies.playground"
-
-    buildFeatures {
-        buildConfig = true
-    }
-
     defaultConfig {
-        buildConfigString("PLAYGROUND_API_KEY") { stringPropertyOrNull("playground.api.key") }
+        resValue("playground_api_key") { stringPropertyOrNull("playground.api.key") }
 
         versionName = "1.0"
         versionCode = 1
     }
+
+    namespace = "io.ashdavies.playground"
 
     val main by sourceSets.getting {
         // Overwrite manifest.srcFile io.ashdavies.android.gradle.kts:56

@@ -10,10 +10,6 @@ import org.gradle.kotlin.dsl.getting
 import org.jetbrains.kotlin.gradle.plugin.KotlinDependencyHandler
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
 
-public fun VariantDimension.buildConfigString(key: String, block: () -> String?) {
-    buildConfigField("String", key, "\"${block()}\"")
-}
-
 public fun NamedDomainObjectCollection<KotlinSourceSet>.dependencies(
     configure: KotlinDependencyHandler.() -> Unit,
 ) = getting { dependencies(configure) }
@@ -34,6 +30,10 @@ public fun <T : ModuleDependency> T.exclude(
 public fun <T : ModuleDependency> T.exclude(
     dependency: MinimalExternalModuleDependency,
 ): T = exclude(dependency.group, dependency.name)
+
+public fun VariantDimension.resValue(key: String, block: () -> String?) {
+    resValue("string", key, "${block()}")
+}
 
 public inline fun <reified T> ExtensionContainer.withType(
     configure: T.() -> Unit,

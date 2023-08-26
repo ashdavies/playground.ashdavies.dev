@@ -17,6 +17,7 @@ kotlin {
             implementation(composeCli)
             implementation(localStorage)
             implementation(notionClient)
+            implementation(platformSupport)
         }
 
         implementation(libs.jraf.klibnotion)

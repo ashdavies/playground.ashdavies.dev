@@ -61,13 +61,15 @@ function closeWindow() {
 """.trimIndent()
 
 public fun getNotionHttpClient(
-    accessTokenFileString: String,
+    accessTokenFileString: () -> String,
+    notionClientId: () -> String,
+    notionClientSecret: () -> String,
     openUri: (String) -> Unit,
 ): HttpClient = APPLICATION_HTTP_CLIENT.config {
     install(Auth) {
         bearer {
             loadTokens {
-                val accessTokenFile = File(accessTokenFileString)
+                val accessTokenFile = File(accessTokenFileString())
                 if (accessTokenFile.exists()) {
                     return@loadTokens BearerTokens(
                         accessToken = accessTokenFile.readText(),
@@ -88,7 +90,7 @@ public fun getNotionHttpClient(
 
                 val authorizationUrlQuery = parameters {
                     append("redirect_uri", "http://localhost:8080/callback")
-                    append("client_id", NotionClientId)
+                    append("client_id", notionClientId())
                     append("response_type", "code")
                     append("owner", "user")
                 }.formUrlEncode()
@@ -103,8 +105,8 @@ public fun getNotionHttpClient(
                 val tokenUrlString = "https://api.notion.com/v1/oauth/token"
                 val tokenResponse = APPLICATION_HTTP_CLIENT.post(tokenUrlString) {
                     basicAuth(
-                        username = NotionClientId,
-                        password = NotionClientSecret,
+                        username = notionClientId(),
+                        password = notionClientSecret(),
                     )
 
                     headers {
@@ -154,10 +156,19 @@ public fun getNotionHttpClient(
 }
 
 @Deprecated("Do not call this method directly")
-public suspend fun getAccessToken(openUri: (String) -> Unit): String {
-    val notionHttpClient = getNotionHttpClient("tokens.db", openUri)
-    val response = notionHttpClient.get("users/me")
+public suspend fun getAccessToken(
+    notionClientId: () -> String,
+    notionClientSecret: () -> String,
+    openUri: (String) -> Unit,
+): String {
+    val notionHttpClient = getNotionHttpClient(
+        accessTokenFileString = { "tokens.db" },
+        notionClientId = notionClientId,
+        notionClientSecret = notionClientSecret,
+        openUri = openUri,
+    )
 
+    val response = notionHttpClient.get("users/me")
     if (response.status != HttpStatusCode.OK) {
         val error = response.body<Notion.Object.Error>()
         throw RuntimeException(error.message)
