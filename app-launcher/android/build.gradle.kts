@@ -9,9 +9,6 @@ plugins {
 
 android {
     defaultConfig {
-        resValue("firebase_database_url") { stringProperty("firebase.database.url") }
-        resValue("google_app_id") { stringProperty("google.app.id") }
-        resValue("google_api_key") { stringProperty("google.api.key") }
         resValue("playground_api_key") { stringPropertyOrNull("playground.api.key") }
 
         versionName = "1.0"
