@@ -10,6 +10,7 @@ pluginManagement.repositories {
 @Suppress("UnstableApiUsage")
 dependencyResolutionManagement.repositories {
     // repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    maven("https://androidx.dev/storage/compose-compiler/repository/")
     google()
     mavenCentral()
 }
