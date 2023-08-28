@@ -45,7 +45,7 @@ public fun LauncherScreen(
     modifier: Modifier = Modifier,
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
-    val pagerState = rememberPagerState()
+    val pagerState = rememberPagerState { state.entries.size }
     val eventSink = state.eventSink
 
     Scaffold(
@@ -53,7 +53,6 @@ public fun LauncherScreen(
         topBar = { LauncherTopAppBar() },
     ) { contentPadding ->
         HorizontalPager(
-            pageCount = state.entries.size,
             state = pagerState,
             contentPadding = contentPadding,
         ) { index ->
