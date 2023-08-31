@@ -8,7 +8,7 @@ import com.arkivanov.essenty.parcelable.Parcelize
 import com.slack.circuit.runtime.CircuitUiEvent
 import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.Navigator
-import com.slack.circuit.runtime.Screen
+import com.slack.circuit.runtime.screen.Screen
 
 @Parcelize
 internal data class DetailsScreen(val eventId: String) : Parcelable, Screen {

@@ -11,7 +11,7 @@ import com.slack.circuit.foundation.onNavEvent
 import com.slack.circuit.runtime.CircuitUiEvent
 import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.Navigator
-import com.slack.circuit.runtime.Screen
+import com.slack.circuit.runtime.screen.Screen
 import io.ashdavies.playground.activity.ActivityScreen
 
 @Parcelize

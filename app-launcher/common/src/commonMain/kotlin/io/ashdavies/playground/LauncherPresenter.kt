@@ -8,9 +8,9 @@ import com.arkivanov.essenty.parcelable.Parcelize
 import com.slack.circuit.runtime.CircuitUiEvent
 import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.Navigator
-import com.slack.circuit.runtime.Screen
 import com.slack.circuit.runtime.presenter.Presenter
 import com.slack.circuit.runtime.presenter.presenterOf
+import com.slack.circuit.runtime.screen.Screen
 import io.ashdavies.dominion.DominionScreen
 import io.ashdavies.gallery.GalleryScreen
 import kotlinx.collections.immutable.persistentListOf
