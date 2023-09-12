@@ -65,7 +65,7 @@ jobs:
         uses: google-github-actions/setup-gcloud@v1
 
       - name: Docker Auth
-        uses: docker/login-action@v2
+        uses: docker/login-action@v3
         with:
           username: oauth2accesstoken
           password: ${{ steps.google_cloud_auth.outputs.access_token }}
