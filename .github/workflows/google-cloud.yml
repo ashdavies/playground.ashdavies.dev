@@ -101,7 +101,7 @@ jobs:
           PLAYGROUND_API_KEY: ${{ secrets.PLAYGROUND_API_KEY }}
           TF_LOG: ${{ inputs.debug && 'DEBUG' || 'ERROR' }}
         if: ${{ github.event_name == 'pull_request' }}
-        run: terraform -chdir=terraform plan -no-color -lock-timeout=5m
+        run: terraform -chdir=terraform plan -no-color
 
       - uses: actions/github-script@v6
         if: ${{ github.event_name == 'pull_request' }}
@@ -118,4 +118,4 @@ jobs:
           PLAYGROUND_API_KEY: ${{ secrets.PLAYGROUND_API_KEY }}
           TF_LOG: ${{ inputs.debug && 'DEBUG' || 'ERROR' }}
         if: ${{ github.ref == 'refs/heads/main' }}
-        run: terraform -chdir=terraform apply -auto-approve -lock-timeout=5m
+        run: terraform -chdir=terraform apply -auto-approve
