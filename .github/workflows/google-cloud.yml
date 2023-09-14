@@ -102,7 +102,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const comments = require('./.github/workflows/scripts/comments.js');
-            const message = '\`\`\`${{ steps.plan.outputs.stdout }}\`\`\`';
+            const message = `\`\`\`${{ steps.plan.outputs.stdout }}\`\`\``;
             await comments.create(context, github, message);
 
       - id: apply
