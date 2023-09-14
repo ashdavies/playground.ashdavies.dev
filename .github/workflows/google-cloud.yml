@@ -105,7 +105,7 @@ jobs:
             const message = '\`\`\`${{ steps.plan.outputs.stdout }}\`\`\`';
             await comments.create(context, github, message);
 
-      - id: plan
+      - id: apply
         env:
           TF_VAR_gh_token: ${{ steps.token.outputs.token }}
           TF_LOG: ${{ inputs.debug && 'DEBUG' || 'ERROR' }}
