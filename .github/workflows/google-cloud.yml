@@ -100,8 +100,9 @@ jobs:
           GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
           PLAYGROUND_API_KEY: ${{ secrets.PLAYGROUND_API_KEY }}
           TF_LOG: ${{ inputs.debug && 'DEBUG' || 'ERROR' }}
+          TF_INPUT: 0
         if: ${{ github.event_name == 'pull_request' }}
-        run: terraform -chdir=terraform plan -no-color
+        run: terraform -chdir=terraform plan -no-color -var gh_token=${{ secrets.GITHUB_TOKEN }}
 
       - uses: actions/github-script@v6
         if: ${{ github.event_name == 'pull_request' }}
@@ -117,5 +118,6 @@ jobs:
           GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
           PLAYGROUND_API_KEY: ${{ secrets.PLAYGROUND_API_KEY }}
           TF_LOG: ${{ inputs.debug && 'DEBUG' || 'ERROR' }}
+          TF_INPUT: 0
         if: ${{ github.ref == 'refs/heads/main' }}
-        run: terraform -chdir=terraform apply -auto-approve
+        run: terraform -chdir=terraform apply -auto-approve -var gh_token=${{ secrets.GITHUB_TOKEN }}
