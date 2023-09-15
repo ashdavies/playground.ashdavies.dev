@@ -94,7 +94,9 @@ jobs:
           TF_LOG: ${{ inputs.debug && 'DEBUG' || 'ERROR' }}
           TF_VAR_gh_token: ${{ steps.token.outputs.token }}
         if: ${{ github.event_name == 'pull_request' }}
-        run: terraform -chdir=terraform plan -no-color
+        run: |
+          terraform -chdir=terraform plan >/dev/null -out=.terraform/terraform.tfplan
+          terraform show .terraform/terraform.tfplan
 
       - uses: actions/github-script@v6
         if: ${{ github.event_name == 'pull_request' }}
