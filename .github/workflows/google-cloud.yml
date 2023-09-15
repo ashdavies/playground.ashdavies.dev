@@ -96,7 +96,7 @@ jobs:
         if: ${{ github.event_name == 'pull_request' }}
         run: |
           terraform -chdir=terraform plan >/dev/null -lock-timeout=5m -out=.terraform/terraform.tfplan
-          terraform -chdir=terraform show .terraform/terraform.tfplan
+          terraform -chdir=terraform show .terraform/terraform.tfplan -no-color
 
       - uses: actions/github-script@v6
         if: ${{ github.event_name == 'pull_request' }}
