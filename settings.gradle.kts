@@ -55,7 +55,6 @@ include(
     ":events-app",
     ":firebase-compose",
     ":gallery-app",
-    ":google-cloud",
     ":http-client",
     ":image-loader",
     ":kotlin-gb",

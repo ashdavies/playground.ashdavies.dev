@@ -22,7 +22,7 @@ module "cloud-run-endpoint" {
   container_image    = "${var.project_region}-docker.pkg.dev/${var.project_id}/endpoints-release/endpoints-runtime-serverless:${var.esp_tag}-${var.service_name}-${module.cloud-run-endpoint.config_id}"
   endpoint_name      = "playground.ashdavies.dev"
   esp_tag            = var.esp_tag
-  gcloud_build_image = var.resources.gcloud-build-image.path
+  gcloud_build_image = var.gcloud_build_image
   image_repository   = "${var.project_region}-docker.pkg.dev/${var.project_id}/endpoints-release"
   location           = var.project_region
   openapi_config     = local.openapi_config

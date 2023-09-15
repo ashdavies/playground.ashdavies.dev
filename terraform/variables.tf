@@ -4,6 +4,11 @@ variable "esp_tag" {
   default     = "2.40.0"
 }
 
+variable "gcloud_build_image" {
+  description = "GCloud build image script"
+  default     = "./gcloud_build_image"
+}
+
 variable "gh_owner" {
   description = "Username of the GitHub repository owner"
   default     = "ashdavies"
@@ -20,6 +25,7 @@ variable "gh_token" {
 
 variable "openapi_config" {
   description = "The full path of the OpenAPI configuration."
+  default     = "../openapi-v2.yml"
 }
 
 variable "service_name" {

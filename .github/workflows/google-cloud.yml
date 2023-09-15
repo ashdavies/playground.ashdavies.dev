@@ -35,46 +35,39 @@ jobs:
 #     - name: Permissions Monitor
 #       uses: GitHubSecurityLab/actions-permissions/monitor@v1
 
-      - name: Checkout Repository
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
-      - name: Setup JDK
-        uses: actions/setup-java@v3
+      - uses: actions/setup-java@v3
         with:
           distribution: temurin
           java-version: 17
 
-      - name: Generate Token
-        id: generate_token
+      - id: token
         uses: tibdex/github-app-token@v2
         with:
           private_key: ${{ secrets.PRIVATE_KEY }}
           app_id: ${{ secrets.APP_ID }}
 
-      - name: Google Cloud Auth
-        id: google_cloud_auth
+      - id: google_cloud_auth
         uses: google-github-actions/auth@v1
         with:
           workload_identity_provider: ${{ secrets.GOOGLE_WORKLOAD_IDENTITY }}
           service_account: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
           token_format: access_token
 
-      - name: Setup Cloud SDK
-        uses: google-github-actions/setup-gcloud@v1
+      - uses: google-github-actions/setup-gcloud@v1
 
-      - name: Docker Auth
-        uses: docker/login-action@v3
+      - uses: docker/login-action@v3
         with:
           username: oauth2accesstoken
           password: ${{ steps.google_cloud_auth.outputs.access_token }}
           registry: europe-west1-docker.pkg.dev
 
-      - name: Setup Gradle Build
-        uses: gradle/gradle-build-action@v2
+      - uses: gradle/gradle-build-action@v2
 
-      - name: Containerize Cloud Run
+      - id: containerize
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GOOGLE_PROJECT_API_KEY: ${{ secrets.google_project_api_key }}
@@ -90,50 +83,34 @@ jobs:
             --no-configuration-cache \
             --console=plain \
 
-      - name: Generate Terraform Plan
+      - uses: hashicorp/setup-terraform@v2
+
+      - id: init
+        run: terraform -chdir=terraform init
+
+      - id: plan
         env:
-          GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
-          PLAYGROUND_API_KEY: ${{ secrets.PLAYGROUND_API_KEY }}
+          TF_INPUT: 0
           TF_LOG: ${{ inputs.debug && 'DEBUG' || 'ERROR' }}
+          TF_VAR_gh_token: ${{ steps.token.outputs.token }}
         if: ${{ github.event_name == 'pull_request' }}
         run: |
-          ./gradlew google-cloud:terraformShowText \
-            ${{ contains(github.event.pull_request.labels.*.name, 'Dry Run') && '--dry-run' || '' }} \
-            ${{ inputs.debug && '--debug' || '--info' }} \
-            --no-configuration-cache \
-            --console=plain \
-            --stacktrace
+          terraform -chdir=terraform plan >/dev/null -lock-timeout=5m -out=.terraform/terraform.tfplan
+          terraform -chdir=terraform show .terraform/terraform.tfplan -no-color
 
-      - name: Show Terraform Plan
-        uses: actions/github-script@v6
+      - uses: actions/github-script@v6
         if: ${{ github.event_name == 'pull_request' }}
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const comments = require('./.github/workflows/scripts/comments.js');
-            const fs = require('fs/promises');
-            
-            const body = await fs.readFile('google-cloud/build/terraform/main/plan.txt', 'utf8');
-            await comments.create(context, github, `\`\`\`${body}\`\`\``);
+            const message = `\`\`\`${{ steps.plan.outputs.stdout }}\`\`\``;
+            await comments.create(context, github, message);
 
-      - name: Apply Terraform Plan
+      - id: apply
         env:
-          GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
-          PLAYGROUND_API_KEY: ${{ secrets.PLAYGROUND_API_KEY }}
+          TF_VAR_gh_token: ${{ steps.token.outputs.token }}
           TF_LOG: ${{ inputs.debug && 'DEBUG' || 'ERROR' }}
+          TF_INPUT: 0
         if: ${{ github.ref == 'refs/heads/main' }}
-        run: |
-          ./gradlew google-cloud:terraformApply \
-            ${{ contains(github.event.pull_request.labels.*.name, 'Dry Run') && '--dry-run' || '' }} \
-            ${{ inputs.debug && '--debug' || '--info' }} \
-            --no-configuration-cache \
-            --console=plain \
-            -Ptf.apply
-
-      - name: Upload Terraform Plan
-        uses: actions/upload-artifact@v3
-        with:
-          name: terraform-plan
-          path: "**/build/terraform/main/plan.txt"
-          if-no-files-found: error
-        if: ${{ github.ref == 'refs/heads/main' }}
+        run: terraform -chdir=terraform apply -auto-approve -lock-timeout=5m
