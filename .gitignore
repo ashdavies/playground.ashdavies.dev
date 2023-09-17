@@ -40,6 +40,10 @@ node_modules/
 # Terraform lock files
 .terraform.lock.hcl
 
+# .tfplan files
+*.tfplan
+*.tfplan.*
+
 # .tfstate files
 *.tfstate
 *.tfstate.*
