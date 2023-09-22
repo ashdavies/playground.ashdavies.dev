@@ -37,7 +37,7 @@ auth-jwks-rsa = "com.auth0:jwks-rsa:0.22.1"
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil-kt" }
 coil-core = { module = "io.coil-kt:coil", version.ref = "coil-kt" }
 
-essenty-parcelable = "com.arkivanov.essenty:parcelable:1.1.0"
+essenty-parcelable = "com.arkivanov.essenty:parcelable:1.2.0"
 fusesource-jansi = "org.fusesource.jansi:jansi:2.4.0"
 
 google-accompanist-flowlayout = { module = "com.google.accompanist:accompanist-flowlayout", version.ref = "google-accompanist" }
