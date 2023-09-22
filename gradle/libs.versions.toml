@@ -133,7 +133,7 @@ apollo-graphql = { id = "com.apollographql.apollo", version.ref = "apollo-graphq
 cash-sqldelight = { id = "app.cash.sqldelight", version.ref = "cash-sqldelight" }
 dependency-analysis = { id = "com.autonomousapps.dependency-analysis", version = "1.22.0" }
 diffplug-spotless = "com.diffplug.spotless:6.21.0"
-google-cloud-jib = "com.google.cloud.tools.jib:3.3.2"
+google-cloud-jib = "com.google.cloud.tools.jib:3.4.0"
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
 gradle-doctor = "com.osacky.doctor:0.8.1"
 jetbrains-dokka = "org.jetbrains.dokka:1.9.0"
