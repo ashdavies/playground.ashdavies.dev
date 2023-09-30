@@ -67,7 +67,7 @@ module "github-repository" {
       color       = "6AFD9F"
     },
     {
-      name        = "enhancement"
+      name        = "Enhancement"
       description = "Indicates new feature requests"
       color       = "c5def5"
     }
