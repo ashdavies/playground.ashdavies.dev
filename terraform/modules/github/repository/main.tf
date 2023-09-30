@@ -9,21 +9,17 @@ resource "github_actions_secret" "main" {
 }
 
 resource "github_repository" "main" {
-  description            = var.description
   name                   = var.repository
+  description            = var.description
+  homepage_url           = var.homepage_url
+  has_issues             = true
+  has_discussions        = false
+  has_wiki               = false
   allow_merge_commit     = false
   allow_rebase_merge     = false
-  delete_branch_on_merge = true
   allow_auto_merge       = true
-  has_issues             = true
-  topics                 = [
-    "android-development",
-    "multiplatform",
-    "development",
-    "composer",
-    "android",
-    "kotlin",
-  ]
+  delete_branch_on_merge = true
+  topics                 = var.topics
 }
 
 resource "github_issue_label" "main" {
