@@ -64,6 +64,11 @@ module "github-repository" {
       description = "Run Gradle with all task actions disabled"
       name        = "Dry Run"
       color       = "6AFD9F"
+    },
+    {
+      name        = "Enhancement"
+      description = "Indicates new feature requests"
+      color       = "c5def5"
     }
   ]
   secrets = [
