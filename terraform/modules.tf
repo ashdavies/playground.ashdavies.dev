@@ -51,19 +51,18 @@ module "github-api-key" {
 }
 
 module "github-repository" {
-  source       = "./modules/github/repository"
-  repository   = var.gh_repo_name
-  description  = "Playground"
-  homepage_url = "https://playground.ashdavies.dev/"
-  labels       = [
+  source      = "./modules/github/repository"
+  repository  = var.gh_repo_name
+  description = "Playground"
+  labels      = [
     {
-      name        = "Bug",
       description = "Indicates an unexpected problem or unintended behavior",
       color       = "D73A4A"
+      name        = "Bug",
     },
     {
-      name        = "Dry Run"
       description = "Run Gradle with all task actions disabled"
+      name        = "Dry Run"
       color       = "6AFD9F"
     },
     {
@@ -72,7 +71,7 @@ module "github-repository" {
       color       = "c5def5"
     }
   ]
-  secrets      = [
+  secrets = [
     {
       plaintext_value = module.github-service-account.email
       secret_name     = "google_service_account_id"
@@ -81,16 +80,6 @@ module "github-repository" {
       plaintext_value = module.github-workload-identity.provider_name
       secret_name     = "google_workload_identity"
     }
-  ]
-  topics       = [
-    "android",
-    "android-development",
-    "development",
-    "jetpack-compose",
-    "kotlin",
-    "kotlin-android",
-    "kotlin-multiplatform",
-    "multiplatform"
   ]
 }
 
