@@ -1,4 +1,4 @@
-name: Configure Google Cloud
+name: Configure Terraform
 
 on:
   push:
@@ -84,6 +84,8 @@ jobs:
             --console=plain \
 
       - uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.5.7
 
       - id: init
         run: terraform -chdir=terraform init
