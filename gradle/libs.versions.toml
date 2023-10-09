@@ -131,7 +131,7 @@ android-application = { id = "com.android.application", version.ref = "google-an
 android-library = { id = "com.android.library", version.ref = "google-android" }
 apollo-graphql = { id = "com.apollographql.apollo", version.ref = "apollo-graphql" }
 cash-sqldelight = { id = "app.cash.sqldelight", version.ref = "cash-sqldelight" }
-dependency-analysis = { id = "com.autonomousapps.dependency-analysis", version = "1.24.0" }
+dependency-analysis = { id = "com.autonomousapps.dependency-analysis", version = "1.25.0" }
 diffplug-spotless = "com.diffplug.spotless:6.22.0"
 google-cloud-jib = "com.google.cloud.tools.jib:3.4.0"
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
