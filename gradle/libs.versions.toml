@@ -44,7 +44,7 @@ google-accompanist-flowlayout = { module = "com.google.accompanist:accompanist-f
 google-accompanist-placeholderMaterial = { module = "com.google.accompanist:accompanist-placeholder-material", version.ref = "google-accompanist" }
 
 google-android-maps = "com.google.android.gms:play-services-maps:18.1.0"
-google-android-material = "com.google.android.material:material:1.9.0"
+google-android-material = "com.google.android.material:material:1.10.0"
 
 google-cloud-bom = "com.google.cloud:libraries-bom:26.24.0"
 google-cloud-firestore = { module = "com.google.cloud:google-cloud-firestore" }
