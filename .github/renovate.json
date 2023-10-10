@@ -7,6 +7,16 @@
   "gitAuthor": "Playground Manager <126197455+playground-manager[bot]@users.noreply.github.com>",
   "packageRules": [
     {
+      "matchDatasources": [
+        "maven"
+      ],
+      "registryUrls": [
+        "https://repo.maven.apache.org/maven2/",
+        "https://dl.google.com/dl/android/maven2/",
+        "https://plugins.gradle.org/m2/"
+      ]
+    },
+    {
       "matchPackageNames": [
         "actions/checkout"
       ],
