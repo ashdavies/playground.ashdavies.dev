@@ -33,6 +33,7 @@ module "cloud-run-endpoint" {
 # module endpoint-iam-binding is deprecated
 module "endpoint-iam-binding" {
   source             = "terraform-google-modules/iam/google//modules/cloud_run_services_iam"
+  version            = "7.7.0"
   bindings           = { "roles/run.invoker" = ["allUsers"] }
   cloud_run_services = [module.cloud-run-endpoint.name]
   location           = var.project_region
@@ -85,11 +86,12 @@ module "github-repository" {
 
 module "github-service-account" {
   source        = "terraform-google-modules/service-accounts/google"
+  version       = "4.2.1"
   providers     = { google = google.impersonated }
   display_name  = "GitHub Service Account"
-  project_id    = var.project_id
   names         = ["oidc"]
   prefix        = "gh"
+  project_id    = var.project_id
   project_roles = [
     "${var.project_id}=>${google_project_iam_custom_role.main.id}",
     "${var.project_id}=>roles/serviceusage.serviceUsageConsumer",
@@ -102,9 +104,10 @@ module "github-service-account" {
 
 module "github-workload-identity" {
   source      = "terraform-google-modules/github-actions-runners/google//modules/gh-oidc"
-  provider_id = "gh-oidc-provider"
-  project_id  = var.project_id
+  version     = "3.1.2"
   pool_id     = "gh-oidc-pool"
+  project_id  = var.project_id
+  provider_id = "gh-oidc-provider"
   sa_mapping  = {
     (module.github-service-account.service_account.account_id) = {
       attribute = "attribute.repository/${var.gh_owner}/${var.gh_repo_name}"
@@ -115,32 +118,34 @@ module "github-workload-identity" {
 
 module "gradle-build-cache" {
   source                   = "terraform-google-modules/cloud-storage/google//modules/simple_bucket"
-  name                     = "playground-build-cache"
+  version                  = "4.0.1"
   location                 = var.project_region
+  name                     = "playground-build-cache"
   project_id               = var.project_id
-# public_access_prevention = "enforced"
-  versioning               = false
   bucket_policy_only       = true
   iam_members              = [{
     member = module.github-service-account.iam_email
     role   = "roles/storage.admin"
   }]
-  retention_policy = {
+  public_access_prevention = "enforced"
+  retention_policy         = {
     retention_period = 2678400
     is_locked        = false
   }
+  versioning               = false
 }
 
 module "runtime-resources" {
   source                   = "terraform-google-modules/cloud-storage/google//modules/simple_bucket"
-  name                     = "playground-runtime"
+  version                  = "4.0.1"
   location                 = var.project_region
+  name                     = "playground-runtime"
   project_id               = var.project_id
-# public_access_prevention = "enforced"
-  versioning               = false
   bucket_policy_only       = true
   iam_members              = [{
     member = module.github-service-account.iam_email
     role   = "roles/storage.admin"
   }]
+  public_access_prevention = "enforced"
+  versioning               = false
 }
