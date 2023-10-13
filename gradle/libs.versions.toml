@@ -38,7 +38,7 @@ coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil-kt" }
 coil-core = { module = "io.coil-kt:coil", version.ref = "coil-kt" }
 
 essenty-parcelable = "com.arkivanov.essenty:parcelable:1.2.0"
-fusesource-jansi = "org.fusesource.jansi:jansi:2.4.0"
+fusesource-jansi = "org.fusesource.jansi:jansi:2.4.1"
 
 google-accompanist-flowlayout = { module = "com.google.accompanist:accompanist-flowlayout", version.ref = "google-accompanist" }
 google-accompanist-placeholderMaterial = { module = "com.google.accompanist:accompanist-placeholder-material", version.ref = "google-accompanist" }
