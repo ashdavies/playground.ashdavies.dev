@@ -43,7 +43,7 @@ fusesource-jansi = "org.fusesource.jansi:jansi:2.4.1"
 google-accompanist-flowlayout = { module = "com.google.accompanist:accompanist-flowlayout", version.ref = "google-accompanist" }
 google-accompanist-placeholderMaterial = { module = "com.google.accompanist:accompanist-placeholder-material", version.ref = "google-accompanist" }
 
-google-android-maps = "com.google.android.gms:play-services-maps:18.1.0"
+google-android-maps = "com.google.android.gms:play-services-maps:18.2.0"
 google-android-material = "com.google.android.material:material:1.10.0"
 
 google-cloud-bom = "com.google.cloud:libraries-bom:26.25.0"
