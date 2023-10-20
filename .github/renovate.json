@@ -1,10 +1,19 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "customManagers": [
+    {
+      "datasourceTemplate": "github-releases",
+      "depNameTemplate": "hashicorp/terraform",
+      "extractVersionTemplate": "v(?<version>.*)",
+      "fileMatch": "^\\.github/workflows/.*\\.yaml",
+      "matchStrings": ["terraform_version: (?<currentValue>.*)"]
+    }
+  ],
   "extends": [
     "config:base"
   ],
-  "ignoreUnstable": true,
   "gitAuthor": "Playground Manager <126197455+playground-manager[bot]@users.noreply.github.com>",
+  "ignoreUnstable": true,
   "packageRules": [
     {
       "matchDatasources": [
