@@ -118,7 +118,7 @@ module "github-workload-identity" {
 
 module "gradle-build-cache" {
   source                   = "terraform-google-modules/cloud-storage/google//modules/simple_bucket"
-  version                  = "4.0.1"
+  version                  = "5.0.0"
   location                 = var.project_region
   name                     = "playground-build-cache"
   project_id               = var.project_id
@@ -137,7 +137,7 @@ module "gradle-build-cache" {
 
 module "runtime-resources" {
   source                   = "terraform-google-modules/cloud-storage/google//modules/simple_bucket"
-  version                  = "4.0.1"
+  version                  = "5.0.0"
   location                 = var.project_region
   name                     = "playground-runtime"
   project_id               = var.project_id
