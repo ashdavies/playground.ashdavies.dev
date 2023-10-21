@@ -26,18 +26,15 @@ jobs:
 #     - name: Permissions Monitor
 #       uses: GitHubSecurityLab/actions-permissions/monitor@v1
 
-      - name: Checkout
-        uses: actions/checkout@v3.5.2
+      - uses: actions/checkout@v3.5.2
 
-      - name: Generate Token
-        id: generate_token
+      - id: generate_token
         uses: tibdex/github-app-token@v2
         with:
           private_key: ${{ secrets.PRIVATE_KEY }}
           app_id: ${{ secrets.APP_ID }}
 
-      - name: Self-hosted Renovate
-        uses: renovatebot/github-action@v35.2.0
+      - uses: renovatebot/github-action@v35.2.0
         env:
           LOG_LEVEL: ${{ inputs.logLevel || 'INFO' }}
         with:

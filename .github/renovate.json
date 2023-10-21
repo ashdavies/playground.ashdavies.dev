@@ -1,10 +1,9 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "customManagers": [
+  "regexManagers": [
     {
       "datasourceTemplate": "github-releases",
       "depNameTemplate": "hashicorp/terraform",
-      "extractVersionTemplate": "v(?<version>.*)",
       "fileMatch": "^\\.github/workflows/.*\\.yaml",
       "matchStrings": ["terraform_version: (?<currentValue>.*)"]
     }
