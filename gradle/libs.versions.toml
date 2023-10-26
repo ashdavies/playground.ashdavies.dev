@@ -137,7 +137,6 @@ google-cloud-jib = "com.google.cloud.tools.jib:3.4.0"
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
 gradle-doctor = "com.osacky.doctor:0.8.1"
 jetbrains-dokka = "org.jetbrains.dokka:1.9.10"
-jetbrains-terraform = "org.jetbrains.gradle.terraform:1.5.2"
 kotlin-compose = { id = "org.jetbrains.compose", version.ref = "jetbrains-compose" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrains-kotlin" }
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "jetbrains-kotlin" }
