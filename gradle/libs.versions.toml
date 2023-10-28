@@ -46,12 +46,12 @@ google-accompanist-placeholderMaterial = { module = "com.google.accompanist:acco
 google-android-maps = "com.google.android.gms:play-services-maps:18.2.0"
 google-android-material = "com.google.android.material:material:1.10.0"
 
-google-cloud-bom = "com.google.cloud:libraries-bom:26.25.0"
+google-cloud-bom = "com.google.cloud:libraries-bom:26.26.0"
 google-cloud-firestore = { module = "com.google.cloud:google-cloud-firestore" }
 google-cloud-storage = { module = "com.google.cloud:google-cloud-storage" }
 
 google-firebase-admin = "com.google.firebase:firebase-admin:9.2.0"
-google-firebase-bom = "com.google.firebase:firebase-bom:32.4.0"
+google-firebase-bom = "com.google.firebase:firebase-bom:32.4.1"
 google-firebase-analytics = { module = "com.google.firebase:firebase-analytics-ktx" }
 google-firebase-appcheck = { module = "com.google.firebase:firebase-appcheck" }
 google-firebase-appcheck-debug = { module = "com.google.firebase:firebase-appcheck-debug" }
@@ -137,7 +137,6 @@ google-cloud-jib = "com.google.cloud.tools.jib:3.4.0"
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
 gradle-doctor = "com.osacky.doctor:0.8.1"
 jetbrains-dokka = "org.jetbrains.dokka:1.9.10"
-jetbrains-terraform = "org.jetbrains.gradle.terraform:1.5.2"
 kotlin-compose = { id = "org.jetbrains.compose", version.ref = "jetbrains-compose" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrains-kotlin" }
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "jetbrains-kotlin" }
