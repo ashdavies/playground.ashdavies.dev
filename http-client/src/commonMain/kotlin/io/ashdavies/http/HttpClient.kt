@@ -4,8 +4,8 @@ import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.staticCompositionLocalOf
 import io.ktor.client.HttpClient
 import io.ktor.client.HttpClientConfig
+import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.engine.cio.CIO
-import io.ktor.client.engine.cio.CIOEngineConfig
 import io.ktor.client.plugins.DefaultRequest
 import io.ktor.client.plugins.cache.HttpCache
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
@@ -27,9 +27,9 @@ private val defaultUserAgent: String
     get() = "${Software.clientName} (${Software.productName}; ${Software.buildVersion})"
 
 public fun DefaultHttpClient(
-    logLevel: LogLevel = LogLevel.INFO,
-    configure: HttpClientConfig<CIOEngineConfig>.() -> Unit = { },
-): HttpClient = HttpClient(CIO) {
+    engine: HttpClientEngine = CIO.create { },
+    block: HttpClientConfig<*>.() -> Unit = { },
+): HttpClient = HttpClient(engine) {
     install(ContentNegotiation) {
         json(
             Json {
@@ -47,10 +47,10 @@ public fun DefaultHttpClient(
 
     install(Logging) {
         logger = DefaultLogger()
-        level = logLevel
+        level = LogLevel.INFO
     }
 
-    configure()
+    block()
 }
 
 private fun DefaultLogger(block: (message: String) -> Unit = ::println) = object : Logger {

@@ -19,6 +19,7 @@ kotlin {
         implementation(projects.sqlDriver)
 
         implementation(libs.essenty.parcelable)
+        implementation(libs.ktor.client.mock)
         implementation(libs.slack.circuit.foundation)
     }
 

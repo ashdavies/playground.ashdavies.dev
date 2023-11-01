@@ -77,7 +77,9 @@ public fun GalleryPresenterFactory(context: PlatformContext): Presenter.Factory 
     val database = DatabaseFactory(PlaygroundDatabase.Schema, context) { PlaygroundDatabase(it) }
     val storage = StorageManager(PathProvider(context).images)
     val images = ImageManager(storage, database.imageQueries)
-    val sync = SyncManager(DefaultHttpClient())
+
+    val engine = InMemoryHttpClientEngine(emptyList())
+    val sync = SyncManager(DefaultHttpClient(engine))
 
     return Presenter.Factory { screen, _, _ ->
         when (screen) {
@@ -136,6 +138,7 @@ internal fun GalleryPresenter(
 
             is GalleryScreen.Event.Sync -> coroutineScope.launch {
                 selected.forEach { sync.sync(it.path) }
+                selected = emptyList()
             }
 
             is GalleryScreen.Event.Result -> {

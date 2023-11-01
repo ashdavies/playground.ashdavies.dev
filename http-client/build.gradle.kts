@@ -18,7 +18,6 @@ kotlin {
     commonMain {
         dependencies {
             with(libs.ktor.client) {
-                api(cio)
                 api(core)
                 api(logging)
             }
@@ -26,7 +25,12 @@ kotlin {
             implementation(projects.localStorage)
 
             implementation(libs.jetbrains.kotlinx.serialization.properties)
-            implementation(libs.ktor.client.content.negotiation)
+
+            with(libs.ktor.client) {
+                implementation(content.negotiation)
+                implementation(cio)
+            }
+
             implementation(libs.ktor.serialization.json)
             implementation(libs.ktor.serialization.kotlinx)
             implementation(libs.slf4j.simple)

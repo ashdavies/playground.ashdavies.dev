@@ -45,7 +45,6 @@ internal fun SyncManager(
 
     override suspend fun sync(path: String) = with(File(path)) {
         val initialState = state.value[getName()] ?: SyncState.NOT_SYNCED
-        println(state.value)
 
         state.update { it + (getName() to SyncState.SYNCING) }
 
