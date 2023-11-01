@@ -11,11 +11,6 @@ internal actual fun StorageManager(parent: File): StorageManager = object : Stor
         return file
     }
 
-    override fun list(): List<File> {
-        val files = parent.listFiles() ?: return emptyList()
-        return files.toList()
-    }
-
     override fun delete(file: File): Boolean {
         if (!file.exists()) throw IllegalArgumentException()
         return file.delete()

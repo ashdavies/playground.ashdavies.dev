@@ -18,7 +18,7 @@ internal class SyncManagerTest {
             reader = { ByteReadChannel.Empty },
         )
 
-        manager.state().test {
+        manager.state.test {
             assertEquals(awaitItem(), mapOf(RandomImage to SyncState.SYNCED))
         }
     }
@@ -30,7 +30,7 @@ internal class SyncManagerTest {
             reader = { ByteReadChannel.Empty },
         )
 
-        manager.state().test {
+        manager.state.test {
             skipItems(1) // initialValue = emptyMap()
 
             manager.sync("resources/$RandomImage")
@@ -47,7 +47,7 @@ internal class SyncManagerTest {
             reader = { ByteReadChannel.Empty },
         )
 
-        manager.state().test {
+        manager.state.test {
             skipItems(1) // initialValue = emptyMap()
 
             manager.sync("resources/$RandomImage")
@@ -64,7 +64,7 @@ internal class SyncManagerTest {
             reader = { ByteReadChannel.Empty },
         )
 
-        manager.state().test {
+        manager.state.test {
             manager.sync("resources/$RandomImage")
             cancelAndIgnoreRemainingEvents()
         }

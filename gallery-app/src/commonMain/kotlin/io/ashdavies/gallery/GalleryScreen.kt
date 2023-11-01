@@ -42,7 +42,6 @@ import androidx.compose.material.icons.filled.Sync
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.CenterAlignedTopAppBar
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -89,18 +88,17 @@ internal fun GalleryScreen(
     manager: StorageManager,
     modifier: Modifier = Modifier,
 ) {
-    val isSelecting = state is GalleryScreen.State.Success && state.itemList.any { it.isSelected }
     val scrollBehavior = enterAlwaysScrollBehavior(rememberTopAppBarState())
+    val isSelecting = state.itemList.any { it.isSelected }
 
     Scaffold(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = { GalleryTopAppBar(scrollBehavior) },
         bottomBar = { GalleryBottomBar(state, isSelecting) },
     ) { paddingValues ->
-        when (state) {
-            GalleryScreen.State.Loading -> GalleryProgressIndicator()
-            is GalleryScreen.State.Empty -> GalleryEmpty()
-            is GalleryScreen.State.Success -> {
+        when {
+            state.itemList.isEmpty() -> GalleryEmpty()
+            else -> {
                 GalleryGrid(
                     itemList = state.itemList.toImmutableList(),
                     isSelecting = isSelecting,
@@ -121,7 +119,7 @@ internal fun GalleryScreen(
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-private fun GalleryTopAppBar(
+internal fun GalleryTopAppBar(
     scrollBehavior: TopAppBarScrollBehavior,
     title: String = "Gallery",
     modifier: Modifier = Modifier,
@@ -143,19 +141,7 @@ private fun GalleryTopAppBar(
 }
 
 @Composable
-private fun GalleryProgressIndicator(modifier: Modifier = Modifier) {
-    Box(
-        modifier = modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center,
-    ) {
-        CircularProgressIndicator(
-            color = MaterialTheme.colorScheme.onSurface,
-        )
-    }
-}
-
-@Composable
-private fun GalleryEmpty(modifier: Modifier = Modifier) {
+internal fun GalleryEmpty(modifier: Modifier = Modifier) {
     Box(
         modifier = modifier.fillMaxSize(),
         contentAlignment = Alignment.Center,
@@ -166,8 +152,8 @@ private fun GalleryEmpty(modifier: Modifier = Modifier) {
 
 @Composable
 @OptIn(ExperimentalFoundationApi::class)
-private fun GalleryGrid(
-    itemList: ImmutableList<GalleryScreen.State.Success.Item>,
+internal fun GalleryGrid(
+    itemList: ImmutableList<GalleryScreen.State.Item>,
     isSelecting: Boolean = false,
     modifier: Modifier = Modifier,
     onSelect: (Int) -> Unit,
@@ -250,7 +236,7 @@ private fun GalleryGrid(
 }
 
 @Composable
-private fun SyncIndicator(isSyncing: Boolean, modifier: Modifier = Modifier) {
+internal fun SyncIndicator(isSyncing: Boolean, modifier: Modifier = Modifier) {
     val tint by animateColorAsState(if (isSyncing) Color.Orange else Color.LightGreen)
     val scale by animateFloatAsState(if (isSyncing) 0.75f else 1f)
 
@@ -298,7 +284,7 @@ private fun SyncIndicator(isSyncing: Boolean, modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun GalleryCapture(
+internal fun GalleryCapture(
     manager: StorageManager,
     modifier: Modifier = Modifier,
     eventSink: (GalleryScreen.Event) -> Unit,
@@ -311,33 +297,25 @@ private fun GalleryCapture(
 }
 
 @Composable
-private fun GalleryBottomBar(
+internal fun GalleryBottomBar(
     state: GalleryScreen.State,
     isSelecting: Boolean,
     modifier: Modifier = Modifier,
 ) {
-    val eventSink = when (state) {
-        is GalleryScreen.State.Success -> state.eventSink
-        is GalleryScreen.State.Empty -> state.eventSink
-        else -> null
-    }
+    val eventSink = state.eventSink
 
     BottomAppBar(
         actions = {
             AnimatedVisibility(
-                visible = eventSink != null && isSelecting,
+                visible = isSelecting,
                 enter = slideIn(initialOffset = { IntOffset(0, 200) }),
                 exit = slideOut(targetOffset = { IntOffset(0, 200) }),
             ) {
-                check(eventSink != null) { "Event sink cannot be null" }
-
                 Row {
                     Box(modifier = Modifier.padding(horizontal = 4.dp)) {
                         IconButton(
                             onClick = { eventSink(GalleryScreen.Event.Sync) },
-                            enabled = state is GalleryScreen.State.Success && state.itemList.none {
-                                it.state == SyncState.SYNCING
-                            },
+                            enabled = state.itemList.none { it.state == SyncState.SYNCING },
                         ) {
                             Icon(
                                 imageVector = Icons.Filled.Sync,
@@ -359,19 +337,11 @@ private fun GalleryBottomBar(
         },
         modifier = modifier,
         floatingActionButton = {
-            AnimatedVisibility(
-                visible = eventSink != null,
-                enter = fadeIn(),
-                exit = fadeOut(),
-            ) {
-                check(eventSink != null) { "Event sink cannot be null" }
-
-                FloatingActionButton(onClick = { eventSink(GalleryScreen.Event.Capture) }) {
-                    Icon(
-                        imageVector = Icons.Filled.Add,
-                        contentDescription = "Add",
-                    )
-                }
+            FloatingActionButton(onClick = { eventSink(GalleryScreen.Event.Capture) }) {
+                Icon(
+                    imageVector = Icons.Filled.Add,
+                    contentDescription = "Add",
+                )
             }
         },
     )

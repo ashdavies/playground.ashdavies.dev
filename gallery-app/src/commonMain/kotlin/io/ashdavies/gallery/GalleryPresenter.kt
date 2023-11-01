@@ -3,7 +3,6 @@
 package io.ashdavies.gallery
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.produceState
@@ -34,42 +33,19 @@ public object GalleryScreen : Parcelable, Screen {
         data object Sync : Event
     }
 
-    internal sealed interface State : CircuitUiState {
-        data class Empty(val eventSink: (Event) -> Unit) : State
+    internal data class State(
+        val itemList: List<Item>,
+        val showCapture: Boolean,
+        val isLoggedIn: Boolean,
+        val eventSink: (Event) -> Unit,
+    ) : CircuitUiState {
 
-        data class Success(
-            val itemList: List<Item>,
-            val showCapture: Boolean,
-            val eventSink: (Event) -> Unit,
-        ) : State {
-            constructor(
-                itemList: List<Image>,
-                isSelected: (Image) -> Boolean,
-                state: (Image) -> SyncState,
-                showCapture: Boolean,
-                eventSink: (Event) -> Unit,
-            ) : this(
-                itemList = itemList.map { image ->
-                    Item(
-                        name = image.name,
-                        file = File(image.path),
-                        isSelected = isSelected(image),
-                        state = state(image),
-                    )
-                },
-                showCapture = showCapture,
-                eventSink = eventSink,
-            )
-
-            data class Item(
-                val name: String,
-                val file: File,
-                val isSelected: Boolean,
-                val state: SyncState,
-            )
-        }
-
-        data object Loading : State
+        data class Item(
+            val name: String,
+            val file: File,
+            val isSelected: Boolean,
+            val state: SyncState,
+        )
     }
 }
 
@@ -113,20 +89,29 @@ internal fun GalleryPresenter(
     sync: SyncManager,
 ): GalleryScreen.State {
     val itemList by produceState(emptyList<Image>(), images) {
-        images.list().collect { value = it }
+        images.list.collect { value = it }
     }
 
     var selected by remember { mutableStateOf(emptyList<Image>()) }
     var takePhoto by remember { mutableStateOf(false) }
 
-    val syncState by sync.state().collectAsState(emptyMap())
+    val syncState by produceState(emptyMap<String, SyncState>()) {
+        sync.state.collect { value = it }
+    }
+
     val coroutineScope = rememberCoroutineScope()
 
-    return GalleryScreen.State.Success(
-        itemList = itemList,
-        isSelected = { it in selected },
-        state = { syncState[it.name] ?: SyncState.NOT_SYNCED },
+    return GalleryScreen.State(
+        itemList = itemList.map {
+            GalleryScreen.State.Item(
+                name = it.name,
+                file = File(it.path),
+                isSelected = it in selected,
+                state = syncState[it.name] ?: SyncState.NOT_SYNCED,
+            )
+        },
         showCapture = takePhoto,
+        isLoggedIn = false,
     ) { event ->
         when (event) {
             is GalleryScreen.Event.Capture -> takePhoto = true
