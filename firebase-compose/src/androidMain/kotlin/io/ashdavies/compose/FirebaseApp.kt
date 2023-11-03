@@ -14,7 +14,7 @@ public val LocalFirebaseAndroidApp: ProvidableCompositionLocal<FirebaseApp> = st
 }
 
 @Composable
-public fun ProvideFirebaseApp(context: Context = LocalContext.current, content: @Composable () -> Unit) {
+public fun FirebaseApp(context: Context = LocalContext.current, content: @Composable () -> Unit) {
     CompositionLocalProvider(
         LocalFirebaseAndroidApp provides requireFirebaseApp(context),
         content = content,
@@ -22,10 +22,9 @@ public fun ProvideFirebaseApp(context: Context = LocalContext.current, content: 
 }
 
 private fun requireFirebaseApp(context: Context): FirebaseApp {
-    val firebaseApp = if (FirebaseApp.getApps(context).size > 0) {
-        FirebaseApp.getInstance()
-    } else {
-        FirebaseApp.initializeApp(context)
+    val firebaseApp = when (FirebaseApp.getApps(context).isEmpty()) {
+        true -> FirebaseApp.initializeApp(context)
+        else -> FirebaseApp.getInstance()
     }
 
     return requireNotNull(firebaseApp) {

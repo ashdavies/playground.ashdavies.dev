@@ -23,11 +23,15 @@ public val LocalHttpClient: ProvidableCompositionLocal<HttpClient> = staticCompo
     DefaultHttpClient { install(HttpCache) }
 }
 
-private val defaultUserAgent: String
-    get() = "${Software.clientName} (${Software.productName}; ${Software.buildVersion})"
+public fun DefaultHttpClient(
+    credentials: HttpCredentials,
+    configure: HttpClientConfig<CIOEngineConfig>.() -> Unit = { },
+): HttpClient = DefaultHttpClient {
+    install(DefaultRequest) { userAgent(credentials.userAgent) }
+    configure()
+}
 
 public fun DefaultHttpClient(
-    logLevel: LogLevel = LogLevel.INFO,
     configure: HttpClientConfig<CIOEngineConfig>.() -> Unit = { },
 ): HttpClient = HttpClient(CIO) {
     install(ContentNegotiation) {
@@ -42,12 +46,11 @@ public fun DefaultHttpClient(
     install(DefaultRequest) {
         contentType(ContentType.Application.Json)
         accept(ContentType.Application.Json)
-        userAgent(defaultUserAgent)
     }
 
     install(Logging) {
         logger = DefaultLogger()
-        level = logLevel
+        level = LogLevel.INFO
     }
 
     configure()

@@ -6,7 +6,7 @@ import app.cash.paging.ExperimentalPagingApi
 import app.cash.paging.Pager
 import app.cash.paging.PagingConfig
 import io.ashdavies.generated.apis.EventsApi
-import io.ashdavies.http.buildApi
+import io.ashdavies.http.LocalHttpCredentials
 import io.ashdavies.playground.Event
 import io.ashdavies.playground.EventsQueries
 import io.ashdavies.playground.MultipleReferenceWarning
@@ -20,7 +20,7 @@ private const val DEFAULT_PAGE_SIZE = 10
 @MultipleReferenceWarning
 internal fun rememberEventPager(
     eventsQueries: EventsQueries = rememberPlaygroundDatabase().eventsQueries,
-    eventsApi: EventsApi = remember { buildApi(::EventsApi) },
+    eventsApi: EventsApi = rememberEventsApi(),
     initialKey: String = todayAsString(),
     pageSize: Int = DEFAULT_PAGE_SIZE,
 ): Pager<String, Event> = remember(eventsQueries, eventsApi) {
@@ -30,4 +30,11 @@ internal fun rememberEventPager(
         remoteMediator = EventsRemoteMediator(eventsQueries, eventsApi),
         pagingSourceFactory = { EventsPagingSource(eventsQueries) },
     )
+}
+
+@Composable
+private fun rememberEventsApi(
+    apiKey: String = LocalHttpCredentials.current.apiKey,
+): EventsApi = remember(apiKey) {
+    EventsApi().apply { setApiKey(apiKey) }
 }

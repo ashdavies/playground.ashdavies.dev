@@ -40,7 +40,7 @@ import io.ashdavies.graphics.rememberAsyncImagePainter
     ExperimentalFoundationApi::class,
     ExperimentalMaterial3Api::class,
 )
-public fun LauncherScreen(
+internal fun LauncherScreen(
     state: LauncherScreen.State,
     modifier: Modifier = Modifier,
 ) {
