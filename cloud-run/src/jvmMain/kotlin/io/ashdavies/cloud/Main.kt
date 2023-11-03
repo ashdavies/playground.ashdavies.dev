@@ -1,7 +1,6 @@
 package io.ashdavies.cloud
 
 import io.ashdavies.http.DefaultHttpClient
-import io.ashdavies.http.Software
 import io.ktor.client.HttpClient
 import io.ktor.http.HttpHeaders
 import io.ktor.serialization.Configuration
@@ -45,5 +44,5 @@ internal fun Application.main(client: HttpClient = DefaultHttpClient()) {
 }
 
 private fun DefaultHeadersConfig.headers() {
-    header(HttpHeaders.Server, Software.clientName)
+    header(HttpHeaders.Server, System.getProperty("os.name"))
 }
