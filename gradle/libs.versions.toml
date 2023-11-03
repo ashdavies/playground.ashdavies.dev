@@ -2,21 +2,21 @@
 androidx-activity = "1.8.0"
 apollo-graphql = "2.5.14"
 cash-sqldelight = "2.0.0"
-coil-kt = "2.4.0"
+coil-kt = "2.5.0"
 compose-compiler = "1.5.3"
 google-accompanist = "0.32.0"
 google-android = "8.1.2"
 google-auto = "1.0.1"
-google-maps-compose = "4.0.0"
+google-maps-compose = "4.1.1"
 google-services = "4.4.0"
-jetbrains-compose = "1.5.3"
+jetbrains-compose = "1.5.10"
 jetbrains-kotlin = "1.9.10"
 kotlinx-coroutines = "1.7.3"
 kotlinx-serialization = "1.6.0"
 ktor = "2.3.5"
 paging-compose = "3.2.0-alpha05-0.2.3"
 pinterest-ktlint = "0.50.0"
-slack-circuit = "0.15.0"
+slack-circuit = "0.16.0"
 
 [libraries]
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity" }
@@ -51,7 +51,7 @@ google-cloud-firestore = { module = "com.google.cloud:google-cloud-firestore" }
 google-cloud-storage = { module = "com.google.cloud:google-cloud-storage" }
 
 google-firebase-admin = "com.google.firebase:firebase-admin:9.2.0"
-google-firebase-bom = "com.google.firebase:firebase-bom:32.4.1"
+google-firebase-bom = "com.google.firebase:firebase-bom:32.5.0"
 google-firebase-analytics = { module = "com.google.firebase:firebase-analytics-ktx" }
 google-firebase-appcheck = { module = "com.google.firebase:firebase-appcheck" }
 google-firebase-appcheck-debug = { module = "com.google.firebase:firebase-appcheck-debug" }
@@ -105,7 +105,7 @@ ktor-server-request-validation = { module = "io.ktor:ktor-server-request-validat
 ktor-server-test-host = { module = "io.ktor:ktor-server-test-host", version.ref = "ktor" }
 
 material-windowSizeClass = "dev.chrisbanes.material3:material3-window-size-class-multiplatform:0.3.1"
-molecule-runtime = "app.cash.molecule:molecule-runtime:1.2.1"
+molecule-runtime = "app.cash.molecule:molecule-runtime:1.3.0"
 mosaic-runtime = "com.jakewharton.mosaic:mosaic-runtime:0.9.1"
 
 paging-compose-common = { module = "app.cash.paging:paging-compose-common", version.ref = "paging-compose" }

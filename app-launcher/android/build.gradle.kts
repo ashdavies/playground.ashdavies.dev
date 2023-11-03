@@ -26,6 +26,7 @@ android {
 dependencies {
     implementation(projects.appLauncher.common)
     implementation(projects.firebaseCompose)
+    implementation(projects.httpClient)
 
     with(libs.androidx) {
         implementation(libs.androidx.core.splashscreen)

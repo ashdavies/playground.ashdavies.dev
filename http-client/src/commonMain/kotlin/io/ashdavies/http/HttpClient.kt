@@ -6,6 +6,7 @@ import io.ktor.client.HttpClient
 import io.ktor.client.HttpClientConfig
 import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.engine.cio.CIO
+import io.ktor.client.engine.cio.CIOEngineConfig
 import io.ktor.client.plugins.DefaultRequest
 import io.ktor.client.plugins.cache.HttpCache
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
@@ -23,8 +24,13 @@ public val LocalHttpClient: ProvidableCompositionLocal<HttpClient> = staticCompo
     DefaultHttpClient { install(HttpCache) }
 }
 
-private val defaultUserAgent: String
-    get() = "${Software.clientName} (${Software.productName}; ${Software.buildVersion})"
+public fun DefaultHttpClient(
+    credentials: HttpCredentials,
+    configure: HttpClientConfig<CIOEngineConfig>.() -> Unit = { },
+): HttpClient = DefaultHttpClient {
+    install(DefaultRequest) { userAgent(credentials.userAgent) }
+    configure()
+}
 
 public fun DefaultHttpClient(
     engine: HttpClientEngine = CIO.create { },
@@ -42,7 +48,6 @@ public fun DefaultHttpClient(
     install(DefaultRequest) {
         contentType(ContentType.Application.Json)
         accept(ContentType.Application.Json)
-        userAgent(defaultUserAgent)
     }
 
     install(Logging) {
