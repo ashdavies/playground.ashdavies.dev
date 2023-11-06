@@ -1,8 +1,5 @@
-@file:Suppress("DSL_SCOPE_VIOLATION") // https://github.com/gradle/gradle/issues/22797
-
 plugins {
     id("com.google.cloud.tools.jib")
-    id("io.ashdavies.integration")
     id("io.ashdavies.kotlin")
     application
 
@@ -19,7 +16,41 @@ jib {
 
 kotlin {
     explicitApiWarning()
-    jvm { withJava() }
+
+    jvm {
+        compilations {
+            val main by compilations.getting {
+                defaultSourceSet.kotlin.srcDir(tasks.openApiGenerate)
+            }
+
+            val test by compilations.getting
+
+            val integrationTest by compilations.creating {
+                defaultSourceSet.dependencies {
+                    implementation(main.compileDependencyFiles + main.output.classesDirs)
+                    implementation(kotlin("test-junit"))
+
+                    implementation(libs.ktor.client.content.negotiation)
+                    implementation(libs.ktor.serialization.json)
+                    implementation(libs.ktor.server.test.host)
+                }
+
+                tasks.register<Test>("integrationTest") {
+                    classpath = compileDependencyFiles + runtimeDependencyFiles + output.allOutputs
+                    description = "Run integration tests."
+                    group = LifecycleBasePlugin.VERIFICATION_GROUP
+                    testClassesDirs = output.classesDirs
+                    testLogging { events("passed") }
+                }
+            }
+
+            integrationTest.associateWith(test)
+        }
+
+        withJava()
+    }
+
+    val jvmMain by sourceSets.getting
 
     jvmMain.dependencies {
         with(projects) {
@@ -45,31 +76,23 @@ kotlin {
             implementation(serialization.json)
         }
 
-        implementation(libs.ktor.serialization.json)
-        implementation(libs.ktor.serialization.kotlinx)
+        with(libs.ktor) {
+            implementation(serialization.json)
+            implementation(serialization.kotlinx)
 
-        with(libs.ktor.server) {
-            implementation(auth)
-            implementation(call.logging)
-            implementation(cio)
-            implementation(compression)
-            implementation(conditional.headers)
-            implementation(content.negotiation)
-            implementation(core)
-            implementation(default.headers)
-            implementation(request.validation)
+            with(server) {
+                implementation(auth)
+                implementation(call.logging)
+                implementation(cio)
+                implementation(compression)
+                implementation(conditional.headers)
+                implementation(content.negotiation)
+                implementation(core)
+                implementation(default.headers)
+                implementation(request.validation)
+            }
         }
     }
-
-    jvmIntegrationTest.dependencies {
-        implementation(libs.ktor.client.content.negotiation)
-        implementation(libs.ktor.client.core)
-        implementation(libs.ktor.server.test.host)
-    }
-}
-
-sourceSets.main {
-    java.srcDir(tasks.openApiGenerate)
 }
 
 openApiGenerate {
