@@ -19,10 +19,7 @@ kotlin {
 
     jvm {
         compilations {
-            val main by compilations.getting {
-                defaultSourceSet.kotlin.srcDir(tasks.openApiGenerate)
-            }
-
+            val main by compilations.getting
             val test by compilations.getting
 
             val integrationTest by compilations.creating {
@@ -50,46 +47,48 @@ kotlin {
         withJava()
     }
 
-    val jvmMain by sourceSets.getting
+    commonMain {
+        kotlin.srcDir(tasks.openApiGenerate)
 
-    jvmMain.dependencies {
-        with(projects) {
-            implementation(appCheck.appCheckSdk)
-            implementation(cloudFirestore)
-            implementation(httpClient)
-            implementation(eventsAggregator)
-            implementation(localStorage)
-        }
+        dependencies {
+            with(projects) {
+                implementation(appCheck.appCheckSdk)
+                implementation(cloudFirestore)
+                implementation(httpClient)
+                implementation(eventsAggregator)
+                implementation(localStorage)
+            }
 
-        with(libs.google) {
-            implementation(dependencies.platform(cloud.bom))
-            implementation(cloud.firestore)
-            implementation(cloud.storage)
-            implementation(firebase.admin)
-            implementation(guava.jre)
-        }
+            with(libs.google) {
+                implementation(dependencies.platform(cloud.bom))
+                implementation(cloud.firestore)
+                implementation(cloud.storage)
+                implementation(firebase.admin)
+                implementation(guava.jre)
+            }
 
-        with(libs.jetbrains.kotlinx) {
-            implementation(coroutines.core)
-            implementation(datetime)
-            implementation(serialization.core)
-            implementation(serialization.json)
-        }
+            with(libs.jetbrains.kotlinx) {
+                implementation(coroutines.core)
+                implementation(datetime)
+                implementation(serialization.core)
+                implementation(serialization.json)
+            }
 
-        with(libs.ktor) {
-            implementation(serialization.json)
-            implementation(serialization.kotlinx)
+            with(libs.ktor) {
+                implementation(serialization.json)
+                implementation(serialization.kotlinx)
 
-            with(server) {
-                implementation(auth)
-                implementation(call.logging)
-                implementation(cio)
-                implementation(compression)
-                implementation(conditional.headers)
-                implementation(content.negotiation)
-                implementation(core)
-                implementation(default.headers)
-                implementation(request.validation)
+                with(server) {
+                    implementation(auth)
+                    implementation(call.logging)
+                    implementation(cio)
+                    implementation(compression)
+                    implementation(conditional.headers)
+                    implementation(content.negotiation)
+                    implementation(core)
+                    implementation(default.headers)
+                    implementation(request.validation)
+                }
             }
         }
     }
