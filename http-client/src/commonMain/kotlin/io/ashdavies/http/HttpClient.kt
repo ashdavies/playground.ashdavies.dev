@@ -4,8 +4,8 @@ import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.staticCompositionLocalOf
 import io.ktor.client.HttpClient
 import io.ktor.client.HttpClientConfig
+import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.engine.cio.CIO
-import io.ktor.client.engine.cio.CIOEngineConfig
 import io.ktor.client.plugins.DefaultRequest
 import io.ktor.client.plugins.cache.HttpCache
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
@@ -25,15 +25,16 @@ public val LocalHttpClient: ProvidableCompositionLocal<HttpClient> = staticCompo
 
 public fun DefaultHttpClient(
     credentials: HttpCredentials,
-    configure: HttpClientConfig<CIOEngineConfig>.() -> Unit = { },
+    configure: HttpClientConfig<*>.() -> Unit = { },
 ): HttpClient = DefaultHttpClient {
     install(DefaultRequest) { userAgent(credentials.userAgent) }
     configure()
 }
 
 public fun DefaultHttpClient(
-    configure: HttpClientConfig<CIOEngineConfig>.() -> Unit = { },
-): HttpClient = HttpClient(CIO) {
+    engine: HttpClientEngine = CIO.create { },
+    block: HttpClientConfig<*>.() -> Unit = { },
+): HttpClient = HttpClient(engine) {
     install(ContentNegotiation) {
         json(
             Json {
@@ -53,7 +54,7 @@ public fun DefaultHttpClient(
         level = LogLevel.INFO
     }
 
-    configure()
+    block()
 }
 
 private fun DefaultLogger(block: (message: String) -> Unit = ::println) = object : Logger {

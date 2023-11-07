@@ -4,7 +4,7 @@ import io.ashdavies.playground.mapToList
 import kotlinx.coroutines.flow.Flow
 
 internal interface ImageManager {
-    fun list(): Flow<List<Image>>
+    val list: Flow<List<Image>>
     fun add(file: File)
     fun remove(image: Image)
 }
@@ -14,9 +14,9 @@ internal fun ImageManager(
     queries: ImageQueries,
 ): ImageManager = object : ImageManager {
 
-    override fun list(): Flow<List<Image>> {
-        return queries.selectAll().mapToList()
-    }
+    override val list: Flow<List<Image>> = queries
+        .selectAll()
+        .mapToList()
 
     override fun add(file: File) {
         val image = Image(

@@ -16,7 +16,7 @@ import kotlinx.coroutines.flow.update
 import java.util.concurrent.atomic.AtomicBoolean
 
 internal interface SyncManager {
-    fun state(): Flow<Map<String, SyncState>>
+    val state: Flow<Map<String, SyncState>>
     suspend fun sync(path: String)
 }
 
@@ -31,23 +31,22 @@ internal fun SyncManager(
     reader: File.() -> ByteReadChannel = File::readChannel,
 ): SyncManager = object : SyncManager {
 
-    private val state = MutableStateFlow<Map<String, SyncState>>(emptyMap())
+    private val _state = MutableStateFlow<Map<String, SyncState>>(emptyMap())
     private val initialised = AtomicBoolean(false)
 
-    override fun state(): Flow<Map<String, SyncState>> = channelFlow {
+    override val state: Flow<Map<String, SyncState>> = channelFlow {
         if (initialised.compareAndSet(false, true)) {
             val initialValue = client.get("/").body<List<String>>()
-            state.value = initialValue.associateWith { SyncState.SYNCED }
+            _state.value = initialValue.associateWith { SyncState.SYNCED }
         }
 
-        state.collect(::send)
+        _state.collect(::send)
     }
 
     override suspend fun sync(path: String) = with(File(path)) {
-        val initialState = state.value[getName()] ?: SyncState.NOT_SYNCED
-        println(state.value)
+        val initialState = _state.value[getName()] ?: SyncState.NOT_SYNCED
 
-        state.update { it + (getName() to SyncState.SYNCING) }
+        _state.update { it + (getName() to SyncState.SYNCING) }
 
         when (initialState) {
             SyncState.NOT_SYNCED -> client.post(getName()) {
@@ -58,7 +57,7 @@ internal fun SyncManager(
             else -> client.put(getName())
         }
 
-        state.update { it + (getName() to SyncState.SYNCED) }
+        _state.update { it + (getName() to SyncState.SYNCED) }
     }
 }
 
