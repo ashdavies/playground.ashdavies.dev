@@ -5,7 +5,7 @@
       "datasourceTemplate": "github-releases",
       "depNameTemplate": "hashicorp/terraform",
       "extractVersionTemplate": "v(?<version>.*)",
-      "fileMatch": "^\\.github/workflows/.*\\.yaml",
+      "fileMatch": "^\\.github/workflows/.*\\.yml",
       "matchStrings": ["terraform_version: (?<currentValue>.*)"],
       "versioningTemplate": "hashicorp"
     }
