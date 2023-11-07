@@ -24,7 +24,9 @@ internal fun InMemoryHttpClientEngine(initialValue: List<String>): HttpClientEng
     return MockEngine { request ->
         when {
             request.method == HttpMethod.Get && request.path.isEmpty() -> {
-                respond(ByteReadChannel("[${values.joinToString()}]"), headers = DefaultHeaders)
+                val text = "[${values.joinToString(transform = { "\"$it\"" })}]"
+
+                respond(ByteReadChannel(text), headers = DefaultHeaders)
             }
 
             request.method == HttpMethod.Post && request.path.isNotEmpty() -> {

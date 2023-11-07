@@ -19,7 +19,7 @@ internal class SyncManagerTest {
         )
 
         manager.state.test {
-            assertEquals(awaitItem(), mapOf(RandomImage to SyncState.SYNCED))
+            assertEquals(mapOf(RandomImage to SyncState.SYNCED), awaitItem())
         }
     }
 
@@ -31,12 +31,12 @@ internal class SyncManagerTest {
         )
 
         manager.state.test {
-            skipItems(1) // initialValue = emptyMap()
+            assertEquals(emptyMap(), awaitItem())
 
             manager.sync("resources/$RandomImage")
 
-            assertEquals(awaitItem(), mapOf(RandomImage to SyncState.SYNCING))
-            assertEquals(awaitItem(), mapOf(RandomImage to SyncState.SYNCED))
+            assertEquals(mapOf(RandomImage to SyncState.SYNCING), awaitItem())
+            assertEquals(mapOf(RandomImage to SyncState.SYNCED), awaitItem())
         }
     }
 
@@ -48,12 +48,12 @@ internal class SyncManagerTest {
         )
 
         manager.state.test {
-            skipItems(1) // initialValue = emptyMap()
+            assertEquals(mapOf(RandomImage to SyncState.SYNCED), awaitItem())
 
             manager.sync("resources/$RandomImage")
 
-            assertEquals(awaitItem(), mapOf(RandomImage to SyncState.SYNCING))
-            assertEquals(awaitItem(), mapOf(RandomImage to SyncState.SYNCED))
+            assertEquals(mapOf(RandomImage to SyncState.SYNCING), awaitItem())
+            assertEquals(mapOf(RandomImage to SyncState.SYNCED), awaitItem())
         }
     }
 
