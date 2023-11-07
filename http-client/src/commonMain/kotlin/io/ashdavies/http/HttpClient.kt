@@ -26,7 +26,7 @@ public val LocalHttpClient: ProvidableCompositionLocal<HttpClient> = staticCompo
 
 public fun DefaultHttpClient(
     credentials: HttpCredentials,
-    configure: HttpClientConfig<CIOEngineConfig>.() -> Unit = { },
+    configure: HttpClientConfig<*>.() -> Unit = { },
 ): HttpClient = DefaultHttpClient {
     install(DefaultRequest) { userAgent(credentials.userAgent) }
     configure()

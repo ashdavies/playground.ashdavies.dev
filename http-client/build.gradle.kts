@@ -17,13 +17,10 @@ kotlin {
 
     commonMain {
         dependencies {
-            with(libs.ktor.client) {
-                api(core)
-                api(logging)
-            }
+            api(libs.ktor.client.core)
+            api(libs.ktor.client.logging)
 
             implementation(projects.localStorage)
-
             implementation(libs.jetbrains.kotlinx.serialization.properties)
 
             with(libs.ktor.client) {
