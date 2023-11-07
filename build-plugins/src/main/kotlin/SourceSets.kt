@@ -5,10 +5,8 @@ import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetContainer
 import kotlin.properties.ReadOnlyProperty
 
-public val KotlinMultiplatformExtension.androidInstrumentedTest: KotlinSourceSet by SourceSetDelegate()
 public val KotlinMultiplatformExtension.androidMain: KotlinSourceSet by SourceSetDelegate()
 public val KotlinMultiplatformExtension.androidDebug: SourceSetInvoker by InvokerDelegate()
-public val KotlinMultiplatformExtension.androidUnitTest: KotlinSourceSet by SourceSetDelegate()
 
 public val KotlinMultiplatformExtension.commonMain: KotlinSourceSet by SourceSetDelegate()
 public val KotlinMultiplatformExtension.commonTest: KotlinSourceSet by SourceSetDelegate()
