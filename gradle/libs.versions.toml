@@ -5,15 +5,15 @@ cash-sqldelight = "2.0.0"
 coil-kt = "2.5.0"
 compose-compiler = "1.5.4"
 google-accompanist = "0.32.0"
-google-android = "8.1.2"
+google-android = "8.1.3"
 google-auto = "1.0.1"
 google-maps-compose = "4.1.1"
 google-services = "4.4.0"
 jetbrains-compose = "1.5.10"
-jetbrains-kotlin = "1.9.10"
+jetbrains-kotlin = "1.9.20"
 kotlinx-coroutines = "1.7.3"
 kotlinx-serialization = "1.6.0"
-ktor = "2.3.5"
+ktor = "2.3.6"
 paging-compose = "3.2.0-alpha05-0.2.3"
 pinterest-ktlint = "0.50.0"
 slack-circuit = "0.16.0"
@@ -62,6 +62,7 @@ google-guava-jre = "com.google.guava:guava:32.1.3-jre"
 google-maps-android-compose = { module = "com.google.maps.android:maps-compose", version.ref = "google-maps-compose" }
 google-maps-android-compose-widgets = { module = "com.google.maps.android:maps-compose-widgets", version.ref = "google-maps-compose" }
 
+jetbrains-compose-compiler = { module = "org.jetbrains.compose.compiler:compiler", version.ref = "compose-compiler" }
 jetbrains-compose-runtime = { module = "org.jetbrains.compose.runtime:runtime", version.ref = "jetbrains-compose" }
 jetbrains-kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "jetbrains-kotlin" }
 jetbrains-kotlin-test-annotations = { module = "org.jetbrains.kotlin:kotlin-test-annotations-common", version.ref = "jetbrains-kotlin" }
@@ -135,7 +136,7 @@ dependency-analysis = { id = "com.autonomousapps.dependency-analysis", version =
 diffplug-spotless = "com.diffplug.spotless:6.22.0"
 google-cloud-jib = "com.google.cloud.tools.jib:3.4.0"
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
-gradle-doctor = "com.osacky.doctor:0.8.1"
+gradle-doctor = "com.osacky.doctor:0.9.0"
 jetbrains-dokka = "org.jetbrains.dokka:1.9.10"
 kotlin-compose = { id = "org.jetbrains.compose", version.ref = "jetbrains-compose" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrains-kotlin" }
