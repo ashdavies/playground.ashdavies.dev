@@ -8,8 +8,8 @@ plugins {
 }
 
 compose {
-    val composeCompilerVersion = libs.versions.compose.compiler.get()
-    kotlinCompilerPlugin.set("$composeCompilerVersion")
+    val composeCompiler = libs.jetbrains.compose.compiler.get()
+    kotlinCompilerPlugin.set("$composeCompiler")
 }
 
 dependencies {
