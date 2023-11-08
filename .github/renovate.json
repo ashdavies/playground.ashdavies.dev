@@ -4,6 +4,7 @@
     {
       "datasourceTemplate": "github-releases",
       "depNameTemplate": "hashicorp/terraform",
+      "depTypeTemplate": "terraform_version",
       "extractVersionTemplate": "v(?<version>.*)",
       "fileMatch": "^\\.github/workflows/.*\\.yml",
       "matchStrings": ["terraform_version: (?<currentValue>.*)"],
@@ -35,6 +36,7 @@
       ]
     },
     {
+      "groupName": "Compose Multiplatform",
       "matchPackagePrefixes": [
         "androidx.compose.compiler",
         "org.jetbrains.compose.compiler",
