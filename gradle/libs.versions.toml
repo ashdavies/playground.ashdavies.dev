@@ -3,7 +3,6 @@ androidx-activity = "1.8.0"
 apollo-graphql = "2.5.14"
 cash-sqldelight = "2.0.0"
 coil-kt = "2.5.0"
-compose-compiler = "1.5.3"
 google-accompanist = "0.32.0"
 google-android = "8.1.3"
 google-auto = "1.0.1"
@@ -22,7 +21,7 @@ slack-circuit = "0.16.0"
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity" }
 androidx-activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "androidx-activity" }
 androidx-annotation = "androidx.annotation:annotation:1.7.0"
-androidx-compose-compiler = { module = "androidx.compose.compiler:compiler", version.ref = "compose-compiler" }
+androidx-compose-compiler = { module = "androidx.compose.compiler:compiler", version = "1.5.4" }
 androidx-core-ktx = "androidx.core:core-ktx:1.12.0"
 androidx-core-splashscreen = "androidx.core:core-splashscreen:1.0.1"
 
@@ -62,7 +61,7 @@ google-guava-jre = "com.google.guava:guava:32.1.3-jre"
 google-maps-android-compose = { module = "com.google.maps.android:maps-compose", version.ref = "google-maps-compose" }
 google-maps-android-compose-widgets = { module = "com.google.maps.android:maps-compose-widgets", version.ref = "google-maps-compose" }
 
-jetbrains-compose-compiler = { module = "org.jetbrains.compose.compiler:compiler", version.ref = "compose-compiler" }
+jetbrains-compose-compiler = { module = "org.jetbrains.compose.compiler:compiler", version = "1.5.3" }
 jetbrains-compose-runtime = { module = "org.jetbrains.compose.runtime:runtime", version.ref = "jetbrains-compose" }
 jetbrains-kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "jetbrains-kotlin" }
 jetbrains-kotlin-test-annotations = { module = "org.jetbrains.kotlin:kotlin-test-annotations-common", version.ref = "jetbrains-kotlin" }
