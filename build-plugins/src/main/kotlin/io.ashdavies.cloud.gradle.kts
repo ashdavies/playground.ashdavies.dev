@@ -8,8 +8,8 @@ plugins {
 }
 
 compose {
-    val composeCompiler = libs.androidx.compose.compiler.get()
-    kotlinCompilerPlugin.set("$composeCompiler")
+    val composeCompilerVersion = libs.versions.compose.compiler.get()
+    kotlinCompilerPlugin.set("$composeCompilerVersion")
 }
 
 dependencies {
