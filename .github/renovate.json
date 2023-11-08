@@ -38,9 +38,8 @@
     {
       "groupName": "Compose Multiplatform",
       "matchPackagePrefixes": [
-        "androidx.compose.compiler",
         "org.jetbrains.compose.compiler",
-        "org.jetbrains.kotlin"
+        "org.jetbrains.kotlin:kotlin",
       ]
     },
     {
