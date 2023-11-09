@@ -18,7 +18,7 @@ import kotlinx.collections.immutable.persistentListOf
 @OptIn(ExperimentalMaterial3Api::class)
 internal fun GalleryTopAppBarPreview() {
     GalleryPreviewTheme {
-        GalleryTopAppBar(enterAlwaysScrollBehavior())
+        GalleryTopAppBar(enterAlwaysScrollBehavior()) { }
     }
 }
 
@@ -36,15 +36,6 @@ internal fun GalleryGridPreview() {
                 GalleryScreenStateItem(state = SyncState.SYNCED),
             ),
         ) { }
-    }
-}
-
-@Preview
-@Composable
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
-internal fun GalleryBottomBarPreview() {
-    GalleryPreviewTheme {
-        GalleryBottomBar(GalleryScreenState())
     }
 }
 

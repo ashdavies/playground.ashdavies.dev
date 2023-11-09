@@ -1,6 +1,7 @@
 package io.ashdavies.gallery
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.Crossfade
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.LinearEasing
@@ -35,6 +36,7 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Delete
@@ -97,7 +99,7 @@ internal fun GalleryScreen(
 
     Scaffold(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
-        topBar = { GalleryTopAppBar(scrollBehavior) },
+        topBar = { GalleryTopAppBar(scrollBehavior) { } },
         bottomBar = { GalleryBottomBar(state, isSelecting) },
     ) { paddingValues ->
         when {
@@ -132,6 +134,7 @@ internal fun GalleryTopAppBar(
     scrollBehavior: TopAppBarScrollBehavior,
     title: String = "Gallery",
     modifier: Modifier = Modifier,
+    onProfileClick: (Boolean) -> Unit,
 ) {
     CenterAlignedTopAppBar(
         title = {
@@ -142,11 +145,36 @@ internal fun GalleryTopAppBar(
             )
         },
         modifier = modifier,
+        actions = { ProfileActionButton { onProfileClick(false) } },
         colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
             containerColor = MaterialTheme.colorScheme.background,
         ),
         scrollBehavior = scrollBehavior,
     )
+}
+
+@Composable
+private fun ProfileActionButton(
+    isLoggedIn: Boolean = false,
+    onClick: () -> Unit,
+) {
+    Crossfade(targetState = isLoggedIn) { state ->
+        when (state) {
+            true -> IconButton(onClick = onClick) {
+                Image(
+                    imageVector = Icons.Filled.AccountCircle,
+                    contentDescription = "Logout",
+                )
+            }
+
+            false -> IconButton(onClick = onClick) {
+                Image(
+                    imageVector = Icons.Filled.AccountCircle,
+                    contentDescription = "Login",
+                )
+            }
+        }
+    }
 }
 
 @Composable
