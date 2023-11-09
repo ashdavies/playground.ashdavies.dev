@@ -42,7 +42,7 @@ public object GalleryScreen : Parcelable, Screen {
 
         data class Item(
             val name: String,
-            val file: File,
+            val imageModel: Any?,
             val isSelected: Boolean,
             val state: SyncState,
         )
@@ -105,7 +105,7 @@ internal fun GalleryPresenter(
         itemList = itemList.map {
             GalleryScreen.State.Item(
                 name = it.name,
-                file = File(it.path),
+                imageModel = File(it.path),
                 isSelected = it in selected,
                 state = syncState[it.name] ?: SyncState.NOT_SYNCED,
             )
