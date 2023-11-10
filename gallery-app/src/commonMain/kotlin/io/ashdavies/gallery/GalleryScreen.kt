@@ -1,6 +1,7 @@
 package io.ashdavies.gallery
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.Crossfade
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.LinearEasing
@@ -35,6 +36,7 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Delete
@@ -61,14 +63,18 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.scale
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import io.ashdavies.graphics.rememberAsyncImagePainter
@@ -82,7 +88,10 @@ private val Color.Companion.Orange: Color
     get() = Color(0xFFFFA500)
 
 @Composable
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(
+    ExperimentalFoundationApi::class,
+    ExperimentalMaterial3Api::class,
+)
 internal fun GalleryScreen(
     state: GalleryScreen.State,
     manager: StorageManager,
@@ -90,39 +99,47 @@ internal fun GalleryScreen(
 ) {
     val scrollBehavior = enterAlwaysScrollBehavior(rememberTopAppBarState())
     val isSelecting = state.itemList.any { it.isSelected }
+    val eventSink = state.eventSink
 
     Scaffold(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
-        topBar = { GalleryTopAppBar(scrollBehavior) },
+        topBar = { GalleryTopAppBar(scrollBehavior) { } },
         bottomBar = { GalleryBottomBar(state, isSelecting) },
     ) { paddingValues ->
         when {
-            state.itemList.isEmpty() -> GalleryEmpty()
+            state.itemList.isEmpty() -> {
+                Box(
+                    modifier = modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center,
+                    content = { Text("Empty") },
+                )
+            }
+
             else -> {
                 GalleryGrid(
                     itemList = state.itemList.toImmutableList(),
                     isSelecting = isSelecting,
                     modifier = Modifier.padding(paddingValues),
-                    onSelect = { state.eventSink(GalleryScreen.Event.Toggle(it)) },
+                    onSelect = { eventSink(GalleryScreen.Event.Toggle(it)) },
                 )
+            }
+        }
 
-                if (state.showCapture) {
-                    GalleryCapture(
-                        manager = manager,
-                        eventSink = state.eventSink,
-                    )
-                }
+        if (state.showCapture) {
+            ImageCapture(manager) {
+                eventSink(GalleryScreen.Event.Result(it))
             }
         }
     }
 }
 
 @Composable
-@OptIn(ExperimentalMaterial3Api::class)
+@ExperimentalMaterial3Api
 internal fun GalleryTopAppBar(
     scrollBehavior: TopAppBarScrollBehavior,
     title: String = "Gallery",
     modifier: Modifier = Modifier,
+    onProfileClick: (Boolean) -> Unit,
 ) {
     CenterAlignedTopAppBar(
         title = {
@@ -133,6 +150,7 @@ internal fun GalleryTopAppBar(
             )
         },
         modifier = modifier,
+        actions = { ProfileActionButton { onProfileClick(false) } },
         colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
             containerColor = MaterialTheme.colorScheme.background,
         ),
@@ -141,17 +159,33 @@ internal fun GalleryTopAppBar(
 }
 
 @Composable
-internal fun GalleryEmpty(modifier: Modifier = Modifier) {
-    Box(
-        modifier = modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center,
-    ) {
-        Text("Empty")
+private fun ProfileActionButton(
+    isLoggedIn: Boolean = false,
+    onClick: () -> Unit,
+) {
+    Crossfade(targetState = isLoggedIn) { state ->
+        when (state) {
+            true -> IconButton(onClick = onClick) {
+                Image(
+                    imageVector = Icons.Filled.AccountCircle,
+                    contentDescription = "Logout",
+                    colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onBackground),
+                )
+            }
+
+            false -> IconButton(onClick = onClick) {
+                Image(
+                    imageVector = Icons.Filled.AccountCircle,
+                    contentDescription = "Login",
+                    colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onBackground),
+                )
+            }
+        }
     }
 }
 
 @Composable
-@OptIn(ExperimentalFoundationApi::class)
+@ExperimentalFoundationApi
 internal fun GalleryGrid(
     itemList: ImmutableList<GalleryScreen.State.Item>,
     isSelecting: Boolean = false,
@@ -166,77 +200,125 @@ internal fun GalleryGrid(
         contentPadding = PaddingValues(12.dp),
     ) {
         itemsIndexed(itemList) { index, item ->
-            val itemBorderRadius by animateDpAsState(if (item.isSelected) 12.dp else 8.dp)
-            val itemPadding by animateDpAsState(if (item.isSelected) 12.dp else 0.dp)
-
-            Box(Modifier.animateItemPlacement()) {
-                Column {
-                    Image(
-                        painter = rememberAsyncImagePainter(item.file),
-                        contentDescription = item.name,
-                        modifier = Modifier.padding(itemPadding)
-                            .clip(RoundedCornerShape(itemBorderRadius))
-                            .background(Color.DarkGray)
-                            .combinedClickable(
-                                interactionSource = remember { MutableInteractionSource() },
-                                indication = rememberRipple(bounded = false),
-                                onLongClick = { onSelect(index) },
-                                onClick = { if (isSelecting) onSelect(index) },
-                            )
-                            .fillMaxWidth()
-                            .aspectRatio(1f),
-                        contentScale = ContentScale.Crop,
-                    )
-
-                    Text(
-                        text = item.name,
-                        modifier = Modifier.fillMaxWidth(),
-                        style = MaterialTheme.typography.labelSmall,
-                    )
-                }
-
-                AnimatedVisibility(
-                    visible = item.isSelected,
-                    modifier = Modifier.align(Alignment.TopStart),
-                    enter = fadeIn(),
-                    exit = fadeOut(),
-                ) {
-                    Icon(
-                        imageVector = Icons.Filled.CheckCircle,
-                        contentDescription = null,
-                        modifier = Modifier.padding(4.dp),
-                    )
-
-                    Canvas(
-                        modifier = Modifier
-                            .padding(4.dp)
-                            .size(24.dp),
-                    ) {
-                        drawCircle(
-                            color = if (item.isSelected) Color.DarkGray else Color.White,
-                            radius = (size.minDimension / 2) - if (item.isSelected) 0 else 8,
-                            center = Offset(x = size.width / 2, y = size.height / 2),
-                            alpha = if (item.isSelected) 1.0f else 0.5f,
-                            style = Stroke(if (item.isSelected) 8f else 6f),
-                        )
-                    }
-                }
-
-                AnimatedVisibility(
-                    visible = item.state != SyncState.NOT_SYNCED,
-                    modifier = Modifier.align(Alignment.TopEnd),
-                    enter = fadeIn(),
-                    exit = fadeOut(),
-                ) {
-                    SyncIndicator(item.state == SyncState.SYNCING)
-                }
-            }
+            GalleryItem(
+                item = item,
+                isSelecting = isSelecting,
+                modifier = Modifier.animateItemPlacement(),
+                onSelect = { onSelect(index) },
+            )
         }
     }
 }
 
 @Composable
-internal fun SyncIndicator(isSyncing: Boolean, modifier: Modifier = Modifier) {
+@ExperimentalFoundationApi
+internal fun GalleryItem(
+    item: GalleryScreen.State.Item,
+    isSelecting: Boolean = false,
+    modifier: Modifier = Modifier,
+    onSelect: () -> Unit,
+) {
+    val itemBorderRadius by animateDpAsState(if (item.isSelected) 12.dp else 8.dp)
+    val itemPadding by animateDpAsState(if (item.isSelected) 12.dp else 0.dp)
+
+    Box(modifier) {
+        Column {
+            Image(
+                painter = rememberAsyncImagePainter(item.imageModel),
+                contentDescription = item.name,
+                modifier = Modifier.padding(itemPadding)
+                    .clip(RoundedCornerShape(itemBorderRadius))
+                    .background(Color.DarkGray)
+                    .combinedClickable(
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = rememberRipple(bounded = false),
+                        onLongClick = { onSelect() },
+                        onClick = { if (isSelecting) onSelect() },
+                    )
+                    .fillMaxWidth()
+                    .aspectRatio(1f),
+                contentScale = ContentScale.Crop,
+            )
+
+            Text(
+                text = item.name,
+                modifier = Modifier.fillMaxWidth(),
+                style = MaterialTheme.typography.labelSmall,
+            )
+        }
+
+        AnimatedVisibility(
+            visible = isSelecting,
+            modifier = Modifier
+                .align(Alignment.TopStart)
+                .padding(4.dp),
+            enter = fadeIn(),
+            exit = fadeOut(),
+        ) {
+            Crossfade(item.isSelected) { state ->
+                when (state) {
+                    true -> SelectedIndicator(
+                        modifier = Modifier.size(24.dp),
+                    )
+
+                    false -> UnselectedIndicator(
+                        modifier = Modifier
+                            .padding(4.dp)
+                            .size(16.dp),
+                    )
+                }
+            }
+        }
+
+        AnimatedVisibility(
+            visible = item.state != SyncState.NOT_SYNCED,
+            modifier = Modifier.align(Alignment.TopEnd),
+            enter = fadeIn(),
+            exit = fadeOut(),
+        ) {
+            SyncIndicator(item.state == SyncState.SYNCING)
+        }
+    }
+}
+
+@Composable
+private fun SelectedIndicator(
+    surfaceColor: Color = MaterialTheme.colorScheme.surface,
+    onPrimaryContainerColor: Color = MaterialTheme.colorScheme.onPrimaryContainer,
+    iconPainter: Painter = rememberVectorPainter(Icons.Filled.CheckCircle),
+    modifier: Modifier = Modifier,
+) {
+    Canvas(modifier) {
+        drawCircle(
+            color = surfaceColor,
+        )
+
+        with(iconPainter) {
+            draw(
+                size = iconPainter.intrinsicSize,
+                colorFilter = ColorFilter.tint(onPrimaryContainerColor),
+            )
+        }
+    }
+}
+
+@Composable
+private fun UnselectedIndicator(
+    highlightColor: Color = Color.White.copy(alpha = 0.5F),
+    strokeWidth: Dp = 2.dp,
+    modifier: Modifier = Modifier,
+) {
+    Canvas(modifier) {
+        drawCircle(
+            color = highlightColor,
+            radius = (size.minDimension / 2.0f),
+            style = Stroke(strokeWidth.toPx()),
+        )
+    }
+}
+
+@Composable
+private fun SyncIndicator(isSyncing: Boolean, modifier: Modifier = Modifier) {
     val tint by animateColorAsState(if (isSyncing) Color.Orange else Color.LightGreen)
     val scale by animateFloatAsState(if (isSyncing) 0.75f else 1f)
 
@@ -284,22 +366,9 @@ internal fun SyncIndicator(isSyncing: Boolean, modifier: Modifier = Modifier) {
 }
 
 @Composable
-internal fun GalleryCapture(
-    manager: StorageManager,
-    modifier: Modifier = Modifier,
-    eventSink: (GalleryScreen.Event) -> Unit,
-) {
-    ImageCapture(
-        manager = manager,
-        modifier = modifier,
-        onCapture = { eventSink(GalleryScreen.Event.Result(it)) },
-    )
-}
-
-@Composable
 internal fun GalleryBottomBar(
     state: GalleryScreen.State,
-    isSelecting: Boolean,
+    isSelecting: Boolean = false,
     modifier: Modifier = Modifier,
 ) {
     val eventSink = state.eventSink
