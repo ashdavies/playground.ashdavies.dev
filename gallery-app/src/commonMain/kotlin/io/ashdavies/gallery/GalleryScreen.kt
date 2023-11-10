@@ -110,6 +110,7 @@ internal fun GalleryScreen(
                     content = { Text("Empty") },
                 )
             }
+
             else -> {
                 GalleryGrid(
                     itemList = state.itemList.toImmutableList(),
@@ -117,12 +118,12 @@ internal fun GalleryScreen(
                     modifier = Modifier.padding(paddingValues),
                     onSelect = { eventSink(GalleryScreen.Event.Toggle(it)) },
                 )
+            }
+        }
 
-                if (state.showCapture) {
-                    ImageCapture(manager) {
-                        eventSink(GalleryScreen.Event.Result(it))
-                    }
-                }
+        if (state.showCapture) {
+            ImageCapture(manager) {
+                eventSink(GalleryScreen.Event.Result(it))
             }
         }
     }
