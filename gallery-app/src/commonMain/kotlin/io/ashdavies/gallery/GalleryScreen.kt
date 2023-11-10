@@ -169,6 +169,7 @@ private fun ProfileActionButton(
                 Image(
                     imageVector = Icons.Filled.AccountCircle,
                     contentDescription = "Logout",
+                    colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onBackground),
                 )
             }
 
@@ -176,6 +177,7 @@ private fun ProfileActionButton(
                 Image(
                     imageVector = Icons.Filled.AccountCircle,
                     contentDescription = "Login",
+                    colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onBackground),
                 )
             }
         }
