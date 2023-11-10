@@ -258,13 +258,13 @@ internal fun GalleryItem(
             Crossfade(item.isSelected) { state ->
                 when (state) {
                     true -> SelectedIndicator(
-                        modifier = Modifier.size(24.dp)
+                        modifier = Modifier.size(24.dp),
                     )
 
                     false -> UnselectedIndicator(
                         modifier = Modifier
                             .padding(4.dp)
-                            .size(16.dp)
+                            .size(16.dp),
                     )
                 }
             }
@@ -290,7 +290,7 @@ private fun SelectedIndicator(
 ) {
     Canvas(modifier) {
         drawCircle(
-            color = surfaceColor
+            color = surfaceColor,
         )
 
         with(iconPainter) {
