@@ -5,6 +5,7 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.TopAppBarDefaults.enterAlwaysScrollBehavior
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
@@ -28,14 +29,17 @@ internal fun GalleryTopAppBarPreview() {
 @Preview(heightDp = 120, uiMode = Configuration.UI_MODE_NIGHT_YES)
 internal fun GalleryGridPreview() {
     GalleryPreviewTheme {
-        GalleryGrid(
-            itemList = persistentListOf(
-                GalleryScreenStateItem(),
-                GalleryScreenStateItem(isSelected = true),
-                GalleryScreenStateItem(state = SyncState.SYNCING),
-                GalleryScreenStateItem(state = SyncState.SYNCED),
-            ),
-        ) { }
+        Surface {
+            GalleryGrid(
+                itemList = persistentListOf(
+                    GalleryScreenStateItem(),
+                    GalleryScreenStateItem(isSelected = true),
+                    GalleryScreenStateItem(state = SyncState.SYNCING),
+                    GalleryScreenStateItem(state = SyncState.SYNCED),
+                ),
+                isSelecting = true,
+            ) { }
+        }
     }
 }
 

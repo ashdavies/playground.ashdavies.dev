@@ -63,14 +63,18 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.scale
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import io.ashdavies.graphics.rememberAsyncImagePainter
@@ -242,29 +246,25 @@ internal fun GalleryItem(
         }
 
         AnimatedVisibility(
-            visible = item.isSelected,
-            modifier = Modifier.align(Alignment.TopStart),
+            visible = isSelecting,
+            modifier = Modifier
+                .align(Alignment.TopStart)
+                .padding(4.dp),
             enter = fadeIn(),
             exit = fadeOut(),
         ) {
-            Icon(
-                imageVector = Icons.Filled.CheckCircle,
-                contentDescription = null,
-                modifier = Modifier.padding(4.dp),
-            )
+            Crossfade(item.isSelected) { state ->
+                when (state) {
+                    true -> SelectedIndicator(
+                        modifier = Modifier.size(24.dp)
+                    )
 
-            Canvas(
-                modifier = Modifier
-                    .padding(4.dp)
-                    .size(24.dp),
-            ) {
-                drawCircle(
-                    color = if (item.isSelected) Color.DarkGray else Color.White,
-                    radius = (size.minDimension / 2) - if (item.isSelected) 0 else 8,
-                    center = Offset(x = size.width / 2, y = size.height / 2),
-                    alpha = if (item.isSelected) 1.0f else 0.5f,
-                    style = Stroke(if (item.isSelected) 8f else 6f),
-                )
+                    false -> UnselectedIndicator(
+                        modifier = Modifier
+                            .padding(4.dp)
+                            .size(16.dp)
+                    )
+                }
             }
         }
 
@@ -276,6 +276,42 @@ internal fun GalleryItem(
         ) {
             SyncIndicator(item.state == SyncState.SYNCING)
         }
+    }
+}
+
+@Composable
+private fun SelectedIndicator(
+    surfaceColor: Color = MaterialTheme.colorScheme.surface,
+    onPrimaryContainerColor: Color = MaterialTheme.colorScheme.onPrimaryContainer,
+    iconPainter: Painter = rememberVectorPainter(Icons.Filled.CheckCircle),
+    modifier: Modifier = Modifier,
+) {
+    Canvas(modifier) {
+        drawCircle(
+            color = surfaceColor
+        )
+
+        with(iconPainter) {
+            draw(
+                size = iconPainter.intrinsicSize,
+                colorFilter = ColorFilter.tint(onPrimaryContainerColor),
+            )
+        }
+    }
+}
+
+@Composable
+private fun UnselectedIndicator(
+    highlightColor: Color = Color.White.copy(alpha = 0.5F),
+    strokeWidth: Dp = 2.dp,
+    modifier: Modifier = Modifier,
+) {
+    Canvas(modifier) {
+        drawCircle(
+            color = highlightColor,
+            radius = (size.minDimension / 2.0f),
+            style = Stroke(strokeWidth.toPx()),
+        )
     }
 }
 
