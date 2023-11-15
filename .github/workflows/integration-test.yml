@@ -49,14 +49,14 @@ jobs:
         id: gradle_build
         uses: gradle/gradle-build-action@v2
         env:
-          GOOGLE_PROJECT_API_KEY: ${{ secrets.google_project_api_key }}
           GOOGLE_SERVICE_ACCOUNT_ID: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
-          MOBILE_SDK_APP_ID: ${{ secrets.mobile_sdk_app_id }}
           PLAYGROUND_API_KEY: ${{ secrets.PLAYGROUND_API_KEY }}
         with:
           gradle-home-cache-cleanup: true
           arguments: >
             cloud-run:integrationTest
+              -Dfirebase.android.app.id=${{ secrets.firebase_android_app_id }}
+              -Dintegration.api.key=${{ secrets.integration_api_key }}
               ${{ inputs.debug && '--debug' || '--info' }}
               --console=plain
 

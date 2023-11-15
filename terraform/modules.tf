@@ -43,12 +43,12 @@ module "endpoint-iam-binding" {
 
 module "github-api-key" {
   display_name = "Integration key (managed by Terraform)"
-  source       = "./modules/google/github-api-key"
-  service      = "identitytoolkit.googleapis.com"
-  secret_name  = "google_project_api_key"
-  repository   = var.gh_repo_name
-  project      = var.project_id
   name         = "integration"
+  project      = var.project_id
+  repository   = var.gh_repo_name
+  service      = "identitytoolkit.googleapis.com"
+  source       = "./modules/google/github-api-key"
+  secret_name  = "integration_api_key"
 }
 
 module "github-repository" {
@@ -73,6 +73,10 @@ module "github-repository" {
     }
   ]
   secrets = [
+    {
+      plaintext_value = google_firebase_android_app.main.app_id
+      secret_name     = "firebase_android_app_id"
+    },
     {
       plaintext_value = module.github-service-account.email
       secret_name     = "google_service_account_id"

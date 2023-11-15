@@ -38,7 +38,7 @@ internal class ApplicationTest {
     @Test
     fun `should sign in with custom token`() = testMainApplication { client ->
         val authResult = client.post("/firebase/auth") {
-            header("X-API-Key", requireNotNull(System.getenv("GOOGLE_PROJECT_API_KEY")))
+            header("X-API-Key", requireNotNull(System.getProperty("integration.api.key")))
             setBody(mapOf("uid" to "jane.smith@example.com"))
             contentType(ContentType.Application.Json)
         }.body<Map<String, String>>()
@@ -49,7 +49,7 @@ internal class ApplicationTest {
     @Test
     fun `should return app check token for request`() = testMainApplication { client ->
         val token = client.post("/firebase/token") {
-            setBody(FirebaseApp(System.getenv("MOBILE_SDK_APP_ID")))
+            setBody(FirebaseApp(System.getProperty("firebase.android.app.id")))
             contentType(ContentType.Application.Json)
         }.body<AppCheckToken>()
 
