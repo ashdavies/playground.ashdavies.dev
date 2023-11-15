@@ -55,9 +55,9 @@ jobs:
           gradle-home-cache-cleanup: true
           arguments: >
             cloud-run:integrationTest
+              -Dfirebase.android.app.id=${{ secrets.firebase_android_app_id }}
               -Dintegration.api.key=${{ secrets.integration_api_key }}
               ${{ inputs.debug && '--debug' || '--info' }}
-              -Dfirebase.android.app.id=${{ secrets.firebase_android_app_id }}
               --console=plain
 
       - name: Produce Test Summary
