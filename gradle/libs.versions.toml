@@ -7,7 +7,7 @@ compose-compiler = "1.5.3"
 google-accompanist = "0.32.0"
 google-android = "8.1.3"
 google-auto = "1.0.1"
-google-maps-compose = "4.1.1"
+google-maps-compose = "4.2.0"
 google-services = "4.4.0"
 jetbrains-compose = "1.5.10"
 jetbrains-kotlin = "1.9.20"
@@ -107,7 +107,7 @@ ktor-server-test-host = { module = "io.ktor:ktor-server-test-host", version.ref 
 
 material-windowSizeClass = "dev.chrisbanes.material3:material3-window-size-class-multiplatform:0.3.1"
 molecule-runtime = "app.cash.molecule:molecule-runtime:1.3.0"
-mosaic-runtime = "com.jakewharton.mosaic:mosaic-runtime:0.9.1"
+mosaic-runtime = "com.jakewharton.mosaic:mosaic-runtime:0.10.0"
 
 paging-compose-common = { module = "app.cash.paging:paging-compose-common", version.ref = "paging-compose" }
 paging-compose-runtime = { module = "app.cash.paging:paging-runtime-composeui", version.ref = "paging-compose" }
@@ -143,4 +143,4 @@ kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrains-kotlin"
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "jetbrains-kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "jetbrains-kotlin" }
 kotlinx-kover = "org.jetbrains.kotlinx.kover:0.7.4"
-openapi-generator = "org.openapi.generator:7.0.1"
+openapi-generator = "org.openapi.generator:7.1.0"
