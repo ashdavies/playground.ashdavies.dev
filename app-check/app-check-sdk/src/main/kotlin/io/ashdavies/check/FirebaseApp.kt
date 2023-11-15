@@ -11,7 +11,6 @@ import kotlinx.coroutines.runBlocking
 import java.net.UnknownHostException
 
 private val GoogleCloudProject: String? get() = System.getenv("GOOGLE_CLOUD_PROJECT")
-private val MobileSdkAppId: String? get() = System.getenv("MOBILE_SDK_APP_ID")
 private val GCloudProject: String? get() = System.getenv("GCLOUD_PROJECT")
 private val GCPProject: String? get() = System.getenv("GCP_PROJECT")
 
@@ -45,7 +44,7 @@ private fun findExplicitProjectId(firebaseApp: FirebaseApp): String? =
         ?: fetchProjectId()
 
 private fun findExplicitProjectNumber(): String? =
-    MobileSdkAppId
+    System.getProperty("firebase.android.app.id")
         ?.let { it.split(":")[1] }
         ?: fetchProjectNumber()
 

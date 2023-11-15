@@ -48,7 +48,7 @@ module "github-api-key" {
   repository   = var.gh_repo_name
   service      = "identitytoolkit.googleapis.com"
   source       = "./modules/google/github-api-key"
-  secret_name  = "integration-api-key"
+  secret_name  = "integration_api_key"
 }
 
 module "github-repository" {
@@ -73,6 +73,10 @@ module "github-repository" {
     }
   ]
   secrets = [
+    {
+      plaintext_value = google_firebase_android_app.main.app_id
+      secret_name     = "firebase_android_app_id"
+    },
     {
       plaintext_value = module.github-service-account.email
       secret_name     = "google_service_account_id"

@@ -4,6 +4,19 @@ locals {
   })
 }
 
+resource "google_firebase_android_app" "main" {
+  provider      = google-beta
+  display_name  = "Playground"
+  package_name = "io.ashdavies.playground"
+  sha1_hashes   = ["4761bd71b66b1cda731f4c5fef4a554785f7648b"]
+  sha256_hashes = ["b0df48830f81daafc80955b552b3e85aa93c56c7a4172f56358067b071f1f686"]
+}
+
+import {
+  id = "projects/playground-1a136/androidApps/1:279861227938:android:8b4e86b064ce7429c502fb"
+  to = google_firebase_android_app.main
+}
+
 # google_project_service.main is deprecated
 resource "google_project_service" "main" {
   service            = module.cloud-run-endpoint.service_name
