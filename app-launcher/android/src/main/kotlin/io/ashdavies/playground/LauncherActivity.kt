@@ -13,7 +13,7 @@ import io.ashdavies.http.HttpCredentials
 import io.ashdavies.http.LocalHttpCredentials
 
 internal class LauncherActivity : KotlinActivity(action = {
-    val credentials = HttpCredentials(getString(R.string.playground_api_key), Build.PRODUCT)
+    val credentials = HttpCredentials(BuildConfig.PLAYGROUND_API_KEY, Build.PRODUCT)
     val initialBackStack = buildInitialBackStack(intent.getStringExtra("route"))
     val circuit = CircuitConfig(applicationContext)
 

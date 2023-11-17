@@ -8,6 +8,10 @@ plugins {
 }
 
 android {
+    buildFeatures {
+        buildConfig = true
+    }
+
     defaultConfig {
         buildConfigField("String", "PLAYGROUND_API_KEY", "PLAYGROUND_API_KEY")
 
