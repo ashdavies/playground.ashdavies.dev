@@ -28,7 +28,7 @@ jobs:
     name: Run Integration Tests
     runs-on: ubuntu-latest
     env:
-      GRADLE_OPTS: "-Dorg.gradle.logging.level=${{ github.event.inputs.log_level }}"
+      GRADLE_OPTS: "-Dorg.gradle.logging.level=${{ github.event.inputs.log_level || 'info' }}"
 
     permissions:
       id-token: 'write'
