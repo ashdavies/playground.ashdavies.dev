@@ -7,15 +7,22 @@ on:
 
   pull_request:
     branches:
-      - '*'
+      - "*"
 
   workflow_dispatch:
     inputs:
-      debug:
-        description: 'Debug'
+      log_level:
+        type: choice
+        description: Log Level
         required: false
-        default: false
-        type: boolean
+        default: info
+        options:
+          - error
+          - quiet
+          - warning
+          - lifecycle
+          - info
+          - debug
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -25,6 +32,8 @@ jobs:
   build:
     name: Pre Merge Checks
     runs-on: ubuntu-latest
+    env:
+      GRADLE_OPTS: "-Dorg.gradle.logging.level=${{ github.event.inputs.log_level || 'info' }}"
 
     permissions:
       pull-requests: 'write'
@@ -92,7 +101,6 @@ jobs:
             build
               ${{ contains(github.event.pull_request.labels.*.name, 'Dry Run') && '--dry-run' || '' }}
               --console=plain
-              --info
 
       - name: Gradle Scan Link
         uses: actions/github-script@v6

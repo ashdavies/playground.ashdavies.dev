@@ -11,6 +11,9 @@
 # Database
 *.db
 
+# Environments
+.envrc
+
 # Firebase
 **/.firebaserc
 **/firebase.json

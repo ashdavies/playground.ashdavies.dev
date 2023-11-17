@@ -6,11 +6,18 @@ on:
 
   workflow_dispatch:
     inputs:
-      debug:
-        description: 'Debug'
+      log_level:
+        type: choice
+        description: Log Level
         required: false
-        default: false
-        type: boolean
+        default: info
+        options:
+          - error
+          - quiet
+          - warning
+          - lifecycle
+          - info
+          - debug
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -20,6 +27,8 @@ jobs:
   build:
     name: Run Integration Tests
     runs-on: ubuntu-latest
+    env:
+      GRADLE_OPTS: "-Dorg.gradle.logging.level=${{ github.event.inputs.log_level || 'info' }}"
 
     permissions:
       id-token: 'write'
@@ -49,16 +58,13 @@ jobs:
         id: gradle_build
         uses: gradle/gradle-build-action@v2
         env:
+          FIREBASE_ANDROID_APP_ID: ${{ secrets.firebase_android_app_id }}
           GOOGLE_SERVICE_ACCOUNT_ID: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
+          INTEGRATION_API_KEY: ${{ secrets.integration_api_key }}
           PLAYGROUND_API_KEY: ${{ secrets.PLAYGROUND_API_KEY }}
         with:
           gradle-home-cache-cleanup: true
-          arguments: >
-            cloud-run:integrationTest
-              -Dfirebase.android.app.id=${{ secrets.firebase_android_app_id }}
-              -Dintegration.api.key=${{ secrets.integration_api_key }}
-              ${{ inputs.debug && '--debug' || '--info' }}
-              --console=plain
+          arguments: cloud-run:integrationTest --console=plain
 
       - name: Produce Test Summary
         uses: test-summary/action@v2

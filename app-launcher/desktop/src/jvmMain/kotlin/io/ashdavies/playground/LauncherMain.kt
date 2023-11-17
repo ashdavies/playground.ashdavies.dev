@@ -26,7 +26,7 @@ public fun main(args: Array<String>) {
     val circuit = CircuitConfig(PlatformContext.Default)
 
     val credentials = HttpCredentials(
-        apiKey = System.getProperty("PLAYGROUND_API_KEY"),
+        apiKey = System.getenv("PLAYGROUND_API_KEY"),
         userAgent = System.getProperty("os.name"),
     )
 
