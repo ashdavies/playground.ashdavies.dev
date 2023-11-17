@@ -40,7 +40,7 @@ kotlin {
 openApiGenerate {
     generatorName.set("kotlin")
     outputDir.set("$buildDir/generated/openapi/main")
-    inputSpec.set("$rootDir/${requireNotNull(System.getenv("openapi.generator.inputSpec"))}")
+    inputSpec.set("$rootDir/${property("openapi.generator.inputSpec")}")
     packageName.set("io.ashdavies.generated")
     serverVariables.put("cloud_run_hostname", String())
     ignoreFileOverride.set("$projectDir/.openapi-generator-ignore")
