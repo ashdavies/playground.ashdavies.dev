@@ -13,7 +13,7 @@ android {
     }
 
     defaultConfig {
-        buildConfigField("String", "PLAYGROUND_API_KEY", "PLAYGROUND_API_KEY")
+        buildConfigField("String", "PLAYGROUND_API_KEY", "\"${System.getenv("PLAYGROUND_API_KEY")}\"")
 
         versionName = "1.0"
         versionCode = 1
