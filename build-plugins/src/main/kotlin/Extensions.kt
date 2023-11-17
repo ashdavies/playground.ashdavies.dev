@@ -31,10 +31,6 @@ public fun <T : ModuleDependency> T.exclude(
     dependency: MinimalExternalModuleDependency,
 ): T = exclude(dependency.group, dependency.name)
 
-public fun VariantDimension.resValue(key: String, block: () -> String?) {
-    resValue("string", key, "${block()}")
-}
-
 public inline fun <reified T> ExtensionContainer.withType(
     configure: T.() -> Unit,
 ) = findByType(T::class.java)?.configure()

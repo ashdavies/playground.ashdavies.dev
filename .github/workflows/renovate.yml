@@ -6,10 +6,10 @@ on:
 
   workflow_dispatch:
     inputs:
-      logLevel:
+      log_level:
         description: 'Log level'
         required: false
-        default: 'INFO'
+        default: INFO
         type: choice
         options:
           - DEBUG
@@ -36,7 +36,7 @@ jobs:
 
       - uses: renovatebot/github-action@v39.1.1
         env:
-          LOG_LEVEL: ${{ inputs.logLevel || 'INFO' }}
+          LOG_LEVEL: ${{ inputs.log_level }}
         with:
           configurationFile: .github/renovate.json
           token: ${{ steps.generate_token.outputs.token }}

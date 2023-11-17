@@ -9,7 +9,7 @@ plugins {
 
 android {
     defaultConfig {
-        resValue("playground_api_key") { stringPropertyOrNull("playground.api.key") }
+        buildConfigField("String", "PLAYGROUND_API_KEY", "PLAYGROUND_API_KEY")
 
         versionName = "1.0"
         versionCode = 1

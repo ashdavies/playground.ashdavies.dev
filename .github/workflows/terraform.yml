@@ -12,11 +12,18 @@ on:
 
   workflow_dispatch:
     inputs:
-      debug:
-        description: 'Debug'
+      log_level:
+        type: choice
+        description: Log Level
         required: false
-        default: false
-        type: boolean
+        default: info
+        options:
+          - error
+          - quiet
+          - warning
+          - lifecycle
+          - info
+          - debug
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -26,6 +33,8 @@ jobs:
   build:
     name: Configure Google Cloud
     runs-on: ubuntu-latest
+    env:
+      GRADLE_OPTS: "-Dorg.gradle.logging.level=${{ github.event.inputs.log_level }}"
 
     permissions:
       pull-requests: 'write'
@@ -69,19 +78,18 @@ jobs:
 
       - id: containerize
         env:
+          FIREBASE_ANDROID_APP_ID: ${{ secrets.firebase_android_app_id }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GOOGLE_PROJECT_API_KEY: ${{ secrets.google_project_api_key }}
           GOOGLE_SERVICE_ACCOUNT_ID: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
           PLAYGROUND_API_KEY: ${{ secrets.PLAYGROUND_API_KEY }}
         if: ${{ github.ref == 'refs/heads/main' }}
-        run: |
-          ./gradlew cloud-run:jib \
-            --image=europe-west1-docker.pkg.dev/${{ steps.google_cloud_auth.outputs.project_id }}/cloud-run-source-deploy/playground.ashdavies.dev \
-            ${{ contains(github.event.pull_request.labels.*.name, 'Dry Run') && '--dry-run' || '' }} \
-            -Dfirebase.android.app.id=${{ secrets.firebase_android_app_id }} \
-            ${{ inputs.debug && '--debug' || '--info' }} \
-            --no-configuration-cache \
-            --console=plain \
+        run: >
+          ./gradlew cloud-run:jib
+            --image=europe-west1-docker.pkg.dev/${{ steps.google_cloud_auth.outputs.project_id }}/cloud-run-source-deploy/playground.ashdavies.dev
+            ${{ contains(github.event.pull_request.labels.*.name, 'Dry Run') && '--dry-run' || '' }}
+            --no-configuration-cache
+            --console=plain
 
       - uses: hashicorp/setup-terraform@v3
         with:

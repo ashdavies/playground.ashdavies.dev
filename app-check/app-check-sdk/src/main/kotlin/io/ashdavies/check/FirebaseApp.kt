@@ -10,10 +10,6 @@ import io.ktor.client.request.header
 import kotlinx.coroutines.runBlocking
 import java.net.UnknownHostException
 
-private val GoogleCloudProject: String? get() = System.getenv("GOOGLE_CLOUD_PROJECT")
-private val GCloudProject: String? get() = System.getenv("GCLOUD_PROJECT")
-private val GCPProject: String? get() = System.getenv("GCP_PROJECT")
-
 public fun FirebaseApp.appCheck(httpClient: HttpClient): AppCheck = AppCheck(
     cryptoSigner = CryptoSigner(this),
     projectId = getProjectId(this),
@@ -38,13 +34,13 @@ internal fun getProjectNumber(): String =
 private fun findExplicitProjectId(firebaseApp: FirebaseApp): String? =
     firebaseApp.options.projectId
         ?: googleCredentials<ServiceAccountCredentials, String?> { it.projectId }
-        ?: GoogleCloudProject
-        ?: GCloudProject
-        ?: GCPProject
+        ?: System.getenv("GOOGLE_CLOUD_PROJECT")
+        ?: System.getenv("GCLOUD_PROJECT")
+        ?: System.getenv("GCP_PROJECT")
         ?: fetchProjectId()
 
 private fun findExplicitProjectNumber(): String? =
-    System.getProperty("firebase.android.app.id")
+    System.getenv("FIREBASE_ANDROID_APP_ID")
         ?.let { it.split(":")[1] }
         ?: fetchProjectNumber()
 
