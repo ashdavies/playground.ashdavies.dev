@@ -75,8 +75,6 @@ jobs:
           registry: europe-west1-docker.pkg.dev
 
       - uses: gradle/gradle-build-action@v2
-
-      - id: containerize
         env:
           FIREBASE_ANDROID_APP_ID: ${{ secrets.firebase_android_app_id }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -84,12 +82,14 @@ jobs:
           GOOGLE_SERVICE_ACCOUNT_ID: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
           PLAYGROUND_API_KEY: ${{ secrets.PLAYGROUND_API_KEY }}
         if: ${{ github.ref == 'refs/heads/main' }}
-        run: >
-          ./gradlew cloud-run:jib
-            --image=europe-west1-docker.pkg.dev/${{ steps.google_cloud_auth.outputs.project_id }}/cloud-run-source-deploy/playground.ashdavies.dev
-            ${{ contains(github.event.pull_request.labels.*.name, 'Dry Run') && '--dry-run' || '' }}
-            --no-configuration-cache
-            --console=plain
+        with:
+          gradle-home-cache-cleanup: true
+          arguments: >
+            cloud-run:jib
+              --image=europe-west1-docker.pkg.dev/${{ steps.google_cloud_auth.outputs.project_id }}/cloud-run-source-deploy/playground.ashdavies.dev
+              ${{ contains(github.event.pull_request.labels.*.name, 'Dry Run') && '--dry-run' || '' }}
+              --no-configuration-cache
+              --console=plain
 
       - uses: hashicorp/setup-terraform@v3
         with:
