@@ -38,7 +38,9 @@ internal fun GalleryGridPreview() {
                     GalleryScreenStateItem(state = SyncState.SYNCED),
                 ),
                 isSelecting = true,
-            ) { }
+                onSelect = { },
+                onExpand = { },
+            )
         }
     }
 }
@@ -63,7 +65,7 @@ private fun GalleryPreviewTheme(content: @Composable () -> Unit) {
 }
 
 private fun GalleryScreenState(
-    itemList: List<GalleryScreen.State.Item> = emptyList(),
+    itemList: List<GalleryScreen.State.StandardItem> = emptyList(),
     showCapture: Boolean = false,
     isLoggedIn: Boolean = false,
 ) = GalleryScreen.State(
@@ -76,8 +78,8 @@ private fun GalleryScreenStateItem(
     name: String = "Sample Image",
     isSelected: Boolean = false,
     state: SyncState = SyncState.NOT_SYNCED,
-) = GalleryScreen.State.Item(
-    name = name,
+) = GalleryScreen.State.StandardItem(
+    title = name,
     imageModel = "https://picsum.photos/200",
     isSelected = isSelected,
     state = state,
