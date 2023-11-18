@@ -11,14 +11,17 @@ import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandIn
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkOut
 import androidx.compose.animation.slideIn
 import androidx.compose.animation.slideOut
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement.spacedBy
@@ -63,7 +66,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.scale
@@ -77,6 +79,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import com.slack.circuit.foundation.internal.BackHandler
 import io.ashdavies.graphics.rememberAsyncImagePainter
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
@@ -120,8 +123,38 @@ internal fun GalleryScreen(
                     itemList = state.itemList.toImmutableList(),
                     isSelecting = isSelecting,
                     modifier = Modifier.padding(paddingValues),
+                    onExpand = { eventSink(GalleryScreen.Event.Expand(it)) },
                     onSelect = { eventSink(GalleryScreen.Event.Toggle(it)) },
                 )
+
+                if (state.expandedItem != null) {
+                    AnimatedVisibility(
+                        visible = state.expandedItem.isExpanded,
+                        modifier = Modifier
+                            .clickable(
+                                interactionSource = remember { MutableInteractionSource() },
+                                indication = null,
+                                onClick = { },
+                            )
+                            .fillMaxSize(),
+                        enter = fadeIn() + expandIn(expandFrom = Alignment.Center),
+                        exit = fadeOut() + shrinkOut(shrinkTowards = Alignment.Center),
+                    ) {
+                        Image(
+                            painter = rememberAsyncImagePainter(state.expandedItem.imageModel),
+                            contentDescription = state.expandedItem.contentDescription,
+                            modifier = Modifier
+                                .background(MaterialTheme.colorScheme.background)
+                                .fillMaxSize(),
+                            contentScale = ContentScale.Fit,
+                        )
+                    }
+
+                }
+
+                BackHandler(state.expandedItem != null) {
+                    eventSink(GalleryScreen.Event.Collapse)
+                }
             }
         }
 
@@ -187,9 +220,10 @@ private fun ProfileActionButton(
 @Composable
 @ExperimentalFoundationApi
 internal fun GalleryGrid(
-    itemList: ImmutableList<GalleryScreen.State.Item>,
+    itemList: ImmutableList<GalleryScreen.State.StandardItem>,
     isSelecting: Boolean = false,
     modifier: Modifier = Modifier,
+    onExpand: (Int) -> Unit,
     onSelect: (Int) -> Unit,
 ) {
     LazyVerticalGrid(
@@ -205,6 +239,7 @@ internal fun GalleryGrid(
                 isSelecting = isSelecting,
                 modifier = Modifier.animateItemPlacement(),
                 onSelect = { onSelect(index) },
+                onExpand = { onExpand(index) },
             )
         }
     }
@@ -213,10 +248,11 @@ internal fun GalleryGrid(
 @Composable
 @ExperimentalFoundationApi
 internal fun GalleryItem(
-    item: GalleryScreen.State.Item,
+    item: GalleryScreen.State.StandardItem,
     isSelecting: Boolean = false,
     modifier: Modifier = Modifier,
     onSelect: () -> Unit,
+    onExpand: () -> Unit,
 ) {
     val itemBorderRadius by animateDpAsState(if (item.isSelected) 12.dp else 8.dp)
     val itemPadding by animateDpAsState(if (item.isSelected) 12.dp else 0.dp)
@@ -225,7 +261,7 @@ internal fun GalleryItem(
         Column {
             Image(
                 painter = rememberAsyncImagePainter(item.imageModel),
-                contentDescription = item.name,
+                contentDescription = item.title,
                 modifier = Modifier.padding(itemPadding)
                     .clip(RoundedCornerShape(itemBorderRadius))
                     .background(Color.DarkGray)
@@ -233,7 +269,7 @@ internal fun GalleryItem(
                         interactionSource = remember { MutableInteractionSource() },
                         indication = rememberRipple(bounded = false),
                         onLongClick = { onSelect() },
-                        onClick = { if (isSelecting) onSelect() },
+                        onClick = { if (isSelecting) onSelect() else onExpand() },
                     )
                     .fillMaxWidth()
                     .aspectRatio(1f),
@@ -241,7 +277,7 @@ internal fun GalleryItem(
             )
 
             Text(
-                text = item.name,
+                text = item.title,
                 modifier = Modifier.fillMaxWidth(),
                 style = MaterialTheme.typography.labelSmall,
             )
