@@ -149,7 +149,6 @@ internal fun GalleryScreen(
                             contentScale = ContentScale.Fit,
                         )
                     }
-
                 }
 
                 BackHandler(state.expandedItem != null) {

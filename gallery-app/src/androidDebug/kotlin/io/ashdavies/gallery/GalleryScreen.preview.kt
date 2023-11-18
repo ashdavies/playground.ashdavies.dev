@@ -39,7 +39,7 @@ internal fun GalleryGridPreview() {
                 ),
                 isSelecting = true,
                 onSelect = { },
-                onExpand = { }
+                onExpand = { },
             )
         }
     }
