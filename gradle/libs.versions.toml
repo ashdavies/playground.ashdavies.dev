@@ -136,7 +136,7 @@ dependency-analysis = { id = "com.autonomousapps.dependency-analysis", version =
 diffplug-spotless = "com.diffplug.spotless:6.22.0"
 google-cloud-jib = "com.google.cloud.tools.jib:3.4.0"
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
-gradle-doctor = "com.osacky.doctor:0.9.0"
+gradle-doctor = "com.osacky.doctor:0.9.1"
 jetbrains-dokka = "org.jetbrains.dokka:1.9.10"
 kotlin-compose = { id = "org.jetbrains.compose", version.ref = "jetbrains-compose" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrains-kotlin" }
