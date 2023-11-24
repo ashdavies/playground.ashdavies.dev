@@ -7,7 +7,7 @@ compose-compiler = "1.5.3"
 google-accompanist = "0.32.0"
 google-android = "8.1.4"
 google-auto = "1.0.1"
-google-maps-compose = "4.2.0"
+google-maps-compose = "4.3.0"
 google-services = "4.4.0"
 jetbrains-compose = "1.5.10"
 jetbrains-kotlin = "1.9.20"
@@ -136,7 +136,7 @@ dependency-analysis = { id = "com.autonomousapps.dependency-analysis", version =
 diffplug-spotless = "com.diffplug.spotless:6.22.0"
 google-cloud-jib = "com.google.cloud.tools.jib:3.4.0"
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
-gradle-doctor = "com.osacky.doctor:0.9.0"
+gradle-doctor = "com.osacky.doctor:0.9.1"
 jetbrains-dokka = "org.jetbrains.dokka:1.9.10"
 kotlin-compose = { id = "org.jetbrains.compose", version.ref = "jetbrains-compose" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrains-kotlin" }
