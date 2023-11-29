@@ -4,7 +4,8 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.produceState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.FileProvider
@@ -15,21 +16,23 @@ internal actual fun ImageCapture(
     modifier: Modifier,
     onCapture: (File) -> Unit,
 ) {
-    val context = LocalContext.current
-    val file = remember(context) {
-        manager.create(context)
+    val platformContext = LocalContext.current
+    val fileState by produceState<File?>(null) {
+        value = manager.create(platformContext)
     }
 
-    val singlePhotoPickerLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.TakePicture(),
-        onResult = { onCapture(file) },
-    )
+    val activityResultContract = ActivityResultContracts.TakePicture()
+    val file = requireNotNull(fileState) { "File must not be null" }
+
+    val singlePhotoPickerLauncher = rememberLauncherForActivityResult(activityResultContract) {
+        onCapture(file)
+    }
 
     LaunchedEffect(Unit) {
-        val authority = "${context.packageName}.files"
+        val authority = "${platformContext.packageName}.files"
         val target = FileProvider.getUriForFile(
             /* context = */
-            context,
+            platformContext,
             /* authority = */
             authority,
             /* file = */

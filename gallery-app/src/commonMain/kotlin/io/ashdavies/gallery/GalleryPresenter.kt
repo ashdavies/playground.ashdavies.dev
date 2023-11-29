@@ -22,6 +22,7 @@ import io.ashdavies.content.PlatformContext
 import io.ashdavies.http.DefaultHttpClient
 import io.ashdavies.playground.DatabaseFactory
 import kotlinx.coroutines.launch
+import kotlin.coroutines.CoroutineContext
 
 @Parcelize
 public object GalleryScreen : Parcelable, Screen {
@@ -58,11 +59,16 @@ public object GalleryScreen : Parcelable, Screen {
     }
 }
 
-public fun GalleryPresenterFactory(context: PlatformContext): Presenter.Factory {
-    val database = DatabaseFactory(PlaygroundDatabase.Schema, context) { PlaygroundDatabase(it) }
-    val storage = StorageManager(PathProvider(context).images)
-    val images = ImageManager(storage, database.imageQueries)
-
+public fun GalleryPresenterFactory(
+    platformContext: PlatformContext,
+    coroutineContext: CoroutineContext,
+): Presenter.Factory {
+    val database =
+        DatabaseFactory(PlaygroundDatabase.Schema, platformContext) { PlaygroundDatabase(it) }
+    val images = ImageManager(
+        StorageManager(PathProvider(platformContext), coroutineContext),
+        database.imageQueries
+    )
     val engine = InMemoryHttpClientEngine(emptyList())
     val sync = SyncManager(DefaultHttpClient(engine))
 
@@ -74,8 +80,11 @@ public fun GalleryPresenterFactory(context: PlatformContext): Presenter.Factory 
     }
 }
 
-public fun GalleryUiFactory(context: PlatformContext): Ui.Factory {
-    val storage = StorageManager(PathProvider(context).images)
+public fun GalleryUiFactory(
+    platformContext: PlatformContext,
+    coroutineContext: CoroutineContext,
+): Ui.Factory {
+    val storage = StorageManager(PathProvider(platformContext), coroutineContext)
 
     return Ui.Factory { screen, _ ->
         when (screen) {

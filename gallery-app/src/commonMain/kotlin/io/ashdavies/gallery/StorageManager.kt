@@ -1,12 +1,14 @@
 package io.ashdavies.gallery
 
 import io.ashdavies.content.PlatformContext
+import kotlin.coroutines.CoroutineContext
 
 internal interface StorageManager {
-    fun create(context: PlatformContext): File
+    suspend fun create(platformContext: PlatformContext): File
     fun delete(file: File): Boolean
 }
 
 internal expect fun StorageManager(
-    parent: File,
+    pathProvider: PathProvider,
+    coroutineContext: CoroutineContext,
 ): StorageManager
