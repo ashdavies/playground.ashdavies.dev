@@ -7,5 +7,5 @@ import androidx.compose.ui.Modifier
 internal expect fun ImageCapture(
     manager: StorageManager,
     modifier: Modifier = Modifier,
-    onCapture: (File) -> Unit,
+    onCapture: (File?) -> Unit,
 )

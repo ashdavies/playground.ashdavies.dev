@@ -47,6 +47,7 @@ import androidx.compose.material.icons.filled.Sync
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -159,7 +160,10 @@ internal fun GalleryScreen(
 
         if (state.showCapture) {
             ImageCapture(manager) {
-                eventSink(GalleryScreen.Event.Result(it))
+                when (it) {
+                    is File -> eventSink(GalleryScreen.Event.Result(it))
+                    null -> eventSink(GalleryScreen.Event.Cancel)
+                }
             }
         }
     }
@@ -441,11 +445,21 @@ internal fun GalleryBottomBar(
         },
         modifier = modifier,
         floatingActionButton = {
-            FloatingActionButton(onClick = { eventSink(GalleryScreen.Event.Capture) }) {
-                Icon(
-                    imageVector = Icons.Filled.Add,
-                    contentDescription = "Add",
-                )
+            FloatingActionButton({ if (!state.showCapture) eventSink(GalleryScreen.Event.Capture) }) {
+                Crossfade(targetState = state.showCapture) { state ->
+                    val iconImageVector = Icons.Filled.Add
+
+                    when (state) {
+                        true -> CircularProgressIndicator(
+                            modifier = Modifier.size(iconImageVector.defaultWidth),
+                        )
+
+                        false -> Icon(
+                            imageVector = iconImageVector,
+                            contentDescription = "Add",
+                        )
+                    }
+                }
             }
         },
     )

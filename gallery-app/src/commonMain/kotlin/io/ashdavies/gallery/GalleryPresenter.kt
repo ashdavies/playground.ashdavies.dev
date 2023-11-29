@@ -29,6 +29,7 @@ public object GalleryScreen : Parcelable, Screen {
         data class Expand(val index: Int) : Event
         data class Result(val value: File) : Event
         data class Toggle(val index: Int) : Event
+        data object Cancel : Event
         data object Capture : Event
         data object Collapse : Event
         data object Delete : Event
@@ -117,13 +118,15 @@ internal fun GalleryPresenter(images: ImageManager, sync: SyncManager): GalleryS
         isLoggedIn = false,
     ) { event ->
         when (event) {
+            is GalleryScreen.Event.Cancel -> takePhoto = false
+
             is GalleryScreen.Event.Capture -> takePhoto = true
 
             is GalleryScreen.Event.Collapse -> {
                 expandedItem = expandedItem?.copy(isExpanded = false)
             }
 
-            is GalleryScreen.Event.Delete -> {
+            is GalleryScreen.Event.Delete -> coroutineScope.launch {
                 selected.forEach { images.remove(it) }
                 selected = emptyList()
             }
