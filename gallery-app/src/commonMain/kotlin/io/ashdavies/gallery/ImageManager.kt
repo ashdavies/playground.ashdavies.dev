@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 internal interface ImageManager {
     val list: Flow<List<Image>>
     fun add(file: File)
-    fun remove(image: Image)
+    suspend fun remove(image: Image)
 }
 
 internal fun ImageManager(
@@ -28,7 +28,7 @@ internal fun ImageManager(
         queries.insertOrReplace(image)
     }
 
-    override fun remove(image: Image) {
+    override suspend fun remove(image: Image) {
         storage.delete(File(image.path))
         queries.deleteById(image.uuid)
     }

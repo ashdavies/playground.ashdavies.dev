@@ -29,6 +29,7 @@ public object GalleryScreen : Parcelable, Screen {
         data class Expand(val index: Int) : Event
         data class Result(val value: File) : Event
         data class Toggle(val index: Int) : Event
+        data object Cancel : Event
         data object Capture : Event
         data object Collapse : Event
         data object Delete : Event
@@ -60,8 +61,7 @@ public object GalleryScreen : Parcelable, Screen {
 
 public fun GalleryPresenterFactory(context: PlatformContext): Presenter.Factory {
     val database = DatabaseFactory(PlaygroundDatabase.Schema, context) { PlaygroundDatabase(it) }
-    val storage = StorageManager(PathProvider(context).images)
-    val images = ImageManager(storage, database.imageQueries)
+    val images = ImageManager(StorageManager(PathProvider(context)), database.imageQueries)
 
     val engine = InMemoryHttpClientEngine(emptyList())
     val sync = SyncManager(DefaultHttpClient(engine))
@@ -75,16 +75,12 @@ public fun GalleryPresenterFactory(context: PlatformContext): Presenter.Factory 
 }
 
 public fun GalleryUiFactory(context: PlatformContext): Ui.Factory {
-    val storage = StorageManager(PathProvider(context).images)
+    val storage = StorageManager(PathProvider(context))
 
     return Ui.Factory { screen, _ ->
         when (screen) {
             is GalleryScreen -> ui<GalleryScreen.State> { state, modifier ->
-                GalleryScreen(
-                    state = state,
-                    manager = storage,
-                    modifier = modifier,
-                )
+                GalleryScreen(state, storage, modifier)
             }
 
             else -> null
@@ -122,13 +118,15 @@ internal fun GalleryPresenter(images: ImageManager, sync: SyncManager): GalleryS
         isLoggedIn = false,
     ) { event ->
         when (event) {
+            is GalleryScreen.Event.Cancel -> takePhoto = false
+
             is GalleryScreen.Event.Capture -> takePhoto = true
 
             is GalleryScreen.Event.Collapse -> {
                 expandedItem = expandedItem?.copy(isExpanded = false)
             }
 
-            is GalleryScreen.Event.Delete -> {
+            is GalleryScreen.Event.Delete -> coroutineScope.launch {
                 selected.forEach { images.remove(it) }
                 selected = emptyList()
             }
