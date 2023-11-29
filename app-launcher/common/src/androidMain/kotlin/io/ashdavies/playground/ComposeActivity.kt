@@ -5,27 +5,30 @@ import android.content.pm.ApplicationInfo
 import android.os.Bundle
 import android.os.StrictMode
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.runtime.Composable
 
-private typealias OnCreateAction = ComponentActivity.(savedInstanceState: Bundle?) -> Unit
-
-public abstract class KotlinActivity(
-    private val edgeToEdge: Boolean = true,
-    private val action: OnCreateAction,
+public abstract class ComposeActivity(
+    private val edgeToEdge: () -> Boolean = { true },
+    private val strictMode: Context.() -> Boolean = { isDebuggable() },
+    private val content: @Composable ComponentActivity.(Bundle?) -> Unit,
 ) : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        if (edgeToEdge) {
+        if (edgeToEdge()) {
             enableEdgeToEdge()
         }
 
-        if (isDebuggable()) {
+        if (strictMode()) {
             enableStrictMode()
         }
 
-        action(savedInstanceState)
+        setContent {
+            content(savedInstanceState)
+        }
     }
 }
 
