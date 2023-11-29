@@ -16,7 +16,7 @@ internal actual fun StorageManager(
         }
     }
 
-    override fun delete(file: File): Boolean {
-        return file.delete()
+    override suspend fun delete(file: File): Boolean = withContext(coroutineContext) {
+        file.delete()
     }
 }

@@ -16,8 +16,8 @@ internal actual fun StorageManager(
         }
     }
 
-    override fun delete(file: File): Boolean {
+    override suspend fun delete(file: File): Boolean = withContext(coroutineContext) {
         if (!file.exists()) throw IllegalArgumentException()
-        return file.delete()
+        file.delete()
     }
 }

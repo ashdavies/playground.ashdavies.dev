@@ -37,7 +37,7 @@ public fun DefaultHttpClient(
 ): HttpClient = HttpClient(engine) {
     install(ContentNegotiation) {
         json(
-            json = Json {
+            Json {
                 ignoreUnknownKeys = true
                 encodeDefaults = true
             },

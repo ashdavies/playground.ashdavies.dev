@@ -6,38 +6,22 @@ import io.ashdavies.dominion.DominionPresenterFactory
 import io.ashdavies.dominion.DominionUiFactory
 import io.ashdavies.gallery.GalleryPresenterFactory
 import io.ashdavies.gallery.GalleryUiFactory
-import kotlin.coroutines.CoroutineContext
 
-public fun CircuitConfig(
-    platformContext: PlatformContext,
-    coroutineContext: CoroutineContext,
-): Circuit = Circuit.Builder()
-    .addPresenterFactories(getPresenterFactories(platformContext, coroutineContext))
-    .addUiFactories(getUiFactories(platformContext, coroutineContext))
+public fun CircuitConfig(context: PlatformContext): Circuit = Circuit.Builder()
+    .addPresenterFactories(getPresenterFactories(context))
+    .addUiFactories(getUiFactories(context))
     .build()
 
-private fun getPresenterFactories(
-    platformContext: PlatformContext,
-    coroutineContext: CoroutineContext,
-) = listOf(
+private fun getPresenterFactories(context: PlatformContext) = listOf(
     DominionPresenterFactory(),
     EventsPresenterFactory(),
-    GalleryPresenterFactory(
-        platformContext = platformContext,
-        coroutineContext = coroutineContext,
-    ),
+    GalleryPresenterFactory(context),
     LauncherPresenterFactory(),
 )
 
-private fun getUiFactories(
-    platformContext: PlatformContext,
-    coroutineContext: CoroutineContext,
-) = listOf(
+private fun getUiFactories(context: PlatformContext) = listOf(
     DominionUiFactory(),
     EventsUiFactory(),
-    GalleryUiFactory(
-        platformContext = platformContext,
-        coroutineContext = coroutineContext,
-    ),
+    GalleryUiFactory(context),
     LauncherUiFactory(),
 )

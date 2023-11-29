@@ -4,7 +4,6 @@ import android.os.Build
 import androidx.activity.compose.setContent
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.lifecycle.lifecycleScope
 import com.slack.circuit.backstack.rememberSaveableBackStack
 import com.slack.circuit.foundation.CircuitCompositionLocals
 import com.slack.circuit.foundation.NavigableCircuitContent
@@ -16,7 +15,7 @@ import io.ashdavies.http.LocalHttpCredentials
 internal class LauncherActivity : KotlinActivity(action = {
     val credentials = HttpCredentials(BuildConfig.PLAYGROUND_API_KEY, Build.PRODUCT)
     val initialBackStack = buildInitialBackStack(intent.getStringExtra("route"))
-    val circuit = CircuitConfig(applicationContext, lifecycleScope.coroutineContext)
+    val circuit = CircuitConfig(applicationContext)
 
     setContent {
         val backStack = rememberSaveableBackStack { initialBackStack.forEach(::push) }
