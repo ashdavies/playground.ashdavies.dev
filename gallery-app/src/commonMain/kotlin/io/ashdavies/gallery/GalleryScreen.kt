@@ -124,8 +124,8 @@ internal fun GalleryScreen(
                     itemList = state.itemList.toImmutableList(),
                     isSelecting = isSelecting,
                     modifier = Modifier.padding(paddingValues),
-                    onExpand = { eventSink(GalleryScreen.Event.Expand(it)) },
-                    onSelect = { eventSink(GalleryScreen.Event.Toggle(it)) },
+                    onExpand = { eventSink(GalleryScreen.Event.Selection.Expand(it)) },
+                    onSelect = { eventSink(GalleryScreen.Event.Selection.Toggle(it)) },
                 )
 
                 if (state.expandedItem != null) {
@@ -153,7 +153,7 @@ internal fun GalleryScreen(
                 }
 
                 BackHandler(state.expandedItem != null) {
-                    eventSink(GalleryScreen.Event.Collapse)
+                    eventSink(GalleryScreen.Event.Selection.Collapse)
                 }
             }
         }
@@ -161,8 +161,8 @@ internal fun GalleryScreen(
         if (state.showCapture) {
             ImageCapture(manager) {
                 when (it) {
-                    is File -> eventSink(GalleryScreen.Event.Result(it))
-                    null -> eventSink(GalleryScreen.Event.Cancel)
+                    is File -> eventSink(GalleryScreen.Event.Capture.Result(it))
+                    null -> eventSink(GalleryScreen.Event.Capture.Cancel)
                 }
             }
         }
@@ -422,7 +422,7 @@ internal fun GalleryBottomBar(
                 Row {
                     Box(modifier = Modifier.padding(horizontal = 4.dp)) {
                         IconButton(
-                            onClick = { eventSink(GalleryScreen.Event.Sync) },
+                            onClick = { eventSink(GalleryScreen.Event.Selection.Sync) },
                             enabled = state.itemList.none { it.state == SyncState.SYNCING },
                         ) {
                             Icon(
@@ -433,7 +433,7 @@ internal fun GalleryBottomBar(
                     }
 
                     Box(modifier = Modifier.padding(horizontal = 4.dp)) {
-                        IconButton(onClick = { eventSink(GalleryScreen.Event.Delete) }) {
+                        IconButton(onClick = { eventSink(GalleryScreen.Event.Selection.Delete) }) {
                             Icon(
                                 imageVector = Icons.Filled.Delete,
                                 contentDescription = "Delete",
@@ -445,7 +445,7 @@ internal fun GalleryBottomBar(
         },
         modifier = modifier,
         floatingActionButton = {
-            FloatingActionButton({ if (!state.showCapture) eventSink(GalleryScreen.Event.Capture) }) {
+            FloatingActionButton({ if (!state.showCapture) eventSink(GalleryScreen.Event.Capture.Request) }) {
                 Crossfade(targetState = state.showCapture) { state ->
                     val iconImageVector = Icons.Filled.Add
 
