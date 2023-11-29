@@ -67,7 +67,7 @@ public fun GalleryPresenterFactory(
         DatabaseFactory(PlaygroundDatabase.Schema, platformContext) { PlaygroundDatabase(it) }
     val images = ImageManager(
         StorageManager(PathProvider(platformContext), coroutineContext),
-        database.imageQueries
+        database.imageQueries,
     )
     val engine = InMemoryHttpClientEngine(emptyList())
     val sync = SyncManager(DefaultHttpClient(engine))
