@@ -37,7 +37,7 @@ auth-jwks-rsa = "com.auth0:jwks-rsa:0.22.1"
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil-kt" }
 coil-core = { module = "io.coil-kt:coil", version.ref = "coil-kt" }
 
-essenty-parcelable = "com.arkivanov.essenty:parcelable:1.2.0"
+essenty-parcelable = "com.arkivanov.essenty:parcelable:1.3.0"
 fusesource-jansi = "org.fusesource.jansi:jansi:2.4.1"
 
 google-accompanist-flowlayout = { module = "com.google.accompanist:accompanist-flowlayout", version.ref = "google-accompanist" }
@@ -106,13 +106,13 @@ ktor-server-request-validation = { module = "io.ktor:ktor-server-request-validat
 ktor-server-test-host = { module = "io.ktor:ktor-server-test-host", version.ref = "ktor" }
 
 material-windowSizeClass = "dev.chrisbanes.material3:material3-window-size-class-multiplatform:0.3.1"
-molecule-runtime = "app.cash.molecule:molecule-runtime:1.3.0"
+molecule-runtime = "app.cash.molecule:molecule-runtime:1.3.1"
 mosaic-runtime = "com.jakewharton.mosaic:mosaic-runtime:0.10.0"
 
 paging-compose-common = { module = "app.cash.paging:paging-compose-common", version.ref = "paging-compose" }
 paging-compose-runtime = { module = "app.cash.paging:paging-runtime-composeui", version.ref = "paging-compose" }
 
-qos-logbackClassic = "ch.qos.logback:logback-classic:1.4.11"
+qos-logbackClassic = "ch.qos.logback:logback-classic:1.4.13"
 
 slack-circuit-backstack = { module = "com.slack.circuit:circuit-backstack", version.ref = "slack-circuit" }
 slack-circuit-foundation = { module = "com.slack.circuit:circuit-foundation", version.ref = "slack-circuit" }
@@ -142,5 +142,5 @@ kotlin-compose = { id = "org.jetbrains.compose", version.ref = "jetbrains-compos
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrains-kotlin" }
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "jetbrains-kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "jetbrains-kotlin" }
-kotlinx-kover = "org.jetbrains.kotlinx.kover:0.7.4"
+kotlinx-kover = "org.jetbrains.kotlinx.kover:0.7.5"
 openapi-generator = "org.openapi.generator:7.1.0"
