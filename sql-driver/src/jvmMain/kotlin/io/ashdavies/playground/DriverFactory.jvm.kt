@@ -13,5 +13,6 @@ public actual object DriverFactory {
         name: String,
     ): SqlDriver = JdbcSqliteDriver(
         url = "${JdbcSqliteDriver.IN_MEMORY}$name",
+        schema = schema,
     )
 }
