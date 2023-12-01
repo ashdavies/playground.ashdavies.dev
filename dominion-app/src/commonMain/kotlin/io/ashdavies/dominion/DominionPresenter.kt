@@ -3,8 +3,6 @@
 package io.ashdavies.dominion
 
 import androidx.compose.runtime.Composable
-import com.arkivanov.essenty.parcelable.Parcelable
-import com.arkivanov.essenty.parcelable.Parcelize
 import com.slack.circuit.runtime.CircuitUiEvent
 import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.Navigator
@@ -16,13 +14,14 @@ import com.slack.circuit.runtime.ui.ui
 import io.ashdavies.dominion.card.CardScreen
 import io.ashdavies.dominion.home.HomeScreen
 import io.ashdavies.dominion.kingdom.KingdomScreen
+import kotlinx.serialization.Serializable
 
-@Parcelize
-public sealed class DominionScreen : Parcelable, Screen {
+@Serializable
+public sealed class DominionScreen : Screen {
     internal data class Kingdom(val expansion: DominionExpansion) : DominionScreen()
     internal data class Card(val card: DominionCard) : DominionScreen()
 
-    public object Home : DominionScreen()
+    public data object Home : DominionScreen()
 }
 
 internal sealed interface DominionEvent : CircuitUiEvent {

@@ -9,8 +9,6 @@ import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import com.arkivanov.essenty.parcelable.Parcelable
-import com.arkivanov.essenty.parcelable.Parcelize
 import com.slack.circuit.runtime.CircuitUiEvent
 import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.presenter.Presenter
@@ -22,9 +20,10 @@ import io.ashdavies.content.PlatformContext
 import io.ashdavies.http.DefaultHttpClient
 import io.ashdavies.playground.DatabaseFactory
 import kotlinx.coroutines.launch
+import kotlinx.serialization.Serializable
 
-@Parcelize
-public object GalleryScreen : Parcelable, Screen {
+@Serializable
+public object GalleryScreen : Screen {
     internal sealed interface Event : CircuitUiEvent {
         sealed interface Capture : Event {
             data class Result(val value: File) : Capture

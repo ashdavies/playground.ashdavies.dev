@@ -1,6 +1,5 @@
 plugins {
     id("io.ashdavies.default")
-    id("io.ashdavies.parcelable")
 }
 
 android {
@@ -13,7 +12,6 @@ kotlin {
         implementation(projects.httpClient)
         implementation(projects.imageLoader)
 
-        implementation(libs.essenty.parcelable)
         implementation(libs.slack.circuit.foundation)
         implementation(libs.slf4j.simple)
     }

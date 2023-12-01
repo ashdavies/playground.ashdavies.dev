@@ -21,8 +21,13 @@ internal class LauncherActivity : ComposeActivity(content = {
         CircuitCompositionLocals(circuit) {
             ContentWithOverlays {
                 MaterialTheme(dynamicColorScheme()) {
-                    val initialBackStack = buildInitialBackStack(intent.getStringExtra("route"))
-                    val backStack = rememberSaveableBackStack { initialBackStack.forEach(::push) }
+                    val initialBackStack = remember {
+                        buildInitialBackStack(intent.getStringExtra("route"))
+                    }
+
+                    val backStack = rememberSaveableBackStack {
+                        initialBackStack.forEach(::push)
+                    }
 
                     NavigableCircuitContent(
                         navigator = rememberCircuitNavigator(backStack),

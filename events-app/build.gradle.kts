@@ -1,6 +1,5 @@
 plugins {
     id("io.ashdavies.default")
-    id("io.ashdavies.parcelable")
     id("io.ashdavies.sql")
 }
 
@@ -19,7 +18,6 @@ kotlin {
             implementation(localStorage)
         }
 
-        implementation(libs.essenty.parcelable)
         implementation(libs.paging.compose.common)
         implementation(libs.paging.compose.runtime)
         implementation(libs.slf4j.simple)

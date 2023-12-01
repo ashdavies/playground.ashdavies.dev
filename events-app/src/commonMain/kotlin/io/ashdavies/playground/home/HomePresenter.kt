@@ -5,7 +5,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import com.arkivanov.essenty.parcelable.Parcelize
 import com.slack.circuit.foundation.NavEvent
 import com.slack.circuit.foundation.onNavEvent
 import com.slack.circuit.runtime.CircuitUiEvent
@@ -13,8 +12,9 @@ import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.Navigator
 import com.slack.circuit.runtime.screen.Screen
 import io.ashdavies.playground.activity.ActivityScreen
+import kotlinx.serialization.Serializable
 
-@Parcelize
+@Serializable
 public object HomeScreen : Screen {
     public sealed interface Event : CircuitUiEvent {
         public data class ChildNav(val navEvent: NavEvent) : Event

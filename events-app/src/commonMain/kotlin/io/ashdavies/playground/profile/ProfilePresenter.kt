@@ -5,17 +5,17 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.platform.UriHandler
-import com.arkivanov.essenty.parcelable.Parcelize
 import com.slack.circuit.runtime.CircuitUiEvent
 import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.Navigator
 import com.slack.circuit.runtime.screen.Screen
 import io.ashdavies.playground.Profile
+import kotlinx.serialization.Serializable
 
-@Parcelize
+@Serializable
 internal object ProfileScreen : Screen {
     sealed interface Event : CircuitUiEvent {
-        object Login : Event
+        data object Login : Event
     }
 
     data class State(

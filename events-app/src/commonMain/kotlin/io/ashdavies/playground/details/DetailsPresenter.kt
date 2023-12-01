@@ -3,18 +3,17 @@ package io.ashdavies.playground.details
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import com.arkivanov.essenty.parcelable.Parcelable
-import com.arkivanov.essenty.parcelable.Parcelize
 import com.slack.circuit.runtime.CircuitUiEvent
 import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.Navigator
 import com.slack.circuit.runtime.screen.Screen
+import kotlinx.serialization.Serializable
 
-@Parcelize
-internal data class DetailsScreen(val eventId: String) : Parcelable, Screen {
+@Serializable
+internal data class DetailsScreen(val eventId: String) : Screen {
     sealed interface Event : CircuitUiEvent {
         sealed interface NavEvent : Event {
-            object Pop : NavEvent
+            data object Pop : NavEvent
         }
     }
 

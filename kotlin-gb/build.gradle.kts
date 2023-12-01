@@ -8,7 +8,6 @@ android {
 
 kotlin {
     commonMain.dependencies {
-        implementation(libs.essenty.parcelable)
         implementation(libs.ktor.http)
     }
 }

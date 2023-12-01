@@ -1,6 +1,5 @@
 plugins {
     id("io.ashdavies.default")
-    id("kotlin-parcelize")
 }
 
 android {
@@ -25,7 +24,6 @@ kotlin {
             implementation(imageLoader)
         }
 
-        implementation(libs.essenty.parcelable)
         implementation(libs.slack.circuit.foundation)
     }
 

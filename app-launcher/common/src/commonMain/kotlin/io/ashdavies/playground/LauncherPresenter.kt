@@ -3,8 +3,6 @@
 package io.ashdavies.playground
 
 import androidx.compose.runtime.Composable
-import com.arkivanov.essenty.parcelable.Parcelable
-import com.arkivanov.essenty.parcelable.Parcelize
 import com.slack.circuit.runtime.CircuitUiEvent
 import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.Navigator
@@ -14,6 +12,7 @@ import com.slack.circuit.runtime.screen.Screen
 import io.ashdavies.dominion.DominionScreen
 import io.ashdavies.gallery.GalleryScreen
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.serialization.Serializable
 import io.ashdavies.playground.home.HomeScreen as EventsHomeScreen
 
 private val DominionEntry = LauncherScreen.Entry(
@@ -34,8 +33,8 @@ private val GalleryEntry = LauncherScreen.Entry(
     event = LauncherScreen.Event.Gallery,
 )
 
-@Parcelize
-public object LauncherScreen : Parcelable, Screen {
+@Serializable
+public object LauncherScreen : Screen {
     public data class Entry(
         val image: Any,
         val title: String,
