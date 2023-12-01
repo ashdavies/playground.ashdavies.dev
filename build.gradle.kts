@@ -1,5 +1,3 @@
-@file:Suppress("DSL_SCOPE_VIOLATION") // https://github.com/gradle/gradle/issues/22797
-
 buildscript {
     dependencies {
         val googleServicesVersion = libs.versions.google.services.get()

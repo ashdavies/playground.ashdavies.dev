@@ -1,5 +1,3 @@
-@file:Suppress("DSL_SCOPE_VIOLATION") // https://github.com/gradle/gradle/issues/22797
-
 import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode
 
 plugins {

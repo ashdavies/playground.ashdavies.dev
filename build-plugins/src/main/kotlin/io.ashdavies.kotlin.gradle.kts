@@ -42,10 +42,12 @@ kotlin {
         implementation(libs.jetbrains.kotlinx.coroutines.swing)
     }
 
-    jvmToolchain(Playground.jvmTarget)
-}
+    val jvmTargetVersion = libs.versions.kotlin.jvmTarget.get()
 
-tasks.withType<KotlinCompile> {
-    kotlinOptions.freeCompilerArgs += Playground.freeCompilerArgs
-    kotlinOptions.jvmTarget = "${Playground.jvmTarget}"
+    tasks.withType<KotlinCompile> {
+        kotlinOptions.freeCompilerArgs += "-Xexpect-actual-classes"
+        kotlinOptions.jvmTarget = jvmTargetVersion
+    }
+
+    jvmToolchain(jvmTargetVersion.toInt())
 }

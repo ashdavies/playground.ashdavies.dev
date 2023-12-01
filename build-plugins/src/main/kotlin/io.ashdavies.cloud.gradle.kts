@@ -35,6 +35,6 @@ java {
 }
 
 tasks.withType<KotlinCompile> {
-    kotlinOptions.freeCompilerArgs += Playground.freeCompilerArgs
-    kotlinOptions.jvmTarget = "${Playground.jvmTarget}"
+    val jvmTargetVersion = libs.versions.kotlin.jvmTarget.get()
+    kotlinOptions.jvmTarget = jvmTargetVersion
 }

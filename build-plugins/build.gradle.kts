@@ -19,7 +19,3 @@ dependencies {
         implementation(plugin(kotlin.serialization))
     }
 }
-
-kotlin.sourceSets.all {
-    languageSettings.optIn("kotlin.RequiresOptIn")
-}
