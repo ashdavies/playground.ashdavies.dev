@@ -9,7 +9,7 @@ import javax.imageio.ImageIO
 internal actual fun ImageCapture(
     manager: StorageManager,
     modifier: Modifier,
-    onCapture: (File) -> Unit,
+    onCapture: (File?) -> Unit,
 ) {
     val fileSuffixes = ImageIO.getReaderFileSuffixes()
     val filenameFilter = FilenameFilter { _, name ->

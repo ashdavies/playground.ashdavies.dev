@@ -2,8 +2,8 @@ package io.ashdavies.gallery
 
 import io.ashdavies.content.PlatformContext
 
-internal interface PathProvider {
-    val images: File
+internal fun interface PathProvider {
+    suspend fun getImagesPath(): File
 }
 
 internal expect fun PathProvider(

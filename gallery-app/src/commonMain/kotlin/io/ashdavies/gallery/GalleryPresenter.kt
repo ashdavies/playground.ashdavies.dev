@@ -26,13 +26,21 @@ import kotlinx.coroutines.launch
 @Parcelize
 public object GalleryScreen : Parcelable, Screen {
     internal sealed interface Event : CircuitUiEvent {
-        data class Expand(val index: Int) : Event
-        data class Result(val value: File) : Event
-        data class Toggle(val index: Int) : Event
-        data object Capture : Event
-        data object Collapse : Event
-        data object Delete : Event
-        data object Sync : Event
+        sealed interface Capture : Event {
+            data class Result(val value: File) : Capture
+
+            data object Cancel : Capture
+            data object Request : Capture
+        }
+
+        sealed interface Selection : Event {
+            data class Expand(val index: Int) : Selection
+            data class Toggle(val index: Int) : Selection
+
+            data object Collapse : Selection
+            data object Delete : Selection
+            data object Sync : Selection
+        }
     }
 
     internal data class State(
@@ -60,8 +68,7 @@ public object GalleryScreen : Parcelable, Screen {
 
 public fun GalleryPresenterFactory(context: PlatformContext): Presenter.Factory {
     val database = DatabaseFactory(PlaygroundDatabase.Schema, context) { PlaygroundDatabase(it) }
-    val storage = StorageManager(PathProvider(context).images)
-    val images = ImageManager(storage, database.imageQueries)
+    val images = ImageManager(StorageManager(PathProvider(context)), database.imageQueries)
 
     val engine = InMemoryHttpClientEngine(emptyList())
     val sync = SyncManager(DefaultHttpClient(engine))
@@ -75,16 +82,12 @@ public fun GalleryPresenterFactory(context: PlatformContext): Presenter.Factory 
 }
 
 public fun GalleryUiFactory(context: PlatformContext): Ui.Factory {
-    val storage = StorageManager(PathProvider(context).images)
+    val storage = StorageManager(PathProvider(context))
 
     return Ui.Factory { screen, _ ->
         when (screen) {
             is GalleryScreen -> ui<GalleryScreen.State> { state, modifier ->
-                GalleryScreen(
-                    state = state,
-                    manager = storage,
-                    modifier = modifier,
-                )
+                GalleryScreen(state, storage, modifier)
             }
 
             else -> null
@@ -122,37 +125,42 @@ internal fun GalleryPresenter(images: ImageManager, sync: SyncManager): GalleryS
         isLoggedIn = false,
     ) { event ->
         when (event) {
-            is GalleryScreen.Event.Capture -> takePhoto = true
+            is GalleryScreen.Event.Capture -> when (event) {
+                is GalleryScreen.Event.Capture.Result -> coroutineScope.launch {
+                    images.add(event.value)
+                    takePhoto = false
+                }
 
-            is GalleryScreen.Event.Collapse -> {
-                expandedItem = expandedItem?.copy(isExpanded = false)
+                is GalleryScreen.Event.Capture.Cancel -> takePhoto = false
+                is GalleryScreen.Event.Capture.Request -> takePhoto = true
             }
 
-            is GalleryScreen.Event.Delete -> {
-                selected.forEach { images.remove(it) }
-                selected = emptyList()
-            }
+            is GalleryScreen.Event.Selection -> when (event) {
+                is GalleryScreen.Event.Selection.Expand -> {
+                    expandedItem = GalleryScreen.State.ExpandedItem(
+                        contentDescription = itemList[event.index].name,
+                        imageModel = File(itemList[event.index].path),
+                        isExpanded = true,
+                    )
+                }
 
-            is GalleryScreen.Event.Expand -> {
-                expandedItem = GalleryScreen.State.ExpandedItem(
-                    contentDescription = itemList[event.index].name,
-                    imageModel = File(itemList[event.index].path),
-                    isExpanded = true,
-                )
-            }
+                is GalleryScreen.Event.Selection.Toggle -> itemList[event.index].also {
+                    if (it in selected) selected -= it else selected += it
+                }
 
-            is GalleryScreen.Event.Sync -> coroutineScope.launch {
-                selected.forEach { sync.sync(it.path) }
-                selected = emptyList()
-            }
+                is GalleryScreen.Event.Selection.Collapse -> {
+                    expandedItem = expandedItem?.copy(isExpanded = false)
+                }
 
-            is GalleryScreen.Event.Result -> {
-                images.add(event.value)
-                takePhoto = false
-            }
+                is GalleryScreen.Event.Selection.Delete -> coroutineScope.launch {
+                    selected.forEach { images.remove(it) }
+                    selected = emptyList()
+                }
 
-            is GalleryScreen.Event.Toggle -> itemList[event.index].also {
-                if (it in selected) selected -= it else selected += it
+                is GalleryScreen.Event.Selection.Sync -> coroutineScope.launch {
+                    selected.forEach { sync.sync(it.path) }
+                    selected = emptyList()
+                }
             }
         }
     }

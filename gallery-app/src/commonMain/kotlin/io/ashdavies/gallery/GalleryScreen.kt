@@ -47,6 +47,7 @@ import androidx.compose.material.icons.filled.Sync
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -123,8 +124,8 @@ internal fun GalleryScreen(
                     itemList = state.itemList.toImmutableList(),
                     isSelecting = isSelecting,
                     modifier = Modifier.padding(paddingValues),
-                    onExpand = { eventSink(GalleryScreen.Event.Expand(it)) },
-                    onSelect = { eventSink(GalleryScreen.Event.Toggle(it)) },
+                    onExpand = { eventSink(GalleryScreen.Event.Selection.Expand(it)) },
+                    onSelect = { eventSink(GalleryScreen.Event.Selection.Toggle(it)) },
                 )
 
                 if (state.expandedItem != null) {
@@ -152,14 +153,17 @@ internal fun GalleryScreen(
                 }
 
                 BackHandler(state.expandedItem != null) {
-                    eventSink(GalleryScreen.Event.Collapse)
+                    eventSink(GalleryScreen.Event.Selection.Collapse)
                 }
             }
         }
 
         if (state.showCapture) {
             ImageCapture(manager) {
-                eventSink(GalleryScreen.Event.Result(it))
+                when (it) {
+                    is File -> eventSink(GalleryScreen.Event.Capture.Result(it))
+                    null -> eventSink(GalleryScreen.Event.Capture.Cancel)
+                }
             }
         }
     }
@@ -418,7 +422,7 @@ internal fun GalleryBottomBar(
                 Row {
                     Box(modifier = Modifier.padding(horizontal = 4.dp)) {
                         IconButton(
-                            onClick = { eventSink(GalleryScreen.Event.Sync) },
+                            onClick = { eventSink(GalleryScreen.Event.Selection.Sync) },
                             enabled = state.itemList.none { it.state == SyncState.SYNCING },
                         ) {
                             Icon(
@@ -429,7 +433,7 @@ internal fun GalleryBottomBar(
                     }
 
                     Box(modifier = Modifier.padding(horizontal = 4.dp)) {
-                        IconButton(onClick = { eventSink(GalleryScreen.Event.Delete) }) {
+                        IconButton(onClick = { eventSink(GalleryScreen.Event.Selection.Delete) }) {
                             Icon(
                                 imageVector = Icons.Filled.Delete,
                                 contentDescription = "Delete",
@@ -441,11 +445,21 @@ internal fun GalleryBottomBar(
         },
         modifier = modifier,
         floatingActionButton = {
-            FloatingActionButton(onClick = { eventSink(GalleryScreen.Event.Capture) }) {
-                Icon(
-                    imageVector = Icons.Filled.Add,
-                    contentDescription = "Add",
-                )
+            FloatingActionButton({ if (!state.showCapture) eventSink(GalleryScreen.Event.Capture.Request) }) {
+                Crossfade(targetState = state.showCapture) { state ->
+                    val iconImageVector = Icons.Filled.Add
+
+                    when (state) {
+                        true -> CircularProgressIndicator(
+                            modifier = Modifier.size(iconImageVector.defaultWidth),
+                        )
+
+                        false -> Icon(
+                            imageVector = iconImageVector,
+                            contentDescription = "Add",
+                        )
+                    }
+                }
             }
         },
     )
