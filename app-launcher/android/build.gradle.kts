@@ -20,34 +20,35 @@ android {
     }
 
     namespace = "io.ashdavies.playground"
-
-    val main by sourceSets.getting {
-        // Overwrite manifest.srcFile io.ashdavies.android.gradle.kts:56
-        manifest.srcFile("src/main/AndroidManifest.xml")
-    }
 }
 
-dependencies {
-    debugImplementation(libs.leakcanary.android)
-
-    implementation(projects.appLauncher.common)
-    implementation(projects.firebaseCompose)
-    implementation(projects.httpClient)
-
-    with(libs.androidx) {
-        implementation(libs.androidx.core.splashscreen)
-        implementation(libs.androidx.activity.compose)
-        implementation(libs.androidx.activity.ktx)
+kotlin {
+    androidDebug.dependencies {
+        implementation(libs.leakcanary.android)
     }
 
-    with(libs.google) {
-        implementation(android.material)
+    androidMain.dependencies {
+        with(projects) {
+            implementation(appLauncher.common)
+            implementation(firebaseCompose)
+            implementation(httpClient)
+        }
 
-        implementation(platform(firebase.bom))
-        implementation(firebase.analytics)
-        implementation(firebase.common.ktx)
+        with(libs.androidx) {
+            implementation(libs.androidx.core.splashscreen)
+            implementation(libs.androidx.activity.compose)
+            implementation(libs.androidx.activity.ktx)
+        }
+
+        with(libs.google) {
+            implementation(android.material)
+
+            implementation(project.dependencies.platform(firebase.bom))
+            implementation(firebase.analytics)
+            implementation(firebase.common.ktx)
+        }
+
+        implementation(libs.slack.circuit.foundation)
+        implementation(libs.slack.circuit.overlay)
     }
-
-    implementation(libs.slack.circuit.foundation)
-    implementation(libs.slack.circuit.overlay)
 }
