@@ -28,6 +28,8 @@ android {
 }
 
 dependencies {
+    debugImplementation(libs.leakcanary.android)
+
     implementation(projects.appLauncher.common)
     implementation(projects.firebaseCompose)
     implementation(projects.httpClient)

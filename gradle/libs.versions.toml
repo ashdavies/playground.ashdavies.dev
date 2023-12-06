@@ -3,15 +3,15 @@ android-compileSdk = "34"
 android-minSdk = "24"
 androidx-activity = "1.8.1"
 apollo-graphql = "2.5.14"
-cash-sqldelight = "2.0.0"
+cash-sqldelight = "2.0.1"
 coil-kt = "2.5.0"
 compose-compiler = "1.5.4"
 google-accompanist = "0.32.0"
-google-android = "8.1.4"
+google-android = "8.2.0"
 google-auto = "1.0.1"
 google-maps-compose = "4.3.0"
 google-services = "4.4.0"
-jetbrains-compose = "1.5.10"
+jetbrains-compose = "1.5.11"
 jetbrains-kotlin = "1.9.21"
 kotlin-jvmTarget = "17"
 kotlinx-coroutines = "1.7.3"
@@ -19,7 +19,7 @@ kotlinx-serialization = "1.6.2"
 ktor = "2.3.6"
 paging-compose = "3.2.0-alpha05-0.2.3"
 pinterest-ktlint = "0.50.0"
-slack-circuit = "0.16.1"
+slack-circuit = "0.17.1"
 
 [libraries]
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity" }
@@ -78,7 +78,7 @@ jetbrains-kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-co
 jetbrains-kotlinx-coroutines-play = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services", version.ref = "kotlinx-coroutines" }
 jetbrains-kotlinx-coroutines-swing = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-swing", version.ref = "kotlinx-coroutines" }
 jetbrains-kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinx-coroutines" }
-jetbrains-kotlinx-datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.4.1"
+jetbrains-kotlinx-datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.5.0"
 jetbrains-kotlinx-serialization-core = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version.ref = "kotlinx-serialization" }
 jetbrains-kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
 jetbrains-kotlinx-serialization-properties = { module = "org.jetbrains.kotlinx:kotlinx-serialization-properties", version.ref = "kotlinx-serialization" }
@@ -108,6 +108,7 @@ ktor-server-openapi = { module = "io.ktor:ktor-server-openapi", version.ref = "k
 ktor-server-request-validation = { module = "io.ktor:ktor-server-request-validation", version.ref = "ktor" }
 ktor-server-test-host = { module = "io.ktor:ktor-server-test-host", version.ref = "ktor" }
 
+leakcanary-android = "com.squareup.leakcanary:leakcanary-android:2.12"
 material-windowSizeClass = "dev.chrisbanes.material3:material3-window-size-class-multiplatform:0.3.1"
 molecule-runtime = "app.cash.molecule:molecule-runtime:1.3.1"
 mosaic-runtime = "com.jakewharton.mosaic:mosaic-runtime:0.10.0"
@@ -115,7 +116,7 @@ mosaic-runtime = "com.jakewharton.mosaic:mosaic-runtime:0.10.0"
 paging-compose-common = { module = "app.cash.paging:paging-compose-common", version.ref = "paging-compose" }
 paging-compose-runtime = { module = "app.cash.paging:paging-runtime-composeui", version.ref = "paging-compose" }
 
-qos-logbackClassic = "ch.qos.logback:logback-classic:1.4.13"
+qos-logbackClassic = "ch.qos.logback:logback-classic:1.4.14"
 
 slack-circuit-backstack = { module = "com.slack.circuit:circuit-backstack", version.ref = "slack-circuit" }
 slack-circuit-foundation = { module = "com.slack.circuit:circuit-foundation", version.ref = "slack-circuit" }
@@ -135,8 +136,8 @@ android-application = { id = "com.android.application", version.ref = "google-an
 android-library = { id = "com.android.library", version.ref = "google-android" }
 apollo-graphql = { id = "com.apollographql.apollo", version.ref = "apollo-graphql" }
 cash-sqldelight = { id = "app.cash.sqldelight", version.ref = "cash-sqldelight" }
-dependency-analysis = { id = "com.autonomousapps.dependency-analysis", version = "1.26.0" }
-diffplug-spotless = "com.diffplug.spotless:6.22.0"
+dependency-analysis = { id = "com.autonomousapps.dependency-analysis", version = "1.27.0" }
+diffplug-spotless = "com.diffplug.spotless:6.23.3"
 google-cloud-jib = "com.google.cloud.tools.jib:3.4.0"
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
 gradle-doctor = "com.osacky.doctor:0.9.1"
