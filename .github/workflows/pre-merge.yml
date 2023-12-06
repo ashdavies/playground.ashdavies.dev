@@ -104,8 +104,6 @@ jobs:
 
       - uses: ./.github/workflows/create-comment
         if: ${{ github.event_name == 'pull_request' && steps.gradle.outputs.build-scan-url }}
-        secrets:
-          token: ${{ secrets.GITHUB_TOKEN }}
         with:
           body: Build scan published to ${{ steps.gradle.outputs.build-scan-url }}
 

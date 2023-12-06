@@ -108,14 +108,12 @@ jobs:
           terraform -chdir=terraform plan >/dev/null -lock-timeout=5m -out=.terraform/terraform.tfplan
           terraform -chdir=terraform show .terraform/terraform.tfplan -no-color
 
-      - uses: actions/github-script@v7
+      - uses: ./.github/workflows/create-comment
         if: ${{ github.event_name == 'pull_request' }}
+        secrets:
+          token: ${{ steps.token.outputs.token }}
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const comments = require('./.github/workflows/scripts/comments.js');
-            const message = `\`\`\`${{ steps.plan.outputs.stdout }}\`\`\``;
-            await comments.create(context, github, message);
+          body: `\`\`\`${{ steps.plan.outputs.stdout }}\`\`\``
 
       - id: apply
         env:
