@@ -25,7 +25,7 @@ slack-circuit = "0.17.1"
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity" }
 androidx-activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "androidx-activity" }
 androidx-annotation = "androidx.annotation:annotation:1.7.0"
-androidx-compose-compiler = { module = "androidx.compose.compiler:compiler", version = "1.5.5" }
+androidx-compose-compiler = { module = "androidx.compose.compiler:compiler", version = "1.5.6" }
 androidx-core-ktx = "androidx.core:core-ktx:1.12.0"
 androidx-core-splashscreen = "androidx.core:core-splashscreen:1.0.1"
 
