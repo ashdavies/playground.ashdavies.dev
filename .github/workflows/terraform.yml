@@ -108,7 +108,7 @@ jobs:
           terraform -chdir=terraform plan >/dev/null -lock-timeout=5m -out=.terraform/terraform.tfplan
           terraform -chdir=terraform show .terraform/terraform.tfplan -no-color
 
-      - uses: ./.github/workflows/create-comment
+      - uses: ./.github/workflows/create-comment.yml
         if: ${{ github.event_name == 'pull_request' }}
         secrets:
           token: ${{ steps.token.outputs.token }}

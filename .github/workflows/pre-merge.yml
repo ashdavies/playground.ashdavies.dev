@@ -102,7 +102,7 @@ jobs:
               ${{ contains(github.event.pull_request.labels.*.name, 'Dry Run') && '--dry-run' || '' }}
               --console=plain
 
-      - uses: ./.github/workflows/create-comment
+      - uses: ./.github/workflows/create-comment.yml
         if: ${{ github.event_name == 'pull_request' && steps.gradle.outputs.build-scan-url }}
         with:
           body: Build scan published to ${{ steps.gradle.outputs.build-scan-url }}
