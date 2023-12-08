@@ -39,6 +39,9 @@ jobs:
       pull-requests: 'write'
       id-token: 'write'
 
+    outputs:
+      scan: ${{ steps.gradle.outputs.build-scan-url }}
+
     steps:
 #     - name: Permissions Monitor
 #       uses: GitHubSecurityLab/actions-permissions/monitor@v1
@@ -102,11 +105,6 @@ jobs:
               ${{ contains(github.event.pull_request.labels.*.name, 'Dry Run') && '--dry-run' || '' }}
               --console=plain
 
-      - uses: ./.github/workflows/create-comment.yml
-        if: ${{ github.event_name == 'pull_request' && steps.gradle.outputs.build-scan-url }}
-        with:
-          body: Build scan published to ${{ steps.gradle.outputs.build-scan-url }}
-
       - name: Produce Test Summary
         uses: test-summary/action@v2
         with:
@@ -120,3 +118,13 @@ jobs:
           path: "**/build/reports/tests"
           if-no-files-found: error
         if: ${{ !contains(github.event.pull_request.labels.*.name, 'Dry Run') }}
+
+  comment:
+    name: Create Comment
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+    - uses: ./.github/workflows/create-comment.yml
+      if: ${{ github.event_name == 'pull_request' }}
+      with:
+        body: 'Build scan published to ${{ needs.build.outputs.scan }}'
