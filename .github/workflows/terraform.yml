@@ -113,7 +113,7 @@ jobs:
         secrets:
           token: ${{ steps.token.outputs.token }}
         with:
-          body: `\`\`\`${{ steps.plan.outputs.stdout }}\`\`\``
+          body: '````${{ steps.plan.outputs.stdout }}\````'
 
       - id: apply
         env:
