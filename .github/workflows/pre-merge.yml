@@ -31,7 +31,7 @@ concurrency:
 jobs:
   reset:
     if: ${{ github.event_name == 'pull_request' }}
-    uses: ./.github/workflows/delete-comment.yml
+    uses: ./.github/workflows/delete-comments.yml
     secrets:
       token: ${{ secrets.GITHUB_TOKEN }}
 
