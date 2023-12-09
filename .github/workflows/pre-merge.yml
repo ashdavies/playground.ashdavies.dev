@@ -120,5 +120,7 @@ jobs:
     if: ${{ github.event_name == 'pull_request' }}
     needs: build
     uses: ./.github/workflows/create-comment.yml
+    secrets:
+      token: ${{ secrets.GITHUB_TOKEN }}
     with:
       body: 'Build scan published to ${{ needs.build.outputs.scan }}'
