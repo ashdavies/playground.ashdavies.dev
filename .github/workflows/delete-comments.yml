@@ -1,0 +1,25 @@
+on:
+    workflow_call:
+      inputs:
+        body:
+          required: true
+          type: string
+  
+      secrets:
+        token:
+          default: ${{ secrets.GITHUB_TOKEN }}
+          required: true
+  
+  jobs:
+    comment:
+      runs-on: ubuntu-latest
+  
+      steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const comments = require('./.github/workflows/scripts/comments.js');
+            await comments.deleteAll(context, github)  

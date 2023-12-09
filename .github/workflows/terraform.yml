@@ -121,15 +121,10 @@ jobs:
         run: terraform -chdir=terraform apply -auto-approve -lock-timeout=5m
   
   comment:
-    name: Create Comment
-    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'pull_request' }}
     needs: build
-    steps:
-    - uses: actions/checkout@v3
-
-    - uses: ./.github/workflows/create-comment.yml
-      if: ${{ github.event_name == 'pull_request' }}
-      secrets:
-        token: ${{ needs.build.outputs.token }}
-      with:
-        body: '````${{ needs.build.outputs.plan }}\````'
+    uses: ./.github/workflows/create-comment.yml
+    secrets:
+      token: ${{ needs.build.outputs.token }}
+    with:
+      body: '````${{ needs.build.outputs.plan }}\````'
