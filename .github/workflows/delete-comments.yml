@@ -7,7 +7,6 @@ on:
   
     secrets:
       token:
-        default: ${{ secrets.GITHUB_TOKEN }}
         required: true
 
 jobs:
