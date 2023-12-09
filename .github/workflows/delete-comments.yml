@@ -1,10 +1,5 @@
 on:
   workflow_call:
-    inputs:
-      body:
-        required: true
-        type: string
-  
     secrets:
       token:
         required: true
