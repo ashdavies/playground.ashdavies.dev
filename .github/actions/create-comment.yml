@@ -1,0 +1,20 @@
+name: "Create Comment"
+
+inputs:
+  message:
+    description: "Message that should be printed in the pull request"
+    required: true
+  tag:
+    description: "A tag that will be used to identify a comment in case of replacement"
+  token:
+    description: "The GitHub token to use for authentication"
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - uses: thollander/actions-comment-pull-request@v2
+      with:
+        comment_tag: inputs.tag
+        message: inputs.mesage
+        mode: recreate
