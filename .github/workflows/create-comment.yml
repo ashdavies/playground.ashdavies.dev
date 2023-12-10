@@ -21,4 +21,4 @@ jobs:
         github-token: ${{ secrets.token }}
         script: |
           const comments = require('./.github/workflows/scripts/comments.js');
-          await comments.create(context, github, ${{ github.event.inputs.body }});
+          await comments.create(context, github, ${{ inputs.body }});
