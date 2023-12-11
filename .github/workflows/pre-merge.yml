@@ -94,7 +94,7 @@ jobs:
               --console=plain
 
       - name: Gradle Scan Link
-        uses: ./.github/actions/create-comment.yml
+        uses: ./.github/actions/pull-comment
         if: ${{ github.event_name == 'pull_request' && steps.gradle.outputs.build-scan-url }}
         with:
           message: "Build scan published to ${{ steps.gradle.outputs.build-scan-url }}"
