@@ -1,39 +1,18 @@
 name: Pre Merge Checks
 
 on:
-  push:
-    branches:
-      - main
-
   pull_request:
     branches:
       - "*"
 
-  workflow_dispatch:
-    inputs:
-      log_level:
-        type: choice
-        description: Log Level
-        required: false
-        default: info
-        options:
-          - error
-          - quiet
-          - warning
-          - lifecycle
-          - info
-          - debug
-
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
   cancel-in-progress: true
 
 jobs:
   build:
     name: Pre Merge Checks
     runs-on: ubuntu-latest
-    env:
-      GRADLE_OPTS: "-Dorg.gradle.logging.level=${{ github.event.inputs.log_level || 'info' }}"
 
     permissions:
       pull-requests: 'write'
@@ -64,14 +43,6 @@ jobs:
       - name: Setup Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
 
-      - name: Generate Encryption Passphrase
-        run: openssl rand -base64 32
-        if: ${{ false }}
-
-      - name: Encrypt Google Services config file
-        if: ${{ false }}
-        run: find . -type f -name "google-services.json" -exec sh -c 'openssl aes-256-cbc -md sha256 -salt -in "$0" -out "${0%.json*}.aes" -k "${GOOGLE_SERVICES_PASSPHRASE}"' {} \;
-
       - name: Decrypt Google Services
         if: ${{ !contains(github.event.pull_request.labels.*.name, 'Dry Run') }}
         env:
@@ -95,7 +66,7 @@ jobs:
 
       - name: Gradle Scan Link
         uses: ./.github/actions/pull-comment
-        if: ${{ github.event_name == 'pull_request' && steps.gradle.outputs.build-scan-url }}
+        if: ${{ steps.gradle.outputs.build-scan-url }}
         with:
           message: "Build scan published to ${{ steps.gradle.outputs.build-scan-url }}"
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -105,12 +76,4 @@ jobs:
         uses: test-summary/action@v2
         with:
           paths: "**/build/test-results/test/TEST-*.xml"
-        if: ${{ !contains(github.event.pull_request.labels.*.name, 'Dry Run') }}
-
-      - name: Upload Test Report
-        uses: actions/upload-artifact@v3
-        with:
-          name: test-report
-          path: "**/build/reports/tests"
-          if-no-files-found: error
         if: ${{ !contains(github.event.pull_request.labels.*.name, 'Dry Run') }}
