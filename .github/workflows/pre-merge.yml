@@ -97,7 +97,7 @@ jobs:
         uses: ./.github/actions/pull-comment
         if: ${{ github.event_name == 'pull_request' && steps.gradle.outputs.build-scan-url }}
         with:
-          message: "Build scan published to ${{ steps.gradle.outputs.build-scan-url }}"
+          message: Build scan published to ${{ steps.gradle.outputs.build-scan-url }}
           token: ${{ secrets.GITHUB_TOKEN }}
           tag: build-scan-url
 
