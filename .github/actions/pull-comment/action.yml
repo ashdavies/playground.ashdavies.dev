@@ -18,4 +18,3 @@ runs:
         comment_tag: ${{ inputs.tag }}
         message: ${{ inputs.message }}
         mode: recreate
-        
