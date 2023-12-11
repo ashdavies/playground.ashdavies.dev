@@ -15,6 +15,6 @@ runs:
   steps:
     - uses: thollander/actions-comment-pull-request@v2
       with:
-        comment_tag: inputs.tag
-        message: inputs.mesage
+        comment_tag: ${{ inputs.tag }}
+        message: ${{ inputs.mesage }}
         mode: recreate
