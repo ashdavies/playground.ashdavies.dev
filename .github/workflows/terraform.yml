@@ -111,4 +111,4 @@ jobs:
           TF_VAR_gh_token: ${{ steps.token.outputs.token }}
           TF_INPUT: false
         if: ${{ github.ref == 'refs/heads/main' }}
-        run: terraform -chdir=terraform apply .terraform/terraform.tfplan -lock-timeout=5m
+        run: terraform -chdir=terraform apply -auto-approve -lock-timeout=5m
