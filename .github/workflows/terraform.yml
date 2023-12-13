@@ -58,7 +58,7 @@ jobs:
           password: ${{ steps.setup-cloud.outputs.access_token }}
           registry: europe-west1-docker.pkg.dev
 
-      - uses: ./github/actions/setup-gradle
+      - uses: ./.github/actions/setup-gradle
         if: ${{ github.ref == 'refs/heads/main' }}
 
       - if: ${{ github.ref == 'refs/heads/main' }}
