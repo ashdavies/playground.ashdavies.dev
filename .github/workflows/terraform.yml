@@ -3,7 +3,7 @@ name: Configure Terraform
 on:
   pull_request:
     branches:
-      - *
+      - "*"
 
   push:
     branches:
