@@ -1,12 +1,13 @@
 name: Configure Terraform
 
 on:
+  pull_request:
+    branches:
+      - "*"
+
   push:
     branches:
       - main
-
-  pull_request:
-    types: [ labeled, opened, reopened, synchronize ]
 
   workflow_dispatch:
     inputs:
@@ -33,61 +34,52 @@ jobs:
     runs-on: ubuntu-latest
     env:
       GRADLE_OPTS: "-Dorg.gradle.logging.level=${{ github.event.inputs.log_level || 'info' }}"
+      DRY_RUN: ${{ contains(github.event.pull_request.labels.*.name, 'Dry Run') }}
 
     permissions:
       pull-requests: 'write'
       id-token: write
 
     steps:
-#     - name: Permissions Monitor
-#       uses: GitHubSecurityLab/actions-permissions/monitor@v1
-
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
-      - uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: 17
-
-      - id: token
-        uses: tibdex/github-app-token@v2
-        with:
-          private_key: ${{ secrets.PRIVATE_KEY }}
-          app_id: ${{ secrets.APP_ID }}
-
-      - id: google_cloud_auth
-        uses: google-github-actions/auth@v2
+      - id: setup-cloud
+        uses: ./.github/actions/setup-cloud
         with:
           workload_identity_provider: ${{ secrets.GOOGLE_WORKLOAD_IDENTITY }}
           service_account: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
           token_format: access_token
 
-      - uses: google-github-actions/setup-gcloud@v2
-
       - uses: docker/login-action@v3
         with:
           username: oauth2accesstoken
-          password: ${{ steps.google_cloud_auth.outputs.access_token }}
+          password: ${{ steps.setup-cloud.outputs.access_token }}
           registry: europe-west1-docker.pkg.dev
 
-      - uses: gradle/gradle-build-action@v2
+      - uses: ./github/actions/setup-gradle
+        if: ${{ github.ref == 'refs/heads/main' }}
+
+      - if: ${{ github.ref == 'refs/heads/main' }}
         env:
           FIREBASE_ANDROID_APP_ID: ${{ secrets.firebase_android_app_id }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GOOGLE_PROJECT_API_KEY: ${{ secrets.google_project_api_key }}
           GOOGLE_SERVICE_ACCOUNT_ID: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
           PLAYGROUND_API_KEY: ${{ secrets.PLAYGROUND_API_KEY }}
-        if: ${{ github.ref == 'refs/heads/main' }}
-        with:
-          gradle-home-cache-cleanup: true
-          arguments: >
-            cloud-run:jib
+        run: >
+            ./gradlew cloud-run:jib
               --image=europe-west1-docker.pkg.dev/${{ steps.google_cloud_auth.outputs.project_id }}/cloud-run-source-deploy/playground.ashdavies.dev
-              ${{ contains(github.event.pull_request.labels.*.name, 'Dry Run') && '--dry-run' || '' }}
+              ${{ env.DRY_RUN && '--dry-run' || '' }}
               --no-configuration-cache
               --console=plain
+
+      - id: token
+        uses: tibdex/github-app-token@v2
+        with:
+          private_key: ${{ secrets.PRIVATE_KEY }}
+          app_id: ${{ secrets.APP_ID }}
 
       - uses: hashicorp/setup-terraform@v3
         with:
@@ -98,9 +90,9 @@ jobs:
 
       - id: plan
         env:
-          TF_INPUT: 0
-          TF_LOG: ${{ inputs.debug && 'DEBUG' || 'ERROR' }}
           TF_VAR_gh_token: ${{ steps.token.outputs.token }}
+          TF_LOG: ${{ inputs.debug && 'DEBUG' || 'ERROR' }}
+          TF_INPUT: false
         if: ${{ github.event_name == 'pull_request' }}
         run: |
           terraform -chdir=terraform plan >/dev/null -lock-timeout=5m -out=.terraform/terraform.tfplan
@@ -115,8 +107,8 @@ jobs:
 
       - id: apply
         env:
-          TF_VAR_gh_token: ${{ steps.token.outputs.token }}
           TF_LOG: ${{ inputs.debug && 'DEBUG' || 'ERROR' }}
-          TF_INPUT: 0
+          TF_VAR_gh_token: ${{ steps.token.outputs.token }}
+          TF_INPUT: false
         if: ${{ github.ref == 'refs/heads/main' }}
-        run: terraform -chdir=terraform apply -auto-approve -lock-timeout=5m
+        run: terraform -chdir=terraform apply .terraform/terraform.tfplan -lock-timeout=5m

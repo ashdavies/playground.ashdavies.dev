@@ -1,0 +1,39 @@
+name: "Setup Cloud"
+description: "Authenticate to Google Cloud via Workload Identity Federation"
+
+inputs:
+  workload_identity_provider:
+    description: "The full identifier of the Workload Identity Provider"
+    required: true
+
+  service_account:
+    description: "The Google Cloud service account for which to generate credentials"
+    required: true
+
+  token_format:
+    description: "Output format for the generated authentication token"
+    required: false
+    default: ''
+
+  setup_gcloud:
+    description: "Setup gcloud Cloud SDK environment"
+    required: false
+    default: "true"
+
+outputs:
+  access_token:
+    description: "The Google Cloud access token for calling other Google Cloud APIs"
+    value: ${{ steps.google-cloud-auth.outputs.access_token }}
+
+runs:
+  using: "composite"
+  steps:
+    - id: google-cloud-auth
+      uses: google-github-actions/auth@v2
+      with:
+        workload_identity_provider: ${{ inputs.workload_identity_provider }}
+        service_account: ${{ inputs.service_account }}
+        token_format: ${{ inputs.token_format }}
+
+    - uses: google-github-actions/setup-gcloud@v2
+      if: ${{ inputs.setup_gcloud == 'true' }}

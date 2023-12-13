@@ -1,5 +1,5 @@
 name: Pre Merge Checks
-on: [pull_request]
+on: [ pull_request ]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
@@ -9,56 +9,41 @@ jobs:
   build:
     name: Pre Merge Checks
     runs-on: ubuntu-latest
+    env:
+      DRY_RUN: ${{ contains(github.event.pull_request.labels.*.name, 'Dry Run') }}
 
     permissions:
       pull-requests: 'write'
       id-token: 'write'
 
     steps:
-#     - name: Permissions Monitor
-#       uses: GitHubSecurityLab/actions-permissions/monitor@v1
-
       - name: Checkout Repository
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
-      - name: Setup JDK
-        uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: 17
-
-      - name: Google Cloud Auth
-        id: google_cloud_auth
-        uses: google-github-actions/auth@v2
-        with:
-          workload_identity_provider: ${{ secrets.GOOGLE_WORKLOAD_IDENTITY }}
-          service_account: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
-
-      - name: Setup Cloud SDK
-        uses: google-github-actions/setup-gcloud@v2
-
       - name: Decrypt Google Services
-        if: ${{ !contains(github.event.pull_request.labels.*.name, 'Dry Run') }}
+        if: ${{ !env.DRY_RUN }}
         env:
           GOOGLE_SERVICES_PASSPHRASE: ${{ secrets.google_services_passphrase }}
         run: find . -type f -name "google-services.aes" -exec sh -c 'openssl aes-256-cbc -md sha256 -d -in "$0" -out "${0%.aes*}.json" -k "${GOOGLE_SERVICES_PASSPHRASE}"' {} \;
 
-      - name: Run Gradle Tasks
-        id: gradle
-        uses: gradle/gradle-build-action@v2
+      - id: setup-cloud
+        uses: ./.github/actions/setup-cloud
+        with:
+          workload_identity_provider: ${{ secrets.GOOGLE_WORKLOAD_IDENTITY }}
+          service_account: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
+          setup_gcloud: false
+
+      - uses: ./.github/actions/setup-gradle
+
+      - id: gradle
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GOOGLE_PROJECT_API_KEY: ${{ secrets.google_project_api_key }}
           GOOGLE_SERVICE_ACCOUNT_ID: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
           PLAYGROUND_API_KEY: ${{ secrets.PLAYGROUND_API_KEY }}
-        with:
-          gradle-home-cache-cleanup: true
-          arguments: >
-            build
-              ${{ contains(github.event.pull_request.labels.*.name, 'Dry Run') && '--dry-run' || '' }}
-              --console=plain
+        run: ./gradlew build --console=plain ${{ env.DRY_RUN && '--dry-run' || '' }}
 
       - name: Gradle Scan Link
         uses: ./.github/actions/pull-comment
@@ -68,8 +53,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           tag: build-scan-url
 
-      - name: Produce Test Summary
-        uses: test-summary/action@v2
+      - uses: test-summary/action@v2
+        if: ${{ !env.DRY_RUN }}
         with:
           paths: "**/build/test-results/test/TEST-*.xml"
-        if: ${{ !contains(github.event.pull_request.labels.*.name, 'Dry Run') }}

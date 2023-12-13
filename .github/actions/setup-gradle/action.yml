@@ -1,0 +1,14 @@
+name: "Setup Gradle"
+description: "Configures Gradle for GitHub actions, caching state and generating a dependency graph"
+
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/setup-java@v4
+      with:
+        distribution: temurin
+        java-version: 17
+
+    - uses: gradle/gradle-build-action@v2
+      with:
+        gradle-home-cache-cleanup: true
