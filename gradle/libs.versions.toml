@@ -109,7 +109,7 @@ ktor-server-request-validation = { module = "io.ktor:ktor-server-request-validat
 ktor-server-test-host = { module = "io.ktor:ktor-server-test-host", version.ref = "ktor" }
 
 leakcanary-android = "com.squareup.leakcanary:leakcanary-android:2.12"
-material-windowSizeClass = "dev.chrisbanes.material3:material3-window-size-class-multiplatform:0.3.1"
+material-windowSizeClass = "dev.chrisbanes.material3:material3-window-size-class-multiplatform:0.3.2"
 molecule-runtime = "app.cash.molecule:molecule-runtime:1.3.1"
 mosaic-runtime = "com.jakewharton.mosaic:mosaic-runtime:0.10.0"
 
@@ -136,7 +136,7 @@ android-application = { id = "com.android.application", version.ref = "google-an
 android-library = { id = "com.android.library", version.ref = "google-android" }
 apollo-graphql = { id = "com.apollographql.apollo", version.ref = "apollo-graphql" }
 cash-sqldelight = { id = "app.cash.sqldelight", version.ref = "cash-sqldelight" }
-dependency-analysis = { id = "com.autonomousapps.dependency-analysis", version = "1.27.0" }
+dependency-analysis = { id = "com.autonomousapps.dependency-analysis", version = "1.28.0" }
 diffplug-spotless = "com.diffplug.spotless:6.23.3"
 google-cloud-jib = "com.google.cloud.tools.jib:3.4.0"
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
