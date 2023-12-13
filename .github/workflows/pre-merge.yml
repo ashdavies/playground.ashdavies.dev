@@ -1,5 +1,5 @@
 name: Pre Merge Checks
-on: [pull_request]
+on: [ pull_request ]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
@@ -9,6 +9,8 @@ jobs:
   build:
     name: Pre Merge Checks
     runs-on: ubuntu-latest
+    env:
+      DRY_RUN: ${{ contains(github.event.pull_request.labels.*.name, 'Dry Run') }}
 
     permissions:
       pull-requests: 'write'
@@ -21,7 +23,7 @@ jobs:
           fetch-depth: 0
 
       - name: Decrypt Google Services
-        if: ${{ !contains(github.event.pull_request.labels.*.name, 'Dry Run') }}
+        if: ${{ !env.DRY_RUN }}
         env:
           GOOGLE_SERVICES_PASSPHRASE: ${{ secrets.google_services_passphrase }}
         run: find . -type f -name "google-services.aes" -exec sh -c 'openssl aes-256-cbc -md sha256 -d -in "$0" -out "${0%.aes*}.json" -k "${GOOGLE_SERVICES_PASSPHRASE}"' {} \;
@@ -41,9 +43,7 @@ jobs:
           GOOGLE_PROJECT_API_KEY: ${{ secrets.google_project_api_key }}
           GOOGLE_SERVICE_ACCOUNT_ID: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
           PLAYGROUND_API_KEY: ${{ secrets.PLAYGROUND_API_KEY }}
-        run: >
-          ./gradlew build --console=plain
-            ${{ contains(github.event.pull_request.labels.*.name, 'Dry Run') && '--dry-run' || '' }}
+        run: ./gradlew build --console=plain ${{ env.DRY_RUN && '--dry-run' || '' }}
 
       - name: Gradle Scan Link
         uses: ./.github/actions/pull-comment
@@ -53,8 +53,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           tag: build-scan-url
 
-      - name: Produce Test Summary
-        uses: test-summary/action@v2
+      - uses: test-summary/action@v2
+        if: ${{ !env.DRY_RUN }}
         with:
           paths: "**/build/test-results/test/TEST-*.xml"
-        if: ${{ !contains(github.event.pull_request.labels.*.name, 'Dry Run') }}
