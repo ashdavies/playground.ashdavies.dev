@@ -1,0 +1,23 @@
+name: "Setup Cloud"
+
+inputs:
+  token_format:
+    description: "Output format for the generated authentication token"
+    default: ''
+
+outputs:
+  access_token:
+    description: "The Google Cloud access token for calling other Google Cloud APIs"
+    value: ${{ steps.google-cloud-auth.outputs.access_token }}
+
+runs:
+  using: "composite"
+  steps:
+    - id: google-cloud-auth
+      uses: google-github-actions/auth@v2
+      with:
+        workload_identity_provider: ${{ secrets.GOOGLE_WORKLOAD_IDENTITY }}
+        service_account: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
+        token_format: ${{ inputs.token_format }}
+
+    - uses: google-github-actions/setup-gcloud@v2
