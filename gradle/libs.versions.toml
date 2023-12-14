@@ -1,7 +1,7 @@
 [versions]
 android-compileSdk = "34"
 android-minSdk = "24"
-androidx-activity = "1.8.1"
+androidx-activity = "1.8.2"
 apollo-graphql = "2.5.14"
 cash-sqldelight = "2.0.1"
 coil-kt = "2.5.0"
