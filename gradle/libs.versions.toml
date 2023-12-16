@@ -49,7 +49,7 @@ google-accompanist-placeholderMaterial = { module = "com.google.accompanist:acco
 google-android-maps = "com.google.android.gms:play-services-maps:18.2.0"
 google-android-material = "com.google.android.material:material:1.11.0"
 
-google-cloud-bom = "com.google.cloud:libraries-bom:26.28.0"
+google-cloud-bom = "com.google.cloud:libraries-bom:26.29.0"
 google-cloud-firestore = { module = "com.google.cloud:google-cloud-firestore" }
 google-cloud-storage = { module = "com.google.cloud:google-cloud-storage" }
 
