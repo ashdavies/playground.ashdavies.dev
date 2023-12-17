@@ -36,10 +36,10 @@ private fun Context.isDebuggable(): Boolean {
     return applicationInfo.flags != 0 and ApplicationInfo.FLAG_DEBUGGABLE
 }
 
-private fun enableStrictMode() {
+private fun enableStrictMode(penaltyDeath: Boolean = false) {
     val policy = StrictMode.ThreadPolicy.Builder()
+        .also { if (penaltyDeath) it.penaltyDeath() else it }
         .detectAll()
-        .penaltyDeath()
         .penaltyLog()
         .build()
 
