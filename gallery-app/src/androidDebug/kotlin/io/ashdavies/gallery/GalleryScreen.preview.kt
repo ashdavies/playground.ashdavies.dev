@@ -48,12 +48,9 @@ internal fun GalleryGridPreview() {
 @Preview
 @Composable
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
-internal fun GalleryBottomBarSelectingPreview() {
+internal fun GalleryBottomSheetPreview() {
     GalleryPreviewTheme {
-        GalleryBottomBar(
-            state = GalleryScreenState(),
-            isSelecting = true,
-        )
+        GallerySheetContent(eventSink = { })
     }
 }
 
@@ -63,16 +60,6 @@ private fun GalleryPreviewTheme(content: @Composable () -> Unit) {
         content()
     }
 }
-
-private fun GalleryScreenState(
-    itemList: List<GalleryScreen.State.StandardItem> = emptyList(),
-    showCapture: Boolean = false,
-    isLoggedIn: Boolean = false,
-) = GalleryScreen.State(
-    itemList = itemList,
-    showCapture = showCapture,
-    isLoggedIn = isLoggedIn,
-) { }
 
 private fun GalleryScreenStateItem(
     name: String = "Sample Image",
