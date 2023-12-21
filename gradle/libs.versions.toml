@@ -2,6 +2,7 @@
 android-compileSdk = "34"
 android-minSdk = "24"
 androidx-activity = "1.8.2"
+androidx-datastore = "1.0.0"
 apollo-graphql = "2.5.14"
 cash-sqldelight = "2.0.1"
 coil-kt = "2.5.0"
@@ -28,6 +29,8 @@ androidx-annotation = "androidx.annotation:annotation:1.7.1"
 androidx-compose-compiler = { module = "androidx.compose.compiler:compiler", version = "1.5.7" }
 androidx-core-ktx = "androidx.core:core-ktx:1.12.0"
 androidx-core-splashscreen = "androidx.core:core-splashscreen:1.0.1"
+androidx-datastore-android = { module = "androidx.datastore:datastore-preferences", version.ref = "androidx-datastore" }
+androidx-datastore-core = { module = "androidx.datastore:datastore-preferences-core", version.ref = "androidx-datastore" }
 
 apollo-graphql-coroutines-support = { module = "com.apollographql.apollo:apollo-coroutines-support", version.ref = "apollo-graphql" }
 apollo-graphql-runtime = { module = "com.apollographql.apollo:apollo-runtime", version.ref = "apollo-graphql" }
@@ -108,7 +111,6 @@ ktor-server-openapi = { module = "io.ktor:ktor-server-openapi", version.ref = "k
 ktor-server-request-validation = { module = "io.ktor:ktor-server-request-validation", version.ref = "ktor" }
 ktor-server-test-host = { module = "io.ktor:ktor-server-test-host", version.ref = "ktor" }
 
-leakcanary-android = "com.squareup.leakcanary:leakcanary-android:2.12"
 material-windowSizeClass = "dev.chrisbanes.material3:material3-window-size-class-multiplatform:0.3.2"
 molecule-runtime = "app.cash.molecule:molecule-runtime:1.3.1"
 mosaic-runtime = "com.jakewharton.mosaic:mosaic-runtime:0.10.0"
@@ -131,16 +133,21 @@ sqldelight-coroutines-extensions = { module = "app.cash.sqldelight:coroutines-ex
 sqldelight-runtime = { module = "app.cash.sqldelight:runtime", version.ref = "cash-sqldelight" }
 sqldelight-sqlite-driver = { module = "app.cash.sqldelight:sqlite-driver", version.ref = "cash-sqldelight" }
 
+squareup-leakcanary = "com.squareup.leakcanary:leakcanary-android:2.12"
+squareup-okio = "com.squareup.okio:okio:3.7.0"
+
 [plugins]
 android-application = { id = "com.android.application", version.ref = "google-android" }
 android-library = { id = "com.android.library", version.ref = "google-android" }
+androidx-build-cache = "androidx.build.gradle.gcpbuildcache:1.0.0-beta05"
 apollo-graphql = { id = "com.apollographql.apollo", version.ref = "apollo-graphql" }
 cash-sqldelight = { id = "app.cash.sqldelight", version.ref = "cash-sqldelight" }
-dependency-analysis = { id = "com.autonomousapps.dependency-analysis", version = "1.28.0" }
+dependency-analysis = "com.autonomousapps.dependency-analysis:1.28.0"
 diffplug-spotless = "com.diffplug.spotless:6.23.3"
 google-cloud-jib = "com.google.cloud.tools.jib:3.4.0"
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
 gradle-doctor = "com.osacky.doctor:0.9.1"
+gradle-enterprise = "com.gradle.enterprise:3.16.1"
 jetbrains-dokka = "org.jetbrains.dokka:1.9.10"
 kotlin-compose = { id = "org.jetbrains.compose", version.ref = "jetbrains-compose" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrains-kotlin" }
@@ -148,3 +155,4 @@ kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref 
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "jetbrains-kotlin" }
 kotlinx-kover = "org.jetbrains.kotlinx.kover:0.7.5"
 openapi-generator = "org.openapi.generator:7.1.0"
+squareup-wire = "com.squareup.wire:4.9.3"

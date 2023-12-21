@@ -13,6 +13,7 @@ kotlin {
         implementation(compose.materialIconsExtended)
 
         implementation(projects.httpClient)
+        implementation(projects.identityManager)
         implementation(projects.imageLoader)
         implementation(projects.localStorage)
         implementation(projects.platformSupport)

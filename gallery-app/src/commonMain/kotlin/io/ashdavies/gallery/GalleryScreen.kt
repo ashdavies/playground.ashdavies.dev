@@ -27,6 +27,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
@@ -91,7 +92,9 @@ internal fun GalleryScreen(
         },
         showDragHandle = false,
         topBar = {
-            GalleryTopAppBar(scrollBehavior) { }
+            GalleryTopAppBar(state.authState, scrollBehavior) {
+                eventSink(GalleryScreen.Event.Identity.SignIn)
+            }
         },
         floatingActionButton = {
             GalleryActionButton(
@@ -164,10 +167,11 @@ internal fun GalleryScreen(
 @Composable
 @ExperimentalMaterial3Api
 internal fun GalleryTopAppBar(
+    authState: AuthState,
     scrollBehavior: TopAppBarScrollBehavior,
     title: String = "Gallery",
     modifier: Modifier = Modifier,
-    onProfileClick: (Boolean) -> Unit,
+    onProfileClick: () -> Unit,
 ) {
     CenterAlignedTopAppBar(
         title = {
@@ -178,7 +182,7 @@ internal fun GalleryTopAppBar(
             )
         },
         modifier = modifier,
-        actions = { ProfileActionButton { onProfileClick(false) } },
+        actions = { ProfileActionButton(authState) { onProfileClick() } },
         colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
             containerColor = MaterialTheme.colorScheme.background,
         ),
@@ -188,26 +192,29 @@ internal fun GalleryTopAppBar(
 
 @Composable
 private fun ProfileActionButton(
-    isLoggedIn: Boolean = false,
+    authState: AuthState,
+    modifier: Modifier = Modifier,
     onClick: () -> Unit,
 ) {
-    Crossfade(targetState = isLoggedIn) { state ->
+    Crossfade(authState, modifier) { state ->
         when (state) {
-            true -> IconButton(onClick = onClick) {
+            is AuthState.Authenticated -> IconButton(onClick = onClick) {
+                Image(
+                    painter = rememberAsyncImagePainter(state.profilePictureUrl),
+                    contentDescription = null,
+                    modifier = Modifier.clip(CircleShape),
+                )
+            }
+
+            AuthState.Unauthenticated -> IconButton(onClick = onClick) {
                 Image(
                     imageVector = Icons.Filled.AccountCircle,
-                    contentDescription = "Logout",
+                    contentDescription = "SignIn",
                     colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onBackground),
                 )
             }
 
-            false -> IconButton(onClick = onClick) {
-                Image(
-                    imageVector = Icons.Filled.AccountCircle,
-                    contentDescription = "Login",
-                    colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onBackground),
-                )
-            }
+            AuthState.Unsupported -> Unit
         }
     }
 }

@@ -2,6 +2,7 @@ buildscript {
     dependencies {
         val googleServicesVersion = libs.versions.google.services.get()
         classpath("com.google.gms:google-services:$googleServicesVersion")
+        //classpath("com.squareup.wire:wire-gradle-plugin:4.9.3")
     }
 }
 
@@ -21,6 +22,8 @@ plugins {
             classpath(multiplatform)
             classpath(serialization)
         }
+
+        //classpath(squareup.wire)
 
         alias(dependency.analysis)
         alias(gradle.doctor)

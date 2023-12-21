@@ -13,13 +13,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import kotlinx.collections.immutable.persistentListOf
 
+private fun randomPhotoUrl(size: Int = 200): String {
+    return "https://picsum.photos/$size"
+}
+
 @Preview
 @Composable
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @OptIn(ExperimentalMaterial3Api::class)
 internal fun GalleryTopAppBarPreview() {
     GalleryPreviewTheme {
-        GalleryTopAppBar(enterAlwaysScrollBehavior()) { }
+        GalleryTopAppBar(
+            authState = AuthState.Authenticated(randomPhotoUrl()),
+            scrollBehavior = enterAlwaysScrollBehavior()
+        ) { }
     }
 }
 
@@ -67,7 +74,7 @@ private fun GalleryScreenStateItem(
     state: SyncState = SyncState.NOT_SYNCED,
 ) = GalleryScreen.State.StandardItem(
     title = name,
-    imageModel = "https://picsum.photos/200",
+    imageModel = randomPhotoUrl(),
     isSelected = isSelected,
     state = state,
 )

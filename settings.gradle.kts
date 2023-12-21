@@ -1,6 +1,15 @@
 import androidx.build.gradle.gcpbuildcache.GcpBuildCache
 import androidx.build.gradle.gcpbuildcache.GcpBuildCacheServiceFactory
 
+buildscript {
+    dependencies {
+        // noinspection GradleDependency
+        classpath("com.squareup.okio:okio:3.6.0")?.because("""
+            androidx.build.gradle.gcpbuildcache uses older versions of okio
+        """.trimIndent())
+    }
+}
+
 pluginManagement.repositories {
     gradlePluginPortal()
     google()
@@ -9,7 +18,6 @@ pluginManagement.repositories {
 
 @Suppress("UnstableApiUsage")
 dependencyResolutionManagement.repositories {
-    // repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     google()
     mavenCentral()
 }
@@ -56,6 +64,7 @@ include(
     ":firebase-compose",
     ":gallery-app",
     ":http-client",
+    ":identity-manager",
     ":image-loader",
     ":kotlin-gb",
     ":local-storage",
