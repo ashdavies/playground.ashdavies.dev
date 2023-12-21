@@ -9,6 +9,7 @@ import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.datastore.core.DataStore
 import com.arkivanov.essenty.parcelable.Parcelable
 import com.arkivanov.essenty.parcelable.Parcelize
 import com.slack.circuit.runtime.CircuitUiEvent
@@ -20,6 +21,8 @@ import com.slack.circuit.runtime.ui.Ui
 import com.slack.circuit.runtime.ui.ui
 import io.ashdavies.content.PlatformContext
 import io.ashdavies.http.DefaultHttpClient
+import io.ashdavies.identity.Credential
+import io.ashdavies.identity.credentialDataStore
 import io.ashdavies.playground.DatabaseFactory
 import kotlinx.coroutines.launch
 
@@ -31,6 +34,10 @@ public object GalleryScreen : Parcelable, Screen {
 
             data object Cancel : Capture
             data object Request : Capture
+        }
+
+        sealed interface Identity : Event {
+            data object SignIn : Identity
         }
 
         sealed interface Selection : Event {
@@ -47,7 +54,7 @@ public object GalleryScreen : Parcelable, Screen {
         val itemList: List<StandardItem> = emptyList(),
         val expandedItem: ExpandedItem? = null,
         val showCapture: Boolean,
-        val isLoggedIn: Boolean,
+        val authState: AuthState,
         val eventSink: (Event) -> Unit,
     ) : CircuitUiState {
 
@@ -68,14 +75,20 @@ public object GalleryScreen : Parcelable, Screen {
 
 public fun GalleryPresenterFactory(context: PlatformContext): Presenter.Factory {
     val database = DatabaseFactory(PlaygroundDatabase.Schema, context) { PlaygroundDatabase(it) }
-    val images = ImageManager(StorageManager(PathProvider(context)), database.imageQueries)
-
-    val engine = InMemoryHttpClientEngine(emptyList())
-    val sync = SyncManager(DefaultHttpClient(engine))
+    val imageManager = ImageManager(StorageManager(PathProvider(context)), database.imageQueries)
+    val syncManager = SyncManager(DefaultHttpClient(InMemoryHttpClientEngine(emptyList())))
+    val credentialDataStore = context.credentialDataStore
 
     return Presenter.Factory { screen, _, _ ->
         when (screen) {
-            is GalleryScreen -> presenterOf { GalleryPresenter(images, sync) }
+            is GalleryScreen -> presenterOf {
+                GalleryPresenter(
+                    credentialStore = credentialDataStore,
+                    imageManager = imageManager,
+                    syncManager = syncManager
+                )
+            }
+
             else -> null
         }
     }
@@ -96,20 +109,28 @@ public fun GalleryUiFactory(context: PlatformContext): Ui.Factory {
 }
 
 @Composable
-internal fun GalleryPresenter(images: ImageManager, sync: SyncManager): GalleryScreen.State {
-    val itemList by produceState(emptyList<Image>(), images) {
-        images.list.collect { value = it }
+internal fun GalleryPresenter(
+    credentialStore: DataStore<Credential>,
+    imageManager: ImageManager,
+    syncManager: SyncManager,
+): GalleryScreen.State {
+    val itemList by produceState(emptyList<Image>(), imageManager) {
+        imageManager.list.collect { value = it }
     }
+
+    val syncState by produceState(emptyMap<String, SyncState>()) {
+        syncManager.state.collect { value = it }
+    }
+
+    val credential by produceState(null as Credential?, credentialStore) {
+        credentialStore.data.collect { value = it }
+    }
+
+    val coroutineScope = rememberCoroutineScope()
 
     var expandedItem by remember { mutableStateOf<GalleryScreen.State.ExpandedItem?>(null) }
     var selected by remember { mutableStateOf(emptyList<Image>()) }
     var takePhoto by remember { mutableStateOf(false) }
-
-    val syncState by produceState(emptyMap<String, SyncState>()) {
-        sync.state.collect { value = it }
-    }
-
-    val coroutineScope = rememberCoroutineScope()
 
     return GalleryScreen.State(
         itemList = itemList.map {
@@ -122,17 +143,30 @@ internal fun GalleryPresenter(images: ImageManager, sync: SyncManager): GalleryS
         },
         expandedItem = expandedItem,
         showCapture = takePhoto,
-        isLoggedIn = false,
+        authState = when (val credential = credential) {
+            is Credential -> when {
+                credential.profile_picture_url.isEmpty() -> AuthState.Unauthenticated
+                else -> AuthState.Authenticated(credential.profile_picture_url)
+            }
+
+            else -> AuthState.Unauthenticated
+        },
     ) { event ->
         when (event) {
             is GalleryScreen.Event.Capture -> when (event) {
                 is GalleryScreen.Event.Capture.Result -> coroutineScope.launch {
-                    images.add(event.value)
+                    imageManager.add(event.value)
                     takePhoto = false
                 }
 
                 is GalleryScreen.Event.Capture.Cancel -> takePhoto = false
                 is GalleryScreen.Event.Capture.Request -> takePhoto = true
+            }
+
+            is GalleryScreen.Event.Identity -> when (event) {
+                is GalleryScreen.Event.Identity.SignIn -> coroutineScope.launch {
+                    credentialStore.updateData { Credential("https://picsum.photos/200") }
+                }
             }
 
             is GalleryScreen.Event.Selection -> when (event) {
@@ -153,12 +187,12 @@ internal fun GalleryPresenter(images: ImageManager, sync: SyncManager): GalleryS
                 }
 
                 is GalleryScreen.Event.Selection.Delete -> coroutineScope.launch {
-                    selected.forEach { images.remove(it) }
+                    selected.forEach { imageManager.remove(it) }
                     selected = emptyList()
                 }
 
                 is GalleryScreen.Event.Selection.Sync -> coroutineScope.launch {
-                    selected.forEach { sync.sync(it.path) }
+                    selected.forEach { syncManager.sync(it.path) }
                     selected = emptyList()
                 }
             }

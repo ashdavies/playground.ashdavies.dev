@@ -24,7 +24,7 @@ android {
 
 kotlin {
     androidDebug.dependencies {
-        implementation(libs.leakcanary.android)
+        implementation(libs.squareup.leakcanary)
     }
 
     androidMain.dependencies {
