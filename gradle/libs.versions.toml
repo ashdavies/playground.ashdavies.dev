@@ -139,7 +139,7 @@ squareup-okio = "com.squareup.okio:okio:3.7.0"
 [plugins]
 android-application = { id = "com.android.application", version.ref = "google-android" }
 android-library = { id = "com.android.library", version.ref = "google-android" }
-androidx-build-cache = "androidx.build.gradle.gcpbuildcache:1.0.0-beta05"
+androidx-build-cache = "androidx.build.gradle.gcpbuildcache:1.0.0-beta07"
 apollo-graphql = { id = "com.apollographql.apollo", version.ref = "apollo-graphql" }
 cash-sqldelight = { id = "app.cash.sqldelight", version.ref = "cash-sqldelight" }
 dependency-analysis = "com.autonomousapps.dependency-analysis:1.28.0"
