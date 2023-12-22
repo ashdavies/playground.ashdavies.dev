@@ -11,7 +11,7 @@ android {
 kotlin {
     commonMain.dependencies {
         implementation(projects.platformSupport)
-        api(libs.androidx.datastore.core)
+        implementation(libs.androidx.datastore.core)
     }
 
     androidMain.dependencies {
