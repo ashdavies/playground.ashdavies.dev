@@ -3,13 +3,12 @@
 package io.ashdavies.gallery
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import androidx.datastore.core.DataStore
 import com.arkivanov.essenty.parcelable.Parcelable
 import com.arkivanov.essenty.parcelable.Parcelize
 import com.slack.circuit.runtime.CircuitUiEvent
@@ -22,7 +21,8 @@ import com.slack.circuit.runtime.ui.ui
 import io.ashdavies.content.PlatformContext
 import io.ashdavies.http.DefaultHttpClient
 import io.ashdavies.identity.Credential
-import io.ashdavies.identity.credentialDataStore
+import io.ashdavies.identity.IdentityManager
+import io.ashdavies.identity.IdentityState
 import io.ashdavies.playground.DatabaseFactory
 import kotlinx.coroutines.launch
 
@@ -53,8 +53,8 @@ public object GalleryScreen : Parcelable, Screen {
     internal data class State(
         val itemList: List<StandardItem> = emptyList(),
         val expandedItem: ExpandedItem? = null,
-        val showCapture: Boolean,
-        val authState: AuthState,
+        val showCapture: Boolean = false,
+        val identityState: IdentityState,
         val eventSink: (Event) -> Unit,
     ) : CircuitUiState {
 
@@ -77,13 +77,13 @@ public fun GalleryPresenterFactory(context: PlatformContext): Presenter.Factory 
     val database = DatabaseFactory(PlaygroundDatabase.Schema, context) { PlaygroundDatabase(it) }
     val imageManager = ImageManager(StorageManager(PathProvider(context)), database.imageQueries)
     val syncManager = SyncManager(DefaultHttpClient(InMemoryHttpClientEngine(emptyList())))
-    val credentialDataStore = context.credentialDataStore
+    val identityManager = IdentityManager()
 
     return Presenter.Factory { screen, _, _ ->
         when (screen) {
             is GalleryScreen -> presenterOf {
                 GalleryPresenter(
-                    credentialStore = credentialDataStore,
+                    identityManager = identityManager,
                     imageManager = imageManager,
                     syncManager = syncManager
                 )
@@ -110,21 +110,13 @@ public fun GalleryUiFactory(context: PlatformContext): Ui.Factory {
 
 @Composable
 internal fun GalleryPresenter(
-    credentialStore: DataStore<Credential>,
+    identityManager: IdentityManager,
     imageManager: ImageManager,
     syncManager: SyncManager,
 ): GalleryScreen.State {
-    val itemList by produceState(emptyList<Image>(), imageManager) {
-        imageManager.list.collect { value = it }
-    }
-
-    val syncState by produceState(emptyMap<String, SyncState>()) {
-        syncManager.state.collect { value = it }
-    }
-
-    val credential by produceState(null as Credential?, credentialStore) {
-        credentialStore.data.collect { value = it }
-    }
+    val identityState by identityManager.state.collectAsState(IdentityState.Unsupported)
+    val itemList by imageManager.list.collectAsState(emptyList())
+    val syncState by syncManager.state.collectAsState(emptyMap())
 
     val coroutineScope = rememberCoroutineScope()
 
@@ -143,14 +135,7 @@ internal fun GalleryPresenter(
         },
         expandedItem = expandedItem,
         showCapture = takePhoto,
-        authState = when (val credential = credential) {
-            is Credential -> when {
-                credential.profile_picture_url.isEmpty() -> AuthState.Unauthenticated
-                else -> AuthState.Authenticated(credential.profile_picture_url)
-            }
-
-            else -> AuthState.Unauthenticated
-        },
+        identityState = identityState,
     ) { event ->
         when (event) {
             is GalleryScreen.Event.Capture -> when (event) {
@@ -165,7 +150,7 @@ internal fun GalleryPresenter(
 
             is GalleryScreen.Event.Identity -> when (event) {
                 is GalleryScreen.Event.Identity.SignIn -> coroutineScope.launch {
-                    credentialStore.updateData { Credential("https://picsum.photos/200") }
+                    TODO()
                 }
             }
 

@@ -35,6 +35,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Sync
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
@@ -66,6 +67,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.slack.circuit.foundation.internal.BackHandler
 import io.ashdavies.graphics.rememberAsyncImagePainter
+import io.ashdavies.identity.IdentityState
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 
@@ -92,7 +94,7 @@ internal fun GalleryScreen(
         },
         showDragHandle = false,
         topBar = {
-            GalleryTopAppBar(state.authState, scrollBehavior) {
+            GalleryTopAppBar(state.identityState, scrollBehavior) {
                 eventSink(GalleryScreen.Event.Identity.SignIn)
             }
         },
@@ -167,7 +169,7 @@ internal fun GalleryScreen(
 @Composable
 @ExperimentalMaterial3Api
 internal fun GalleryTopAppBar(
-    authState: AuthState,
+    identityState: IdentityState,
     scrollBehavior: TopAppBarScrollBehavior,
     title: String = "Gallery",
     modifier: Modifier = Modifier,
@@ -182,7 +184,7 @@ internal fun GalleryTopAppBar(
             )
         },
         modifier = modifier,
-        actions = { ProfileActionButton(authState) { onProfileClick() } },
+        actions = { ProfileActionButton(identityState) { onProfileClick() } },
         colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
             containerColor = MaterialTheme.colorScheme.background,
         ),
@@ -192,21 +194,27 @@ internal fun GalleryTopAppBar(
 
 @Composable
 private fun ProfileActionButton(
-    authState: AuthState,
+    identityState: IdentityState,
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
 ) {
-    Crossfade(authState, modifier) { state ->
+    Crossfade(identityState, modifier) { state ->
         when (state) {
-            is AuthState.Authenticated -> IconButton(onClick = onClick) {
+            is IdentityState.Authenticated -> IconButton(onClick = onClick) {
                 Image(
-                    painter = rememberAsyncImagePainter(state.profilePictureUrl),
+                    painter = rememberAsyncImagePainter(state.pictureProfileUrl),
                     contentDescription = null,
                     modifier = Modifier.clip(CircleShape),
                 )
             }
 
-            AuthState.Unauthenticated -> IconButton(onClick = onClick) {
+            is IdentityState.Failure -> Image(
+                imageVector = Icons.Filled.Warning,
+                contentDescription = "Failure",
+                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onBackground),
+            )
+
+            IdentityState.Unauthenticated -> IconButton(onClick = onClick) {
                 Image(
                     imageVector = Icons.Filled.AccountCircle,
                     contentDescription = "SignIn",
@@ -214,7 +222,7 @@ private fun ProfileActionButton(
                 )
             }
 
-            AuthState.Unsupported -> Unit
+            IdentityState.Unsupported -> Unit
         }
     }
 }
