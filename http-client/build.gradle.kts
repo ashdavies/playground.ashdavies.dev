@@ -41,6 +41,7 @@ openApiGenerate {
     inputSpec.set("$rootDir/${property("openapi.generator.inputSpec")}")
     templateDir.set("$projectDir/src/commonMain/resources/templates")
     packageName.set("io.ashdavies.generated")
+    additionalProperties.put("dateLibrary", "kotlinx-datetime")
     serverVariables.put("cloud_run_hostname", String())
     ignoreFileOverride.set("$projectDir/.openapi-generator-ignore")
     configOptions.put("library", "multiplatform")
