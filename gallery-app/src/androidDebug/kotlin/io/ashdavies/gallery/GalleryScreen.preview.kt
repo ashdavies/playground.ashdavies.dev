@@ -12,11 +12,8 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import io.ashdavies.identity.IdentityState
+import io.ashdavies.identity.randomPhotoUrl
 import kotlinx.collections.immutable.persistentListOf
-
-private fun randomPhotoUrl(size: Int = 200): String {
-    return "https://picsum.photos/$size"
-}
 
 @Preview
 @Composable
@@ -26,7 +23,7 @@ internal fun GalleryTopAppBarPreview() {
     GalleryPreviewTheme {
         GalleryTopAppBar(
             identityState = IdentityState.Authenticated(randomPhotoUrl()),
-            scrollBehavior = enterAlwaysScrollBehavior()
+            scrollBehavior = enterAlwaysScrollBehavior(),
         ) { }
     }
 }

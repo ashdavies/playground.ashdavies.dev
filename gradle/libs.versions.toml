@@ -2,7 +2,6 @@
 android-compileSdk = "34"
 android-minSdk = "24"
 androidx-activity = "1.8.2"
-androidx-datastore = "1.0.0"
 apollo-graphql = "2.5.14"
 cash-sqldelight = "2.0.1"
 coil-kt = "2.5.0"
@@ -29,8 +28,6 @@ androidx-annotation = "androidx.annotation:annotation:1.7.1"
 androidx-compose-compiler = { module = "androidx.compose.compiler:compiler", version = "1.5.7" }
 androidx-core-ktx = "androidx.core:core-ktx:1.12.0"
 androidx-core-splashscreen = "androidx.core:core-splashscreen:1.0.1"
-androidx-datastore-android = { module = "androidx.datastore:datastore-preferences", version.ref = "androidx-datastore" }
-androidx-datastore-core = { module = "androidx.datastore:datastore-preferences-core", version.ref = "androidx-datastore" }
 
 apollo-graphql-coroutines-support = { module = "com.apollographql.apollo:apollo-coroutines-support", version.ref = "apollo-graphql" }
 apollo-graphql-runtime = { module = "com.apollographql.apollo:apollo-runtime", version.ref = "apollo-graphql" }
@@ -155,4 +152,3 @@ kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref 
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "jetbrains-kotlin" }
 kotlinx-kover = "org.jetbrains.kotlinx.kover:0.7.5"
 openapi-generator = "org.openapi.generator:7.2.0"
-squareup-wire = "com.squareup.wire:4.9.3"

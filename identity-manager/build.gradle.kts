@@ -1,7 +1,6 @@
 plugins {
     id("io.ashdavies.default")
-
-    alias(libs.plugins.squareup.wire)
+    id("io.ashdavies.sql")
 }
 
 android {
@@ -11,14 +10,17 @@ android {
 kotlin {
     commonMain.dependencies {
         implementation(projects.platformSupport)
-        implementation(libs.androidx.datastore.core)
-    }
-
-    androidMain.dependencies {
-        implementation(libs.androidx.datastore.android)
+        implementation(projects.localStorage)
+        implementation(projects.sqlDriver)
     }
 }
 
-wire {
-    kotlin { }
+
+sqldelight {
+    databases {
+        create("PlaygroundDatabase") {
+            packageName.set(android.namespace)
+            dependency(projects.localStorage)
+        }
+    }
 }
