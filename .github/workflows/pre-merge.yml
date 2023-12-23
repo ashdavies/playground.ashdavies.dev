@@ -10,7 +10,6 @@ jobs:
     name: Pre Merge Checks
     runs-on: ubuntu-latest
     env:
-      DRY_RUN: ${{ contains(github.event.pull_request.labels.*.name, 'Dry Run') }}
 
     permissions:
       pull-requests: 'write'
@@ -23,7 +22,6 @@ jobs:
           fetch-depth: 0
 
       - name: Decrypt Google Services
-        if: fromJSON(env.DRY_RUN)
         env:
           GOOGLE_SERVICES_PASSPHRASE: ${{ secrets.google_services_passphrase }}
         run: find . -type f -name "google-services.aes" -exec sh -c 'openssl aes-256-cbc -md sha256 -d -in "$0" -out "${0%.aes*}.json" -k "${GOOGLE_SERVICES_PASSPHRASE}"' {} \;
@@ -43,7 +41,7 @@ jobs:
           GOOGLE_PROJECT_API_KEY: ${{ secrets.google_project_api_key }}
           GOOGLE_SERVICE_ACCOUNT_ID: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
           PLAYGROUND_API_KEY: ${{ secrets.PLAYGROUND_API_KEY }}
-        run: ./gradlew build --console=plain ${{ fromJSON(env.DRY_RUN) && '--dry-run' || '' }}
+        run: ./gradlew build --console=plain
 
       - name: Gradle Scan Link
         uses: ./.github/actions/pull-comment
@@ -54,6 +52,5 @@ jobs:
           tag: build-scan-url
 
       - uses: test-summary/action@v2
-        if: fromJSON(env.DRY_RUN)
         with:
           paths: "**/build/test-results/test/TEST-*.xml"
