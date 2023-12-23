@@ -77,7 +77,7 @@ public fun GalleryPresenterFactory(context: PlatformContext): Presenter.Factory 
     val database = DatabaseFactory(PlaygroundDatabase.Schema, context) { PlaygroundDatabase(it) }
     val imageManager = ImageManager(StorageManager(PathProvider(context)), database.imageQueries)
     val syncManager = SyncManager(DefaultHttpClient(InMemoryHttpClientEngine(emptyList())))
-    val identityManager = IdentityManager()
+    val identityManager = IdentityManager(context)
 
     return Presenter.Factory { screen, _, _ ->
         when (screen) {
