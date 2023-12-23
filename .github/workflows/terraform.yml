@@ -71,7 +71,7 @@ jobs:
         run: >
             ./gradlew cloud-run:jib
             --image=europe-west1-docker.pkg.dev/${{ steps.google_cloud_auth.outputs.project_id }}/cloud-run-source-deploy/playground.ashdavies.dev
-            ${{ env.DRY_RUN == "true" && '--dry-run' || '' }}
+            ${{ fromJSON(env.DRY_RUN) && '--dry-run' || '' }}
             --no-configuration-cache
             --console=plain
 
