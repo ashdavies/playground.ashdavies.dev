@@ -25,6 +25,10 @@ outputs:
     description: "The Google Cloud access token for calling other Google Cloud APIs"
     value: ${{ steps.google-cloud-auth.outputs.access_token }}
 
+  project_id:
+    description: "The Google Cloud project identifier"
+    value: ${{ steps.google-cloud-auth.outputs.project_id }}
+
 runs:
   using: "composite"
   steps:
