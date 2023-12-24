@@ -9,7 +9,6 @@ jobs:
   build:
     name: Pre Merge Checks
     runs-on: ubuntu-latest
-    env:
 
     permissions:
       pull-requests: 'write'
