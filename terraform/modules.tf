@@ -81,6 +81,10 @@ module "github-repository" {
       secret_name     = "google_workload_identity"
     }
   ]
+  topics = [
+    "compose-multiplatform",
+    "kotlin-multiplatform",
+  ]
 }
 
 module "github-service-account" {
@@ -116,35 +120,22 @@ module "github-workload-identity" {
 }
 
 module "gradle-build-cache" {
-  source                   = "terraform-google-modules/cloud-storage/google//modules/simple_bucket"
-  version                  = "5.0.0"
-  location                 = var.project_region
-  name                     = "playground-build-cache"
-  project_id               = var.project_id
-  bucket_policy_only       = true
-  iam_members              = [{
-    member = module.github-service-account.iam_email
-    role   = "roles/storage.admin"
-  }]
+  source             = "terraform-google-modules/cloud-storage/google//modules/simple_bucket"
+  version            = "5.0.0"
+  location           = var.project_region
+  name               = "playground-build-cache"
+  project_id         = var.project_id
+  bucket_policy_only = true
+  iam_members        = [
+    {
+      member = module.github-service-account.iam_email
+      role   = "roles/storage.admin"
+    }
+  ]
   public_access_prevention = "enforced"
   retention_policy         = {
     retention_period = 2678400
     is_locked        = false
   }
-  versioning               = false
-}
-
-module "runtime-resources" {
-  source                   = "terraform-google-modules/cloud-storage/google//modules/simple_bucket"
-  version                  = "5.0.0"
-  location                 = var.project_region
-  name                     = "playground-runtime"
-  project_id               = var.project_id
-  bucket_policy_only       = true
-  iam_members              = [{
-    member = module.github-service-account.iam_email
-    role   = "roles/storage.admin"
-  }]
-  public_access_prevention = "enforced"
-  versioning               = false
+  versioning = false
 }
