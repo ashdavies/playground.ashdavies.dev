@@ -20,7 +20,6 @@ import com.slack.circuit.runtime.ui.Ui
 import com.slack.circuit.runtime.ui.ui
 import io.ashdavies.content.PlatformContext
 import io.ashdavies.http.DefaultHttpClient
-import io.ashdavies.identity.Credential
 import io.ashdavies.identity.IdentityManager
 import io.ashdavies.identity.IdentityState
 import io.ashdavies.playground.DatabaseFactory
@@ -77,7 +76,7 @@ public fun GalleryPresenterFactory(context: PlatformContext): Presenter.Factory 
     val database = DatabaseFactory(PlaygroundDatabase.Schema, context) { PlaygroundDatabase(it) }
     val imageManager = ImageManager(StorageManager(PathProvider(context)), database.imageQueries)
     val syncManager = SyncManager(DefaultHttpClient(InMemoryHttpClientEngine(emptyList())))
-    val identityManager = IdentityManager()
+    val identityManager = IdentityManager(database.credentialQueries)
 
     return Presenter.Factory { screen, _, _ ->
         when (screen) {
@@ -85,7 +84,7 @@ public fun GalleryPresenterFactory(context: PlatformContext): Presenter.Factory 
                 GalleryPresenter(
                     identityManager = identityManager,
                     imageManager = imageManager,
-                    syncManager = syncManager
+                    syncManager = syncManager,
                 )
             }
 
@@ -150,7 +149,7 @@ internal fun GalleryPresenter(
 
             is GalleryScreen.Event.Identity -> when (event) {
                 is GalleryScreen.Event.Identity.SignIn -> coroutineScope.launch {
-                    TODO()
+                    identityManager.signIn()
                 }
             }
 

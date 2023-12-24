@@ -5,8 +5,7 @@ CREATE TABLE image (
 );
 
 selectAll:
-    SELECT *
-    FROM image;
+    SELECT * FROM image;
 
 insertOrReplace:
     INSERT OR REPLACE INTO image VALUES ?;
