@@ -34,48 +34,29 @@ jobs:
       id-token: 'write'
 
     steps:
-#     - name: Permissions Monitor
-#       uses: GitHubSecurityLab/actions-permissions/monitor@v1
-
       - name: Checkout Repository
         uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
 
-      - name: Setup JDK
-        uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: 17
-
-      - name: Google Cloud Auth
-        uses: google-github-actions/auth@v2
+      - id: setup-cloud
+        uses: ./.github/actions/setup-cloud
         with:
           workload_identity_provider: ${{ secrets.GOOGLE_WORKLOAD_IDENTITY }}
           service_account: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
+          setup_gcloud: false
+
+      - uses: ./.github/actions/setup-gradle
 
       - name: Run Gradle Tasks
         id: gradle_build
-        uses: gradle/gradle-build-action@v2
         env:
           FIREBASE_ANDROID_APP_ID: ${{ secrets.firebase_android_app_id }}
           GOOGLE_SERVICE_ACCOUNT_ID: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
           INTEGRATION_API_KEY: ${{ secrets.integration_api_key }}
           PLAYGROUND_API_KEY: ${{ secrets.PLAYGROUND_API_KEY }}
-        with:
-          gradle-home-cache-cleanup: true
-          arguments: cloud-run:integrationTest --console=plain
+        run: ./gradlew cloud-run:integrationTest --console=plain
 
       - name: Produce Test Summary
         uses: test-summary/action@v2
         with:
           paths: "**/build/test-results/test/TEST-*.xml"
-        if: ${{ always() }}
-
-      - name: Upload Test Report
-        uses: actions/upload-artifact@v4
-        with:
-          name: test-report
-          path: "**/build/reports/tests"
-          if-no-files-found: error
         if: ${{ always() }}
