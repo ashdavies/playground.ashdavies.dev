@@ -1,4 +1,4 @@
-package io.ashdavies.content
+package io.ashdavies.util
 
 import java.util.UUID
 

@@ -1,3 +1,3 @@
-package io.ashdavies.content
+package io.ashdavies.util
 
 public expect fun randomUuid(): String

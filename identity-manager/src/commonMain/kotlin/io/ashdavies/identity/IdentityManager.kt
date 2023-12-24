@@ -1,7 +1,7 @@
 package io.ashdavies.identity
 
-import io.ashdavies.content.randomUuid
 import io.ashdavies.playground.mapToOneOrNull
+import io.ashdavies.util.randomUuid
 import kotlinx.coroutines.flow.Flow
 
 public interface IdentityManager {

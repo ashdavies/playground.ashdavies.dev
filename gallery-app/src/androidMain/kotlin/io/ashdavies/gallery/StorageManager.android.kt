@@ -1,7 +1,7 @@
 package io.ashdavies.gallery
 
 import io.ashdavies.content.PlatformContext
-import io.ashdavies.content.randomUuid
+import io.ashdavies.util.randomUuid
 import kotlinx.coroutines.withContext
 import java.io.File
 import kotlin.coroutines.CoroutineContext
