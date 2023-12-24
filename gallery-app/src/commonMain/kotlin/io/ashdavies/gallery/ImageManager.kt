@@ -1,6 +1,7 @@
 package io.ashdavies.gallery
 
 import io.ashdavies.playground.mapToList
+import io.ashdavies.util.randomUuid
 import kotlinx.coroutines.flow.Flow
 
 internal interface ImageManager {

@@ -2,6 +2,7 @@ package io.ashdavies.gallery
 
 import app.cash.turbine.test
 import io.ashdavies.http.DefaultHttpClient
+import io.ashdavies.util.randomUuid
 import io.ktor.utils.io.ByteReadChannel
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test

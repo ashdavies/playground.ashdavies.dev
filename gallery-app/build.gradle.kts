@@ -41,6 +41,7 @@ sqldelight {
     databases {
         create("PlaygroundDatabase") {
             packageName.set(android.namespace)
+            dependency(projects.identityManager)
             dependency(projects.localStorage)
         }
     }
