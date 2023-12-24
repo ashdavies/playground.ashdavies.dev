@@ -25,3 +25,9 @@ variable "secrets" {
     secret_name     = string
   }))
 }
+
+variable "topics" {
+  description = "The list of topics of the repository."
+  default     = []
+  type        = list(string)
+}

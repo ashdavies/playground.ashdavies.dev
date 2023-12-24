@@ -16,14 +16,7 @@ resource "github_repository" "main" {
   delete_branch_on_merge = true
   allow_auto_merge       = true
   has_issues             = true
-  topics                 = [
-    "android-development",
-    "multiplatform",
-    "development",
-    "composer",
-    "android",
-    "kotlin",
-  ]
+  topics                 = var.topics
 }
 
 resource "github_issue_label" "main" {
