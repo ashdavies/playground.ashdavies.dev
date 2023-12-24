@@ -60,6 +60,8 @@ jobs:
       - uses: ./.github/actions/setup-gradle
         if: ${{ github.ref == 'refs/heads/main' }}
 
+      - run: echo "${{ steps.setup-cloud.outputs.project_id }}"
+
       - if: ${{ github.ref == 'refs/heads/main' }}
         env:
           FIREBASE_ANDROID_APP_ID: ${{ secrets.firebase_android_app_id }}
@@ -69,7 +71,7 @@ jobs:
           PLAYGROUND_API_KEY: ${{ secrets.PLAYGROUND_API_KEY }}
         run: >
             ./gradlew cloud-run:jib
-            --image=europe-west1-docker.pkg.dev/${{ steps.google_cloud_auth.outputs.project_id }}/cloud-run-source-deploy/playground.ashdavies.dev
+            --image=europe-west1-docker.pkg.dev/${{ steps.setup-cloud.outputs.project_id }}/cloud-run-source-deploy/playground.ashdavies.dev
             --no-configuration-cache
             --console=plain
 
