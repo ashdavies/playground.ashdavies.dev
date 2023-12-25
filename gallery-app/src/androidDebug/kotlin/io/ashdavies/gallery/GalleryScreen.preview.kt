@@ -12,7 +12,6 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import io.ashdavies.identity.IdentityState
-import io.ashdavies.identity.randomPhotoUrl
 import kotlinx.collections.immutable.persistentListOf
 
 @Preview
@@ -22,7 +21,7 @@ import kotlinx.collections.immutable.persistentListOf
 internal fun GalleryTopAppBarPreview() {
     GalleryPreviewTheme {
         GalleryTopAppBar(
-            identityState = IdentityState.Authenticated(randomPhotoUrl()),
+            identityState = IdentityState.Authenticated(null),
             scrollBehavior = enterAlwaysScrollBehavior(),
         ) { }
     }
@@ -72,7 +71,7 @@ private fun GalleryScreenStateItem(
     state: SyncState = SyncState.NOT_SYNCED,
 ) = GalleryScreen.State.StandardItem(
     title = name,
-    imageModel = randomPhotoUrl(),
+    imageModel = null,
     isSelected = isSelected,
     state = state,
 )

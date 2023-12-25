@@ -1,7 +1,6 @@
 package io.ashdavies.identity
 
 import io.ashdavies.playground.mapToOneOrNull
-import io.ashdavies.util.randomUuid
 import kotlinx.coroutines.flow.Flow
 
 public interface IdentityManager {
@@ -9,22 +8,28 @@ public interface IdentityManager {
     public suspend fun signIn()
 }
 
-public fun IdentityManager(credentials: CredentialQueries): IdentityManager = object : IdentityManager {
+internal fun IdentityManager(
+    credentialQueries: CredentialQueries,
+    identityService: GoogleIdIdentityService,
+): IdentityManager = object : IdentityManager {
 
-    override val state: Flow<IdentityState> = credentials.selectAll().mapToOneOrNull {
-        if (it != null) IdentityState.Authenticated(it.profile_picture_url) else IdentityState.Unauthenticated
+    override val state: Flow<IdentityState> = credentialQueries.selectAll().mapToOneOrNull {
+        if (it != null) IdentityState.Authenticated(it.profilePictureUrl) else IdentityState.Unauthenticated
     }
 
     override suspend fun signIn() {
-        credentials.insertOrReplace(
+        val identityRequest = GoogleIdIdentityRequest(serverClientId = serverClientId())
+        val identityResponse = try {
+            identityService.request(identityRequest)
+        } catch (_: UnsupportedOperationException) {
+            return
+        }
+
+        credentialQueries.insertOrReplace(
             credential = Credential(
-                uuid = randomUuid(),
-                profile_picture_url = randomPhotoUrl(),
+                uuid = identityResponse.uuid,
+                profilePictureUrl = identityResponse.pictureProfileUrl,
             ),
         )
     }
-}
-
-public fun randomPhotoUrl(size: Int = 200): String {
-    return "https://picsum.photos/$size"
 }
