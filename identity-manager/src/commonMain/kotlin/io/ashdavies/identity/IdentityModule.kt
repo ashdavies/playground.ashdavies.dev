@@ -10,6 +10,6 @@ public object IdentityModule {
         credentialQueries = credentialQueries,
         identityService = GoogleIdIdentityService(
             context = platformContext,
-        )
+        ),
     )
 }
