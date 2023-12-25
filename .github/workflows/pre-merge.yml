@@ -40,6 +40,7 @@ jobs:
           GOOGLE_PROJECT_API_KEY: ${{ secrets.google_project_api_key }}
           GOOGLE_SERVICE_ACCOUNT_ID: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
           PLAYGROUND_API_KEY: ${{ secrets.PLAYGROUND_API_KEY }}
+          SERVER_CLIENT_ID: ${{ secrets.SERVER_CLIENT_ID }}
         run: ./gradlew build --console=plain
 
       - name: Gradle Scan Link

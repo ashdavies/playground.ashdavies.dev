@@ -21,6 +21,7 @@ import com.slack.circuit.runtime.ui.ui
 import io.ashdavies.content.PlatformContext
 import io.ashdavies.http.DefaultHttpClient
 import io.ashdavies.identity.IdentityManager
+import io.ashdavies.identity.IdentityModule
 import io.ashdavies.identity.IdentityState
 import io.ashdavies.playground.DatabaseFactory
 import kotlinx.coroutines.launch
@@ -76,7 +77,7 @@ public fun GalleryPresenterFactory(context: PlatformContext): Presenter.Factory 
     val database = DatabaseFactory(PlaygroundDatabase.Schema, context) { PlaygroundDatabase(it) }
     val imageManager = ImageManager(StorageManager(PathProvider(context)), database.imageQueries)
     val syncManager = SyncManager(DefaultHttpClient(InMemoryHttpClientEngine(emptyList())))
-    val identityManager = IdentityManager(database.credentialQueries)
+    val identityManager = IdentityModule.identityManager(context, database.credentialQueries)
 
     return Presenter.Factory { screen, _, _ ->
         when (screen) {
@@ -109,9 +110,9 @@ public fun GalleryUiFactory(context: PlatformContext): Ui.Factory {
 
 @Composable
 internal fun GalleryPresenter(
-    identityManager: IdentityManager,
     imageManager: ImageManager,
     syncManager: SyncManager,
+    identityManager: IdentityManager,
 ): GalleryScreen.State {
     val identityState by identityManager.state.collectAsState(IdentityState.Unsupported)
     val itemList by imageManager.list.collectAsState(emptyList())

@@ -28,6 +28,7 @@ androidx-annotation = "androidx.annotation:annotation:1.7.1"
 androidx-compose-compiler = { module = "androidx.compose.compiler:compiler", version = "1.5.7" }
 androidx-core-ktx = "androidx.core:core-ktx:1.12.0"
 androidx-core-splashscreen = "androidx.core:core-splashscreen:1.0.1"
+androidx-credentials-auth = "androidx.credentials:credentials-play-services-auth:1.2.0"
 
 apollo-graphql-coroutines-support = { module = "com.apollographql.apollo:apollo-coroutines-support", version.ref = "apollo-graphql" }
 apollo-graphql-runtime = { module = "com.apollographql.apollo:apollo-runtime", version.ref = "apollo-graphql" }
@@ -46,6 +47,7 @@ fusesource-jansi = "org.fusesource.jansi:jansi:2.4.1"
 google-accompanist-flowlayout = { module = "com.google.accompanist:accompanist-flowlayout", version.ref = "google-accompanist" }
 google-accompanist-placeholderMaterial = { module = "com.google.accompanist:accompanist-placeholder-material", version.ref = "google-accompanist" }
 
+google-android-identity = "com.google.android.libraries.identity.googleid:googleid:1.1.0"
 google-android-maps = "com.google.android.gms:play-services-maps:18.2.0"
 google-android-material = "com.google.android.material:material:1.11.0"
 
