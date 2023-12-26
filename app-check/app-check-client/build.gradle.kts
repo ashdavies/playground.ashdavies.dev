@@ -23,10 +23,7 @@ kotlin {
     }
 
     androidMain.dependencies {
-        with(libs.google.firebase) {
-            implementation(analytics)
-            implementation(common.ktx)
-            implementation(appcheck.playintegrity)
-        }
+        implementation(libs.gitlive.firebase.app)
+        implementation(libs.google.firebase.appcheck.playintegrity)
     }
 }

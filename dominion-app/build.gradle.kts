@@ -24,11 +24,6 @@ kotlin {
 
         with(libs.google) {
             implementation(accompanist.placeholderMaterial)
-
-            implementation(dependencies.platform(firebase.bom))
-            implementation(firebase.analytics)
-            implementation(firebase.auth.ktx)
-            implementation(firebase.common.ktx)
         }
     }
 }

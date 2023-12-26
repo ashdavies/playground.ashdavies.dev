@@ -7,11 +7,8 @@ android {
 }
 
 kotlin {
-    androidMain.dependencies {
-        with(libs.google.firebase) {
-            implementation(dependencies.platform(bom))
-            implementation(analytics)
-            implementation(common.ktx)
-        }
+    commonMain.dependencies {
+        implementation(projects.platformSupport)
+        implementation(libs.gitlive.firebase.app)
     }
 }
