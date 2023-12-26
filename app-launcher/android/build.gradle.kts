@@ -42,10 +42,6 @@ kotlin {
 
         with(libs.google) {
             implementation(android.material)
-
-            implementation(project.dependencies.platform(firebase.bom))
-            implementation(firebase.analytics)
-            implementation(firebase.common.ktx)
         }
 
         implementation(libs.slack.circuit.foundation)

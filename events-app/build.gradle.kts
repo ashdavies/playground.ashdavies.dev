@@ -39,11 +39,8 @@ kotlin {
 
             with(firebase) {
                 implementation(dependencies.platform(bom))
-                implementation(analytics)
                 implementation(appcheck.playintegrity)
                 implementation(appcheck)
-                implementation(auth.ktx)
-                implementation(common.ktx)
             }
 
             implementation(maps.android.compose)

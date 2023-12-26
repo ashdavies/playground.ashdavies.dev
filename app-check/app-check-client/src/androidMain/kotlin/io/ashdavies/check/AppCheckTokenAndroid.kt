@@ -18,7 +18,7 @@ import com.google.firebase.appcheck.AppCheckToken as FirebaseAppCheckToken
 public actual fun ProvideAppCheckToken(client: HttpClient, content: @Composable () -> Unit) {
     val factory = PlayIntegrityAppCheckProviderFactory.getInstance()
     val firebaseApp = LocalFirebaseAndroidApp.current
-    val appCheck = firebaseApp.appCheck
+    val appCheck = firebaseApp.android.appCheck
 
     val token by produceState<AppCheckToken?>(null) {
         appCheck.addAppCheckListener { value = AppCheckToken(it) }
