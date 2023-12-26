@@ -18,19 +18,19 @@ import io.ashdavies.gallery.GalleryScreen
 import io.ashdavies.playground.home.HomeScreen as EventsHomeScreen
 
 private val DominionEntry = LauncherScreen.Entry(
-    image = LauncherDrawableTokens.dominion,
+    imageModel = LauncherDrawableTokens.dominion,
     title = "Dominion",
     event = LauncherScreen.Event.Dominion,
 )
 
 private val EventsEntry = LauncherScreen.Entry(
-    image = LauncherDrawableTokens.events,
+    imageModel = LauncherDrawableTokens.events,
     title = "Events",
     event = LauncherScreen.Event.Events,
 )
 
 private val GalleryEntry = LauncherScreen.Entry(
-    image = LauncherDrawableTokens.gallery,
+    imageModel = LauncherDrawableTokens.gallery,
     title = "Gallery",
     event = LauncherScreen.Event.Gallery,
 )
@@ -38,7 +38,7 @@ private val GalleryEntry = LauncherScreen.Entry(
 @Parcelize
 public object LauncherScreen : Parcelable, Screen {
     public data class Entry(
-        val image: Any,
+        val imageModel: Any,
         val title: String,
         val event: Event,
     )
