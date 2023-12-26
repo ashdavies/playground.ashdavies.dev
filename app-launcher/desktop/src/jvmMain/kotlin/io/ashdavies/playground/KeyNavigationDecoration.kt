@@ -6,6 +6,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.input.key.KeyEvent
 import androidx.compose.ui.input.key.KeyEventType
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onPreviewKeyEvent
@@ -17,6 +18,7 @@ import kotlinx.collections.immutable.ImmutableList
 
 internal class KeyNavigationDecoration(
     private val decoration: NavDecoration = NavigatorDefaults.DefaultDecoration,
+    private val predicate: (KeyEvent) -> Boolean = { it.key == Key.Escape },
     private val onBackInvoked: () -> Unit,
 ) : NavDecoration {
 
@@ -30,7 +32,12 @@ internal class KeyNavigationDecoration(
         decoration.DecoratedContent(
             args = args,
             backStackDepth = backStackDepth,
-            modifier = modifier.focusOnPlacement().onEscKey(onBackInvoked),
+            modifier = modifier
+                .focusOnPlacement()
+                .onPreviewKeyUp(
+                    predicate = predicate,
+                    action = onBackInvoked,
+                ),
             content = content,
         )
     }
@@ -43,8 +50,11 @@ private fun Modifier.focusOnPlacement(): Modifier {
 }
 
 @Composable
-private fun Modifier.onEscKey(action: () -> Unit): Modifier = onPreviewKeyEvent {
-    if (it.type == KeyEventType.KeyUp && it.key == Key.Escape) {
+private fun Modifier.onPreviewKeyUp(
+    predicate: (KeyEvent) -> Boolean = { true },
+    action: () -> Unit,
+): Modifier = onPreviewKeyEvent {
+    if (it.type == KeyEventType.KeyUp && predicate(it)) {
         action()
         true
     } else {
