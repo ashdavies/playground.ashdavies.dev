@@ -5,6 +5,8 @@ package io.ashdavies.playground
 import androidx.compose.runtime.Composable
 import com.arkivanov.essenty.parcelable.Parcelable
 import com.arkivanov.essenty.parcelable.Parcelize
+import com.slack.circuit.backstack.SaveableBackStack
+import com.slack.circuit.backstack.rememberSaveableBackStack
 import com.slack.circuit.runtime.CircuitUiEvent
 import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.Navigator
@@ -13,7 +15,6 @@ import com.slack.circuit.runtime.presenter.presenterOf
 import com.slack.circuit.runtime.screen.Screen
 import io.ashdavies.dominion.DominionScreen
 import io.ashdavies.gallery.GalleryScreen
-import kotlinx.collections.immutable.persistentListOf
 import io.ashdavies.playground.home.HomeScreen as EventsHomeScreen
 
 private val DominionEntry = LauncherScreen.Entry(
@@ -71,11 +72,19 @@ internal fun LauncherPresenterFactory(): Presenter.Factory = Presenter.Factory {
     if (screen is LauncherScreen) presenterOf { LauncherPresenter(navigator) } else null
 }
 
-public fun buildInitialBackStack(initialScreen: String? = null): List<Screen> {
-    return when (initialScreen) {
-        "dominion" -> persistentListOf(LauncherScreen, DominionScreen.Home)
-        "events" -> persistentListOf(LauncherScreen, EventsHomeScreen)
-        "gallery" -> persistentListOf(LauncherScreen, GalleryScreen)
-        else -> persistentListOf(LauncherScreen)
+@Composable
+public fun rememberSaveableBackStack(initialScreenName: String? = null): SaveableBackStack = rememberSaveableBackStack {
+    when (val initialScreen = initialScreenOrNull(initialScreenName)) {
+        is Screen -> listOf(LauncherScreen, initialScreen)
+        else -> listOf(LauncherScreen)
+    }.forEach(::push)
+}
+
+private fun initialScreenOrNull(name: String? = null): Screen? = name?.let {
+    return when (it) {
+        "dominion" -> DominionScreen.Home
+        "events" -> EventsHomeScreen
+        "gallery" -> GalleryScreen
+        else -> null
     }
 }

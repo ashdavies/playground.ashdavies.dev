@@ -1,10 +1,8 @@
 package io.ashdavies.playground
 
 import android.os.Build
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
-import com.slack.circuit.backstack.rememberSaveableBackStack
 import com.slack.circuit.foundation.CircuitCompositionLocals
 import com.slack.circuit.foundation.NavigableCircuitContent
 import com.slack.circuit.foundation.rememberCircuitNavigator
@@ -20,9 +18,8 @@ internal class LauncherActivity : ComposeActivity(content = {
 
         CircuitCompositionLocals(circuit) {
             ContentWithOverlays {
-                MaterialTheme(dynamicColorScheme()) {
-                    val initialBackStack = buildInitialBackStack(intent.getStringExtra("route"))
-                    val backStack = rememberSaveableBackStack { initialBackStack.forEach(::push) }
+                LauncherContent {
+                    val backStack = rememberSaveableBackStack(intent.getStringExtra("route"))
 
                     NavigableCircuitContent(
                         navigator = rememberCircuitNavigator(backStack),
