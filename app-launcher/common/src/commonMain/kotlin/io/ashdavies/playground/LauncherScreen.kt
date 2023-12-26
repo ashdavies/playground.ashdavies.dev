@@ -104,7 +104,7 @@ private fun LauncherItem(
         ) {
             Image(
                 painter = rememberAsyncImagePainter(
-                    model = entry.image,
+                    model = entry.imageModel,
                     contentScale = ContentScale.FillHeight,
                 ),
                 contentDescription = entry.title,
