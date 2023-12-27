@@ -30,7 +30,6 @@ kotlin {
     androidMain.dependencies {
         with(projects) {
             implementation(appLauncher.common)
-            implementation(firebaseCompose)
             implementation(httpClient)
         }
 

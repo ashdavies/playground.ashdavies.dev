@@ -45,7 +45,6 @@
 stateDiagram-v2
     AppLauncher --> DominionApp
     AppLauncher --> EventsApp
-    AppLauncher --> FirebaseCompose
 
     CloudRun --> AppCheckSdk
     CloudRun --> CloudFirestore

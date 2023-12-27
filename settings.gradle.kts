@@ -61,7 +61,6 @@ include(
     ":dominion-app",
     ":events-aggregator",
     ":events-app",
-    ":firebase-compose",
     ":gallery-app",
     ":http-client",
     ":identity-manager",
