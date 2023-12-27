@@ -28,7 +28,7 @@ internal enum class SyncState {
 
 internal fun SyncManager(
     client: HttpClient,
-    reader: File.() -> ByteReadChannel = File::readChannel,
+    reader: File.() -> ByteReadChannel,
 ): SyncManager = object : SyncManager {
 
     private val _state = MutableStateFlow<Map<String, SyncState>>(emptyMap())
