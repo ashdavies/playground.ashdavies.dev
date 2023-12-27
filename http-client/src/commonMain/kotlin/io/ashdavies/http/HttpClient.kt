@@ -51,7 +51,7 @@ public fun DefaultHttpClient(
 
     install(Logging) {
         logger = DefaultLogger()
-        level = LogLevel.INFO
+        level = LogLevel.ALL
     }
 
     block()

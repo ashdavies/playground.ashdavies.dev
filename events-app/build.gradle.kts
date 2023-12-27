@@ -27,8 +27,6 @@ kotlin {
     }
 
     androidMain.dependencies {
-        implementation(projects.firebaseCompose)
-
         implementation(libs.androidx.activity.compose)
         implementation(libs.androidx.activity.ktx)
 

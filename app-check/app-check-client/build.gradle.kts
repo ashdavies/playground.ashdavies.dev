@@ -8,12 +8,14 @@ android {
 
 kotlin {
     commonMain.dependencies {
+        api(libs.ktor.client.core)
+
         with(projects) {
             implementation(appCheck.appCheckCommon)
-            implementation(firebaseCompose)
             implementation(httpClient)
         }
 
+        implementation(libs.gitlive.firebase.app)
         implementation(libs.ktor.client.core)
         implementation(libs.slf4j.simple)
     }
