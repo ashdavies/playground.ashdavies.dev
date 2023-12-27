@@ -19,11 +19,9 @@ import com.slack.circuit.runtime.screen.Screen
 import com.slack.circuit.runtime.ui.Ui
 import com.slack.circuit.runtime.ui.ui
 import io.ashdavies.content.PlatformContext
-import io.ashdavies.http.DefaultHttpClient
 import io.ashdavies.identity.IdentityManager
 import io.ashdavies.identity.IdentityModule
 import io.ashdavies.identity.IdentityState
-import io.ashdavies.playground.DatabaseFactory
 import kotlinx.coroutines.launch
 
 @Parcelize
@@ -74,18 +72,15 @@ public object GalleryScreen : Parcelable, Screen {
 }
 
 public fun GalleryPresenterFactory(context: PlatformContext): Presenter.Factory {
-    val database = DatabaseFactory(PlaygroundDatabase.Schema, context) { PlaygroundDatabase(it) }
-    val imageManager = ImageManager(StorageManager(PathProvider(context)), database.imageQueries)
-    val syncManager = SyncManager(DefaultHttpClient(InMemoryHttpClientEngine(emptyList())))
-    val identityManager = IdentityModule.identityManager(context, database.credentialQueries)
+    val database = GalleryModule.playgroundDatabase(context)
 
     return Presenter.Factory { screen, _, _ ->
         when (screen) {
             is GalleryScreen -> presenterOf {
                 GalleryPresenter(
-                    identityManager = identityManager,
-                    imageManager = imageManager,
-                    syncManager = syncManager,
+                    identityManager = IdentityModule.identityManager(context, database.credentialQueries),
+                    imageManager = GalleryModule.imageManager(context, database.imageQueries),
+                    syncManager = GalleryModule.syncManager(),
                 )
             }
 
