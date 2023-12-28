@@ -1,7 +1,7 @@
 package io.ashdavies.cloud
 
+import io.ashdavies.http.common.models.Event
 import io.ashdavies.playground.github.GitHubService
-import io.ashdavies.playground.models.Event
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.call
 import io.ktor.server.response.respond

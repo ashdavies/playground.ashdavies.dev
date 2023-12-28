@@ -2,8 +2,6 @@ plugins {
     id("com.google.cloud.tools.jib")
     id("io.ashdavies.kotlin")
     application
-
-    alias(libs.plugins.openapi.generator)
 }
 
 application {
@@ -48,8 +46,6 @@ kotlin {
     }
 
     commonMain {
-        kotlin.srcDir(tasks.openApiGenerate)
-
         dependencies {
             with(projects) {
                 implementation(appCheck.appCheckSdk)
@@ -92,19 +88,6 @@ kotlin {
             }
         }
     }
-}
-
-openApiGenerate {
-    generatorName.set("kotlin-server")
-    outputDir.set("$buildDir/generated/openapi/main")
-    inputSpec.set("$rootDir/${property("openapi.generator.inputSpec")}")
-    templateDir.set("$projectDir/src/jvmMain/resources/templates")
-    packageName.set("io.ashdavies.playground")
-    ignoreFileOverride.set("$projectDir/.openapi-generator-ignore")
-    configOptions.put("library", "ktor")
-    configOptions.put("sourceFolder", ".")
-    typeMappings.put("date", "LocalDate")
-    importMappings.put("LocalDate", "kotlinx.datetime.LocalDate")
 }
 
 tasks.withType<com.google.cloud.tools.jib.gradle.JibTask> {

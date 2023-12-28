@@ -1,8 +1,9 @@
 package io.ashdavies.http
 
+import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.staticCompositionLocalOf
 
-public val LocalHttpCredentials = staticCompositionLocalOf<HttpCredentials> {
+public val LocalHttpCredentials: ProvidableCompositionLocal<HttpCredentials> = staticCompositionLocalOf {
     error("CompositionLocal LocalHttpCredentials not present")
 }
 

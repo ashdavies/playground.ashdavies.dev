@@ -6,10 +6,10 @@ import com.google.firebase.FirebaseOptions
 import com.google.firebase.auth.FirebaseAuth
 import io.ashdavies.check.appCheck
 import io.ashdavies.http.AppCheckToken
-import io.ashdavies.playground.models.AppCheckToken
-import io.ashdavies.playground.models.AuthResult
-import io.ashdavies.playground.models.DecodedToken
-import io.ashdavies.playground.models.SignInRequest
+import io.ashdavies.http.common.models.AppCheckToken
+import io.ashdavies.http.common.models.AuthResult
+import io.ashdavies.http.common.models.DecodedToken
+import io.ashdavies.http.common.models.SignInRequest
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.parameter
@@ -25,8 +25,7 @@ import io.ktor.server.routing.post
 import io.ktor.server.routing.put
 import io.ktor.server.routing.route
 
-private const val SIGNUP_ENDPOINT =
-    "https://identitytoolkit.googleapis.com/v1/accounts:signInWithCustomToken"
+private const val SIGNUP_ENDPOINT = "https://identitytoolkit.googleapis.com/v1/accounts:signInWithCustomToken"
 
 internal val firebaseApp: FirebaseApp by lazy(LazyThreadSafetyMode.NONE) {
     when (val serviceAccountId = System.getenv("GOOGLE_SERVICE_ACCOUNT_ID")) {
@@ -60,7 +59,7 @@ internal fun Route.firebase(client: HttpClient) = route("/firebase") {
 
     post("/token") {
         val appCheck = firebaseApp.appCheck(client)
-        val appCheckRequest = call.receive<io.ashdavies.playground.models.FirebaseApp>()
+        val appCheckRequest = call.receive<io.ashdavies.http.common.models.FirebaseApp>()
         val appCheckToken = appCheck.createToken(
             appId = appCheckRequest.appId,
             mapper = ::AppCheckToken,
