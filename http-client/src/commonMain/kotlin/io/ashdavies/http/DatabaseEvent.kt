@@ -1,9 +1,9 @@
 package io.ashdavies.http
 
-import io.ashdavies.generated.models.Event
-import io.ashdavies.playground.Event as LegacyEvent
+import io.ashdavies.http.common.models.Event as ApiEvent
+import io.ashdavies.playground.Event as DatabaseEvent
 
-public fun LegacyEvent(event: Event): LegacyEvent = LegacyEvent(
+public fun DatabaseEvent(event: ApiEvent): DatabaseEvent = DatabaseEvent(
     dateStart = event.dateStart,
     cfpStart = event.cfp?.start,
     cfpSite = event.cfp?.site,

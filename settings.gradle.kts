@@ -63,6 +63,7 @@ include(
     ":events-app",
     ":gallery-app",
     ":http-client",
+    ":http-common",
     ":identity-manager",
     ":image-loader",
     ":kotlin-gb",

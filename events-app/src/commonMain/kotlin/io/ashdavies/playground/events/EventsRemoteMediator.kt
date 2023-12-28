@@ -4,23 +4,26 @@ import app.cash.paging.ExperimentalPagingApi
 import app.cash.paging.LoadType
 import app.cash.paging.PagingState
 import app.cash.paging.RemoteMediator
-import io.ashdavies.generated.apis.EventsApi
-import io.ashdavies.http.LegacyEvent
-import io.ashdavies.playground.Event
+import io.ashdavies.http.DatabaseEvent
 import io.ashdavies.playground.EventsQueries
+import io.ktor.client.HttpClient
+import io.ktor.client.call.body
 import io.ktor.client.network.sockets.SocketTimeoutException
+import io.ktor.client.request.get
+import io.ashdavies.http.common.models.Event as ApiEvent
+import io.ashdavies.playground.Event as DatabaseEvent
 
 private const val NETWORK_PAGE_SIZE = 100
 
 @OptIn(ExperimentalPagingApi::class)
 internal class EventsRemoteMediator(
     private val eventsQueries: EventsQueries,
-    private val eventsApi: EventsApi,
-) : RemoteMediator<String, Event>() {
+    private val httpClient: HttpClient,
+) : RemoteMediator<String, DatabaseEvent>() {
 
     override suspend fun load(
         loadType: LoadType,
-        state: PagingState<String, Event>,
+        state: PagingState<String, DatabaseEvent>,
     ): MediatorResult {
         val loadKey = when (loadType) {
             LoadType.APPEND -> state.lastItemOrNull()?.id ?: return endOfPaginationReached()
@@ -28,8 +31,8 @@ internal class EventsRemoteMediator(
             LoadType.REFRESH -> null
         }
 
-        val result = try {
-            eventsApi.getEvents(loadKey, limit = NETWORK_PAGE_SIZE)
+        val result: List<ApiEvent> = try {
+            httpClient.get("/events?startAt=$loadKey&limit=$NETWORK_PAGE_SIZE")
         } catch (exception: SocketTimeoutException) {
             return MediatorResult.Error(exception)
         }.body()
@@ -40,7 +43,7 @@ internal class EventsRemoteMediator(
             }
 
             result.forEach {
-                eventsQueries.insertOrReplace(LegacyEvent(it))
+                eventsQueries.insertOrReplace(DatabaseEvent(it))
             }
         }
 

@@ -5,13 +5,13 @@ import androidx.compose.runtime.remember
 import app.cash.paging.ExperimentalPagingApi
 import app.cash.paging.Pager
 import app.cash.paging.PagingConfig
-import io.ashdavies.generated.apis.EventsApi
-import io.ashdavies.http.LocalHttpCredentials
+import io.ashdavies.http.LocalHttpClient
 import io.ashdavies.playground.Event
 import io.ashdavies.playground.EventsQueries
 import io.ashdavies.playground.MultipleReferenceWarning
 import io.ashdavies.playground.network.todayAsString
 import io.ashdavies.playground.rememberPlaygroundDatabase
+import io.ktor.client.HttpClient
 
 private const val DEFAULT_PAGE_SIZE = 10
 
@@ -20,21 +20,14 @@ private const val DEFAULT_PAGE_SIZE = 10
 @MultipleReferenceWarning
 internal fun rememberEventPager(
     eventsQueries: EventsQueries = rememberPlaygroundDatabase().eventsQueries,
-    eventsApi: EventsApi = rememberEventsApi(),
+    httpClient: HttpClient = LocalHttpClient.current,
     initialKey: String = todayAsString(),
     pageSize: Int = DEFAULT_PAGE_SIZE,
-): Pager<String, Event> = remember(eventsQueries, eventsApi) {
+): Pager<String, Event> = remember(eventsQueries, httpClient) {
     Pager(
         config = PagingConfig(pageSize),
         initialKey = initialKey,
-        remoteMediator = EventsRemoteMediator(eventsQueries, eventsApi),
+        remoteMediator = EventsRemoteMediator(eventsQueries, httpClient),
         pagingSourceFactory = { EventsPagingSource(eventsQueries) },
     )
-}
-
-@Composable
-private fun rememberEventsApi(
-    apiKey: String = LocalHttpCredentials.current.apiKey,
-): EventsApi = remember(apiKey) {
-    EventsApi().apply { setApiKey(apiKey) }
 }
