@@ -11,10 +11,10 @@ kotlin {
     }
 
     jvmMain.dependencies {
+        implementation(projects.appLauncher.common)
         implementation(projects.httpClient)
         implementation(libs.jetbrains.kotlinx.cli)
         implementation(libs.slack.circuit.foundation)
-        implementation(projects.appLauncher.common)
     }
 }
 

@@ -19,7 +19,7 @@ kotlin {
         api(projects.platformSupport)
 
         with(projects) {
-            implementation(appCheck.appCheckClient)
+            //implementation(appCheck.appCheckClient)
             implementation(dominionApp)
             implementation(eventsApp)
             implementation(galleryApp)

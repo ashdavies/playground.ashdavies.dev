@@ -9,7 +9,6 @@ android {
 
 kotlin {
     commonMain.dependencies {
-        implementation(projects.appCheck.appCheckClient)
         implementation(projects.httpClient)
         implementation(projects.imageLoader)
 

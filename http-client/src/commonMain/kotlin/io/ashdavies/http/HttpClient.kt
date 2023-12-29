@@ -15,20 +15,11 @@ import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.request.accept
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
-import io.ktor.http.userAgent
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 
 public val LocalHttpClient: ProvidableCompositionLocal<HttpClient> = staticCompositionLocalOf {
     DefaultHttpClient { install(HttpCache) }
-}
-
-public fun DefaultHttpClient(
-    credentials: HttpCredentials,
-    configure: HttpClientConfig<*>.() -> Unit = { },
-): HttpClient = DefaultHttpClient {
-    install(DefaultRequest) { userAgent(credentials.userAgent) }
-    configure()
 }
 
 public fun DefaultHttpClient(
