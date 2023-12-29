@@ -41,7 +41,6 @@ internal class LauncherActivity : ComposeActivity(content = {
     }
 })
 
-
 @Suppress("DEPRECATION")
 private fun getSignature(packageManager: PackageManager, packageName: String): String {
     val packageInfo = packageManager.getPackageInfo(packageName, PackageManager.GET_SIGNATURES)
