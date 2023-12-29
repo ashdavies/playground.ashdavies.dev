@@ -11,16 +11,11 @@ import com.slack.circuit.foundation.CircuitCompositionLocals
 import com.slack.circuit.foundation.NavigableCircuitContent
 import com.slack.circuit.foundation.rememberCircuitNavigator
 import io.ashdavies.content.PlatformContext
-import io.ashdavies.http.HttpCredentials
-import io.ashdavies.http.LocalHttpCredentials
+import io.ashdavies.http.LocalHttpClient
+import io.ktor.client.plugins.DefaultRequest
+import io.ktor.client.request.header
 import kotlinx.cli.ArgParser
 import kotlinx.cli.ArgType
-
-private val ApiKey: String
-    get() = System.getenv("PLAYGROUND_API_KEY")
-
-private val UserAgent: String
-    get() = System.getProperty("os.name")
 
 public fun main(args: Array<String>) {
     val argParser = ArgParser("Playground")
@@ -36,9 +31,14 @@ public fun main(args: Array<String>) {
             val circuit = remember { CircuitConfig(PlatformContext.Default) }
 
             CircuitCompositionLocals(circuit) {
-                val credentials = remember { HttpCredentials(ApiKey, UserAgent) }
-
-                CompositionLocalProvider(LocalHttpCredentials provides credentials) {
+                CompositionLocalProvider(
+                    LocalHttpClient provides LocalHttpClient.current.config {
+                        install(DefaultRequest) {
+                            header("User-Agent", System.getProperty("os.name"))
+                            header("X-API-Key", System.getenv("BROWSER_API_KEY"))
+                        }
+                    },
+                ) {
                     LauncherContent {
                         val backStack = rememberSaveableBackStack(routerArgOption)
 

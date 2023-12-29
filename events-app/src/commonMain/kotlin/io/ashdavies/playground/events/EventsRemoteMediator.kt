@@ -13,6 +13,7 @@ import io.ktor.client.request.get
 import io.ashdavies.http.common.models.Event as ApiEvent
 import io.ashdavies.playground.Event as DatabaseEvent
 
+private const val PLAYGROUND_API_HOST = "playground.ashdavies.dev"
 private const val NETWORK_PAGE_SIZE = 100
 
 @OptIn(ExperimentalPagingApi::class)
@@ -31,8 +32,13 @@ internal class EventsRemoteMediator(
             LoadType.REFRESH -> null
         }
 
+        val query = buildList {
+            if (loadKey != null) add("startAt=$loadKey")
+            add("limit=$NETWORK_PAGE_SIZE")
+        }
+
         val result: List<ApiEvent> = try {
-            httpClient.get("/events?startAt=$loadKey&limit=$NETWORK_PAGE_SIZE")
+            httpClient.get("https://$PLAYGROUND_API_HOST/events?${query.joinToString("&")}")
         } catch (exception: SocketTimeoutException) {
             return MediatorResult.Error(exception)
         }.body()

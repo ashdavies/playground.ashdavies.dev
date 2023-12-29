@@ -13,7 +13,6 @@ kotlin {
         implementation(compose.material)
 
         with(projects) {
-            implementation(appCheck.appCheckClient)
             implementation(httpClient)
             implementation(imageLoader)
             implementation(localStorage)

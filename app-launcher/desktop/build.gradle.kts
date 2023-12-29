@@ -11,15 +11,18 @@ kotlin {
     }
 
     jvmMain.dependencies {
+        implementation(projects.appLauncher.common)
         implementation(projects.httpClient)
         implementation(libs.jetbrains.kotlinx.cli)
         implementation(libs.slack.circuit.foundation)
-        implementation(projects.appLauncher.common)
     }
 }
 
 compose.desktop {
     application {
+        // https://github.com/Kotlin/kotlinx.coroutines/issues/3914
+        jvmArgs("-Dkotlinx.coroutines.fast.service.loader=false")
+
         mainClass = "io.ashdavies.playground.LauncherMainKt"
 
         nativeDistributions {
