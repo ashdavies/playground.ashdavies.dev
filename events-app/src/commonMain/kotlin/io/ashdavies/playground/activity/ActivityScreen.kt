@@ -54,7 +54,6 @@ private val <T : Any> LazyPagingItems<T>.isRefreshing: Boolean
 @OptIn(ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class)
 internal fun ActivityScreen(state: ActivityScreen.State, modifier: Modifier = Modifier) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
-    val eventSink = state.eventSink
 
     Scaffold(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -82,9 +81,7 @@ internal fun ActivityScreen(state: ActivityScreen.State, modifier: Modifier = Mo
                 contentPadding = contentPadding,
             ) {
                 items(state.pagingItems.itemCount) {
-                    EventSection(state.pagingItems[it]) { event ->
-                        eventSink(ActivityScreen.Event.Details(event.id))
-                    }
+                    EventSection(state.pagingItems[it])
                 }
             }
         }
@@ -111,10 +108,10 @@ private fun ActivityTopAppBar(text: String = "Events", modifier: Modifier = Modi
 }
 
 @Composable
-private fun EventSection(event: Event?, onClick: (Event) -> Unit) {
+private fun EventSection(event: Event?) {
     Box(Modifier.padding(horizontal = 16.dp, vertical = 8.dp)) {
         Button(
-            onClick = { if (event != null) onClick(event) },
+            onClick = { },
             modifier = Modifier.fillMaxWidth(),
             enabled = event != null,
         ) {
