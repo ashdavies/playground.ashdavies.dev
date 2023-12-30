@@ -11,7 +11,6 @@ import io.ashdavies.playground.EventsQueries
 import io.ashdavies.playground.MultipleReferenceWarning
 import io.ashdavies.playground.network.todayAsString
 import io.ashdavies.playground.rememberPlaygroundDatabase
-import io.ktor.client.HttpClient
 
 private const val DEFAULT_PAGE_SIZE = 10
 
