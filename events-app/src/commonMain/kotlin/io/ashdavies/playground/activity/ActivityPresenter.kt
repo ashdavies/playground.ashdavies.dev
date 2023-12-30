@@ -10,11 +10,9 @@ import app.cash.paging.compose.collectAsLazyPagingItems
 import com.arkivanov.essenty.parcelable.Parcelable
 import com.arkivanov.essenty.parcelable.Parcelize
 import com.slack.circuit.runtime.CircuitUiState
-import com.slack.circuit.runtime.Navigator
 import com.slack.circuit.runtime.screen.Screen
 import io.ashdavies.playground.Event
 import io.ashdavies.playground.MultipleReferenceWarning
-import io.ashdavies.playground.details.DetailsScreen
 import io.ashdavies.playground.events.rememberEventPager
 
 @Parcelize
@@ -23,20 +21,12 @@ internal object ActivityScreen : Parcelable, Screen {
         data class Details(val eventId: String) : Event
     }
 
-    data class State(
-        val pagingItems: LazyPagingItems<io.ashdavies.playground.Event>,
-        val eventSink: (Event) -> Unit,
-    ) : CircuitUiState
+    data class State(val pagingItems: LazyPagingItems<io.ashdavies.playground.Event>) : CircuitUiState
 }
 
 @Composable
 @OptIn(ExperimentalPagingApi::class, MultipleReferenceWarning::class)
-internal fun ActivityPresenter(
-    navigator: Navigator,
-    eventPager: Pager<String, Event> = rememberEventPager(),
-): ActivityScreen.State {
+internal fun ActivityPresenter(eventPager: Pager<String, Event> = rememberEventPager()): ActivityScreen.State {
     val pagingData = eventPager.flow.cachedIn(rememberCoroutineScope())
-    return ActivityScreen.State(pagingData.collectAsLazyPagingItems()) {
-        if (it is ActivityScreen.Event.Details) navigator.goTo(DetailsScreen(it.eventId))
-    }
+    return ActivityScreen.State(pagingData.collectAsLazyPagingItems())
 }

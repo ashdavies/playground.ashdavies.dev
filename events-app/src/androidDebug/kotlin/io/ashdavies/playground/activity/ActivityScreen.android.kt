@@ -17,7 +17,7 @@ private val DroidconEvents = listOf(AndroidMakers, DroidconBerlin, DroidconLondo
 @Preview
 @Composable
 internal fun ActivityScreenPreview(data: List<Event> = DroidconEvents) {
-    ActivityScreen(ActivityScreen.State(lazyPagingItems(flowOf(PagingData.from(data)))) { })
+    ActivityScreen(ActivityScreen.State(lazyPagingItems(flowOf(PagingData.from(data)))))
 }
 
 @Composable
