@@ -20,14 +20,14 @@ private const val DEFAULT_PAGE_SIZE = 10
 @MultipleReferenceWarning
 internal fun rememberEventPager(
     eventsQueries: EventsQueries = rememberPlaygroundDatabase().eventsQueries,
-    httpClient: HttpClient = LocalHttpClient.current,
+    eventsService: EventsService = EventsService(LocalHttpClient.current),
     initialKey: String = todayAsString(),
     pageSize: Int = DEFAULT_PAGE_SIZE,
-): Pager<String, Event> = remember(eventsQueries, httpClient) {
+): Pager<String, Event> = remember(eventsQueries, eventsService) {
     Pager(
         config = PagingConfig(pageSize),
         initialKey = initialKey,
-        remoteMediator = EventsRemoteMediator(eventsQueries, httpClient),
+        remoteMediator = EventsRemoteMediator(eventsQueries, eventsService),
         pagingSourceFactory = { EventsPagingSource(eventsQueries) },
     )
 }
