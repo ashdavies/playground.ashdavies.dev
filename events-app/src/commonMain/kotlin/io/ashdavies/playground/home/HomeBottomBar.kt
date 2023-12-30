@@ -2,10 +2,8 @@ package io.ashdavies.playground.home
 
 import androidx.compose.foundation.Image
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -31,20 +29,6 @@ internal fun HomeBottomBar(
             icon = { NavigationBarImage(Icons.Default.Home) },
             onClick = { onClick(ActivityScreen) },
             selected = selected is ActivityScreen,
-        )
-
-        NavigationBarItem(
-            icon = { NavigationBarImage(Icons.Default.Search) },
-            selected = false,
-            enabled = false,
-            onClick = { },
-        )
-
-        NavigationBarItem(
-            icon = { NavigationBarImage(Icons.Default.DateRange) },
-            selected = false,
-            enabled = false,
-            onClick = { },
         )
 
         NavigationBarItem(

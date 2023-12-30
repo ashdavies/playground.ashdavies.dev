@@ -17,11 +17,7 @@ import io.ashdavies.playground.events.rememberEventPager
 
 @Parcelize
 internal object ActivityScreen : Parcelable, Screen {
-    sealed interface Event {
-        data class Details(val eventId: String) : Event
-    }
-
-    data class State(val pagingItems: LazyPagingItems<io.ashdavies.playground.Event>) : CircuitUiState
+    data class State(val pagingItems: LazyPagingItems<Event>) : CircuitUiState
 }
 
 @Composable
