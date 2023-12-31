@@ -49,6 +49,7 @@ gradleEnterprise {
 }
 
 include(
+    ":after-party-app",
     ":app-check:app-check-client",
     ":app-check:app-check-common",
     ":app-check:app-check-sdk",

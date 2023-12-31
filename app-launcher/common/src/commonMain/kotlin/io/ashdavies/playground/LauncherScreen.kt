@@ -33,7 +33,33 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
+import com.arkivanov.essenty.parcelable.Parcelable
+import com.arkivanov.essenty.parcelable.Parcelize
+import com.slack.circuit.runtime.CircuitUiEvent
+import com.slack.circuit.runtime.CircuitUiState
+import com.slack.circuit.runtime.screen.Screen
 import io.ashdavies.graphics.rememberAsyncImagePainter
+
+@Parcelize
+internal object LauncherScreen : Parcelable, Screen {
+    data class Entry(
+        val imageModel: Any,
+        val title: String,
+        val event: Event,
+    )
+
+    sealed interface Event : CircuitUiEvent {
+        data object AfterParty : Event
+        data object Dominion : Event
+        data object Events : Event
+        data object Gallery : Event
+    }
+
+    data class State(
+        val entries: List<Entry> = emptyList(),
+        val eventSink: (Event) -> Unit = { },
+    ) : CircuitUiState
+}
 
 @Composable
 @OptIn(
@@ -105,7 +131,7 @@ private fun LauncherItem(
             Image(
                 painter = rememberAsyncImagePainter(
                     model = entry.imageModel,
-                    contentScale = ContentScale.FillHeight,
+                    contentScale = ContentScale.Crop,
                 ),
                 contentDescription = entry.title,
                 modifier = Modifier
@@ -114,6 +140,7 @@ private fun LauncherItem(
                     .fillMaxWidth()
                     .clip(RoundedCornerShape(8.dp))
                     .background(MaterialTheme.colorScheme.background),
+                contentScale = ContentScale.Crop,
             )
 
             Button(

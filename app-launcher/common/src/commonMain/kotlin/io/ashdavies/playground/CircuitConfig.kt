@@ -6,6 +6,8 @@ import io.ashdavies.dominion.DominionPresenterFactory
 import io.ashdavies.dominion.DominionUiFactory
 import io.ashdavies.gallery.GalleryPresenterFactory
 import io.ashdavies.gallery.GalleryUiFactory
+import io.ashdavies.party.AfterPartyPresenterFactory
+import io.ashdavies.party.AfterPartyUiFactory
 
 public fun CircuitConfig(context: PlatformContext): Circuit = Circuit.Builder()
     .addPresenterFactories(getPresenterFactories(context))
@@ -13,6 +15,7 @@ public fun CircuitConfig(context: PlatformContext): Circuit = Circuit.Builder()
     .build()
 
 private fun getPresenterFactories(context: PlatformContext) = listOf(
+    AfterPartyPresenterFactory(),
     DominionPresenterFactory(),
     EventsPresenterFactory(),
     GalleryPresenterFactory(context),
@@ -20,6 +23,7 @@ private fun getPresenterFactories(context: PlatformContext) = listOf(
 )
 
 private fun getUiFactories(context: PlatformContext) = listOf(
+    AfterPartyUiFactory(),
     DominionUiFactory(),
     EventsUiFactory(),
     GalleryUiFactory(context),
