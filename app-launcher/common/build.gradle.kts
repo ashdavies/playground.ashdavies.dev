@@ -20,6 +20,7 @@ kotlin {
 
         with(projects) {
             implementation(appCheck.appCheckClient)
+            implementation(afterPartyApp)
             implementation(dominionApp)
             implementation(eventsApp)
             implementation(galleryApp)
