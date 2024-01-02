@@ -182,7 +182,6 @@ internal fun GalleryTopAppBar(
     )
 }
 
-
 @Composable
 private fun ProfileActionButton(
     identityState: IdentityState,
