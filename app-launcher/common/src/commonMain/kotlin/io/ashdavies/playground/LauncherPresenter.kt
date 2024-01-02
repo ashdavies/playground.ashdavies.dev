@@ -1,5 +1,3 @@
-@file:Suppress("INLINE_FROM_HIGHER_PLATFORM")
-
 package io.ashdavies.playground
 
 import androidx.compose.runtime.Composable
@@ -8,9 +6,7 @@ import com.slack.circuit.backstack.rememberSaveableBackStack
 import com.slack.circuit.runtime.Navigator
 import com.slack.circuit.runtime.screen.Screen
 import io.ashdavies.dominion.DominionScreen
-import io.ashdavies.gallery.GalleryScreen
 import io.ashdavies.party.AfterPartyScreen
-import io.ashdavies.playground.home.HomeScreen as EventsHomeScreen
 
 private val AfterPartyEntry = LauncherScreen.Entry(
     imageModel = LauncherDrawableTokens.afterParty,
@@ -24,28 +20,14 @@ private val DominionEntry = LauncherScreen.Entry(
     event = LauncherScreen.Event.Dominion,
 )
 
-private val EventsEntry = LauncherScreen.Entry(
-    imageModel = LauncherDrawableTokens.events,
-    title = "Events",
-    event = LauncherScreen.Event.Events,
-)
-
-private val GalleryEntry = LauncherScreen.Entry(
-    imageModel = LauncherDrawableTokens.gallery,
-    title = "Gallery",
-    event = LauncherScreen.Event.Gallery,
-)
-
 @Composable
 internal fun LauncherPresenter(navigator: Navigator): LauncherScreen.State {
-    val entries = listOf(AfterPartyEntry, DominionEntry, GalleryEntry, EventsEntry)
+    val entries = listOf(AfterPartyEntry, DominionEntry)
 
     return LauncherScreen.State(entries) { event ->
         when (event) {
             LauncherScreen.Event.AfterParty -> navigator.goTo(AfterPartyScreen)
             LauncherScreen.Event.Dominion -> navigator.goTo(DominionScreen.Home)
-            LauncherScreen.Event.Events -> navigator.goTo(EventsHomeScreen)
-            LauncherScreen.Event.Gallery -> navigator.goTo(GalleryScreen)
         }
     }
 }
@@ -60,9 +42,8 @@ public fun rememberSaveableBackStack(initialScreenName: String? = null): Saveabl
 
 private fun initialScreenOrNull(name: String? = null): Screen? = name?.let {
     return when (it) {
+        "after-party" -> AfterPartyScreen
         "dominion" -> DominionScreen.Home
-        "events" -> EventsHomeScreen
-        "gallery" -> GalleryScreen
         else -> null
     }
 }

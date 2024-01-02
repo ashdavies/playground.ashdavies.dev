@@ -1,5 +1,3 @@
-@file:Suppress("INLINE_FROM_HIGHER_PLATFORM")
-
 package io.ashdavies.dominion
 
 import androidx.compose.runtime.Composable

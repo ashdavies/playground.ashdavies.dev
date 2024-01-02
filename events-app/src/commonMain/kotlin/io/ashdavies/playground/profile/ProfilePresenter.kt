@@ -8,17 +8,16 @@ import androidx.compose.ui.platform.UriHandler
 import com.arkivanov.essenty.parcelable.Parcelize
 import com.slack.circuit.runtime.CircuitUiEvent
 import com.slack.circuit.runtime.CircuitUiState
-import com.slack.circuit.runtime.Navigator
 import com.slack.circuit.runtime.screen.Screen
 import io.ashdavies.playground.Profile
 
 @Parcelize
-internal object ProfileScreen : Screen {
-    sealed interface Event : CircuitUiEvent {
-        object Login : Event
+public object ProfileScreen : Screen {
+    internal sealed interface Event : CircuitUiEvent {
+        data object Login : Event
     }
 
-    data class State(
+    internal data class State(
         val profile: Profile? = null,
         val eventSink: (Event) -> Unit,
     ) : CircuitUiState
@@ -26,7 +25,6 @@ internal object ProfileScreen : Screen {
 
 @Composable
 internal fun ProfilePresenter(
-    navigator: Navigator,
     repository: ProfileRepository = rememberProfileRepository(),
     uriHandler: UriHandler = LocalUriHandler.current,
 ): ProfileScreen.State {

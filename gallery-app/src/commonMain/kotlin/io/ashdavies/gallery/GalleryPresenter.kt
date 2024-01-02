@@ -1,5 +1,3 @@
-@file:Suppress("INLINE_FROM_HIGHER_PLATFORM")
-
 package io.ashdavies.gallery
 
 import androidx.compose.runtime.Composable
@@ -26,25 +24,25 @@ import kotlinx.coroutines.launch
 
 @Parcelize
 public object GalleryScreen : Parcelable, Screen {
-    internal sealed interface Event : CircuitUiEvent {
-        sealed interface Capture : Event {
-            data class Result(val value: File) : Capture
+    public sealed interface Event : CircuitUiEvent {
+        public sealed interface Capture : Event {
+            public data class Result(val value: File) : Capture
 
-            data object Cancel : Capture
-            data object Request : Capture
+            public data object Cancel : Capture
+            public data object Request : Capture
         }
 
-        sealed interface Identity : Event {
-            data object SignIn : Identity
+        public sealed interface Identity : Event {
+            public data object SignIn : Identity
         }
 
-        sealed interface Selection : Event {
-            data class Expand(val index: Int) : Selection
-            data class Toggle(val index: Int) : Selection
+        public sealed interface Selection : Event {
+            public data class Expand(val index: Int) : Selection
+            public data class Toggle(val index: Int) : Selection
 
-            data object Collapse : Selection
-            data object Delete : Selection
-            data object Sync : Selection
+            public data object Collapse : Selection
+            public data object Delete : Selection
+            public data object Sync : Selection
         }
     }
 

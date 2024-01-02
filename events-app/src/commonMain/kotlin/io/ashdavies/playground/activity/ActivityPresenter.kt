@@ -16,8 +16,8 @@ import io.ashdavies.playground.MultipleReferenceWarning
 import io.ashdavies.playground.events.rememberEventPager
 
 @Parcelize
-internal object ActivityScreen : Parcelable, Screen {
-    data class State(val pagingItems: LazyPagingItems<Event>) : CircuitUiState
+public object ActivityScreen : Parcelable, Screen {
+    public data class State(val pagingItems: LazyPagingItems<Event>) : CircuitUiState
 }
 
 @Composable
