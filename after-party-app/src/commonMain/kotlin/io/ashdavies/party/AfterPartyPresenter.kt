@@ -1,9 +1,23 @@
 package io.ashdavies.party
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import com.slack.circuit.foundation.onNavEvent
 import com.slack.circuit.runtime.Navigator
+import com.slack.circuit.runtime.screen.Screen
+import io.ashdavies.playground.activity.ActivityScreen
 
 @Composable
 internal fun AfterPartyPresenter(navigator: Navigator): AfterPartyScreen.State {
-    return AfterPartyScreen.State.Initial
+    var screen by remember { mutableStateOf<Screen>(ActivityScreen) }
+
+    return AfterPartyScreen.State(screen) { event ->
+        when (event) {
+            is AfterPartyScreen.Event.ChildNav -> navigator.onNavEvent(event.navEvent)
+            is AfterPartyScreen.Event.BottomNav -> screen = event.screen
+        }
+    }
 }

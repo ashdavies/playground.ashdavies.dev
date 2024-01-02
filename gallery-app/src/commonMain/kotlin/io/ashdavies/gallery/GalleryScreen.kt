@@ -18,7 +18,6 @@ import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -33,8 +32,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.CheckCircle
-import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.Sync
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -44,6 +41,7 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarDefaults.enterAlwaysScrollBehavior
@@ -85,14 +83,7 @@ internal fun GalleryScreen(
     val isSelecting = state.itemList.any { it.isSelected }
     val eventSink = state.eventSink
 
-    BottomSheetScaffold(
-        sheetContent = {
-            GallerySheetContent(
-                eventSink = eventSink,
-                modifier = Modifier.padding(16.dp),
-            )
-        },
-        showDragHandle = false,
+    Scaffold(
         topBar = {
             GalleryTopAppBar(state.identityState, scrollBehavior) {
                 eventSink(GalleryScreen.Event.Identity.SignIn)
@@ -104,7 +95,6 @@ internal fun GalleryScreen(
                 isActive = state.showCapture,
             )
         },
-        isExpanded = isSelecting,
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
     ) { paddingValues ->
         when {
@@ -191,6 +181,7 @@ internal fun GalleryTopAppBar(
         scrollBehavior = scrollBehavior,
     )
 }
+
 
 @Composable
 private fun ProfileActionButton(
@@ -387,27 +378,5 @@ private fun GalleryActionButton(
                 )
             }
         }
-    }
-}
-
-@Composable
-internal fun GallerySheetContent(
-    eventSink: (GalleryScreen.Event) -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    Row(modifier) {
-        BottomSheetItem(
-            imageVector = Icons.Filled.Sync,
-            onClick = { eventSink(GalleryScreen.Event.Selection.Sync) },
-            contentDescription = "Sync",
-            modifier = Modifier.padding(8.dp),
-        )
-
-        BottomSheetItem(
-            imageVector = Icons.Filled.Delete,
-            onClick = { eventSink(GalleryScreen.Event.Selection.Delete) },
-            contentDescription = "Delete",
-            modifier = Modifier.padding(8.dp),
-        )
     }
 }
