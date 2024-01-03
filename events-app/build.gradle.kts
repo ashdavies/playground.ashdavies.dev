@@ -14,10 +14,10 @@ kotlin {
 
         with(projects) {
             implementation(httpClient)
-            implementation(imageLoader)
             implementation(localStorage)
         }
 
+        implementation(libs.coil.compose)
         implementation(libs.essenty.parcelable)
         implementation(libs.paging.compose.common)
         implementation(libs.paging.compose.runtime)

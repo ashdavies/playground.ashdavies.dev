@@ -24,9 +24,10 @@ kotlin {
             implementation(dominionApp)
             implementation(eventsApp)
             implementation(galleryApp)
-            implementation(imageLoader)
         }
 
+        implementation(libs.coil.compose)
+        implementation(libs.coil.network)
         implementation(libs.essenty.parcelable)
         implementation(libs.slack.circuit.foundation)
     }

@@ -66,7 +66,6 @@ include(
     ":http-client",
     ":http-common",
     ":identity-manager",
-    ":image-loader",
     ":kotlin-gb",
     ":local-storage",
     ":micro-yaml",

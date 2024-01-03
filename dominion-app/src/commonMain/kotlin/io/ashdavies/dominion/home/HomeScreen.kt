@@ -1,6 +1,7 @@
 package io.ashdavies.dominion.home
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -15,6 +16,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
@@ -27,8 +29,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
+import coil3.compose.rememberAsyncImagePainter
 import io.ashdavies.dominion.DominionExpansion
-import io.ashdavies.graphics.rememberAsyncImagePainter
 import io.ashdavies.http.LocalHttpClient
 import io.ashdavies.http.onLoading
 import io.ashdavies.http.produceStateInline
@@ -43,6 +45,7 @@ internal fun HomeScreen(
     httpClient: HttpClient = LocalHttpClient.current,
     onClick: (DominionExpansion) -> Unit = { },
 ) {
+    println("=== HomeScreen()")
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     val expansionService = remember(httpClient) {
         ExpansionService(httpClient)
@@ -56,6 +59,8 @@ internal fun HomeScreen(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = { CenterAlignedTopAppBar({ Text("Dominion") }) },
     ) { contentPadding ->
+        println("=== HomeScreen.Scaffold($state)")
+
         state.onSuccess {
             HomeScreen(
                 expansions = it.toImmutableList(),
@@ -67,9 +72,23 @@ internal fun HomeScreen(
         state.onLoading {
             LinearProgressIndicator(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(4.dp),
+                    .padding(contentPadding)
+                    .fillMaxWidth(),
             )
+        }
+
+        state.onFailure {
+            Box(
+                modifier = Modifier
+                    .background(MaterialTheme.colorScheme.error)
+                    .padding(contentPadding)
+                    .fillMaxWidth(),
+            ) {
+                Text(
+                    text = it.message ?: "An unknown error occurred (${it::class.simpleName})",
+                    color = MaterialTheme.colorScheme.onError,
+                )
+            }
         }
     }
 }
@@ -82,6 +101,8 @@ private fun HomeScreen(
     onClick: (DominionExpansion) -> Unit = { },
     modifier: Modifier = Modifier,
 ) {
+    println("=== HomeScreen ${expansions.size}")
+
     LazyVerticalGrid(
         columns = GridCells.Fixed(3),
         modifier = modifier.padding(4.dp),
@@ -101,6 +122,8 @@ private fun ExpansionCard(
     onClick: () -> Unit = { },
 ) {
     Box(Modifier.padding(4.dp)) {
+        println("=== Fetching Image ${value.image}")
+
         Image(
             painter = rememberAsyncImagePainter(value.image),
             contentDescription = value.name,

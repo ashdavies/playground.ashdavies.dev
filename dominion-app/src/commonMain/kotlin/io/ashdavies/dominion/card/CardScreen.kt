@@ -15,8 +15,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import coil3.compose.rememberAsyncImagePainter
 import io.ashdavies.dominion.DominionCard
-import io.ashdavies.graphics.rememberAsyncImagePainter
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
