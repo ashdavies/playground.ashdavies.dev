@@ -13,7 +13,7 @@ kotlin {
         implementation(compose.materialIconsExtended)
 
         with(projects) {
-            implementation(bottomSheet)
+            implementation(composeMaterial)
             implementation(httpClient)
             implementation(identityManager)
             implementation(localStorage)

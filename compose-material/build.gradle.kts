@@ -3,5 +3,5 @@ plugins {
 }
 
 android {
-    namespace = "io.ashdavies.bottomsheet"
+    namespace = "io.ashdavies.material"
 }
