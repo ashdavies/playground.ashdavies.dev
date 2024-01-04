@@ -54,12 +54,10 @@ stateDiagram-v2
 
     DominionApp --> AppCheckClient
     DominionApp --> HttpClient
-    DominionApp --> ImageLoader
 
     EventsApp --> AppCheckClient
     EventsApp --> Auth0Auth
     EventsApp --> HttpClient
-    EventsApp --> ImageLoader
     EventsApp --> LocalStorage
 ```
 

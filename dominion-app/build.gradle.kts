@@ -10,8 +10,8 @@ android {
 kotlin {
     commonMain.dependencies {
         implementation(projects.httpClient)
-        implementation(projects.imageLoader)
 
+        implementation(libs.coil.compose)
         implementation(libs.essenty.parcelable)
         implementation(libs.slack.circuit.foundation)
         implementation(libs.slf4j.simple)

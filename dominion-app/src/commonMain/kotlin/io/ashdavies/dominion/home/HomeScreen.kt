@@ -27,8 +27,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
+import coil3.compose.rememberAsyncImagePainter
 import io.ashdavies.dominion.DominionExpansion
-import io.ashdavies.graphics.rememberAsyncImagePainter
 import io.ashdavies.http.LocalHttpClient
 import io.ashdavies.http.onLoading
 import io.ashdavies.http.produceStateInline

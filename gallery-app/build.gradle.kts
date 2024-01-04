@@ -14,11 +14,11 @@ kotlin {
 
         implementation(projects.httpClient)
         implementation(projects.identityManager)
-        implementation(projects.imageLoader)
         implementation(projects.localStorage)
         implementation(projects.platformSupport)
         implementation(projects.sqlDriver)
 
+        implementation(libs.coil.compose)
         implementation(libs.essenty.parcelable)
         implementation(libs.ktor.client.mock)
         implementation(libs.slack.circuit.foundation)

@@ -63,8 +63,8 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import coil3.compose.rememberAsyncImagePainter
 import com.slack.circuit.foundation.internal.BackHandler
-import io.ashdavies.graphics.rememberAsyncImagePainter
 import io.ashdavies.identity.IdentityState
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
