@@ -4,6 +4,8 @@ import io.ashdavies.http.common.models.Event
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
+import io.ktor.http.HttpStatusCode
+import kotlinx.serialization.Serializable
 import io.ashdavies.http.common.models.Event as ApiEvent
 
 private const val PLAYGROUND_API_HOST = "playground.ashdavies.dev"
@@ -24,8 +26,17 @@ internal fun EventsService(client: HttpClient): EventsService = object : EventsS
             add("limit=$limit")
         }
 
-        return client
-            .get("https://$PLAYGROUND_API_HOST/events?startAt=${query.joinToString("&")}")
-            .body()
+        val response = client.get("https://$PLAYGROUND_API_HOST/events?startAt=${query.joinToString("&")}")
+        if (response.status == HttpStatusCode.OK) {
+            return response.body()
+        }
+
+        throw response.body<ErrorResponse>()
     }
 }
+
+@Serializable
+internal data class ErrorResponse(
+    override val message: String,
+    val code: Int,
+) : Throwable()

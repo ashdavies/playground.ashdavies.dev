@@ -1,6 +1,7 @@
 package io.ashdavies.dominion.home
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -15,6 +16,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
@@ -39,8 +41,8 @@ import kotlinx.collections.immutable.toImmutableList
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 internal fun HomeScreen(
-    modifier: Modifier = Modifier,
     httpClient: HttpClient = LocalHttpClient.current,
+    modifier: Modifier = Modifier,
     onClick: (DominionExpansion) -> Unit = { },
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
@@ -67,9 +69,23 @@ internal fun HomeScreen(
         state.onLoading {
             LinearProgressIndicator(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(4.dp),
+                    .padding(contentPadding)
+                    .fillMaxWidth(),
             )
+        }
+
+        state.onFailure {
+            Box(
+                modifier = Modifier
+                    .background(MaterialTheme.colorScheme.error)
+                    .padding(contentPadding)
+                    .fillMaxWidth(),
+            ) {
+                Text(
+                    text = it.message ?: "An unknown error occurred (${it::class.simpleName})",
+                    color = MaterialTheme.colorScheme.onError,
+                )
+            }
         }
     }
 }

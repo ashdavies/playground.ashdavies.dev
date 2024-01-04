@@ -30,6 +30,8 @@ internal class EventsRemoteMediator(
             eventsService.getEvents(loadKey)
         } catch (exception: SocketTimeoutException) {
             return MediatorResult.Error(exception)
+        } catch (exception: ErrorResponse) {
+            return MediatorResult.Error(exception)
         }
 
         eventsQueries.transaction {
