@@ -11,7 +11,7 @@ internal inline fun <reified T : JsonElement> JsonElement.getOrThrow(vararg keys
     keys.fold(this) { acc, key -> acc.getOrThrow(key) } as? T ?: error(simpleName<T>())
 
 internal inline fun <reified T : JsonElement> JsonElement.getOrThrow(key: String): T =
-    jsonObject.getOrElse(key) { throw IllegalStateException() } as? T ?: error(simpleName<T>())
+    jsonObject.getOrElse(key) { throw IllegalStateException("Failed to find key: $key in $this") } as? T ?: error(simpleName<T>())
 
 internal inline fun <reified T> simpleName(): String =
     T::class.simpleName ?: error(T::class)

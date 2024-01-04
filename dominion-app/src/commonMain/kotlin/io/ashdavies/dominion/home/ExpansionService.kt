@@ -12,16 +12,17 @@ import io.ktor.client.request.get
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.jsonObject
 
 private val EXCLUSIONS = listOf("Coffers", "Guilds & Cornucopia")
 
 private inline val JsonElement.title: String
     get() = getContent("title")
 
-private inline val JsonElement.imageInfoUrl: String
-    get() = getOrThrow<JsonArray>("imageinfo")
-        .firstNotNullOf { it }
-        .getContent("url")
+private inline val JsonElement.imageInfoUrl: String?
+    get() = (jsonObject["imageinfo"] as? JsonArray)
+        ?.firstNotNullOf { it }
+        ?.getContent("url")
 
 /**
  * http://wiki.dominionstrategy.com/api.php?action=query&titles=Expansions&pllimit=max&format=json&prop=links
@@ -43,6 +44,7 @@ internal class ExpansionService(private val client: HttpClient) {
         get() = getOrThrow<JsonObject>("query", "pages")
             .mapValues { DominionExpansion(it.value) }
             .values
+            .filterNotNull()
             .toList()
 
     suspend fun getExpansionList(): List<DominionExpansion> {
@@ -64,7 +66,10 @@ internal class ExpansionService(private val client: HttpClient) {
     }
 }
 
-internal fun DominionExpansion(element: JsonElement) = DominionExpansion(
-    name = element.title.let { it.substring(5, it.length - 4) },
-    image = element.imageInfoUrl,
-)
+internal fun DominionExpansion(element: JsonElement): DominionExpansion? {
+    val image = element.imageInfoUrl ?: return null
+    return DominionExpansion(
+        name = element.title.let { it.substring(5, it.length - 4) },
+        image = image,
+    )
+}
