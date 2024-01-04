@@ -56,6 +56,7 @@ include(
     ":app-launcher:android",
     ":app-launcher:common",
     ":app-launcher:desktop",
+    ":bottom-sheet",
     ":cloud-firestore",
     ":cloud-run",
     ":compose-cli",

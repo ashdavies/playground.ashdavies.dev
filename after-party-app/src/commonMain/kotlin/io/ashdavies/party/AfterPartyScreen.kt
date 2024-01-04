@@ -29,6 +29,7 @@ import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.screen.Screen
 import io.ashdavies.gallery.GalleryScreen
 import io.ashdavies.gallery.GallerySheetContent
+import io.ashdavies.material.BottomSheetScaffold
 import io.ashdavies.playground.activity.ActivityScreen
 import io.ashdavies.playground.profile.ProfileScreen
 

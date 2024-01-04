@@ -10,11 +10,11 @@ public fun AfterPartyPresenterFactory(): Presenter.Factory = Presenter.Factory {
 }
 
 public fun AfterPartyUiFactory(): Ui.Factory = Ui.Factory { screen, _ ->
-    if (screen is AfterPartyScreen) {
-        ui<AfterPartyScreen.State> { state, modifier ->
+    when (screen) {
+        is AfterPartyScreen -> ui<AfterPartyScreen.State> { state, modifier ->
             AfterPartyScreen(state, modifier)
         }
-    } else {
-        null
+
+        else -> null
     }
 }

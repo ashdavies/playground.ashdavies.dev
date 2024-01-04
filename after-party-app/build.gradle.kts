@@ -9,6 +9,7 @@ android {
 
 kotlin {
     commonMain.dependencies {
+        implementation(projects.bottomSheet)
         implementation(projects.eventsApp)
         implementation(projects.galleryApp)
 

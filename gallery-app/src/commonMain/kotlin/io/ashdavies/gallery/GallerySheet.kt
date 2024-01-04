@@ -8,6 +8,7 @@ import androidx.compose.material.icons.filled.Sync
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import io.ashdavies.material.BottomSheetItem
 
 @Composable
 public fun GallerySheetContent(
