@@ -41,8 +41,8 @@ import kotlinx.collections.immutable.toImmutableList
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 internal fun HomeScreen(
-    modifier: Modifier = Modifier,
     httpClient: HttpClient = LocalHttpClient.current,
+    modifier: Modifier = Modifier,
     onClick: (DominionExpansion) -> Unit = { },
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()

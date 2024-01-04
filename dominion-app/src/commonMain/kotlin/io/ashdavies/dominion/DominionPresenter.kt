@@ -49,7 +49,9 @@ public fun DominionPresenterFactory(): Presenter.Factory = Presenter.Factory { s
 public fun DominionUiFactory(): Ui.Factory = Ui.Factory { screen, _ ->
     when (screen) {
         is DominionScreen.Home -> ui<DominionState> { state, modifier ->
-            HomeScreen(modifier) { state.sink(DominionEvent.NavEvent.GoTo(DominionScreen.Kingdom(it))) }
+            HomeScreen(modifier = modifier) {
+                state.sink(DominionEvent.NavEvent.GoTo(DominionScreen.Kingdom(it)))
+            }
         }
 
         is DominionScreen.Kingdom -> ui<DominionState> { state, modifier ->
