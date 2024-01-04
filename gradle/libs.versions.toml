@@ -4,11 +4,11 @@ android-minSdk = "24"
 androidx-activity = "1.8.2"
 apollo-graphql = "2.5.14"
 cash-sqldelight = "2.0.1"
-coil-kt = "2.5.0"
+coil-kt = "3.0.0-alpha01"
 compose-compiler = "1.5.7"
 gitlive-firebase = "1.10.4"
 google-accompanist = "0.32.0"
-google-android = "8.2.0"
+google-android = "8.2.1"
 google-auto = "1.0.1"
 google-maps-compose = "4.3.0"
 google-services = "4.4.0"
@@ -39,8 +39,9 @@ app-cash-turbine = "app.cash.turbine:turbine:1.0.0"
 auth-java-jwt = "com.auth0:java-jwt:4.4.0"
 auth-jwks-rsa = "com.auth0:jwks-rsa:0.22.1"
 
-coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil-kt" }
-coil-core = { module = "io.coil-kt:coil", version.ref = "coil-kt" }
+coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil-kt" }
+coil-core = { module = "io.coil-kt.coil3:coil-core", version.ref = "coil-kt" }
+coil-network = { module = "io.coil-kt.coil3:coil-network", version.ref = "coil-kt" }
 
 essenty-parcelable = "com.arkivanov.essenty:parcelable:1.3.0"
 fusesource-jansi = "org.fusesource.jansi:jansi:2.4.1"
@@ -134,7 +135,7 @@ sqldelight-coroutines-extensions = { module = "app.cash.sqldelight:coroutines-ex
 sqldelight-runtime = { module = "app.cash.sqldelight:runtime", version.ref = "cash-sqldelight" }
 sqldelight-sqlite-driver = { module = "app.cash.sqldelight:sqlite-driver", version.ref = "cash-sqldelight" }
 
-squareup-leakcanary = "com.squareup.leakcanary:leakcanary-android:2.12"
+squareup-leakcanary = "com.squareup.leakcanary:leakcanary-android:2.13"
 squareup-okio = "com.squareup.okio:okio:3.7.0"
 
 [plugins]

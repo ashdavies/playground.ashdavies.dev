@@ -1,6 +1,7 @@
 package io.ashdavies.playground.profile
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -23,8 +24,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
-import io.ashdavies.graphics.EmptyPainter
-import io.ashdavies.graphics.rememberAsyncImagePainter
+import coil3.compose.rememberAsyncImagePainter
 import io.ashdavies.playground.android.FlowRow
 import io.ashdavies.playground.android.fade
 import kotlin.random.Random.Default.nextInt
@@ -101,10 +101,9 @@ private fun ProfileHeader(
 private fun StubLanyardFlow(until: Int = 30) {
     FlowRow {
         repeat(nextInt(until)) {
-            Image(
-                painter = EmptyPainter,
-                contentDescription = null,
+            Box(
                 modifier = Modifier
+                    .background(Color.DarkGray)
                     .border(1.dp, Color.LightGray, CircleShape)
                     .size(64.dp, 64.dp)
                     .clip(CircleShape)
