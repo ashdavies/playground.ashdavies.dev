@@ -38,5 +38,5 @@ internal fun EventsService(client: HttpClient): EventsService = object : EventsS
 @Serializable
 internal data class ErrorResponse(
     override val message: String,
-    val code: Int
+    val code: Int,
 ) : Throwable()
