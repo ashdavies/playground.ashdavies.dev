@@ -59,6 +59,7 @@ include(
     ":cloud-firestore",
     ":cloud-run",
     ":compose-cli",
+    ":compose-material",
     ":dominion-app",
     ":events-aggregator",
     ":events-app",

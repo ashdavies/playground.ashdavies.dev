@@ -1,4 +1,4 @@
-package io.ashdavies.playground
+package io.ashdavies.material
 
 import androidx.compose.material3.ColorScheme
 import androidx.compose.runtime.Composable

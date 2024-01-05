@@ -21,6 +21,7 @@ kotlin {
         with(projects) {
             implementation(appCheck.appCheckClient)
             implementation(afterPartyApp)
+            implementation(composeMaterial)
             implementation(dominionApp)
             implementation(eventsApp)
             implementation(galleryApp)

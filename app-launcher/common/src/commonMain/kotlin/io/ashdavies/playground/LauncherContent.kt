@@ -7,6 +7,7 @@ import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.setSingletonImageLoaderFactory
 import coil3.fetch.NetworkFetcher
 import io.ashdavies.check.ProvideAppCheckToken
+import io.ashdavies.material.dynamicColorScheme
 
 @Composable
 @OptIn(ExperimentalCoilApi::class)
