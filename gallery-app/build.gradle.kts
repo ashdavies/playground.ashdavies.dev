@@ -12,11 +12,14 @@ kotlin {
     commonMain.dependencies {
         implementation(compose.materialIconsExtended)
 
-        implementation(projects.httpClient)
-        implementation(projects.identityManager)
-        implementation(projects.localStorage)
-        implementation(projects.platformSupport)
-        implementation(projects.sqlDriver)
+        with(projects) {
+            implementation(composeMaterial)
+            implementation(httpClient)
+            implementation(identityManager)
+            implementation(localStorage)
+            implementation(platformSupport)
+            implementation(sqlDriver)
+        }
 
         implementation(libs.coil.compose)
         implementation(libs.essenty.parcelable)
