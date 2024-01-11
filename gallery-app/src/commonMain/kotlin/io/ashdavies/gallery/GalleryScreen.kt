@@ -26,20 +26,16 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.CheckCircle
-import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -65,7 +61,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil3.compose.rememberAsyncImagePainter
 import com.slack.circuit.foundation.internal.BackHandler
-import io.ashdavies.identity.IdentityState
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 
@@ -85,9 +80,7 @@ internal fun GalleryScreen(
 
     Scaffold(
         topBar = {
-            GalleryTopAppBar(state.identityState, scrollBehavior) {
-                eventSink(GalleryScreen.Event.Identity.SignIn)
-            }
+            GalleryTopAppBar(scrollBehavior)
         },
         floatingActionButton = {
             GalleryActionButton(
@@ -159,11 +152,9 @@ internal fun GalleryScreen(
 @Composable
 @ExperimentalMaterial3Api
 internal fun GalleryTopAppBar(
-    identityState: IdentityState,
     scrollBehavior: TopAppBarScrollBehavior,
     title: String = "Gallery",
     modifier: Modifier = Modifier,
-    onProfileClick: () -> Unit,
 ) {
     CenterAlignedTopAppBar(
         title = {
@@ -174,47 +165,11 @@ internal fun GalleryTopAppBar(
             )
         },
         modifier = modifier,
-        actions = { ProfileActionButton(identityState) { onProfileClick() } },
         colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
             containerColor = MaterialTheme.colorScheme.background,
         ),
         scrollBehavior = scrollBehavior,
     )
-}
-
-@Composable
-private fun ProfileActionButton(
-    identityState: IdentityState,
-    modifier: Modifier = Modifier,
-    onClick: () -> Unit,
-) {
-    Crossfade(identityState, modifier) { state ->
-        when (state) {
-            is IdentityState.Authenticated -> IconButton(onClick = onClick) {
-                Image(
-                    painter = rememberAsyncImagePainter(state.pictureProfileUrl),
-                    contentDescription = null,
-                    modifier = Modifier.clip(CircleShape),
-                )
-            }
-
-            is IdentityState.Failure -> Image(
-                imageVector = Icons.Filled.Warning,
-                contentDescription = "Failure",
-                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onBackground),
-            )
-
-            IdentityState.Unauthenticated -> IconButton(onClick = onClick) {
-                Image(
-                    imageVector = Icons.Filled.AccountCircle,
-                    contentDescription = "SignIn",
-                    colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onBackground),
-                )
-            }
-
-            IdentityState.Unsupported -> Unit
-        }
-    }
 }
 
 @Composable
