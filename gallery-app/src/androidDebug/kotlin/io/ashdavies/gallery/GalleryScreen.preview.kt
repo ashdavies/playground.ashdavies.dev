@@ -6,12 +6,10 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.TopAppBarDefaults.enterAlwaysScrollBehavior
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import io.ashdavies.identity.IdentityState
 import kotlinx.collections.immutable.persistentListOf
 
 @Preview
@@ -20,10 +18,7 @@ import kotlinx.collections.immutable.persistentListOf
 @OptIn(ExperimentalMaterial3Api::class)
 internal fun GalleryTopAppBarPreview() {
     GalleryPreviewTheme {
-        GalleryTopAppBar(
-            identityState = IdentityState.Authenticated(null),
-            scrollBehavior = enterAlwaysScrollBehavior(),
-        ) { }
+        GalleryTopAppBar()
     }
 }
 
