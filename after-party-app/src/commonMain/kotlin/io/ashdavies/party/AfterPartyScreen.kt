@@ -1,6 +1,7 @@
 package io.ashdavies.party
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Home
@@ -29,6 +30,7 @@ import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.screen.Screen
 import io.ashdavies.gallery.GalleryScreen
 import io.ashdavies.gallery.GallerySheetContent
+import io.ashdavies.identity.IdentityState
 import io.ashdavies.material.BottomSheetScaffold
 import io.ashdavies.playground.activity.ActivityScreen
 import io.ashdavies.playground.profile.ProfileScreen
@@ -41,6 +43,7 @@ public object AfterPartyScreen : Parcelable, Screen {
     }
 
     internal data class State(
+        val identityState: IdentityState,
         val screen: Screen,
         val eventSink: (Event) -> Unit,
     ) : CircuitUiState
@@ -57,7 +60,16 @@ internal fun AfterPartyScreen(
     BottomSheetScaffold(
         sheetContent = { GallerySheetContent({ }) },
         showDragHandle = false,
-        topBar = { AfterPartyTopBar() },
+        topBar = {
+            AfterPartyTopBar(
+                actions = {
+                    ProfileActionButton(
+                        identityState = state.identityState,
+                        onClick = { eventSink(AfterPartyScreen.Event.BottomNav(ProfileScreen)) },
+                    )
+                },
+            )
+        },
         bottomBar = {
             AfterPartyBottomBar { screen ->
                 eventSink(AfterPartyScreen.Event.BottomNav(screen))
@@ -79,9 +91,10 @@ internal fun AfterPartyScreen(
 @Composable
 @ExperimentalMaterial3Api
 internal fun AfterPartyTopBar(
-    scrollBehavior: TopAppBarScrollBehavior = enterAlwaysScrollBehavior(rememberTopAppBarState()),
     title: String = "AfterParty",
     modifier: Modifier = Modifier,
+    actions: @Composable RowScope.() -> Unit = { },
+    scrollBehavior: TopAppBarScrollBehavior = enterAlwaysScrollBehavior(rememberTopAppBarState()),
 ) {
     CenterAlignedTopAppBar(
         title = {
@@ -95,6 +108,7 @@ internal fun AfterPartyTopBar(
         colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
             containerColor = MaterialTheme.colorScheme.background,
         ),
+        actions = actions,
         scrollBehavior = scrollBehavior,
     )
 }

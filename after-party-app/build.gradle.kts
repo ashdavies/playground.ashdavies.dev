@@ -12,7 +12,9 @@ kotlin {
         implementation(projects.composeMaterial)
         implementation(projects.eventsApp)
         implementation(projects.galleryApp)
+        implementation(projects.identityManager)
 
+        implementation(libs.coil.compose)
         implementation(libs.essenty.parcelable)
         implementation(libs.slack.circuit.foundation)
     }
