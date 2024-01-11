@@ -5,7 +5,7 @@ import androidx.compose.runtime.Composable
 import coil3.ImageLoader
 import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.setSingletonImageLoaderFactory
-import coil3.fetch.NetworkFetcher
+import coil3.network.NetworkFetcher
 import io.ashdavies.check.ProvideAppCheckToken
 import io.ashdavies.material.dynamicColorScheme
 
