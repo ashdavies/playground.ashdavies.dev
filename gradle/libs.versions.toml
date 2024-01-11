@@ -20,7 +20,7 @@ kotlinx-serialization = "1.6.2"
 ktor = "2.3.7"
 paging-compose = "3.2.0-alpha05-0.2.3"
 pinterest-ktlint = "0.50.0"
-slack-circuit = "0.18.1"
+slack-circuit = "0.18.2"
 
 [libraries]
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity" }
@@ -128,7 +128,7 @@ slack-circuit-overlay = { module = "com.slack.circuit:circuit-overlay", version.
 slack-circuit-retained = { module = "com.slack.circuit:circuit-retained", version.ref = "slack-circuit" }
 slack-circuit-test = { module = "com.slack.circuit:circuit-test", version.ref = "slack-circuit" }
 
-slf4j-simple = "org.slf4j:slf4j-simple:2.0.10"
+slf4j-simple = "org.slf4j:slf4j-simple:2.0.11"
 
 sqldelight-android-driver = { module = "app.cash.sqldelight:android-driver", version.ref = "cash-sqldelight" }
 sqldelight-coroutines-extensions = { module = "app.cash.sqldelight:coroutines-extensions", version.ref = "cash-sqldelight" }
