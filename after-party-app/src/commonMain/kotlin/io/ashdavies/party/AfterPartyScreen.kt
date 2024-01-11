@@ -67,7 +67,7 @@ internal fun AfterPartyScreen(
                         identityState = state.identityState,
                         onClick = { eventSink(AfterPartyScreen.Event.BottomNav(ProfileScreen)) },
                     )
-                }
+                },
             )
         },
         bottomBar = {

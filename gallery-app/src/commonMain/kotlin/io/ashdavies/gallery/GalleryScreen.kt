@@ -152,7 +152,7 @@ internal fun GalleryScreen(
 @Composable
 @ExperimentalMaterial3Api
 internal fun GalleryTopAppBar(
-    scrollBehavior: TopAppBarScrollBehavior,
+    scrollBehavior: TopAppBarScrollBehavior = enterAlwaysScrollBehavior(),
     title: String = "Gallery",
     modifier: Modifier = Modifier,
 ) {
