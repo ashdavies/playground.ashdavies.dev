@@ -6,7 +6,7 @@ apollo-graphql = "2.5.14"
 cash-sqldelight = "2.0.1"
 coil-kt = "3.0.0-alpha02"
 compose-compiler = "1.5.7"
-gitlive-firebase = "1.10.4"
+gitlive-firebase = "1.11.0"
 google-accompanist = "0.32.0"
 google-android = "8.2.1"
 google-auto = "1.0.1"
@@ -144,7 +144,7 @@ androidx-build-cache = "androidx.build.gradle.gcpbuildcache:1.0.0-beta07"
 apollo-graphql = { id = "com.apollographql.apollo", version.ref = "apollo-graphql" }
 cash-sqldelight = { id = "app.cash.sqldelight", version.ref = "cash-sqldelight" }
 dependency-analysis = "com.autonomousapps.dependency-analysis:1.28.0"
-diffplug-spotless = "com.diffplug.spotless:6.23.3"
+diffplug-spotless = "com.diffplug.spotless:6.24.0"
 google-cloud-jib = "com.google.cloud.tools.jib:3.4.0"
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
 gradle-doctor = "com.osacky.doctor:0.9.1"
