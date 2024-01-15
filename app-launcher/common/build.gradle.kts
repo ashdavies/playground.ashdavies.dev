@@ -6,7 +6,7 @@ plugins {
 android {
     namespace = "io.ashdavies.common"
 
-    sourceSets["main"].apply {
+    val main by sourceSets.getting {
         res.srcDirs(
             "src/androidMain/res",
             "src/commonMain/resources",
