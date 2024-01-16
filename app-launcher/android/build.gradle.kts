@@ -8,6 +8,10 @@ plugins {
 }
 
 android {
+    val androidTest by sourceSets.getting {
+        res.srcDirs("src/androidMain/res")
+    }
+
     buildFeatures {
         buildConfig = true
     }
@@ -28,10 +32,8 @@ kotlin {
     }
 
     androidMain.dependencies {
-        with(projects) {
-            implementation(appLauncher.common)
-            implementation(httpClient)
-        }
+        implementation(projects.appLauncher.common)
+        implementation(projects.httpClient)
 
         with(libs.androidx) {
             implementation(libs.androidx.core.splashscreen)
@@ -39,11 +41,12 @@ kotlin {
             implementation(libs.androidx.activity.ktx)
         }
 
-        with(libs.google) {
-            implementation(android.material)
-        }
-
+        implementation(libs.google.android.material)
         implementation(libs.slack.circuit.foundation)
         implementation(libs.slack.circuit.overlay)
+    }
+
+    val androidInstrumentedTest by sourceSets.getting {
+        dependsOn(androidMain)
     }
 }
