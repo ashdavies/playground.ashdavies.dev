@@ -4,11 +4,10 @@ plugins {
 }
 
 dependencies {
-    with(projects) {
-        implementation(cloudFirestore)
-        implementation(localStorage)
-        implementation(microYaml)
-    }
+    api(projects.microYaml)
+    api(libs.apollo.graphql.api)
+    api(libs.apollo.graphql.runtime)
 
-    implementation(libs.google.guava.jre)
+    implementation(libs.squareup.okhttp)
+    implementation(libs.squareup.okio)
 }

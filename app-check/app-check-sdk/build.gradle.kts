@@ -3,13 +3,16 @@ plugins {
 }
 
 dependencies {
-    api(projects.appCheck.appCheckCommon)
+    api(libs.auth.java.jwt)
+    api(libs.google.firebase.admin)
     api(libs.ktor.client.core)
 
-    implementation(projects.httpClient)
-
-    implementation(libs.auth.java.jwt)
     implementation(libs.auth.jwks.rsa)
-    implementation(libs.google.guava.jre)
-    implementation(libs.slf4j.simple)
+    implementation(libs.google.auth.http)
+    implementation(libs.jetbrains.kotlinx.coroutines.core)
+    implementation(libs.jetbrains.kotlinx.datetime)
+    implementation(libs.ktor.http)
+    implementation(libs.ktor.utils)
+
+    runtimeOnly(libs.slf4j.simple)
 }

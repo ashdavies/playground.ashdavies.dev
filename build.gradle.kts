@@ -28,6 +28,14 @@ plugins {
     }
 }
 
+dependencyAnalysis {
+    structure {
+        bundle("compose-runtime") {
+            includeGroup(libs.jetbrains.compose.runtime)
+        }
+    }
+}
+
 doctor {
     allowBuildingAllAndroidAppsSimultaneously.set(true)
     disallowCleanTaskDependencies.set(false)

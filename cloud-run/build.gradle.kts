@@ -48,6 +48,7 @@ kotlin {
     commonMain {
         dependencies {
             with(projects) {
+                implementation(appCheck.appCheckCommon)
                 implementation(appCheck.appCheckSdk)
                 implementation(cloudFirestore)
                 implementation(httpClient)
