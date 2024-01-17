@@ -6,7 +6,7 @@ apollo-graphql = "2.5.14"
 cash-sqldelight = "2.0.1"
 coil-kt = "3.0.0-alpha02"
 compose-compiler = "1.5.7"
-gitlive-firebase = "1.11.0"
+gitlive-firebase = "1.11.1"
 google-accompanist = "0.32.0"
 google-android = "8.2.1"
 google-auto = "1.0.1"
@@ -56,8 +56,7 @@ google-android-maps = "com.google.android.gms:play-services-maps:18.2.0"
 google-android-material = "com.google.android.material:material:1.11.0"
 
 google-auth-http = "com.google.auth:google-auth-library-oauth2-http:1.17.0"
-
-google-cloud-bom = "com.google.cloud:libraries-bom:26.29.0"
+google-cloud-bom = "com.google.cloud:libraries-bom:26.30.0"
 google-cloud-firestore = { module = "com.google.cloud:google-cloud-firestore" }
 google-cloud-storage = { module = "com.google.cloud:google-cloud-storage" }
 
