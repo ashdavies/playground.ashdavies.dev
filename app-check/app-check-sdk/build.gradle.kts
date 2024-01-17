@@ -14,5 +14,6 @@ dependencies {
     implementation(libs.ktor.http)
     implementation(libs.ktor.utils)
 
+    runtimeOnly(libs.google.guava.jre)
     runtimeOnly(libs.slf4j.simple)
 }
