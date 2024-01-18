@@ -12,11 +12,6 @@ compose {
     kotlinCompilerPlugin.set("$composeCompiler")
 }
 
-dependencies {
-    implementation(compose.runtime)
-    implementation(libs.jetbrains.kotlinx.serialization.core)
-}
-
 java {
     sourceCompatibility = JavaVersion.VERSION_17
     targetCompatibility = JavaVersion.VERSION_17

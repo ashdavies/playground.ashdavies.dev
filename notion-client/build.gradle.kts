@@ -10,30 +10,19 @@ android {
 kotlin {
     commonMain.dependencies {
         implementation(projects.localStorage)
-        implementation(projects.sqlDriver)
 
-        with(libs.ktor.client) {
-            implementation(auth)
-            implementation(content.negotiation)
-            implementation(logging)
-        }
-
-        implementation(libs.ktor.serialization.json)
-        implementation(libs.ktor.serialization.kotlinx)
-
-        with(libs.ktor.server) {
-            implementation(auth)
-            implementation(call.logging)
-            implementation(cio)
-            implementation(compression)
-            implementation(conditional.headers)
-            implementation(content.negotiation)
-            implementation(core)
-            implementation(default.headers)
-            implementation(request.validation)
-        }
-
-        implementation(libs.slf4j.simple)
+        implementation(libs.jetbrains.kotlinx.serialization.core)
+        implementation(libs.jetbrains.kotlinx.serialization.json)
+        implementation(libs.ktor.client.auth)
+        implementation(libs.ktor.client.content.negotiation)
+        implementation(libs.ktor.client.core)
+        implementation(libs.ktor.client.logging)
+        implementation(libs.ktor.http)
+        implementation(libs.ktor.serialization.kotlinx.json)
+        implementation(libs.ktor.server.auth)
+        implementation(libs.ktor.server.cio)
+        implementation(libs.ktor.server.core)
+        implementation(libs.ktor.server.host.common)
     }
 }
 

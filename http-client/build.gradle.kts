@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode
-
 plugins {
     id("io.ashdavies.default")
 
@@ -11,20 +9,17 @@ android {
 }
 
 kotlin {
-    commonMain {
-        dependencies {
-            api(projects.httpCommon)
-            api(libs.ktor.client.core)
-            api(libs.ktor.client.logging)
+    commonMain.dependencies {
+        implementation(projects.httpCommon)
+        implementation(projects.localStorage)
 
-            implementation(projects.localStorage)
+        implementation(compose.runtime)
 
-            implementation(libs.jetbrains.kotlinx.serialization.properties)
-            implementation(libs.ktor.client.content.negotiation)
-            implementation(libs.ktor.client.cio)
-            implementation(libs.ktor.serialization.json)
-            implementation(libs.ktor.serialization.kotlinx)
-            implementation(libs.slf4j.simple)
-        }
+        implementation(libs.jetbrains.kotlinx.serialization.properties)
+        implementation(libs.ktor.serialization.kotlinx.json)
+        implementation(libs.ktor.client.cio)
+        implementation(libs.ktor.client.content.negotiation)
+        implementation(libs.ktor.client.core)
+        implementation(libs.ktor.client.logging)
     }
 }

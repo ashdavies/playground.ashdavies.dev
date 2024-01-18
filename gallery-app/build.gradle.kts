@@ -10,33 +10,37 @@ android {
 
 kotlin {
     commonMain.dependencies {
-        implementation(compose.materialIconsExtended)
+        implementation(projects.composeMaterial)
+        implementation(projects.httpClient)
+        implementation(projects.identityManager)
+        implementation(projects.localStorage)
+        implementation(projects.platformSupport)
+        implementation(projects.sqlDriver)
 
-        with(projects) {
-            implementation(composeMaterial)
-            implementation(httpClient)
-            implementation(identityManager)
-            implementation(localStorage)
-            implementation(platformSupport)
-            implementation(sqlDriver)
-        }
+        implementation(compose.foundation)
+        implementation(compose.material)
+        implementation(compose.material3)
+        implementation(compose.materialIconsExtended)
+        implementation(compose.runtime)
+        implementation(compose.ui)
 
         implementation(libs.coil.compose)
         implementation(libs.essenty.parcelable)
+        implementation(libs.jetbrains.kotlinx.collections.immutable)
+        implementation(libs.ktor.client.core)
         implementation(libs.ktor.client.mock)
+        implementation(libs.ktor.http)
+        implementation(libs.ktor.io)
         implementation(libs.slack.circuit.foundation)
-    }
-
-    commonTest.dependencies {
-        with(libs.ktor) {
-            implementation(client.content.negotiation)
-            implementation(serialization.json)
-            implementation(client.mock)
-        }
+        implementation(libs.sqldelight.runtime)
     }
 
     androidMain.dependencies {
         implementation(libs.androidx.activity.compose)
+    }
+
+    androidDebug.dependencies {
+        implementation(compose.uiTooling)
     }
 }
 

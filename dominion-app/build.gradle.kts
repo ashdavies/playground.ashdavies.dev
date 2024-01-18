@@ -11,18 +11,16 @@ kotlin {
     commonMain.dependencies {
         implementation(projects.httpClient)
 
+        implementation(compose.foundation)
+        implementation(compose.material3)
+        implementation(compose.runtime)
+        implementation(compose.ui)
+
         implementation(libs.coil.compose)
         implementation(libs.essenty.parcelable)
+        implementation(libs.jetbrains.kotlinx.collections.immutable)
+        implementation(libs.jetbrains.kotlinx.serialization.json)
+        implementation(libs.ktor.client.core)
         implementation(libs.slack.circuit.foundation)
-        implementation(libs.slf4j.simple)
-    }
-
-    androidMain.dependencies {
-        implementation(libs.androidx.activity.compose)
-        implementation(libs.androidx.activity.ktx)
-
-        with(libs.google) {
-            implementation(accompanist.placeholderMaterial)
-        }
     }
 }

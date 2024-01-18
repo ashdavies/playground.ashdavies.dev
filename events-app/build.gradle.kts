@@ -10,43 +10,29 @@ android {
 
 kotlin {
     commonMain.dependencies {
-        implementation(compose.material)
+        implementation(projects.httpClient)
+        implementation(projects.httpCommon)
+        implementation(projects.localStorage)
 
-        with(projects) {
-            implementation(httpClient)
-            implementation(localStorage)
-        }
+        implementation(compose.foundation)
+        implementation(compose.material)
+        implementation(compose.material3)
+        implementation(compose.runtime)
+        implementation(compose.ui)
 
         implementation(libs.coil.compose)
         implementation(libs.essenty.parcelable)
+        implementation(libs.google.accompanist.flowlayout)
+        implementation(libs.google.accompanist.placeholderMaterial)
+        implementation(libs.jetbrains.kotlinx.datetime)
+        implementation(libs.jetbrains.kotlinx.serialization.core)
+        implementation(libs.ktor.client.core)
         implementation(libs.paging.compose.common)
-        implementation(libs.paging.compose.runtime)
-        implementation(libs.slf4j.simple)
         implementation(libs.slack.circuit.foundation)
     }
 
-    androidMain.dependencies {
-        implementation(libs.androidx.activity.compose)
-        implementation(libs.androidx.activity.ktx)
-
-        with(libs.google) {
-            implementation(android.maps)
-            implementation(accompanist.flowlayout)
-            implementation(accompanist.placeholderMaterial)
-
-            with(firebase) {
-                implementation(dependencies.platform(bom))
-                implementation(appcheck.playintegrity)
-                implementation(appcheck)
-            }
-
-            implementation(maps.android.compose)
-            implementation(maps.android.compose.widgets)
-        }
-    }
-
     androidDebug.dependencies {
-        implementation(libs.google.firebase.appcheck.debug)
+        implementation(compose.uiTooling)
     }
 }
 

@@ -7,9 +7,3 @@ pluginManager.withPlugin("com.android.library") {
 plugins {
     kotlin("multiplatform")
 }
-
-kotlin {
-    commonMain.dependencies {
-        implementation(project(":parcelable-support"))
-    }
-}

@@ -23,17 +23,6 @@ kotlin {
             val integrationTest by compilations.creating {
                 defaultSourceSet.dependencies {
                     implementation(main.compileDependencyFiles + main.output.classesDirs)
-
-                    implementation(libs.jetbrains.kotlin.test)
-                    implementation(libs.jetbrains.kotlinx.coroutines.core)
-                    implementation(libs.jetbrains.kotlinx.serialization.json)
-                    implementation(libs.ktor.client.core)
-                    implementation(libs.ktor.client.content.negotiation)
-                    implementation(libs.ktor.serialization)
-                    implementation(libs.ktor.serialization.json)
-                    implementation(libs.ktor.server.test.host)
-                    implementation(libs.ktor.http)
-                    implementation(libs.ktor.utils)
                 }
 
                 tasks.register<Test>("integrationTest") {
@@ -52,47 +41,27 @@ kotlin {
     }
 
     commonMain.dependencies {
-        with(projects) {
-            implementation(appCheck.appCheckCommon)
-            implementation(appCheck.appCheckSdk)
-            implementation(cloudFirestore)
-            implementation(eventsAggregator)
-            implementation(httpClient)
-            implementation(localStorage)
-        }
+        implementation(projects.appCheck.appCheckCommon)
+        implementation(projects.appCheck.appCheckSdk)
+        implementation(projects.cloudFirestore)
+        implementation(projects.eventsAggregator)
+        implementation(projects.httpClient)
+        implementation(projects.httpCommon)
+        implementation(projects.localStorage)
 
-        with(libs.google) {
-            implementation(dependencies.platform(cloud.bom))
-            implementation(auth.http)
-            implementation(cloud.firestore)
-            implementation(cloud.storage)
-            implementation(firebase.admin)
-            implementation(guava.jre)
-        }
-
-        with(libs.jetbrains.kotlinx) {
-            implementation(coroutines.core)
-            implementation(datetime)
-            implementation(serialization.core)
-            implementation(serialization.json)
-        }
-
-        with(libs.ktor) {
-            implementation(serialization.json)
-            implementation(serialization.kotlinx)
-
-            with(server) {
-                implementation(auth)
-                implementation(call.logging)
-                implementation(cio)
-                implementation(compression)
-                implementation(conditional.headers)
-                implementation(content.negotiation)
-                implementation(core)
-                implementation(default.headers)
-                implementation(request.validation)
-            }
-        }
+        implementation(libs.google.firebase.admin)
+        implementation(libs.jetbrains.kotlinx.datetime)
+        implementation(libs.jetbrains.kotlinx.serialization.core)
+        implementation(libs.ktor.client.core)
+        implementation(libs.ktor.serialization.kotlinx.json)
+        implementation(libs.ktor.server.call.logging)
+        implementation(libs.ktor.server.cio)
+        implementation(libs.ktor.server.compression)
+        implementation(libs.ktor.server.conditional.headers)
+        implementation(libs.ktor.server.content.negotiation)
+        implementation(libs.ktor.server.core)
+        implementation(libs.ktor.server.default.headers)
+        implementation(libs.ktor.server.host.common)
     }
 }
 

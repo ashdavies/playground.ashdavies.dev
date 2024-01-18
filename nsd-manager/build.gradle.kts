@@ -8,6 +8,13 @@ android {
 
 kotlin {
     commonMain.dependencies {
-        implementation(projects.platformSupport)
+        implementation(compose.runtime)
+
+        implementation(libs.jetbrains.kotlinx.coroutines.core)
+        //implementation(projects.platformSupport)
+    }
+
+    androidMain.dependencies {
+        implementation(libs.androidx.annotation)
     }
 }
