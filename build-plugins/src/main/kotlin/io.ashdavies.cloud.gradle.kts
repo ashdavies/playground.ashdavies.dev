@@ -13,20 +13,8 @@ compose {
 }
 
 dependencies {
-    implementation(compose.foundation)
     implementation(compose.runtime)
-
-    with(libs.jetbrains.kotlinx) {
-        implementation(coroutines.core)
-        implementation(datetime)
-        implementation(serialization.core)
-        implementation(serialization.json)
-    }
-
-    implementation(libs.google.firebase.admin)
-
-    testImplementation(kotlin("test"))
-    testImplementation(libs.jetbrains.kotlinx.coroutines.test)
+    implementation(libs.jetbrains.kotlinx.serialization.core)
 }
 
 java {
