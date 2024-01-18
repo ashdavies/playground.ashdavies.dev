@@ -148,7 +148,7 @@ android-library = { id = "com.android.library", version.ref = "google-android" }
 androidx-build-cache = "androidx.build.gradle.gcpbuildcache:1.0.0-beta07"
 apollo-graphql = { id = "com.apollographql.apollo", version.ref = "apollo-graphql" }
 cash-sqldelight = { id = "app.cash.sqldelight", version.ref = "cash-sqldelight" }
-dependency-analysis = "com.autonomousapps.dependency-analysis:1.28.0"
+dependency-analysis = "com.autonomousapps.dependency-analysis:1.29.0"
 diffplug-spotless = "com.diffplug.spotless:6.24.0"
 google-cloud-jib = "com.google.cloud.tools.jib:3.4.0"
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
