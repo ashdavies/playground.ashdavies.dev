@@ -10,6 +10,8 @@ apollo {
 }
 
 dependencies {
+    api(libs.apollo.graphql.runtime)
+    api(libs.apollo.graphql.api)
+
     implementation(libs.apollo.graphql.coroutines.support)
-    implementation(libs.apollo.graphql.runtime)
 }

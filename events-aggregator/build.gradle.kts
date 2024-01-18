@@ -4,11 +4,8 @@ plugins {
 }
 
 dependencies {
-    with(projects) {
-        implementation(cloudFirestore)
-        implementation(localStorage)
-        implementation(microYaml)
-    }
+    api(projects.microYaml)
 
-    implementation(libs.google.guava.jre)
+    implementation(libs.squareup.okhttp)
+    implementation(libs.squareup.okio)
 }
