@@ -55,13 +55,13 @@ google-android-identity = "com.google.android.libraries.identity.googleid:google
 google-android-maps = "com.google.android.gms:play-services-maps:18.2.0"
 google-android-material = "com.google.android.material:material:1.11.0"
 
-google-auth-http = "com.google.auth:google-auth-library-oauth2-http:1.17.0"
+google-auth-http = "com.google.auth:google-auth-library-oauth2-http:1.22.0"
 google-cloud-bom = "com.google.cloud:libraries-bom:26.30.0"
 google-cloud-firestore = { module = "com.google.cloud:google-cloud-firestore" }
 google-cloud-storage = { module = "com.google.cloud:google-cloud-storage" }
 
 google-firebase-admin = "com.google.firebase:firebase-admin:9.2.0"
-google-firebase-bom = "com.google.firebase:firebase-bom:32.7.0"
+google-firebase-bom = "com.google.firebase:firebase-bom:32.7.1"
 google-firebase-appcheck-debug = { module = "com.google.firebase:firebase-appcheck-debug" }
 google-firebase-appcheck-playintegrity = { module = "com.google.firebase:firebase-appcheck-playintegrity" }
 
