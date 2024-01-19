@@ -7,7 +7,7 @@ android {
     namespace = "io.ashdavies.common"
 
     val main by sourceSets.getting {
-        res.srcDirs("src/commonMain/resources")
+        res.srcDirs("src/androidMain/res", "src/commonMain/resources")
     }
 }
 
@@ -33,5 +33,13 @@ kotlin {
 
     androidMain.dependencies {
         implementation(libs.androidx.activity.compose)
+    }
+
+    jvmTest.dependencies {
+        implementation(kotlin("test"))
+
+        implementation(libs.app.cash.turbine)
+        implementation(libs.jetbrains.kotlinx.coroutines.test)
+        implementation(libs.slack.circuit.test)
     }
 }

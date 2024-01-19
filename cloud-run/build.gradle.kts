@@ -63,6 +63,18 @@ kotlin {
         implementation(libs.ktor.server.default.headers)
         implementation(libs.ktor.server.host.common)
     }
+
+    commonTest.dependencies {
+        implementation(kotlin("test"))
+
+        implementation(libs.ktor.server.test.host)
+    }
+
+    jvmIntegrationTest.dependencies {
+        implementation(libs.app.cash.turbine)
+        implementation(libs.jetbrains.kotlinx.coroutines.test)
+        implementation(libs.ktor.client.content.negotiation)
+    }
 }
 
 tasks.withType<com.google.cloud.tools.jib.gradle.JibTask> {
