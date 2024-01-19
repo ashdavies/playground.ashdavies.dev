@@ -11,6 +11,8 @@ kotlin {
     commonMain.dependencies {
         implementation(projects.localStorage)
 
+        implementation(compose.runtime)
+
         implementation(libs.kotlinx.serialization.core)
         implementation(libs.kotlinx.serialization.json)
         implementation(libs.ktor.client.auth)
