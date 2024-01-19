@@ -3,16 +3,15 @@ plugins {
 }
 
 dependencies {
-    api(libs.auth.java.jwt)
-    api(libs.google.firebase.admin)
-    api(libs.ktor.client.core)
+    implementation(compose.runtime)
 
+    implementation(libs.auth.java.jwt)
     implementation(libs.auth.jwks.rsa)
     implementation(libs.google.auth.http)
-    implementation(libs.jetbrains.kotlinx.coroutines.core)
+    implementation(libs.google.firebase.admin)
     implementation(libs.jetbrains.kotlinx.datetime)
-    implementation(libs.ktor.http)
-    implementation(libs.ktor.utils)
+    implementation(libs.jetbrains.kotlinx.serialization.core)
+    implementation(libs.ktor.client.core)
 
     runtimeOnly(libs.google.guava.jre)
     runtimeOnly(libs.slf4j.simple)

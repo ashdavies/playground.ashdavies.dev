@@ -7,25 +7,23 @@ android {
     namespace = "io.ashdavies.common"
 
     val main by sourceSets.getting {
-        res.srcDirs(
-            "src/androidMain/res",
-            "src/commonMain/resources",
-        )
+        res.srcDirs("src/androidMain/res", "src/commonMain/resources")
     }
 }
 
 kotlin {
     commonMain.dependencies {
-        api(projects.platformSupport)
+        implementation(projects.afterPartyApp)
+        implementation(projects.appCheck.appCheckClient)
+        implementation(projects.composeMaterial)
+        implementation(projects.dominionApp)
+        implementation(projects.eventsApp)
+        implementation(projects.galleryApp)
+        implementation(projects.platformSupport)
 
-        with(projects) {
-            implementation(appCheck.appCheckClient)
-            implementation(afterPartyApp)
-            implementation(composeMaterial)
-            implementation(dominionApp)
-            implementation(eventsApp)
-            implementation(galleryApp)
-        }
+        implementation(compose.material3)
+        implementation(compose.runtime)
+        implementation(compose.ui)
 
         implementation(libs.coil.compose)
         implementation(libs.coil.network)
@@ -33,12 +31,15 @@ kotlin {
         implementation(libs.slack.circuit.foundation)
     }
 
-    commonTest.dependencies {
-        implementation(libs.slack.circuit.test)
-    }
-
     androidMain.dependencies {
         implementation(libs.androidx.activity.compose)
-        implementation(libs.androidx.activity.ktx)
+    }
+
+    jvmTest.dependencies {
+        implementation(kotlin("test"))
+
+        implementation(libs.app.cash.turbine)
+        implementation(libs.jetbrains.kotlinx.coroutines.test)
+        implementation(libs.slack.circuit.test)
     }
 }

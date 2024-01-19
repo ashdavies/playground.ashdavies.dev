@@ -6,6 +6,8 @@ plugins {
 
 kotlin {
     commonMain.dependencies {
-        api(libs.jetbrains.kotlinx.cli)
+        implementation(compose.runtime)
+
+        implementation(libs.jetbrains.kotlinx.cli)
     }
 }

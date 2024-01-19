@@ -9,8 +9,14 @@ android {
 
 kotlin {
     commonMain.dependencies {
+        implementation(compose.runtime)
+        implementation(compose.ui)
+
         implementation(projects.platformSupport)
         implementation(projects.sqlDriver)
+
+        implementation(libs.jetbrains.kotlinx.serialization.core)
+        implementation(libs.sqldelight.coroutines.extensions)
     }
 }
 

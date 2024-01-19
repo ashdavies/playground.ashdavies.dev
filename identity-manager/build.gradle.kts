@@ -17,17 +17,16 @@ android {
 
 kotlin {
     commonMain.dependencies {
-        implementation(projects.platformSupport)
         implementation(projects.localStorage)
-        implementation(projects.sqlDriver)
-    }
+        implementation(projects.platformSupport)
 
-    androidMain.dependencies {
+        implementation(compose.runtime)
+
         implementation(libs.androidx.credentials.auth)
         implementation(libs.google.android.identity)
+        implementation(libs.jetbrains.kotlinx.coroutines.core)
     }
 }
-
 
 sqldelight {
     databases {

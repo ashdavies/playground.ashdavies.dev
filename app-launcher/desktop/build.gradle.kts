@@ -10,10 +10,13 @@ kotlin {
         withJava()
     }
 
-    jvmMain.dependencies {
+    commonMain.dependencies {
         implementation(projects.appLauncher.common)
         implementation(projects.httpClient)
+        implementation(projects.platformSupport)
+
         implementation(libs.jetbrains.kotlinx.cli)
+        implementation(libs.ktor.client.core)
         implementation(libs.slack.circuit.foundation)
     }
 }
