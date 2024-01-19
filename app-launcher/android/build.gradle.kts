@@ -27,8 +27,17 @@ android {
 }
 
 kotlin {
-    commonMain.dependencies {
-        implementation(compose.material)
+    androidMain.dependencies {
+        implementation(projects.appLauncher.common)
+        implementation(projects.httpClient)
+
+        implementation(compose.runtime)
+
+        implementation(libs.androidx.core.splashscreen)
+        implementation(libs.google.android.material)
+        implementation(libs.ktor.client.core)
+        implementation(libs.slack.circuit.foundation)
+        implementation(libs.slack.circuit.overlay)
     }
 
     val androidInstrumentedTest by sourceSets.getting {
