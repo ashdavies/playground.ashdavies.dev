@@ -15,7 +15,7 @@ kotlin {
         implementation(projects.httpClient)
         implementation(projects.platformSupport)
 
-        implementation(libs.jetbrains.kotlinx.cli)
+        implementation(libs.kotlinx.cli)
         implementation(libs.ktor.client.core)
         implementation(libs.slack.circuit.foundation)
     }

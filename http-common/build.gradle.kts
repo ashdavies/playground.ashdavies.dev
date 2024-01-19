@@ -17,7 +17,7 @@ kotlin {
         dependencies {
             implementation(compose.runtime)
 
-            implementation(libs.jetbrains.kotlinx.serialization.json)
+            implementation(libs.kotlinx.serialization.json)
             implementation(libs.ktor.client.core)
         }
 

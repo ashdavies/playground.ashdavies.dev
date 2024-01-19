@@ -24,7 +24,7 @@ kotlin {
 
         implementation(libs.androidx.credentials.auth)
         implementation(libs.google.android.identity)
-        implementation(libs.jetbrains.kotlinx.coroutines.core)
+        implementation(libs.kotlinx.coroutines.core)
     }
 }
 

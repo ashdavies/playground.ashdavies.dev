@@ -15,7 +15,7 @@ kotlin {
 
         implementation(compose.runtime)
 
-        implementation(libs.jetbrains.kotlinx.serialization.properties)
+        implementation(libs.kotlinx.serialization.properties)
         implementation(libs.ktor.serialization.kotlinx.json)
         implementation(libs.ktor.client.cio)
         implementation(libs.ktor.client.content.negotiation)

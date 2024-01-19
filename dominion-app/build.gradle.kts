@@ -18,8 +18,8 @@ kotlin {
 
         implementation(libs.coil.compose)
         implementation(libs.essenty.parcelable)
-        implementation(libs.jetbrains.kotlinx.collections.immutable)
-        implementation(libs.jetbrains.kotlinx.serialization.json)
+        implementation(libs.kotlinx.collections.immutable)
+        implementation(libs.kotlinx.serialization.json)
         implementation(libs.ktor.client.core)
         implementation(libs.slack.circuit.foundation)
     }

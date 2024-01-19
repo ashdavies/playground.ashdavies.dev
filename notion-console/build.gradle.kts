@@ -21,7 +21,7 @@ kotlin {
         implementation(compose.ui)
 
         implementation(libs.jraf.klibnotion)
-        implementation(libs.jetbrains.kotlinx.cli)
+        implementation(libs.kotlinx.cli)
         implementation(libs.mosaic.runtime)
     }
 

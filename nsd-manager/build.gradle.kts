@@ -10,8 +10,7 @@ kotlin {
     commonMain.dependencies {
         implementation(compose.runtime)
 
-        implementation(libs.jetbrains.kotlinx.coroutines.core)
-        //implementation(projects.platformSupport)
+        implementation(libs.kotlinx.coroutines.core)
     }
 
     androidMain.dependencies {

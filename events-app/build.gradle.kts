@@ -21,8 +21,8 @@ kotlin {
 
         implementation(libs.coil.compose)
         implementation(libs.essenty.parcelable)
-        implementation(libs.jetbrains.kotlinx.datetime)
-        implementation(libs.jetbrains.kotlinx.serialization.core)
+        implementation(libs.kotlinx.datetime)
+        implementation(libs.kotlinx.serialization.core)
         implementation(libs.ktor.client.core)
         implementation(libs.paging.compose.common)
         implementation(libs.slack.circuit.foundation)

@@ -4,6 +4,6 @@ plugins {
 
 kotlin {
     commonMain.dependencies {
-        implementation(libs.jetbrains.kotlinx.serialization.core)
+        implementation(libs.kotlinx.serialization.core)
     }
 }
