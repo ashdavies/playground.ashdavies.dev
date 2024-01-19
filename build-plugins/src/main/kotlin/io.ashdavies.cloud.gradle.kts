@@ -8,7 +8,7 @@ plugins {
 }
 
 compose {
-    val composeCompiler = libs.jetbrains.compose.compiler.get()
+    val composeCompiler = libs.compose.compiler.get()
     kotlinCompilerPlugin.set("$composeCompiler")
 }
 

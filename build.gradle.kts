@@ -31,7 +31,7 @@ plugins {
 dependencyAnalysis {
     structure {
         bundle("compose-runtime") {
-            includeGroup(libs.jetbrains.compose.runtime)
+            includeGroup(libs.compose.runtime)
         }
     }
 }
