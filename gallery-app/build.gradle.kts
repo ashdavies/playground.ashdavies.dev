@@ -26,7 +26,7 @@ kotlin {
 
         implementation(libs.coil.compose)
         implementation(libs.essenty.parcelable)
-        implementation(libs.jetbrains.kotlinx.collections.immutable)
+        implementation(libs.kotlinx.collections.immutable)
         implementation(libs.ktor.client.core)
         implementation(libs.ktor.client.mock)
         implementation(libs.ktor.http)
@@ -39,7 +39,7 @@ kotlin {
         implementation(kotlin("test"))
 
         implementation(libs.app.cash.turbine)
-        implementation(libs.jetbrains.kotlinx.coroutines.test)
+        implementation(libs.kotlinx.coroutines.test)
     }
 
     androidMain.dependencies {

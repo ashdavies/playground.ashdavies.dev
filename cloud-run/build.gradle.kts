@@ -50,8 +50,8 @@ kotlin {
         implementation(projects.localStorage)
 
         implementation(libs.google.firebase.admin)
-        implementation(libs.jetbrains.kotlinx.datetime)
-        implementation(libs.jetbrains.kotlinx.serialization.core)
+        implementation(libs.kotlinx.datetime)
+        implementation(libs.kotlinx.serialization.core)
         implementation(libs.ktor.client.core)
         implementation(libs.ktor.serialization.kotlinx.json)
         implementation(libs.ktor.server.call.logging)
@@ -72,7 +72,7 @@ kotlin {
 
     jvmIntegrationTest.dependencies {
         implementation(libs.app.cash.turbine)
-        implementation(libs.jetbrains.kotlinx.coroutines.test)
+        implementation(libs.kotlinx.coroutines.test)
         implementation(libs.ktor.client.content.negotiation)
     }
 }

@@ -39,7 +39,7 @@ kotlin {
         implementation(kotlin("test"))
 
         implementation(libs.app.cash.turbine)
-        implementation(libs.jetbrains.kotlinx.coroutines.test)
+        implementation(libs.kotlinx.coroutines.test)
         implementation(libs.slack.circuit.test)
     }
 }

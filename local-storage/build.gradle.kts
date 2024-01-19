@@ -15,7 +15,7 @@ kotlin {
         implementation(projects.platformSupport)
         implementation(projects.sqlDriver)
 
-        implementation(libs.jetbrains.kotlinx.serialization.core)
+        implementation(libs.kotlinx.serialization.core)
         implementation(libs.sqldelight.coroutines.extensions)
     }
 }

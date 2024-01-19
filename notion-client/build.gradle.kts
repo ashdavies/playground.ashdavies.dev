@@ -11,8 +11,10 @@ kotlin {
     commonMain.dependencies {
         implementation(projects.localStorage)
 
-        implementation(libs.jetbrains.kotlinx.serialization.core)
-        implementation(libs.jetbrains.kotlinx.serialization.json)
+        implementation(compose.runtime)
+
+        implementation(libs.kotlinx.serialization.core)
+        implementation(libs.kotlinx.serialization.json)
         implementation(libs.ktor.client.auth)
         implementation(libs.ktor.client.content.negotiation)
         implementation(libs.ktor.client.core)

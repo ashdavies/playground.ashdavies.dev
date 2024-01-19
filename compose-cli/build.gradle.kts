@@ -8,6 +8,6 @@ kotlin {
     commonMain.dependencies {
         implementation(compose.runtime)
 
-        implementation(libs.jetbrains.kotlinx.cli)
+        implementation(libs.kotlinx.cli)
     }
 }

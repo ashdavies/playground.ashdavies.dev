@@ -9,8 +9,8 @@ dependencies {
     implementation(libs.auth.jwks.rsa)
     implementation(libs.google.auth.http)
     implementation(libs.google.firebase.admin)
-    implementation(libs.jetbrains.kotlinx.datetime)
-    implementation(libs.jetbrains.kotlinx.serialization.core)
+    implementation(libs.kotlinx.datetime)
+    implementation(libs.kotlinx.serialization.core)
     implementation(libs.ktor.client.core)
 
     runtimeOnly(libs.google.guava.jre)
