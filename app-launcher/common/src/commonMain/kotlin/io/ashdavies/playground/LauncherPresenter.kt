@@ -3,40 +3,37 @@ package io.ashdavies.playground
 import androidx.compose.runtime.Composable
 import com.slack.circuit.backstack.SaveableBackStack
 import com.slack.circuit.backstack.rememberSaveableBackStack
+import com.slack.circuit.foundation.onNavEvent
 import com.slack.circuit.runtime.Navigator
 import com.slack.circuit.runtime.screen.Screen
 import io.ashdavies.dominion.DominionScreen
 import io.ashdavies.party.AfterPartyScreen
 import io.ashdavies.routes.RouteScreen
 
-private val AfterPartyEntry = LauncherScreen.Entry(
-    imageModel = LauncherDrawableTokens.afterParty,
-    title = "After Party",
-    event = LauncherScreen.Event.AfterParty,
-)
+private enum class LauncherEntries : LauncherScreen.State.Item {
+    AfterParty {
+        override val imageModel = LauncherDrawableTokens.afterParty
+        override val screen = AfterPartyScreen
+        override val title = "After Party"
+    },
 
-private val DominionEntry = LauncherScreen.Entry(
-    imageModel = LauncherDrawableTokens.dominion,
-    title = "Dominion",
-    event = LauncherScreen.Event.Dominion,
-)
+    Dominion {
+        override val imageModel = LauncherDrawableTokens.dominion
+        override val screen = DominionScreen.Home
+        override val title = "Dominion"
+    },
 
-private val RoutesEntry = LauncherScreen.Entry(
-    imageModel = LauncherDrawableTokens.routes,
-    title = "Routes",
-    event = LauncherScreen.Event.Routes,
-)
+    Routes {
+        override val imageModel = LauncherDrawableTokens.routes
+        override val screen = RouteScreen
+        override val title = "Routes"
+    },
+}
 
 @Composable
 internal fun LauncherPresenter(navigator: Navigator): LauncherScreen.State {
-    val entries = listOf(AfterPartyEntry, DominionEntry, RoutesEntry)
-
-    return LauncherScreen.State(entries) { event ->
-        when (event) {
-            LauncherScreen.Event.AfterParty -> navigator.goTo(AfterPartyScreen)
-            LauncherScreen.Event.Dominion -> navigator.goTo(DominionScreen.Home)
-            LauncherScreen.Event.Routes -> navigator.goTo(RouteScreen)
-        }
+    return LauncherScreen.State(listOf(*enumValues<LauncherEntries>())) { event ->
+        navigator.onNavEvent(event)
     }
 }
 
@@ -49,10 +46,7 @@ public fun rememberSaveableBackStack(initialScreenName: String? = null): Saveabl
 }
 
 private fun initialScreenOrNull(name: String? = null): Screen? = name?.let {
-    return when (it) {
-        "after-party" -> AfterPartyScreen
-        "dominion" -> DominionScreen.Home
-        "routes" -> RouteScreen
-        else -> null
-    }
+    return enumValues<LauncherEntries>()
+        .firstOrNull { it.name.lowercase() == name.lowercase() }
+        ?.screen
 }

@@ -19,7 +19,7 @@ android {
     defaultConfig {
         val androidApiKey = System.getenv("ANDROID_API_KEY")
         buildConfigField("String", "ANDROID_API_KEY", "\"$androidApiKey}\"")
-        manifestPlaceholders["ANDROID_API_KEY"] = androidApiKey
+        manifestPlaceholders["ANDROID_API_KEY"] = androidApiKey ?: ""
 
         versionName = "1.0"
         versionCode = 1

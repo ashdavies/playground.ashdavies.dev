@@ -21,5 +21,7 @@ internal fun RouteScreen(
     state: RouteScreen.State,
     modifier: Modifier = Modifier,
 ) {
-    RouteMap()
+    RouteMap(
+        modifier = modifier,
+    )
 }

@@ -1,5 +1,6 @@
 package io.ashdavies.playground
 
+import com.slack.circuit.foundation.NavEvent
 import com.slack.circuit.test.FakeNavigator
 import com.slack.circuit.test.presenterTestOf
 import io.ashdavies.party.AfterPartyScreen
@@ -14,7 +15,7 @@ internal class LauncherPresenterTest {
     @Test
     fun `should navigate to after party screen`() = runTest {
         presenterTestOf({ LauncherPresenter(navigator) }) {
-            awaitItem().eventSink(LauncherScreen.Event.AfterParty)
+            awaitItem().eventSink(NavEvent.GoTo(AfterPartyScreen))
 
             assertEquals(navigator.awaitNextScreen(), AfterPartyScreen)
         }
