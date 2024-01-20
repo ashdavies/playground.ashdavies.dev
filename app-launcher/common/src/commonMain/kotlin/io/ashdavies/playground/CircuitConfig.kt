@@ -8,6 +8,8 @@ import io.ashdavies.gallery.GalleryPresenterFactory
 import io.ashdavies.gallery.GalleryUiFactory
 import io.ashdavies.party.AfterPartyPresenterFactory
 import io.ashdavies.party.AfterPartyUiFactory
+import io.ashdavies.routes.RoutePresenterFactory
+import io.ashdavies.routes.RouteUiFactory
 
 public fun CircuitConfig(context: PlatformContext): Circuit = Circuit.Builder()
     .addPresenterFactories(getPresenterFactories(context))
@@ -20,6 +22,7 @@ private fun getPresenterFactories(context: PlatformContext) = listOf(
     EventsPresenterFactory(),
     GalleryPresenterFactory(context),
     LauncherPresenterFactory(),
+    RoutePresenterFactory(),
 )
 
 private fun getUiFactories(context: PlatformContext) = listOf(
@@ -28,4 +31,5 @@ private fun getUiFactories(context: PlatformContext) = listOf(
     EventsUiFactory(),
     GalleryUiFactory(context),
     LauncherUiFactory(),
+    RouteUiFactory(),
 )

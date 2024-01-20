@@ -8,6 +8,7 @@ import com.slack.circuit.runtime.Navigator
 import com.slack.circuit.runtime.screen.Screen
 import io.ashdavies.dominion.DominionScreen
 import io.ashdavies.party.AfterPartyScreen
+import io.ashdavies.routes.RouteScreen
 
 private enum class LauncherEntries : LauncherScreen.State.Item {
     AfterParty {
@@ -20,6 +21,12 @@ private enum class LauncherEntries : LauncherScreen.State.Item {
         override val imageModel = LauncherDrawableTokens.dominion
         override val screen = DominionScreen.Home
         override val title = "Dominion"
+    },
+
+    Routes {
+        override val imageModel = LauncherDrawableTokens.routes
+        override val screen = RouteScreen
+        override val title = "Routes"
     },
 }
 
