@@ -35,6 +35,10 @@ kotlin {
         implementation(libs.androidx.activity.compose)
     }
 
+    jvmMain.dependencies {
+        implementation(compose.desktop.currentOs)
+    }
+
     jvmTest.dependencies {
         implementation(kotlin("test"))
 
