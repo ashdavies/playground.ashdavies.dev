@@ -19,6 +19,7 @@ kotlin {
         implementation(projects.dominionApp)
         implementation(projects.eventsApp)
         implementation(projects.galleryApp)
+        implementation(projects.mapRoutes)
         implementation(projects.platformSupport)
 
         implementation(compose.material3)

@@ -69,6 +69,7 @@ include(
     ":identity-manager",
     ":kotlin-gb",
     ":local-storage",
+    ":map-routes",
     ":micro-yaml",
     ":notion-client",
     ":nsd-manager",
