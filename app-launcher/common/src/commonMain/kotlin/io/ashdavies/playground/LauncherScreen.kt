@@ -51,6 +51,7 @@ internal object LauncherScreen : Parcelable, Screen {
     sealed interface Event : CircuitUiEvent {
         data object AfterParty : Event
         data object Dominion : Event
+        data object Routes : Event
     }
 
     data class State(

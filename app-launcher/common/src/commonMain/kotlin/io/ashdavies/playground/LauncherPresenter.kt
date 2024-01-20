@@ -7,6 +7,7 @@ import com.slack.circuit.runtime.Navigator
 import com.slack.circuit.runtime.screen.Screen
 import io.ashdavies.dominion.DominionScreen
 import io.ashdavies.party.AfterPartyScreen
+import io.ashdavies.routes.RouteScreen
 
 private val AfterPartyEntry = LauncherScreen.Entry(
     imageModel = LauncherDrawableTokens.afterParty,
@@ -20,14 +21,21 @@ private val DominionEntry = LauncherScreen.Entry(
     event = LauncherScreen.Event.Dominion,
 )
 
+private val RoutesEntry = LauncherScreen.Entry(
+    imageModel = LauncherDrawableTokens.routes,
+    title = "Routes",
+    event = LauncherScreen.Event.Routes,
+)
+
 @Composable
 internal fun LauncherPresenter(navigator: Navigator): LauncherScreen.State {
-    val entries = listOf(AfterPartyEntry, DominionEntry)
+    val entries = listOf(AfterPartyEntry, DominionEntry, RoutesEntry)
 
     return LauncherScreen.State(entries) { event ->
         when (event) {
             LauncherScreen.Event.AfterParty -> navigator.goTo(AfterPartyScreen)
             LauncherScreen.Event.Dominion -> navigator.goTo(DominionScreen.Home)
+            LauncherScreen.Event.Routes -> navigator.goTo(RouteScreen)
         }
     }
 }
@@ -44,6 +52,7 @@ private fun initialScreenOrNull(name: String? = null): Screen? = name?.let {
     return when (it) {
         "after-party" -> AfterPartyScreen
         "dominion" -> DominionScreen.Home
+        "routes" -> RouteScreen
         else -> null
     }
 }
