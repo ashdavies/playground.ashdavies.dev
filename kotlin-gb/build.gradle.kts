@@ -8,9 +8,10 @@ android {
 
 kotlin {
     commonMain.dependencies {
+        implementation(projects.parcelableSupport)
+
         implementation(compose.runtime)
 
-        implementation(libs.essenty.parcelable)
         implementation(libs.kotlinx.serialization.core)
         implementation(libs.ktor.http)
     }

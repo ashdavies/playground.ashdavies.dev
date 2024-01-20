@@ -7,8 +7,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import com.arkivanov.essenty.parcelable.Parcelable
-import com.arkivanov.essenty.parcelable.Parcelize
 import com.slack.circuit.runtime.CircuitUiEvent
 import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.presenter.Presenter
@@ -20,6 +18,8 @@ import io.ashdavies.content.PlatformContext
 import io.ashdavies.identity.IdentityManager
 import io.ashdavies.identity.IdentityModule
 import io.ashdavies.identity.IdentityState
+import io.ashdavies.parcelable.Parcelable
+import io.ashdavies.parcelable.Parcelize
 import kotlinx.coroutines.launch
 
 @Parcelize

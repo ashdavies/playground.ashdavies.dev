@@ -7,10 +7,10 @@ import app.cash.paging.Pager
 import app.cash.paging.cachedIn
 import app.cash.paging.compose.LazyPagingItems
 import app.cash.paging.compose.collectAsLazyPagingItems
-import com.arkivanov.essenty.parcelable.Parcelable
-import com.arkivanov.essenty.parcelable.Parcelize
 import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.screen.Screen
+import io.ashdavies.parcelable.Parcelable
+import io.ashdavies.parcelable.Parcelize
 import io.ashdavies.playground.Event
 import io.ashdavies.playground.MultipleReferenceWarning
 import io.ashdavies.playground.events.rememberEventPager

@@ -1,6 +1,6 @@
 plugins {
     id("io.ashdavies.default")
-    id("kotlin-parcelize")
+    id("io.ashdavies.parcelable")
 }
 
 android {
@@ -28,7 +28,6 @@ kotlin {
 
         implementation(libs.coil.compose)
         implementation(libs.coil.network)
-        implementation(libs.essenty.parcelable)
         implementation(libs.slack.circuit.foundation)
     }
 
