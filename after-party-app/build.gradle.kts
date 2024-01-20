@@ -20,7 +20,6 @@ kotlin {
         implementation(compose.ui)
 
         implementation(libs.coil.compose)
-        implementation(libs.essenty.parcelable)
         implementation(libs.slack.circuit.foundation)
     }
 

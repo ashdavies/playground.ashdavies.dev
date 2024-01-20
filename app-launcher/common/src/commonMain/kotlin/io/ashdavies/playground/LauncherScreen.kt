@@ -28,11 +28,17 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil3.compose.rememberAsyncImagePainter
+<<<<<<< Updated upstream
 import com.arkivanov.essenty.parcelable.Parcelable
 import com.arkivanov.essenty.parcelable.Parcelize
 import com.slack.circuit.foundation.NavEvent
+=======
+import com.slack.circuit.runtime.CircuitUiEvent
+>>>>>>> Stashed changes
 import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.screen.Screen
+import io.ashdavies.parcelable.Parcelable
+import io.ashdavies.parcelable.Parcelize
 
 @Parcelize
 internal object LauncherScreen : Parcelable, Screen {

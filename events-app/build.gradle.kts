@@ -20,7 +20,6 @@ kotlin {
         implementation(compose.runtime)
 
         implementation(libs.coil.compose)
-        implementation(libs.essenty.parcelable)
         implementation(libs.kotlinx.datetime)
         implementation(libs.kotlinx.serialization.core)
         implementation(libs.ktor.client.core)

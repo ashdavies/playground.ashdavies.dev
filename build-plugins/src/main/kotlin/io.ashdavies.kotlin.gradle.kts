@@ -1,5 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
+private val jvmTargetVersion = libs.versions.kotlin.jvmTarget.get()
+
 plugins {
     kotlin("plugin.serialization")
     kotlin("multiplatform")
@@ -9,12 +11,17 @@ kotlin {
     explicitApi()
     jvm()
 
-    val jvmTargetVersion = libs.versions.kotlin.jvmTarget.get()
-
-    tasks.withType<KotlinCompile> {
-        kotlinOptions.freeCompilerArgs += "-Xexpect-actual-classes"
-        kotlinOptions.jvmTarget = jvmTargetVersion
-    }
-
     jvmToolchain(jvmTargetVersion.toInt())
+
+    targets.all {
+        compilations.all {
+            compilerOptions.configure {
+                freeCompilerArgs.add("-Xexpect-actual-classes")
+            }
+        }
+    }
+}
+
+tasks.withType<KotlinCompile> {
+    kotlinOptions.jvmTarget = jvmTargetVersion
 }

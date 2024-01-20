@@ -1,8 +1,6 @@
 package io.ashdavies.dominion
 
 import androidx.compose.runtime.Composable
-import com.arkivanov.essenty.parcelable.Parcelable
-import com.arkivanov.essenty.parcelable.Parcelize
 import com.slack.circuit.runtime.CircuitUiEvent
 import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.Navigator
@@ -14,6 +12,8 @@ import com.slack.circuit.runtime.ui.ui
 import io.ashdavies.dominion.card.CardScreen
 import io.ashdavies.dominion.home.HomeScreen
 import io.ashdavies.dominion.kingdom.KingdomScreen
+import io.ashdavies.parcelable.Parcelable
+import io.ashdavies.parcelable.Parcelize
 
 @Parcelize
 public sealed class DominionScreen : Parcelable, Screen {

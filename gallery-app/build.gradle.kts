@@ -25,7 +25,6 @@ kotlin {
         implementation(compose.ui)
 
         implementation(libs.coil.compose)
-        implementation(libs.essenty.parcelable)
         implementation(libs.kotlinx.collections.immutable)
         implementation(libs.ktor.client.core)
         implementation(libs.ktor.client.mock)

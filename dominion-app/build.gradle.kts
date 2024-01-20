@@ -17,7 +17,6 @@ kotlin {
         implementation(compose.ui)
 
         implementation(libs.coil.compose)
-        implementation(libs.essenty.parcelable)
         implementation(libs.kotlinx.collections.immutable)
         implementation(libs.kotlinx.serialization.json)
         implementation(libs.ktor.client.core)

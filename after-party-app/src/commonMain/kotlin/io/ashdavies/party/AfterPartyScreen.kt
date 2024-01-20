@@ -21,8 +21,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
-import com.arkivanov.essenty.parcelable.Parcelable
-import com.arkivanov.essenty.parcelable.Parcelize
 import com.slack.circuit.foundation.CircuitContent
 import com.slack.circuit.foundation.NavEvent
 import com.slack.circuit.runtime.CircuitUiEvent
@@ -32,6 +30,8 @@ import io.ashdavies.gallery.GalleryScreen
 import io.ashdavies.gallery.GallerySheetContent
 import io.ashdavies.identity.IdentityState
 import io.ashdavies.material.BottomSheetScaffold
+import io.ashdavies.parcelable.Parcelable
+import io.ashdavies.parcelable.Parcelize
 import io.ashdavies.playground.activity.ActivityScreen
 import io.ashdavies.playground.profile.ProfileScreen
 
