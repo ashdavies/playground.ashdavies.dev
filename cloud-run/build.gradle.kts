@@ -13,8 +13,8 @@ application {
 }
 
 buildConfig {
-    val firebaseAndroidAppId by stringProperty { value ->
-        buildConfigField("FIREBASE_ANDROID_APP_ID", value)
+    val firebaseAndroidAppId by stringPropertyOrNull { value ->
+        buildConfigField<String?>("FIREBASE_ANDROID_APP_ID", value)
     }
 
     val googleServiceAccountId by stringPropertyOrNull { value ->
