@@ -11,6 +11,9 @@ buildscript {
 }
 
 pluginManagement.repositories {
+    includeBuild("build-plugins")
+    includeBuild("fused-properties")
+
     gradlePluginPortal()
     google()
     mavenCentral()
@@ -78,7 +81,5 @@ include(
     ":platform-support",
     ":sql-driver",
 )
-
-includeBuild("build-plugins")
 
 rootProject.name = "playground"
