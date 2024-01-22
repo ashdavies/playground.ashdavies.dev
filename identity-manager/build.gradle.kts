@@ -1,5 +1,6 @@
 plugins {
     id("io.ashdavies.default")
+    id("io.ashdavies.properties")
     id("io.ashdavies.sql")
 }
 
@@ -9,7 +10,9 @@ android {
     }
 
     defaultConfig {
-        buildConfigField("String", "SERVER_CLIENT_ID", "\"${System.getenv("SERVER_CLIENT_ID")}\"")
+        val serverClientId by stringProperty { value ->
+            buildConfigField("String", "SERVER_CLIENT_ID", "\"$value\"")
+        }
     }
 
     namespace = "io.ashdavies.identity"
