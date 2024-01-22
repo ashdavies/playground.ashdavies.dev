@@ -71,6 +71,8 @@ kotlin {
     }
 
     jvmIntegrationTest.dependencies {
+        implementation(kotlin("test-junit"))
+
         implementation(libs.app.cash.turbine)
         implementation(libs.kotlinx.coroutines.test)
         implementation(libs.ktor.client.content.negotiation)
