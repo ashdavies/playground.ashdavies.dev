@@ -4,6 +4,7 @@ plugins {
     id("io.ashdavies.android")
     id("io.ashdavies.compose")
     id("io.ashdavies.kotlin")
+    id("io.ashdavies.properties")
     id("io.ashdavies.spotless")
 }
 
@@ -17,9 +18,10 @@ android {
     }
 
     defaultConfig {
-        val androidApiKey = System.getenv("ANDROID_API_KEY")
-        buildConfigField("String", "ANDROID_API_KEY", "\"$androidApiKey}\"")
-        manifestPlaceholders["ANDROID_API_KEY"] = androidApiKey ?: ""
+        val androidApiKey by stringProperty { value ->
+            buildConfigField("String", "ANDROID_API_KEY", "\"$value\"")
+            manifestPlaceholders["ANDROID_API_KEY"] = value
+        }
 
         versionName = "1.0"
         versionCode = 1
