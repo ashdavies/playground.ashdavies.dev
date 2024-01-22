@@ -1,9 +1,16 @@
 plugins {
     id("io.ashdavies.default")
     id("io.ashdavies.parcelable")
+    id("io.ashdavies.properties")
 }
 
 android {
+    defaultConfig {
+        val androidApiKey by stringProperty { value ->
+            manifestPlaceholders["ANDROID_API_KEY"] = value
+        }
+    }
+
     namespace = "io.ashdavies.routes"
 }
 

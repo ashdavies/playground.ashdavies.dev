@@ -1,11 +1,31 @@
 plugins {
     id("com.google.cloud.tools.jib")
     id("io.ashdavies.kotlin")
+    id("io.ashdavies.properties")
+
     application
+
+    alias(libs.plugins.build.config)
 }
 
 application {
     mainClass.set("io.ashdavies.cloud.MainKt")
+}
+
+buildConfig {
+    val firebaseAndroidAppId by stringProperty { value ->
+        buildConfigField("FIREBASE_ANDROID_APP_ID", value)
+    }
+
+    val googleServiceAccountId by stringPropertyOrNull { value ->
+        buildConfigField<String?>("GOOGLE_SERVICE_ACCOUNT_ID", value)
+    }
+
+    val integrationApiKey by stringProperty { value ->
+        buildConfigField("INTEGRATION_API_KEY", value)
+    }
+
+    packageName.set("io.ashdavies.cloud")
 }
 
 jib {

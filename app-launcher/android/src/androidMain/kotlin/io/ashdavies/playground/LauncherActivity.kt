@@ -11,6 +11,7 @@ import com.slack.circuit.overlay.ContentWithOverlays
 import io.ashdavies.http.LocalHttpClient
 import io.ktor.client.plugins.DefaultRequest
 import io.ktor.client.request.header
+import playground.app_launcher.android.BuildConfig
 import java.security.MessageDigest
 
 internal class LauncherActivity : ComposeActivity(content = {

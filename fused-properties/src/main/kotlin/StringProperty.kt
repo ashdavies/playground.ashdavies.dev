@@ -20,17 +20,21 @@ private fun Project.stringPropertyProvider(propertyName: String): Provider<Strin
         .orElse(providers.environmentVariable(envPropertyName))
 }
 
-public fun Project.stringProperty(propertyName: String): String {
-    return stringPropertyProvider(propertyName).get()
+public fun Project.stringProperty(block: (String) -> Unit = { }): ReadOnlyDelegateProvider<String> {
+    return readOnlyDelegateProvider { it.get().also(block) }
 }
 
-public fun Project.stringProperty(block: (String) -> Unit = { }): ReadOnlyDelegateProvider<String> {
+public fun Project.stringPropertyOrNull(block: (String?) -> Unit = { }): ReadOnlyDelegateProvider<String?> {
+    return readOnlyDelegateProvider { it.orNull.also(block) }
+}
+
+private fun <T> Project.readOnlyDelegateProvider(transform: (Provider<String>) -> T): ReadOnlyDelegateProvider<T> {
     return ReadOnlyDelegateProvider { _, property ->
-        val value = stringProperty(property.name).also(block)
+        val value = transform(stringPropertyProvider(property.name))
         ReadOnlyProperty { _, _ -> value }
     }
 }
 
-private fun <S: Any, T> Provider<S>.mapOrNull(block: (S) -> T?): Provider<T> {
+private fun <S : Any, T> Provider<S>.mapOrNull(block: (S) -> T?): Provider<T> {
     return flatMap { Providers.ofNullable(block(it)) }
 }

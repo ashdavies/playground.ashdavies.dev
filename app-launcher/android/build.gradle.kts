@@ -6,6 +6,8 @@ plugins {
     id("io.ashdavies.kotlin")
     id("io.ashdavies.properties")
     id("io.ashdavies.spotless")
+
+    alias(libs.plugins.build.config)
 }
 
 android {
@@ -13,16 +15,7 @@ android {
         res.srcDirs("src/androidMain/res")
     }
 
-    buildFeatures {
-        buildConfig = true
-    }
-
     defaultConfig {
-        val androidApiKey by stringProperty { value ->
-            buildConfigField("String", "ANDROID_API_KEY", "\"$value\"")
-            manifestPlaceholders["ANDROID_API_KEY"] = value
-        }
-
         versionName = "1.0"
         versionCode = 1
     }
@@ -30,10 +23,17 @@ android {
     namespace = "io.ashdavies.playground"
 }
 
+buildConfig {
+    val androidApiKey by stringProperty { value ->
+        buildConfigField("ANDROID_API_KEY", value)
+    }
+}
+
 kotlin {
     androidMain.dependencies {
         implementation(projects.appLauncher.common)
         implementation(projects.httpClient)
+        implementation(projects.platformSupport)
 
         implementation(compose.runtime)
 

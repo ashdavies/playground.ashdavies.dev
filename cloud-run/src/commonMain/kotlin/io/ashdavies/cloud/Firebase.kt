@@ -28,7 +28,7 @@ import io.ktor.server.routing.route
 private const val SIGNUP_ENDPOINT = "https://identitytoolkit.googleapis.com/v1/accounts:signInWithCustomToken"
 
 internal val firebaseApp: FirebaseApp by lazy(LazyThreadSafetyMode.NONE) {
-    when (val serviceAccountId = System.getenv("GOOGLE_SERVICE_ACCOUNT_ID")) {
+    when (val serviceAccountId = BuildConfig.GOOGLE_SERVICE_ACCOUNT_ID) {
         null -> FirebaseApp.initializeApp()
         else -> {
             val firebaseOptions = FirebaseOptions.builder()

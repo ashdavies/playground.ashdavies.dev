@@ -35,7 +35,7 @@ public fun main(args: Array<String>) {
                     LocalHttpClient provides LocalHttpClient.current.config {
                         install(DefaultRequest) {
                             header("User-Agent", System.getProperty("os.name"))
-                            header("X-API-Key", System.getenv("BROWSER_API_KEY"))
+                            header("X-API-Key", BuildConfig.BROWSER_API_KEY)
                         }
                     },
                 ) {
