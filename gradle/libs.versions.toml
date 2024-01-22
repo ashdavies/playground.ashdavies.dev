@@ -36,7 +36,7 @@ auth-java-jwt = "com.auth0:java-jwt:4.4.0"
 auth-jwks-rsa = "com.auth0:jwks-rsa:0.22.1"
 
 coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil-kt" }
-coil-network = { module = "io.coil-kt.coil3:coil-network", version.ref = "coil-kt" }
+coil-network = { module = "io.coil-kt.coil3:coil-network-ktor", version.ref = "coil-kt" }
 
 compose-compiler = { module = "org.jetbrains.compose.compiler:compiler", version.ref = "compose-compiler" }
 compose-runtime = { module = "org.jetbrains.compose.runtime:runtime", version.ref = "jetbrains-compose" }
