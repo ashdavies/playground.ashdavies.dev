@@ -48,12 +48,8 @@ internal class ApplicationTest {
 
     @Test
     fun `should return app check token for request`() = testMainApplication { client ->
-        val firebaseAndroidAppId = requireNotNull(BuildConfig.FIREBASE_ANDROID_APP_ID) {
-            "Failed to determine project app identifier"
-        }
-
         val token = client.post("/firebase/token") {
-            setBody(FirebaseApp(firebaseAndroidAppId))
+            setBody(FirebaseApp(requireNotNull(BuildConfig.FIREBASE_ANDROID_APP_ID)))
             contentType(ContentType.Application.Json)
         }.body<AppCheckToken>()
 

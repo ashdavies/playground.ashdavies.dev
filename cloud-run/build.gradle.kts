@@ -21,8 +21,8 @@ buildConfig {
         buildConfigField<String?>("GOOGLE_SERVICE_ACCOUNT_ID", value)
     }
 
-    val integrationApiKey by stringProperty { value ->
-        buildConfigField("INTEGRATION_API_KEY", value)
+    val integrationApiKey by stringPropertyOrNull { value ->
+        buildConfigField<String?>("INTEGRATION_API_KEY", value)
     }
 
     packageName.set("io.ashdavies.cloud")
