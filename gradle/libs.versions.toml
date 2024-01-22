@@ -4,7 +4,7 @@ android-minSdk = "24"
 androidx-activity = "1.8.2"
 apollo-graphql = "2.5.14"
 cash-sqldelight = "2.0.1"
-coil-kt = "3.0.0-alpha02"
+coil-kt = "3.0.0-alpha03"
 compose-compiler = "1.5.7"
 gitlive-firebase = "1.11.1"
 google-accompanist = "0.32.0"
@@ -36,7 +36,7 @@ auth-java-jwt = "com.auth0:java-jwt:4.4.0"
 auth-jwks-rsa = "com.auth0:jwks-rsa:0.22.1"
 
 coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil-kt" }
-coil-network = { module = "io.coil-kt.coil3:coil-network", version.ref = "coil-kt" }
+coil-network = { module = "io.coil-kt.coil3:coil-network-ktor", version.ref = "coil-kt" }
 
 compose-compiler = { module = "org.jetbrains.compose.compiler:compiler", version.ref = "compose-compiler" }
 compose-runtime = { module = "org.jetbrains.compose.runtime:runtime", version.ref = "jetbrains-compose" }
