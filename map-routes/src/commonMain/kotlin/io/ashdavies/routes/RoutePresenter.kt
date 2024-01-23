@@ -23,7 +23,7 @@ internal fun RoutePresenter(locationService: LocationService): CircuitUiState {
     return RouteScreen.State(
         mapState = RouteMapState(
             startPosition = startPosition,
-            hasLocationPermission = locationPermissionState.allPermissionsGranted
+            hasLocationPermission = locationPermissionState.allPermissionsGranted,
         ),
     ) { }
 }
