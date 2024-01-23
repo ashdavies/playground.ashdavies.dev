@@ -4,11 +4,16 @@ import com.slack.circuit.runtime.presenter.Presenter
 import com.slack.circuit.runtime.presenter.presenterOf
 import com.slack.circuit.runtime.ui.Ui
 import com.slack.circuit.runtime.ui.ui
+import io.ashdavies.content.PlatformContext
 
-public fun RoutePresenterFactory(): Presenter.Factory = Presenter.Factory { screen, navigator, _ ->
-    when (screen) {
-        is RouteScreen -> presenterOf { RoutePresenter() }
-        else -> null
+public fun RoutePresenterFactory(context: PlatformContext): Presenter.Factory {
+    val locationService = LocationService(context)
+
+    return Presenter.Factory { screen, _, _ ->
+        when (screen) {
+            is RouteScreen -> presenterOf { RoutePresenter(locationService) }
+            else -> null
+        }
     }
 }
 

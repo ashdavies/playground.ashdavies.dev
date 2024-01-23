@@ -12,6 +12,7 @@ public object RouteScreen : Screen {
     public sealed interface Event : CircuitUiEvent
 
     internal data class State(
+        val mapState: RouteMapState,
         val eventSink: (Event) -> Unit,
     ) : CircuitUiState
 }
@@ -22,6 +23,7 @@ internal fun RouteScreen(
     modifier: Modifier = Modifier,
 ) {
     RouteMap(
+        state = state.mapState,
         modifier = modifier,
     )
 }

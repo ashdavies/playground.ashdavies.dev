@@ -22,7 +22,7 @@ private fun getPresenterFactories(context: PlatformContext) = listOf(
     EventsPresenterFactory(),
     GalleryPresenterFactory(context),
     LauncherPresenterFactory(),
-    RoutePresenterFactory(),
+    RoutePresenterFactory(context),
 )
 
 private fun getUiFactories(context: PlatformContext) = listOf(
