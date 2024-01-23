@@ -34,13 +34,13 @@ internal fun getProjectNumber(): String =
 private fun findExplicitProjectId(firebaseApp: FirebaseApp): String? =
     firebaseApp.options.projectId
         ?: googleCredentials<ServiceAccountCredentials, String?> { it.projectId }
-        ?: System.getenv("GOOGLE_CLOUD_PROJECT")
-        ?: System.getenv("GCLOUD_PROJECT")
-        ?: System.getenv("GCP_PROJECT")
+        ?: BuildConfig.GOOGLE_CLOUD_PROJECT
+        ?: BuildConfig.GCLOUD_PROJECT
+        ?: BuildConfig.GCP_PROJECT
         ?: fetchProjectId()
 
 private fun findExplicitProjectNumber(): String? =
-    System.getenv("FIREBASE_ANDROID_APP_ID")
+    BuildConfig.FIREBASE_ANDROID_APP_ID
         ?.let { it.split(":")[1] }
         ?: fetchProjectNumber()
 

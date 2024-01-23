@@ -1,6 +1,17 @@
 plugins {
     id("io.ashdavies.cloud")
     id("io.ashdavies.graphql")
+    id("io.ashdavies.properties")
+
+    alias(libs.plugins.build.config)
+}
+
+buildConfig {
+    val githubToken by stringPropertyOrNull { value ->
+        buildConfigField<String?>("GITHUB_TOKEN", value)
+    }
+
+    packageName.set("io.ashdavies.playground.aggregator")
 }
 
 dependencies {

@@ -3,6 +3,17 @@ import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 plugins {
     id("io.ashdavies.compose")
     id("io.ashdavies.kotlin")
+    id("io.ashdavies.properties")
+
+    alias(libs.plugins.build.config)
+}
+
+buildConfig {
+    val browserApiKey by stringProperty { value ->
+        buildConfigField("BROWSER_API_KEY", value)
+    }
+
+    packageName.set("io.ashdavies.playground")
 }
 
 kotlin {

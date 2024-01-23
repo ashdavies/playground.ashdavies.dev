@@ -2,20 +2,20 @@ plugins {
     id("io.ashdavies.default")
     id("io.ashdavies.properties")
     id("io.ashdavies.sql")
+
+    alias(libs.plugins.build.config)
 }
 
 android {
-    buildFeatures {
-        buildConfig = true
-    }
-
-    defaultConfig {
-        val serverClientId by stringProperty { value ->
-            buildConfigField("String", "SERVER_CLIENT_ID", "\"$value\"")
-        }
-    }
-
     namespace = "io.ashdavies.identity"
+}
+
+buildConfig {
+    val serverClientId by stringProperty { value ->
+        buildConfigField("SERVER_CLIENT_ID", value)
+    }
+
+    packageName.set(android.namespace)
 }
 
 kotlin {

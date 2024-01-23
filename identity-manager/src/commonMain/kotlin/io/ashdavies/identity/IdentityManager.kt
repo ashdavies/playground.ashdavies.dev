@@ -18,7 +18,7 @@ internal fun IdentityManager(
     }
 
     override suspend fun signIn() {
-        val identityRequest = GoogleIdIdentityRequest(serverClientId = serverClientId())
+        val identityRequest = GoogleIdIdentityRequest(BuildConfig.SERVER_CLIENT_ID)
         val identityResponse = try {
             identityService.request(identityRequest)
         } catch (_: UnsupportedOperationException) {

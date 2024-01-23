@@ -7,7 +7,7 @@ import okhttp3.Response
 private const val HEADER_NAME = "Authorization"
 private const val HEADER_PREFIX = "Bearer"
 
-internal class AuthorisationInterceptor(private val token: String) : Interceptor {
+internal class AuthorisationInterceptor(private val token: String?) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response = chain.proceed {
         addHeader(HEADER_NAME, "$HEADER_PREFIX $token")
     }

@@ -49,7 +49,6 @@ jobs:
       - name: Run Gradle Tasks
         id: gradle_build
         env:
-          ANDROID_API_KEY: ${{ secrets.ANDROID_API_KEY }}
           FIREBASE_ANDROID_APP_ID: ${{ secrets.firebase_android_app_id }}
           GOOGLE_SERVICE_ACCOUNT_ID: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
           INTEGRATION_API_KEY: ${{ secrets.integration_api_key }}
