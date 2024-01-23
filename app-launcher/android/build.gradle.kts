@@ -27,6 +27,8 @@ buildConfig {
     val androidApiKey by stringProperty { value ->
         buildConfigField("ANDROID_API_KEY", value)
     }
+
+    packageName.set(android.namespace)
 }
 
 kotlin {
