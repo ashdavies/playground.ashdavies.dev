@@ -30,12 +30,14 @@ buildConfig {
 }
 
 kotlin {
+    commonMain.dependencies {
+        implementation(compose.runtime)
+    }
+
     androidMain.dependencies {
         implementation(projects.appLauncher.common)
         implementation(projects.httpClient)
         implementation(projects.platformSupport)
-
-        implementation(compose.runtime)
 
         implementation(libs.androidx.core.splashscreen)
         implementation(libs.google.android.material)
