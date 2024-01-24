@@ -16,14 +16,19 @@ android {
 
 kotlin {
     commonMain.dependencies {
+        implementation(projects.platformSupport)
+
         implementation(compose.material3)
         implementation(compose.runtime)
 
-        implementation(libs.essenty.parcelable)
+        implementation(libs.androidx.annotation)
         implementation(libs.slack.circuit.foundation)
     }
 
     androidMain.dependencies {
+        implementation(libs.google.accompanist.permissions)
+        implementation(libs.google.android.location)
         implementation(libs.google.maps.android.compose)
+        implementation(libs.kotlinx.coroutines.play.services)
     }
 }
