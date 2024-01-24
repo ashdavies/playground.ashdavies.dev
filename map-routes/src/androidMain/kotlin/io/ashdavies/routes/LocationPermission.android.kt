@@ -17,10 +17,15 @@ internal actual fun rememberLocationPermissionState(): LocationPermissionState {
     )
 
     return remember(multiplePermissionState) {
-        LocationPermissionState(
-            allPermissionsGranted = multiplePermissionState.allPermissionsGranted,
-            shouldShowRationale = multiplePermissionState.shouldShowRationale,
-            launchMultiplePermissionRequest = multiplePermissionState::launchMultiplePermissionRequest,
-        )
+        object : LocationPermissionState {
+            override val allPermissionsGranted: Boolean =
+                multiplePermissionState.allPermissionsGranted
+
+            override val shouldShowRationale: Boolean =
+                multiplePermissionState.shouldShowRationale
+
+            override fun launchMultiplePermissionRequest() =
+                multiplePermissionState.launchMultiplePermissionRequest()
+        }
     }
 }
