@@ -22,7 +22,6 @@ kotlin {
         implementation(compose.runtime)
 
         implementation(libs.androidx.annotation)
-        implementation(libs.essenty.parcelable)
         implementation(libs.slack.circuit.foundation)
     }
 
