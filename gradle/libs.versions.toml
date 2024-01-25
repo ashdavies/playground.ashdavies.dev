@@ -127,7 +127,7 @@ apollo-graphql = { id = "com.apollographql.apollo", version.ref = "apollo-graphq
 build-config = "com.github.gmazzo.buildconfig:5.3.5"
 cash-sqldelight = { id = "app.cash.sqldelight", version.ref = "cash-sqldelight" }
 dependency-analysis = "com.autonomousapps.dependency-analysis:1.28.0"
-diffplug-spotless = "com.diffplug.spotless:6.24.0"
+diffplug-spotless = "com.diffplug.spotless:6.25.0"
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
 gradle-doctor = "com.osacky.doctor:0.9.1"
 kotlin-compose = { id = "org.jetbrains.compose", version.ref = "jetbrains-compose" }
