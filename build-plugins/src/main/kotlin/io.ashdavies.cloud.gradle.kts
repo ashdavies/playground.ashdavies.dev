@@ -1,15 +1,8 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    id("org.jetbrains.compose")
-
     kotlin("plugin.serialization")
     kotlin("jvm")
-}
-
-compose {
-    val composeCompiler = libs.compose.compiler.get()
-    kotlinCompilerPlugin.set("$composeCompiler")
 }
 
 java {

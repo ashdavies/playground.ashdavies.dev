@@ -23,8 +23,6 @@ kotlin {
         implementation(projects.localStorage)
         implementation(projects.platformSupport)
 
-        implementation(compose.runtime)
-
         implementation(libs.androidx.credentials.auth)
         implementation(libs.google.android.identity)
         implementation(libs.kotlinx.coroutines.core)

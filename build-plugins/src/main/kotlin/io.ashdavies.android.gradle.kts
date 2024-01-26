@@ -1,7 +1,3 @@
-import com.android.build.api.dsl.CommonExtension
-import com.android.build.gradle.LibraryExtension
-import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
-
 plugins {
     kotlin("multiplatform")
 }
@@ -10,20 +6,7 @@ kotlin {
     androidTarget()
 }
 
-extensions.withType<BaseAppModuleExtension> { configure() }
-
-extensions.withType<LibraryExtension> { configure() }
-
-fun CommonExtension<*, *, *, *, *>.configure() {
-    buildFeatures {
-        compose = true
-    }
-
-    composeOptions {
-        val composeCompilerVersion = libs.versions.compose.compiler.get()
-        kotlinCompilerExtensionVersion = composeCompilerVersion
-    }
-
+commonExtension {
     compileOptions {
         val jvmTargetVersion = libs.versions.kotlin.jvmTarget.get()
         sourceCompatibility(jvmTargetVersion)

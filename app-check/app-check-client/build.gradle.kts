@@ -1,4 +1,5 @@
 plugins {
+    id("io.ashdavies.compose")
     id("io.ashdavies.default")
 }
 
@@ -12,6 +13,7 @@ kotlin {
         implementation(projects.httpClient)
 
         implementation(compose.runtime)
+
         implementation(libs.ktor.client.core)
     }
 

@@ -1,4 +1,5 @@
 plugins {
+    id("io.ashdavies.compose")
     id("io.ashdavies.default")
     id("io.ashdavies.parcelable")
 }
