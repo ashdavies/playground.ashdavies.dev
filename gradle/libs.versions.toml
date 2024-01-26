@@ -50,7 +50,7 @@ google-accompanist-permissions = { module = "com.google.accompanist:accompanist-
 google-accompanist-placeholderMaterial = { module = "com.google.accompanist:accompanist-placeholder-material", version.ref = "google-accompanist" }
 
 google-android-identity = "com.google.android.libraries.identity.googleid:googleid:1.1.0"
-google-android-location = "com.google.android.gms:play-services-location:21.0.1"
+google-android-location = "com.google.android.gms:play-services-location:21.1.0"
 google-android-maps = "com.google.android.gms:play-services-maps:18.2.0"
 google-android-material = "com.google.android.material:material:1.11.0"
 
