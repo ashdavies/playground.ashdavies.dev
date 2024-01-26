@@ -26,8 +26,6 @@ buildConfig {
 }
 
 dependencies {
-    implementation(compose.runtime)
-
     implementation(libs.auth.java.jwt)
     implementation(libs.auth.jwks.rsa)
     implementation(libs.google.auth.http)

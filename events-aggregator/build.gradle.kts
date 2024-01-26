@@ -17,8 +17,6 @@ buildConfig {
 dependencies {
     implementation(projects.microYaml)
 
-    implementation(compose.runtime)
-
     implementation(libs.apollo.graphql.coroutines.support)
     implementation(libs.apollo.graphql.runtime)
     implementation(libs.kotlinx.serialization.core)

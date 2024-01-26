@@ -47,5 +47,7 @@ private fun getSignature(packageManager: PackageManager, packageName: String): S
     val signature = packageInfo.signatures[0].toByteArray()
 
     val digest = MessageDigest.getInstance("SHA1").digest(signature)
-    return digest.joinToString(separator = "") { String.format("%02X", it) }
+    return digest.joinToString(separator = "") { String.format("%02X", it) }.also {
+        println("=== AndroidDebugKey: $it ===")
+    }
 }

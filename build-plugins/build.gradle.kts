@@ -19,3 +19,7 @@ dependencies {
         implementation(plugin(kotlin.serialization))
     }
 }
+
+kotlin {
+    explicitApi()
+}

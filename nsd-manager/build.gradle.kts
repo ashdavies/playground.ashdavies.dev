@@ -8,8 +8,6 @@ android {
 
 kotlin {
     commonMain.dependencies {
-        implementation(compose.runtime)
-
         implementation(libs.kotlinx.coroutines.core)
     }
 
