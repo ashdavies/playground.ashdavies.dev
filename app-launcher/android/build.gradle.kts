@@ -20,6 +20,13 @@ android {
         versionCode = 1
     }
 
+    packaging {
+        resources.excludes += setOf(
+            "META-INF/DEPENDENCIES", // com.google.maps:google-maps-routing
+            "META-INF/INDEX.LIST", // com.google.maps:google-maps-routing
+        )
+    }
+
     namespace = "io.ashdavies.playground"
 }
 

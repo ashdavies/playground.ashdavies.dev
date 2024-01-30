@@ -12,7 +12,8 @@ public object RouteScreen : Screen {
     public sealed interface Event : CircuitUiEvent
 
     internal data class State(
-        val mapState: RouteMapState,
+        val mapState: RouteMapState = RouteMapState(),
+        val errorMessage: String? = null,
         val eventSink: (Event) -> Unit,
     ) : CircuitUiState
 }

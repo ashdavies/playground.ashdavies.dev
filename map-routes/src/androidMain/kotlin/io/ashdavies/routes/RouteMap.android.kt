@@ -9,9 +9,11 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.CameraPosition
+import com.google.maps.android.PolyUtil
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
+import com.google.maps.android.compose.Polyline
 import com.google.maps.android.compose.rememberCameraPositionState
 
 public actual typealias LatLng = com.google.android.gms.maps.model.LatLng
@@ -45,6 +47,13 @@ internal actual fun RouteMap(state: RouteMapState, modifier: Modifier) {
                 state = MarkerState(endPosition),
                 icon = rememberRedMarker(),
                 title = "End",
+            )
+        }
+        if (state.routes.isNotEmpty()) {
+            Polyline(
+                points = state.routes.flatMap {
+                    PolyUtil.decode(it.polyline.encodedPolyline)
+                },
             )
         }
     }

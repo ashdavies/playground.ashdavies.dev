@@ -13,7 +13,7 @@ import io.ashdavies.playground.Event as DatabaseEvent
 @OptIn(ExperimentalPagingApi::class)
 internal class EventsRemoteMediator(
     private val eventsQueries: EventsQueries,
-    private val eventsService: EventsService,
+    private val eventsCallable: GetEventsCallable,
 ) : RemoteMediator<String, DatabaseEvent>() {
 
     override suspend fun load(
@@ -27,10 +27,10 @@ internal class EventsRemoteMediator(
         }
 
         val result: List<ApiEvent> = try {
-            eventsService.getEvents(loadKey)
+            eventsCallable(GetEventsRequest(loadKey))
         } catch (exception: SocketTimeoutException) {
             return MediatorResult.Error(exception)
-        } catch (exception: ErrorResponse) {
+        } catch (exception: GetEventsError) {
             return MediatorResult.Error(exception)
         }
 

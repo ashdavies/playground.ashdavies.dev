@@ -73,6 +73,7 @@ include(
     ":kotlin-gb",
     ":local-storage",
     ":map-routes",
+    ":maps-routing",
     ":micro-yaml",
     ":notion-client",
     ":nsd-manager",
