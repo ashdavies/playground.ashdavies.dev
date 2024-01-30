@@ -4,17 +4,6 @@ plugins {
     kotlin("multiplatform")
 }
 
-commonExtension {
-    buildFeatures {
-        compose = true
-    }
-
-    composeOptions {
-        val composeCompilerVersion = libs.versions.compose.compiler.get()
-        kotlinCompilerExtensionVersion = composeCompilerVersion
-    }
-}
-
 compose {
     val composeCompiler = libs.compose.compiler.get()
     kotlinCompilerPlugin.set("$composeCompiler")
@@ -22,8 +11,4 @@ compose {
 
 kotlin {
     jvm()
-}
-
-pluginManager.withPlugin("com.android.library") {
-    plugins { id("kotlin-parcelize") }
 }
