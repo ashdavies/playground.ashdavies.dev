@@ -35,14 +35,16 @@ import io.ashdavies.parcelable.Parcelable
 import io.ashdavies.parcelable.Parcelize
 import io.ashdavies.profile.ProfileScreen
 
+public fun AfterPartyScreen(): Screen = AfterPartyScreen
+
 @Parcelize
-public object AfterPartyScreen : Parcelable, Screen {
-    internal sealed interface Event : CircuitUiEvent {
+internal object AfterPartyScreen : Parcelable, Screen {
+    sealed interface Event : CircuitUiEvent {
         data class ChildNav(val navEvent: NavEvent) : Event
         data class BottomNav(val screen: Screen) : Event
     }
 
-    internal data class State(
+    data class State(
         val identityState: IdentityState,
         val screen: Screen,
         val eventSink: (Event) -> Unit,

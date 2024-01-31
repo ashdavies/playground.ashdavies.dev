@@ -10,6 +10,7 @@ android {
 
 kotlin {
     commonMain.dependencies {
+        implementation(projects.circuitSupport)
         implementation(projects.httpClient)
 
         implementation(compose.foundation)
