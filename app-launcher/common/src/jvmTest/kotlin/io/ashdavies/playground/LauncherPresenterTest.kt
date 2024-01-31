@@ -15,9 +15,9 @@ internal class LauncherPresenterTest {
     @Test
     fun `should navigate to after party screen`() = runTest {
         presenterTestOf({ LauncherPresenter(navigator) }) {
-            awaitItem().eventSink(NavEvent.GoTo(AfterPartyScreen))
+            awaitItem().eventSink(NavEvent.GoTo(AfterPartyScreen()))
 
-            assertEquals(navigator.awaitNextScreen(), AfterPartyScreen)
+            assertEquals(navigator.awaitNextScreen(), AfterPartyScreen())
         }
     }
 }
