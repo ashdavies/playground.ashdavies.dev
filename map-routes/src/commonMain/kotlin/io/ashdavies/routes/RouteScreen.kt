@@ -7,11 +7,13 @@ import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.screen.Screen
 import io.ashdavies.parcelable.Parcelize
 
-@Parcelize
-public object RouteScreen : Screen {
-    public sealed interface Event : CircuitUiEvent
+public fun RouteScreen(): Screen = RouteScreen
 
-    internal data class State(
+@Parcelize
+internal object RouteScreen : Screen {
+    sealed interface Event : CircuitUiEvent
+
+    data class State(
         val mapState: RouteMapState = RouteMapState(),
         val errorMessage: String? = null,
         val eventSink: (Event) -> Unit,

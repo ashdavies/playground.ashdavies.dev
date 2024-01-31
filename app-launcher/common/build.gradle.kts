@@ -16,6 +16,7 @@ kotlin {
     commonMain.dependencies {
         implementation(projects.afterParty)
         implementation(projects.appCheck.appCheckClient)
+        implementation(projects.circuitSupport)
         implementation(projects.composeMaterial)
         implementation(projects.dominionApp)
         implementation(projects.mapRoutes)

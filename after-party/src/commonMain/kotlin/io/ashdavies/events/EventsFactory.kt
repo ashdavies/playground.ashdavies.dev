@@ -19,8 +19,14 @@ public fun EventsPresenterFactory(): Presenter.Factory = Presenter.Factory { scr
 
 public fun EventsUiFactory(): Ui.Factory = Ui.Factory { screen, _ ->
     when (screen) {
-        is ActivityScreen -> ui<ActivityScreen.State> { state, modifier -> ActivityScreen(state, modifier) }
-        is ProfileScreen -> ui<ProfileScreen.State> { state, modifier -> ProfileScreen(state, modifier) }
+        is ActivityScreen -> ui<ActivityScreen.State> { state, modifier ->
+            ActivityScreen(state, modifier)
+        }
+
+        is ProfileScreen -> ui<ProfileScreen.State> { state, modifier ->
+            ProfileScreen(state, modifier)
+        }
+
         else -> null
     }
 }

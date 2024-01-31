@@ -27,6 +27,7 @@ buildConfig {
 
 kotlin {
     commonMain.dependencies {
+        implementation(projects.circuitSupport)
         implementation(projects.httpClient)
         implementation(projects.httpCommon)
         implementation(projects.mapsRouting)

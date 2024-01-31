@@ -9,14 +9,8 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import com.slack.circuit.runtime.CircuitUiEvent
 import com.slack.circuit.runtime.CircuitUiState
-import com.slack.circuit.runtime.presenter.Presenter
-import com.slack.circuit.runtime.presenter.presenterOf
 import com.slack.circuit.runtime.screen.Screen
-import com.slack.circuit.runtime.ui.Ui
-import com.slack.circuit.runtime.ui.ui
-import io.ashdavies.content.PlatformContext
 import io.ashdavies.identity.IdentityManager
-import io.ashdavies.identity.IdentityModule
 import io.ashdavies.identity.IdentityState
 import io.ashdavies.parcelable.Parcelable
 import io.ashdavies.parcelable.Parcelize
@@ -66,38 +60,6 @@ public object GalleryScreen : Parcelable, Screen {
             val imageModel: Any?,
             val isExpanded: Boolean,
         )
-    }
-}
-
-public fun GalleryPresenterFactory(context: PlatformContext): Presenter.Factory {
-    val database = GalleryModule.playgroundDatabase(context)
-
-    return Presenter.Factory { screen, _, _ ->
-        when (screen) {
-            is GalleryScreen -> presenterOf {
-                GalleryPresenter(
-                    identityManager = IdentityModule.identityManager(context, database.credentialQueries),
-                    imageManager = GalleryModule.imageManager(context, database.imageQueries),
-                    syncManager = GalleryModule.syncManager(),
-                )
-            }
-
-            else -> null
-        }
-    }
-}
-
-public fun GalleryUiFactory(context: PlatformContext): Ui.Factory {
-    val storage = StorageManager(PathProvider(context))
-
-    return Ui.Factory { screen, _ ->
-        when (screen) {
-            is GalleryScreen -> ui<GalleryScreen.State> { state, modifier ->
-                GalleryScreen(state, storage, modifier)
-            }
-
-            else -> null
-        }
     }
 }
 
