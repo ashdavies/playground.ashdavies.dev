@@ -14,8 +14,9 @@ application {
 kotlin {
     commonMain.dependencies {
         implementation(projects.composeCli)
-        implementation(projects.localStorage)
         implementation(projects.notionClient)
+        implementation(projects.platformSupport)
+        implementation(projects.sqlDriver)
 
         implementation(compose.runtime)
         implementation(compose.ui)

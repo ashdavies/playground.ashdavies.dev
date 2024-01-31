@@ -17,6 +17,15 @@
 <table>
     <tr>
         <td>
+            <h3>After Party [after-party]</h3>
+            <img src="https://img.shields.io/badge/project-alpha-status.svg?colorA=555555&colorB=orange&label=&logo=kotlin&logoColor=ffffff&logoWidth=10" alt="Alpha" />
+            <img src="https://img.shields.io/badge/project-desktop-component.svg?colorA=555555&colorB=7F52FF&label=&logo=kotlin&logoColor=ffffff&logoWidth=10" alt="Desktop" />
+            <img src="https://img.shields.io/badge/project-android-component.svg?colorA=555555&colorB=3DDC84&label=&logo=android&logoColor=ffffff&logoWidth=10" alt="Android" />
+            <p>Original multiplatform application to demonstrate the capabilities of the included Kotlin libraries and tools.</p>
+            <p>Formerly exclusively for Android, but now configured for Desktop application, and iOS soon to follow.</p>
+            <p>Application purpose is to view upcoming Android conferences, and allow collecting of virtual lanyards.</p>
+        </td>
+        <td>
             <h3>Cloud Run [cloud-run]</h3>
             <img src="https://img.shields.io/badge/project-experimental-status.svg?colorA=555555&colorB=red&label=&logo=kotlin&logoColor=ffffff&logoWidth=10" alt="Experimental" />
             <img src="https://img.shields.io/badge/project-jvm-component.svg?colorA=555555&colorB=7F52FF&label=&logo=kotlin&logoColor=ffffff&logoWidth=10" alt="JVM" />
@@ -27,15 +36,6 @@
             <img src="https://img.shields.io/badge/project-desktop-component.svg?colorA=555555&colorB=7F52FF&label=&logo=kotlin&logoColor=ffffff&logoWidth=10" alt="Desktop" />
             <img src="https://img.shields.io/badge/project-android-component.svg?colorA=555555&colorB=3DDC84&label=&logo=android&logoColor=ffffff&logoWidth=10" alt="Android" />
         </td>
-        <td>
-            <h3>Events App [events-app]</h3>
-            <img src="https://img.shields.io/badge/project-alpha-status.svg?colorA=555555&colorB=orange&label=&logo=kotlin&logoColor=ffffff&logoWidth=10" alt="Alpha" />
-            <img src="https://img.shields.io/badge/project-desktop-component.svg?colorA=555555&colorB=7F52FF&label=&logo=kotlin&logoColor=ffffff&logoWidth=10" alt="Desktop" />
-            <img src="https://img.shields.io/badge/project-android-component.svg?colorA=555555&colorB=3DDC84&label=&logo=android&logoColor=ffffff&logoWidth=10" alt="Android" />
-            <p>Original multiplatform application to demonstrate the capabilities of the included Kotlin libraries and tools.</p>
-            <p>Formerly exclusively for Android, but now configured for Desktop application, and iOS soon to follow.</p>
-            <p>Application purpose is to view upcoming Android conferences, and allow collecting of virtual lanyards.</p>
-        </td>
     </tr>
 </table>
 
@@ -43,22 +43,18 @@
 
 ```mermaid
 stateDiagram-v2
-    AppLauncher --> DominionApp
-    AppLauncher --> EventsApp
+    AppLauncher --> AfterParty
+
+    AfterParty --> AppCheckClient
+    AfterParty --> HttpClient
 
     CloudRun --> AppCheckSdk
     CloudRun --> CloudFirestore
     CloudRun --> EventsAggregator
     CloudRun --> HttpClient
-    CloudRun --> LocalStorage
 
     DominionApp --> AppCheckClient
     DominionApp --> HttpClient
-
-    EventsApp --> AppCheckClient
-    EventsApp --> Auth0Auth
-    EventsApp --> HttpClient
-    EventsApp --> LocalStorage
 ```
 
 ## Modules
@@ -70,10 +66,6 @@ stateDiagram-v2
 Implements a custom app-check provider for multiplatform applications to verify client applications.
 https://firebase.google.com/docs/app-check/custom-provider
 
-### Auth Oauth [auth-oauth]
-![Experimental](https://img.shields.io/badge/project-experimental-status.svg?colorA=555555&colorB=red&label=&logo=kotlin&logoColor=ffffff&logoWidth=10)
-![Multiplatform](https://img.shields.io/badge/project-multiplatform-component.svg?colorA=555555&colorB=7F52FF&label=&logo=kotlin&logoColor=ffffff&logoWidth=10)
-
 ### Build Plugins [build-plugins]
 ![Experimental](https://img.shields.io/badge/project-experimental-status.svg?colorA=555555&colorB=red&label=&logo=kotlin&logoColor=ffffff&logoWidth=10)
 ![JVM](https://img.shields.io/badge/project-jvm-component.svg?colorA=555555&colorB=7F52FF&label=&logo=kotlin&logoColor=ffffff&logoWidth=10)
@@ -83,22 +75,9 @@ https://firebase.google.com/docs/app-check/custom-provider
 ![Multiplatform](https://img.shields.io/badge/project-multiplatform-component.svg?colorA=555555&colorB=7F52FF&label=&logo=kotlin&logoColor=ffffff&logoWidth=10)
 Offers a set of Traditional English aliases for Simplified English Kotlin APIs, largely a parody, thus does not comply to the same level of modularisation.  
 
-### Local Storage [local-storage]
-![Experimental](https://img.shields.io/badge/project-experimental-status.svg?colorA=555555&colorB=red&label=&logo=kotlin&logoColor=ffffff&logoWidth=10)
-![Multiplatform](https://img.shields.io/badge/project-multiplatform-component.svg?colorA=555555&colorB=7F52FF&label=&logo=kotlin&logoColor=ffffff&logoWidth=10)
-
 ### Notion Console [notion-console]
 ![Experimental](https://img.shields.io/badge/project-experimental-status.svg?colorA=555555&colorB=red&label=&logo=kotlin&logoColor=ffffff&logoWidth=10)
 ![JVM](https://img.shields.io/badge/project-jvm-component.svg?colorA=555555&colorB=7F52FF&label=&logo=kotlin&logoColor=ffffff&logoWidth=10)
-
-### Notion Import [notion-import]
-![Planned](https://img.shields.io/badge/project-planned-status.svg?colorA=555555&colorB=blue&label=&logo=kotlin&logoColor=ffffff&logoWidth=10)
-![JVM](https://img.shields.io/badge/project-jvm-component.svg?colorA=555555&colorB=7F52FF&label=&logo=kotlin&logoColor=ffffff&logoWidth=10)
-
-### Playground App [playground-app]
-![Deprecated](https://img.shields.io/badge/project-deprecated-status.svg?colorA=555555&colorB=grey&label=&logo=kotlin&logoColor=ffffff&logoWidth=10)
-![Desktop](https://img.shields.io/badge/project-desktop-component.svg?colorA=555555&colorB=7F52FF&label=&logo=kotlin&logoColor=ffffff&logoWidth=10)
-![Android](https://img.shields.io/badge/project-android-component.svg?colorA=555555&colorB=3DDC84&label=&logo=android&logoColor=ffffff&logoWidth=10)
 
 ## Talks
 - Droidcon Berlin 2022

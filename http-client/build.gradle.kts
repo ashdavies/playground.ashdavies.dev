@@ -12,7 +12,6 @@ android {
 kotlin {
     commonMain.dependencies {
         implementation(projects.httpCommon)
-        implementation(projects.localStorage)
 
         implementation(compose.runtime)
 

@@ -9,8 +9,6 @@ android {
 
 kotlin {
     commonMain.dependencies {
-        implementation(projects.localStorage)
-
         implementation(libs.kotlinx.serialization.core)
         implementation(libs.kotlinx.serialization.json)
         implementation(libs.ktor.client.auth)
@@ -30,7 +28,6 @@ sqldelight {
     databases {
         create("PlaygroundDatabase") {
             packageName.set("io.ashdavies.notion")
-            dependency(projects.localStorage)
         }
     }
 }

@@ -52,7 +52,7 @@ gradleEnterprise {
 }
 
 include(
-    ":after-party-app",
+    ":after-party",
     ":app-check:app-check-client",
     ":app-check:app-check-common",
     ":app-check:app-check-sdk",
@@ -65,13 +65,10 @@ include(
     ":compose-material",
     ":dominion-app",
     ":events-aggregator",
-    ":events-app",
-    ":gallery-app",
     ":http-client",
     ":http-common",
     ":identity-manager",
     ":kotlin-gb",
-    ":local-storage",
     ":map-routes",
     ":micro-yaml",
     ":notion-client",

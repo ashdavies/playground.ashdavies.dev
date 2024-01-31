@@ -20,8 +20,8 @@ buildConfig {
 
 kotlin {
     commonMain.dependencies {
-        implementation(projects.localStorage)
         implementation(projects.platformSupport)
+        implementation(projects.sqlDriver)
 
         implementation(libs.androidx.credentials.auth)
         implementation(libs.google.android.identity)
@@ -33,7 +33,6 @@ sqldelight {
     databases {
         create("PlaygroundDatabase") {
             packageName.set(android.namespace)
-            dependency(projects.localStorage)
         }
     }
 }

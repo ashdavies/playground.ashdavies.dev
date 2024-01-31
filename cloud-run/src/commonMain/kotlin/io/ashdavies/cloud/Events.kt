@@ -11,8 +11,15 @@ import io.ktor.server.routing.post
 import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.todayIn
-import io.ashdavies.playground.Event as LegacyEvent
-import io.ashdavies.playground.EventsSerializer as LegacyEventSerializer
+import kotlinx.serialization.Serializable
+
+@Serializable
+internal data class ApiEvent(
+    val id: String, val name: String, val website: String,
+    val location: String, val status: String?, val online: Boolean?,
+    val dateStart: String, val dateEnd: String, val cfpStart: String?,
+    val cfpEnd: String?, val cfpSite: String?,
+)
 
 internal fun Route.events() {
     get("/events") {
@@ -28,10 +35,10 @@ internal fun Route.events() {
 
     post("/events:aggregate") {
         val provider = DocumentProvider { firestore.collection("events") }
-        val reader = CollectionReader<LegacyEvent>(provider, CollectionQuery(limit = 0))
-        val writer = CollectionWriter(provider, LegacyEvent::id)
+        val reader = CollectionReader<ApiEvent>(provider, CollectionQuery(limit = 0))
+        val writer = CollectionWriter(provider, ApiEvent::id)
 
-        writer(reader.invoke(LegacyEventSerializer), GitHubService.getEvents(::LegacyEvent))
+        writer(reader.invoke(ApiEvent.serializer()), GitHubService.getEvents(::ApiEvent))
         call.respond(HttpStatusCode.OK)
     }
 }

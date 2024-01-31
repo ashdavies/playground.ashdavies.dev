@@ -1,6 +1,6 @@
 package io.ashdavies.identity
 
-import io.ashdavies.playground.mapToOneOrNull
+import io.ashdavies.sql.mapToOneOrNull
 import kotlinx.coroutines.flow.Flow
 
 public interface IdentityManager {
