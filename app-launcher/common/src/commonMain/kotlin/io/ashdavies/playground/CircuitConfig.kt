@@ -4,6 +4,8 @@ import com.slack.circuit.foundation.Circuit
 import io.ashdavies.content.PlatformContext
 import io.ashdavies.dominion.DominionPresenterFactory
 import io.ashdavies.dominion.DominionUiFactory
+import io.ashdavies.events.EventsPresenterFactory
+import io.ashdavies.events.EventsUiFactory
 import io.ashdavies.gallery.GalleryPresenterFactory
 import io.ashdavies.gallery.GalleryUiFactory
 import io.ashdavies.party.AfterPartyPresenterFactory

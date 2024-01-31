@@ -14,12 +14,10 @@ android {
 
 kotlin {
     commonMain.dependencies {
-        implementation(projects.afterPartyApp)
+        implementation(projects.afterParty)
         implementation(projects.appCheck.appCheckClient)
         implementation(projects.composeMaterial)
         implementation(projects.dominionApp)
-        implementation(projects.eventsApp)
-        implementation(projects.galleryApp)
         implementation(projects.mapRoutes)
         implementation(projects.platformSupport)
 

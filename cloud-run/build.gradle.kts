@@ -67,7 +67,6 @@ kotlin {
         implementation(projects.eventsAggregator)
         implementation(projects.httpClient)
         implementation(projects.httpCommon)
-        implementation(projects.localStorage)
 
         implementation(libs.google.firebase.admin)
         implementation(libs.kotlinx.datetime)

@@ -15,7 +15,8 @@ application {
 kotlin {
     commonMain.dependencies {
         implementation(projects.composeCli)
-        implementation(projects.localStorage)
+        implementation(projects.platformSupport)
+        implementation(projects.sqlDriver)
 
         implementation(compose.runtime)
         implementation(compose.ui)
@@ -61,7 +62,6 @@ sqldelight {
     databases {
         create("PlaygroundDatabase") {
             packageName.set("io.ashdavies.notion")
-            dependency(projects.localStorage)
         }
     }
 }
