@@ -9,6 +9,9 @@ android {
 kotlin {
     commonMain.dependencies {
         implementation(projects.platformSupport)
+
+        implementation(libs.kotlinx.coroutines.core)
+        implementation(libs.sqldelight.coroutines.extensions)
         implementation(libs.sqldelight.runtime)
     }
 

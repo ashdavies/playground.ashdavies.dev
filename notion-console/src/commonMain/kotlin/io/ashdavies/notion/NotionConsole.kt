@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.produceState
+import io.ashdavies.content.PlatformContext
 import kotlinx.cli.ArgType
 import kotlinx.cli.ExperimentalCli
 import kotlinx.cli.required
@@ -19,7 +20,7 @@ internal sealed interface NotionState {
 @OptIn(ExperimentalCli::class)
 internal fun NotionCli(args: Array<String>, onState: (NotionState) -> Unit) {
     ComposeCli("notion", args) {
-        ProvidePlaygroundDatabase {
+        ProvidePlaygroundDatabase(PlatformContext.Default) {
             val clientSecret by option(ArgType.String, "client_secret").required()
             val clientId by option(ArgType.String, "client_id").required()
             val authentication by produceAuthenticationState()
