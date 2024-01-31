@@ -9,7 +9,7 @@ import androidx.compose.runtime.setValue
 import com.slack.circuit.runtime.CircuitUiState
 
 @Composable
-internal fun RoutePresenter(locationService: LocationService): CircuitUiState {
+internal fun RoutePresenter(locationService: LocationService): RouteScreen.State {
     var startPosition by remember { mutableStateOf(KnownLocations.Berlin) }
     val locationPermissionState = rememberLocationPermissionState()
 

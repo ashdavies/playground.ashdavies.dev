@@ -17,6 +17,7 @@ android {
 
 kotlin {
     commonMain.dependencies {
+        implementation(projects.circuitSupport)
         implementation(projects.platformSupport)
 
         implementation(compose.material3)

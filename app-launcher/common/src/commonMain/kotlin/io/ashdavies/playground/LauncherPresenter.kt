@@ -13,19 +13,19 @@ import io.ashdavies.routes.RouteScreen
 private enum class LauncherEntries : LauncherScreen.State.Item {
     AfterParty {
         override val imageModel = LauncherDrawableTokens.afterParty
-        override val screen = AfterPartyScreen
+        override val screen = AfterPartyScreen()
         override val title = "After Party"
     },
 
     Dominion {
         override val imageModel = LauncherDrawableTokens.dominion
-        override val screen = DominionScreen.Home
+        override val screen = DominionScreen()
         override val title = "Dominion"
     },
 
     Routes {
         override val imageModel = LauncherDrawableTokens.routes
-        override val screen = RouteScreen
+        override val screen = RouteScreen()
         override val title = "Routes"
     },
 }
