@@ -5,8 +5,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
 public actual class LatLng actual constructor(
-    public actual val latitude: Double,
-    public actual val longitude: Double,
+    latitude: Double,
+    longitude: Double,
 )
 
 @Composable
