@@ -11,8 +11,6 @@ kotlin {
         implementation(projects.httpClient)
         implementation(projects.httpCommon)
 
-        compileOnly(libs.google.maps.routing)
-
         implementation(libs.kotlinx.serialization.core)
         implementation(libs.kotlinx.datetime)
         implementation(libs.ktor.client.core)
