@@ -10,9 +10,8 @@ import com.slack.circuit.runtime.ui.ui
 public inline fun <reified UiScreen : Screen, UiState : CircuitUiState> uiFactoryOf(
     crossinline body: @Composable (screen: UiScreen, state: UiState, modifier: Modifier) -> Unit,
 ): Ui.Factory = Ui.Factory { screen, _ ->
-    if (screen !is UiScreen) return@Factory null
-
-    ui<UiState> { state, modifier ->
-        body(screen, state, modifier)
+    when (screen) {
+        is UiScreen -> ui<UiState> { state, modifier -> body(screen, state, modifier) }
+        else -> null
     }
 }

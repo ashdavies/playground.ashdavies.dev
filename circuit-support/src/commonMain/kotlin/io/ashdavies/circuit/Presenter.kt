@@ -10,6 +10,8 @@ import com.slack.circuit.runtime.screen.Screen
 public inline fun <reified UiScreen : Screen> presenterFactoryOf(
     crossinline body: @Composable (UiScreen, Navigator) -> CircuitUiState,
 ): Presenter.Factory = Presenter.Factory { screen, navigator, _ ->
-    if (screen !is UiScreen) return@Factory null
-    presenterOf { body(screen, navigator) }
+    when (screen) {
+        is UiScreen -> presenterOf { body(screen, navigator) }
+        else -> null
+    }
 }
