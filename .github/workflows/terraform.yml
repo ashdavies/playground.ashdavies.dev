@@ -79,7 +79,7 @@ jobs:
 
       - uses: hashicorp/setup-terraform@v3
         with:
-          terraform_version: 1.7.1
+          terraform_version: 1.7.2
 
       - id: init
         run: terraform -chdir=terraform init
