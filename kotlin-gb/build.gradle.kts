@@ -1,5 +1,6 @@
 plugins {
-    id("io.ashdavies.default")
+    id("io.ashdavies.kotlin")
+    id("io.ashdavies.spotless")
 }
 
 android {

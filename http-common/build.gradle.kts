@@ -1,7 +1,8 @@
 import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode
 
 plugins {
-    id("io.ashdavies.default")
+    id("io.ashdavies.kotlin")
+    id("io.ashdavies.spotless")
 
     alias(libs.plugins.openapi.generator)
 }
