@@ -1,9 +1,6 @@
 plugins {
-    id("io.ashdavies.default")
-}
-
-android {
-    namespace = "io.ashdavies.locale"
+    id("io.ashdavies.kotlin")
+    id("io.ashdavies.spotless")
 }
 
 kotlin {
