@@ -1,13 +1,10 @@
 import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode
 
 plugins {
-    id("io.ashdavies.default")
+    id("io.ashdavies.kotlin")
+    id("io.ashdavies.spotless")
 
     alias(libs.plugins.openapi.generator)
-}
-
-android {
-    namespace = "io.ashdavies.http.common"
 }
 
 kotlin {
@@ -28,7 +25,7 @@ openApiGenerate {
     globalProperties.set(mapOf("models" to ""))
     outputDir.set("$buildDir/generated/openapi/main")
     inputSpec.set("$rootDir/${property("openapi.generator.inputSpec")}")
-    packageName.set(android.namespace)
+    packageName.set("io.ashdavies.http.common")
     additionalProperties.put("dateLibrary", "string")
     ignoreFileOverride.set("$projectDir/.openapi-generator-ignore")
     configOptions.put("library", "multiplatform")
