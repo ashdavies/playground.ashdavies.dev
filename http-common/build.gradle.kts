@@ -25,7 +25,7 @@ openApiGenerate {
     globalProperties.set(mapOf("models" to ""))
     outputDir.set("$buildDir/generated/openapi/main")
     inputSpec.set("$rootDir/${property("openapi.generator.inputSpec")}")
-    packageName.set(android.namespace)
+    packageName.set("io.ashdavies.http.common")
     additionalProperties.put("dateLibrary", "string")
     ignoreFileOverride.set("$projectDir/.openapi-generator-ignore")
     configOptions.put("library", "multiplatform")
