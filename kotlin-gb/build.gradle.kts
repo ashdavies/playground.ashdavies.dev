@@ -3,10 +3,6 @@ plugins {
     id("io.ashdavies.spotless")
 }
 
-android {
-    namespace = "io.ashdavies.locale"
-}
-
 kotlin {
     commonMain.dependencies {
         implementation(projects.parcelableSupport)
