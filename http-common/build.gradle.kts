@@ -7,10 +7,6 @@ plugins {
     alias(libs.plugins.openapi.generator)
 }
 
-android {
-    namespace = "io.ashdavies.http.common"
-}
-
 kotlin {
     explicitApi = ExplicitApiMode.Disabled
 
