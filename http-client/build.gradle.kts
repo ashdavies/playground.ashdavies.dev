@@ -6,10 +6,6 @@ plugins {
     alias(libs.plugins.openapi.generator)
 }
 
-android {
-    namespace = "io.ashdavies.http.client"
-}
-
 kotlin {
     commonMain.dependencies {
         implementation(projects.httpCommon)
