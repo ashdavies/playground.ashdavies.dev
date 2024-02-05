@@ -44,7 +44,7 @@ public object GalleryScreen : Parcelable, Screen {
         val itemList: List<StandardItem> = emptyList(),
         val expandedItem: ExpandedItem? = null,
         val showCapture: Boolean = false,
-        val identityState: IdentityState,
+        val identityState: IdentityState = IdentityState.Unsupported,
         val eventSink: (Event) -> Unit,
     ) : CircuitUiState {
 
@@ -138,4 +138,30 @@ internal fun GalleryPresenter(
             }
         }
     }
+}
+
+@Composable
+internal fun ExperimentalGalleryPresenter(images: ImageManager, sync: SyncManager): GalleryScreen.State {
+    return reducer({ eventSink -> GalleryScreen.State(eventSink = eventSink) }) { uiState, uiEvent ->
+        when (uiEvent) {
+            is GalleryScreen.Event.Capture.Result -> uiState.copy(
+                showCapture = false
+            )
+
+            else -> throw UnsupportedOperationException()
+        }
+    }
+}
+
+@Composable
+private fun <UiEvent : CircuitUiEvent, UiState : CircuitUiState> reducer(
+    initialState: (eventSink: (UiEvent) -> Unit) -> UiState,
+    reduce: (uiState: UiState, uiEvent: UiEvent) -> UiState,
+): UiState {
+    var event by remember { mutableStateOf<UiEvent?>(null) }
+    val eventSink = { uiEvent: UiEvent -> event = uiEvent }
+
+    var state by remember { mutableStateOf(initialState(eventSink)) }
+    event?.let { state = reduce(state, it) }
+    return state
 }
