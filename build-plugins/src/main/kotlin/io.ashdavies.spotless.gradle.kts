@@ -5,16 +5,12 @@ plugins {
 }
 
 spotless {
-    val ktLintVersion = libs.versions.pinterest.ktlint.get()
+    val ktlintVersion = libs.versions.pinterest.ktlint.get()
+    val composeKtlint = libs.compose.ktlint.get()
+
     val editorConfig = mapOf(
         "ij_kotlin_allow_trailing_comma_on_call_site" to "true",
-        "ktlint_standard_comment-wrapping" to "disabled",
-        "ktlint_standard_function-naming" to "disabled",
-        "ktlint_standard_property-naming" to "disabled",
         "ij_kotlin_allow_trailing_comma" to "true",
-        "ktlint_standard_filename" to "disabled",
-        "ktlint_experimental" to "enabled",
-        "android" to "true",
     )
 
     fun FormatExtension.kotlinDefault(target: String) {
@@ -25,12 +21,18 @@ spotless {
     }
 
     kotlinGradle {
-        ktlint(ktLintVersion).editorConfigOverride(editorConfig)
+        ktlint(ktlintVersion)
+            .customRuleSets(listOf("$composeKtlint"))
+            .editorConfigOverride(editorConfig)
+
         kotlinDefault("*.gradle.kts")
     }
 
     kotlin {
-        ktlint(ktLintVersion).editorConfigOverride(editorConfig)
+        ktlint(ktlintVersion)
+            .customRuleSets(listOf("$composeKtlint"))
+            .editorConfigOverride(editorConfig)
+
         kotlinDefault("*.kt")
     }
 
