@@ -6,7 +6,7 @@ public object IdentityModule {
     public fun identityManager(
         platformContext: PlatformContext,
         credentialQueries: CredentialQueries,
-    ): IdentityManager = IdentityManager(
+    ): IdentityManager = GoogleIdentityManager(
         credentialQueries = credentialQueries,
         identityService = GoogleIdIdentityService(
             context = platformContext,

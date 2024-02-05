@@ -4,6 +4,7 @@ plugins {
     id("io.ashdavies.sql")
 
     alias(libs.plugins.build.config)
+    alias(libs.plugins.google.ksp)
 }
 
 android {
@@ -18,8 +19,15 @@ buildConfig {
     packageName.set(android.namespace)
 }
 
+dependencies {
+    val kspCommonMainMetadata by configurations.getting {
+        add(name, projects.composeInject)
+    }
+}
+
 kotlin {
     commonMain.dependencies {
+        implementation(projects.composeAnnotations)
         implementation(projects.platformSupport)
         implementation(projects.sqlDriver)
 
@@ -27,12 +35,18 @@ kotlin {
         implementation(libs.google.android.identity)
         implementation(libs.kotlinx.coroutines.core)
     }
+
+    commonMain.kotlin {
+        srcDir("build/generated/ksp/metadata/commonMain/kotlin")
+    }
 }
 
 sqldelight {
-    databases {
-        create("PlaygroundDatabase") {
-            packageName.set(android.namespace)
-        }
+    databases.create("PlaygroundDatabase") {
+        packageName.set(android.namespace)
     }
+}
+
+tasks.withType<org.jetbrains.kotlin.gradle.dsl.KotlinCompile<*>>().all {
+    if (name != "kspCommonMainKotlinMetadata") dependsOn("kspCommonMainKotlinMetadata")
 }

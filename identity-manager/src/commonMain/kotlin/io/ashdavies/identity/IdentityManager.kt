@@ -1,5 +1,6 @@
 package io.ashdavies.identity
 
+import io.ashdavies.compose.Remember
 import io.ashdavies.sql.mapToOneOrNull
 import kotlinx.coroutines.flow.Flow
 
@@ -8,10 +9,14 @@ public interface IdentityManager {
     public suspend fun signIn()
 }
 
-internal fun IdentityManager(
-    credentialQueries: CredentialQueries,
-    identityService: GoogleIdIdentityService,
-): IdentityManager = object : IdentityManager {
+public fun rememberIdentityManager(): IdentityManager {
+    return rememberGoogleIdentityManager()
+}
+
+internal class GoogleIdentityManager @Remember constructor(
+    private val credentialQueries: CredentialQueries,
+    private val identityService: GoogleIdIdentityService,
+) : IdentityManager {
 
     override val state: Flow<IdentityState> = credentialQueries.selectAll().mapToOneOrNull {
         if (it != null) IdentityState.Authenticated(it.profilePictureUrl) else IdentityState.Unauthenticated

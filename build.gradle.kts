@@ -14,6 +14,7 @@ plugins {
         classpath(apollo.graphql)
         classpath(cash.sqldelight)
         classpath(diffplug.spotless)
+        classpath(google.ksp)
         classpath(google.services)
 
         with(kotlin) {
