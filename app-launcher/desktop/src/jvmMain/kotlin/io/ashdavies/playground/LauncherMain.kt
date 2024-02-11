@@ -44,7 +44,7 @@ public fun main(args: Array<String>) {
 
                         NavigableCircuitContent(
                             navigator = rememberCircuitNavigator(backStack, ::exitApplication),
-                            backstack = backStack,
+                            backStack = backStack,
                             decoration = KeyNavigationDecoration(
                                 decoration = circuit.defaultNavDecoration,
                                 onBackInvoked = backStack::pop,

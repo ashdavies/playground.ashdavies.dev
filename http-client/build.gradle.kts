@@ -1,12 +1,9 @@
 plugins {
     id("io.ashdavies.compose")
-    id("io.ashdavies.default")
+    id("io.ashdavies.kotlin")
+    id("io.ashdavies.spotless")
 
     alias(libs.plugins.openapi.generator)
-}
-
-android {
-    namespace = "io.ashdavies.http.client"
 }
 
 kotlin {

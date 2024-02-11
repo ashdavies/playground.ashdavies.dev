@@ -33,7 +33,7 @@ internal class LauncherActivity : ComposeActivity(content = {
 
                     NavigableCircuitContent(
                         navigator = rememberCircuitNavigator(backStack),
-                        backstack = backStack,
+                        backStack = backStack,
                     )
                 }
             }

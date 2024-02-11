@@ -1,5 +1,6 @@
 plugins {
     id("io.ashdavies.kotlin")
+    id("io.ashdavies.spotless")
 }
 
 kotlin {
