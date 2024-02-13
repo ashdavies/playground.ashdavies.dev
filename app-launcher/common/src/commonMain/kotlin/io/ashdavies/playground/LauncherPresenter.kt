@@ -38,14 +38,14 @@ internal fun LauncherPresenter(navigator: Navigator): LauncherScreen.State {
 }
 
 @Composable
-public fun rememberSaveableBackStack(initialScreenName: String? = null): SaveableBackStack = rememberSaveableBackStack {
-    when (val initialScreen = initialScreenOrNull(initialScreenName)) {
-        is Screen -> listOf(LauncherScreen, initialScreen)
-        else -> listOf(LauncherScreen)
-    }.forEach(::push)
+public fun rememberSaveableBackStack(nextScreenName: String? = null): SaveableBackStack {
+    return rememberSaveableBackStack(LauncherScreen) {
+        val nextScreen = screenOrNull(nextScreenName)
+        if (nextScreen != null) push(nextScreen)
+    }
 }
 
-private fun initialScreenOrNull(name: String? = null): Screen? = name?.let {
+private fun screenOrNull(name: String? = null): Screen? = name?.let {
     return enumValues<LauncherEntries>()
         .firstOrNull { it.name.lowercase() == name.lowercase() }
         ?.screen

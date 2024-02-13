@@ -10,7 +10,7 @@ import kotlin.test.assertEquals
 
 internal class LauncherPresenterTest {
 
-    private val navigator = FakeNavigator()
+    private val navigator = FakeNavigator(LauncherScreen)
 
     @Test
     fun `should navigate to after party screen`() = runTest {
