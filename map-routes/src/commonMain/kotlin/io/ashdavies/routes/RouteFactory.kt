@@ -15,6 +15,6 @@ public fun RoutePresenterFactory(context: PlatformContext): Presenter.Factory {
 
 public fun RouteUiFactory(): Ui.Factory {
     return uiFactoryOf<RouteScreen, RouteScreen.State> { _, state, modifier ->
-        RouteScreen(state, modifier)
+        RouteScreen(state, modifier) { state.eventSink(RouteScreen.Event.OnEndPosition(it)) }
     }
 }
