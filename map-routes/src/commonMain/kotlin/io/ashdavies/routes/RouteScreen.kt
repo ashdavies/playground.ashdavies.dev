@@ -27,6 +27,6 @@ internal fun RouteScreen(
 ) {
     RouteMap(
         state = state.mapState,
-        modifier = modifier,
+        modifier = modifier,,
     )
 }

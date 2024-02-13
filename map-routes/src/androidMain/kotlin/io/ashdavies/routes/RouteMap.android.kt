@@ -15,28 +15,33 @@ import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.Polyline
 import com.google.maps.android.compose.rememberCameraPositionState
-
-public actual typealias LatLng = com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.LatLng as GmsLatLng
 
 private const val CAMERA_ANIMATE_DURATION = 2_000
 
 @Composable
-internal actual fun RouteMap(state: RouteMapState, modifier: Modifier) {
+internal actual fun RouteMap(
+    state: RouteMapState,
+    modifier: Modifier,
+    onEndPosition: (LatLng) -> Unit
+) {
     val cameraPositionState = rememberCameraPositionState()
 
     LaunchedEffect(state.startPosition, state.zoomLevel) {
-        val cameraPosition = CameraPosition.fromLatLngZoom(state.startPosition, state.zoomLevel)
+        val startPosition = state.startPosition.asGmsLatLng()
+        val cameraPosition = CameraPosition.fromLatLngZoom(startPosition, state.zoomLevel)
         val cameraUpdate = CameraUpdateFactory.newCameraPosition(cameraPosition)
+
         cameraPositionState.animate(cameraUpdate, CAMERA_ANIMATE_DURATION)
     }
 
     GoogleMap(
         cameraPositionState = cameraPositionState,
         modifier = modifier.fillMaxSize(),
-        onMapClick = { state.endPosition = it },
+        onMapClick = { onEndPosition(it.asLatLng()) },
     ) {
         Marker(
-            state = MarkerState(state.startPosition),
+            state = MarkerState(state.startPosition.asGmsLatLng()),
             icon = rememberGreenMarker(),
             title = "Start",
         )
@@ -44,11 +49,12 @@ internal actual fun RouteMap(state: RouteMapState, modifier: Modifier) {
         val endPosition = state.endPosition
         if (endPosition != null) {
             Marker(
-                state = MarkerState(endPosition),
+                state = MarkerState(endPosition.asGmsLatLng()),
                 icon = rememberRedMarker(),
                 title = "End",
             )
         }
+
         if (state.routes.isNotEmpty()) {
             Polyline(
                 points = state.routes.flatMap {
@@ -68,3 +74,13 @@ private fun rememberGreenMarker(): BitmapDescriptor = remember {
 private fun rememberRedMarker(): BitmapDescriptor = remember {
     BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)
 }
+
+private fun GmsLatLng.asLatLng() = LatLng(
+    latitude = latitude,
+    longitude = longitude,
+)
+
+private fun LatLng.asGmsLatLng() = GmsLatLng(
+    /* latitude = */ latitude,
+    /* longitude = */ longitude,
+)
