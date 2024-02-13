@@ -23,7 +23,7 @@ private const val CAMERA_ANIMATE_DURATION = 2_000
 internal actual fun RouteMap(
     state: RouteMapState,
     modifier: Modifier,
-    onEndPosition: (LatLng) -> Unit
+    onEndPosition: (LatLng) -> Unit,
 ) {
     val cameraPositionState = rememberCameraPositionState()
 
