@@ -55,7 +55,7 @@ internal class GetEventsCallable(
 }
 
 @Serializable
-public data class GetEventsError(
+internal data class GetEventsError(
     override val message: String,
     val code: Int,
 ) : Throwable()

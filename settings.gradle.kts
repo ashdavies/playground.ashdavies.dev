@@ -71,6 +71,7 @@ include(
     ":identity-manager",
     ":kotlin-gb",
     ":map-routes",
+    ":maps-routing",
     ":micro-yaml",
     ":notion-console",
     ":nsd-manager",
