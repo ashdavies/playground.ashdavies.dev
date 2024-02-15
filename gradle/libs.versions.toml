@@ -125,7 +125,7 @@ android-library = { id = "com.android.library", version.ref = "google-android" }
 apollo-graphql = { id = "com.apollographql.apollo", version.ref = "apollo-graphql" }
 build-config = "com.github.gmazzo.buildconfig:5.3.5"
 cash-sqldelight = { id = "app.cash.sqldelight", version.ref = "cash-sqldelight" }
-dependency-analysis = "com.autonomousapps.dependency-analysis:1.28.0"
+dependency-analysis = "com.autonomousapps.dependency-analysis:1.30.0"
 diffplug-spotless = "com.diffplug.spotless:6.25.0"
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
 gradle-doctor = "com.osacky.doctor:0.9.1"
