@@ -3,8 +3,6 @@ package io.ashdavies.content
 import android.app.Activity
 import android.content.ContextWrapper
 
-public actual typealias PlatformContext = android.content.Context
-
 private val PlatformContext.activity: Activity
     get() = requireNotNull(findActivity()) { "Could not find activity!" }
 
