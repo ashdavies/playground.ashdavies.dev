@@ -74,6 +74,7 @@ include(
     ":micro-yaml",
     ":nsd-manager",
     ":parcelable-support",
+    ":platform-scaffold",
     ":platform-support",
     ":sql-driver",
 )
