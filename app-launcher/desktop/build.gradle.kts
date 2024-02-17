@@ -30,6 +30,12 @@ kotlin {
         implementation(libs.ktor.client.core)
         implementation(libs.slack.circuit.foundation)
     }
+
+    jvmMain.dependencies {
+        runtimeOnly(compose.desktop.currentOs)
+        runtimeOnly(libs.kotlinx.coroutines.swing)
+        runtimeOnly(libs.slf4j.simple)
+    }
 }
 
 compose.desktop {
