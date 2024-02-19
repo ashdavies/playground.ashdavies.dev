@@ -4,6 +4,7 @@ import android.content.pm.PackageManager
 import android.os.Build
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalContext
 import com.slack.circuit.foundation.CircuitCompositionLocals
 import com.slack.circuit.foundation.NavigableCircuitContent
 import com.slack.circuit.foundation.rememberCircuitNavigator
@@ -28,7 +29,7 @@ internal class LauncherActivity : ComposeActivity(content = {
 
         CircuitCompositionLocals(circuit) {
             ContentWithOverlays {
-                LauncherContent {
+                LauncherContent(LocalContext.current) {
                     val backStack = rememberSaveableBackStack(intent.getStringExtra("route"))
 
                     NavigableCircuitContent(

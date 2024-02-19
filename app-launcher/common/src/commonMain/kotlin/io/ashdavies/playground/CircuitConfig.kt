@@ -28,10 +28,10 @@ private fun getPresenterFactories(context: PlatformContext) = listOf(
 )
 
 private fun getUiFactories(context: PlatformContext) = listOf(
-    AfterPartyUiFactory(),
+    AfterPartyUiFactory(context),
     DominionUiFactory(),
     EventsUiFactory(),
     GalleryUiFactory(context),
     LauncherUiFactory(),
-    RouteUiFactory(),
+    RouteUiFactory(context),
 )

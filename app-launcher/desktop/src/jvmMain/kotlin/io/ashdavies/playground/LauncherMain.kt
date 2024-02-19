@@ -39,7 +39,7 @@ private class LauncherCommand : CliktCommand() {
                             }
                         },
                     ) {
-                        LauncherContent {
+                        LauncherContent(PlatformContext.Default) {
                             val backStack = rememberSaveableBackStack(route)
 
                             NavigableCircuitContent(
