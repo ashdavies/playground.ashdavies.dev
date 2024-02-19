@@ -9,7 +9,6 @@ import app.cash.paging.compose.LazyPagingItems
 import app.cash.paging.compose.collectAsLazyPagingItems
 import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.screen.Screen
-import io.ashdavies.compose.MultipleReferenceWarning
 import io.ashdavies.events.Event
 import io.ashdavies.events.rememberEventPager
 import io.ashdavies.parcelable.Parcelable
@@ -21,7 +20,7 @@ public object ActivityScreen : Parcelable, Screen {
 }
 
 @Composable
-@OptIn(ExperimentalPagingApi::class, MultipleReferenceWarning::class)
+@OptIn(ExperimentalPagingApi::class)
 internal fun ActivityPresenter(eventPager: Pager<String, Event> = rememberEventPager()): ActivityScreen.State {
     val pagingData = eventPager.flow.cachedIn(rememberCoroutineScope())
     return ActivityScreen.State(pagingData.collectAsLazyPagingItems())
