@@ -22,12 +22,9 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil3.compose.rememberAsyncImagePainter
@@ -36,6 +33,8 @@ import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.screen.Screen
 import io.ashdavies.parcelable.Parcelable
 import io.ashdavies.parcelable.Parcelize
+import org.jetbrains.compose.resources.DrawableResource
+import org.jetbrains.compose.resources.painterResource
 
 @Parcelize
 internal object LauncherScreen : Parcelable, Screen {
@@ -107,9 +106,7 @@ private fun LauncherItem(
     Card(modifier = modifier.clickable(onClick = onClick)) {
         Column {
             val imagePainter = when (val imageModel = item.imageModel) {
-                is ImageBitmap -> remember(imageModel) {
-                    BitmapPainter(imageModel)
-                }
+                is DrawableResource -> painterResource(imageModel)
 
                 else -> rememberAsyncImagePainter(
                     model = item.imageModel,
