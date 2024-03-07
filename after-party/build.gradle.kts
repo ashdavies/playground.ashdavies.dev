@@ -58,7 +58,6 @@ kotlin {
     }
 }
 
-
 sqldelight {
     databases {
         create("PlaygroundDatabase") {

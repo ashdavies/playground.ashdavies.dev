@@ -1,0 +1,4 @@
+naming:
+  active: false
+  InvalidPackageDeclaration:
+    active: false
