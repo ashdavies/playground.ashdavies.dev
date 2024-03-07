@@ -34,15 +34,6 @@ extensions.configure<DetektExtension> {
     config.setFrom(rootProject.file("detekt-config.yml"))
 }
 
-extensions.configure<KtlintExtension> {
-    /*additionalEditorconfig.putAll(
-        mapOf(
-            "ktlint_standard_trailing-comma-on-call-site" to "disabled",
-            "ktlint_standard_trailing-comma-on-declaration-site" to "disabled",
-        )
-    )*/
-}
-
 tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = jvmTargetVersion
 }
