@@ -27,12 +27,12 @@ ajalt-clikt = "com.github.ajalt.clikt:clikt:4.2.2"
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity" }
 androidx-annotation = "androidx.annotation:annotation:1.7.1"
 androidx-core-splashscreen = "androidx.core:core-splashscreen:1.0.1"
-androidx-credentials-auth = "androidx.credentials:credentials-play-services-auth:1.2.0"
+androidx-credentials-auth = "androidx.credentials:credentials-play-services-auth:1.2.1"
 
 apollo-graphql-coroutines-support = { module = "com.apollographql.apollo:apollo-coroutines-support", version.ref = "apollo-graphql" }
 apollo-graphql-runtime = { module = "com.apollographql.apollo:apollo-runtime", version.ref = "apollo-graphql" }
 
-app-cash-turbine = "app.cash.turbine:turbine:1.0.0"
+app-cash-turbine = "app.cash.turbine:turbine:1.1.0"
 
 auth-java-jwt = "com.auth0:java-jwt:4.4.0"
 auth-jwks-rsa = "com.auth0:jwks-rsa:0.22.1"
@@ -52,15 +52,15 @@ google-accompanist-permissions = { module = "com.google.accompanist:accompanist-
 google-accompanist-placeholderMaterial = { module = "com.google.accompanist:accompanist-placeholder-material", version.ref = "google-accompanist" }
 
 google-android-identity = "com.google.android.libraries.identity.googleid:googleid:1.1.0"
-google-android-location = "com.google.android.gms:play-services-location:21.1.0"
+google-android-location = "com.google.android.gms:play-services-location:21.2.0"
 google-android-material = "com.google.android.material:material:1.11.0"
 
 google-auth-http = "com.google.auth:google-auth-library-oauth2-http:1.23.0"
-google-cloud-bom = "com.google.cloud:libraries-bom:26.33.0"
+google-cloud-bom = "com.google.cloud:libraries-bom:26.34.0"
 google-cloud-firestore = { module = "com.google.cloud:google-cloud-firestore" }
 
 google-firebase-admin = "com.google.firebase:firebase-admin:9.2.0"
-google-firebase-bom = "com.google.firebase:firebase-bom:32.7.3"
+google-firebase-bom = "com.google.firebase:firebase-bom:32.7.4"
 google-firebase-appcheck-playintegrity = { module = "com.google.firebase:firebase-appcheck-playintegrity" }
 
 google-guava-jre = "com.google.guava:guava:33.0.0-jre"
