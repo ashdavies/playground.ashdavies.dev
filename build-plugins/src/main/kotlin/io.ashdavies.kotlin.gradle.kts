@@ -1,3 +1,4 @@
+import io.gitlab.arturbosch.detekt.Detekt
 import io.gitlab.arturbosch.detekt.DetektPlugin
 import io.gitlab.arturbosch.detekt.extensions.DetektExtension
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
@@ -29,6 +30,10 @@ kotlin {
     }
 }
 
+private val detektAll by tasks.registering {
+    dependsOn(tasks.withType<Detekt>())
+}
+
 extensions.configure<DetektExtension> {
     buildUponDefaultConfig = true
     config.setFrom(rootProject.file("detekt-config.yml"))
@@ -37,6 +42,12 @@ extensions.configure<DetektExtension> {
 extensions.configure<KtlintExtension> {
     filter {
         exclude { "generated" in "${it.file}" }
+    }
+}
+
+tasks.withType<Detekt> {
+    val build by tasks.getting {
+        dependsOn(this@withType)
     }
 }
 
