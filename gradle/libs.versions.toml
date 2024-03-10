@@ -56,7 +56,7 @@ google-android-location = "com.google.android.gms:play-services-location:21.2.0"
 google-android-material = "com.google.android.material:material:1.11.0"
 
 google-auth-http = "com.google.auth:google-auth-library-oauth2-http:1.23.0"
-google-cloud-bom = "com.google.cloud:libraries-bom:26.33.0"
+google-cloud-bom = "com.google.cloud:libraries-bom:26.34.0"
 google-cloud-firestore = { module = "com.google.cloud:google-cloud-firestore" }
 
 google-firebase-admin = "com.google.firebase:firebase-admin:9.2.0"
