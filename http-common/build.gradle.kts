@@ -1,5 +1,4 @@
 import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode
-import org.jlleitschuh.gradle.ktlint.KtlintExtension
 
 plugins {
     id("io.ashdavies.kotlin")
@@ -17,12 +16,6 @@ kotlin {
         }
 
         kotlin.srcDir(tasks.openApiGenerate)
-    }
-}
-
-extensions.configure<KtlintExtension> {
-    filter {
-        exclude { "generated" in "${it.file}" }
     }
 }
 

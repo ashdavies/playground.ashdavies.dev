@@ -34,6 +34,12 @@ extensions.configure<DetektExtension> {
     config.setFrom(rootProject.file("detekt-config.yml"))
 }
 
+extensions.configure<KtlintExtension> {
+    filter {
+        exclude { "generated" in "${it.file}" }
+    }
+}
+
 tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = jvmTargetVersion
 }
