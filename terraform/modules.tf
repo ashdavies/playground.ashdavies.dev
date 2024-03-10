@@ -145,9 +145,5 @@ module "gradle-build-cache" {
     }
   ]
   public_access_prevention = "enforced"
-  retention_policy         = {
-    retention_period = 2678400
-    is_locked        = false
-  }
   versioning               = false
 }
