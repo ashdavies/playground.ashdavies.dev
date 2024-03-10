@@ -6,13 +6,13 @@ plugins {
 
 android {
     namespace = "io.ashdavies.common"
-
-    val main by sourceSets.getting {
-        res.srcDirs("src/androidMain/res", "src/commonMain/resources")
-    }
 }
 
 kotlin {
+    sourceSets.all {
+        languageSettings.optIn("org.jetbrains.compose.resources.ExperimentalResourceApi")
+    }
+
     commonMain.dependencies {
         implementation(projects.afterParty)
         implementation(projects.appCheck.appCheckClient)
@@ -22,6 +22,7 @@ kotlin {
         implementation(projects.mapRoutes)
         implementation(projects.platformSupport)
 
+        implementation(compose.components.resources)
         implementation(compose.material3)
         implementation(compose.runtime)
         implementation(compose.ui)
