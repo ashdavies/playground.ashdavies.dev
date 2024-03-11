@@ -5,7 +5,6 @@ plugins {
     id("io.ashdavies.compose")
     id("io.ashdavies.kotlin")
     id("io.ashdavies.properties")
-    id("io.ashdavies.spotless")
 
     alias(libs.plugins.build.config)
 }

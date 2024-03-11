@@ -15,10 +15,17 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 internal data class ApiEvent(
-    val id: String, val name: String, val website: String,
-    val location: String, val status: String?, val online: Boolean?,
-    val dateStart: String, val dateEnd: String, val cfpStart: String?,
-    val cfpEnd: String?, val cfpSite: String?,
+    val id: String,
+    val name: String,
+    val website: String,
+    val location: String,
+    val status: String?,
+    val online: Boolean?,
+    val dateStart: String,
+    val dateEnd: String,
+    val cfpStart: String?,
+    val cfpEnd: String?,
+    val cfpSite: String?,
 )
 
 internal fun Route.events() {
