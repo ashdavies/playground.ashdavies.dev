@@ -27,7 +27,7 @@ internal class KeyNavigationDecoration(
         args: ImmutableList<T>,
         backStackDepth: Int,
         modifier: Modifier,
-        content: @Composable (T) -> Unit
+        content: @Composable (T) -> Unit,
     ) {
         decoration.DecoratedContent(
             args = args,
