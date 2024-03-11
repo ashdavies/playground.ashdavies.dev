@@ -19,7 +19,6 @@ pluginManagement.repositories {
     mavenCentral()
 }
 
-@Suppress("UnstableApiUsage")
 dependencyResolutionManagement.repositories {
     google()
     mavenCentral()
