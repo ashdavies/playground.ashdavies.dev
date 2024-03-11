@@ -3,6 +3,7 @@ package io.ashdavies.cloud
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
+import kotlin.coroutines.CoroutineContext
 
 public fun interface CollectionWriter<T : Any> {
     public suspend operator fun invoke(
@@ -14,6 +15,7 @@ public fun interface CollectionWriter<T : Any> {
 public suspend fun <T : Any> CollectionWriter(
     provider: DocumentProvider,
     identifier: (T) -> String,
+    context: CoroutineContext = Dispatchers.IO,
 ): CollectionWriter<T> = CollectionWriter { oldValue, newValue ->
     val queue = OperationQueue(
         oldValue = oldValue.associateBy(identifier),
@@ -22,7 +24,7 @@ public suspend fun <T : Any> CollectionWriter(
 
     coroutineScope {
         for (operation in queue) {
-            launch(Dispatchers.IO) {
+            launch(context) {
                 operation(provider)
             }.join()
         }
