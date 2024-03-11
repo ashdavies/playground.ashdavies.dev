@@ -2,7 +2,6 @@ pluginManagement.repositories {
     gradlePluginPortal()
 }
 
-@Suppress("UnstableApiUsage")
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
 
@@ -16,3 +15,5 @@ dependencyResolutionManagement {
         from(files("../gradle/libs.versions.toml"))
     }
 }
+
+rootProject.name = "build-plugins"
