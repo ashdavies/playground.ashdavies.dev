@@ -133,4 +133,4 @@ kotlin-compose = { id = "org.jetbrains.compose", version.ref = "jetbrains-compos
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "jetbrains-kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "jetbrains-kotlin" }
 kotlinx-kover = "org.jetbrains.kotlinx.kover:0.7.6"
-openapi-generator = "org.openapi.generator:7.3.0"
+openapi-generator = "org.openapi.generator:7.4.0"
