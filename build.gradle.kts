@@ -13,14 +13,12 @@ plugins {
         classpath(android.library)
         classpath(apollo.graphql)
         classpath(cash.sqldelight)
-        classpath(diffplug.spotless)
+        classpath(detekt)
         classpath(google.services)
-
-        with(kotlin) {
-            classpath(compose)
-            classpath(multiplatform)
-            classpath(serialization)
-        }
+        classpath(kotlin.compose)
+        classpath(kotlin.multiplatform)
+        classpath(kotlin.serialization)
+        classpath(ktlint)
 
         alias(dependency.analysis)
         alias(gradle.doctor)
@@ -42,11 +40,9 @@ doctor {
     javaHome { failOnError.set(false) }
 }
 
-val targetProject = project
-
 subprojects {
     pluginManager.withPlugin("io.ashdavies.kotlin") {
         project.apply(plugin = "org.jetbrains.kotlinx.kover")
-        targetProject.dependencies.kover(project)
+        rootProject.dependencies.kover(project)
     }
 }
