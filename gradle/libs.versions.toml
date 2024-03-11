@@ -126,11 +126,12 @@ apollo-graphql = { id = "com.apollographql.apollo", version.ref = "apollo-graphq
 build-config = "com.github.gmazzo.buildconfig:5.3.5"
 cash-sqldelight = { id = "app.cash.sqldelight", version.ref = "cash-sqldelight" }
 dependency-analysis = "com.autonomousapps.dependency-analysis:1.30.0"
-diffplug-spotless = "com.diffplug.spotless:6.25.0"
+detekt = "io.gitlab.arturbosch.detekt:1.23.3"
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
 gradle-doctor = "com.osacky.doctor:0.9.2"
 kotlin-compose = { id = "org.jetbrains.compose", version.ref = "jetbrains-compose" }
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "jetbrains-kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "jetbrains-kotlin" }
 kotlinx-kover = "org.jetbrains.kotlinx.kover:0.7.6"
-openapi-generator = "org.openapi.generator:7.3.0"
+ktlint = "org.jlleitschuh.gradle.ktlint:11.6.1"
+openapi-generator = "org.openapi.generator:7.4.0"
