@@ -2,8 +2,6 @@ plugins {
     id("io.ashdavies.compose")
     id("io.ashdavies.kotlin")
     id("io.ashdavies.spotless")
-
-    alias(libs.plugins.openapi.generator)
 }
 
 kotlin {
