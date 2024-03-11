@@ -1,4 +1,5 @@
 naming:
-  active: false
   InvalidPackageDeclaration:
     active: false
+  FunctionNaming:
+    functionPattern: '[\w]+'

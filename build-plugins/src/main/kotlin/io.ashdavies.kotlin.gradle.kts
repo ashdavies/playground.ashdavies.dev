@@ -49,6 +49,8 @@ tasks.withType<Detekt> {
     val build by tasks.getting {
         dependsOn(this@withType)
     }
+
+    exclude { "generated" in "$it" }
 }
 
 tasks.withType<KotlinCompile> {
