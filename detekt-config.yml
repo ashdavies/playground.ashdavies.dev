@@ -1,5 +1,11 @@
+complexity:
+  LongParameterList:
+    ignoreDefaultParameters: true
 naming:
   InvalidPackageDeclaration:
     active: false
   FunctionNaming:
     functionPattern: '[\w]+'
+style:
+  MagicNumber:
+    ignorePropertyDeclaration: true
