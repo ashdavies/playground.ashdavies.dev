@@ -44,7 +44,7 @@
       ]
     },
     {
-      "groupName": "Compose Multiplatform",
+      "groupName": "Kotlin & Compose",
       "matchPackagePrefixes": [
         "org.jetbrains.compose",
         "org.jetbrains.kotlin."
