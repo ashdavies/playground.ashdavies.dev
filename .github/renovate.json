@@ -47,7 +47,7 @@
       "groupName": "Compose Multiplatform",
       "matchPackagePrefixes": [
         "org.jetbrains.compose",
-        "org.jetbrains.kotlin.multiplatform"
+        "org.jetbrains.kotlin."
       ]
     },
     {
