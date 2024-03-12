@@ -10,10 +10,7 @@ dependencies {
     }
 
     with(libs.plugins) {
-        // TODO Use compileOnly instead
         implementation(plugin(android.library))
-        implementation(plugin(apollo.graphql))
-        implementation(plugin(cash.sqldelight))
         implementation(plugin(detekt))
         implementation(plugin(kotlin.compose))
         implementation(plugin(kotlin.multiplatform))

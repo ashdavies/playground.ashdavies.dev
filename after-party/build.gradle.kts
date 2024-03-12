@@ -2,7 +2,8 @@ plugins {
     id("io.ashdavies.compose")
     id("io.ashdavies.default")
     id("io.ashdavies.parcelable")
-    id("io.ashdavies.sql")
+
+    alias(libs.plugins.cash.sqldelight)
 }
 
 android {

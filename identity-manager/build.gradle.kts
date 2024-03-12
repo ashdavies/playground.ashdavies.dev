@@ -1,9 +1,9 @@
 plugins {
     id("io.ashdavies.default")
     id("io.ashdavies.properties")
-    id("io.ashdavies.sql")
 
     alias(libs.plugins.build.config)
+    alias(libs.plugins.cash.sqldelight)
 }
 
 android {
