@@ -13,6 +13,7 @@ import io.ashdavies.http.LocalHttpClient
 import io.ktor.client.plugins.DefaultRequest
 import io.ktor.client.request.header
 import java.security.MessageDigest
+import java.util.Locale
 
 internal class LauncherActivity : ComposeActivity(content = {
     CompositionLocalProvider(
@@ -46,7 +47,9 @@ internal class LauncherActivity : ComposeActivity(content = {
 private fun getSignature(packageManager: PackageManager, packageName: String): String {
     val packageInfo = packageManager.getPackageInfo(packageName, PackageManager.GET_SIGNATURES)
     val signature = packageInfo.signatures[0].toByteArray()
-
     val digest = MessageDigest.getInstance("SHA1").digest(signature)
-    return digest.joinToString(separator = "") { String.format("%02X", it) }
+
+    return digest.joinToString(separator = "") {
+        String.format(Locale.getDefault(), "%02X", it)
+    }
 }

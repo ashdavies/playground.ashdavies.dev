@@ -13,6 +13,8 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.todayIn
 import kotlinx.serialization.Serializable
 
+private const val DEFAULT_LIMIT = 50
+
 @Serializable
 internal data class ApiEvent(
     val id: String,
@@ -31,7 +33,7 @@ internal data class ApiEvent(
 internal fun Route.events() {
     get("/events") {
         val startAt = call.request.queryParameters["startAt"] ?: todayAsString()
-        val limit = call.request.queryParameters["limit"]?.toInt() ?: 50
+        val limit = call.request.queryParameters["limit"]?.toInt() ?: DEFAULT_LIMIT
 
         val provider = DocumentProvider { firestore.collection("events") }
         val query = CollectionQuery(orderBy = "dateStart", startAt, limit)

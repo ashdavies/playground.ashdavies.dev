@@ -36,7 +36,7 @@ private enum class LauncherEntries : LauncherScreen.State.Item {
 
 @Composable
 internal fun LauncherPresenter(navigator: Navigator): LauncherScreen.State {
-    return LauncherScreen.State(listOf(*enumValues<LauncherEntries>())) { event ->
+    return LauncherScreen.State(enumValues<LauncherEntries>().toList()) { event ->
         navigator.onNavEvent(event)
     }
 }

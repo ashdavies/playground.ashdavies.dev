@@ -42,6 +42,9 @@ import io.ashdavies.http.produceStateInline
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 
+private const val DEFAULT_ASPECT_RATIO = 0.62f
+private const val DEFAULT_COLUMN_COUNT = 3
+
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 internal fun KingdomScreen(
@@ -123,11 +126,12 @@ private fun BackIconButton(onClick: () -> Unit) {
 private fun KingdomScreen(
     kingdom: ImmutableList<DominionCard>,
     contentPadding: PaddingValues,
+    columnCount: Int = DEFAULT_COLUMN_COUNT,
     onClick: (DominionCard) -> Unit = { },
     modifier: Modifier = Modifier,
 ) {
     LazyVerticalGrid(
-        columns = GridCells.Fixed(3),
+        columns = GridCells.Fixed(columnCount),
         modifier = modifier.padding(4.dp),
         contentPadding = contentPadding,
     ) {
@@ -152,7 +156,7 @@ private fun KingdomCard(
                     painter = rememberAsyncImagePainter(image),
                     contentDescription = value.name,
                     modifier = Modifier
-                        .aspectRatio(0.62F)
+                        .aspectRatio(DEFAULT_ASPECT_RATIO)
                         .height(300.dp),
                 )
             }
