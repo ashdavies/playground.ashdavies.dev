@@ -11,7 +11,7 @@ import kotlinx.datetime.toJavaInstant
 import kotlin.time.Duration.Companion.hours
 
 private const val APP_CHECK_ENDPOINT = "https://firebaseappcheck.googleapis.com"
-private const val APP_CHECK_AUDIENCE = "${APP_CHECK_ENDPOINT}/google.firebase.appcheck.v1.TokenExchangeService"
+private const val APP_CHECK_AUDIENCE = "$APP_CHECK_ENDPOINT/google.firebase.appcheck.v1.TokenExchangeService"
 
 internal object Jwt : JWT()
 
