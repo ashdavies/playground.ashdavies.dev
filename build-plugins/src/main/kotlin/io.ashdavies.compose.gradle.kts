@@ -1,6 +1,5 @@
 plugins {
     id("org.jetbrains.compose")
-    // id("app.cash.molecule")
     kotlin("multiplatform")
 }
 
