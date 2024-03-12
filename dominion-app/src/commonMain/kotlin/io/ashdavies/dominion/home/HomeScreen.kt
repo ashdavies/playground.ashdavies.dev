@@ -38,6 +38,8 @@ import io.ktor.client.HttpClient
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 
+private const val DEFAULT_COLUMN_COUNT = 3
+
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 internal fun HomeScreen(
@@ -95,11 +97,12 @@ internal fun HomeScreen(
 private fun HomeScreen(
     expansions: ImmutableList<DominionExpansion>,
     contentPadding: PaddingValues,
+    columnCount: Int = DEFAULT_COLUMN_COUNT,
     onClick: (DominionExpansion) -> Unit = { },
     modifier: Modifier = Modifier,
 ) {
     LazyVerticalGrid(
-        columns = GridCells.Fixed(3),
+        columns = GridCells.Fixed(columnCount),
         modifier = modifier.padding(4.dp),
         contentPadding = contentPadding,
     ) {

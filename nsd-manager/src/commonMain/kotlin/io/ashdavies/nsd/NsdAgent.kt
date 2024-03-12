@@ -2,6 +2,7 @@ package io.ashdavies.nsd
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flatMapMerge
@@ -41,7 +42,7 @@ public fun NsdAgent(manager: NsdManager): NsdAgent = NsdAgent { serviceName ->
                 val serviceNames = serviceInfo.map { it.getServiceName() }
 
                 send(NsdState.Discovered(serviceNames))
-                flowOf(*serviceInfo.toTypedArray())
+                serviceInfo.asFlow()
             }
             .flatMapMerge { serviceInfo ->
                 manager.resolveService(serviceInfo)
