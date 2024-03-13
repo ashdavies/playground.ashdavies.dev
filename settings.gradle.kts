@@ -3,7 +3,7 @@ import androidx.build.gradle.gcpbuildcache.GcpBuildCacheServiceFactory
 
 buildscript {
     dependencies {
-        classpath("com.squareup.okio:okio:3.8.0")
+        classpath("com.squareup.okio:okio:3.9.0")
             ?.because("androidx.build.gradle.gcpbuildcache uses older versions of okio")
 
         classpath("org.ow2.asm:asm:9.6")
