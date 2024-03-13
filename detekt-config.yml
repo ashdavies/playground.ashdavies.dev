@@ -1,0 +1,16 @@
+complexity:
+  LongParameterList:
+    ignoreDefaultParameters: true
+naming:
+  InvalidPackageDeclaration:
+    active: false
+  FunctionNaming:
+    excludes: ['**/*Test.kt']
+    functionPattern: '[\w]+'
+  MatchingDeclarationName:
+    excludes:
+      - '**/*.android.kt'
+      - '**/*.jvm.kt'
+style:
+  MagicNumber:
+    ignorePropertyDeclaration: true

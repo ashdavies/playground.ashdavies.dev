@@ -120,22 +120,30 @@ module "github-workload-identity" {
 }
 
 module "gradle-build-cache" {
-  source             = "terraform-google-modules/cloud-storage/google//modules/simple_bucket"
-  version            = "5.0.0"
-  location           = var.project_region
-  name               = "playground-build-cache"
-  project_id         = var.project_id
-  bucket_policy_only = true
-  iam_members        = [
+  source                   = "terraform-google-modules/cloud-storage/google//modules/simple_bucket"
+  version                  = "5.0.0"
+
+  location                 = var.project_region
+  name                     = "playground-build-cache"
+  project_id               = var.project_id
+
+  bucket_policy_only       = true
+  iam_members              = [
     {
       member = module.github-service-account.iam_email
       role   = "roles/storage.admin"
     }
   ]
+  lifecycle_rules          = [
+    {
+      action = {
+        type = "Delete"
+      }
+      condition = {
+        age = 30
+      }
+    }
+  ]
   public_access_prevention = "enforced"
-  retention_policy         = {
-    retention_period = 2678400
-    is_locked        = false
-  }
-  versioning = false
+  versioning               = false
 }

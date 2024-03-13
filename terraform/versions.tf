@@ -7,12 +7,12 @@ terraform {
 
     github = {
       source  = "integrations/github"
-      version = "6.0.1"
+      version = "6.1.0"
     }
 
     google = {
       source  = "hashicorp/google"
-      version = "5.19.0"
+      version = "5.20.0"
     }
   }
 

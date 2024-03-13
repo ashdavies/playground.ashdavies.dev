@@ -1,6 +1,5 @@
 package io.ashdavies.profile
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
@@ -24,7 +23,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
-import coil3.compose.rememberAsyncImagePainter
 import io.ashdavies.android.FlowRow
 import io.ashdavies.android.fade
 import kotlin.random.Random.Default.nextInt
@@ -122,25 +120,5 @@ private fun LoggedOutScreen(onLogin: () -> Unit) {
         Button(onClick = onLogin) {
             Text("Login")
         }
-    }
-}
-
-@Composable
-private fun LoggedInFooter(model: Any? = null) {
-    Column(
-        horizontalAlignment = CenterHorizontally,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
-    ) {
-        Image(
-            painter = rememberAsyncImagePainter(model),
-            contentDescription = null,
-            modifier = Modifier
-                .align(CenterHorizontally)
-                .border(2.dp, Color.LightGray, CircleShape)
-                .clip(CircleShape)
-                .size(128.dp),
-        )
     }
 }

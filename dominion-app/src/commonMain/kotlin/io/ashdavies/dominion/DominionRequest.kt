@@ -19,7 +19,7 @@ internal sealed class DominionRequest(val format: String = "json") {
         data class Images(
             val titles: String,
             val prop: String = "imageinfo",
-            val iiprop: String = "url"
+            val iiprop: String = "url",
         ) : Query()
     }
 
@@ -29,14 +29,14 @@ internal sealed class DominionRequest(val format: String = "json") {
         @Serializable
         data class Sections(
             val page: String,
-            val prop: String = "sections"
+            val prop: String = "sections",
         ) : Parse()
 
         @Serializable
         data class Section(
             val page: String,
             val section: String,
-            val prop: String = "links"
+            val prop: String = "links",
         ) : Parse()
     }
 }

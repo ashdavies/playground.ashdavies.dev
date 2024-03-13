@@ -1,5 +1,5 @@
 plugins {
-    id("io.ashdavies.cloud")
+    id("io.ashdavies.kotlin")
     id("io.ashdavies.properties")
 
     alias(libs.plugins.build.config)
@@ -25,15 +25,19 @@ buildConfig {
     packageName.set("io.ashdavies.check")
 }
 
-dependencies {
-    implementation(libs.auth.java.jwt)
-    implementation(libs.auth.jwks.rsa)
-    implementation(libs.google.auth.http)
-    implementation(libs.google.firebase.admin)
-    implementation(libs.kotlinx.datetime)
-    implementation(libs.kotlinx.serialization.core)
-    implementation(libs.ktor.client.core)
+kotlin {
+    commonMain.dependencies {
+        implementation(libs.auth.java.jwt)
+        implementation(libs.auth.jwks.rsa)
+        implementation(libs.google.auth.http)
+        implementation(libs.google.firebase.admin)
+        implementation(libs.kotlinx.datetime)
+        implementation(libs.kotlinx.serialization.core)
+        implementation(libs.ktor.client.core)
+    }
 
-    runtimeOnly(libs.google.guava.jre)
-    runtimeOnly(libs.slf4j.simple)
+    jvmMain.dependencies {
+        runtimeOnly(libs.google.guava.jre)
+        runtimeOnly(libs.slf4j.simple)
+    }
 }

@@ -27,6 +27,9 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
+import kotlin.time.Duration.Companion.minutes
+
+private const val DEFAULT_LIMIT = 50
 
 private val DefaultHttpConfig: HttpClientConfig<out HttpClientEngineConfig>.() -> Unit = {
     install(ContentNegotiation, ContentNegotiation.Config::json)
@@ -53,7 +56,7 @@ internal class ApplicationTest {
             contentType(ContentType.Application.Json)
         }.body<AppCheckToken>()
 
-        assertEquals(3_600_000, token.ttlMillis)
+        assertEquals(60.minutes.inWholeMilliseconds, token.ttlMillis)
 
         val verify = client.put("/firebase/token:verify") {
             header(HttpHeaders.AppCheckToken, token.token)
@@ -65,7 +68,7 @@ internal class ApplicationTest {
             contentType(ContentType.Application.Json)
         }.body<List<Event>>()
 
-        assertEquals(50, events.size)
+        assertEquals(DEFAULT_LIMIT, events.size)
     }
 }
 

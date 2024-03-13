@@ -13,7 +13,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowForward
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -35,6 +35,9 @@ import io.ashdavies.parcelable.Parcelable
 import io.ashdavies.parcelable.Parcelize
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
+
+private val LauncherAspectRatio: Float
+    get() = 1024f / 500f
 
 @Parcelize
 internal object LauncherScreen : Parcelable, Screen {
@@ -88,7 +91,7 @@ private fun LauncherTopAppBar(modifier: Modifier = Modifier) {
                 contentAlignment = Alignment.Center,
             ) {
                 Icon(
-                    imageVector = Icons.Filled.ArrowForward,
+                    imageVector = Icons.AutoMirrored.Filled.ArrowForward,
                     contentDescription = null,
                 )
             }
@@ -118,7 +121,7 @@ private fun LauncherItem(
                 painter = imagePainter,
                 contentDescription = item.title,
                 modifier = Modifier
-                    .aspectRatio(1024f / 500f)
+                    .aspectRatio(LauncherAspectRatio)
                     .fillMaxWidth(),
                 contentScale = ContentScale.Crop,
             )

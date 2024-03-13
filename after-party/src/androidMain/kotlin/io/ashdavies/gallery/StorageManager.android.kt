@@ -13,12 +13,12 @@ internal actual fun StorageManager(
 
     override suspend fun create(platformContext: PlatformContext): File = withContext(coroutineContext) {
         File(pathProvider.getImagesPath(), "${randomUuid()}.jpg").apply {
-            if (!createNewFile()) throw IllegalStateException()
+            require(createNewFile()) { "File already exists" }
         }
     }
 
     override suspend fun delete(file: File): Boolean = withContext(coroutineContext) {
-        if (!file.exists()) throw IllegalArgumentException()
+        require(file.exists()) { "File does not exist" }
         file.delete()
     }
 }
