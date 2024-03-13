@@ -4,7 +4,7 @@ import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
 
-internal fun Project.commonExtension(action: CommonExtension<*, *, *, *, *>.() -> Unit) {
+internal fun Project.commonExtension(action: CommonExtension<*, *, *, *, *, *>.() -> Unit) {
     val androidApplicationPlugin = libs.plugins.android.application.get()
     pluginManager.withPlugin(androidApplicationPlugin.pluginId) {
         extensions.configure<BaseAppModuleExtension>(action)

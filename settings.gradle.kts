@@ -3,10 +3,11 @@ import androidx.build.gradle.gcpbuildcache.GcpBuildCacheServiceFactory
 
 buildscript {
     dependencies {
-        // noinspection GradleDependency
-        classpath("com.squareup.okio:okio:3.8.0")?.because("""
-            androidx.build.gradle.gcpbuildcache uses older versions of okio
-        """.trimIndent())
+        classpath("com.squareup.okio:okio:3.8.0")
+            ?.because("androidx.build.gradle.gcpbuildcache uses older versions of okio")
+
+        classpath("org.ow2.asm:asm:9.6")
+            ?.because("com.google.cloud.tools.jib uses older versions of asm")
     }
 }
 
