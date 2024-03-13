@@ -1,7 +1,13 @@
 package io.ashdavies.playground
 
+import android.app.Activity
 import android.content.pm.PackageManager
 import android.os.Build
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
@@ -9,13 +15,16 @@ import com.slack.circuit.foundation.CircuitCompositionLocals
 import com.slack.circuit.foundation.NavigableCircuitContent
 import com.slack.circuit.foundation.rememberCircuitNavigator
 import com.slack.circuit.overlay.ContentWithOverlays
+import io.ashdavies.content.enableStrictMode
+import io.ashdavies.content.isDebuggable
 import io.ashdavies.http.LocalHttpClient
 import io.ktor.client.plugins.DefaultRequest
 import io.ktor.client.request.header
 import java.security.MessageDigest
 import java.util.Locale
 
-internal class LauncherActivity : ComposeActivity(content = {
+@Composable
+private fun Activity.LauncherApp() {
     CompositionLocalProvider(
         LocalHttpClient provides LocalHttpClient.current.config {
             install(DefaultRequest) {
@@ -26,9 +35,7 @@ internal class LauncherActivity : ComposeActivity(content = {
             }
         },
     ) {
-        val circuit = remember { CircuitConfig(applicationContext) }
-
-        CircuitCompositionLocals(circuit) {
+        CircuitCompositionLocals(remember { CircuitConfig(applicationContext) }) {
             ContentWithOverlays {
                 LauncherContent(LocalContext.current) {
                     val backStack = rememberSaveableBackStack(intent.getStringExtra("route"))
@@ -41,7 +48,16 @@ internal class LauncherActivity : ComposeActivity(content = {
             }
         }
     }
-},)
+}
+
+internal class LauncherActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+        enableStrictMode(isDebuggable())
+        setContent { LauncherApp() }
+    }
+}
 
 @Suppress("DEPRECATION")
 private fun getSignature(packageManager: PackageManager, packageName: String): String {

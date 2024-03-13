@@ -17,39 +17,50 @@ internal class EventsRemoteMediator(
     override suspend fun load(
         loadType: LoadType,
         state: PagingState<String, DatabaseEvent>,
-    ): MediatorResult {
-        val loadKey = when (loadType) {
-            LoadType.APPEND -> state.lastItemOrNull()?.id ?: return endOfPaginationReached()
-            LoadType.PREPEND -> return endOfPaginationReached()
-            LoadType.REFRESH -> null
+    ): MediatorResult = when (loadType) {
+        LoadType.PREPEND -> endOfPaginationReached()
+        else -> when (val lastItem = state.lastItemOrNull()) {
+            is DatabaseEvent -> load(loadType, lastItem.id)
+            else -> endOfPaginationReached()
         }
+    }
 
-        val result: List<ApiEvent> = try {
-            eventsCallable(GetEventsRequest(loadKey))
-        } catch (exception: SocketTimeoutException) {
-            return MediatorResult.Error(exception)
-        } catch (exception: GetEventsError) {
-            return MediatorResult.Error(exception)
-        }
+    private suspend fun load(
+        loadType: LoadType,
+        startAt: String?,
+    ): MediatorResult = when (val result = eventsCallable.result(GetEventsRequest(startAt))) {
+        is CallableResult.Error<*> -> MediatorResult.Error(result.throwable)
+        is CallableResult.Success -> {
+            eventsQueries.transaction {
+                if (loadType == LoadType.REFRESH) eventsQueries.deleteAll()
 
-        eventsQueries.transaction {
-            if (loadType == LoadType.REFRESH) {
-                eventsQueries.deleteAll()
+                result.value.forEach {
+                    eventsQueries.insertOrReplace(it.asDatabaseEvent())
+                }
             }
 
-            result.forEach {
-                eventsQueries.insertOrReplace(it.asDatabaseEvent())
-            }
+            MediatorResult.Success(result.value.isEmpty())
         }
-
-        return MediatorResult.Success(
-            endOfPaginationReached = result.isEmpty(),
-        )
     }
 
     private fun endOfPaginationReached(): MediatorResult {
         return MediatorResult.Success(endOfPaginationReached = true)
     }
+}
+
+private suspend fun GetEventsCallable.result(
+    request: GetEventsRequest,
+): CallableResult<List<ApiEvent>> = try {
+    CallableResult.Success(invoke(request))
+} catch (exception: SocketTimeoutException) {
+    CallableResult.Error(exception)
+} catch (exception: GetEventsError) {
+    CallableResult.Error(exception)
+}
+
+private sealed interface CallableResult<out T> {
+    data class Error<out T>(val throwable: Throwable) : CallableResult<T>
+    data class Success<out T>(val value: T) : CallableResult<T>
 }
 
 private fun ApiEvent.asDatabaseEvent(): DatabaseEvent = DatabaseEvent(

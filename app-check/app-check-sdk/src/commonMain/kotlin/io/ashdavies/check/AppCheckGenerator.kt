@@ -9,6 +9,7 @@ import io.ktor.http.HttpHeaders
 import kotlinx.datetime.Clock
 import kotlinx.serialization.Serializable
 import kotlin.time.Duration.Companion.hours
+import kotlin.time.Duration.Companion.seconds
 
 private const val CUSTOM_EXCHANGE_URL_TEMPLATE =
     "https://firebaseappcheck.googleapis.com/v1/projects/%s/apps/%s:exchangeCustomToken"
@@ -56,12 +57,13 @@ internal fun AppCheckGenerator(
             setBody(mapOf("customToken" to customToken))
         }.body<CustomTokenResponse>()
 
-        val ttlMillis = result.ttl
+        val ttlSeconds = result.ttl
             .substring(0, result.ttl.length - 1)
-            .toLong() * 1000
+            .toLong()
+            .seconds
 
         return mapper(
-            /* ttlMillis */ ttlMillis,
+            /* ttlMillis */ ttlSeconds.inWholeMilliseconds,
             /* token */ result.token,
         )
     }
