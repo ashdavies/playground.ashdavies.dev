@@ -21,36 +21,34 @@ private class LauncherCommand : CliktCommand() {
 
     val route: String? by option(help = "The initial route to navigate to")
 
-    override fun run() {
-        application {
-            Window(
-                onCloseRequest = ::exitApplication,
-                state = rememberWindowState(size = DpSize(450.dp, 975.dp)),
-                title = commandName,
-            ) {
-                val circuit = remember { CircuitConfig(PlatformContext.Default) }
+    override fun run() = application {
+        Window(
+            onCloseRequest = ::exitApplication,
+            state = rememberWindowState(size = DpSize(450.dp, 975.dp)),
+            title = commandName,
+        ) {
+            val circuit = remember { CircuitConfig(PlatformContext.Default) }
 
-                CircuitCompositionLocals(circuit) {
-                    CompositionLocalProvider(
-                        LocalHttpClient provides LocalHttpClient.current.config {
-                            install(DefaultRequest) {
-                                header("User-Agent", System.getProperty("os.name"))
-                                header("X-API-Key", BuildConfig.BROWSER_API_KEY)
-                            }
-                        },
-                    ) {
-                        LauncherContent(PlatformContext.Default) {
-                            val backStack = rememberSaveableBackStack(route)
-
-                            NavigableCircuitContent(
-                                navigator = rememberCircuitNavigator(backStack, ::exitApplication),
-                                backStack = backStack,
-                                decoration = KeyNavigationDecoration(
-                                    decoration = circuit.defaultNavDecoration,
-                                    onBackInvoked = backStack::pop,
-                                ),
-                            )
+            CircuitCompositionLocals(circuit) {
+                CompositionLocalProvider(
+                    LocalHttpClient provides LocalHttpClient.current.config {
+                        install(DefaultRequest) {
+                            header("User-Agent", System.getProperty("os.name"))
+                            header("X-API-Key", BuildConfig.BROWSER_API_KEY)
                         }
+                    },
+                ) {
+                    LauncherContent(PlatformContext.Default) {
+                        val backStack = rememberSaveableBackStack(route)
+
+                        NavigableCircuitContent(
+                            navigator = rememberCircuitNavigator(backStack, ::exitApplication),
+                            backStack = backStack,
+                            decoration = KeyNavigationDecoration(
+                                decoration = circuit.defaultNavDecoration,
+                                onBackInvoked = backStack::pop,
+                            ),
+                        )
                     }
                 }
             }

@@ -38,8 +38,10 @@ kotlin {
     androidMain.dependencies {
         implementation(projects.appLauncher.common)
         implementation(projects.httpClient)
+        implementation(projects.platformScaffold)
         implementation(projects.platformSupport)
 
+        implementation(libs.androidx.activity.compose)
         implementation(libs.androidx.core.splashscreen)
         implementation(libs.google.android.material)
         implementation(libs.ktor.client.core)
