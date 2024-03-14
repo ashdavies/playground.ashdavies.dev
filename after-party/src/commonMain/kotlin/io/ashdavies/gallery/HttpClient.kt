@@ -18,7 +18,7 @@ private val HttpRequestData.path: String
 private val Headers.contentLength: String
     get() = requireNotNull(get(HttpHeaders.ContentLength))
 
-internal fun InMemoryHttpClientEngine(initialValue: List<String>): HttpClientEngine {
+internal fun inMemoryHttpClientEngine(initialValue: List<String>): HttpClientEngine {
     val values = initialValue.toMutableList()
 
     return MockEngine { request ->

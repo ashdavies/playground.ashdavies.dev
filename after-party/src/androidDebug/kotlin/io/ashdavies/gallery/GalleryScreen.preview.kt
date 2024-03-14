@@ -31,10 +31,10 @@ internal fun GalleryGridPreview() {
         Surface {
             GalleryGrid(
                 itemList = persistentListOf(
-                    GalleryScreenStateItem(),
-                    GalleryScreenStateItem(isSelected = true),
-                    GalleryScreenStateItem(state = SyncState.SYNCING),
-                    GalleryScreenStateItem(state = SyncState.SYNCED),
+                    galleryScreenStateItem(),
+                    galleryScreenStateItem(isSelected = true),
+                    galleryScreenStateItem(state = SyncState.SYNCING),
+                    galleryScreenStateItem(state = SyncState.SYNCED),
                 ),
                 isSelecting = true,
                 onSelect = { },
@@ -60,7 +60,7 @@ private fun GalleryPreviewTheme(content: @Composable () -> Unit) {
     }
 }
 
-private fun GalleryScreenStateItem(
+private fun galleryScreenStateItem(
     name: String = "Sample Image",
     isSelected: Boolean = false,
     state: SyncState = SyncState.NOT_SYNCED,

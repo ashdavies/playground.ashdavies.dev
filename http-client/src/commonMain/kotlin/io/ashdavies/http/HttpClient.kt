@@ -22,10 +22,12 @@ public val LocalHttpClient: ProvidableCompositionLocal<HttpClient> = staticCompo
     DefaultHttpClient { install(HttpCache) }
 }
 
+public typealias DefaultHttpClient = HttpClient
+
 public fun DefaultHttpClient(
     engine: HttpClientEngine = CIO.create { },
     block: HttpClientConfig<*>.() -> Unit = { },
-): HttpClient = HttpClient(engine) {
+): DefaultHttpClient = HttpClient(engine) {
     install(ContentNegotiation) {
         json(
             Json {
@@ -41,13 +43,13 @@ public fun DefaultHttpClient(
     }
 
     install(Logging) {
-        logger = DefaultLogger()
+        logger = Logger()
         level = LogLevel.ALL
     }
 
     block()
 }
 
-private fun DefaultLogger(block: (message: String) -> Unit = ::println) = object : Logger {
+private fun Logger(block: (message: String) -> Unit = ::println): Logger = object : Logger {
     override fun log(message: String) = block(message)
 }

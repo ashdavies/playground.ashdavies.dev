@@ -42,7 +42,7 @@ internal class ExpansionService(private val client: HttpClient) {
 
     private val JsonObject.expansions: List<DominionExpansion>
         get() = getOrThrow<JsonObject>("query", "pages")
-            .mapValues { DominionExpansion(it.value) }
+            .mapValues { dominionExpansionOrNull(it.value) }
             .values
             .filterNotNull()
             .toList()
@@ -66,7 +66,7 @@ internal class ExpansionService(private val client: HttpClient) {
     }
 }
 
-internal fun DominionExpansion(element: JsonElement): DominionExpansion? {
+internal fun dominionExpansionOrNull(element: JsonElement): DominionExpansion? {
     val image = element.imageInfoUrl ?: return null
     return DominionExpansion(
         name = element.title.let { it.substring(5, it.length - 4) },

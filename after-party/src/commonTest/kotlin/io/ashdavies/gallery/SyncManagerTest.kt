@@ -15,7 +15,7 @@ internal class SyncManagerTest {
     @Test
     fun `should request initial value`() = runTest {
         val manager = SyncManager(
-            client = DefaultHttpClient(InMemoryHttpClientEngine(listOf(RandomImage))),
+            client = DefaultHttpClient(inMemoryHttpClientEngine(listOf(RandomImage))),
             reader = { ByteReadChannel.Empty },
         )
 
@@ -27,7 +27,7 @@ internal class SyncManagerTest {
     @Test
     fun `should sync image on invocation`() = runTest {
         val manager = SyncManager(
-            client = DefaultHttpClient(InMemoryHttpClientEngine(emptyList())),
+            client = DefaultHttpClient(inMemoryHttpClientEngine(emptyList())),
             reader = { ByteReadChannel.Empty },
         )
 
@@ -44,7 +44,7 @@ internal class SyncManagerTest {
     @Test
     fun `should put synced image without content`() = runTest {
         val manager = SyncManager(
-            client = DefaultHttpClient(InMemoryHttpClientEngine(listOf(RandomImage))),
+            client = DefaultHttpClient(inMemoryHttpClientEngine(listOf(RandomImage))),
             reader = { ByteReadChannel.Empty },
         )
 
@@ -61,7 +61,7 @@ internal class SyncManagerTest {
     @Test
     fun `should include content length header`() = runTest {
         val manager = SyncManager(
-            client = DefaultHttpClient(InMemoryHttpClientEngine(emptyList())),
+            client = DefaultHttpClient(inMemoryHttpClientEngine(emptyList())),
             reader = { ByteReadChannel.Empty },
         )
 

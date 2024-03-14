@@ -18,7 +18,7 @@ internal object GalleryModule {
     )
 
     fun syncManager(initialValue: List<String> = emptyList()): SyncManager = SyncManager(
-        client = DefaultHttpClient(InMemoryHttpClientEngine(initialValue)),
+        client = DefaultHttpClient(inMemoryHttpClientEngine(initialValue)),
         reader = File::readChannel,
     )
 }

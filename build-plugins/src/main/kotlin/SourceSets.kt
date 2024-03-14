@@ -13,7 +13,7 @@ import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetContainer
 import kotlin.properties.ReadOnlyProperty
 
 public val KotlinMultiplatformExtension.androidMain: KotlinSourceSet by SourceSetDelegate()
-public val KotlinMultiplatformExtension.androidDebug: SourceSetInvoker by InvokerDelegate()
+public val KotlinMultiplatformExtension.androidDebug: SourceSetInvoker by SourceInvokerDelegate()
 
 public val KotlinMultiplatformExtension.commonMain: KotlinSourceSet by SourceSetDelegate()
 public val KotlinMultiplatformExtension.commonTest: KotlinSourceSet by SourceSetDelegate()
@@ -33,7 +33,7 @@ internal fun SourceSetDelegate(): SourceSetDelegate = SourceSetDelegate { thisRe
 }
 
 @OptIn(ExperimentalKotlinGradlePluginApi::class)
-internal fun InvokerDelegate(): SourceInvokerDelegate = SourceInvokerDelegate { thisRef, property ->
+internal fun SourceInvokerDelegate(): SourceInvokerDelegate = SourceInvokerDelegate { thisRef, property ->
     { thisRef.apply { sourceSets.invokeWhenCreated(property.name, it) } }
 }
 
