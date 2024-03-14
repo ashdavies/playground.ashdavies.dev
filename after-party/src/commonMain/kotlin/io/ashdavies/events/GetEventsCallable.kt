@@ -1,7 +1,7 @@
 package io.ashdavies.events
 
-import io.ashdavies.http.defaultHttpClient
 import io.ashdavies.http.UnaryCallable
+import io.ashdavies.http.defaultHttpClient
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.ClientRequestException
