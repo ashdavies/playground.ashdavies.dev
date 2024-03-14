@@ -41,8 +41,11 @@ extensions.configure<DetektExtension> {
 
 extensions.configure<KtlintExtension> {
     filter {
-        exclude { "generated" in "${it.file}" }
+        exclude { "generated" in it.file.path }
     }
+
+    val ktlintBom = libs.pinterest.ktlint.bom.get()
+    version = ktlintBom.version
 }
 
 tasks.withType<Detekt> {
