@@ -1,7 +1,7 @@
 package io.ashdavies.gallery
 
 import io.ashdavies.content.PlatformContext
-import io.ashdavies.http.DefaultHttpClient
+import io.ashdavies.http.defaultHttpClient
 import io.ashdavies.party.PlaygroundDatabase
 import io.ashdavies.sql.DatabaseFactory
 
@@ -18,7 +18,7 @@ internal object GalleryModule {
     )
 
     fun syncManager(initialValue: List<String> = emptyList()): SyncManager = SyncManager(
-        client = DefaultHttpClient(InMemoryHttpClientEngine(initialValue)),
+        client = defaultHttpClient(inMemoryHttpClientEngine(initialValue)),
         reader = File::readChannel,
     )
 }

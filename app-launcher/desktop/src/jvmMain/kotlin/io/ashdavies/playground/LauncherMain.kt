@@ -27,7 +27,7 @@ private class LauncherCommand : CliktCommand() {
             state = rememberWindowState(size = DpSize(450.dp, 975.dp)),
             title = commandName,
         ) {
-            val circuit = remember { CircuitConfig(PlatformContext.Default) }
+            val circuit = remember { Circuit(PlatformContext.Default) }
 
             CircuitCompositionLocals(circuit) {
                 CompositionLocalProvider(

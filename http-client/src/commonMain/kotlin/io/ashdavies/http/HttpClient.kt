@@ -19,10 +19,10 @@ import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 
 public val LocalHttpClient: ProvidableCompositionLocal<HttpClient> = staticCompositionLocalOf {
-    DefaultHttpClient { install(HttpCache) }
+    defaultHttpClient { install(HttpCache) }
 }
 
-public fun DefaultHttpClient(
+public fun defaultHttpClient(
     engine: HttpClientEngine = CIO.create { },
     block: HttpClientConfig<*>.() -> Unit = { },
 ): HttpClient = HttpClient(engine) {
@@ -41,13 +41,13 @@ public fun DefaultHttpClient(
     }
 
     install(Logging) {
-        logger = DefaultLogger()
+        logger = Logger()
         level = LogLevel.ALL
     }
 
     block()
 }
 
-private fun DefaultLogger(block: (message: String) -> Unit = ::println) = object : Logger {
+private fun Logger(block: (message: String) -> Unit = ::println): Logger = object : Logger {
     override fun log(message: String) = block(message)
 }

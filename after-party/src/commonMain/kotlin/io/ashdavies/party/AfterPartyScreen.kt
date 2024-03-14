@@ -35,7 +35,7 @@ import io.ashdavies.parcelable.Parcelable
 import io.ashdavies.parcelable.Parcelize
 import io.ashdavies.profile.ProfileScreen
 
-public fun AfterPartyScreen(): Screen = AfterPartyScreen
+public fun afterPartyScreen(): Screen = AfterPartyScreen
 
 @Parcelize
 internal object AfterPartyScreen : Parcelable, Screen {

@@ -8,13 +8,13 @@ import io.ashdavies.dominion.card.CardScreen
 import io.ashdavies.dominion.home.HomeScreen
 import io.ashdavies.dominion.kingdom.KingdomScreen
 
-public fun DominionPresenterFactory(): Presenter.Factory {
+public fun dominionPresenterFactory(): Presenter.Factory {
     return presenterFactoryOf<DominionScreen> { _, navigator ->
         DominionPresenter(navigator)
     }
 }
 
-public fun DominionUiFactory(): Ui.Factory = Ui.Factory { screen, _ ->
+public fun dominionUiFactory(): Ui.Factory = Ui.Factory { screen, _ ->
     when (screen) {
         is DominionScreen.Home -> ui<DominionState> { state, modifier ->
             HomeScreen(modifier = modifier) {

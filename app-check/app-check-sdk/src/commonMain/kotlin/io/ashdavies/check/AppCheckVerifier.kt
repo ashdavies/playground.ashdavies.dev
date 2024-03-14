@@ -19,7 +19,7 @@ public interface AppCheckVerifier {
 internal fun AppCheckVerifier(
     cryptoSigner: CryptoSigner,
     projectNumber: String,
-) = object : AppCheckVerifier {
+): AppCheckVerifier = object : AppCheckVerifier {
     override suspend fun <T : Any> verifyToken(
         token: String,
         mapper: (
