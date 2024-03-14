@@ -19,15 +19,13 @@ import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 
 public val LocalHttpClient: ProvidableCompositionLocal<HttpClient> = staticCompositionLocalOf {
-    DefaultHttpClient { install(HttpCache) }
+    defaultHttpClient { install(HttpCache) }
 }
 
-public typealias DefaultHttpClient = HttpClient
-
-public fun DefaultHttpClient(
+public fun defaultHttpClient(
     engine: HttpClientEngine = CIO.create { },
     block: HttpClientConfig<*>.() -> Unit = { },
-): DefaultHttpClient = HttpClient(engine) {
+): HttpClient = HttpClient(engine) {
     install(ContentNegotiation) {
         json(
             Json {

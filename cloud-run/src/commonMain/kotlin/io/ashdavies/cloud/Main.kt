@@ -1,6 +1,6 @@
 package io.ashdavies.cloud
 
-import io.ashdavies.http.DefaultHttpClient
+import io.ashdavies.http.defaultHttpClient
 import io.ktor.client.HttpClient
 import io.ktor.http.HttpHeaders
 import io.ktor.serialization.Configuration
@@ -28,7 +28,7 @@ public fun main(args: Array<String>) {
     server.start(wait = true)
 }
 
-internal fun Application.main(client: HttpClient = DefaultHttpClient()) {
+internal fun Application.main(client: HttpClient = defaultHttpClient()) {
     install(DefaultHeaders, DefaultHeadersConfig::headers)
     install(Compression, CompressionConfig::default)
     install(ContentNegotiation, Configuration::json)
