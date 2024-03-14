@@ -35,7 +35,7 @@ private fun Activity.LauncherApp() {
             }
         },
     ) {
-        CircuitCompositionLocals(remember { CircuitConfig(applicationContext) }) {
+        CircuitCompositionLocals(remember { Circuit(applicationContext) }) {
             ContentWithOverlays {
                 LauncherContent(LocalContext.current) {
                     val backStack = rememberSaveableBackStack(intent.getStringExtra("route"))

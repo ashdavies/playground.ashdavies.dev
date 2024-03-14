@@ -28,7 +28,7 @@ internal fun AppCheckGenerator(
     httpClient: HttpClient,
     cryptoSigner: CryptoSigner,
     projectId: String,
-) = object : AppCheckGenerator {
+): AppCheckGenerator = object : AppCheckGenerator {
     override suspend fun <T : Any> createToken(
         appId: String,
         mapper: (

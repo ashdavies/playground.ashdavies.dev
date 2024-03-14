@@ -9,7 +9,7 @@ import io.ashdavies.activity.ActivityScreen
 import io.ashdavies.profile.ProfilePresenter
 import io.ashdavies.profile.ProfileScreen
 
-public fun EventsPresenterFactory(): Presenter.Factory = Presenter.Factory { screen, _, _ ->
+public fun eventsPresenterFactory(): Presenter.Factory = Presenter.Factory { screen, _, _ ->
     when (screen) {
         is ActivityScreen -> presenterOf { ActivityPresenter() }
         is ProfileScreen -> presenterOf { ProfilePresenter() }
@@ -17,7 +17,7 @@ public fun EventsPresenterFactory(): Presenter.Factory = Presenter.Factory { scr
     }
 }
 
-public fun EventsUiFactory(): Ui.Factory = Ui.Factory { screen, _ ->
+public fun eventsUiFactory(): Ui.Factory = Ui.Factory { screen, _ ->
     when (screen) {
         is ActivityScreen -> ui<ActivityScreen.State> { state, modifier ->
             ActivityScreen(state, modifier)

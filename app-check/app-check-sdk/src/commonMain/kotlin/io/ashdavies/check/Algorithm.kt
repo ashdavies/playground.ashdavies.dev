@@ -10,15 +10,14 @@ import java.security.interfaces.RSAPublicKey
 import com.auth0.jwt.algorithms.Algorithm as JwtAlgorithm
 
 private val JwkProvider = UrlJwkProvider(URL("https://firebaseappcheck.googleapis.com/v1/jwks"))
-private val PublicRsa = RSA256(PublicKeyProvider { JwkProvider[it].publicKey as RSAPublicKey })
+private val PublicRsa = RSA256(RSAKeyProvider { JwkProvider[it].publicKey as RSAPublicKey })
 
-private fun PublicKeyProvider(block: (keyId: String) -> RSAPublicKey) = object : RSAKeyProvider {
+private fun RSAKeyProvider(block: (keyId: String) -> RSAPublicKey): RSAKeyProvider = object : RSAKeyProvider {
     override fun getPublicKeyById(keyId: String): RSAPublicKey = block(keyId)
     override fun getPrivateKey(): RSAPrivateKey? = null
     override fun getPrivateKeyId(): String? = null
 }
 
-@Suppress("OVERRIDE_DEPRECATION")
 public class GoogleAlgorithm(private val signer: CryptoSigner) : RsaAlgorithm(PublicRsa) {
     override fun sign(contentBytes: ByteArray): ByteArray = signer.sign(contentBytes)
     override fun verify(jwt: DecodedJWT): Unit = from.verify(jwt)

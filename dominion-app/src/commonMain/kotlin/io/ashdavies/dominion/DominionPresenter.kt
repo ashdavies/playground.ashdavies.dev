@@ -8,7 +8,7 @@ import com.slack.circuit.runtime.screen.Screen
 import io.ashdavies.parcelable.Parcelable
 import io.ashdavies.parcelable.Parcelize
 
-public fun DominionScreen(): Screen = DominionScreen.Home
+public fun dominionScreen(): Screen = DominionScreen.Home
 
 @Parcelize
 internal sealed interface DominionScreen : Parcelable, Screen {

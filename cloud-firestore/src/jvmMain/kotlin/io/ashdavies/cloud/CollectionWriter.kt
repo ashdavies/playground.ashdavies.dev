@@ -17,7 +17,7 @@ public suspend fun <T : Any> CollectionWriter(
     identifier: (T) -> String,
     context: CoroutineContext = Dispatchers.IO,
 ): CollectionWriter<T> = CollectionWriter { oldValue, newValue ->
-    val queue = OperationQueue(
+    val queue = operationQueue(
         oldValue = oldValue.associateBy(identifier),
         newValue = newValue.associateBy(identifier),
     )
@@ -31,15 +31,15 @@ public suspend fun <T : Any> CollectionWriter(
     }
 }
 
-private fun <T : Any> OperationQueue(oldValue: Map<String, T>, newValue: Map<String, T>) = buildList {
+private fun <T : Any> operationQueue(oldValue: Map<String, T>, newValue: Map<String, T>) = buildList {
     val newEntries: Map<String, T> = log(newValue - oldValue.keys) { "Writing ${it.size} new entries..." }
     for ((childPath: String, value: T) in newEntries) {
-        add(WriteOperation(childPath, value))
+        add(writeOperation(childPath, value))
     }
 
     val oldEntries: Map<String, T> = log(oldValue - newValue.keys) { "Deleting ${it.size} entries..." }
     for ((childPath: String, _: T) in oldEntries) {
-        add(DeleteOperation(childPath))
+        add(deleteOperation(childPath))
     }
 }
 
@@ -47,14 +47,14 @@ private fun interface CollectionOperation<T> {
     suspend operator fun invoke(provider: DocumentProvider)
 }
 
-private fun <T : Any> WriteOperation(childPath: String, value: T) = CollectionOperation<T> { reference ->
+private fun <T : Any> writeOperation(childPath: String, value: T) = CollectionOperation<T> { reference ->
     reference
         .document(childPath)
         .set(value)
         .await()
 }
 
-private fun <T : Any> DeleteOperation(childPath: String) = CollectionOperation<T> { reference ->
+private fun <T : Any> deleteOperation(childPath: String) = CollectionOperation<T> { reference ->
     reference
         .document(childPath)
         .delete()
