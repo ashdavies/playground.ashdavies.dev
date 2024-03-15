@@ -26,9 +26,15 @@ kotlin {
         implementation(projects.httpClient)
         implementation(projects.platformSupport)
 
-        implementation(libs.kotlinx.cli)
+        implementation(libs.ajalt.clikt)
         implementation(libs.ktor.client.core)
         implementation(libs.slack.circuit.foundation)
+    }
+
+    jvmMain.dependencies {
+        runtimeOnly(compose.desktop.currentOs)
+        runtimeOnly(libs.kotlinx.coroutines.swing)
+        runtimeOnly(libs.slf4j.simple)
     }
 }
 

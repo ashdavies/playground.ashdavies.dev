@@ -7,6 +7,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
+import com.github.ajalt.clikt.core.CliktCommand
+import com.github.ajalt.clikt.parameters.options.option
 import com.slack.circuit.foundation.CircuitCompositionLocals
 import com.slack.circuit.foundation.NavigableCircuitContent
 import com.slack.circuit.foundation.rememberCircuitNavigator
@@ -14,21 +16,18 @@ import io.ashdavies.content.PlatformContext
 import io.ashdavies.http.LocalHttpClient
 import io.ktor.client.plugins.DefaultRequest
 import io.ktor.client.request.header
-import kotlinx.cli.ArgParser
-import kotlinx.cli.ArgType
 
-public fun main(args: Array<String>) {
-    val argParser = ArgParser("Playground")
-    val routerArgOption by argParser.option(ArgType.String, "route")
-    val argResult = argParser.parse(args)
+private class LauncherCommand : CliktCommand() {
 
-    application {
+    val route: String? by option(help = "The initial route to navigate to")
+
+    override fun run() = application {
         Window(
             onCloseRequest = ::exitApplication,
             state = rememberWindowState(size = DpSize(450.dp, 975.dp)),
-            title = argResult.commandName,
+            title = commandName,
         ) {
-            val circuit = remember { CircuitConfig(PlatformContext.Default) }
+            val circuit = remember { Circuit(PlatformContext.Default) }
 
             CircuitCompositionLocals(circuit) {
                 CompositionLocalProvider(
@@ -36,15 +35,15 @@ public fun main(args: Array<String>) {
                         install(DefaultRequest) {
                             header("User-Agent", System.getProperty("os.name"))
                             header("X-API-Key", BuildConfig.BROWSER_API_KEY)
-                        }   
+                        }
                     },
                 ) {
-                    LauncherContent {
-                        val backStack = rememberSaveableBackStack(routerArgOption)
+                    LauncherContent(PlatformContext.Default) {
+                        val backStack = rememberSaveableBackStack(route)
 
                         NavigableCircuitContent(
                             navigator = rememberCircuitNavigator(backStack, ::exitApplication),
-                            backstack = backStack,
+                            backStack = backStack,
                             decoration = KeyNavigationDecoration(
                                 decoration = circuit.defaultNavDecoration,
                                 onBackInvoked = backStack::pop,
@@ -55,4 +54,8 @@ public fun main(args: Array<String>) {
             }
         }
     }
+}
+
+public fun main(args: Array<String>) {
+    LauncherCommand().main(args)
 }

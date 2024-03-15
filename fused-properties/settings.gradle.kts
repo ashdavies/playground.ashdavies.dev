@@ -5,3 +5,5 @@ pluginManagement.repositories {
 dependencyResolutionManagement.repositories {
     gradlePluginPortal()
 }
+
+rootProject.name = "fused-properties"

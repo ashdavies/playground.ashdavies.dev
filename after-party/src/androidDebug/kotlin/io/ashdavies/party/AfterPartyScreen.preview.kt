@@ -14,12 +14,14 @@ import io.ashdavies.identity.IdentityState
 @OptIn(ExperimentalMaterial3Api::class)
 internal fun AfterPartyTopBarPreview() {
     AfterPartyPreviewTheme {
-        AfterPartyTopBar(actions = {
-            ProfileActionButton(
-                identityState = IdentityState.Unauthenticated,
-                onClick = { },
-            )
-        })
+        AfterPartyTopBar(
+            actions = {
+                ProfileActionButton(
+                    identityState = IdentityState.Unauthenticated,
+                    onClick = { },
+                )
+            },
+        )
     }
 }
 

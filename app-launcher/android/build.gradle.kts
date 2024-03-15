@@ -5,7 +5,6 @@ plugins {
     id("io.ashdavies.compose")
     id("io.ashdavies.kotlin")
     id("io.ashdavies.properties")
-    id("io.ashdavies.spotless")
 
     alias(libs.plugins.build.config)
 }
@@ -39,8 +38,10 @@ kotlin {
     androidMain.dependencies {
         implementation(projects.appLauncher.common)
         implementation(projects.httpClient)
+        implementation(projects.platformScaffold)
         implementation(projects.platformSupport)
 
+        implementation(libs.androidx.activity.compose)
         implementation(libs.androidx.core.splashscreen)
         implementation(libs.google.android.material)
         implementation(libs.ktor.client.core)

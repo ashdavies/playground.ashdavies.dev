@@ -7,14 +7,17 @@ import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.screen.Screen
 import io.ashdavies.parcelable.Parcelize
 
-public fun RouteScreen(): Screen = RouteScreen
+public fun routeScreen(): Screen = RouteScreen
 
 @Parcelize
 internal object RouteScreen : Screen {
-    sealed interface Event : CircuitUiEvent
+    sealed interface Event : CircuitUiEvent {
+        data class OnEndPosition(val position: LatLng) : Event
+    }
 
     data class State(
-        val mapState: RouteMapState,
+        val mapState: RouteMapState = RouteMapState(),
+        val errorMessage: String? = null,
         val eventSink: (Event) -> Unit,
     ) : CircuitUiState
 }
@@ -23,9 +26,11 @@ internal object RouteScreen : Screen {
 internal fun RouteScreen(
     state: RouteScreen.State,
     modifier: Modifier = Modifier,
+    onEndPosition: (LatLng) -> Unit,
 ) {
     RouteMap(
         state = state.mapState,
         modifier = modifier,
+        onEndPosition = onEndPosition,
     )
 }

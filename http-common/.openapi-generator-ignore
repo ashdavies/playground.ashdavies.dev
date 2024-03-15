@@ -1,1 +1,2 @@
-build/generated/openapi/main/docs/*
+build/generated/openapi/main/docs/**
+build/generated/openapi/main/src/test/**

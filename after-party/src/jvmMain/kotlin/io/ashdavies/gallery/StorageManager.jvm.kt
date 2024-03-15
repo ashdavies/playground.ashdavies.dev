@@ -13,7 +13,7 @@ internal actual fun StorageManager(
 
     override suspend fun create(platformContext: PlatformContext): File = withContext(coroutineContext) {
         File(pathProvider.getImagesPath(), "${randomUuid()}.jpg").apply {
-            if (!createNewFile()) throw IllegalStateException()
+            require(createNewFile()) { "File already exists" }
         }
     }
 

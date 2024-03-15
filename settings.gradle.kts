@@ -3,10 +3,11 @@ import androidx.build.gradle.gcpbuildcache.GcpBuildCacheServiceFactory
 
 buildscript {
     dependencies {
-        // noinspection GradleDependency
-        classpath("com.squareup.okio:okio:3.7.0")?.because("""
-            androidx.build.gradle.gcpbuildcache uses older versions of okio
-        """.trimIndent())
+        classpath("com.squareup.okio:okio:3.9.0")
+            ?.because("androidx.build.gradle.gcpbuildcache uses older versions of okio")
+
+        classpath("org.ow2.asm:asm:9.6")
+            ?.because("com.google.cloud.tools.jib uses older versions of asm")
     }
 }
 
@@ -19,7 +20,6 @@ pluginManagement.repositories {
     mavenCentral()
 }
 
-@Suppress("UnstableApiUsage")
 dependencyResolutionManagement.repositories {
     google()
     mavenCentral()
@@ -27,7 +27,7 @@ dependencyResolutionManagement.repositories {
 
 plugins {
     id("androidx.build.gradle.gcpbuildcache") version "1.0.0-beta07"
-    id("com.google.cloud.tools.jib") version "3.4.0" apply false
+    id("com.google.cloud.tools.jib") version "3.4.1" apply false
     id("com.gradle.enterprise") version "3.16.2"
 }
 
@@ -62,7 +62,6 @@ include(
     ":circuit-support",
     ":cloud-firestore",
     ":cloud-run",
-    ":compose-cli",
     ":compose-material",
     ":dominion-app",
     ":events-aggregator",
@@ -71,10 +70,11 @@ include(
     ":identity-manager",
     ":kotlin-gb",
     ":map-routes",
+    ":maps-routing",
     ":micro-yaml",
-    ":notion-console",
     ":nsd-manager",
     ":parcelable-support",
+    ":platform-scaffold",
     ":platform-support",
     ":sql-driver",
 )

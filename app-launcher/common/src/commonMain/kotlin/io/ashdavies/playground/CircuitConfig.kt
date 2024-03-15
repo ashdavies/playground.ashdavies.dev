@@ -2,36 +2,36 @@ package io.ashdavies.playground
 
 import com.slack.circuit.foundation.Circuit
 import io.ashdavies.content.PlatformContext
-import io.ashdavies.dominion.DominionPresenterFactory
-import io.ashdavies.dominion.DominionUiFactory
-import io.ashdavies.events.EventsPresenterFactory
-import io.ashdavies.events.EventsUiFactory
-import io.ashdavies.gallery.GalleryPresenterFactory
-import io.ashdavies.gallery.GalleryUiFactory
-import io.ashdavies.party.AfterPartyPresenterFactory
-import io.ashdavies.party.AfterPartyUiFactory
-import io.ashdavies.routes.RoutePresenterFactory
-import io.ashdavies.routes.RouteUiFactory
+import io.ashdavies.dominion.dominionPresenterFactory
+import io.ashdavies.dominion.dominionUiFactory
+import io.ashdavies.events.eventsPresenterFactory
+import io.ashdavies.events.eventsUiFactory
+import io.ashdavies.gallery.galleryPresenterFactory
+import io.ashdavies.gallery.galleryUiFactory
+import io.ashdavies.party.afterPartyPresenterFactory
+import io.ashdavies.party.afterPartyUiFactory
+import io.ashdavies.routes.routePresenterFactory
+import io.ashdavies.routes.routeUiFactory
 
-public fun CircuitConfig(context: PlatformContext): Circuit = Circuit.Builder()
+public fun Circuit(context: PlatformContext): Circuit = Circuit.Builder()
     .addPresenterFactories(getPresenterFactories(context))
     .addUiFactories(getUiFactories(context))
     .build()
 
 private fun getPresenterFactories(context: PlatformContext) = listOf(
-    AfterPartyPresenterFactory(),
-    DominionPresenterFactory(),
-    EventsPresenterFactory(),
-    GalleryPresenterFactory(context),
-    LauncherPresenterFactory(),
-    RoutePresenterFactory(context),
+    afterPartyPresenterFactory(),
+    dominionPresenterFactory(),
+    eventsPresenterFactory(),
+    galleryPresenterFactory(context),
+    launcherPresenterFactory(),
+    routePresenterFactory(context),
 )
 
 private fun getUiFactories(context: PlatformContext) = listOf(
-    AfterPartyUiFactory(),
-    DominionUiFactory(),
-    EventsUiFactory(),
-    GalleryUiFactory(context),
-    LauncherUiFactory(),
-    RouteUiFactory(),
+    afterPartyUiFactory(context),
+    dominionUiFactory(),
+    eventsUiFactory(),
+    galleryUiFactory(context),
+    launcherUiFactory(),
+    routeUiFactory(context),
 )

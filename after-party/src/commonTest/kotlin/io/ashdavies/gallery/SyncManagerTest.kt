@@ -1,7 +1,7 @@
 package io.ashdavies.gallery
 
 import app.cash.turbine.test
-import io.ashdavies.http.DefaultHttpClient
+import io.ashdavies.http.defaultHttpClient
 import io.ashdavies.util.randomUuid
 import io.ktor.utils.io.ByteReadChannel
 import kotlinx.coroutines.test.runTest
@@ -15,7 +15,7 @@ internal class SyncManagerTest {
     @Test
     fun `should request initial value`() = runTest {
         val manager = SyncManager(
-            client = DefaultHttpClient(InMemoryHttpClientEngine(listOf(RandomImage))),
+            client = defaultHttpClient(inMemoryHttpClientEngine(listOf(RandomImage))),
             reader = { ByteReadChannel.Empty },
         )
 
@@ -27,7 +27,7 @@ internal class SyncManagerTest {
     @Test
     fun `should sync image on invocation`() = runTest {
         val manager = SyncManager(
-            client = DefaultHttpClient(InMemoryHttpClientEngine(emptyList())),
+            client = defaultHttpClient(inMemoryHttpClientEngine(emptyList())),
             reader = { ByteReadChannel.Empty },
         )
 
@@ -44,7 +44,7 @@ internal class SyncManagerTest {
     @Test
     fun `should put synced image without content`() = runTest {
         val manager = SyncManager(
-            client = DefaultHttpClient(InMemoryHttpClientEngine(listOf(RandomImage))),
+            client = defaultHttpClient(inMemoryHttpClientEngine(listOf(RandomImage))),
             reader = { ByteReadChannel.Empty },
         )
 
@@ -61,7 +61,7 @@ internal class SyncManagerTest {
     @Test
     fun `should include content length header`() = runTest {
         val manager = SyncManager(
-            client = DefaultHttpClient(InMemoryHttpClientEngine(emptyList())),
+            client = defaultHttpClient(inMemoryHttpClientEngine(emptyList())),
             reader = { ByteReadChannel.Empty },
         )
 

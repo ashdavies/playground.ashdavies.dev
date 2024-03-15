@@ -106,7 +106,9 @@ private suspend fun NsdManager.resolveServiceApi16(
 ): NsdServiceInfo = suspendCancellableCoroutine { continuation ->
     val listener = object : AndroidNsdManager.ResolveListener {
         override fun onResolveFailed(serviceInfo: NsdServiceInfo, errorCode: Int) {
-            continuation.resumeWithException(IllegalStateException("Service resolution failed with an error ($errorCode)"))
+            continuation.resumeWithException(
+                IllegalStateException("Service resolution failed with an error ($errorCode)"),
+            )
         }
 
         override fun onServiceResolved(serviceInfo: NsdServiceInfo) {

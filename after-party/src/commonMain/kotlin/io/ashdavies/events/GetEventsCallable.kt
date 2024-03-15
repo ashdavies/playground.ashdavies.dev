@@ -1,7 +1,7 @@
 package io.ashdavies.events
 
-import io.ashdavies.http.DefaultHttpClient
 import io.ashdavies.http.UnaryCallable
+import io.ashdavies.http.defaultHttpClient
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.ClientRequestException
@@ -23,7 +23,7 @@ internal data class GetEventsRequest(
 internal typealias GetEventsResponse = List<ApiEvent>
 
 internal class GetEventsCallable(
-    httpClient: HttpClient = DefaultHttpClient(),
+    httpClient: HttpClient = defaultHttpClient(),
 ) : UnaryCallable<GetEventsRequest, GetEventsResponse> {
 
     private val httpClient = httpClient.config {
@@ -55,7 +55,7 @@ internal class GetEventsCallable(
 }
 
 @Serializable
-public data class GetEventsError(
+internal data class GetEventsError(
     override val message: String,
     val code: Int,
 ) : Throwable()

@@ -2,7 +2,8 @@ plugins {
     id("io.ashdavies.compose")
     id("io.ashdavies.default")
     id("io.ashdavies.parcelable")
-    id("io.ashdavies.sql")
+
+    alias(libs.plugins.cash.sqldelight)
 }
 
 android {
@@ -16,6 +17,7 @@ kotlin {
         implementation(projects.httpClient)
         implementation(projects.httpCommon)
         implementation(projects.identityManager)
+        implementation(projects.platformScaffold)
         implementation(projects.platformSupport)
         implementation(projects.sqlDriver)
 
@@ -56,7 +58,6 @@ kotlin {
         implementation(compose.uiTooling)
     }
 }
-
 
 sqldelight {
     databases {

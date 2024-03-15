@@ -64,6 +64,8 @@ import com.slack.circuit.foundation.internal.BackHandler
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 
+private const val DEFAULT_COLUMN_COUNT = 4
+
 @OptIn(
     ExperimentalFoundationApi::class,
     ExperimentalMaterial3Api::class,
@@ -176,13 +178,14 @@ internal fun GalleryTopAppBar(
 @ExperimentalFoundationApi
 internal fun GalleryGrid(
     itemList: ImmutableList<GalleryScreen.State.StandardItem>,
+    columnCount: Int = DEFAULT_COLUMN_COUNT,
     isSelecting: Boolean = false,
     modifier: Modifier = Modifier,
     onExpand: (Int) -> Unit,
     onSelect: (Int) -> Unit,
 ) {
     LazyVerticalGrid(
-        columns = GridCells.Fixed(4),
+        columns = GridCells.Fixed(columnCount),
         modifier = modifier.fillMaxSize(),
         horizontalArrangement = spacedBy(12.dp),
         verticalArrangement = spacedBy(12.dp),
