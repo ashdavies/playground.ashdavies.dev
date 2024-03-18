@@ -164,31 +164,11 @@ internal fun GalleryScreen(
                 )
 
                 if (state.expandedItem != null) {
-                    AnimatedVisibility(
-                        visible = state.expandedItem.isExpanded,
-                        modifier = Modifier
-                            .clickable(
-                                interactionSource = remember { MutableInteractionSource() },
-                                indication = null,
-                                onClick = { },
-                            )
-                            .fillMaxSize(),
-                        enter = fadeIn() + expandIn(expandFrom = Alignment.Center),
-                        exit = fadeOut() + shrinkOut(shrinkTowards = Alignment.Center),
-                    ) {
-                        Image(
-                            painter = rememberAsyncImagePainter(state.expandedItem.imageModel),
-                            contentDescription = state.expandedItem.contentDescription,
-                            modifier = Modifier
-                                .background(MaterialTheme.colorScheme.background)
-                                .fillMaxSize(),
-                            contentScale = ContentScale.Fit,
-                        )
-                    }
-                }
+                    GalleryExpandedItem(state.expandedItem)
 
-                BackHandler(state.expandedItem != null) {
-                    eventSink(GalleryScreen.Event.Selection.Collapse)
+                    BackHandler(enabled = true) {
+                        eventSink(GalleryScreen.Event.Selection.Collapse)
+                    }
                 }
             }
         }
@@ -201,6 +181,34 @@ internal fun GalleryScreen(
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun GalleryExpandedItem(
+    expandedItem: GalleryScreen.State.ExpandedItem,
+    modifier: Modifier = Modifier,
+) {
+    AnimatedVisibility(
+        visible = expandedItem.isExpanded,
+        modifier = modifier
+            .clickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = null,
+                onClick = { },
+            )
+            .fillMaxSize(),
+        enter = fadeIn() + expandIn(expandFrom = Alignment.Center),
+        exit = fadeOut() + shrinkOut(shrinkTowards = Alignment.Center),
+    ) {
+        Image(
+            painter = rememberAsyncImagePainter(expandedItem.imageModel),
+            contentDescription = expandedItem.contentDescription,
+            modifier = Modifier
+                .background(MaterialTheme.colorScheme.background)
+                .fillMaxSize(),
+            contentScale = ContentScale.Fit,
+        )
     }
 }
 
