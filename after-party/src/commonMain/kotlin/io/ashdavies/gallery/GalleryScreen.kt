@@ -61,10 +61,63 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil3.compose.rememberAsyncImagePainter
 import com.slack.circuit.foundation.internal.BackHandler
+import com.slack.circuit.runtime.CircuitUiEvent
+import com.slack.circuit.runtime.CircuitUiState
+import com.slack.circuit.runtime.screen.Screen
+import io.ashdavies.identity.IdentityState
+import io.ashdavies.parcelable.Parcelable
+import io.ashdavies.parcelable.Parcelize
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 
 private const val DEFAULT_COLUMN_COUNT = 4
+
+@Parcelize
+internal object GalleryScreen : Parcelable, Screen {
+    sealed interface Event : CircuitUiEvent {
+        sealed interface Capture : Event {
+            data class Result(val value: File) : Capture
+
+            data object Cancel : Capture
+            data object Request : Capture
+        }
+
+        sealed interface Identity : Event {
+            data object SignIn : Identity
+        }
+
+        sealed interface Selection : Event {
+            data class Expand(val index: Int) : Selection
+            data class Toggle(val index: Int) : Selection
+
+            data object Collapse : Selection
+            data object Delete : Selection
+            data object Sync : Selection
+        }
+    }
+
+    internal data class State(
+        val itemList: List<StandardItem> = emptyList(),
+        val expandedItem: ExpandedItem? = null,
+        val showCapture: Boolean = false,
+        val identityState: IdentityState,
+        val eventSink: (Event) -> Unit,
+    ) : CircuitUiState {
+
+        data class StandardItem(
+            val title: String,
+            val imageModel: Any?,
+            val isSelected: Boolean,
+            val state: SyncState,
+        )
+
+        data class ExpandedItem(
+            val contentDescription: String,
+            val imageModel: Any?,
+            val isExpanded: Boolean,
+        )
+    }
+}
 
 @OptIn(
     ExperimentalFoundationApi::class,

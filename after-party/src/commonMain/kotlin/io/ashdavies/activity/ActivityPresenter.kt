@@ -14,11 +14,6 @@ import io.ashdavies.events.rememberEventPager
 import io.ashdavies.parcelable.Parcelable
 import io.ashdavies.parcelable.Parcelize
 
-@Parcelize
-public object ActivityScreen : Parcelable, Screen {
-    public data class State(val pagingItems: LazyPagingItems<Event>) : CircuitUiState
-}
-
 @Composable
 @OptIn(ExperimentalPagingApi::class)
 internal fun ActivityPresenter(eventPager: Pager<String, Event> = rememberEventPager()): ActivityScreen.State {

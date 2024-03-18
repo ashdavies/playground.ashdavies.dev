@@ -10,18 +10,6 @@ import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.screen.Screen
 import io.ashdavies.parcelable.Parcelize
 
-@Parcelize
-public object ProfileScreen : Screen {
-    internal sealed interface Event : CircuitUiEvent {
-        data object Login : Event
-    }
-
-    internal data class State(
-        val profile: Profile? = null,
-        val eventSink: (Event) -> Unit,
-    ) : CircuitUiState
-}
-
 @Composable
 internal fun ProfilePresenter(
     repository: ProfileRepository = rememberProfileRepository(),

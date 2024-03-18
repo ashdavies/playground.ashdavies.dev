@@ -23,9 +23,25 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
+import com.slack.circuit.runtime.CircuitUiEvent
+import com.slack.circuit.runtime.CircuitUiState
+import com.slack.circuit.runtime.screen.Screen
 import io.ashdavies.android.FlowRow
 import io.ashdavies.android.fade
+import io.ashdavies.parcelable.Parcelize
 import kotlin.random.Random.Default.nextInt
+
+@Parcelize
+internal object ProfileScreen : Screen {
+    internal sealed interface Event : CircuitUiEvent {
+        data object Login : Event
+    }
+
+    internal data class State(
+        val profile: Profile? = null,
+        val eventSink: (Event) -> Unit,
+    ) : CircuitUiState
+}
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)

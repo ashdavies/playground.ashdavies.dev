@@ -15,6 +15,7 @@ import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.jsonObject
 
 private val EXCLUSIONS = listOf("Coffers", "Guilds & Cornucopia")
+private val FILE_ENTRY = Regex("^File:(\\w+)\\.\\w{3,4}")
 
 private inline val JsonElement.title: String
     get() = getContent("title")
@@ -55,7 +56,7 @@ internal class ExpansionService(private val client: HttpClient) {
             .links
 
         val files: String = links
-            .map { it.substring(5, it.length - 4) }
+            .map { fileEntry(it) }
             .filterNot { it in EXCLUSIONS || "File:${it}2.jpg" in links }
             .joinToString("|") { "File:$it.jpg" }
 
@@ -69,7 +70,11 @@ internal class ExpansionService(private val client: HttpClient) {
 internal fun dominionExpansionOrNull(element: JsonElement): DominionExpansion? {
     val image = element.imageInfoUrl ?: return null
     return DominionExpansion(
-        name = element.title.let { it.substring(5, it.length - 4) },
+        name = fileEntry(element.title),
         image = image,
     )
+}
+
+private fun fileEntry(input: String): String {
+    return FILE_ENTRY.find(input)?.groupValues?.get(1) ?: input
 }

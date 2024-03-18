@@ -11,6 +11,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Sync
+import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -30,10 +31,17 @@ private val Color.Companion.LightGreen: Color
 private val Color.Companion.Orange: Color
     get() = Color(0xFFFFA500)
 
+private const val ANIMATION_DURATION = 3_600
+private const val ROTATION_SPEED = 10
+private const val SYNCING_SCALE = 0.75f
+
+private const val FULL_ROTATION = 360
+private const val HALF_ROTATION = 180
+
 @Composable
 internal fun SyncIndicator(isSyncing: Boolean, modifier: Modifier = Modifier) {
     val tint by animateColorAsState(if (isSyncing) Color.Orange else Color.LightGreen)
-    val scale by animateFloatAsState(if (isSyncing) 0.75f else 1f)
+    val scale by animateFloatAsState(if (isSyncing) SYNCING_SCALE else 1f)
 
     var currentRotation by remember { mutableStateOf(0f) }
     val rotation = remember { Animatable(currentRotation) }
@@ -41,10 +49,10 @@ internal fun SyncIndicator(isSyncing: Boolean, modifier: Modifier = Modifier) {
     LaunchedEffect(isSyncing) {
         if (isSyncing) {
             rotation.animateTo(
-                targetValue = currentRotation + 360f,
+                targetValue = currentRotation + FULL_ROTATION,
                 animationSpec = infiniteRepeatable(
                     animation = tween(
-                        durationMillis = 3_600,
+                        durationMillis = ANIMATION_DURATION,
                         easing = LinearEasing,
                     ),
                     repeatMode = RepeatMode.Restart,
@@ -52,9 +60,9 @@ internal fun SyncIndicator(isSyncing: Boolean, modifier: Modifier = Modifier) {
                 block = { currentRotation = value },
             )
         } else {
-            val rotationRemaining = 180 - (currentRotation % 180)
+            val rotationRemaining = HALF_ROTATION - (currentRotation % HALF_ROTATION)
+            val durationMillis = (rotationRemaining * ROTATION_SPEED).toInt()
             val targetValue = currentRotation + rotationRemaining
-            val durationMillis = (rotationRemaining * 10).toInt()
 
             rotation.animateTo(
                 targetValue = targetValue,
