@@ -11,7 +11,7 @@ import androidx.compose.ui.unit.dp
 import io.ashdavies.material.BottomSheetItem
 
 @Composable
-public fun GallerySheetContent(
+internal fun GallerySheetContent(
     eventSink: (GalleryScreen.Event) -> Unit,
     modifier: Modifier = Modifier,
 ) {

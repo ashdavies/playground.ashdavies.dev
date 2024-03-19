@@ -17,6 +17,8 @@ public interface GitHubService {
     public suspend fun <T : Any> getEvents(mapper: Mapper<T>): List<T>
 
     public fun interface Mapper<T : Any> {
+
+        @Suppress("LongParameterList")
         public operator fun invoke(
             id: String,
             name: String,
