@@ -7,61 +7,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import com.slack.circuit.runtime.CircuitUiEvent
-import com.slack.circuit.runtime.CircuitUiState
-import com.slack.circuit.runtime.screen.Screen
 import io.ashdavies.identity.IdentityManager
 import io.ashdavies.identity.IdentityState
-import io.ashdavies.parcelable.Parcelable
-import io.ashdavies.parcelable.Parcelize
 import kotlinx.coroutines.launch
-
-@Parcelize
-public object GalleryScreen : Parcelable, Screen {
-    public sealed interface Event : CircuitUiEvent {
-        public sealed interface Capture : Event {
-            public data class Result(val value: File) : Capture
-
-            public data object Cancel : Capture
-            public data object Request : Capture
-        }
-
-        public sealed interface Identity : Event {
-            public data object SignIn : Identity
-        }
-
-        public sealed interface Selection : Event {
-            public data class Expand(val index: Int) : Selection
-            public data class Toggle(val index: Int) : Selection
-
-            public data object Collapse : Selection
-            public data object Delete : Selection
-            public data object Sync : Selection
-        }
-    }
-
-    internal data class State(
-        val itemList: List<StandardItem> = emptyList(),
-        val expandedItem: ExpandedItem? = null,
-        val showCapture: Boolean = false,
-        val identityState: IdentityState,
-        val eventSink: (Event) -> Unit,
-    ) : CircuitUiState {
-
-        data class StandardItem(
-            val title: String,
-            val imageModel: Any?,
-            val isSelected: Boolean,
-            val state: SyncState,
-        )
-
-        data class ExpandedItem(
-            val contentDescription: String,
-            val imageModel: Any?,
-            val isExpanded: Boolean,
-        )
-    }
-}
 
 @Composable
 internal fun GalleryPresenter(

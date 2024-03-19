@@ -18,7 +18,7 @@ import io.ktor.server.plugins.defaultheaders.DefaultHeaders
 import io.ktor.server.plugins.defaultheaders.DefaultHeadersConfig
 import io.ktor.server.routing.routing
 
-public fun main(args: Array<String>) {
+public fun main() {
     val server = embeddedServer(
         module = Application::main,
         factory = CIO,

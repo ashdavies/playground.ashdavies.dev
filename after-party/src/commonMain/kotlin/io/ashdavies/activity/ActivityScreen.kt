@@ -3,7 +3,6 @@ package io.ashdavies.activity
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -39,8 +38,12 @@ import androidx.compose.ui.unit.dp
 import app.cash.paging.LoadStateError
 import app.cash.paging.LoadStateLoading
 import app.cash.paging.compose.LazyPagingItems
+import com.slack.circuit.runtime.CircuitUiState
+import com.slack.circuit.runtime.screen.Screen
 import io.ashdavies.android.fade
 import io.ashdavies.events.Event
+import io.ashdavies.parcelable.Parcelable
+import io.ashdavies.parcelable.Parcelize
 
 private val <T : Any> LazyPagingItems<T>.errorMessage: String?
     get() = (loadState.append as? LoadStateError)
@@ -49,6 +52,11 @@ private val <T : Any> LazyPagingItems<T>.errorMessage: String?
 
 private val <T : Any> LazyPagingItems<T>.isRefreshing: Boolean
     get() = loadState.refresh is LoadStateLoading
+
+@Parcelize
+internal object ActivityScreen : Parcelable, Screen {
+    data class State(val pagingItems: LazyPagingItems<Event>) : CircuitUiState
+}
 
 @Composable
 @OptIn(ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class)
@@ -130,18 +138,21 @@ private fun EventSection(event: Event?) {
                         .padding(start = 12.dp),
                 ) {
                     PlaceholderText(
-                        style = MaterialTheme.typography.labelLarge,
                         text = event?.name,
+                        modifier = Modifier.align(Alignment.Start),
+                        style = MaterialTheme.typography.labelLarge,
                     )
 
                     PlaceholderText(
-                        style = MaterialTheme.typography.labelMedium,
                         text = event?.location,
+                        modifier = Modifier.align(Alignment.Start),
+                        style = MaterialTheme.typography.labelMedium,
                     )
 
                     PlaceholderText(
-                        style = MaterialTheme.typography.labelSmall,
                         text = event?.dateStart,
+                        modifier = Modifier.align(Alignment.Start),
+                        style = MaterialTheme.typography.labelSmall,
                     )
                 }
             }
@@ -150,9 +161,11 @@ private fun EventSection(event: Event?) {
 }
 
 @Composable
-private fun ColumnScope.PlaceholderText(
+internal fun PlaceholderText(
     text: String?,
     modifier: Modifier = Modifier,
+    verticalPadding: Dp = 2.dp,
+    characters: Int = 12,
     style: TextStyle = LocalTextStyle.current,
 ) {
     Text(
@@ -161,9 +174,8 @@ private fun ColumnScope.PlaceholderText(
         style = style,
         maxLines = 1,
         modifier = modifier
-            .padding(bottom = 2.dp)
-            .defaultMinSize(minWidth = Dp(style.fontSize.value * 12))
-            .align(Alignment.Start)
+            .padding(vertical = verticalPadding)
+            .defaultMinSize(minWidth = Dp(style.fontSize.value * characters))
             .fade(text == null),
     )
 }
