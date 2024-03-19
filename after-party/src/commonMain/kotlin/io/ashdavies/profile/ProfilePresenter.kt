@@ -5,22 +5,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.platform.UriHandler
-import com.slack.circuit.runtime.CircuitUiEvent
-import com.slack.circuit.runtime.CircuitUiState
-import com.slack.circuit.runtime.screen.Screen
-import io.ashdavies.parcelable.Parcelize
-
-@Parcelize
-public object ProfileScreen : Screen {
-    internal sealed interface Event : CircuitUiEvent {
-        data object Login : Event
-    }
-
-    internal data class State(
-        val profile: Profile? = null,
-        val eventSink: (Event) -> Unit,
-    ) : CircuitUiState
-}
 
 @Composable
 internal fun ProfilePresenter(
