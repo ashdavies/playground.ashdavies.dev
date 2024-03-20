@@ -42,7 +42,7 @@ private class LauncherCommand : CliktCommand() {
                         val backStack = rememberSaveableBackStack(route)
 
                         NavigableCircuitContent(
-                            navigator = rememberCircuitNavigator(backStack, ::exitApplication),
+                            navigator = rememberCircuitNavigator(backStack) { exitApplication() },
                             backStack = backStack,
                             decoration = KeyNavigationDecoration(
                                 decoration = circuit.defaultNavDecoration,
