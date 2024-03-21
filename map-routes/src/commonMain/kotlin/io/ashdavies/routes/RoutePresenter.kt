@@ -4,8 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import com.slack.circuit.retained.rememberRetained
 import io.ashdavies.http.LocalHttpClient
 import io.ashdavies.routing.ComputeRoutesCallable
 import io.ashdavies.routing.ComputeRoutesError
@@ -17,7 +17,7 @@ internal fun RoutePresenter(
     locationService: LocationService,
     httpClient: HttpClient = LocalHttpClient.current,
 ): RouteScreen.State {
-    var startPosition by remember { mutableStateOf(KnownLocations.Berlin) }
+    var startPosition by rememberRetained { mutableStateOf(KnownLocations.Berlin) }
     val locationPermissionState = rememberLocationPermissionState()
 
     LaunchedEffect(locationPermissionState.allPermissionsGranted) {
@@ -27,8 +27,11 @@ internal fun RoutePresenter(
         }
     }
 
-    val computeRoutes = remember { ComputeRoutesCallable(httpClient, BuildConfig.ANDROID_API_KEY) }
-    var mapState by remember { mutableStateOf(RouteMapState(startPosition)) }
+    val computeRoutes = rememberRetained {
+        ComputeRoutesCallable(httpClient, BuildConfig.ANDROID_API_KEY)
+    }
+
+    var mapState by rememberRetained { mutableStateOf(RouteMapState(startPosition)) }
     var errorMessage = null as String?
 
     LaunchedEffect(mapState.endPosition) {
