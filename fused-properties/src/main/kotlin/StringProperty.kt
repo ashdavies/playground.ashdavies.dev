@@ -20,6 +20,10 @@ private fun Project.stringPropertyProvider(propertyName: String): Provider<Strin
         .orElse(providers.environmentVariable(envPropertyName))
 }
 
+public fun Project.booleanProperty(block: (Boolean) -> Unit = { }): ReadOnlyDelegateProvider<Boolean> {
+    return readOnlyDelegateProvider { it.get().toBoolean().also(block) }
+}
+
 public fun Project.stringProperty(block: (String) -> Unit = { }): ReadOnlyDelegateProvider<String> {
     return readOnlyDelegateProvider { it.get().also(block) }
 }

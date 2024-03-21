@@ -54,7 +54,11 @@ internal class LauncherActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        enableStrictMode(isDebuggable())
+
+        if (BuildConfig.ANDROID_STRICT_MODE) {
+            enableStrictMode(isDebuggable())
+        }
+
         setContent { LauncherApp() }
     }
 }
