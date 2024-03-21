@@ -1,12 +1,12 @@
 package io.ashdavies.gallery
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import com.slack.circuit.retained.collectAsRetainedState
+import com.slack.circuit.retained.rememberRetained
 import io.ashdavies.identity.IdentityManager
 import io.ashdavies.identity.IdentityState
 import kotlinx.coroutines.launch
@@ -17,15 +17,18 @@ internal fun GalleryPresenter(
     syncManager: SyncManager,
     identityManager: IdentityManager,
 ): GalleryScreen.State {
-    val identityState by identityManager.state.collectAsState(IdentityState.Unsupported)
-    val itemList by imageManager.list.collectAsState(emptyList())
-    val syncState by syncManager.state.collectAsState(emptyMap())
+    val identityState by identityManager.state.collectAsRetainedState(IdentityState.Unsupported)
+    val itemList by imageManager.list.collectAsRetainedState(emptyList())
+    val syncState by syncManager.state.collectAsRetainedState(emptyMap())
 
     val coroutineScope = rememberCoroutineScope()
 
-    var expandedItem by remember { mutableStateOf<GalleryScreen.State.ExpandedItem?>(null) }
-    var selected by remember { mutableStateOf(emptyList<Image>()) }
-    var takePhoto by remember { mutableStateOf(false) }
+    var expandedItem by rememberRetained {
+        mutableStateOf<GalleryScreen.State.ExpandedItem?>(null)
+    }
+
+    var selected by rememberRetained { mutableStateOf(emptyList<Image>()) }
+    var takePhoto by rememberRetained { mutableStateOf(false) }
 
     return GalleryScreen.State(
         itemList = itemList.map {
