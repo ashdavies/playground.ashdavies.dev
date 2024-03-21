@@ -1,6 +1,6 @@
 package io.ashdavies.playground
 
-import android.app.Activity
+import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
@@ -24,21 +24,21 @@ import java.security.MessageDigest
 import java.util.Locale
 
 @Composable
-private fun Activity.LauncherApp() {
+private fun LauncherApp(context: Context = LocalContext.current, extra: (String) -> String?) {
     CompositionLocalProvider(
         LocalHttpClient provides LocalHttpClient.current.config {
             install(DefaultRequest) {
-                header("X-Android-Cert", getSignature(packageManager, packageName))
-                header("X-Android-Package", packageName)
+                header("X-Android-Cert", getSignature(context.packageManager, context.packageName))
+                header("X-Android-Package", context.packageName)
                 header("X-API-Key", BuildConfig.ANDROID_API_KEY)
                 header("User-Agent", Build.PRODUCT)
             }
         },
     ) {
-        CircuitCompositionLocals(remember { Circuit(applicationContext) }) {
+        CircuitCompositionLocals(remember { Circuit(context) }) {
             ContentWithOverlays {
-                LauncherContent(LocalContext.current) {
-                    val backStack = rememberSaveableBackStack(intent.getStringExtra("route"))
+                LauncherContent(context) {
+                    val backStack = rememberSaveableBackStack(extra("route"))
 
                     NavigableCircuitContent(
                         navigator = rememberCircuitNavigator(backStack),
@@ -59,11 +59,12 @@ internal class LauncherActivity : ComponentActivity() {
             enableStrictMode(isDebuggable())
         }
 
-        setContent { LauncherApp() }
+        setContent {
+            LauncherApp { intent.getStringExtra(it) }
+        }
     }
 }
 
-@Suppress("DEPRECATION")
 private fun getSignature(packageManager: PackageManager, packageName: String): String {
     val packageInfo = packageManager.getPackageInfo(packageName, PackageManager.GET_SIGNATURES)
     val signature = packageInfo.signatures[0].toByteArray()
