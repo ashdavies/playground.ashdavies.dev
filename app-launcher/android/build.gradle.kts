@@ -27,6 +27,10 @@ buildConfig {
         buildConfigField("ANDROID_API_KEY", value)
     }
 
+    val androidStrictMode by booleanProperty { value ->
+        buildConfigField("ANDROID_STRICT_MODE", value)
+    }
+
     packageName.set(android.namespace)
 }
 
