@@ -55,7 +55,7 @@ private val <T : Any> LazyPagingItems<T>.isRefreshing: Boolean
 
 @Parcelize
 internal object ActivityScreen : Parcelable, Screen {
-    data class State constructor(val pagingItems: LazyPagingItems<Event>) : CircuitUiState
+    data class State(val pagingItems: LazyPagingItems<Event>) : CircuitUiState
 }
 
 @Composable
