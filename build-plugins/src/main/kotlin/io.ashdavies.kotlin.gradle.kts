@@ -19,8 +19,6 @@ kotlin {
     explicitApi()
     jvm()
 
-    jvmToolchain(jvmTargetVersion.toInt())
-
     targets.all {
         compilations.all {
             compilerOptions.configure {
