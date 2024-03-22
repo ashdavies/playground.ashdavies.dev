@@ -5,8 +5,6 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jlleitschuh.gradle.ktlint.KtlintExtension
 import org.jlleitschuh.gradle.ktlint.KtlintPlugin
 
-private val jvmTargetVersion = libs.versions.kotlin.jvmTarget.get()
-
 plugins {
     kotlin("plugin.serialization")
     kotlin("multiplatform")
@@ -55,5 +53,6 @@ tasks.withType<Detekt> {
 }
 
 tasks.withType<KotlinCompile> {
+    val jvmTargetVersion = libs.versions.kotlin.jvmTarget.get()
     kotlinOptions.jvmTarget = jvmTargetVersion
 }
