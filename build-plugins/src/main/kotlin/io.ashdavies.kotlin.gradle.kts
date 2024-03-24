@@ -31,8 +31,9 @@ private val detektAll by tasks.registering {
 }
 
 extensions.configure<DetektExtension> {
-    buildUponDefaultConfig = true
     config.setFrom(rootProject.file("detekt-config.yml"))
+    buildUponDefaultConfig = true
+    toolVersion = "1.23.5"
 }
 
 extensions.configure<KtlintExtension> {
@@ -45,9 +46,9 @@ extensions.configure<KtlintExtension> {
 }
 
 tasks.withType<Detekt> {
-    /*val build by tasks.getting {
+    val build by tasks.getting {
         dependsOn(this@withType)
-    }*/
+    }
 
     exclude { "generated" in "$it" }
 }

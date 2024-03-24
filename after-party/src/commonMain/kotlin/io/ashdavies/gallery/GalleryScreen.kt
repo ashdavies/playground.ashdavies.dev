@@ -64,7 +64,6 @@ import com.slack.circuit.foundation.internal.BackHandler
 import com.slack.circuit.runtime.CircuitUiEvent
 import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.screen.Screen
-import io.ashdavies.identity.IdentityState
 import io.ashdavies.parcelable.Parcelable
 import io.ashdavies.parcelable.Parcelize
 import kotlinx.collections.immutable.ImmutableList
@@ -82,10 +81,6 @@ internal object GalleryScreen : Parcelable, Screen {
             data object Request : Capture
         }
 
-        sealed interface Identity : Event {
-            data object SignIn : Identity
-        }
-
         sealed interface Selection : Event {
             data class Expand(val index: Int) : Selection
             data class Toggle(val index: Int) : Selection
@@ -100,7 +95,6 @@ internal object GalleryScreen : Parcelable, Screen {
         val itemList: List<StandardItem> = emptyList(),
         val expandedItem: ExpandedItem? = null,
         val showCapture: Boolean = false,
-        val identityState: IdentityState,
         val eventSink: (Event) -> Unit,
     ) : CircuitUiState {
 

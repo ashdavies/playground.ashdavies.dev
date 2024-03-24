@@ -14,9 +14,6 @@ public fun galleryPresenterFactory(context: PlatformContext): Presenter.Factory 
 
     return presenterFactoryOf<GalleryScreen> { _, _ ->
         GalleryPresenter(
-            identityManager = remember(playgroundDatabase) {
-                IdentityModule.identityManager(context, playgroundDatabase.credentialQueries)
-            },
             imageManager = remember(playgroundDatabase) {
                 GalleryModule.imageManager(context, playgroundDatabase.imageQueries)
             },
