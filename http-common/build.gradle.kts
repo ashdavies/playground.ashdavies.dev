@@ -30,3 +30,7 @@ openApiGenerate {
     configOptions.put("library", "multiplatform")
     configOptions.put("sourceFolder", ".")
 }
+
+detekt {
+    allRules = false
+}

@@ -7,16 +7,12 @@ import io.ashdavies.circuit.presenterFactoryOf
 import io.ashdavies.circuit.uiFactoryOf
 import io.ashdavies.content.PlatformContext
 import io.ashdavies.content.reportFullyDrawn
-import io.ashdavies.identity.IdentityModule
 
 public fun galleryPresenterFactory(context: PlatformContext): Presenter.Factory {
     val playgroundDatabase = GalleryModule.playgroundDatabase(context)
 
     return presenterFactoryOf<GalleryScreen> { _, _ ->
         GalleryPresenter(
-            identityManager = remember(playgroundDatabase) {
-                IdentityModule.identityManager(context, playgroundDatabase.credentialQueries)
-            },
             imageManager = remember(playgroundDatabase) {
                 GalleryModule.imageManager(context, playgroundDatabase.imageQueries)
             },
