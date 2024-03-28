@@ -3,8 +3,8 @@ package io.ashdavies.check
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import com.google.firebase.appcheck.AppCheckToken
 import com.google.firebase.appcheck.FirebaseAppCheck
@@ -23,7 +23,9 @@ import kotlinx.coroutines.flow.channelFlow
 @Composable
 public actual fun ProvideAppCheckToken(client: HttpClient, content: @Composable () -> Unit) {
     val appCheck = remember { Firebase.app.android.appCheck }
-    val token by appCheck.appCheckToken().collectAsState(null)
+    val token by produceState<AppCheckToken?>(null) {
+        appCheck.appCheckToken().collect { value = it }
+    }
 
     LaunchedEffect(appCheck) {
         val factory = PlayIntegrityAppCheckProviderFactory.getInstance()
