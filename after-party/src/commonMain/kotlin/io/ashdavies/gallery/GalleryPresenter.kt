@@ -5,7 +5,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import com.slack.circuit.retained.collectAsRetainedState
+import com.slack.circuit.retained.produceRetainedState
 import com.slack.circuit.retained.rememberRetained
 import kotlinx.coroutines.launch
 
@@ -14,8 +14,13 @@ internal fun GalleryPresenter(
     imageManager: ImageManager,
     syncManager: SyncManager,
 ): GalleryScreen.State {
-    val itemList by imageManager.list.collectAsRetainedState(emptyList())
-    val syncState by syncManager.state.collectAsRetainedState(emptyMap())
+    val itemList by produceRetainedState(emptyList<Image>()) {
+        imageManager.list.collect { value = it }
+    }
+
+    val syncState by produceRetainedState(emptyMap<String, SyncState>()) {
+        syncManager.state.collect { value = it }
+    }
 
     val coroutineScope = rememberCoroutineScope()
 
