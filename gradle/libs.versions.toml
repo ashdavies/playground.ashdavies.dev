@@ -27,7 +27,7 @@ ajalt-clikt = "com.github.ajalt.clikt:clikt:4.3.0"
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity" }
 androidx-annotation = "androidx.annotation:annotation:1.7.1"
 androidx-core-splashscreen = "androidx.core:core-splashscreen:1.0.1"
-androidx-credentials-auth = "androidx.credentials:credentials-play-services-auth:1.2.1"
+androidx-credentials-auth = "androidx.credentials:credentials-play-services-auth:1.2.2"
 
 apollo-graphql-coroutines-support = { module = "com.apollographql.apollo:apollo-coroutines-support", version.ref = "apollo-graphql" }
 apollo-graphql-runtime = { module = "com.apollographql.apollo:apollo-runtime", version.ref = "apollo-graphql" }
