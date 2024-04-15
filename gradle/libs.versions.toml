@@ -16,7 +16,7 @@ jetbrains-kotlin = "1.9.23"
 kotlin-jvmTarget = "17"
 kotlinx-coroutines = "1.8.0"
 kotlinx-serialization = "1.6.3"
-ktor = "2.3.9"
+ktor = "2.3.10"
 paging-compose = "3.2.0-alpha05-0.2.3"
 pinterest-ktlint = "0.50.0"
 slack-circuit = "0.20.0"
@@ -60,7 +60,7 @@ google-cloud-bom = "com.google.cloud:libraries-bom:26.37.0"
 google-cloud-firestore = { module = "com.google.cloud:google-cloud-firestore" }
 
 google-firebase-admin = "com.google.firebase:firebase-admin:9.2.0"
-google-firebase-bom = "com.google.firebase:firebase-bom:32.8.0"
+google-firebase-bom = "com.google.firebase:firebase-bom:32.8.1"
 google-firebase-appcheck-playintegrity = { module = "com.google.firebase:firebase-appcheck-playintegrity" }
 
 google-guava-jre = "com.google.guava:guava:33.1.0-jre"
@@ -110,7 +110,7 @@ slack-circuit-foundation = { module = "com.slack.circuit:circuit-foundation", ve
 slack-circuit-overlay = { module = "com.slack.circuit:circuit-overlay", version.ref = "slack-circuit" }
 slack-circuit-test = { module = "com.slack.circuit:circuit-test", version.ref = "slack-circuit" }
 
-slf4j-simple = "org.slf4j:slf4j-simple:2.0.12"
+slf4j-simple = "org.slf4j:slf4j-simple:2.0.13"
 
 sqldelight-android-driver = { module = "app.cash.sqldelight:android-driver", version.ref = "cash-sqldelight" }
 sqldelight-coroutines-extensions = { module = "app.cash.sqldelight:coroutines-extensions", version.ref = "cash-sqldelight" }
