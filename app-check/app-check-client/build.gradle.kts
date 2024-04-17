@@ -8,18 +8,20 @@ android {
 }
 
 kotlin {
-    commonMain.dependencies {
-        implementation(projects.appCheck.appCheckCommon)
-        implementation(projects.httpClient)
+    sourceSets {
+        commonMain.dependencies {
+            implementation(projects.appCheck.appCheckCommon)
+            implementation(projects.httpClient)
 
-        implementation(compose.runtime)
+            implementation(compose.runtime)
 
-        implementation(libs.ktor.client.core)
-    }
+            implementation(libs.ktor.client.core)
+        }
 
-    androidMain.dependencies {
-        implementation(dependencies.platform(libs.google.firebase.bom))
-        implementation(libs.gitlive.firebase.app)
-        implementation(libs.google.firebase.appcheck.playintegrity)
+        androidMain.dependencies {
+            implementation(dependencies.platform(libs.google.firebase.bom))
+            implementation(libs.gitlive.firebase.app)
+            implementation(libs.google.firebase.appcheck.playintegrity)
+        }
     }
 }

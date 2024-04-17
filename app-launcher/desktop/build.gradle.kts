@@ -21,20 +21,22 @@ kotlin {
         withJava()
     }
 
-    commonMain.dependencies {
-        implementation(projects.appLauncher.common)
-        implementation(projects.httpClient)
-        implementation(projects.platformSupport)
+    sourceSets {
+        commonMain.dependencies {
+            implementation(projects.appLauncher.common)
+            implementation(projects.httpClient)
+            implementation(projects.platformSupport)
 
-        implementation(libs.ajalt.clikt)
-        implementation(libs.ktor.client.core)
-        implementation(libs.slack.circuit.foundation)
-    }
+            implementation(libs.ajalt.clikt)
+            implementation(libs.ktor.client.core)
+            implementation(libs.slack.circuit.foundation)
+        }
 
-    jvmMain.dependencies {
-        runtimeOnly(compose.desktop.currentOs)
-        runtimeOnly(libs.kotlinx.coroutines.swing)
-        runtimeOnly(libs.slf4j.simple)
+        jvmMain.dependencies {
+            runtimeOnly(compose.desktop.currentOs)
+            runtimeOnly(libs.kotlinx.coroutines.swing)
+            runtimeOnly(libs.slf4j.simple)
+        }
     }
 }
 

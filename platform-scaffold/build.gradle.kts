@@ -7,7 +7,7 @@ android {
 }
 
 kotlin {
-    commonMain.dependencies {
+    sourceSets.commonMain.dependencies {
         implementation(projects.platformSupport)
     }
 }

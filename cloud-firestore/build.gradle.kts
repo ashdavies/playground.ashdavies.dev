@@ -3,7 +3,7 @@ plugins {
 }
 
 kotlin {
-    jvmMain.dependencies {
+    sourceSets.jvmMain.dependencies {
         implementation(dependencies.platform(libs.google.cloud.bom))
         implementation(libs.google.cloud.firestore)
         implementation(libs.kotlinx.coroutines.core)

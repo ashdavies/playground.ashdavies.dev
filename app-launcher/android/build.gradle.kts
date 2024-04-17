@@ -35,25 +35,27 @@ buildConfig {
 }
 
 kotlin {
-    commonMain.dependencies {
-        implementation(compose.runtime)
-    }
+    sourceSets {
+        commonMain.dependencies {
+            implementation(compose.runtime)
+        }
 
-    androidMain.dependencies {
-        implementation(projects.appLauncher.common)
-        implementation(projects.httpClient)
-        implementation(projects.platformScaffold)
-        implementation(projects.platformSupport)
+        androidMain.dependencies {
+            implementation(projects.appLauncher.common)
+            implementation(projects.httpClient)
+            implementation(projects.platformScaffold)
+            implementation(projects.platformSupport)
 
-        implementation(libs.androidx.activity.compose)
-        implementation(libs.androidx.core.splashscreen)
-        implementation(libs.google.android.material)
-        implementation(libs.ktor.client.core)
-        implementation(libs.slack.circuit.foundation)
-        implementation(libs.slack.circuit.overlay)
-    }
+            implementation(libs.androidx.activity.compose)
+            implementation(libs.androidx.core.splashscreen)
+            implementation(libs.google.android.material)
+            implementation(libs.ktor.client.core)
+            implementation(libs.slack.circuit.foundation)
+            implementation(libs.slack.circuit.overlay)
+        }
 
-    val androidInstrumentedTest by sourceSets.getting {
-        dependsOn(androidMain)
+        val androidInstrumentedTest by getting {
+            dependsOn(androidMain.get())
+        }
     }
 }

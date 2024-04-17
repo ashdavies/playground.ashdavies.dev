@@ -8,7 +8,7 @@ android {
 }
 
 kotlin {
-    commonMain.dependencies {
+    sourceSets.commonMain.dependencies {
         implementation(compose.material3)
     }
 }

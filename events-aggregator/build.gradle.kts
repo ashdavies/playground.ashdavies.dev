@@ -23,7 +23,7 @@ buildConfig {
 kotlin {
     explicitApi = ExplicitApiMode.Disabled
 
-    commonMain.dependencies {
+    sourceSets.commonMain.dependencies {
         implementation(projects.microYaml)
 
         implementation(libs.apollo.graphql.coroutines.support)

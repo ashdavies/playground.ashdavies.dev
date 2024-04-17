@@ -26,18 +26,20 @@ buildConfig {
 }
 
 kotlin {
-    commonMain.dependencies {
-        implementation(libs.auth.java.jwt)
-        implementation(libs.auth.jwks.rsa)
-        implementation(libs.google.auth.http)
-        implementation(libs.google.firebase.admin)
-        implementation(libs.kotlinx.datetime)
-        implementation(libs.kotlinx.serialization.core)
-        implementation(libs.ktor.client.core)
-    }
+    sourceSets {
+        commonMain.dependencies {
+            implementation(libs.auth.java.jwt)
+            implementation(libs.auth.jwks.rsa)
+            implementation(libs.google.auth.http)
+            implementation(libs.google.firebase.admin)
+            implementation(libs.kotlinx.datetime)
+            implementation(libs.kotlinx.serialization.core)
+            implementation(libs.ktor.client.core)
+        }
 
-    jvmMain.dependencies {
-        runtimeOnly(libs.google.guava.jre)
-        runtimeOnly(libs.slf4j.simple)
+        jvmMain.dependencies {
+            runtimeOnly(libs.google.guava.jre)
+            runtimeOnly(libs.slf4j.simple)
+        }
     }
 }

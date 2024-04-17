@@ -9,7 +9,7 @@ plugins {
 kotlin {
     explicitApi = ExplicitApiMode.Disabled
 
-    commonMain {
+    sourceSets.commonMain {
         dependencies {
             implementation(libs.kotlinx.serialization.json)
             implementation(libs.ktor.client.core)
@@ -22,7 +22,7 @@ kotlin {
 openApiGenerate {
     generatorName.set("kotlin")
     globalProperties.set(mapOf("models" to ""))
-    outputDir.set("$buildDir/generated/openapi/main")
+    outputDir.set("${project.layout.buildDirectory.get()}/generated/openapi/main")
     inputSpec.set("$rootDir/${property("openapi.generator.inputSpec")}")
     packageName.set("io.ashdavies.http.common")
     additionalProperties.put("dateLibrary", "string")

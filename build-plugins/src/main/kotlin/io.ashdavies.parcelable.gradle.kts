@@ -9,7 +9,7 @@ plugins {
 }
 
 kotlin {
-    commonMain.dependencies {
+    sourceSets.commonMain.dependencies {
         implementation(project(":parcelable-support"))
     }
 }

@@ -7,11 +7,13 @@ android {
 }
 
 kotlin {
-    commonMain.dependencies {
-        implementation(libs.kotlinx.coroutines.core)
-    }
+    sourceSets {
+        commonMain.dependencies {
+            implementation(libs.kotlinx.coroutines.core)
+        }
 
-    androidMain.dependencies {
-        implementation(libs.androidx.annotation)
+        androidMain.dependencies {
+            implementation(libs.androidx.annotation)
+        }
     }
 }

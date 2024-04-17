@@ -26,27 +26,29 @@ buildConfig {
 }
 
 kotlin {
-    commonMain.dependencies {
-        implementation(projects.circuitSupport)
-        implementation(projects.httpClient)
-        implementation(projects.httpCommon)
-        implementation(projects.mapsRouting)
-        implementation(projects.platformScaffold)
-        implementation(projects.platformSupport)
+    sourceSets {
+        commonMain.dependencies {
+            implementation(projects.circuitSupport)
+            implementation(projects.httpClient)
+            implementation(projects.httpCommon)
+            implementation(projects.mapsRouting)
+            implementation(projects.platformScaffold)
+            implementation(projects.platformSupport)
 
-        implementation(compose.material3)
-        implementation(compose.runtime)
+            implementation(compose.material3)
+            implementation(compose.runtime)
 
-        implementation(libs.androidx.annotation)
-        implementation(libs.ktor.client.core)
-        implementation(libs.slack.circuit.foundation)
-    }
+            implementation(libs.androidx.annotation)
+            implementation(libs.ktor.client.core)
+            implementation(libs.slack.circuit.foundation)
+        }
 
-    androidMain.dependencies {
-        implementation(libs.google.accompanist.permissions)
-        implementation(libs.google.android.location)
-        implementation(libs.google.maps.android.compose)
-        implementation(libs.google.maps.android.utils)
-        implementation(libs.kotlinx.coroutines.play.services)
+        androidMain.dependencies {
+            implementation(libs.google.accompanist.permissions)
+            implementation(libs.google.android.location)
+            implementation(libs.google.maps.android.compose)
+            implementation(libs.google.maps.android.utils)
+            implementation(libs.kotlinx.coroutines.play.services)
+        }
     }
 }

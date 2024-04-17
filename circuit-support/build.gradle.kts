@@ -4,7 +4,7 @@ plugins {
 }
 
 kotlin {
-    commonMain.dependencies {
+    sourceSets.commonMain.dependencies {
         implementation(compose.runtime)
 
         implementation(libs.slack.circuit.foundation)

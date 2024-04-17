@@ -4,7 +4,7 @@ plugins {
 }
 
 kotlin {
-    commonMain.dependencies {
+    sourceSets.commonMain.dependencies {
         implementation(projects.httpCommon)
 
         implementation(compose.runtime)

@@ -60,41 +60,45 @@ kotlin {
         withJava()
     }
 
-    commonMain.dependencies {
-        implementation(projects.appCheck.appCheckCommon)
-        implementation(projects.appCheck.appCheckSdk)
-        implementation(projects.cloudFirestore)
-        implementation(projects.eventsAggregator)
-        implementation(projects.httpClient)
-        implementation(projects.httpCommon)
+    sourceSets {
+        commonMain.dependencies {
+            implementation(projects.appCheck.appCheckCommon)
+            implementation(projects.appCheck.appCheckSdk)
+            implementation(projects.cloudFirestore)
+            implementation(projects.eventsAggregator)
+            implementation(projects.httpClient)
+            implementation(projects.httpCommon)
 
-        implementation(libs.google.firebase.admin)
-        implementation(libs.kotlinx.datetime)
-        implementation(libs.kotlinx.serialization.core)
-        implementation(libs.ktor.client.core)
-        implementation(libs.ktor.serialization.kotlinx.json)
-        implementation(libs.ktor.server.call.logging)
-        implementation(libs.ktor.server.cio)
-        implementation(libs.ktor.server.compression)
-        implementation(libs.ktor.server.conditional.headers)
-        implementation(libs.ktor.server.content.negotiation)
-        implementation(libs.ktor.server.core)
-        implementation(libs.ktor.server.default.headers)
-        implementation(libs.ktor.server.host.common)
-    }
+            implementation(libs.google.firebase.admin)
+            implementation(libs.kotlinx.datetime)
+            implementation(libs.kotlinx.serialization.core)
+            implementation(libs.ktor.client.core)
+            implementation(libs.ktor.serialization.kotlinx.json)
+            implementation(libs.ktor.server.call.logging)
+            implementation(libs.ktor.server.cio)
+            implementation(libs.ktor.server.compression)
+            implementation(libs.ktor.server.conditional.headers)
+            implementation(libs.ktor.server.content.negotiation)
+            implementation(libs.ktor.server.core)
+            implementation(libs.ktor.server.default.headers)
+            implementation(libs.ktor.server.host.common)
+        }
 
-    commonTest.dependencies {
-        implementation(kotlin("test"))
+        commonTest.dependencies {
+            implementation(kotlin("test"))
 
-        implementation(libs.ktor.server.test.host)
-    }
+            implementation(libs.ktor.server.test.host)
+        }
 
-    jvmIntegrationTest.dependencies {
-        implementation(kotlin("test-junit"))
+        val jvmIntegrationTest by getting {
+            dependencies {
+                implementation(kotlin("test-junit"))
 
-        implementation(libs.app.cash.turbine)
-        implementation(libs.kotlinx.coroutines.test)
-        implementation(libs.ktor.client.content.negotiation)
+                implementation(libs.app.cash.turbine)
+                implementation(libs.kotlinx.coroutines.test)
+                implementation(libs.ktor.client.content.negotiation)
+            }
+        }
     }
 }
 

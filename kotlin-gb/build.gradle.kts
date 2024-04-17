@@ -3,7 +3,7 @@ plugins {
 }
 
 kotlin {
-    commonMain.dependencies {
+    sourceSets.commonMain.dependencies {
         implementation(projects.parcelableSupport)
 
         implementation(libs.kotlinx.serialization.core)
