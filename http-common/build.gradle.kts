@@ -22,7 +22,7 @@ kotlin {
 openApiGenerate {
     generatorName.set("kotlin")
     globalProperties.set(mapOf("models" to ""))
-    outputDir.set("${layout.buildDirectory}/generated/openapi/main")
+    outputDir.set("${project.layout.buildDirectory.get()}/generated/openapi/main")
     inputSpec.set("$rootDir/${property("openapi.generator.inputSpec")}")
     packageName.set("io.ashdavies.http.common")
     additionalProperties.put("dateLibrary", "string")
