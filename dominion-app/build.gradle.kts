@@ -9,7 +9,7 @@ android {
 }
 
 kotlin {
-    commonMain.dependencies {
+    sourceSets.commonMain.dependencies {
         implementation(projects.circuitSupport)
         implementation(projects.httpClient)
 

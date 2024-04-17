@@ -3,7 +3,7 @@ plugins {
 }
 
 kotlin {
-    commonMain.dependencies {
+    sourceSets.commonMain.dependencies {
         api(libs.ktor.http)
     }
 }

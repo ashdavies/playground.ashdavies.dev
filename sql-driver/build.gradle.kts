@@ -7,19 +7,21 @@ android {
 }
 
 kotlin {
-    commonMain.dependencies {
-        implementation(projects.platformSupport)
+    sourceSets {
+        commonMain.dependencies {
+            implementation(projects.platformSupport)
 
-        implementation(libs.kotlinx.coroutines.core)
-        implementation(libs.sqldelight.coroutines.extensions)
-        implementation(libs.sqldelight.runtime)
-    }
+            implementation(libs.kotlinx.coroutines.core)
+            implementation(libs.sqldelight.coroutines.extensions)
+            implementation(libs.sqldelight.runtime)
+        }
 
-    androidMain.dependencies {
-        implementation(libs.sqldelight.android.driver)
-    }
+        androidMain.dependencies {
+            implementation(libs.sqldelight.android.driver)
+        }
 
-    jvmMain.dependencies {
-        implementation(libs.sqldelight.sqlite.driver)
+        jvmMain.dependencies {
+            implementation(libs.sqldelight.sqlite.driver)
+        }
     }
 }
