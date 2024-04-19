@@ -135,4 +135,4 @@ kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref 
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "jetbrains-kotlin" }
 kotlinx-kover = "org.jetbrains.kotlinx.kover:0.7.6"
 ktlint = "org.jlleitschuh.gradle.ktlint:12.1.0"
-openapi-generator = "org.openapi.generator:7.4.0"
+openapi-generator = "org.openapi.generator:7.5.0"
