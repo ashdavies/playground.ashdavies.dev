@@ -90,6 +90,10 @@ kotlin {
             implementation(libs.ktor.server.test.host)
         }
 
+        jvmMain.dependencies {
+            compileOnly(libs.fasterxml.jackson.core)
+        }
+
         val jvmIntegrationTest by getting {
             dependencies {
                 implementation(kotlin("test-junit"))
