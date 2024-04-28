@@ -22,7 +22,7 @@ pinterest-ktlint = "0.50.0"
 slack-circuit = "0.20.0"
 
 [libraries]
-ajalt-clikt = "com.github.ajalt.clikt:clikt:4.3.0"
+ajalt-clikt = "com.github.ajalt.clikt:clikt:4.4.0"
 
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity" }
 androidx-annotation = "androidx.annotation:annotation:1.7.1"
