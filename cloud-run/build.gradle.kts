@@ -91,7 +91,11 @@ kotlin {
         }
 
         jvmMain.dependencies {
-            compileOnly(libs.fasterxml.jackson.core)
+            compileOnly(libs.fasterxml.jackson.core)?.because("""
+                "runtimeClasspath configuration transitively depends upon jackson-databind 2.17.0, 
+                but 2.14.2 is required by compileClasspath dependencies, this causes runtime
+                exceptions due to missing method errors at runtime." 
+            """.trimIndent())
         }
 
         val jvmIntegrationTest by getting {
