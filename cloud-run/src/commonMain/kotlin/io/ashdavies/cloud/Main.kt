@@ -28,7 +28,7 @@ public fun main() {
     server.start(wait = true)
 }
 
-internal fun Application.main(client: HttpClient = defaultHttpClient()) {
+internal fun Application.main(client: HttpClient = defaultHttpClient { installCallValidator() }) {
     install(DefaultHeaders, DefaultHeadersConfig::headers)
     install(Compression, CompressionConfig::default)
     install(ContentNegotiation, Configuration::json)

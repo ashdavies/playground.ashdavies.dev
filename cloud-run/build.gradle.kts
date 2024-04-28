@@ -90,6 +90,14 @@ kotlin {
             implementation(libs.ktor.server.test.host)
         }
 
+        jvmMain.dependencies {
+            compileOnly(libs.fasterxml.jackson.core)?.because(
+                "runtimeClasspath configuration transitively depends upon jackson-databind" +
+                    " 2.17.0, but 2.14.2 is required by compileClasspath dependencies, this " +
+                    "causes exceptions due to missing method errors at runtime.",
+            )
+        }
+
         val jvmIntegrationTest by getting {
             dependencies {
                 implementation(kotlin("test-junit"))
