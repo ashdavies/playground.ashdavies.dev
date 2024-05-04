@@ -1,4 +1,4 @@
-package io.ashdavies.dominion.card
+package io.ashdavies.dominion
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,12 +16,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import coil3.compose.rememberAsyncImagePainter
-import io.ashdavies.dominion.DominionCard
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 internal fun CardScreen(
-    card: DominionCard,
+    card: Card,
     modifier: Modifier = Modifier,
     onBack: () -> Unit = { },
 ) {
@@ -38,13 +37,13 @@ internal fun CardScreen(
 @Composable
 @ExperimentalMaterial3Api
 private fun CardTopBar(
-    card: DominionCard,
+    card: Card,
     modifier: Modifier = Modifier,
     onBack: () -> Unit = { },
 ) {
     TopAppBar(
         navigationIcon = { BackIconButton(onBack) },
-        title = { Text(card.name) },
+        title = { Text(card.title) },
         modifier = modifier,
     )
 }
@@ -60,16 +59,16 @@ private fun BackIconButton(onClick: () -> Unit = { }) {
 }
 
 @Composable
-private fun CardScreen(card: DominionCard, modifier: Modifier = Modifier) {
+private fun CardScreen(card: Card, modifier: Modifier = Modifier) {
     if (card.image == null) {
         Text(
             modifier = modifier.fillMaxSize(),
-            text = card.name,
+            text = card.title,
         )
     } else {
         Image(
             painter = rememberAsyncImagePainter(card.image),
-            contentDescription = card.name,
+            contentDescription = card.title,
             modifier = modifier.fillMaxSize(),
         )
     }

@@ -1,11 +1,10 @@
-package io.ashdavies.dominion.kingdom
+package io.ashdavies.dominion
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -17,7 +16,6 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LargeTopAppBar
-import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -26,19 +24,15 @@ import androidx.compose.material3.TopAppBarDefaults.enterAlwaysScrollBehavior
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
 import coil3.compose.rememberAsyncImagePainter
-import io.ashdavies.dominion.DominionCard
-import io.ashdavies.dominion.DominionExpansion
-import io.ashdavies.dominion.layout.windowInsetsPadding
-import io.ashdavies.http.LocalHttpClient
-import io.ashdavies.http.onLoading
-import io.ashdavies.http.produceStateInline
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 
@@ -46,55 +40,56 @@ private const val DEFAULT_ASPECT_RATIO = 0.62f
 private const val DEFAULT_COLUMN_COUNT = 3
 
 @Composable
+internal fun KingdomPresenter(expansion: String): DominionScreen.Kingdom.State {
+    var expandedCard by remember { mutableStateOf<Card?>(null) }
+
+    return DominionScreen.Kingdom.State(expansion, emptyList(), expandedCard) { event ->
+        if (event is DominionScreen.Kingdom.Event.ExpandCard) {
+            expandedCard = event.card
+        }
+    }
+}
+
+@Composable
 @OptIn(ExperimentalMaterial3Api::class)
 internal fun KingdomScreen(
-    expansion: DominionExpansion,
-    onClick: (DominionCard) -> Unit = { },
-    onBack: () -> Unit = { },
+    state: DominionScreen.Kingdom.State,
     modifier: Modifier = Modifier,
 ) {
     val scrollBehavior = enterAlwaysScrollBehavior()
-    val httpClient = LocalHttpClient.current
-    val cardService = remember(httpClient) {
-        CardService(httpClient)
-    }
-
-    val viewState by produceStateInline {
-        cardService.getCardList(expansion)
-    }
+    val eventSink = state.eventSink
 
     Scaffold(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
-        topBar = { KingdomTopBar(expansion, scrollBehavior, onBack) },
+        topBar = {
+            KingdomTopBar(
+                title = state.expansion,
+                onBack = { eventSink(DominionScreen.Kingdom.Event.Back) },
+                scrollBehavior = scrollBehavior,
+            )
+        },
     ) { contentPadding ->
-        viewState.onSuccess {
-            KingdomScreen(
-                kingdom = it.toImmutableList(),
-                contentPadding = contentPadding,
-                onClick = onClick,
-            )
-        }
-
-        viewState.onLoading {
-            LinearProgressIndicator(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(4.dp),
-            )
-        }
+        KingdomScreen(
+            cards = state.cards.toImmutableList(),
+            contentPadding = contentPadding,
+            onClick = { eventSink(DominionScreen.Kingdom.Event.ExpandCard(it)) },
+        )
     }
 }
 
 @Composable
 @ExperimentalMaterial3Api
 private fun KingdomTopBar(
-    expansion: DominionExpansion,
-    scrollBehavior: TopAppBarScrollBehavior,
+    title: String,
     onBack: () -> Unit = { },
+    scrollBehavior: TopAppBarScrollBehavior,
 ) {
     Surface(color = MaterialTheme.colorScheme.surface) {
         LargeTopAppBar(
-            title = { Text(expansion.name) },
+            title = { Text(title) },
+            modifier = Modifier
+                .nestedScroll(scrollBehavior.nestedScrollConnection)
+                .windowInsetsPadding(),
             navigationIcon = {
                 /*Image(
                     contentDescription = expansion.name,
@@ -104,9 +99,6 @@ private fun KingdomTopBar(
                 BackIconButton(onBack)
             },
             scrollBehavior = scrollBehavior,
-            modifier = Modifier
-                .nestedScroll(scrollBehavior.nestedScrollConnection)
-                .windowInsetsPadding(),
         )
     }
 }
@@ -124,10 +116,10 @@ private fun BackIconButton(onClick: () -> Unit) {
 @Composable
 @ExperimentalMaterial3Api
 private fun KingdomScreen(
-    kingdom: ImmutableList<DominionCard>,
+    cards: ImmutableList<Card>,
     contentPadding: PaddingValues,
     columnCount: Int = DEFAULT_COLUMN_COUNT,
-    onClick: (DominionCard) -> Unit = { },
+    onClick: (Card) -> Unit = { },
     modifier: Modifier = Modifier,
 ) {
     LazyVerticalGrid(
@@ -135,7 +127,7 @@ private fun KingdomScreen(
         modifier = modifier.padding(4.dp),
         contentPadding = contentPadding,
     ) {
-        items(kingdom) {
+        items(cards) {
             KingdomCard(it) { onClick(it) }
         }
     }
@@ -144,17 +136,17 @@ private fun KingdomScreen(
 @Composable
 @ExperimentalMaterial3Api
 private fun KingdomCard(
-    value: DominionCard,
+    value: Card,
     modifier: Modifier = Modifier,
     onClick: () -> Unit = { },
 ) {
     Box(Modifier.padding(4.dp)) {
         Card(modifier.clickable(onClick = onClick)) {
             when (val image = value.image) {
-                null -> Text(value.name, color = Color.White)
+                null -> Text(value.title, color = Color.White)
                 else -> Image(
                     painter = rememberAsyncImagePainter(image),
-                    contentDescription = value.name,
+                    contentDescription = value.title,
                     modifier = Modifier
                         .aspectRatio(DEFAULT_ASPECT_RATIO)
                         .height(300.dp),

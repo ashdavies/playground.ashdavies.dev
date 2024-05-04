@@ -1,7 +1,7 @@
-package io.ashdavies.dominion.home
+package io.ashdavies.dominion
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -16,13 +16,15 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LinearProgressIndicator
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -30,10 +32,8 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil3.compose.rememberAsyncImagePainter
-import io.ashdavies.dominion.DominionExpansion
+import com.slack.circuit.runtime.Navigator
 import io.ashdavies.http.LocalHttpClient
-import io.ashdavies.http.onLoading
-import io.ashdavies.http.produceStateInline
 import io.ktor.client.HttpClient
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
@@ -41,34 +41,45 @@ import kotlinx.collections.immutable.toImmutableList
 private const val DEFAULT_COLUMN_COUNT = 3
 
 @Composable
-@OptIn(ExperimentalMaterial3Api::class)
-internal fun HomeScreen(
+internal fun ExpansionsPresenter(
+    navigator: Navigator,
     httpClient: HttpClient = LocalHttpClient.current,
-    modifier: Modifier = Modifier,
-    onClick: (DominionExpansion) -> Unit = { },
-) {
-    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
-    val expansionService = remember(httpClient) {
-        ExpansionService(httpClient)
+): DominionScreen.Expansions.State {
+    var isLoading by remember { mutableStateOf(true) }
+
+    val expansions by produceState(emptyList()) {
+        value = httpClient
+            .categoryMembers("Category:Sets", "page")
+            .map { Expansion(it, null, null) }
+            .also { isLoading = false }
     }
 
-    val state by produceStateInline {
-        expansionService.getExpansionList()
+    return DominionScreen.Expansions.State(
+        expansions = expansions,
+        isLoading = false,
+    ) { event ->
+        when (event) {
+            is DominionScreen.Expansions.Event.ShowExpansion -> {
+                navigator.goTo(DominionScreen.Kingdom(event.expansion.title))
+            }
+        }
     }
+}
+
+@Composable
+@OptIn(ExperimentalMaterial3Api::class)
+internal fun ExpansionsScreen(
+    state: DominionScreen.Expansions.State,
+    modifier: Modifier = Modifier,
+) {
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
+    val eventSink = state.eventSink
 
     Scaffold(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = { CenterAlignedTopAppBar({ Text("Dominion") }) },
     ) { contentPadding ->
-        state.onSuccess {
-            HomeScreen(
-                expansions = it.toImmutableList(),
-                contentPadding = contentPadding,
-                onClick = onClick,
-            )
-        }
-
-        state.onLoading {
+        AnimatedVisibility(state.isLoading) {
             LinearProgressIndicator(
                 modifier = Modifier
                     .padding(contentPadding)
@@ -76,29 +87,21 @@ internal fun HomeScreen(
             )
         }
 
-        state.onFailure {
-            Box(
-                modifier = Modifier
-                    .background(MaterialTheme.colorScheme.error)
-                    .padding(contentPadding)
-                    .fillMaxWidth(),
-            ) {
-                Text(
-                    text = it.message ?: "An unknown error occurred (${it::class.simpleName})",
-                    color = MaterialTheme.colorScheme.onError,
-                )
-            }
-        }
+        ExpansionsScreen(
+            expansions = state.expansions.toImmutableList(),
+            contentPadding = contentPadding,
+            onClick = { eventSink(DominionScreen.Expansions.Event.ShowExpansion(it)) },
+        )
     }
 }
 
 @Composable
 @ExperimentalMaterial3Api
-private fun HomeScreen(
-    expansions: ImmutableList<DominionExpansion>,
+private fun ExpansionsScreen(
+    expansions: ImmutableList<Expansion>,
     contentPadding: PaddingValues,
     columnCount: Int = DEFAULT_COLUMN_COUNT,
-    onClick: (DominionExpansion) -> Unit = { },
+    onClick: (Expansion) -> Unit = { },
     modifier: Modifier = Modifier,
 ) {
     LazyVerticalGrid(
@@ -115,14 +118,18 @@ private fun HomeScreen(
 @Composable
 @ExperimentalMaterial3Api
 private fun ExpansionCard(
-    value: DominionExpansion,
+    expansions: Expansion,
     modifier: Modifier = Modifier,
     onClick: () -> Unit = { },
 ) {
     Box(Modifier.padding(4.dp)) {
+        if (expansions.image == null) {
+            Text(expansions.title)
+        }
+
         Image(
-            painter = rememberAsyncImagePainter(value.image),
-            contentDescription = value.name,
+            painter = rememberAsyncImagePainter(expansions.image),
+            contentDescription = expansions.title,
             modifier = modifier
                 .fillMaxSize()
                 .aspectRatio(1.0f)
