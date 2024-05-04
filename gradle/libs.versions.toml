@@ -130,7 +130,7 @@ cash-sqldelight = { id = "app.cash.sqldelight", version.ref = "cash-sqldelight" 
 dependency-analysis = "com.autonomousapps.dependency-analysis:1.31.0"
 detekt = "io.gitlab.arturbosch.detekt:1.23.6"
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
-gradle-doctor = "com.osacky.doctor:0.9.2"
+gradle-doctor = "com.osacky.doctor:0.10.0"
 kotlin-compose = { id = "org.jetbrains.compose", version.ref = "jetbrains-compose" }
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "jetbrains-kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "jetbrains-kotlin" }
