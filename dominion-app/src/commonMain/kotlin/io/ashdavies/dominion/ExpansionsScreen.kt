@@ -40,6 +40,9 @@ import kotlinx.collections.immutable.toImmutableList
 
 private const val DEFAULT_COLUMN_COUNT = 3
 
+private val FILE_ART_REGEX = Regex("File:(.*)Art\\.jpg")
+private val FILE_REGEX = Regex("File:(.*)\\.jpg")
+
 @Composable
 internal fun ExpansionsPresenter(
     navigator: Navigator,
@@ -48,10 +51,31 @@ internal fun ExpansionsPresenter(
     var isLoading by remember { mutableStateOf(true) }
 
     val expansions by produceState(emptyList()) {
-        value = httpClient
-            .categoryMembers("Category:Sets", "page")
-            .map { Expansion(it, null, null) }
-            .also { isLoading = false }
+        val sets = httpClient.categoryMembers("Category:Sets", "page")
+
+        val images = httpClient
+            .categoryImages("Category:English_box_images", FILE_REGEX)
+            .toMutableMap()
+
+        val art = httpClient
+            .categoryImages("Category:Box_art", FILE_ART_REGEX)
+            .toMutableMap()
+
+        value = sets.map { title ->
+            Expansion(
+                title = title,
+                image = images.remove(title) ?: let {
+                    println("Failed to find image for $title from $images")
+                    null
+                },
+                art = art.remove(title) ?: let {
+                    println("Failed to find art for $title from $art")
+                    null
+                },
+            )
+        }
+
+        isLoading = false
     }
 
     return DominionScreen.Expansions.State(

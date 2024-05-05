@@ -12,7 +12,10 @@ import kotlinx.serialization.json.jsonPrimitive
 private const val DOMINION_STRATEGY_URL = "https://wiki.dominionstrategy.com/api.php"
 private const val DEFAULT_LIMIT = 500
 
-internal suspend fun HttpClient.categoryMembers(cmTitle: String, cmType: String): List<String> {
+internal suspend fun HttpClient.categoryMembers(
+    cmTitle: String,
+    cmType: String,
+): List<String> {
     val queryString = "action=query" +
             "&list=categorymembers" +
             "&cmtitle=$cmTitle" +
@@ -27,7 +30,10 @@ internal suspend fun HttpClient.categoryMembers(cmTitle: String, cmType: String)
         .map { it.getContentAsString("title") }
 }
 
-internal suspend fun HttpClient.categoryImages(gcmTitle: String): List<Pair<String, String>> {
+internal suspend fun HttpClient.categoryImages(
+    gcmTitle: String,
+    regex: Regex,
+): Map<String, String> {
     val queryString = "action=query" +
             "&generator=categorymembers" +
             "&gcmtitle=$gcmTitle" +
@@ -37,12 +43,18 @@ internal suspend fun HttpClient.categoryImages(gcmTitle: String): List<Pair<Stri
             "&iiprop=url" +
             "&format=json"
 
+    fun String.firstGroup(regex: Regex): String = regex.find(this)
+        ?.groupValues
+        ?.get(1)
+        ?: error("No match found for $regex in $this")
+
     return get("$DOMINION_STRATEGY_URL?$queryString")
         .body<JsonObject>()
         .getOrThrow<JsonObject>("query")
         .getOrThrow<JsonObject>("pages")
-        .values.map {
-            it.getContentAsString("title") to it
+        .values.associate {
+            it.getContentAsString("title")
+                .firstGroup(regex) to it
                 .getOrThrow<JsonArray>("imageinfo")
                 .first()
                 .getContentAsString("url")
