@@ -3,6 +3,7 @@ package io.ashdavies.dominion
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
+import io.ktor.http.encodeURLPath
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
@@ -43,18 +44,37 @@ internal suspend fun HttpClient.categoryImages(
             "&iiprop=url" +
             "&format=json"
 
-    fun String.firstGroup(regex: Regex): String = regex.find(this)
-        ?.groupValues
-        ?.get(1)
-        ?: error("No match found for $regex in $this")
+    return imageInfo(queryString, regex)
+}
 
+internal suspend fun HttpClient.imageUrls(
+    vararg titles: String,
+    regex: Regex,
+): Map<String, String> {
+    val queryString = "action=query" +
+            "&titles=${titles.joinToString("|").encodeURLPath()}" +
+            "&prop=imageinfo" +
+            "&iiprop=url" +
+            "&format=json"
+
+    return imageInfo(queryString, regex)
+}
+
+private suspend fun HttpClient.imageInfo(
+    queryString: String,
+    regex: Regex,
+): Map<String, String> {
     return get("$DOMINION_STRATEGY_URL?$queryString")
         .body<JsonObject>()
         .getOrThrow<JsonObject>("query")
         .getOrThrow<JsonObject>("pages")
-        .values.associate {
-            it.getContentAsString("title")
-                .firstGroup(regex) to it
+        .values.associate { value ->
+            val key = value
+                .getContentAsString("title")
+                .firstGroupOrNull(regex)
+                ?: error("Failed to find group for $value")
+
+            key to value
                 .getOrThrow<JsonArray>("imageinfo")
                 .first()
                 .getContentAsString("url")
@@ -64,11 +84,5 @@ internal suspend fun HttpClient.categoryImages(
 private fun JsonElement.getContentAsString(key: String): String =
     jsonObject.getValue(key).jsonPrimitive.content
 
-private inline fun <reified T : JsonElement> JsonElement.getOrThrow(vararg keys: String): T =
-    keys.fold(this) { acc, key -> acc.getOrThrow(key) } as? T ?: error(simpleName<T>())
-
 private inline fun <reified T : JsonElement> JsonElement.getOrThrow(key: String): T =
-    jsonObject.getValue(key) as? T ?: error(simpleName<T>())
-
-private inline fun <reified T> simpleName(): String =
-    T::class.simpleName ?: error(T::class)
+    jsonObject.getValue(key) as? T ?: error(T::class.simpleName ?: error(T::class))

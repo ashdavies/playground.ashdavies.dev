@@ -33,6 +33,7 @@ import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
 import coil3.compose.rememberAsyncImagePainter
+import com.slack.circuit.runtime.Navigator
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 
@@ -40,12 +41,21 @@ private const val DEFAULT_ASPECT_RATIO = 0.62f
 private const val DEFAULT_COLUMN_COUNT = 3
 
 @Composable
-internal fun KingdomPresenter(expansion: String): DominionScreen.Kingdom.State {
+internal fun KingdomPresenter(
+    navigator: Navigator,
+    expansion: String,
+): DominionScreen.Kingdom.State {
     var expandedCard by remember { mutableStateOf<Card?>(null) }
 
     return DominionScreen.Kingdom.State(expansion, emptyList(), expandedCard) { event ->
-        if (event is DominionScreen.Kingdom.Event.ExpandCard) {
-            expandedCard = event.card
+        when (event) {
+            is DominionScreen.Kingdom.Event.ExpandCard -> {
+                expandedCard = event.card
+            }
+
+            DominionScreen.Kingdom.Event.Back -> {
+                navigator.pop()
+            }
         }
     }
 }

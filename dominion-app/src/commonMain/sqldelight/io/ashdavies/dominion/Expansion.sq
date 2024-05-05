@@ -1,6 +1,6 @@
 CREATE TABLE expansion(
-    title TEXT NOT NULL UNIQUE PRIMARY KEY,
-    image TEXT DEFAULT NULL,
+    title TEXT NOT NULL PRIMARY KEY,
+    image TEXT NOT NULL,
     art TEXT DEFAULT NULL
 );
 

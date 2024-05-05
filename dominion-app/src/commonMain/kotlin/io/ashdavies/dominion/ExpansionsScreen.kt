@@ -3,7 +3,6 @@ package io.ashdavies.dominion
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
@@ -40,47 +39,22 @@ import kotlinx.collections.immutable.toImmutableList
 
 private const val DEFAULT_COLUMN_COUNT = 3
 
-private val FILE_ART_REGEX = Regex("File:(.*)Art\\.jpg")
-private val FILE_REGEX = Regex("File:(.*)\\.jpg")
-
 @Composable
 internal fun ExpansionsPresenter(
     navigator: Navigator,
+    expansionsQueries: ExpansionQueries,
     httpClient: HttpClient = LocalHttpClient.current,
 ): DominionScreen.Expansions.State {
     var isLoading by remember { mutableStateOf(true) }
-
-    val expansions by produceState(emptyList()) {
-        val sets = httpClient.categoryMembers("Category:Sets", "page")
-
-        val images = httpClient
-            .categoryImages("Category:English_box_images", FILE_REGEX)
-            .toMutableMap()
-
-        val art = httpClient
-            .categoryImages("Category:Box_art", FILE_ART_REGEX)
-            .toMutableMap()
-
-        value = sets.map { title ->
-            Expansion(
-                title = title,
-                image = images.remove(title) ?: let {
-                    println("Failed to find image for $title from $images")
-                    null
-                },
-                art = art.remove(title) ?: let {
-                    println("Failed to find art for $title from $art")
-                    null
-                },
-            )
-        }
-
+    val expansionsStore = remember { ExpansionsStore(expansionsQueries, httpClient) }
+    val expansions by produceState(emptyList<Expansion>()) {
+        value = expansionsStore()
         isLoading = false
     }
 
     return DominionScreen.Expansions.State(
         expansions = expansions,
-        isLoading = false,
+        isLoading = isLoading,
     ) { event ->
         when (event) {
             is DominionScreen.Expansions.Event.ShowExpansion -> {
@@ -142,25 +116,20 @@ private fun ExpansionsScreen(
 @Composable
 @ExperimentalMaterial3Api
 private fun ExpansionCard(
-    expansions: Expansion,
+    expansion: Expansion,
     modifier: Modifier = Modifier,
     onClick: () -> Unit = { },
 ) {
-    Box(Modifier.padding(4.dp)) {
-        if (expansions.image == null) {
-            Text(expansions.title)
-        }
-
-        Image(
-            painter = rememberAsyncImagePainter(expansions.image),
-            contentDescription = expansions.title,
-            modifier = modifier
-                .fillMaxSize()
-                .aspectRatio(1.0f)
-                .clip(RoundedCornerShape(4.dp))
-                .clickable(onClick = onClick),
-            alignment = Alignment.TopCenter,
-            contentScale = ContentScale.Crop,
-        )
-    }
+    Image(
+        painter = rememberAsyncImagePainter(expansion.image),
+        contentDescription = expansion.title,
+        modifier = modifier
+            .fillMaxSize()
+            .padding(4.dp)
+            .aspectRatio(1.0f)
+            .clip(RoundedCornerShape(4.dp))
+            .clickable(onClick = onClick),
+        alignment = Alignment.TopCenter,
+        contentScale = ContentScale.Crop,
+    )
 }

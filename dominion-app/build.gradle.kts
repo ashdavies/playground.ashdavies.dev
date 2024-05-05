@@ -29,7 +29,6 @@ kotlin {
         implementation(libs.ktor.client.core)
         implementation(libs.paging.compose.common)
         implementation(libs.slack.circuit.foundation)
-        implementation(libs.sqldelight.paging3.extensions)
     }
 }
 
