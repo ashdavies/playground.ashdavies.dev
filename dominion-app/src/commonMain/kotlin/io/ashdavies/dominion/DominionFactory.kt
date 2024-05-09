@@ -1,5 +1,6 @@
 package io.ashdavies.dominion
 
+import androidx.compose.runtime.remember
 import com.slack.circuit.runtime.presenter.Presenter
 import com.slack.circuit.runtime.presenter.presenterOf
 import com.slack.circuit.runtime.ui.Ui
@@ -18,18 +19,30 @@ public fun dominionPresenterFactory(context: PlatformContext): Presenter.Factory
 
         when (screen) {
             is DominionScreen.ExpansionsList -> presenterOf {
+                val httpClient = LocalHttpClient.current
+
                 ExpansionsPresenter(
                     navigator = navigator,
-                    expansionsQueries = playgroundDatabase.expansionQueries,
-                    httpClient = LocalHttpClient.current
+                    expansionsStore = remember(playgroundDatabase, httpClient) {
+                        ExpansionsStore(
+                            expansionQueries = playgroundDatabase.expansionQueries,
+                            httpClient = httpClient,
+                        )
+                    },
                 )
             }
 
             is DominionScreen.ExpansionDetails -> presenterOf {
+                val httpClient = LocalHttpClient.current
+
                 DetailsPresenter(
                     navigator = navigator,
-                    cardQueries = playgroundDatabase.cardQueries,
-                    httpClient = LocalHttpClient.current,
+                    cardsStore = remember(playgroundDatabase, httpClient) {
+                        CardsStore(
+                            cardQueries = playgroundDatabase.cardQueries,
+                            httpClient = httpClient,
+                        )
+                    },
                     expansion = screen.expansion,
                 )
             }

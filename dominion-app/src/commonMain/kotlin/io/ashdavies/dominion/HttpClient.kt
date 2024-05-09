@@ -17,11 +17,11 @@ internal suspend fun HttpClient.categoryMembers(
     cmType: String,
 ): List<String> {
     val queryString = "action=query" +
-            "&list=categorymembers" +
-            "&cmtitle=$cmTitle" +
-            "&cmtype=$cmType" +
-            "&cmlimit=$DEFAULT_LIMIT" +
-            "&format=json"
+        "&list=categorymembers" +
+        "&cmtitle=$cmTitle" +
+        "&cmtype=$cmType" +
+        "&cmlimit=$DEFAULT_LIMIT" +
+        "&format=json"
 
     return get("$DOMINION_STRATEGY_URL?$queryString")
         .body<JsonObject>()
@@ -35,13 +35,13 @@ internal suspend fun HttpClient.categoryImages(
     regex: Regex,
 ): Map<String, String> {
     val queryString = "action=query" +
-            "&generator=categorymembers" +
-            "&gcmtitle=$gcmTitle" +
-            "&gcmtype=file" +
-            "&gcmlimit=$DEFAULT_LIMIT" +
-            "&prop=imageinfo" +
-            "&iiprop=url" +
-            "&format=json"
+        "&generator=categorymembers" +
+        "&gcmtitle=$gcmTitle" +
+        "&gcmtype=file" +
+        "&gcmlimit=$DEFAULT_LIMIT" +
+        "&prop=imageinfo" +
+        "&iiprop=url" +
+        "&format=json"
 
     return get("$DOMINION_STRATEGY_URL?$queryString")
         .body<JsonObject>()

@@ -1,13 +1,13 @@
 CREATE TABLE card(
     title TEXT NOT NULL UNIQUE PRIMARY KEY,
-    extension TEXT NOT NULL,
+    expansion TEXT NOT NULL,
     image TEXT DEFAULT NULL
 );
 
-selectByExtension:
+selectByExpansion:
     SELECT *
     FROM card
-    WHERE extension = :extension
+    WHERE expansion = :expansion
     ORDER BY title DESC;
 
 deleteAll:

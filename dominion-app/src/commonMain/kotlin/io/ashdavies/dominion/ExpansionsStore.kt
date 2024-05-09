@@ -6,6 +6,8 @@ private val FILE_ART_REGEX = Regex("File:(.*)Art\\.jpg")
 private val FILE_REGEX = Regex("File:(.*)\\.jpg")
 private val TITLE_REGEX = Regex("(.+) \\(.+\\)")
 
+// TODO Rename to Set
+
 internal fun interface ExpansionsStore : suspend () -> List<Expansion>
 
 internal fun ExpansionsStore(

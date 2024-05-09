@@ -25,6 +25,7 @@ import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -34,7 +35,6 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
 import coil3.compose.rememberAsyncImagePainter
 import com.slack.circuit.runtime.Navigator
-import io.ktor.client.HttpClient
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 
@@ -44,13 +44,23 @@ private const val DEFAULT_COLUMN_COUNT = 3
 @Composable
 internal fun DetailsPresenter(
     navigator: Navigator,
-    cardQueries: CardQueries,
-    httpClient: HttpClient,
-    expansion: String,
+    cardsStore: CardsStore,
+    expansion: Expansion,
 ): DominionScreen.ExpansionDetails.State {
     var expandedCard by remember { mutableStateOf<Card?>(null) }
+    var isLoading by remember { mutableStateOf(false) }
 
-    return DominionScreen.ExpansionDetails.State(expansion, emptyList(), expandedCard) { event ->
+    val cards by produceState(emptyList<Card>()) {
+        value = cardsStore.invoke(expansion.title)
+        isLoading = false
+    }
+
+    return DominionScreen.ExpansionDetails.State(
+        expansion = expansion,
+        cards = cards,
+        expandedCard = expandedCard,
+        isLoading = isLoading,
+    ) { event ->
         when (event) {
             is DominionScreen.ExpansionDetails.Event.ExpandCard -> {
                 expandedCard = event.card
@@ -76,7 +86,7 @@ internal fun DetailsScreen(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             DetailsTopBar(
-                title = state.expansion,
+                title = state.expansion.title,
                 onBack = { eventSink(DominionScreen.ExpansionDetails.Event.Back) },
                 scrollBehavior = scrollBehavior,
             )

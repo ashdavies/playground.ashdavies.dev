@@ -37,7 +37,6 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImagePainter
 import coil3.compose.rememberAsyncImagePainter
 import com.slack.circuit.runtime.Navigator
-import io.ktor.client.HttpClient
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 
@@ -46,19 +45,16 @@ private const val DEFAULT_COLUMN_COUNT = 3
 @Composable
 internal fun ExpansionsPresenter(
     navigator: Navigator,
-    expansionsQueries: ExpansionQueries,
-    httpClient: HttpClient,
+    expansionsStore: ExpansionsStore,
 ): DominionScreen.ExpansionsList.State {
     var isLoading by remember { mutableStateOf(true) }
-    val expansionsStore =
-        remember { ExpansionsStore(expansionsQueries, httpClient, refresh = true) }
-    val expansions by produceState(emptyList<Expansion>()) {
+    val expansionList by produceState(emptyList<Expansion>()) {
         value = expansionsStore()
         isLoading = false
     }
 
     return DominionScreen.ExpansionsList.State(
-        expansions = expansions,
+        expansionList = expansionList,
         isLoading = isLoading,
     ) { event ->
         when (event) {
@@ -91,7 +87,7 @@ internal fun ExpansionsScreen(
         }
 
         ExpansionsScreen(
-            expansions = state.expansions.toImmutableList(),
+            expansions = state.expansionList.toImmutableList(),
             contentPadding = contentPadding,
             onClick = { eventSink(DominionScreen.ExpansionsList.Event.ShowExpansion(it)) },
         )

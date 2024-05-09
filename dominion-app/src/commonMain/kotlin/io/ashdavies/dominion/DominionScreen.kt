@@ -13,7 +13,7 @@ internal sealed interface DominionScreen : Parcelable, Screen {
     @Parcelize
     data object ExpansionsList : DominionScreen {
         data class State(
-            val expansions: List<Expansion>,
+            val expansionList: List<Expansion>,
             val isLoading: Boolean,
             val eventSink: (Event) -> Unit,
         ) : CircuitUiState
@@ -28,9 +28,10 @@ internal sealed interface DominionScreen : Parcelable, Screen {
     @Parcelize
     data class ExpansionDetails(val expansion: String) : DominionScreen {
         data class State(
-            val expansion: String,
+            val expansion: Expansion,
             val cards: List<Card>,
             val expandedCard: Card?,
+            val isLoading: Boolean,
             val eventSink: (Event) -> Unit,
         ) : CircuitUiState
 
