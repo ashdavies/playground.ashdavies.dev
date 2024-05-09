@@ -48,7 +48,7 @@ internal fun ExpansionsPresenter(
     navigator: Navigator,
     expansionsQueries: ExpansionQueries,
     httpClient: HttpClient,
-): DominionScreen.Expansions.State {
+): DominionScreen.ExpansionsList.State {
     var isLoading by remember { mutableStateOf(true) }
     val expansionsStore =
         remember { ExpansionsStore(expansionsQueries, httpClient, refresh = true) }
@@ -57,13 +57,13 @@ internal fun ExpansionsPresenter(
         isLoading = false
     }
 
-    return DominionScreen.Expansions.State(
+    return DominionScreen.ExpansionsList.State(
         expansions = expansions,
         isLoading = isLoading,
     ) { event ->
         when (event) {
-            is DominionScreen.Expansions.Event.ShowExpansion -> {
-                navigator.goTo(DominionScreen.Kingdom(event.expansion.title))
+            is DominionScreen.ExpansionsList.Event.ShowExpansion -> {
+                navigator.goTo(DominionScreen.ExpansionDetails(event.expansion.title))
             }
         }
     }
@@ -72,7 +72,7 @@ internal fun ExpansionsPresenter(
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 internal fun ExpansionsScreen(
-    state: DominionScreen.Expansions.State,
+    state: DominionScreen.ExpansionsList.State,
     modifier: Modifier = Modifier,
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
@@ -93,7 +93,7 @@ internal fun ExpansionsScreen(
         ExpansionsScreen(
             expansions = state.expansions.toImmutableList(),
             contentPadding = contentPadding,
-            onClick = { eventSink(DominionScreen.Expansions.Event.ShowExpansion(it)) },
+            onClick = { eventSink(DominionScreen.ExpansionsList.Event.ShowExpansion(it)) },
         )
     }
 }

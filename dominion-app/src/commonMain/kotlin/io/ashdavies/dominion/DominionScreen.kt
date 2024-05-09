@@ -6,12 +6,12 @@ import com.slack.circuit.runtime.screen.Screen
 import io.ashdavies.parcelable.Parcelable
 import io.ashdavies.parcelable.Parcelize
 
-public fun dominionScreen(): Screen = DominionScreen.Expansions
+public fun dominionScreen(): Screen = DominionScreen.ExpansionsList
 
 internal sealed interface DominionScreen : Parcelable, Screen {
 
     @Parcelize
-    data object Expansions : DominionScreen {
+    data object ExpansionsList : DominionScreen {
         data class State(
             val expansions: List<Expansion>,
             val isLoading: Boolean,
@@ -26,7 +26,7 @@ internal sealed interface DominionScreen : Parcelable, Screen {
     }
 
     @Parcelize
-    data class Kingdom(val expansion: String) : DominionScreen {
+    data class ExpansionDetails(val expansion: String) : DominionScreen {
         data class State(
             val expansion: String,
             val cards: List<Card>,

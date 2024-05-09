@@ -42,21 +42,21 @@ private const val DEFAULT_ASPECT_RATIO = 0.62f
 private const val DEFAULT_COLUMN_COUNT = 3
 
 @Composable
-internal fun KingdomPresenter(
+internal fun DetailsPresenter(
     navigator: Navigator,
     cardQueries: CardQueries,
     httpClient: HttpClient,
     expansion: String,
-): DominionScreen.Kingdom.State {
+): DominionScreen.ExpansionDetails.State {
     var expandedCard by remember { mutableStateOf<Card?>(null) }
 
-    return DominionScreen.Kingdom.State(expansion, emptyList(), expandedCard) { event ->
+    return DominionScreen.ExpansionDetails.State(expansion, emptyList(), expandedCard) { event ->
         when (event) {
-            is DominionScreen.Kingdom.Event.ExpandCard -> {
+            is DominionScreen.ExpansionDetails.Event.ExpandCard -> {
                 expandedCard = event.card
             }
 
-            DominionScreen.Kingdom.Event.Back -> {
+            DominionScreen.ExpansionDetails.Event.Back -> {
                 navigator.pop()
             }
         }
@@ -65,8 +65,8 @@ internal fun KingdomPresenter(
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-internal fun KingdomScreen(
-    state: DominionScreen.Kingdom.State,
+internal fun DetailsScreen(
+    state: DominionScreen.ExpansionDetails.State,
     modifier: Modifier = Modifier,
 ) {
     val scrollBehavior = enterAlwaysScrollBehavior()
@@ -75,24 +75,24 @@ internal fun KingdomScreen(
     Scaffold(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            KingdomTopBar(
+            DetailsTopBar(
                 title = state.expansion,
-                onBack = { eventSink(DominionScreen.Kingdom.Event.Back) },
+                onBack = { eventSink(DominionScreen.ExpansionDetails.Event.Back) },
                 scrollBehavior = scrollBehavior,
             )
         },
     ) { contentPadding ->
-        KingdomScreen(
+        DetailsScreen(
             cards = state.cards.toImmutableList(),
             contentPadding = contentPadding,
-            onClick = { eventSink(DominionScreen.Kingdom.Event.ExpandCard(it)) },
+            onClick = { eventSink(DominionScreen.ExpansionDetails.Event.ExpandCard(it)) },
         )
     }
 }
 
 @Composable
 @ExperimentalMaterial3Api
-private fun KingdomTopBar(
+private fun DetailsTopBar(
     title: String,
     onBack: () -> Unit = { },
     scrollBehavior: TopAppBarScrollBehavior,
@@ -128,7 +128,7 @@ private fun BackIconButton(onClick: () -> Unit) {
 
 @Composable
 @ExperimentalMaterial3Api
-private fun KingdomScreen(
+private fun DetailsScreen(
     cards: ImmutableList<Card>,
     contentPadding: PaddingValues,
     columnCount: Int = DEFAULT_COLUMN_COUNT,
@@ -141,14 +141,14 @@ private fun KingdomScreen(
         contentPadding = contentPadding,
     ) {
         items(cards) {
-            KingdomCard(it) { onClick(it) }
+            ExpansionCard(it) { onClick(it) }
         }
     }
 }
 
 @Composable
 @ExperimentalMaterial3Api
-private fun KingdomCard(
+private fun ExpansionCard(
     value: Card,
     modifier: Modifier = Modifier,
     onClick: () -> Unit = { },

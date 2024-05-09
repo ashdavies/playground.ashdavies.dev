@@ -17,7 +17,7 @@ public fun dominionPresenterFactory(context: PlatformContext): Presenter.Factory
         )
 
         when (screen) {
-            is DominionScreen.Expansions -> presenterOf {
+            is DominionScreen.ExpansionsList -> presenterOf {
                 ExpansionsPresenter(
                     navigator = navigator,
                     expansionsQueries = playgroundDatabase.expansionQueries,
@@ -25,8 +25,8 @@ public fun dominionPresenterFactory(context: PlatformContext): Presenter.Factory
                 )
             }
 
-            is DominionScreen.Kingdom -> presenterOf {
-                KingdomPresenter(
+            is DominionScreen.ExpansionDetails -> presenterOf {
+                DetailsPresenter(
                     navigator = navigator,
                     cardQueries = playgroundDatabase.cardQueries,
                     httpClient = LocalHttpClient.current,
@@ -41,12 +41,12 @@ public fun dominionPresenterFactory(context: PlatformContext): Presenter.Factory
 
 public fun dominionUiFactory(): Ui.Factory = Ui.Factory { screen, _ ->
     when (screen) {
-        is DominionScreen.Expansions -> ui<DominionScreen.Expansions.State> { state, modifier ->
+        is DominionScreen.ExpansionsList -> ui<DominionScreen.ExpansionsList.State> { state, modifier ->
             ExpansionsScreen(state, modifier)
         }
 
-        is DominionScreen.Kingdom -> ui<DominionScreen.Kingdom.State> { state, modifier ->
-            KingdomScreen(state, modifier)
+        is DominionScreen.ExpansionDetails -> ui<DominionScreen.ExpansionDetails.State> { state, modifier ->
+            DetailsScreen(state, modifier)
         }
 
         else -> null
