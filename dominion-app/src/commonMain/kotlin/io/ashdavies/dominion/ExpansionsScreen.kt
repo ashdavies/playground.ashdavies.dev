@@ -2,7 +2,9 @@ package io.ashdavies.dominion
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,8 +15,10 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
@@ -30,9 +34,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
+import coil3.compose.AsyncImagePainter
 import coil3.compose.rememberAsyncImagePainter
 import com.slack.circuit.runtime.Navigator
-import io.ashdavies.http.LocalHttpClient
 import io.ktor.client.HttpClient
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
@@ -43,10 +47,11 @@ private const val DEFAULT_COLUMN_COUNT = 3
 internal fun ExpansionsPresenter(
     navigator: Navigator,
     expansionsQueries: ExpansionQueries,
-    httpClient: HttpClient = LocalHttpClient.current,
+    httpClient: HttpClient,
 ): DominionScreen.Expansions.State {
     var isLoading by remember { mutableStateOf(true) }
-    val expansionsStore = remember { ExpansionsStore(expansionsQueries, httpClient) }
+    val expansionsStore =
+        remember { ExpansionsStore(expansionsQueries, httpClient, refresh = true) }
     val expansions by produceState(emptyList<Expansion>()) {
         value = expansionsStore()
         isLoading = false
@@ -120,16 +125,35 @@ private fun ExpansionCard(
     modifier: Modifier = Modifier,
     onClick: () -> Unit = { },
 ) {
-    Image(
-        painter = rememberAsyncImagePainter(expansion.image),
-        contentDescription = expansion.title,
+    Box(
         modifier = modifier
-            .fillMaxSize()
-            .padding(4.dp)
             .aspectRatio(1.0f)
+            .padding(4.dp)
             .clip(RoundedCornerShape(4.dp))
-            .clickable(onClick = onClick),
-        alignment = Alignment.TopCenter,
-        contentScale = ContentScale.Crop,
-    )
+            .background(MaterialTheme.colorScheme.surfaceVariant),
+    ) {
+        var isLoading by remember { mutableStateOf(true) }
+        val painter = rememberAsyncImagePainter(
+            model = expansion.image,
+            onState = { isLoading = it is AsyncImagePainter.State.Loading },
+        )
+
+        if (isLoading) {
+            CircularProgressIndicator(
+                modifier = modifier
+                    .fillMaxSize()
+                    .padding(48.dp),
+            )
+        }
+
+        Image(
+            painter = painter,
+            contentDescription = expansion.title,
+            modifier = modifier
+                .clickable(onClick = onClick)
+                .fillMaxSize(),
+            alignment = Alignment.TopCenter,
+            contentScale = ContentScale.Crop,
+        )
+    }
 }

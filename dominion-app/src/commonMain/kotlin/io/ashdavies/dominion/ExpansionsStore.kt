@@ -35,7 +35,6 @@ internal fun ExpansionsStore(
             title = title,
             image = boxImages.remove(short) ?: run {
                 println("Failed to find image for $short")
-                // TODO Use File API to find image
                 return@mapNotNull null
             },
             art = boxArt.remove(short),

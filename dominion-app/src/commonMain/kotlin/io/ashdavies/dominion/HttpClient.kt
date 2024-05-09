@@ -3,7 +3,6 @@ package io.ashdavies.dominion
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
-import io.ktor.http.encodeURLPath
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
@@ -44,26 +43,6 @@ internal suspend fun HttpClient.categoryImages(
             "&iiprop=url" +
             "&format=json"
 
-    return imageInfo(queryString, regex)
-}
-
-internal suspend fun HttpClient.imageUrls(
-    vararg titles: String,
-    regex: Regex,
-): Map<String, String> {
-    val queryString = "action=query" +
-            "&titles=${titles.joinToString("|").encodeURLPath()}" +
-            "&prop=imageinfo" +
-            "&iiprop=url" +
-            "&format=json"
-
-    return imageInfo(queryString, regex)
-}
-
-private suspend fun HttpClient.imageInfo(
-    queryString: String,
-    regex: Regex,
-): Map<String, String> {
     return get("$DOMINION_STRATEGY_URL?$queryString")
         .body<JsonObject>()
         .getOrThrow<JsonObject>("query")

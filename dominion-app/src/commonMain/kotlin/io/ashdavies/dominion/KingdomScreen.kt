@@ -34,6 +34,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
 import coil3.compose.rememberAsyncImagePainter
 import com.slack.circuit.runtime.Navigator
+import io.ktor.client.HttpClient
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 
@@ -43,6 +44,8 @@ private const val DEFAULT_COLUMN_COUNT = 3
 @Composable
 internal fun KingdomPresenter(
     navigator: Navigator,
+    cardQueries: CardQueries,
+    httpClient: HttpClient,
     expansion: String,
 ): DominionScreen.Kingdom.State {
     var expandedCard by remember { mutableStateOf<Card?>(null) }
