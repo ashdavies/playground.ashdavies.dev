@@ -16,7 +16,7 @@ jetbrains-kotlin = "1.9.23"
 kotlin-jvmTarget = "17"
 kotlinx-coroutines = "1.8.0"
 kotlinx-serialization = "1.6.3"
-ktor = "2.3.10"
+ktor = "2.3.11"
 paging-compose = "3.2.0-alpha05-0.2.3"
 pinterest-ktlint = "0.50.0"
 slack-circuit = "0.20.0"
@@ -43,7 +43,7 @@ coil-network = { module = "io.coil-kt.coil3:coil-network-ktor", version.ref = "c
 compose-compiler = { module = "org.jetbrains.compose.compiler:compiler", version.ref = "compose-compiler" }
 compose-runtime = { module = "org.jetbrains.compose.runtime:runtime", version.ref = "jetbrains-compose" }
 
-fasterxml-jackson-core = "com.fasterxml.jackson.core:jackson-core:2.17.0"
+fasterxml-jackson-core = "com.fasterxml.jackson.core:jackson-core:2.17.1"
 fusesource-jansi = "org.fusesource.jansi:jansi:2.4.1"
 
 gitlive-firebase-app = { module = "dev.gitlive:firebase-app", version.ref = "gitlive-firebase" }
@@ -61,7 +61,7 @@ google-cloud-bom = "com.google.cloud:libraries-bom:26.38.0"
 google-cloud-firestore = { module = "com.google.cloud:google-cloud-firestore" }
 
 google-firebase-admin = "com.google.firebase:firebase-admin:9.2.0"
-google-firebase-bom = "com.google.firebase:firebase-bom:32.8.1"
+google-firebase-bom = "com.google.firebase:firebase-bom:33.0.0"
 google-firebase-appcheck-playintegrity = { module = "com.google.firebase:firebase-appcheck-playintegrity" }
 
 google-guava-jre = "com.google.guava:guava:33.2.0-jre"
@@ -136,5 +136,5 @@ kotlin-compose = { id = "org.jetbrains.compose", version.ref = "jetbrains-compos
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "jetbrains-kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "jetbrains-kotlin" }
 kotlinx-kover = "org.jetbrains.kotlinx.kover:0.7.6"
-ktlint = "org.jlleitschuh.gradle.ktlint:12.1.0"
+ktlint = "org.jlleitschuh.gradle.ktlint:12.1.1"
 openapi-generator = "org.openapi.generator:7.5.0"
