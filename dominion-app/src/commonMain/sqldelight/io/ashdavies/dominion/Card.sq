@@ -1,14 +1,20 @@
-CREATE TABLE card(
+CREATE TABLE Card(
     title TEXT NOT NULL UNIQUE PRIMARY KEY,
-    expansion TEXT NOT NULL,
-    image TEXT DEFAULT NULL
+    image TEXT NOT NULL,
+    boxSet TEXT
 );
 
-selectByExpansion:
+selectAll:
+    SELECT * FROM Card;
+
+selectByBoxSet:
     SELECT *
-    FROM card
-    WHERE expansion = :expansion
+    FROM Card
+    WHERE boxSet = :boxSet
     ORDER BY title DESC;
 
+insertOrReplace:
+    INSERT OR REPLACE INTO Card VALUES ?;
+
 deleteAll:
-    DELETE FROM card;
+    DELETE FROM Card;

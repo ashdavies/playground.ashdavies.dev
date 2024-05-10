@@ -1,0 +1,17 @@
+CREATE TABLE BoxSet(
+    title TEXT NOT NULL PRIMARY KEY,
+    image TEXT NOT NULL,
+    art TEXT DEFAULT NULL
+);
+
+selectAll:
+    SELECT * FROM BoxSet;
+
+selectByTitle:
+    SELECT * FROM BoxSet WHERE title = :title;
+
+insertOrReplace:
+    INSERT OR REPLACE INTO BoxSet VALUES ?;
+
+deleteAll:
+    DELETE FROM BoxSet;

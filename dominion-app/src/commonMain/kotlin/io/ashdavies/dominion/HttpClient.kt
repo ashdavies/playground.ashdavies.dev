@@ -32,13 +32,16 @@ internal suspend fun HttpClient.categoryMembers(
 
 internal suspend fun HttpClient.categoryImages(
     gcmTitle: String,
+    gcmLimit: Int = DEFAULT_LIMIT,
+    gcmOffset: Int = 0,
     regex: Regex,
 ): Map<String, String> {
     val queryString = "action=query" +
         "&generator=categorymembers" +
         "&gcmtitle=$gcmTitle" +
         "&gcmtype=file" +
-        "&gcmlimit=$DEFAULT_LIMIT" +
+        "&gcmlimit=$gcmLimit" +
+        "&gcmoffset=$gcmOffset" +
         "&prop=imageinfo" +
         "&iiprop=url" +
         "&format=json"
@@ -48,12 +51,9 @@ internal suspend fun HttpClient.categoryImages(
         .getOrThrow<JsonObject>("query")
         .getOrThrow<JsonObject>("pages")
         .values.associate { value ->
-            val key = value
+            value
                 .getContentAsString("title")
-                .firstGroupOrNull(regex)
-                ?: error("Failed to find group for $value")
-
-            key to value
+                .firstGroup(regex) to value
                 .getOrThrow<JsonArray>("imageinfo")
                 .first()
                 .getContentAsString("url")

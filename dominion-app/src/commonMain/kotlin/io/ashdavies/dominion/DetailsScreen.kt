@@ -45,28 +45,28 @@ private const val DEFAULT_COLUMN_COUNT = 3
 internal fun DetailsPresenter(
     navigator: Navigator,
     cardsStore: CardsStore,
-    expansion: Expansion,
-): DominionScreen.ExpansionDetails.State {
+    boxSet: BoxSet,
+): DominionScreen.BoxSetDetails.State {
     var expandedCard by remember { mutableStateOf<Card?>(null) }
     var isLoading by remember { mutableStateOf(false) }
 
     val cards by produceState(emptyList<Card>()) {
-        value = cardsStore.invoke(expansion.title)
+        value = cardsStore(boxSet.title)
         isLoading = false
     }
 
-    return DominionScreen.ExpansionDetails.State(
-        expansion = expansion,
+    return DominionScreen.BoxSetDetails.State(
+        boxSet = boxSet,
         cards = cards,
         expandedCard = expandedCard,
         isLoading = isLoading,
     ) { event ->
         when (event) {
-            is DominionScreen.ExpansionDetails.Event.ExpandCard -> {
+            is DominionScreen.BoxSetDetails.Event.ExpandCard -> {
                 expandedCard = event.card
             }
 
-            DominionScreen.ExpansionDetails.Event.Back -> {
+            DominionScreen.BoxSetDetails.Event.Back -> {
                 navigator.pop()
             }
         }
@@ -76,7 +76,7 @@ internal fun DetailsPresenter(
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 internal fun DetailsScreen(
-    state: DominionScreen.ExpansionDetails.State,
+    state: DominionScreen.BoxSetDetails.State,
     modifier: Modifier = Modifier,
 ) {
     val scrollBehavior = enterAlwaysScrollBehavior()
@@ -86,8 +86,8 @@ internal fun DetailsScreen(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             DetailsTopBar(
-                title = state.expansion.title,
-                onBack = { eventSink(DominionScreen.ExpansionDetails.Event.Back) },
+                title = state.boxSet.title,
+                onBack = { eventSink(DominionScreen.BoxSetDetails.Event.Back) },
                 scrollBehavior = scrollBehavior,
             )
         },
@@ -95,7 +95,7 @@ internal fun DetailsScreen(
         DetailsScreen(
             cards = state.cards.toImmutableList(),
             contentPadding = contentPadding,
-            onClick = { eventSink(DominionScreen.ExpansionDetails.Event.ExpandCard(it)) },
+            onClick = { eventSink(DominionScreen.BoxSetDetails.Event.ExpandCard(it)) },
         )
     }
 }
@@ -115,9 +115,9 @@ private fun DetailsTopBar(
                 .windowInsetsPadding(),
             navigationIcon = {
                 /*Image(
-                    contentDescription = expansion.name,
+                    contentDescription = boxSet.name,
                     modifier = Modifier.fillMaxWidth(),
-                    urlString = expansion.image,
+                    urlString = boxSet.image,
                 )*/
                 BackIconButton(onBack)
             },
@@ -151,14 +151,14 @@ private fun DetailsScreen(
         contentPadding = contentPadding,
     ) {
         items(cards) {
-            ExpansionCard(it) { onClick(it) }
+            BoxSetCard(it) { onClick(it) }
         }
     }
 }
 
 @Composable
 @ExperimentalMaterial3Api
-private fun ExpansionCard(
+private fun BoxSetCard(
     value: Card,
     modifier: Modifier = Modifier,
     onClick: () -> Unit = { },

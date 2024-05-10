@@ -43,23 +43,23 @@ import kotlinx.collections.immutable.toImmutableList
 private const val DEFAULT_COLUMN_COUNT = 3
 
 @Composable
-internal fun ExpansionsPresenter(
+internal fun BoxSetListPresenter(
     navigator: Navigator,
-    expansionsStore: ExpansionsStore,
-): DominionScreen.ExpansionsList.State {
+    boxSetStore: BoxSetStore,
+): DominionScreen.BoxSetList.State {
     var isLoading by remember { mutableStateOf(true) }
-    val expansionList by produceState(emptyList<Expansion>()) {
-        value = expansionsStore()
+    val boxSetList by produceState(emptyList<BoxSet>()) {
+        value = boxSetStore()
         isLoading = false
     }
 
-    return DominionScreen.ExpansionsList.State(
-        expansionList = expansionList,
+    return DominionScreen.BoxSetList.State(
+        boxSetList = boxSetList,
         isLoading = isLoading,
     ) { event ->
         when (event) {
-            is DominionScreen.ExpansionsList.Event.ShowExpansion -> {
-                navigator.goTo(DominionScreen.ExpansionDetails(event.expansion.title))
+            is DominionScreen.BoxSetList.Event.ShowBoxSet -> {
+                navigator.goTo(DominionScreen.BoxSetDetails(event.boxSet.title))
             }
         }
     }
@@ -67,8 +67,8 @@ internal fun ExpansionsPresenter(
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-internal fun ExpansionsScreen(
-    state: DominionScreen.ExpansionsList.State,
+internal fun BoxSetListScreen(
+    state: DominionScreen.BoxSetList.State,
     modifier: Modifier = Modifier,
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
@@ -86,21 +86,21 @@ internal fun ExpansionsScreen(
             )
         }
 
-        ExpansionsScreen(
-            expansions = state.expansionList.toImmutableList(),
+        BoxSetListScreen(
+            boxSetList = state.boxSetList.toImmutableList(),
             contentPadding = contentPadding,
-            onClick = { eventSink(DominionScreen.ExpansionsList.Event.ShowExpansion(it)) },
+            onClick = { eventSink(DominionScreen.BoxSetList.Event.ShowBoxSet(it)) },
         )
     }
 }
 
 @Composable
 @ExperimentalMaterial3Api
-private fun ExpansionsScreen(
-    expansions: ImmutableList<Expansion>,
+private fun BoxSetListScreen(
+    boxSetList: ImmutableList<BoxSet>,
     contentPadding: PaddingValues,
     columnCount: Int = DEFAULT_COLUMN_COUNT,
-    onClick: (Expansion) -> Unit = { },
+    onClick: (BoxSet) -> Unit = { },
     modifier: Modifier = Modifier,
 ) {
     LazyVerticalGrid(
@@ -108,16 +108,16 @@ private fun ExpansionsScreen(
         modifier = modifier.padding(4.dp),
         contentPadding = contentPadding,
     ) {
-        items(expansions) {
-            ExpansionCard(it) { onClick(it) }
+        items(boxSetList) {
+            BoxSetCard(it) { onClick(it) }
         }
     }
 }
 
 @Composable
 @ExperimentalMaterial3Api
-private fun ExpansionCard(
-    expansion: Expansion,
+private fun BoxSetCard(
+    boxSet: BoxSet,
     modifier: Modifier = Modifier,
     onClick: () -> Unit = { },
 ) {
@@ -130,7 +130,7 @@ private fun ExpansionCard(
     ) {
         var isLoading by remember { mutableStateOf(true) }
         val painter = rememberAsyncImagePainter(
-            model = expansion.image,
+            model = boxSet.image,
             onState = { isLoading = it is AsyncImagePainter.State.Loading },
         )
 
@@ -144,7 +144,7 @@ private fun ExpansionCard(
 
         Image(
             painter = painter,
-            contentDescription = expansion.title,
+            contentDescription = boxSet.title,
             modifier = modifier
                 .clickable(onClick = onClick)
                 .fillMaxSize(),
