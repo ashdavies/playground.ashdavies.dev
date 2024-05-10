@@ -4,7 +4,7 @@ import io.ktor.client.HttpClient
 
 private const val DEFAULT_LIMIT = 500
 
-private val CARD_IMAGE_REGEX = Regex("File:(.*)\\.jpg")
+private val CARD_IMAGE_REGEX = Regex("File:(.*)\\.(jpg|png)", RegexOption.IGNORE_CASE)
 
 internal fun interface CardsStore : suspend (String) -> List<Card>
 
@@ -55,8 +55,14 @@ internal fun CardsStore(
 
     val allCardsByTitle = allCards.associateBy { it.title }
 
-    httpClient
+    val boxSetCards = httpClient
         .categoryMembers("Category:$title", "subcat")
         .flatMap { httpClient.categoryMembers(it, "page") }
-        .map { allCardsByTitle.getValue(it) }
+        .mapNotNull { allCardsByTitle[it] }
+
+    cardQueries.transaction {
+        boxSetCards.forEach(cardQueries::insertOrReplace)
+    }
+
+    boxSetCards
 }
