@@ -3,7 +3,6 @@ package io.ashdavies.dominion
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
-import io.ktor.http.encodeURLPath
 import io.ktor.http.encodeURLQueryComponent
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement
@@ -46,7 +45,7 @@ internal suspend fun HttpClient.categoryImages(
         "&gcmoffset=$gcmOffset" +
         "&prop=imageinfo" +
         "&iiprop=url" +
-            "&format=json".encodeURLPath()
+        "&format=json"
 
     return get("$DOMINION_STRATEGY_URL?${queryString.encodeURLQueryComponent()}")
         .body<JsonObject>()
