@@ -25,7 +25,7 @@ slack-circuit = "0.20.0"
 ajalt-clikt = "com.github.ajalt.clikt:clikt:4.4.0"
 
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity" }
-androidx-annotation = "androidx.annotation:annotation:1.7.1"
+androidx-annotation = "androidx.annotation:annotation:1.8.0"
 androidx-core-splashscreen = "androidx.core:core-splashscreen:1.0.1"
 androidx-credentials-auth = "androidx.credentials:credentials-play-services-auth:1.2.2"
 
@@ -134,6 +134,6 @@ gradle-doctor = "com.osacky.doctor:0.10.0"
 kotlin-compose = { id = "org.jetbrains.compose", version.ref = "jetbrains-compose" }
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "jetbrains-kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "jetbrains-kotlin" }
-kotlinx-kover = "org.jetbrains.kotlinx.kover:0.7.6"
+kotlinx-kover = "org.jetbrains.kotlinx.kover:0.8.0"
 ktlint = "org.jlleitschuh.gradle.ktlint:12.1.1"
 openapi-generator = "org.openapi.generator:7.5.0"
