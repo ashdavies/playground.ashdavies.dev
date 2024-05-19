@@ -7,8 +7,7 @@ import kotlin.contracts.contract
 public val Result<*>.isLoading: Boolean
     get() = exceptionOrNull() is LoadingException
 
-@PublishedApi
-internal class LoadingException(val progress: Float) : Exception()
+public class LoadingException(public val progress: Float) : Exception()
 
 public fun <T> Result.Companion.loading(progress: Float = 0f): Result<T> {
     return failure(LoadingException(progress))

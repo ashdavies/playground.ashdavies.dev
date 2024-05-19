@@ -1,4 +1,4 @@
-package io.ashdavies.dominion.layout
+package io.ashdavies.dominion
 
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides.Companion.Horizontal

@@ -1,5 +1,6 @@
-package io.ashdavies.dominion.home
+package io.ashdavies.dominion
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -14,6 +15,7 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -22,53 +24,61 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
+import coil3.compose.AsyncImagePainter
 import coil3.compose.rememberAsyncImagePainter
-import io.ashdavies.dominion.DominionExpansion
-import io.ashdavies.http.LocalHttpClient
-import io.ashdavies.http.onLoading
-import io.ashdavies.http.produceStateInline
-import io.ktor.client.HttpClient
+import com.slack.circuit.runtime.Navigator
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 
 private const val DEFAULT_COLUMN_COUNT = 3
 
 @Composable
-@OptIn(ExperimentalMaterial3Api::class)
-internal fun HomeScreen(
-    httpClient: HttpClient = LocalHttpClient.current,
-    modifier: Modifier = Modifier,
-    onClick: (DominionExpansion) -> Unit = { },
-) {
-    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
-    val expansionService = remember(httpClient) {
-        ExpansionService(httpClient)
+internal fun BoxSetListPresenter(
+    navigator: Navigator,
+    boxSetStore: BoxSetStore,
+): DominionScreen.BoxSetList.State {
+    var isLoading by remember { mutableStateOf(true) }
+    val boxSetList by produceState(emptyList<BoxSet>()) {
+        value = boxSetStore()
+        isLoading = false
     }
 
-    val state by produceStateInline {
-        expansionService.getExpansionList()
+    return DominionScreen.BoxSetList.State(
+        boxSetList = boxSetList,
+        isLoading = isLoading,
+    ) { event ->
+        when (event) {
+            is DominionScreen.BoxSetList.Event.ShowBoxSet -> {
+                navigator.goTo(DominionScreen.BoxSetDetails(event.boxSet.title))
+            }
+        }
     }
+}
+
+@Composable
+@OptIn(ExperimentalMaterial3Api::class)
+internal fun BoxSetListScreen(
+    state: DominionScreen.BoxSetList.State,
+    modifier: Modifier = Modifier,
+) {
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
+    val eventSink = state.eventSink
 
     Scaffold(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = { CenterAlignedTopAppBar({ Text("Dominion") }) },
     ) { contentPadding ->
-        state.onSuccess {
-            HomeScreen(
-                expansions = it.toImmutableList(),
-                contentPadding = contentPadding,
-                onClick = onClick,
-            )
-        }
-
-        state.onLoading {
+        AnimatedVisibility(state.isLoading) {
             LinearProgressIndicator(
                 modifier = Modifier
                     .padding(contentPadding)
@@ -76,29 +86,21 @@ internal fun HomeScreen(
             )
         }
 
-        state.onFailure {
-            Box(
-                modifier = Modifier
-                    .background(MaterialTheme.colorScheme.error)
-                    .padding(contentPadding)
-                    .fillMaxWidth(),
-            ) {
-                Text(
-                    text = it.message ?: "An unknown error occurred (${it::class.simpleName})",
-                    color = MaterialTheme.colorScheme.onError,
-                )
-            }
-        }
+        BoxSetListScreen(
+            boxSetList = state.boxSetList.toImmutableList(),
+            contentPadding = contentPadding,
+            onClick = { eventSink(DominionScreen.BoxSetList.Event.ShowBoxSet(it)) },
+        )
     }
 }
 
 @Composable
 @ExperimentalMaterial3Api
-private fun HomeScreen(
-    expansions: ImmutableList<DominionExpansion>,
+private fun BoxSetListScreen(
+    boxSetList: ImmutableList<BoxSet>,
     contentPadding: PaddingValues,
     columnCount: Int = DEFAULT_COLUMN_COUNT,
-    onClick: (DominionExpansion) -> Unit = { },
+    onClick: (BoxSet) -> Unit = { },
     modifier: Modifier = Modifier,
 ) {
     LazyVerticalGrid(
@@ -106,28 +108,46 @@ private fun HomeScreen(
         modifier = modifier.padding(4.dp),
         contentPadding = contentPadding,
     ) {
-        items(expansions) {
-            ExpansionCard(it) { onClick(it) }
+        items(boxSetList) {
+            BoxSetCard(it) { onClick(it) }
         }
     }
 }
 
 @Composable
 @ExperimentalMaterial3Api
-private fun ExpansionCard(
-    value: DominionExpansion,
+private fun BoxSetCard(
+    boxSet: BoxSet,
     modifier: Modifier = Modifier,
     onClick: () -> Unit = { },
 ) {
-    Box(Modifier.padding(4.dp)) {
+    Box(
+        modifier = modifier
+            .aspectRatio(1.0f)
+            .padding(4.dp)
+            .clip(RoundedCornerShape(4.dp))
+            .background(MaterialTheme.colorScheme.surfaceVariant),
+    ) {
+        var isLoading by remember { mutableStateOf(true) }
+        val painter = rememberAsyncImagePainter(
+            model = boxSet.image,
+            onState = { isLoading = it is AsyncImagePainter.State.Loading },
+        )
+
+        if (isLoading) {
+            CircularProgressIndicator(
+                modifier = modifier
+                    .fillMaxSize()
+                    .padding(48.dp),
+            )
+        }
+
         Image(
-            painter = rememberAsyncImagePainter(value.image),
-            contentDescription = value.name,
+            painter = painter,
+            contentDescription = boxSet.title,
             modifier = modifier
-                .fillMaxSize()
-                .aspectRatio(1.0f)
-                .clip(RoundedCornerShape(4.dp))
-                .clickable(onClick = onClick),
+                .clickable(onClick = onClick)
+                .fillMaxSize(),
             alignment = Alignment.TopCenter,
             contentScale = ContentScale.Crop,
         )

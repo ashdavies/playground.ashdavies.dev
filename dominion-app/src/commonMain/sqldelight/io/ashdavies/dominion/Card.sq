@@ -1,0 +1,23 @@
+import io.ashdavies.dominion.CardFormat;
+
+CREATE TABLE Card(
+    title TEXT NOT NULL UNIQUE PRIMARY KEY,
+    format TEXT AS CardFormat NOT NULL,
+    image TEXT NOT NULL,
+    boxSet TEXT
+);
+
+selectAll:
+    SELECT * FROM Card;
+
+selectByBoxSet:
+    SELECT *
+    FROM Card
+    WHERE boxSet = :boxSet
+    ORDER BY title DESC;
+
+insertOrReplace:
+    INSERT OR REPLACE INTO Card VALUES ?;
+
+deleteAll:
+    DELETE FROM Card;
