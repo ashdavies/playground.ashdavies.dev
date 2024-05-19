@@ -43,6 +43,9 @@ import kotlinx.collections.immutable.toImmutableList
 private const val DEFAULT_ASPECT_RATIO = 0.62f
 private const val DEFAULT_COLUMN_COUNT = 6
 
+private const val HORIZONTAL_CARD_SPAN = 2
+private const val VERTICAL_CARD_SPAN = 3
+
 @Composable
 internal fun DetailsPresenter(
     navigator: Navigator,
@@ -172,7 +175,10 @@ private fun DetailsScreen(
         contentPadding = contentPadding,
     ) {
         cards.sortedBy { it.format }.forEach {
-            val currentLineSpan = if (it.format == CardFormat.HORIZONTAL) 3 else 2
+            val currentLineSpan = columnCount / when (it.format) {
+                CardFormat.HORIZONTAL -> HORIZONTAL_CARD_SPAN
+                CardFormat.VERTICAL -> VERTICAL_CARD_SPAN
+            }
 
             item(span = { GridItemSpan(currentLineSpan) }) {
                 BoxSetCard(it) {
@@ -198,7 +204,7 @@ private fun BoxSetCard(
                 modifier = Modifier
                     .aspectRatio(DEFAULT_ASPECT_RATIO)
                     .height(300.dp),
-                )
+            )
         }
     }
 }

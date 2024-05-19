@@ -22,7 +22,7 @@ public fun dominionPresenterFactory(context: PlatformContext): Presenter.Factory
                 driver = driver,
                 CardAdapter = Card.Adapter(
                     formatAdapter = EnumColumnAdapter(),
-                )
+                ),
             )
         }
 

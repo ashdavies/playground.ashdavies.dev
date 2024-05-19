@@ -15,6 +15,9 @@ import okio.Path
 
 private const val IMAGE_CACHE_PATH = "image_cache"
 
+private const val MAX_SIZE_BYTES = 5L * 1024 * 1024
+private const val MAX_SIZE_PERCENT = 0.2
+
 @Composable
 @OptIn(ExperimentalCoilApi::class)
 public fun LauncherContent(context: PlatformContext, content: @Composable () -> Unit) {
@@ -22,13 +25,13 @@ public fun LauncherContent(context: PlatformContext, content: @Composable () -> 
         ImageLoader.Builder(ctx)
             .memoryCache {
                 MemoryCache.Builder()
-                    .maxSizePercent(ctx, 0.20)
+                    .maxSizePercent(ctx, MAX_SIZE_PERCENT)
                     .build()
             }
             .diskCache {
                 DiskCache.Builder()
                     .directory(context.resolveCacheDir(IMAGE_CACHE_PATH))
-                    .maxSizeBytes(5 * 1024 * 1024)
+                    .maxSizeBytes(MAX_SIZE_BYTES)
                     .build()
             }
             .build()

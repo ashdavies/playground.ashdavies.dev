@@ -12,14 +12,14 @@ internal fun CardsStore(
     cardQueries: CardQueries,
     httpClient: HttpClient,
     refresh: Boolean = false,
-): CardsStore = CardsStore { boxSetTitle ->
+): CardsStore = CardsStore local@{ boxSetTitle ->
     val allLocalCards = cardQueries.selectAll().executeAsList()
     val localBoxSetCards = allLocalCards.filter {
         it.boxSet == boxSetTitle
     }
 
     if (!refresh && localBoxSetCards.isNotEmpty()) {
-        return@CardsStore localBoxSetCards
+        return@local localBoxSetCards
     }
 
     val boxSetCardTitles = httpClient
@@ -29,7 +29,7 @@ internal fun CardsStore(
 
     val boxSetCards = mutableListOf<Card>()
 
-    val allCards = (allLocalCards
+    val allCards = allLocalCards
         .takeIf { !refresh && it.isNotEmpty() }
         ?: httpClient.allCategoryImages().map { (cardTitle, imageInfo) ->
             val isInBoxSet = cardTitle in boxSetCardTitles
@@ -47,7 +47,7 @@ internal fun CardsStore(
                     boxSetCards.add(it)
                 }
             }
-        })
+        }
 
     cardQueries.transaction {
         allCards.forEach(cardQueries::insertOrReplace)
