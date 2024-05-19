@@ -2,6 +2,7 @@ package io.ashdavies.dominion
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import app.cash.sqldelight.EnumColumnAdapter
 import com.slack.circuit.runtime.presenter.Presenter
 import com.slack.circuit.runtime.presenter.presenterOf
 import com.slack.circuit.runtime.ui.Ui
@@ -16,8 +17,14 @@ public fun dominionPresenterFactory(context: PlatformContext): Presenter.Factory
         val playgroundDatabase = DatabaseFactory(
             schema = PlaygroundDatabase.Schema,
             context = context,
-            factory = PlaygroundDatabase.Companion::invoke,
-        )
+        ) { driver ->
+            PlaygroundDatabase(
+                driver = driver,
+                CardAdapter = Card.Adapter(
+                    formatAdapter = EnumColumnAdapter(),
+                )
+            )
+        }
 
         when (screen) {
             is DominionScreen.BoxSetList -> presenterOf {
@@ -77,5 +84,6 @@ private fun rememberCardsStore(
     CardsStore(
         cardQueries = playgroundDatabase.cardQueries,
         httpClient = httpClient,
+        refresh = true,
     )
 }

@@ -1,21 +1,24 @@
 package io.ashdavies.dominion
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LargeTopAppBar
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -29,7 +32,6 @@ import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
@@ -39,7 +41,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 
 private const val DEFAULT_ASPECT_RATIO = 0.62f
-private const val DEFAULT_COLUMN_COUNT = 3
+private const val DEFAULT_COLUMN_COUNT = 6
 
 @Composable
 internal fun DetailsPresenter(
@@ -92,11 +94,30 @@ internal fun DetailsScreen(
             )
         },
     ) { contentPadding ->
+        AnimatedVisibility(state.isLoading) {
+            LinearProgressIndicator(
+                modifier = Modifier
+                    .padding(contentPadding)
+                    .fillMaxWidth(),
+            )
+        }
+
         DetailsScreen(
             cards = state.cards.toImmutableList(),
             contentPadding = contentPadding,
             onClick = { eventSink(DominionScreen.BoxSetDetails.Event.ExpandCard(it)) },
         )
+
+        AnimatedVisibility(
+            visible = !state.isLoading && state.cards.isEmpty(),
+            modifier = Modifier.padding(contentPadding),
+        ) {
+            Text(
+                text = "No cards found",
+                modifier = Modifier.padding(16.dp),
+                color = MaterialTheme.colorScheme.error,
+            )
+        }
     }
 }
 
@@ -147,11 +168,17 @@ private fun DetailsScreen(
 ) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(columnCount),
-        modifier = modifier.padding(4.dp),
+        modifier = modifier.padding(2.dp),
         contentPadding = contentPadding,
     ) {
-        items(cards) {
-            BoxSetCard(it) { onClick(it) }
+        cards.sortedBy { it.format }.forEach {
+            val currentLineSpan = if (it.format == CardFormat.HORIZONTAL) 3 else 2
+
+            item(span = { GridItemSpan(currentLineSpan) }) {
+                BoxSetCard(it) {
+                    onClick(it)
+                }
+            }
         }
     }
 }
@@ -165,16 +192,13 @@ private fun BoxSetCard(
 ) {
     Box(Modifier.padding(4.dp)) {
         Card(modifier.clickable(onClick = onClick)) {
-            when (val image = value.image) {
-                null -> Text(value.title, color = Color.White)
-                else -> Image(
-                    painter = rememberAsyncImagePainter(image),
-                    contentDescription = value.title,
-                    modifier = Modifier
-                        .aspectRatio(DEFAULT_ASPECT_RATIO)
-                        .height(300.dp),
+            Image(
+                painter = rememberAsyncImagePainter(value.image),
+                contentDescription = value.title,
+                modifier = Modifier
+                    .aspectRatio(DEFAULT_ASPECT_RATIO)
+                    .height(300.dp),
                 )
-            }
         }
     }
 }

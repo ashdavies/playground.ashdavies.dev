@@ -35,11 +35,13 @@ internal fun BoxSetStore(
 
         BoxSet(
             title = title.firstGroup(SET_TITLE_REGEX),
-            image = boxImages.remove(short) ?: run {
+            image = boxImages.remove(short)?.url ?: run {
                 println("Failed to find image for $short")
                 return@mapNotNull null
             },
-            art = boxArt.remove(short),
+            art = boxArt
+                .remove(short)
+                ?.url,
         )
     }
 

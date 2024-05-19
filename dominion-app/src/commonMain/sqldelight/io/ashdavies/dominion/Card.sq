@@ -1,5 +1,8 @@
+import io.ashdavies.dominion.CardFormat;
+
 CREATE TABLE Card(
     title TEXT NOT NULL UNIQUE PRIMARY KEY,
+    format TEXT AS CardFormat NOT NULL,
     image TEXT NOT NULL,
     boxSet TEXT
 );

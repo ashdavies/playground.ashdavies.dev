@@ -36,7 +36,7 @@ internal suspend fun HttpClient.categoryImages(
     gcmLimit: Int = DEFAULT_LIMIT,
     gcmOffset: Int = 0,
     regex: Regex,
-): Map<String, String> {
+): Map<String, ImageInfo> {
     val queryString = "action=query" +
         "&generator=categorymembers" +
         "&gcmtitle=$gcmTitle" +
@@ -44,7 +44,7 @@ internal suspend fun HttpClient.categoryImages(
         "&gcmlimit=$gcmLimit" +
         "&gcmoffset=$gcmOffset" +
         "&prop=imageinfo" +
-        "&iiprop=url" +
+        "&iiprop=url|size" +
         "&format=json"
 
     return get("$DOMINION_STRATEGY_URL?${queryString.encodeURLQueryComponent()}")
@@ -52,13 +52,38 @@ internal suspend fun HttpClient.categoryImages(
         .getOrThrow<JsonObject>("query")
         .getOrThrow<JsonObject>("pages")
         .values.associate { value ->
-            value
+            val title = value
                 .getContentAsString("title")
-                .firstGroup(regex) to value
+                .firstGroup(regex)
+
+            val imageInfo = value
                 .getOrThrow<JsonArray>("imageinfo")
                 .first()
-                .getContentAsString("url")
+
+            title to ImageInfo(
+                title = title,
+                url = imageInfo.getContentAsString("url"),
+                size = ImageInfo.Size(
+                    width = imageInfo
+                        .getContentAsString("width")
+                        .toInt(),
+                    height = imageInfo
+                        .getContentAsString("height")
+                        .toInt(),
+                ),
+            )
         }
+}
+
+internal data class ImageInfo(
+    val title: String,
+    val url: String,
+    val size: Size,
+) {
+    data class Size(
+        val width: Int,
+        val height: Int,
+    )
 }
 
 private fun JsonElement.getContentAsString(key: String): String =
