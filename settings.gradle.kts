@@ -70,6 +70,7 @@ include(
     ":maps-routing",
     ":micro-yaml",
     ":nsd-manager",
+    ":paging-compose",
     ":parcelable-support",
     ":platform-scaffold",
     ":platform-support",

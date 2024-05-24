@@ -2,9 +2,9 @@ package io.ashdavies.events
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import app.cash.paging.ExperimentalPagingApi
-import app.cash.paging.Pager
-import app.cash.paging.PagingConfig
+import androidx.paging.ExperimentalPagingApi
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
 import io.ashdavies.compose.LocalPlaygroundDatabase
 import io.ashdavies.http.LocalHttpClient
 import io.ashdavies.network.todayAsString
