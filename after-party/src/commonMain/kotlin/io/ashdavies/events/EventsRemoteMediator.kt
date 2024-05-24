@@ -1,9 +1,9 @@
 package io.ashdavies.events
 
-import app.cash.paging.ExperimentalPagingApi
-import app.cash.paging.LoadType
-import app.cash.paging.PagingState
-import app.cash.paging.RemoteMediator
+import androidx.paging.ExperimentalPagingApi
+import androidx.paging.LoadType
+import androidx.paging.PagingState
+import androidx.paging.RemoteMediator
 import io.ktor.client.network.sockets.SocketTimeoutException
 import io.ashdavies.events.Event as DatabaseEvent
 import io.ashdavies.http.common.models.Event as ApiEvent

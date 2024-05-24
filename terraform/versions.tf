@@ -12,9 +12,9 @@ terraform {
 
     google = {
       source  = "hashicorp/google"
-      version = "5.29.1"
+      version = "5.30.0"
     }
   }
 
-  required_version = "1.8.3"
+  required_version = "1.8.4"
 }
