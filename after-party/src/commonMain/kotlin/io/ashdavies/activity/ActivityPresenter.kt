@@ -3,13 +3,13 @@ package io.ashdavies.activity
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.RememberObserver
 import androidx.compose.runtime.Stable
-import app.cash.paging.ExperimentalPagingApi
-import app.cash.paging.Pager
-import app.cash.paging.cachedIn
-import app.cash.paging.compose.collectAsLazyPagingItems
+import androidx.paging.ExperimentalPagingApi
+import androidx.paging.Pager
+import androidx.paging.cachedIn
 import com.slack.circuit.retained.rememberRetained
 import io.ashdavies.events.Event
 import io.ashdavies.events.rememberEventPager
+import io.ashdavies.paging.collectAsLazyPagingItems
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
