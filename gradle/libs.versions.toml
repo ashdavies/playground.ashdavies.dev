@@ -5,13 +5,12 @@ androidx-activity = "1.9.0"
 apollo-graphql = "2.5.14"
 cash-sqldelight = "2.0.2"
 coil-kt = "3.0.0-alpha06"
-compose-compiler = "1.5.10.2"
+compose-plugin = "1.6.10-beta03"
 gitlive-firebase = "1.12.0"
 google-accompanist = "0.34.0"
 google-android = "8.4.1"
 google-maps-compose = "4.3.2"
 google-services = "4.4.1"
-jetbrains-compose = "1.6.2"
 jetbrains-kotlin = "2.0.0"
 kotlin-jvmTarget = "17"
 kotlinx-coroutines = "1.8.1"
@@ -39,9 +38,6 @@ auth-jwks-rsa = "com.auth0:jwks-rsa:0.22.1"
 
 coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil-kt" }
 coil-network = { module = "io.coil-kt.coil3:coil-network-ktor", version.ref = "coil-kt" }
-
-compose-compiler = { module = "org.jetbrains.compose.compiler:compiler", version.ref = "compose-compiler" }
-compose-runtime = { module = "org.jetbrains.compose.runtime:runtime", version.ref = "jetbrains-compose" }
 
 fasterxml-jackson-core = "com.fasterxml.jackson.core:jackson-core:2.17.1"
 fusesource-jansi = "org.fusesource.jansi:jansi:2.4.1"
@@ -128,11 +124,12 @@ android-library = { id = "com.android.library", version.ref = "google-android" }
 apollo-graphql = { id = "com.apollographql.apollo", version.ref = "apollo-graphql" }
 build-config = "com.github.gmazzo.buildconfig:5.3.5"
 cash-sqldelight = { id = "app.cash.sqldelight", version.ref = "cash-sqldelight" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "jetbrains-kotlin" }
 dependency-analysis = "com.autonomousapps.dependency-analysis:1.31.0"
 detekt = "io.gitlab.arturbosch.detekt:1.23.6"
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
 gradle-doctor = "com.osacky.doctor:0.10.0"
-kotlin-compose = { id = "org.jetbrains.compose", version.ref = "jetbrains-compose" }
+jetbrains-compose = { id = "org.jetbrains.compose", version.ref = "compose-plugin" }
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "jetbrains-kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "jetbrains-kotlin" }
 kotlinx-kover = "org.jetbrains.kotlinx.kover:0.8.0"
