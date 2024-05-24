@@ -35,23 +35,22 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import app.cash.paging.LoadStateError
-import app.cash.paging.LoadStateLoading
-import app.cash.paging.compose.LazyPagingItems
+import androidx.paging.LoadState
 import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.screen.Screen
 import io.ashdavies.android.fade
 import io.ashdavies.events.Event
+import io.ashdavies.paging.LazyPagingItems
 import io.ashdavies.parcelable.Parcelable
 import io.ashdavies.parcelable.Parcelize
 
 private val <T : Any> LazyPagingItems<T>.errorMessage: String?
-    get() = (loadState.append as? LoadStateError)
+    get() = (loadState.append as? LoadState.Error)
         ?.error
         ?.message
 
 private val <T : Any> LazyPagingItems<T>.isRefreshing: Boolean
-    get() = loadState.refresh is LoadStateLoading
+    get() = loadState.refresh is LoadState.Loading
 
 @Parcelize
 internal object ActivityScreen : Parcelable, Screen {

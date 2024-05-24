@@ -14,6 +14,7 @@ kotlin {
     sourceSets.commonMain.dependencies {
         implementation(projects.circuitSupport)
         implementation(projects.httpClient)
+        implementation(projects.pagingCompose)
         implementation(projects.platformScaffold)
         implementation(projects.platformSupport)
         implementation(projects.sqlDriver)
@@ -23,11 +24,11 @@ kotlin {
         implementation(compose.runtime)
         implementation(compose.ui)
 
+        implementation(libs.androidx.paging.common)
         implementation(libs.coil.compose)
         implementation(libs.kotlinx.collections.immutable)
         implementation(libs.kotlinx.serialization.json)
         implementation(libs.ktor.client.core)
-        implementation(libs.paging.compose.common)
         implementation(libs.slack.circuit.foundation)
     }
 }
