@@ -30,13 +30,13 @@ import androidx.paging.PagingData
 import androidx.paging.PagingDataEvent
 import androidx.paging.PagingDataPresenter
 import kotlinx.coroutines.Dispatchers
-import kotlin.coroutines.CoroutineContext
-import kotlin.coroutines.EmptyCoroutineContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.withContext
+import kotlin.coroutines.CoroutineContext
+import kotlin.coroutines.EmptyCoroutineContext
 
 /**
  * The class responsible for accessing the data from a [Flow] of [PagingData].
@@ -54,7 +54,7 @@ public class LazyPagingItems<T : Any> internal constructor(
     /**
      * the [Flow] object which contains a stream of [PagingData] elements.
      */
-    private val flow: Flow<PagingData<T>>
+    private val flow: Flow<PagingData<T>>,
 ) {
     private val mainDispatcher = Dispatchers.Main
 
@@ -67,7 +67,7 @@ public class LazyPagingItems<T : Any> internal constructor(
     private val pagingDataPresenter = object : PagingDataPresenter<T>(
         mainContext = mainDispatcher,
         cachedPagingData =
-        if (flow is SharedFlow<PagingData<T>>) flow.replayCache.firstOrNull() else null
+        if (flow is SharedFlow<PagingData<T>>) flow.replayCache.firstOrNull() else null,
     ) {
         override suspend fun presentPagingDataEvent(
             event: PagingDataEvent<T>,
@@ -81,7 +81,7 @@ public class LazyPagingItems<T : Any> internal constructor(
      * placeholders if they are enabled.
      */
     private var itemSnapshotList by mutableStateOf(
-        pagingDataPresenter.snapshot()
+        pagingDataPresenter.snapshot(),
     )
 
     /**
@@ -131,8 +131,8 @@ public class LazyPagingItems<T : Any> internal constructor(
                 refresh = InitialLoadStates.refresh,
                 prepend = InitialLoadStates.prepend,
                 append = InitialLoadStates.append,
-                source = InitialLoadStates
-            )
+                source = InitialLoadStates,
+            ),
     )
         private set
 
@@ -153,7 +153,7 @@ private val IncompleteLoadState = LoadState.NotLoading(false)
 private val InitialLoadStates = LoadStates(
     LoadState.Loading,
     IncompleteLoadState,
-    IncompleteLoadState
+    IncompleteLoadState,
 )
 
 /**
@@ -166,9 +166,8 @@ private val InitialLoadStates = LoadStates(
  */
 @Composable
 public fun <T : Any> Flow<PagingData<T>>.collectAsLazyPagingItems(
-    context: CoroutineContext = EmptyCoroutineContext
+    context: CoroutineContext = EmptyCoroutineContext,
 ): LazyPagingItems<T> {
-
     val lazyPagingItems = remember(this) { LazyPagingItems(this) }
 
     LaunchedEffect(lazyPagingItems) {

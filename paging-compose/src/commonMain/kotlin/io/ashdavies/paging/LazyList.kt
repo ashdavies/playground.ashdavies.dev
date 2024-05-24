@@ -41,7 +41,7 @@ public interface LazyListScope {
      * higher devices.
      * @param content the content of the item
      */
-    public fun item(itemId: Long = UnspecifiedItemId, content: @Composable LazyItemScope.() -> Unit)
+    public fun item(itemId: Long = UNSPECIFIED_ITEM_ID, content: @Composable LazyItemScope.() -> Unit)
 
     /**
      * Adds a [count] of items.
@@ -55,12 +55,12 @@ public interface LazyListScope {
      */
     public fun items(
         count: Int,
-        itemId: ((index: Int) -> Long) = { UnspecifiedItemId },
+        itemId: ((index: Int) -> Long) = { UNSPECIFIED_ITEM_ID },
         itemContent: @Composable LazyItemScope.(index: Int) -> Unit,
     )
 
     public companion object {
-        public const val UnspecifiedItemId: Long = Long.MIN_VALUE
+        internal const val UNSPECIFIED_ITEM_ID: Long = Long.MIN_VALUE
     }
 }
 
@@ -76,7 +76,7 @@ public interface LazyListScope {
  */
 internal inline fun <T> LazyListScope.items(
     items: List<T>,
-    crossinline itemId: ((item: T) -> Long) = { LazyListScope.UnspecifiedItemId },
+    crossinline itemId: ((item: T) -> Long) = { LazyListScope.UNSPECIFIED_ITEM_ID },
     crossinline itemContent: @Composable LazyItemScope.(item: T) -> Unit,
 ) = items(items.size, { index: Int -> itemId(items[index]) }) {
     itemContent(items[it])
@@ -94,7 +94,7 @@ internal inline fun <T> LazyListScope.items(
  */
 internal inline fun <T> LazyListScope.items(
     items: Array<T>,
-    noinline itemId: ((item: T) -> Long) = { LazyListScope.UnspecifiedItemId },
+    noinline itemId: ((item: T) -> Long) = { LazyListScope.UNSPECIFIED_ITEM_ID },
     crossinline itemContent: @Composable LazyItemScope.(item: T) -> Unit,
 ) = items(items.size, { index: Int -> itemId(items[index]) }) {
     itemContent(items[it])
