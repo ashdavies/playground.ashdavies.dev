@@ -18,6 +18,7 @@ kotlin {
             implementation(projects.httpClient)
             implementation(projects.httpCommon)
             implementation(projects.identityManager)
+            implementation(projects.pagingCompose)
             implementation(projects.platformScaffold)
             implementation(projects.platformSupport)
             implementation(projects.sqlDriver)
@@ -29,6 +30,7 @@ kotlin {
             implementation(compose.runtime)
             implementation(compose.ui)
 
+            implementation(libs.androidx.paging.common)
             implementation(libs.coil.compose)
             implementation(libs.kotlinx.collections.immutable)
             implementation(libs.kotlinx.datetime)
@@ -37,7 +39,6 @@ kotlin {
             implementation(libs.ktor.client.mock)
             implementation(libs.ktor.http)
             implementation(libs.ktor.io)
-            implementation(libs.paging.compose.common)
             implementation(libs.slack.circuit.foundation)
             implementation(libs.sqldelight.runtime)
         }

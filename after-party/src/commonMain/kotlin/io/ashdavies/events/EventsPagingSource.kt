@@ -1,7 +1,7 @@
 package io.ashdavies.events
 
-import app.cash.paging.PagingSource
-import app.cash.paging.PagingState
+import androidx.paging.PagingSource
+import androidx.paging.PagingState
 import io.ashdavies.network.todayAsString
 
 internal class EventsPagingSource(private val queries: EventsQueries) : PagingSource<String, Event>() {
