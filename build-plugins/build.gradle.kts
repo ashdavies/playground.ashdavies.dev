@@ -11,8 +11,9 @@ dependencies {
 
     with(libs.plugins) {
         implementation(plugin(android.library))
+        implementation(plugin(compose.compiler))
         implementation(plugin(detekt))
-        implementation(plugin(kotlin.compose))
+        implementation(plugin(jetbrains.compose))
         implementation(plugin(kotlin.multiplatform))
         implementation(plugin(kotlin.serialization))
         implementation(plugin(ktlint))

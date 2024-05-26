@@ -1,11 +1,8 @@
 plugins {
     id("org.jetbrains.compose")
-    kotlin("multiplatform")
-}
+    id("org.jetbrains.kotlin.plugin.compose")
 
-compose {
-    val composeCompiler = libs.compose.compiler.get()
-    kotlinCompilerPlugin.set("$composeCompiler")
+    kotlin("multiplatform")
 }
 
 kotlin {

@@ -13,9 +13,10 @@ plugins {
         classpath(android.library)
         classpath(apollo.graphql)
         classpath(cash.sqldelight)
+        classpath(compose.compiler)
         classpath(detekt)
         classpath(google.services)
-        classpath(kotlin.compose)
+        classpath(jetbrains.compose)
         classpath(kotlin.multiplatform)
         classpath(kotlin.serialization)
         classpath(ktlint)
@@ -23,14 +24,6 @@ plugins {
         alias(dependency.analysis)
         alias(gradle.doctor)
         alias(kotlinx.kover)
-    }
-}
-
-dependencyAnalysis {
-    structure {
-        bundle("compose-runtime") {
-            includeGroup(libs.compose.runtime)
-        }
     }
 }
 
