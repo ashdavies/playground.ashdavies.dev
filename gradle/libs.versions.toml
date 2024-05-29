@@ -99,7 +99,7 @@ ktor-server-default-headers = { module = "io.ktor:ktor-server-default-headers", 
 ktor-server-host-common = { module = "io.ktor:ktor-server-host-common", version.ref = "ktor" }
 ktor-server-test-host = { module = "io.ktor:ktor-server-test-host", version.ref = "ktor" }
 
-mosaic-runtime = "com.jakewharton.mosaic:mosaic-runtime:0.11.0"
+mosaic-runtime = "com.jakewharton.mosaic:mosaic-runtime:0.13.0"
 pinterest-ktlint-bom = "com.pinterest.ktlint:ktlint-bom:1.2.1"
 
 slack-circuit-foundation = { module = "com.slack.circuit:circuit-foundation", version.ref = "slack-circuit" }
