@@ -44,13 +44,6 @@
       ]
     },
     {
-      "groupName": "Kotlin & Compose",
-      "matchPackagePrefixes": [
-        "org.jetbrains.compose",
-        "org.jetbrains.kotlin."
-      ]
-    },
-    {
       "matchPackageNames": [
         "renovatebot/github-action"
       ],
