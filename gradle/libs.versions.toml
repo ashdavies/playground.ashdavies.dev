@@ -61,7 +61,7 @@ google-firebase-admin = "com.google.firebase:firebase-admin:9.3.0"
 google-firebase-bom = "com.google.firebase:firebase-bom:33.0.0"
 google-firebase-appcheck-playintegrity = { module = "com.google.firebase:firebase-appcheck-playintegrity" }
 
-google-guava-jre = "com.google.guava:guava:33.2.0-jre"
+google-guava-jre = "com.google.guava:guava:33.2.1-jre"
 
 google-maps-android-compose = "com.google.maps.android:maps-compose:5.0.1"
 google-maps-android-utils = "com.google.maps.android:android-maps-utils:3.8.2"
