@@ -1,5 +1,6 @@
 package io.ashdavies.gallery
 
+import io.ashdavies.content.PlatformContext
 import io.ashdavies.sql.mapToList
 import io.ashdavies.util.randomUuid
 import kotlinx.coroutines.flow.Flow
@@ -9,6 +10,14 @@ internal interface ImageManager {
     fun add(file: File)
     suspend fun remove(image: Image)
 }
+
+internal fun ImageManager(
+    context: PlatformContext,
+    queries: ImageQueries,
+): ImageManager = ImageManager(
+    storage = StorageManager(PathProvider(context)),
+    queries = queries,
+)
 
 internal fun ImageManager(
     storage: StorageManager,
