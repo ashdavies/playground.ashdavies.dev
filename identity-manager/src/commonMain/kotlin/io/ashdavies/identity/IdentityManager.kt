@@ -8,6 +8,16 @@ public interface IdentityManager {
     public suspend fun signIn()
 }
 
+public fun IdentityManager(
+    platformContext: io.ashdavies.content.PlatformContext,
+    credentialQueries: CredentialQueries,
+): IdentityManager = IdentityManager(
+    credentialQueries = credentialQueries,
+    identityService = GoogleIdIdentityService(
+        context = platformContext,
+    ),
+)
+
 internal fun IdentityManager(
     credentialQueries: CredentialQueries,
     identityService: GoogleIdIdentityService,

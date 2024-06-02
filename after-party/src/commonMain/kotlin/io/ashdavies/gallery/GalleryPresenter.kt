@@ -3,11 +3,25 @@ package io.ashdavies.gallery
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import com.slack.circuit.retained.produceRetainedState
 import com.slack.circuit.retained.rememberRetained
+import io.ashdavies.content.PlatformContext
+import io.ashdavies.party.PlaygroundDatabase
 import kotlinx.coroutines.launch
+
+@Composable
+internal fun GalleryPresenter(
+    context: PlatformContext,
+    database: PlaygroundDatabase,
+): GalleryScreen.State = GalleryPresenter(
+    imageManager = remember(database) {
+        ImageManager(context, database.imageQueries)
+    },
+    syncManager = remember { SyncManager() },
+)
 
 @Composable
 internal fun GalleryPresenter(

@@ -7,27 +7,17 @@ import io.ashdavies.circuit.presenterFactoryOf
 import io.ashdavies.circuit.uiFactoryOf
 import io.ashdavies.content.PlatformContext
 import io.ashdavies.content.reportFullyDrawn
+import io.ashdavies.party.PlaygroundDatabase
 
 public fun galleryPresenterFactory(context: PlatformContext): Presenter.Factory {
-    val playgroundDatabase = GalleryModule.playgroundDatabase(context)
-
     return presenterFactoryOf<GalleryScreen> { _, _ ->
-        GalleryPresenter(
-            imageManager = remember(playgroundDatabase) {
-                GalleryModule.imageManager(context, playgroundDatabase.imageQueries)
-            },
-            syncManager = remember {
-                GalleryModule.syncManager()
-            },
-        )
+        GalleryPresenter(context, remember { PlaygroundDatabase(context) })
     }
 }
 
 public fun galleryUiFactory(context: PlatformContext): Ui.Factory {
-    val storageManager = StorageManager(PathProvider(context))
-
     return uiFactoryOf<GalleryScreen, GalleryScreen.State> { _, state, modifier ->
-        GalleryScreen(state, storageManager, modifier)
+        GalleryScreen(state, remember { StorageManager(PathProvider(context)) }, modifier)
         context.reportFullyDrawn()
     }
 }
