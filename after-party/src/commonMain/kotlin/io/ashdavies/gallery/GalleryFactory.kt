@@ -7,12 +7,9 @@ import io.ashdavies.circuit.presenterFactoryOf
 import io.ashdavies.circuit.uiFactoryOf
 import io.ashdavies.content.PlatformContext
 import io.ashdavies.content.reportFullyDrawn
-import io.ashdavies.party.PlaygroundDatabase
 
 public fun galleryPresenterFactory(context: PlatformContext): Presenter.Factory {
-    return presenterFactoryOf<GalleryScreen> { _, _ ->
-        GalleryPresenter(context, remember { PlaygroundDatabase(context) })
-    }
+    return presenterFactoryOf<GalleryScreen> { _, _ -> GalleryPresenter(context) }
 }
 
 public fun galleryUiFactory(context: PlatformContext): Ui.Factory {

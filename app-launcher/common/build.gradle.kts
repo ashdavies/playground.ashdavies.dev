@@ -2,6 +2,8 @@ plugins {
     id("io.ashdavies.compose")
     id("io.ashdavies.default")
     id("io.ashdavies.parcelable")
+
+    alias(libs.plugins.cash.sqldelight)
 }
 
 android {
@@ -22,6 +24,8 @@ kotlin {
             implementation(projects.dominionApp)
             implementation(projects.mapRoutes)
             implementation(projects.platformSupport)
+            implementation(projects.sqlCompose)
+            implementation(projects.sqlDriver)
 
             implementation(compose.components.resources)
             implementation(compose.material3)
@@ -47,6 +51,16 @@ kotlin {
             implementation(libs.app.cash.turbine)
             implementation(libs.kotlinx.coroutines.test)
             implementation(libs.slack.circuit.test)
+        }
+    }
+}
+
+sqldelight {
+    databases {
+        create("PlaygroundDatabase") {
+            packageName.set(android.namespace)
+            dependency(projects.afterParty)
+            dependency(projects.dominionApp)
         }
     }
 }

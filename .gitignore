@@ -26,6 +26,9 @@
 build
 /reports
 
+# Kotlin
+.kotlin/sessions
+
 # JavaScript
 node_modules/
 **/*.js.map
