@@ -21,7 +21,8 @@ kotlin {
             implementation(projects.pagingCompose)
             implementation(projects.platformScaffold)
             implementation(projects.platformSupport)
-            implementation(projects.sqlDriver)
+            implementation(projects.sqlCommon)
+            implementation(projects.sqlCompose)
 
             implementation(compose.foundation)
             implementation(compose.material)

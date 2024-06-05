@@ -8,9 +8,11 @@ import coil3.compose.setSingletonImageLoaderFactory
 import coil3.disk.DiskCache
 import coil3.memory.MemoryCache
 import io.ashdavies.check.ProvideAppCheckToken
-import io.ashdavies.compose.ProvidePlaygroundDatabase
 import io.ashdavies.content.PlatformContext
 import io.ashdavies.material.dynamicColorScheme
+import io.ashdavies.party.PlaygroundDatabase
+import io.ashdavies.sql.ProvideTransacter
+import io.ashdavies.sql.rememberTransacter
 import okio.Path
 
 private const val IMAGE_CACHE_PATH = "image_cache"
@@ -38,7 +40,14 @@ public fun LauncherContent(context: PlatformContext, content: @Composable () -> 
     }
 
     ProvideAppCheckToken {
-        ProvidePlaygroundDatabase(context) {
+        // TODO Change to io.ashdavies.common.PlaygroundDatabase
+        val transacter = rememberTransacter(
+            schema = PlaygroundDatabase.Schema,
+            context = context,
+            factory = PlaygroundDatabase.Companion::invoke,
+        )
+
+        ProvideTransacter(transacter) {
             MaterialTheme(dynamicColorScheme()) {
                 content()
             }

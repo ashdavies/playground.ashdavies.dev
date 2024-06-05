@@ -9,24 +9,23 @@ import androidx.compose.runtime.setValue
 import com.slack.circuit.retained.produceRetainedState
 import com.slack.circuit.retained.rememberRetained
 import io.ashdavies.content.PlatformContext
-import io.ashdavies.party.PlaygroundDatabase
+import io.ashdavies.sql.rememberLocalQueries
 import kotlinx.coroutines.launch
 
 @Composable
 internal fun GalleryPresenter(
-    context: PlatformContext,
-    database: PlaygroundDatabase,
+    platformContext: PlatformContext,
+    imageQueries: ImageQueries = rememberLocalQueries { it.imageQueries },
 ): GalleryScreen.State = GalleryPresenter(
-    imageManager = remember(database) {
-        ImageManager(context, database.imageQueries)
+    imageManager = remember(imageQueries) {
+        ImageManager(platformContext, imageQueries)
     },
-    syncManager = remember { SyncManager() },
 )
 
 @Composable
 internal fun GalleryPresenter(
     imageManager: ImageManager,
-    syncManager: SyncManager,
+    syncManager: SyncManager = remember { SyncManager() },
 ): GalleryScreen.State {
     val itemList by produceRetainedState(emptyList<Image>()) {
         imageManager.list.collect { value = it }
