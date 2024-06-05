@@ -3,25 +3,15 @@ plugins {
 }
 
 android {
-    namespace = "io.ashdavies.sql.driver"
+    namespace = "io.ashdavies.sql.common"
 }
 
 kotlin {
     sourceSets {
         commonMain.dependencies {
-            implementation(projects.platformSupport)
-
             implementation(libs.kotlinx.coroutines.core)
             implementation(libs.sqldelight.coroutines.extensions)
             implementation(libs.sqldelight.runtime)
-        }
-
-        androidMain.dependencies {
-            implementation(libs.sqldelight.android.driver)
-        }
-
-        jvmMain.dependencies {
-            implementation(libs.sqldelight.sqlite.driver)
         }
     }
 }

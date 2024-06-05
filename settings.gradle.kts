@@ -74,6 +74,8 @@ include(
     ":parcelable-support",
     ":platform-scaffold",
     ":platform-support",
+    ":sql-common",
+    ":sql-compose",
     ":sql-driver",
 )
 

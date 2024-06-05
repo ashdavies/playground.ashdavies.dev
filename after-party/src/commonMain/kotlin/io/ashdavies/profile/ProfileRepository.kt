@@ -2,12 +2,12 @@ package io.ashdavies.profile
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import io.ashdavies.compose.LocalPlaygroundDatabase
 import io.ashdavies.http.LocalHttpClient
 import io.ashdavies.random.Profile
 import io.ashdavies.random.RandomProvider
 import io.ashdavies.random.getRandomUser
 import io.ashdavies.sql.mapToOneOrNull
+import io.ashdavies.sql.rememberLocalQueries
 import io.ktor.client.HttpClient
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterNotNull
@@ -27,7 +27,7 @@ internal fun ProfileRepository(
 
 @Composable
 internal fun rememberProfileRepository(
-    profileQueries: ProfileQueries = LocalPlaygroundDatabase.current.profileQueries,
+    profileQueries: ProfileQueries = rememberLocalQueries { it.profileQueries },
     httpClient: HttpClient = LocalHttpClient.current,
 ): ProfileRepository = remember(httpClient, profileQueries) {
     ProfileRepository(

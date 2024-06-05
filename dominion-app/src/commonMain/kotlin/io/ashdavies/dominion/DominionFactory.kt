@@ -2,46 +2,31 @@ package io.ashdavies.dominion
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import app.cash.sqldelight.EnumColumnAdapter
 import com.slack.circuit.runtime.presenter.Presenter
 import com.slack.circuit.runtime.presenter.presenterOf
 import com.slack.circuit.runtime.ui.Ui
 import com.slack.circuit.runtime.ui.ui
-import io.ashdavies.content.PlatformContext
 import io.ashdavies.http.LocalHttpClient
-import io.ashdavies.sql.DatabaseFactory
 import io.ktor.client.HttpClient
 
-public fun dominionPresenterFactory(context: PlatformContext): Presenter.Factory {
+public fun dominionPresenterFactory(): Presenter.Factory {
     return Presenter.Factory { screen, navigator, _ ->
-        val playgroundDatabase = DatabaseFactory(
-            schema = PlaygroundDatabase.Schema,
-            context = context,
-        ) { driver ->
-            PlaygroundDatabase(
-                driver = driver,
-                CardAdapter = Card.Adapter(
-                    formatAdapter = EnumColumnAdapter(),
-                ),
-            )
-        }
-
         when (screen) {
             is DominionScreen.BoxSetList -> presenterOf {
                 BoxSetListPresenter(
                     navigator = navigator,
-                    boxSetStore = rememberBoxSetStore(playgroundDatabase),
+                    boxSetStore = rememberBoxSetStore(),
                 )
             }
 
             is DominionScreen.BoxSetDetails -> presenterOf {
-                val boxSet = playgroundDatabase.boxSetQueries
+                val boxSet = rememberLocalQueries { it.boxSetQueries }
                     .selectByTitle(screen.title)
                     .executeAsOne()
 
                 DetailsPresenter(
                     navigator = navigator,
-                    cardsStore = rememberCardsStore(playgroundDatabase),
+                    cardsStore = rememberCardsStore(),
                     boxSet = boxSet,
                 )
             }
@@ -67,22 +52,22 @@ public fun dominionUiFactory(): Ui.Factory = Ui.Factory { screen, _ ->
 
 @Composable
 private fun rememberBoxSetStore(
-    playgroundDatabase: PlaygroundDatabase,
+    boxSetQueries: BoxSetQueries = rememberLocalQueries { it.boxSetQueries },
     httpClient: HttpClient = LocalHttpClient.current,
-): BoxSetStore = remember(playgroundDatabase, httpClient) {
+): BoxSetStore = remember(boxSetQueries, httpClient) {
     BoxSetStore(
-        boxSetQueries = playgroundDatabase.boxSetQueries,
+        boxSetQueries = boxSetQueries,
         httpClient = httpClient,
     )
 }
 
 @Composable
 private fun rememberCardsStore(
-    playgroundDatabase: PlaygroundDatabase,
+    cardQueries: CardQueries = rememberLocalQueries { it.cardQueries },
     httpClient: HttpClient = LocalHttpClient.current,
-): CardsStore = remember(playgroundDatabase, httpClient) {
+): CardsStore = remember(cardQueries, httpClient) {
     CardsStore(
-        cardQueries = playgroundDatabase.cardQueries,
+        cardQueries = cardQueries,
         httpClient = httpClient,
         refresh = true,
     )
