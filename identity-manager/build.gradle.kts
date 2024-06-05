@@ -21,7 +21,7 @@ buildConfig {
 kotlin {
     sourceSets.commonMain.dependencies {
         implementation(projects.platformSupport)
-        implementation(projects.sqlDriver)
+        implementation(projects.sqlCommon)
 
         implementation(libs.androidx.credentials.auth)
         implementation(libs.google.android.identity)

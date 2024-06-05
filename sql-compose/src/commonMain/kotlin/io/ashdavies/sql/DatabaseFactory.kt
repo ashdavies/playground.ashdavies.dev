@@ -1,4 +1,4 @@
-package io.ashdavies.database
+package io.ashdavies.sql
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -7,10 +7,9 @@ import app.cash.sqldelight.db.QueryResult
 import app.cash.sqldelight.db.SqlDriver
 import app.cash.sqldelight.db.SqlSchema
 import io.ashdavies.content.PlatformContext
-import io.ashdavies.sql.DatabaseFactory
 
 @Composable
-internal fun <T : Transacter> rememberDatabase(
+public fun <T : Transacter> rememberTransacter(
     schema: SqlSchema<QueryResult.Value<Unit>>,
     context: PlatformContext,
     factory: (SqlDriver) -> T,
