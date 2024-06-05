@@ -19,7 +19,6 @@ plugins {
         classpath(jetbrains.compose)
         classpath(kotlin.multiplatform)
         classpath(kotlin.serialization)
-        classpath(ktlint)
 
         alias(dependency.analysis)
         alias(gradle.doctor)

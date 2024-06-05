@@ -16,7 +16,6 @@ dependencies {
         implementation(plugin(jetbrains.compose))
         implementation(plugin(kotlin.multiplatform))
         implementation(plugin(kotlin.serialization))
-        implementation(plugin(ktlint))
     }
 }
 

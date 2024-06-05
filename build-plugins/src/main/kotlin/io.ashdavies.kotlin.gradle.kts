@@ -2,8 +2,6 @@ import io.gitlab.arturbosch.detekt.Detekt
 import io.gitlab.arturbosch.detekt.DetektPlugin
 import io.gitlab.arturbosch.detekt.extensions.DetektExtension
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import org.jlleitschuh.gradle.ktlint.KtlintExtension
-import org.jlleitschuh.gradle.ktlint.KtlintPlugin
 
 plugins {
     kotlin("plugin.serialization")
@@ -11,7 +9,6 @@ plugins {
 }
 
 apply<DetektPlugin>()
-apply<KtlintPlugin>()
 
 kotlin {
     explicitApi()
@@ -34,15 +31,6 @@ extensions.configure<DetektExtension> {
     config.setFrom(rootProject.file("detekt-config.yml"))
     buildUponDefaultConfig = true
     toolVersion = "1.23.5"
-}
-
-extensions.configure<KtlintExtension> {
-    filter {
-        exclude { "generated" in it.file.path }
-    }
-
-    val ktlintBom = libs.pinterest.ktlint.bom.get()
-    version = ktlintBom.version
 }
 
 tasks.withType<Detekt> {
