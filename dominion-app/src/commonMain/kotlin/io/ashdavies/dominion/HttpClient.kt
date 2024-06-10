@@ -1,9 +1,15 @@
 package io.ashdavies.dominion
 
 import io.ktor.client.HttpClient
+import io.ktor.client.HttpClientConfig
 import io.ktor.client.call.body
+import io.ktor.client.plugins.CallRequestExceptionHandler
+import io.ktor.client.plugins.ClientRequestException
+import io.ktor.client.plugins.HttpCallValidator
 import io.ktor.client.request.get
+import io.ktor.client.statement.HttpResponse
 import io.ktor.http.encodeURLQueryComponent
+import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
@@ -73,6 +79,36 @@ internal suspend fun HttpClient.categoryImages(
                 ),
             )
         }
+}
+
+internal fun HttpClient.onClientRequestException(
+    block: suspend (HttpResponse) -> Throwable,
+): HttpClient = onException { cause, _ ->
+    if (cause is ClientRequestException) block(cause.response)
+}
+
+private fun HttpClient.onException(
+    block: CallRequestExceptionHandler,
+): HttpClient = config {
+    validateHttpCall { handleResponseExceptionWithRequest(block) }
+}
+
+private fun HttpClientConfig<*>.validateHttpCall(
+    configure: HttpCallValidator.Config.() -> Unit,
+) {
+    install(HttpCallValidator, configure)
+}
+
+@Serializable
+internal data class DbConnectionError(
+    val error: Error,
+) : Throwable(error.info) {
+
+    @Serializable
+    data class Error(
+        val code: String,
+        val info: String,
+    )
 }
 
 internal data class ImageInfo(

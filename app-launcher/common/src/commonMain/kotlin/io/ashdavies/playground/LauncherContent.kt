@@ -2,15 +2,17 @@ package io.ashdavies.playground
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import app.cash.sqldelight.EnumColumnAdapter
 import coil3.ImageLoader
 import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.setSingletonImageLoaderFactory
 import coil3.disk.DiskCache
 import coil3.memory.MemoryCache
 import io.ashdavies.check.ProvideAppCheckToken
+import io.ashdavies.common.PlaygroundDatabase
 import io.ashdavies.content.PlatformContext
+import io.ashdavies.dominion.Card
 import io.ashdavies.material.dynamicColorScheme
-import io.ashdavies.party.PlaygroundDatabase
 import io.ashdavies.sql.ProvideTransacter
 import io.ashdavies.sql.rememberTransacter
 import okio.Path
@@ -40,12 +42,17 @@ public fun LauncherContent(context: PlatformContext, content: @Composable () -> 
     }
 
     ProvideAppCheckToken {
-        // TODO Change to io.ashdavies.common.PlaygroundDatabase
         val transacter = rememberTransacter(
             schema = PlaygroundDatabase.Schema,
             context = context,
-            factory = PlaygroundDatabase.Companion::invoke,
-        )
+        ) { driver ->
+            PlaygroundDatabase(
+                driver = driver,
+                CardAdapter = Card.Adapter(
+                    formatAdapter = EnumColumnAdapter(),
+                ),
+            )
+        }
 
         ProvideTransacter(transacter) {
             MaterialTheme(dynamicColorScheme()) {
