@@ -22,6 +22,7 @@ kotlin {
             implementation(projects.circuitSupport)
             implementation(projects.composeMaterial)
             implementation(projects.dominionApp)
+            implementation(projects.identityManager)
             implementation(projects.mapRoutes)
             implementation(projects.platformSupport)
             implementation(projects.sqlCompose)

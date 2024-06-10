@@ -8,6 +8,7 @@ import com.slack.circuit.runtime.ui.Ui
 import com.slack.circuit.runtime.ui.ui
 import io.ashdavies.http.LocalHttpClient
 import io.ktor.client.HttpClient
+import io.ktor.client.call.body
 
 public fun dominionPresenterFactory(): Presenter.Factory {
     return Presenter.Factory { screen, navigator, _ ->
@@ -53,7 +54,9 @@ public fun dominionUiFactory(): Ui.Factory = Ui.Factory { screen, _ ->
 @Composable
 private fun rememberBoxSetStore(
     boxSetQueries: BoxSetQueries = rememberLocalQueries { it.boxSetQueries },
-    httpClient: HttpClient = LocalHttpClient.current,
+    httpClient: HttpClient = LocalHttpClient.current.onClientRequestException {
+        throw it.body<DbConnectionError>()
+    },
 ): BoxSetStore = remember(boxSetQueries, httpClient) {
     BoxSetStore(
         boxSetQueries = boxSetQueries,
@@ -64,7 +67,9 @@ private fun rememberBoxSetStore(
 @Composable
 private fun rememberCardsStore(
     cardQueries: CardQueries = rememberLocalQueries { it.cardQueries },
-    httpClient: HttpClient = LocalHttpClient.current,
+    httpClient: HttpClient = LocalHttpClient.current.onClientRequestException {
+        throw it.body<DbConnectionError>()
+    },
 ): CardsStore = remember(cardQueries, httpClient) {
     CardsStore(
         cardQueries = cardQueries,

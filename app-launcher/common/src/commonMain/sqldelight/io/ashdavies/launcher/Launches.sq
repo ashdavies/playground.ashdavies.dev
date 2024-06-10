@@ -1,0 +1,7 @@
+CREATE TABLE Launch(
+    id TEXT NOT NULL PRIMARY KEY,
+    timestamp INTEGER NOT NULL
+);
+
+insert:
+    INSERT INTO Launch VALUES ?;
