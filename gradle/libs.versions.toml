@@ -9,7 +9,7 @@ coil-kt = "3.0.0-alpha06"
 compose-plugin = "1.6.11"
 gitlive-firebase = "1.12.0"
 google-accompanist = "0.34.0"
-google-android = "8.4.1"
+google-android = "8.4.2"
 google-maps-compose = "4.3.2"
 google-services = "4.4.2"
 jetbrains-kotlin = "2.0.0"
@@ -131,6 +131,6 @@ gradle-doctor = "com.osacky.doctor:0.10.0"
 jetbrains-compose = { id = "org.jetbrains.compose", version.ref = "compose-plugin" }
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "jetbrains-kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "jetbrains-kotlin" }
-kotlinx-kover = "org.jetbrains.kotlinx.kover:0.8.0"
+kotlinx-kover = "org.jetbrains.kotlinx.kover:0.8.1"
 ktlint = "org.jlleitschuh.gradle.ktlint:12.1.1"
 openapi-generator = "org.openapi.generator:7.6.0"
