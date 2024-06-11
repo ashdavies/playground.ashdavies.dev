@@ -19,7 +19,7 @@ import okio.Path
 
 private const val IMAGE_CACHE_PATH = "image_cache"
 
-private const val MAX_SIZE_BYTES = 5L * 1024 * 1024
+private const val MAX_SIZE_BYTES = 250L * 1024 * 1024
 private const val MAX_SIZE_PERCENT = 0.2
 
 @Composable
