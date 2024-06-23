@@ -1,5 +1,9 @@
 package io.ashdavies.activity
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -36,11 +40,15 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.screen.Screen
-import io.ashdavies.android.fade
 import io.ashdavies.events.Event
 import io.ashdavies.paging.LazyPagingItems
 import io.ashdavies.parcelable.Parcelable
 import io.ashdavies.parcelable.Parcelize
+import io.ashdavies.placeholder.PlaceholderHighlight
+import io.ashdavies.placeholder.fade
+import io.ashdavies.placeholder.placeholder
+
+private const val EMPTY_STRING = "No Data Available"
 
 @Parcelize
 internal object ActivityScreen : Parcelable, Screen {
@@ -76,13 +84,38 @@ internal fun ActivityScreen(state: ActivityScreen.State, modifier: Modifier = Mo
                 state = pullRefreshState,
             )
 
-            LazyColumn(Modifier.fillMaxSize()) {
-                items(state.pagingItems.itemCount) {
-                    EventSection(state.pagingItems[it])
+            FadeVisibility(state.pagingItems.itemCount > 0) {
+                LazyColumn(Modifier.fillMaxSize()) {
+                    items(state.pagingItems.itemCount) {
+                        EventSection(state.pagingItems[it])
+                    }
+                }
+            }
+
+            FadeVisibility(state.pagingItems.loadState.isRefreshing) {
+                LazyColumn(Modifier.fillMaxSize()) {
+                    items(6) {
+                        EventSection(null)
+                    }
                 }
             }
         }
     }
+}
+
+@Composable
+private fun FadeVisibility(
+    visible: Boolean,
+    modifier: Modifier = Modifier,
+    content: @Composable AnimatedVisibilityScope.() -> Unit,
+) {
+    AnimatedVisibility(
+        visible = visible,
+        modifier = modifier,
+        enter = fadeIn(),
+        exit = fadeOut(),
+        content = content,
+    )
 }
 
 @Composable
@@ -159,13 +192,13 @@ internal fun PlaceholderText(
 ) {
     Text(
         overflow = TextOverflow.Ellipsis,
-        text = text ?: String(),
+        text = text ?: EMPTY_STRING,
         style = style,
         maxLines = 1,
         modifier = modifier
             .padding(vertical = verticalPadding)
             .defaultMinSize(minWidth = Dp(style.fontSize.value * characters))
-            .fade(text == null),
+            .placeholder(text == null, highlight = PlaceholderHighlight.fade()),
     )
 }
 

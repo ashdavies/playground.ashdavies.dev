@@ -27,8 +27,10 @@ import com.slack.circuit.runtime.CircuitUiEvent
 import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.screen.Screen
 import io.ashdavies.android.FlowRow
-import io.ashdavies.android.fade
 import io.ashdavies.parcelable.Parcelize
+import io.ashdavies.placeholder.PlaceholderHighlight
+import io.ashdavies.placeholder.fade
+import io.ashdavies.placeholder.placeholder
 import kotlin.random.Random.Default.nextInt
 
 @Parcelize
@@ -121,7 +123,7 @@ private fun StubLanyardFlow(until: Int = 30) {
                     .border(1.dp, Color.LightGray, CircleShape)
                     .size(64.dp, 64.dp)
                     .clip(CircleShape)
-                    .fade(true)
+                    .placeholder(true, highlight = PlaceholderHighlight.fade())
                     .padding(4.dp),
             )
         }

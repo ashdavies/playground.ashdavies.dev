@@ -5,6 +5,8 @@ import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import io.ktor.client.network.sockets.SocketTimeoutException
+import kotlinx.coroutines.delay
+import kotlin.time.Duration.Companion.seconds
 import io.ashdavies.events.Event as DatabaseEvent
 import io.ashdavies.http.common.models.Event as ApiEvent
 
@@ -20,6 +22,9 @@ internal class EventsRemoteMediator(
         loadType: LoadType,
         state: PagingState<String, DatabaseEvent>,
     ): MediatorResult {
+        delay(5.seconds)
+        return MediatorResult.Success(true)
+
         val loadKey = when (loadType) {
             LoadType.APPEND -> state.lastItemOrNull() ?: return endOfPaginationReached()
             LoadType.PREPEND -> return endOfPaginationReached()
