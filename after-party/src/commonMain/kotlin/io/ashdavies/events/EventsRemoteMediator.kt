@@ -12,6 +12,7 @@ import io.ashdavies.http.common.models.Event as ApiEvent
 internal class EventsRemoteMediator(
     private val eventsQueries: EventsQueries,
     private val eventsCallable: GetEventsCallable,
+    private val onInvalidate: () -> Unit,
 ) : RemoteMediator<String, DatabaseEvent>() {
 
     @Suppress("ReturnCount")
@@ -35,6 +36,8 @@ internal class EventsRemoteMediator(
                         eventsQueries.insertOrReplace(it.asDatabaseEvent())
                     }
                 }
+                
+                onInvalidate()
 
                 MediatorResult.Success(result.value.isEmpty())
             }
