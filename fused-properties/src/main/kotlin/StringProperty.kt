@@ -7,7 +7,8 @@ import kotlin.properties.ReadOnlyProperty
 public fun interface ReadOnlyDelegateProvider<T> : PropertyDelegateProvider<Any?, ReadOnlyProperty<Any?, T>>
 
 private fun Project.stringPropertyProvider(propertyName: String): Provider<String> {
-    val localPropertiesProvider = rootProject.cachedLocalPropertiesProvider()
+    val rootPropertiesProvider = rootProject.cachedLocalPropertiesProvider()
+    val localPropertiesProvider = cachedLocalPropertiesProvider()
     val startPropertiesProvider = startParameterProvider()
 
     val propertyNameParts = propertyName.split(Regex("(?=[A-Z])"))
@@ -16,6 +17,7 @@ private fun Project.stringPropertyProvider(propertyName: String): Provider<Strin
 
     return startPropertiesProvider.mapOrNull { it[gradlePropertyName] }
         .orElse(localPropertiesProvider.map { it.getProperty(gradlePropertyName) })
+        .orElse(rootPropertiesProvider.map { it.getProperty(gradlePropertyName) })
         .orElse(providers.gradleProperty(gradlePropertyName))
         .orElse(providers.environmentVariable(envPropertyName))
 }
