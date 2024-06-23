@@ -12,40 +12,42 @@ import io.ashdavies.http.common.models.Event as ApiEvent
 internal class EventsRemoteMediator(
     private val eventsQueries: EventsQueries,
     private val eventsCallable: GetEventsCallable,
+    private val onInvalidate: () -> Unit,
 ) : RemoteMediator<String, DatabaseEvent>() {
 
+    @Suppress("ReturnCount")
     override suspend fun load(
         loadType: LoadType,
         state: PagingState<String, DatabaseEvent>,
-    ): MediatorResult = when (loadType) {
-        LoadType.PREPEND -> endOfPaginationReached()
-        else -> when (val lastItem = state.lastItemOrNull()) {
-            is DatabaseEvent -> load(loadType, lastItem.id)
-            else -> endOfPaginationReached()
+    ): MediatorResult {
+        val loadKey = when (loadType) {
+            LoadType.APPEND -> state.lastItemOrNull() ?: return endOfPaginationReached()
+            LoadType.PREPEND -> return endOfPaginationReached()
+            LoadType.REFRESH -> null
         }
-    }
 
-    private suspend fun load(
-        loadType: LoadType,
-        startAt: String?,
-    ): MediatorResult = when (val result = eventsCallable.result(GetEventsRequest(startAt))) {
-        is CallableResult.Error<*> -> MediatorResult.Error(result.throwable)
-        is CallableResult.Success -> {
-            eventsQueries.transaction {
-                if (loadType == LoadType.REFRESH) eventsQueries.deleteAll()
+        return when (val result = eventsCallable.result(GetEventsRequest(loadKey?.dateStart))) {
+            is CallableResult.Error<*> -> MediatorResult.Error(result.throwable)
+            is CallableResult.Success -> {
+                eventsQueries.transaction {
+                    if (loadType == LoadType.REFRESH) eventsQueries.deleteAll()
 
-                result.value.forEach {
-                    eventsQueries.insertOrReplace(it.asDatabaseEvent())
+                    result.value.forEach {
+                        eventsQueries.insertOrReplace(it.asDatabaseEvent())
+                    }
                 }
-            }
 
-            MediatorResult.Success(result.value.isEmpty())
+                onInvalidate()
+
+                MediatorResult.Success(result.value.isEmpty())
+            }
         }
     }
+}
 
-    private fun endOfPaginationReached(): MediatorResult {
-        return MediatorResult.Success(endOfPaginationReached = true)
-    }
+@ExperimentalPagingApi
+private fun endOfPaginationReached(): RemoteMediator.MediatorResult {
+    return RemoteMediator.MediatorResult.Success(endOfPaginationReached = true)
 }
 
 private suspend fun GetEventsCallable.result(

@@ -1,6 +1,5 @@
 package io.ashdavies.activity
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -35,7 +34,6 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.paging.LoadState
 import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.screen.Screen
 import io.ashdavies.android.fade
@@ -43,14 +41,6 @@ import io.ashdavies.events.Event
 import io.ashdavies.paging.LazyPagingItems
 import io.ashdavies.parcelable.Parcelable
 import io.ashdavies.parcelable.Parcelize
-
-private val <T : Any> LazyPagingItems<T>.errorMessage: String?
-    get() = (loadState.append as? LoadState.Error)
-        ?.error
-        ?.message
-
-private val <T : Any> LazyPagingItems<T>.isRefreshing: Boolean
-    get() = loadState.refresh is LoadState.Loading
 
 @Parcelize
 internal object ActivityScreen : Parcelable, Screen {
@@ -67,26 +57,26 @@ internal fun ActivityScreen(state: ActivityScreen.State, modifier: Modifier = Mo
         topBar = { ActivityTopAppBar("Events") },
     ) { contentPadding ->
         val pullRefreshState = rememberPullRefreshState(
-            refreshing = state.pagingItems.isRefreshing,
+            refreshing = state.pagingItems.loadState.isRefreshing,
             onRefresh = { state.pagingItems.refresh() },
         )
 
-        Box(modifier = Modifier.pullRefresh(pullRefreshState)) {
-            val errorMessage = state.pagingItems.errorMessage
-            if (errorMessage != null) {
-                EventFailure(errorMessage)
+        Box(
+            modifier = Modifier
+                .padding(contentPadding)
+                .pullRefresh(pullRefreshState),
+        ) {
+            if (state.pagingItems.loadState.hasError) {
+                EventFailure(state.pagingItems.loadState.errorMessage ?: "Unknown Error")
             }
 
             PullRefreshIndicator(
                 modifier = Modifier.align(Alignment.TopCenter),
-                refreshing = state.pagingItems.isRefreshing,
+                refreshing = state.pagingItems.loadState.isRefreshing,
                 state = pullRefreshState,
             )
 
-            LazyColumn(
-                modifier = Modifier.fillMaxSize(),
-                contentPadding = contentPadding,
-            ) {
+            LazyColumn(Modifier.fillMaxSize()) {
                 items(state.pagingItems.itemCount) {
                     EventSection(state.pagingItems[it])
                 }
@@ -181,12 +171,9 @@ internal fun PlaceholderText(
 
 @Composable
 private fun EventFailure(message: String, modifier: Modifier = Modifier) {
-    Column(verticalArrangement = Arrangement.Center) {
-        Row(horizontalArrangement = Arrangement.Center) {
-            Text(
-                modifier = modifier.padding(16.dp, 12.dp),
-                text = message,
-            )
-        }
-    }
+    Text(
+        text = message,
+        modifier = modifier.padding(16.dp, 12.dp),
+        color = MaterialTheme.colorScheme.error,
+    )
 }

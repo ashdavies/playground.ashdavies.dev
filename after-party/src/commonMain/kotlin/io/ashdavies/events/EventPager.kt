@@ -3,6 +3,7 @@ package io.ashdavies.events
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.paging.ExperimentalPagingApi
+import androidx.paging.InvalidatingPagingSourceFactory
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import io.ashdavies.http.LocalHttpClient
@@ -19,10 +20,20 @@ internal fun rememberEventPager(
     initialKey: String = todayAsString(),
     pageSize: Int = DEFAULT_PAGE_SIZE,
 ): Pager<String, Event> = remember(eventsQueries, eventsCallable) {
+    val pagingSourceFactory = InvalidatingPagingSourceFactory {
+        EventsPagingSource(eventsQueries)
+    }
+
+    val remoteMediator = EventsRemoteMediator(
+        eventsQueries = eventsQueries,
+        eventsCallable = eventsCallable,
+        onInvalidate = pagingSourceFactory::invalidate,
+    )
+
     Pager(
         config = PagingConfig(pageSize),
         initialKey = initialKey,
-        remoteMediator = EventsRemoteMediator(eventsQueries, eventsCallable),
-        pagingSourceFactory = { EventsPagingSource(eventsQueries) },
+        remoteMediator = remoteMediator,
+        pagingSourceFactory = pagingSourceFactory,
     )
 }
