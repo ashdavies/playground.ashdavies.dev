@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "io.ashdavies.paging.compose"
+    namespace = "io.ashdavies.placeholder"
 }
 
 kotlin {

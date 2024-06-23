@@ -49,6 +49,7 @@ import io.ashdavies.placeholder.fade
 import io.ashdavies.placeholder.placeholder
 
 private const val EMPTY_STRING = "No Data Available"
+private const val PLACEHOLDER_COUNT = 8
 
 @Parcelize
 internal object ActivityScreen : Parcelable, Screen {
@@ -94,7 +95,7 @@ internal fun ActivityScreen(state: ActivityScreen.State, modifier: Modifier = Mo
 
             FadeVisibility(state.pagingItems.loadState.isRefreshing) {
                 LazyColumn(Modifier.fillMaxSize()) {
-                    items(6) {
+                    items(PLACEHOLDER_COUNT) {
                         EventSection(null)
                     }
                 }
