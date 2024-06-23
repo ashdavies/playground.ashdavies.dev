@@ -61,14 +61,13 @@ internal fun ActivityScreen(state: ActivityScreen.State, modifier: Modifier = Mo
             onRefresh = { state.pagingItems.refresh() },
         )
 
-        Box(modifier = Modifier.pullRefresh(pullRefreshState)) {
+        Box(
+            modifier = Modifier
+                .padding(contentPadding)
+                .pullRefresh(pullRefreshState),
+        ) {
             if (state.pagingItems.loadState.hasError) {
-                EventFailure(
-                    message = state.pagingItems.loadState.errorMessage ?: "Unknown Error",
-                    modifier = Modifier
-                        .padding(contentPadding)
-                        .fillMaxSize(),
-                )
+                EventFailure(state.pagingItems.loadState.errorMessage ?: "Unknown Error")
             }
 
             PullRefreshIndicator(
@@ -77,10 +76,7 @@ internal fun ActivityScreen(state: ActivityScreen.State, modifier: Modifier = Mo
                 state = pullRefreshState,
             )
 
-            LazyColumn(
-                modifier = Modifier.fillMaxSize(),
-                contentPadding = contentPadding,
-            ) {
+            LazyColumn(Modifier.fillMaxSize()) {
                 items(state.pagingItems.itemCount) {
                     EventSection(state.pagingItems[it])
                 }
