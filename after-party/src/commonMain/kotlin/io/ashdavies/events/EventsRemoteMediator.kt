@@ -36,7 +36,7 @@ internal class EventsRemoteMediator(
                         eventsQueries.insertOrReplace(it.asDatabaseEvent())
                     }
                 }
-                
+
                 onInvalidate()
 
                 MediatorResult.Success(result.value.isEmpty())
