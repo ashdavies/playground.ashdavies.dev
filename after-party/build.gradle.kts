@@ -19,6 +19,7 @@ kotlin {
             implementation(projects.httpCommon)
             implementation(projects.identityManager)
             implementation(projects.pagingCompose)
+            implementation(projects.placeholderHighlight)
             implementation(projects.platformScaffold)
             implementation(projects.platformSupport)
             implementation(projects.sqlCommon)
@@ -54,7 +55,6 @@ kotlin {
         androidMain.dependencies {
             implementation(libs.androidx.activity.compose)
             implementation(libs.google.accompanist.flowlayout)
-            implementation(libs.google.accompanist.placeholderMaterial)
         }
 
         val androidDebug by registering {

@@ -72,6 +72,7 @@ include(
     ":nsd-manager",
     ":paging-compose",
     ":parcelable-support",
+    ":placeholder-highlight",
     ":platform-scaffold",
     ":platform-support",
     ":sql-common",

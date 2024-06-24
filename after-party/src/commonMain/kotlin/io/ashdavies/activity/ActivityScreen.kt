@@ -1,5 +1,10 @@
 package io.ashdavies.activity
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -36,11 +41,16 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.screen.Screen
-import io.ashdavies.android.fade
 import io.ashdavies.events.Event
 import io.ashdavies.paging.LazyPagingItems
 import io.ashdavies.parcelable.Parcelable
 import io.ashdavies.parcelable.Parcelize
+import io.ashdavies.placeholder.PlaceholderHighlight
+import io.ashdavies.placeholder.fade
+import io.ashdavies.placeholder.placeholder
+
+private const val EMPTY_STRING = "No Data Available"
+private const val PLACEHOLDER_COUNT = 8
 
 @Parcelize
 internal object ActivityScreen : Parcelable, Screen {
@@ -48,7 +58,11 @@ internal object ActivityScreen : Parcelable, Screen {
 }
 
 @Composable
-@OptIn(ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class)
+@OptIn(
+    ExperimentalFoundationApi::class,
+    ExperimentalMaterialApi::class,
+    ExperimentalMaterial3Api::class,
+)
 internal fun ActivityScreen(state: ActivityScreen.State, modifier: Modifier = Modifier) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
 
@@ -76,9 +90,25 @@ internal fun ActivityScreen(state: ActivityScreen.State, modifier: Modifier = Mo
                 state = pullRefreshState,
             )
 
-            LazyColumn(Modifier.fillMaxSize()) {
-                items(state.pagingItems.itemCount) {
-                    EventSection(state.pagingItems[it])
+            FadeVisibility(state.pagingItems.itemCount > 0) {
+                LazyColumn(Modifier.fillMaxSize()) {
+                    items(state.pagingItems.itemCount) {
+                        EventSection(
+                            event = state.pagingItems[it],
+                            modifier = Modifier.animateItemPlacement(),
+                        )
+                    }
+                }
+            }
+
+            FadeVisibility(state.pagingItems.loadState.isRefreshing) {
+                LazyColumn(Modifier.fillMaxSize()) {
+                    items(PLACEHOLDER_COUNT) {
+                        EventSection(
+                            event = null,
+                            modifier = Modifier.animateItemPlacement(),
+                        )
+                    }
                 }
             }
         }
@@ -86,8 +116,26 @@ internal fun ActivityScreen(state: ActivityScreen.State, modifier: Modifier = Mo
 }
 
 @Composable
+private fun FadeVisibility(
+    visible: Boolean,
+    modifier: Modifier = Modifier,
+    content: @Composable AnimatedVisibilityScope.() -> Unit,
+) {
+    AnimatedVisibility(
+        visible = visible,
+        modifier = modifier,
+        enter = fadeIn(),
+        exit = fadeOut(),
+        content = content,
+    )
+}
+
+@Composable
 @ExperimentalMaterial3Api
-private fun ActivityTopAppBar(text: String = "Events", modifier: Modifier = Modifier) {
+private fun ActivityTopAppBar(
+    text: String = "Events",
+    modifier: Modifier = Modifier,
+) {
     TopAppBar(
         title = {
             Row {
@@ -105,8 +153,11 @@ private fun ActivityTopAppBar(text: String = "Events", modifier: Modifier = Modi
 }
 
 @Composable
-private fun EventSection(event: Event?) {
-    Box(Modifier.padding(horizontal = 16.dp, vertical = 8.dp)) {
+private fun EventSection(
+    event: Event?,
+    modifier: Modifier = Modifier,
+) {
+    Box(modifier.padding(horizontal = 16.dp, vertical = 8.dp)) {
         Button(
             onClick = { },
             modifier = Modifier.fillMaxWidth(),
@@ -159,13 +210,13 @@ internal fun PlaceholderText(
 ) {
     Text(
         overflow = TextOverflow.Ellipsis,
-        text = text ?: String(),
+        text = text ?: EMPTY_STRING,
         style = style,
         maxLines = 1,
         modifier = modifier
             .padding(vertical = verticalPadding)
             .defaultMinSize(minWidth = Dp(style.fontSize.value * characters))
-            .fade(text == null),
+            .placeholder(text == null, highlight = PlaceholderHighlight.fade()),
     )
 }
 

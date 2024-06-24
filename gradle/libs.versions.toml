@@ -47,7 +47,6 @@ gitlive-firebase-app = { module = "dev.gitlive:firebase-app", version.ref = "git
 
 google-accompanist-flowlayout = { module = "com.google.accompanist:accompanist-flowlayout", version.ref = "google-accompanist" }
 google-accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "google-accompanist" }
-google-accompanist-placeholderMaterial = { module = "com.google.accompanist:accompanist-placeholder-material", version.ref = "google-accompanist" }
 
 google-android-identity = "com.google.android.libraries.identity.googleid:googleid:1.1.0"
 google-android-location = "com.google.android.gms:play-services-location:21.3.0"
