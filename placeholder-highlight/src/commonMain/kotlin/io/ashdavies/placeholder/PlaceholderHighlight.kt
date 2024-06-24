@@ -4,13 +4,10 @@ import androidx.annotation.FloatRange
 import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.animation.core.InfiniteRepeatableSpec
 import androidx.compose.runtime.Stable
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.util.lerp
-import kotlin.math.max
 
 /**
  * A class which provides a brush to paint placeholder based on progress.
@@ -30,7 +27,7 @@ public interface PlaceholderHighlight {
      */
     public fun brush(
         @FloatRange(from = 0.0, to = 1.0) progress: Float,
-        size: Size
+        size: Size,
     ): Brush
 
     /**

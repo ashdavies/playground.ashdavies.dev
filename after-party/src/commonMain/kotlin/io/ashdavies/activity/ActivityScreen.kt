@@ -4,6 +4,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -57,7 +58,11 @@ internal object ActivityScreen : Parcelable, Screen {
 }
 
 @Composable
-@OptIn(ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class)
+@OptIn(
+    ExperimentalFoundationApi::class,
+    ExperimentalMaterialApi::class,
+    ExperimentalMaterial3Api::class,
+)
 internal fun ActivityScreen(state: ActivityScreen.State, modifier: Modifier = Modifier) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
 
@@ -88,7 +93,10 @@ internal fun ActivityScreen(state: ActivityScreen.State, modifier: Modifier = Mo
             FadeVisibility(state.pagingItems.itemCount > 0) {
                 LazyColumn(Modifier.fillMaxSize()) {
                     items(state.pagingItems.itemCount) {
-                        EventSection(state.pagingItems[it])
+                        EventSection(
+                            event = state.pagingItems[it],
+                            modifier = Modifier.animateItemPlacement(),
+                        )
                     }
                 }
             }
@@ -96,7 +104,10 @@ internal fun ActivityScreen(state: ActivityScreen.State, modifier: Modifier = Mo
             FadeVisibility(state.pagingItems.loadState.isRefreshing) {
                 LazyColumn(Modifier.fillMaxSize()) {
                     items(PLACEHOLDER_COUNT) {
-                        EventSection(null)
+                        EventSection(
+                            event = null,
+                            modifier = Modifier.animateItemPlacement(),
+                        )
                     }
                 }
             }
@@ -121,7 +132,10 @@ private fun FadeVisibility(
 
 @Composable
 @ExperimentalMaterial3Api
-private fun ActivityTopAppBar(text: String = "Events", modifier: Modifier = Modifier) {
+private fun ActivityTopAppBar(
+    text: String = "Events",
+    modifier: Modifier = Modifier,
+) {
     TopAppBar(
         title = {
             Row {
@@ -139,8 +153,11 @@ private fun ActivityTopAppBar(text: String = "Events", modifier: Modifier = Modi
 }
 
 @Composable
-private fun EventSection(event: Event?) {
-    Box(Modifier.padding(horizontal = 16.dp, vertical = 8.dp)) {
+private fun EventSection(
+    event: Event?,
+    modifier: Modifier = Modifier,
+) {
+    Box(modifier.padding(horizontal = 16.dp, vertical = 8.dp)) {
         Button(
             onClick = { },
             modifier = Modifier.fillMaxWidth(),
