@@ -12,9 +12,9 @@ import com.google.android.gms.maps.model.CameraPosition
 import com.google.maps.android.PolyUtil
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.Marker
-import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.Polyline
 import com.google.maps.android.compose.rememberCameraPositionState
+import com.google.maps.android.compose.rememberMarkerState
 import com.google.android.gms.maps.model.LatLng as GmsLatLng
 
 private const val CAMERA_ANIMATE_DURATION = 2_000
@@ -41,7 +41,7 @@ internal actual fun RouteMap(
         onMapClick = { onEndPosition(it.asLatLng()) },
     ) {
         Marker(
-            state = MarkerState(state.startPosition.asGmsLatLng()),
+            state = rememberMarkerState(position = state.startPosition.asGmsLatLng()),
             icon = rememberGreenMarker(),
             title = "Start",
         )
@@ -49,7 +49,7 @@ internal actual fun RouteMap(
         val endPosition = state.endPosition
         if (endPosition != null) {
             Marker(
-                state = MarkerState(endPosition.asGmsLatLng()),
+                state = rememberMarkerState(position = endPosition.asGmsLatLng()),
                 icon = rememberRedMarker(),
                 title = "End",
             )
