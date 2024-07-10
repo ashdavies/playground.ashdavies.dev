@@ -120,7 +120,7 @@ squareup-okio = "com.squareup.okio:okio:3.9.0"
 android-application = { id = "com.android.application", version.ref = "google-android" }
 android-library = { id = "com.android.library", version.ref = "google-android" }
 apollo-graphql = { id = "com.apollographql.apollo", version.ref = "apollo-graphql" }
-build-config = "com.github.gmazzo.buildconfig:5.3.5"
+build-config = "com.github.gmazzo.buildconfig:5.4.0"
 cash-sqldelight = { id = "app.cash.sqldelight", version.ref = "cash-sqldelight" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "jetbrains-kotlin" }
 dependency-analysis = "com.autonomousapps.dependency-analysis:1.32.0"
