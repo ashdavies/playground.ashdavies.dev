@@ -1,6 +1,5 @@
 package io.ashdavies.playground
 
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
@@ -13,8 +12,8 @@ import com.slack.circuit.foundation.CircuitCompositionLocals
 import com.slack.circuit.foundation.NavigableCircuitContent
 import com.slack.circuit.foundation.rememberCircuitNavigator
 import io.ashdavies.content.PlatformContext
-import io.ashdavies.http.LocalHttpClient
-import io.ktor.client.plugins.DefaultRequest
+import io.ashdavies.http.ProvideHttpClient
+import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.request.header
 
 private class LauncherCommand : CliktCommand() {
@@ -30,9 +29,9 @@ private class LauncherCommand : CliktCommand() {
             val circuit = remember { Circuit(PlatformContext.Default) }
 
             CircuitCompositionLocals(circuit) {
-                CompositionLocalProvider(
-                    LocalHttpClient provides LocalHttpClient.current.config {
-                        install(DefaultRequest) {
+                ProvideHttpClient(
+                    configure = {
+                        defaultRequest {
                             header("User-Agent", System.getProperty("os.name"))
                             header("X-API-Key", BuildConfig.BROWSER_API_KEY)
                         }

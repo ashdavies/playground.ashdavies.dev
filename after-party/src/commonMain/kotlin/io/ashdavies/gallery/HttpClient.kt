@@ -18,39 +18,39 @@ private val HttpRequestData.path: String
 private val Headers.contentLength: String
     get() = requireNotNull(get(HttpHeaders.ContentLength))
 
-internal fun inMemoryHttpClientEngine(initialValue: List<String>): HttpClientEngine {
+internal fun inMemoryHttpClientEngine(
+    initialValue: List<String> = emptyList(),
+): HttpClientEngine = MockEngine { request ->
     val values = initialValue.toMutableList()
 
-    return MockEngine { request ->
-        when {
-            request.method == HttpMethod.Get && request.path.isEmpty() -> {
-                val text = "[${values.joinToString(transform = { "\"$it\"" })}]"
+    when {
+        request.method == HttpMethod.Get && request.path.isEmpty() -> {
+            val text = "[${values.joinToString(transform = { "\"$it\"" })}]"
 
-                respond(ByteReadChannel(text), headers = DefaultHeaders)
-            }
-
-            request.method == HttpMethod.Post && request.path.isNotEmpty() -> {
-                require(request.body.contentLength == request.headers.contentLength.toLong())
-                values += request.path
-
-                respond(ByteReadChannel.Empty, headers = DefaultHeaders)
-            }
-
-            request.method == HttpMethod.Put && request.path.isNotEmpty() -> {
-                require(request.body.contentLength == 0L)
-                values += request.path
-
-                respond(ByteReadChannel.Empty, headers = DefaultHeaders)
-            }
-
-            request.method == HttpMethod.Delete && request.path.isNotEmpty() -> {
-                require(request.body.contentLength == 0L)
-                values -= request.path
-
-                respond(ByteReadChannel.Empty, headers = DefaultHeaders)
-            }
-
-            else -> error("Unhandled request: $request")
+            respond(ByteReadChannel(text), headers = DefaultHeaders)
         }
+
+        request.method == HttpMethod.Post && request.path.isNotEmpty() -> {
+            require(request.body.contentLength == request.headers.contentLength.toLong())
+            values += request.path
+
+            respond(ByteReadChannel.Empty, headers = DefaultHeaders)
+        }
+
+        request.method == HttpMethod.Put && request.path.isNotEmpty() -> {
+            require(request.body.contentLength == 0L)
+            values += request.path
+
+            respond(ByteReadChannel.Empty, headers = DefaultHeaders)
+        }
+
+        request.method == HttpMethod.Delete && request.path.isNotEmpty() -> {
+            require(request.body.contentLength == 0L)
+            values -= request.path
+
+            respond(ByteReadChannel.Empty, headers = DefaultHeaders)
+        }
+
+        else -> error("Unhandled request: $request")
     }
 }

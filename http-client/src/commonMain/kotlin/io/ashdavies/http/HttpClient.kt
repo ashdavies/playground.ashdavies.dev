@@ -1,41 +1,60 @@
 package io.ashdavies.http
 
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocal
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.ProvidableCompositionLocal
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.staticCompositionLocalOf
 import io.ktor.client.HttpClient
 import io.ktor.client.HttpClientConfig
 import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.engine.okhttp.OkHttp
 import io.ktor.client.plugins.DefaultRequest
-import io.ktor.client.plugins.cache.HttpCache
-import io.ktor.client.plugins.cache.storage.FileStorage
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.plugins.logging.DEFAULT
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.request.accept
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
+import io.ktor.serialization.Configuration
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
-import java.nio.file.Files
-import java.nio.file.Paths
+import kotlinx.serialization.json.JsonBuilder
 
-public val LocalHttpClient: ProvidableCompositionLocal<HttpClient> = staticCompositionLocalOf {
-    defaultHttpClient()
+private val ProvidableLocalHttpClient: ProvidableCompositionLocal<HttpClient> =
+    staticCompositionLocalOf { error("CompositionLocal LocalHttpClient not present") }
+
+public val LocalHttpClient: CompositionLocal<HttpClient>
+    get() = ProvidableLocalHttpClient
+
+@RequiresOptIn
+public annotation class HttpClientProvider
+
+@Composable
+@OptIn(HttpClientProvider::class)
+public fun ProvideHttpClient(
+    configure: HttpClientConfig<*>.() -> Unit = { },
+    content: @Composable () -> Unit,
+) {
+    CompositionLocalProvider(
+        ProvidableLocalHttpClient provides remember { httpClient(block = configure) },
+        content = content,
+    )
 }
 
-public fun defaultHttpClient(
+@HttpClientProvider
+public fun httpClient(
     engine: HttpClientEngine = OkHttp.create { },
     block: HttpClientConfig<*>.() -> Unit = { },
 ): HttpClient = HttpClient(engine) {
     install(ContentNegotiation) {
-        json(
-            Json {
-                ignoreUnknownKeys = true
-                encodeDefaults = true
-            },
-        )
+        json {
+            ignoreUnknownKeys = true
+            encodeDefaults = true
+        }
     }
 
     install(DefaultRequest) {
@@ -43,22 +62,15 @@ public fun defaultHttpClient(
         accept(ContentType.Application.Json)
     }
 
-    install(HttpCache) {
-        val cacheFile = Files
-            .createDirectories(Paths.get("build/cache"))
-            .toFile()
-
-        publicStorage(FileStorage(cacheFile))
-    }
-
     install(Logging) {
-        logger = Logger()
+        logger = Logger.DEFAULT
         level = LogLevel.ALL
     }
 
     block()
 }
 
-private fun Logger(block: (message: String) -> Unit = ::println): Logger = object : Logger {
-    override fun log(message: String) = block(message)
-}
+private fun Configuration.json(
+    from: Json = Json.Default,
+    builderAction: JsonBuilder.() -> Unit,
+) = json(Json(from, builderAction))

@@ -1,7 +1,6 @@
 package io.ashdavies.routing
 
 import io.ashdavies.http.UnaryCallable
-import io.ashdavies.http.defaultHttpClient
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.ClientRequestException
@@ -21,7 +20,7 @@ private const val HEADER_FIELD_MASK = "X-Goog-FieldMask"
 private const val FIELD_ENCODED_POLYLINE = "routes.distanceMeters,routes.duration,routes.polyline.encodedPolyline"
 
 public class ComputeRoutesCallable(
-    httpClient: HttpClient = defaultHttpClient(),
+    httpClient: HttpClient,
     apiKey: String,
 ) : UnaryCallable<ComputeRoutesRequest, ComputeRoutesResponse> {
 

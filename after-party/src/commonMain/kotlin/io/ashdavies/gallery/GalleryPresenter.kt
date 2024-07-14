@@ -9,10 +9,13 @@ import androidx.compose.runtime.setValue
 import com.slack.circuit.retained.produceRetainedState
 import com.slack.circuit.retained.rememberRetained
 import io.ashdavies.content.PlatformContext
+import io.ashdavies.http.HttpClientProvider
+import io.ashdavies.http.httpClient
 import io.ashdavies.sql.rememberLocalQueries
 import kotlinx.coroutines.launch
 
 @Composable
+@OptIn(HttpClientProvider::class)
 internal fun GalleryPresenter(
     platformContext: PlatformContext,
     imageQueries: ImageQueries = rememberLocalQueries { it.imageQueries },
@@ -20,12 +23,17 @@ internal fun GalleryPresenter(
     imageManager = remember(imageQueries) {
         ImageManager(platformContext, imageQueries)
     },
+    syncManager = SyncManager(
+        client = httpClient(
+            engine = inMemoryHttpClientEngine(),
+        ),
+    ),
 )
 
 @Composable
-internal fun GalleryPresenter(
+private fun GalleryPresenter(
     imageManager: ImageManager,
-    syncManager: SyncManager = remember { SyncManager() },
+    syncManager: SyncManager,
 ): GalleryScreen.State {
     val itemList by produceRetainedState(emptyList<Image>()) {
         imageManager.list.collect { value = it }

@@ -17,24 +17,34 @@ import com.slack.circuit.foundation.rememberCircuitNavigator
 import com.slack.circuit.overlay.ContentWithOverlays
 import io.ashdavies.content.enableStrictMode
 import io.ashdavies.content.isDebuggable
-import io.ashdavies.http.LocalHttpClient
+import io.ashdavies.http.ProvideHttpClient
+import io.ashdavies.http.publicFileStorage
 import io.ktor.client.plugins.DefaultRequest
+import io.ktor.client.plugins.cache.HttpCache
 import io.ktor.client.request.header
 import java.security.MessageDigest
 import java.util.Locale
 
+private val Context.signature: String
+    get() = getSignature(packageManager, packageName)
+
 @Composable
 private fun LauncherApp(context: Context = LocalContext.current, extra: (String) -> String?) {
     CompositionLocalProvider(
-        LocalHttpClient provides LocalHttpClient.current.config {
-            install(DefaultRequest) {
-                header("X-Android-Cert", getSignature(context.packageManager, context.packageName))
-                header("X-Android-Package", context.packageName)
-                header("X-API-Key", BuildConfig.ANDROID_API_KEY)
-                header("User-Agent", Build.PRODUCT)
-            }
-        },
-    ) {
+        ProvideHttpClient(
+            configure = {
+                install(DefaultRequest) {
+                    header("X-Android-Cert", context.signature)
+                    header("X-Android-Package", context.packageName)
+                    header("X-API-Key", BuildConfig.ANDROID_API_KEY)
+                    header("User-Agent", Build.PRODUCT)
+                }
+
+                install(HttpCache) {
+                    publicFileStorage()
+                }
+            },
+        ) {
         CircuitCompositionLocals(remember { Circuit(context) }) {
             ContentWithOverlays {
                 LauncherContent(context) {
@@ -46,6 +56,7 @@ private fun LauncherApp(context: Context = LocalContext.current, extra: (String)
                     )
                 }
             }
+        }
         }
     }
 }

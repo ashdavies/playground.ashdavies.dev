@@ -1,6 +1,7 @@
 package io.ashdavies.cloud
 
-import io.ashdavies.http.defaultHttpClient
+import io.ashdavies.http.DefaultHttpClient
+import io.ashdavies.http.HttpClientProvider
 import io.ktor.client.HttpClient
 import io.ktor.http.HttpHeaders
 import io.ktor.serialization.Configuration
@@ -28,7 +29,8 @@ public fun main() {
     server.start(wait = true)
 }
 
-internal fun Application.main(client: HttpClient = defaultHttpClient { installCallValidator() }) {
+@OptIn(HttpClientProvider::class)
+internal fun Application.main(client: HttpClient = DefaultHttpClient()) {
     install(DefaultHeaders, DefaultHeadersConfig::headers)
     install(Compression, CompressionConfig::default)
     install(ContentNegotiation, Configuration::json)
