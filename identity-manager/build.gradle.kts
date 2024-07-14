@@ -19,13 +19,18 @@ buildConfig {
 }
 
 kotlin {
-    sourceSets.commonMain.dependencies {
-        implementation(projects.platformSupport)
-        implementation(projects.sqlCommon)
+    sourceSets {
+        commonMain.dependencies {
+            implementation(projects.platformSupport)
+            implementation(projects.sqlCommon)
 
-        implementation(libs.androidx.credentials.auth)
-        implementation(libs.google.android.identity)
-        implementation(libs.kotlinx.coroutines.core)
+            implementation(libs.androidx.credentials.auth)
+            implementation(libs.kotlinx.coroutines.core)
+        }
+
+        androidMain.dependencies {
+            implementation(libs.google.android.identity)
+        }
     }
 }
 
