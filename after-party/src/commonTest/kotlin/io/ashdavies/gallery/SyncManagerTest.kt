@@ -1,8 +1,10 @@
 package io.ashdavies.gallery
 
 import app.cash.turbine.test
-import io.ashdavies.http.defaultHttpClient
+import io.ashdavies.http.json
 import io.ashdavies.util.randomUuid
+import io.ktor.client.HttpClient
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.utils.io.ByteReadChannel
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
@@ -10,12 +12,23 @@ import kotlin.test.assertEquals
 
 private val RandomImage = "${randomUuid()}.jpg"
 
+private fun inMemoryHttpClient(images: List<String> = emptyList()): HttpClient {
+    return HttpClient(inMemoryHttpClientEngine(images)) {
+        install(ContentNegotiation) {
+            json {
+                ignoreUnknownKeys = true
+                encodeDefaults = true
+            }
+        }
+    }
+}
+
 internal class SyncManagerTest {
 
     @Test
     fun `should request initial value`() = runTest {
         val manager = SyncManager(
-            client = defaultHttpClient(inMemoryHttpClientEngine(listOf(RandomImage))),
+            client = inMemoryHttpClient(listOf(RandomImage)),
             reader = { ByteReadChannel.Empty },
         )
 
@@ -27,7 +40,7 @@ internal class SyncManagerTest {
     @Test
     fun `should sync image on invocation`() = runTest {
         val manager = SyncManager(
-            client = defaultHttpClient(inMemoryHttpClientEngine(emptyList())),
+            client = inMemoryHttpClient(),
             reader = { ByteReadChannel.Empty },
         )
 
@@ -44,7 +57,7 @@ internal class SyncManagerTest {
     @Test
     fun `should put synced image without content`() = runTest {
         val manager = SyncManager(
-            client = defaultHttpClient(inMemoryHttpClientEngine(listOf(RandomImage))),
+            client = inMemoryHttpClient(listOf(RandomImage)),
             reader = { ByteReadChannel.Empty },
         )
 
@@ -61,7 +74,7 @@ internal class SyncManagerTest {
     @Test
     fun `should include content length header`() = runTest {
         val manager = SyncManager(
-            client = defaultHttpClient(inMemoryHttpClientEngine(emptyList())),
+            client = inMemoryHttpClient(),
             reader = { ByteReadChannel.Empty },
         )
 

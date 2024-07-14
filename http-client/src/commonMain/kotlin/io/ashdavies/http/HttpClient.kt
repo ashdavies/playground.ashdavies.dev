@@ -70,7 +70,9 @@ public fun httpClient(
     block()
 }
 
-private fun Configuration.json(
+public fun Configuration.json(
     from: Json = Json.Default,
     builderAction: JsonBuilder.() -> Unit,
-) = json(Json(from, builderAction))
+) {
+    json(Json(from, builderAction))
+}
