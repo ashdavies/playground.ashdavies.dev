@@ -17,6 +17,7 @@ import io.ktor.client.request.put
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
+import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
 import io.ktor.serialization.kotlinx.json.json
 import io.ktor.server.application.Application
@@ -77,7 +78,7 @@ internal class ApplicationTest {
             contentType(ContentType.Application.Json)
         }
 
-        assertEquals(200, response.status.value)
+        assertEquals(HttpStatusCode.OK, response.status)
     }
 }
 
