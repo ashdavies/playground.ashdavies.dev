@@ -70,6 +70,15 @@ internal class ApplicationTest {
 
         assertEquals(DEFAULT_LIMIT, events.size)
     }
+
+    @Test
+    fun `should aggregate github events`() = testMainApplication { client ->
+        val response = client.post("/events:aggregate") {
+            contentType(ContentType.Application.Json)
+        }
+
+        assertEquals(200, response.status.value)
+    }
 }
 
 @KtorDsl
