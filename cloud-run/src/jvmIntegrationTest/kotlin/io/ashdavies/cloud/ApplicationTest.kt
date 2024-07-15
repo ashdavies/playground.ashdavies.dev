@@ -17,6 +17,7 @@ import io.ktor.client.request.put
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
+import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
 import io.ktor.serialization.kotlinx.json.json
 import io.ktor.server.application.Application
@@ -69,6 +70,15 @@ internal class ApplicationTest {
         }.body<List<Event>>()
 
         assertEquals(DEFAULT_LIMIT, events.size)
+    }
+
+    @Test
+    fun `should aggregate github events`() = testMainApplication { client ->
+        val response = client.post("/events:aggregate") {
+            contentType(ContentType.Application.Json)
+        }
+
+        assertEquals(HttpStatusCode.OK, response.status)
     }
 }
 
