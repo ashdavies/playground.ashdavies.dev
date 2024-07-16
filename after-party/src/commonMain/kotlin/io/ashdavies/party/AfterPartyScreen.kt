@@ -3,7 +3,7 @@ package io.ashdavies.party
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -25,7 +25,7 @@ import com.slack.circuit.foundation.NavEvent
 import com.slack.circuit.runtime.CircuitUiEvent
 import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.screen.Screen
-import io.ashdavies.activity.ActivityScreen
+import io.ashdavies.events.EventsScreen
 import io.ashdavies.gallery.GalleryScreen
 import io.ashdavies.gallery.GallerySheetContent
 import io.ashdavies.identity.IdentityState
@@ -123,14 +123,14 @@ internal fun AfterPartyBottomBar(
         NavigationBar {
             NavigationBarItem(
                 icon = { NavigationBarImage(Icons.Default.Home) },
-                onClick = { onClick(ActivityScreen) },
-                selected = selected is ActivityScreen,
+                onClick = { onClick(GalleryScreen) },
+                selected = selected is GalleryScreen,
             )
 
             NavigationBarItem(
-                icon = { NavigationBarImage(Icons.Default.Edit) },
-                onClick = { onClick(GalleryScreen) },
-                selected = selected is GalleryScreen,
+                icon = { NavigationBarImage(Icons.AutoMirrored.Filled.List) },
+                onClick = { onClick(EventsScreen) },
+                selected = selected is EventsScreen,
             )
         }
     }

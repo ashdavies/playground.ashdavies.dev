@@ -1,4 +1,4 @@
-package io.ashdavies.activity
+package io.ashdavies.events
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.RememberObserver
@@ -7,8 +7,6 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.cachedIn
 import com.slack.circuit.retained.rememberRetained
-import io.ashdavies.events.Event
-import io.ashdavies.events.rememberEventPager
 import io.ashdavies.paging.collectAsLazyPagingItems
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -20,15 +18,15 @@ private const val COROUTINE_SCOPE = "COROUTINE_SCOPE"
 
 @Composable
 @OptIn(ExperimentalPagingApi::class)
-internal fun ActivityPresenter(
+internal fun EventsPresenter(
     coroutineScope: CoroutineScope = rememberRetainedCoroutineScope(),
     eventPager: Pager<String, Event> = rememberEventPager(),
-): ActivityScreen.State {
+): EventsScreen.State {
     val pagingData = rememberRetained(coroutineScope) {
         eventPager.flow.cachedIn(coroutineScope)
     }
 
-    return ActivityScreen.State(
+    return EventsScreen.State(
         pagingItems = pagingData.collectAsLazyPagingItems(),
     )
 }
