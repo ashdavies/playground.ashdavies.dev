@@ -3,6 +3,7 @@ package io.ashdavies.activity
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.paging.PagingData
+import io.ashdavies.events.EventsScreen
 import io.ashdavies.events.AndroidMakers
 import io.ashdavies.events.DroidconBerlin
 import io.ashdavies.events.DroidconLondon
@@ -17,7 +18,7 @@ private val DroidconEvents = listOf(AndroidMakers, DroidconBerlin, DroidconLondo
 @Preview
 @Composable
 internal fun ActivityScreenPreview(data: List<Event> = DroidconEvents) {
-    ActivityScreen(ActivityScreen.State(lazyPagingItems(flowOf(PagingData.from(data)))))
+    EventsScreen(EventsScreen.State(lazyPagingItems(flowOf(PagingData.from(data)))))
 }
 
 @Composable

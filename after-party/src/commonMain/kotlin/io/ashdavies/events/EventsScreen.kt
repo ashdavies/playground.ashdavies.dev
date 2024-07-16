@@ -1,4 +1,4 @@
-package io.ashdavies.activity
+package io.ashdavies.events
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.AnimatedVisibilityScope
@@ -41,7 +41,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.screen.Screen
-import io.ashdavies.events.Event
 import io.ashdavies.paging.LazyPagingItems
 import io.ashdavies.parcelable.Parcelable
 import io.ashdavies.parcelable.Parcelize
@@ -53,7 +52,7 @@ private const val EMPTY_STRING = "No Data Available"
 private const val PLACEHOLDER_COUNT = 8
 
 @Parcelize
-internal object ActivityScreen : Parcelable, Screen {
+internal object EventsScreen : Parcelable, Screen {
     data class State(val pagingItems: LazyPagingItems<Event>) : CircuitUiState
 }
 
@@ -63,12 +62,12 @@ internal object ActivityScreen : Parcelable, Screen {
     ExperimentalMaterialApi::class,
     ExperimentalMaterial3Api::class,
 )
-internal fun ActivityScreen(state: ActivityScreen.State, modifier: Modifier = Modifier) {
+internal fun EventsScreen(state: EventsScreen.State, modifier: Modifier = Modifier) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
 
     Scaffold(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
-        topBar = { ActivityTopAppBar("Events") },
+        topBar = { EventsTopAppBar("Events") },
     ) { contentPadding ->
         val pullRefreshState = rememberPullRefreshState(
             refreshing = state.pagingItems.loadState.isRefreshing,
@@ -132,7 +131,7 @@ private fun FadeVisibility(
 
 @Composable
 @ExperimentalMaterial3Api
-private fun ActivityTopAppBar(
+private fun EventsTopAppBar(
     text: String = "Events",
     modifier: Modifier = Modifier,
 ) {
