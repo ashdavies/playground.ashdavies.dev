@@ -3,11 +3,11 @@ package io.ashdavies.activity
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.paging.PagingData
-import io.ashdavies.events.EventsScreen
 import io.ashdavies.events.AndroidMakers
 import io.ashdavies.events.DroidconBerlin
 import io.ashdavies.events.DroidconLondon
 import io.ashdavies.events.Event
+import io.ashdavies.events.EventsScreen
 import io.ashdavies.paging.LazyPagingItems
 import io.ashdavies.paging.collectAsLazyPagingItems
 import kotlinx.coroutines.flow.Flow
