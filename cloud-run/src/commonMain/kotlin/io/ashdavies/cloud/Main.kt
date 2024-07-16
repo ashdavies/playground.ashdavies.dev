@@ -43,7 +43,7 @@ internal fun Application.main() {
         }
 
         install(HttpCallValidator) {
-            throwClientRequestExceptionAs<GoogleApisException>()
+            throwClientRequestExceptionAs<GoogleApiException>()
         }
 
         expectSuccess = true
