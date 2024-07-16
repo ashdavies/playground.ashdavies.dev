@@ -1,7 +1,13 @@
 package io.ashdavies.cloud
 
-import io.ashdavies.http.defaultHttpClient
+import io.ashdavies.content.PlatformContext
+import io.ashdavies.http.DefaultHttpConfiguration
+import io.ashdavies.http.publicStorage
+import io.ashdavies.http.throwClientRequestExceptionAs
+import io.ashdavies.io.resolveCacheDir
 import io.ktor.client.HttpClient
+import io.ktor.client.plugins.HttpCallValidator
+import io.ktor.client.plugins.cache.HttpCache
 import io.ktor.http.HttpHeaders
 import io.ktor.serialization.Configuration
 import io.ktor.serialization.kotlinx.json.json
@@ -28,7 +34,21 @@ public fun main() {
     server.start(wait = true)
 }
 
-internal fun Application.main(client: HttpClient = defaultHttpClient { installCallValidator() }) {
+internal fun Application.main() {
+    val client = HttpClient {
+        DefaultHttpConfiguration()
+
+        install(HttpCache) {
+            publicStorage(PlatformContext.Default.resolveCacheDir())
+        }
+
+        install(HttpCallValidator) {
+            throwClientRequestExceptionAs<GoogleApisException>()
+        }
+
+        expectSuccess = true
+    }
+
     install(DefaultHeaders, DefaultHeadersConfig::headers)
     install(Compression, CompressionConfig::default)
     install(ContentNegotiation, Configuration::json)

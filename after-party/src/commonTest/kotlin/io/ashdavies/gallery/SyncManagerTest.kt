@@ -1,8 +1,9 @@
 package io.ashdavies.gallery
 
 import app.cash.turbine.test
-import io.ashdavies.http.defaultHttpClient
+import io.ashdavies.http.DefaultHttpConfiguration
 import io.ashdavies.util.randomUuid
+import io.ktor.client.HttpClient
 import io.ktor.utils.io.ByteReadChannel
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
@@ -15,7 +16,10 @@ internal class SyncManagerTest {
     @Test
     fun `should request initial value`() = runTest {
         val manager = SyncManager(
-            client = defaultHttpClient(inMemoryHttpClientEngine(listOf(RandomImage))),
+            client = HttpClient(
+                engine = inMemoryHttpClientEngine(listOf(RandomImage)),
+                block = DefaultHttpConfiguration,
+            ),
             reader = { ByteReadChannel.Empty },
         )
 
@@ -27,7 +31,10 @@ internal class SyncManagerTest {
     @Test
     fun `should sync image on invocation`() = runTest {
         val manager = SyncManager(
-            client = defaultHttpClient(inMemoryHttpClientEngine(emptyList())),
+            client = HttpClient(
+                engine = inMemoryHttpClientEngine(emptyList()),
+                block = DefaultHttpConfiguration,
+            ),
             reader = { ByteReadChannel.Empty },
         )
 
@@ -44,7 +51,10 @@ internal class SyncManagerTest {
     @Test
     fun `should put synced image without content`() = runTest {
         val manager = SyncManager(
-            client = defaultHttpClient(inMemoryHttpClientEngine(listOf(RandomImage))),
+            client = HttpClient(
+                engine = inMemoryHttpClientEngine(listOf(RandomImage)),
+                block = DefaultHttpConfiguration,
+            ),
             reader = { ByteReadChannel.Empty },
         )
 
@@ -61,7 +71,10 @@ internal class SyncManagerTest {
     @Test
     fun `should include content length header`() = runTest {
         val manager = SyncManager(
-            client = defaultHttpClient(inMemoryHttpClientEngine(emptyList())),
+            client = HttpClient(
+                engine = inMemoryHttpClientEngine(emptyList()),
+                block = DefaultHttpConfiguration,
+            ),
             reader = { ByteReadChannel.Empty },
         )
 

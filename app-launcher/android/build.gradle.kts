@@ -52,6 +52,7 @@ kotlin {
             implementation(libs.ktor.client.core)
             implementation(libs.slack.circuit.foundation)
             implementation(libs.slack.circuit.overlay)
+            implementation(libs.squareup.okio)
         }
 
         val androidInstrumentedTest by getting {
