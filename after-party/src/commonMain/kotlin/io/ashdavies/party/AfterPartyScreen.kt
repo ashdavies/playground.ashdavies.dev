@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -33,7 +32,6 @@ import io.ashdavies.identity.IdentityState
 import io.ashdavies.material.BottomSheetScaffold
 import io.ashdavies.parcelable.Parcelable
 import io.ashdavies.parcelable.Parcelize
-import io.ashdavies.profile.ProfileScreen
 
 public fun afterPartyScreen(): Screen = AfterPartyScreen
 
@@ -67,7 +65,7 @@ internal fun AfterPartyScreen(
                 actions = {
                     ProfileActionButton(
                         identityState = state.identityState,
-                        onClick = { eventSink(AfterPartyScreen.Event.BottomNav(ProfileScreen)) },
+                        onClick = { },
                     )
                 },
             )
@@ -133,12 +131,6 @@ internal fun AfterPartyBottomBar(
                 icon = { NavigationBarImage(Icons.Default.Edit) },
                 onClick = { onClick(GalleryScreen) },
                 selected = selected is GalleryScreen,
-            )
-
-            NavigationBarItem(
-                icon = { NavigationBarImage(Icons.Default.Person) },
-                onClick = { onClick(ProfileScreen) },
-                selected = selected is ProfileScreen,
             )
         }
     }
