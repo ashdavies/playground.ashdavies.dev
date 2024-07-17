@@ -3,7 +3,6 @@ package io.ashdavies.gallery
 import android.content.res.Configuration
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.darkColorScheme
@@ -11,16 +10,6 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import kotlinx.collections.immutable.persistentListOf
-
-@Preview
-@Composable
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
-@OptIn(ExperimentalMaterial3Api::class)
-internal fun GalleryTopAppBarPreview() {
-    GalleryPreviewTheme {
-        GalleryTopAppBar()
-    }
-}
 
 @Composable
 @Preview(heightDp = 120)
