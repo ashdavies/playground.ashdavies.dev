@@ -68,6 +68,7 @@ kotlin {
             implementation(projects.eventsAggregator)
             implementation(projects.httpClient)
             implementation(projects.httpCommon)
+            implementation(projects.platformSupport)
 
             implementation(libs.google.firebase.admin)
             implementation(libs.kotlinx.datetime)
@@ -82,6 +83,7 @@ kotlin {
             implementation(libs.ktor.server.core)
             implementation(libs.ktor.server.default.headers)
             implementation(libs.ktor.server.host.common)
+            implementation(libs.squareup.okio)
         }
 
         commonTest.dependencies {

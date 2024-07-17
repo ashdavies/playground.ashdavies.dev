@@ -1,6 +1,6 @@
 package io.ashdavies.gallery
 
-import io.ashdavies.http.defaultHttpClient
+import io.ashdavies.http.DefaultHttpConfiguration
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
@@ -28,7 +28,7 @@ internal enum class SyncState {
 }
 
 internal fun SyncManager(
-    client: HttpClient = defaultHttpClient(inMemoryHttpClientEngine(emptyList())),
+    client: HttpClient = HttpClient(inMemoryHttpClientEngine(), DefaultHttpConfiguration),
     reader: File.() -> ByteReadChannel = File::readChannel,
 ): SyncManager = object : SyncManager {
 

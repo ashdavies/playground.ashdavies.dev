@@ -8,7 +8,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import com.slack.circuit.foundation.CircuitCompositionLocals
@@ -17,21 +16,28 @@ import com.slack.circuit.foundation.rememberCircuitNavigator
 import com.slack.circuit.overlay.ContentWithOverlays
 import io.ashdavies.content.enableStrictMode
 import io.ashdavies.content.isDebuggable
-import io.ashdavies.http.LocalHttpClient
+import io.ashdavies.http.ProvideHttpClient
+import io.ashdavies.http.publicStorage
+import io.ashdavies.io.resolveCacheDir
 import io.ktor.client.plugins.DefaultRequest
+import io.ktor.client.plugins.cache.HttpCache
 import io.ktor.client.request.header
 import java.security.MessageDigest
 import java.util.Locale
 
 @Composable
 private fun LauncherApp(context: Context = LocalContext.current, extra: (String) -> String?) {
-    CompositionLocalProvider(
-        LocalHttpClient provides LocalHttpClient.current.config {
+    ProvideHttpClient(
+        config = {
             install(DefaultRequest) {
                 header("X-Android-Cert", getSignature(context.packageManager, context.packageName))
                 header("X-Android-Package", context.packageName)
                 header("X-API-Key", BuildConfig.ANDROID_API_KEY)
                 header("User-Agent", Build.PRODUCT)
+            }
+
+            install(HttpCache) {
+                publicStorage(context.resolveCacheDir())
             }
         },
     ) {

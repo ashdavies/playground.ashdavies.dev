@@ -1,7 +1,6 @@
 package io.ashdavies.check
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.produceState
@@ -12,7 +11,7 @@ import com.google.firebase.appcheck.playintegrity.PlayIntegrityAppCheckProviderF
 import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.app
 import io.ashdavies.http.AppCheckToken
-import io.ashdavies.http.LocalHttpClient
+import io.ashdavies.http.ProvideHttpClient
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.DefaultRequest
 import io.ktor.client.request.header
@@ -32,8 +31,8 @@ public actual fun ProvideAppCheckToken(client: HttpClient, content: @Composable 
         appCheck.installAppCheckProviderFactory(factory)
     }
 
-    CompositionLocalProvider(
-        LocalHttpClient provides client.config {
+    ProvideHttpClient(
+        config = {
             install(DefaultRequest) {
                 header(HttpHeaders.AppCheckToken, token?.token)
             }

@@ -12,10 +12,10 @@ import io.ashdavies.check.ProvideAppCheckToken
 import io.ashdavies.common.PlaygroundDatabase
 import io.ashdavies.content.PlatformContext
 import io.ashdavies.dominion.Card
+import io.ashdavies.io.resolveCacheDir
 import io.ashdavies.material.dynamicColorScheme
 import io.ashdavies.sql.ProvideTransacter
 import io.ashdavies.sql.rememberTransacter
-import okio.Path
 
 private const val IMAGE_CACHE_PATH = "image_cache"
 
@@ -61,7 +61,3 @@ public fun LauncherContent(context: PlatformContext, content: @Composable () -> 
         }
     }
 }
-
-internal expect fun PlatformContext.resolveCacheDir(
-    relative: String,
-): Path
