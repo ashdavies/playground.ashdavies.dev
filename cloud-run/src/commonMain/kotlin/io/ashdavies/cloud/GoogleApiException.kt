@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 internal data class GoogleApiException(
-    val error: Error
+    val error: Error,
 ) : Exception(error.message) {
 
     @Serializable
