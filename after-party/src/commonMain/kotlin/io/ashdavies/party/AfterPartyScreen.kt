@@ -2,6 +2,7 @@ package io.ashdavies.party
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.Home
@@ -78,9 +79,10 @@ internal fun AfterPartyScreen(
         floatingActionButton = { },
         isExpanded = false,
         modifier = modifier,
-    ) {
+    ) { contentPadding ->
         CircuitContent(
             screen = state.screen,
+            modifier = Modifier.padding(contentPadding),
             onNavEvent = { event ->
                 eventSink(AfterPartyScreen.Event.ChildNav(event))
             },
@@ -122,15 +124,15 @@ internal fun AfterPartyBottomBar(
     BottomAppBar(modifier) {
         NavigationBar {
             NavigationBarItem(
-                icon = { NavigationBarImage(Icons.Default.Home) },
-                onClick = { onClick(GalleryScreen) },
                 selected = selected is GalleryScreen,
+                onClick = { onClick(GalleryScreen) },
+                icon = { NavigationBarImage(Icons.Default.Home) },
             )
 
             NavigationBarItem(
-                icon = { NavigationBarImage(Icons.AutoMirrored.Filled.List) },
-                onClick = { onClick(EventsScreen) },
                 selected = selected is EventsScreen,
+                onClick = { onClick(EventsScreen) },
+                icon = { NavigationBarImage(Icons.AutoMirrored.Filled.List) },
             )
         }
     }

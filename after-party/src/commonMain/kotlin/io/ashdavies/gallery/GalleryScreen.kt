@@ -31,7 +31,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.ripple.rememberRipple
-import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
@@ -39,9 +38,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarDefaults.enterAlwaysScrollBehavior
-import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -128,9 +125,6 @@ internal fun GalleryScreen(
     val eventSink = state.eventSink
 
     Scaffold(
-        topBar = {
-            GalleryTopAppBar(scrollBehavior)
-        },
         floatingActionButton = {
             GalleryActionButton(
                 onClick = { eventSink(GalleryScreen.Event.Capture.Request) },
@@ -204,29 +198,6 @@ private fun GalleryExpandedItem(
             contentScale = ContentScale.Fit,
         )
     }
-}
-
-@Composable
-@ExperimentalMaterial3Api
-internal fun GalleryTopAppBar(
-    scrollBehavior: TopAppBarScrollBehavior = enterAlwaysScrollBehavior(),
-    title: String = "Gallery",
-    modifier: Modifier = Modifier,
-) {
-    CenterAlignedTopAppBar(
-        title = {
-            Text(
-                text = title,
-                style = MaterialTheme.typography.titleLarge,
-                color = MaterialTheme.colorScheme.onBackground,
-            )
-        },
-        modifier = modifier,
-        colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-            containerColor = MaterialTheme.colorScheme.background,
-        ),
-        scrollBehavior = scrollBehavior,
-    )
 }
 
 @Composable
