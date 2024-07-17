@@ -28,6 +28,7 @@ kotlin {
             implementation(libs.ajalt.clikt)
             implementation(libs.ktor.client.core)
             implementation(libs.slack.circuit.foundation)
+            implementation(libs.squareup.okio)
         }
 
         jvmMain.dependencies {
