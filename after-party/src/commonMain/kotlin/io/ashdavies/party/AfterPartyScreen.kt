@@ -124,7 +124,7 @@ internal fun AfterPartyBottomBar(
     BottomAppBar(modifier) {
         NavigationBar {
             NavigationBarItem(
-                selected =  selected is GalleryScreen,
+                selected = selected is GalleryScreen,
                 onClick = { onClick(GalleryScreen) },
                 icon = { NavigationBarImage(Icons.Default.Home) },
             )
