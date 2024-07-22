@@ -1,7 +1,6 @@
 package io.ashdavies.playground
 
 import android.content.Context
-import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -10,6 +9,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
+import androidx.core.content.pm.PackageInfoCompat
 import com.slack.circuit.foundation.CircuitCompositionLocals
 import com.slack.circuit.foundation.NavigableCircuitContent
 import com.slack.circuit.foundation.rememberCircuitNavigator
@@ -30,7 +30,7 @@ private fun LauncherApp(context: Context = LocalContext.current, extra: (String)
     ProvideHttpClient(
         config = {
             install(DefaultRequest) {
-                header("X-Android-Cert", getSignature(context.packageManager, context.packageName))
+                header("X-Android-Cert", context.getFirstSignatureOrNull())
                 header("X-Android-Package", context.packageName)
                 header("X-API-Key", BuildConfig.ANDROID_API_KEY)
                 header("User-Agent", Build.PRODUCT)
@@ -71,10 +71,14 @@ internal class LauncherActivity : ComponentActivity() {
     }
 }
 
-private fun getSignature(packageManager: PackageManager, packageName: String): String {
-    val packageInfo = packageManager.getPackageInfo(packageName, PackageManager.GET_SIGNATURES)
-    val signature = packageInfo.signatures[0].toByteArray()
-    val digest = MessageDigest.getInstance("SHA1").digest(signature)
+private fun Context.getFirstSignatureOrNull(): String? {
+    val signature = PackageInfoCompat
+        .getSignatures(packageManager, packageName)
+        .firstOrNull() ?: return null
+
+    val digest = MessageDigest
+        .getInstance("SHA1")
+        .digest(signature.toByteArray())
 
     return digest.joinToString(separator = "") {
         String.format(Locale.getDefault(), "%02X", it)
