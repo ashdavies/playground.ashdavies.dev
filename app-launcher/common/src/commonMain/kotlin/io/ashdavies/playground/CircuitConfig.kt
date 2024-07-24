@@ -19,7 +19,7 @@ public fun Circuit(context: PlatformContext): Circuit = Circuit.Builder()
     .build()
 
 private fun getPresenterFactories(context: PlatformContext) = listOf(
-    afterPartyPresenterFactory(),
+    afterPartyPresenterFactory(context),
     dominionPresenterFactory(),
     eventsPresenterFactory(),
     galleryPresenterFactory(context),

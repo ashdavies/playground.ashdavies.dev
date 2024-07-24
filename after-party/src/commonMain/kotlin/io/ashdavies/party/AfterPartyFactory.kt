@@ -7,9 +7,9 @@ import io.ashdavies.circuit.uiFactoryOf
 import io.ashdavies.content.PlatformContext
 import io.ashdavies.content.reportFullyDrawn
 
-public fun afterPartyPresenterFactory(): Presenter.Factory {
+public fun afterPartyPresenterFactory(context: PlatformContext): Presenter.Factory {
     return presenterFactoryOf<AfterPartyScreen> { _, navigator ->
-        AfterPartyPresenter(navigator)
+        AfterPartyPresenter(context, navigator)
     }
 }
 
