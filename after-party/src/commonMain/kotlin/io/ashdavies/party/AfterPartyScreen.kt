@@ -41,6 +41,8 @@ internal object AfterPartyScreen : Parcelable, Screen {
     sealed interface Event : CircuitUiEvent {
         data class ChildNav(val navEvent: NavEvent) : Event
         data class BottomNav(val screen: Screen) : Event
+
+        data object Login : Event
     }
 
     data class State(
@@ -66,7 +68,7 @@ internal fun AfterPartyScreen(
                 actions = {
                     ProfileActionButton(
                         identityState = state.identityState,
-                        onClick = { },
+                        onClick = { eventSink(AfterPartyScreen.Event.Login) },
                     )
                 },
             )

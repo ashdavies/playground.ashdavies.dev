@@ -26,22 +26,24 @@ internal fun ProfileActionButton(
 ) {
     Crossfade(identityState, modifier) { state ->
         when (state) {
-            is IdentityState.Authenticated -> IconButton(onClick = onClick) {
+            is IdentityState.Authenticated -> IconButton(onClick) {
                 Image(
                     painter = rememberAsyncImagePainter(state.pictureProfileUrl),
-                    contentDescription = null,
+                    contentDescription = "Profile",
                     modifier = Modifier.clip(CircleShape),
                 )
             }
 
-            is IdentityState.Failure -> Image(
-                imageVector = Icons.Filled.Warning,
-                contentDescription = "Failure",
-                modifier = Modifier.clickable(onClick = onClick),
-                colorFilter = ColorFilter.tint(tintColor),
-            )
+            is IdentityState.Failure -> IconButton(onClick) {
+                Image(
+                    imageVector = Icons.Filled.Warning,
+                    contentDescription = "Failure",
+                    modifier = Modifier.clickable(onClick = onClick),
+                    colorFilter = ColorFilter.tint(tintColor),
+                )
+            }
 
-            IdentityState.Unauthenticated -> IconButton(onClick = onClick) {
+            IdentityState.Unauthenticated -> IconButton(onClick) {
                 Image(
                     imageVector = Icons.Filled.AccountCircle,
                     contentDescription = "SignIn",

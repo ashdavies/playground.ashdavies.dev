@@ -9,7 +9,6 @@ internal expect class GoogleIdIdentityService(
 
 internal data class GoogleIdIdentityRequest(
     val serverClientId: String,
-    val filterByAuthorizedAccounts: Boolean = true,
     val autoSelectEnabled: Boolean = true,
     val nonce: String? = randomUuid(),
 ) : IdentityRequest

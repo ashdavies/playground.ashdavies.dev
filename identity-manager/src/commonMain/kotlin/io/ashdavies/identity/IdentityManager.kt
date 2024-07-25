@@ -1,7 +1,10 @@
 package io.ashdavies.identity
 
+import io.ashdavies.content.PlatformContext
 import io.ashdavies.sql.mapToOneOrNull
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.merge
 
 public interface IdentityManager {
     public val state: Flow<IdentityState>
@@ -9,7 +12,7 @@ public interface IdentityManager {
 }
 
 public fun IdentityManager(
-    platformContext: io.ashdavies.content.PlatformContext,
+    platformContext: PlatformContext,
     credentialQueries: CredentialQueries,
 ): IdentityManager = IdentityManager(
     credentialQueries = credentialQueries,
@@ -23,15 +26,20 @@ internal fun IdentityManager(
     identityService: GoogleIdIdentityService,
 ): IdentityManager = object : IdentityManager {
 
-    override val state: Flow<IdentityState> = credentialQueries.selectAll().mapToOneOrNull {
+    private val states = MutableStateFlow<IdentityState>(IdentityState.Unauthenticated)
+
+    private val queries = credentialQueries.selectAll().mapToOneOrNull {
         if (it != null) IdentityState.Authenticated(it.profilePictureUrl) else IdentityState.Unauthenticated
     }
+
+    override val state: Flow<IdentityState> = merge(states, queries)
 
     override suspend fun signIn() {
         val identityRequest = GoogleIdIdentityRequest(BuildConfig.SERVER_CLIENT_ID)
         val identityResponse = try {
             identityService.request(identityRequest)
-        } catch (_: UnsupportedOperationException) {
+        } catch (exception: UnsupportedOperationException) {
+            states.value = IdentityState.Failure(exception.message)
             return
         }
 

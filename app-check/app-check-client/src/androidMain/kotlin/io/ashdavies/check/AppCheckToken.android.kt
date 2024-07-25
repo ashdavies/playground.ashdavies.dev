@@ -8,8 +8,6 @@ import androidx.compose.runtime.remember
 import com.google.firebase.appcheck.AppCheckToken
 import com.google.firebase.appcheck.FirebaseAppCheck
 import com.google.firebase.appcheck.playintegrity.PlayIntegrityAppCheckProviderFactory
-import dev.gitlive.firebase.Firebase
-import dev.gitlive.firebase.app
 import io.ashdavies.http.AppCheckToken
 import io.ashdavies.http.ProvideHttpClient
 import io.ktor.client.HttpClient
@@ -21,7 +19,7 @@ import kotlinx.coroutines.flow.channelFlow
 
 @Composable
 public actual fun ProvideAppCheckToken(client: HttpClient, content: @Composable () -> Unit) {
-    val appCheck = remember { Firebase.app.android.appCheck }
+    val appCheck = remember { FirebaseAppCheck.getInstance() }
     val token by produceState<AppCheckToken?>(null) {
         appCheck.appCheckToken().collect { value = it }
     }
