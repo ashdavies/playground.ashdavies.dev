@@ -19,6 +19,7 @@ kotlin {
         }
 
         androidMain.dependencies {
+            implementation(dependencies.platform(libs.google.firebase.bom))
             implementation(libs.google.firebase.appcheck.playintegrity)
         }
     }
