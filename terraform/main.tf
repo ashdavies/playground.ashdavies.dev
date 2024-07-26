@@ -8,7 +8,6 @@ resource "google_firebase_android_app" "main" {
   provider      = google-beta
   display_name  = "Playground"
   package_name = "io.ashdavies.playground"
-  sha1_hashes   = ["4761bd71b66b1cda731f4c5fef4a554785f7648b"]
   sha1_hashes   = ["2F50F8FD822A6592508B5ADB58A231C729D616A3"]
   sha256_hashes = ["2EBFD15AE4682189F047B61A4FAA903DC330CBF29B3A21F667595A73FB53A1FF"]
 }
