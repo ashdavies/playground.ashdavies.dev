@@ -8,8 +8,8 @@ resource "google_firebase_android_app" "main" {
   provider      = google-beta
   display_name  = "Playground"
   package_name = "io.ashdavies.playground"
-  sha1_hashes   = ["2F50F8FD822A6592508B5ADB58A231C729D616A3"]
-  sha256_hashes = ["2EBFD15AE4682189F047B61A4FAA903DC330CBF29B3A21F667595A73FB53A1FF"]
+  sha1_hashes   = ["2f50f8fd822a6592508b5adb58a231c729d616a3"]
+  sha256_hashes = ["2ebfd15ae4682189f047b61a4faa903dc330cbf29b3a21f667595a73fb53a1ff"]
 }
 
 # google_project_service.main is deprecated
