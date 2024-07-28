@@ -123,7 +123,7 @@ apollo-graphql = { id = "com.apollographql.apollo", version.ref = "apollo-graphq
 build-config = "com.github.gmazzo.buildconfig:5.4.0"
 cash-sqldelight = { id = "app.cash.sqldelight", version.ref = "cash-sqldelight" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "jetbrains-kotlin" }
-dependency-analysis = "com.autonomousapps.dependency-analysis:1.32.0"
+dependency-analysis = "com.autonomousapps.dependency-analysis:1.33.0"
 detekt = "io.gitlab.arturbosch.detekt:1.23.6"
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
 gradle-doctor = "com.osacky.doctor:0.10.0"
