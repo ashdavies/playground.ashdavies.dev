@@ -26,6 +26,7 @@ import com.slack.circuit.foundation.NavEvent
 import com.slack.circuit.runtime.CircuitUiEvent
 import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.screen.Screen
+import io.ashdavies.analytics.OnClick
 import io.ashdavies.events.EventsScreen
 import io.ashdavies.gallery.GalleryScreen
 import io.ashdavies.gallery.GallerySheetContent
@@ -68,7 +69,9 @@ internal fun AfterPartyScreen(
                 actions = {
                     ProfileActionButton(
                         identityState = state.identityState,
-                        onClick = { eventSink(AfterPartyScreen.Event.Login) },
+                        onClick = OnClick("profile_login") {
+                            eventSink(AfterPartyScreen.Event.Login)
+                        },
                     )
                 },
             )

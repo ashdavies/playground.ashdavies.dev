@@ -31,6 +31,7 @@ import coil3.compose.rememberAsyncImagePainter
 import com.slack.circuit.foundation.NavEvent
 import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.screen.Screen
+import io.ashdavies.analytics.OnClick
 import io.ashdavies.parcelable.Parcelable
 import io.ashdavies.parcelable.Parcelize
 import org.jetbrains.compose.resources.DrawableResource
@@ -43,8 +44,8 @@ private val LauncherAspectRatio: Float
 internal object LauncherScreen : Parcelable, Screen {
 
     data class State(
-        val entries: List<Item> = emptyList(),
-        val eventSink: (NavEvent) -> Unit = { },
+        val entries: List<Item>,
+        val eventSink: (NavEvent) -> Unit,
     ) : CircuitUiState {
 
         interface Item {
@@ -72,7 +73,9 @@ internal fun LauncherScreen(
                 LauncherItem(
                     item = entry,
                     modifier = modifier.padding(24.dp),
-                    onClick = { eventSink(NavEvent.GoTo(entry.screen)) },
+                    onClick = OnClick("launcher_goto", mapOf("screen" to entry.screen)) {
+                        eventSink(NavEvent.GoTo(entry.screen))
+                    },
                 )
             }
         }
@@ -106,7 +109,12 @@ private fun LauncherItem(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
 ) {
-    Card(modifier = modifier.clickable(onClick = onClick)) {
+    Card(
+        modifier = modifier.clickable(
+            onClickLabel = item.title,
+            onClick = onClick,
+        ),
+    ) {
         Column {
             val imagePainter = when (val imageModel = item.imageModel) {
                 is DrawableResource -> painterResource(imageModel)

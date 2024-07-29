@@ -12,6 +12,7 @@ android {
 
 kotlin {
     sourceSets.commonMain.dependencies {
+        implementation(projects.analytics)
         implementation(projects.circuitSupport)
         implementation(projects.httpClient)
         implementation(projects.pagingCompose)

@@ -61,6 +61,7 @@ import com.slack.circuit.foundation.internal.BackHandler
 import com.slack.circuit.runtime.CircuitUiEvent
 import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.screen.Screen
+import io.ashdavies.analytics.OnClick
 import io.ashdavies.parcelable.Parcelable
 import io.ashdavies.parcelable.Parcelize
 import kotlinx.collections.immutable.ImmutableList
@@ -127,7 +128,9 @@ internal fun GalleryScreen(
     Scaffold(
         floatingActionButton = {
             GalleryActionButton(
-                onClick = { eventSink(GalleryScreen.Event.Capture.Request) },
+                onClick = OnClick("gallery_capture") {
+                    eventSink(GalleryScreen.Event.Capture.Request)
+                },
                 isActive = state.showCapture,
             )
         },

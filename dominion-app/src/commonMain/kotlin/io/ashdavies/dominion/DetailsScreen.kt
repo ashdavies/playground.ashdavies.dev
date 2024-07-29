@@ -37,6 +37,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
 import coil3.compose.rememberAsyncImagePainter
 import com.slack.circuit.runtime.Navigator
+import io.ashdavies.analytics.OnClickWith
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 
@@ -108,7 +109,9 @@ internal fun DetailsScreen(
         DetailsScreen(
             cards = state.cards.toImmutableList(),
             contentPadding = contentPadding,
-            onClick = { eventSink(DominionScreen.BoxSetDetails.Event.ExpandCard(it)) },
+            onClick = OnClickWith("expand_card") {
+                eventSink(DominionScreen.BoxSetDetails.Event.ExpandCard(it))
+            },
         )
 
         AnimatedVisibility(
@@ -128,7 +131,7 @@ internal fun DetailsScreen(
 @ExperimentalMaterial3Api
 private fun DetailsTopBar(
     title: String,
-    onBack: () -> Unit = { },
+    onBack: () -> Unit,
     scrollBehavior: TopAppBarScrollBehavior,
 ) {
     Surface(color = MaterialTheme.colorScheme.surface) {
@@ -166,7 +169,7 @@ private fun DetailsScreen(
     cards: ImmutableList<Card>,
     contentPadding: PaddingValues,
     columnCount: Int = DEFAULT_COLUMN_COUNT,
-    onClick: (Card) -> Unit = { },
+    onClick: (Card) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     LazyVerticalGrid(

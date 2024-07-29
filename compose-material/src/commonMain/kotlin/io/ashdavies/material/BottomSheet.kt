@@ -68,8 +68,8 @@ public fun BottomSheetScaffold(
 @Composable
 public fun BottomSheetItem(
     imageVector: ImageVector,
-    onClick: () -> Unit = { },
-    contentDescription: String? = null,
+    onClick: () -> Unit,
+    contentDescription: String?,
     modifier: Modifier = Modifier,
 ) {
     TextButton(
