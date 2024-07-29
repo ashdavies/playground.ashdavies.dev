@@ -37,6 +37,7 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImagePainter
 import coil3.compose.rememberAsyncImagePainter
 import com.slack.circuit.runtime.Navigator
+import io.ashdavies.analytics.OnClickWith
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 
@@ -89,7 +90,9 @@ internal fun BoxSetListScreen(
         BoxSetListScreen(
             boxSetList = state.boxSetList.toImmutableList(),
             contentPadding = contentPadding,
-            onClick = { eventSink(DominionScreen.BoxSetList.Event.ShowBoxSet(it)) },
+            onClick = OnClickWith("show_box_set") {
+                eventSink(DominionScreen.BoxSetList.Event.ShowBoxSet(it))
+            },
         )
     }
 }
@@ -100,8 +103,8 @@ private fun BoxSetListScreen(
     boxSetList: ImmutableList<BoxSet>,
     contentPadding: PaddingValues,
     columnCount: Int = DEFAULT_COLUMN_COUNT,
-    onClick: (BoxSet) -> Unit = { },
     modifier: Modifier = Modifier,
+    onClick: (BoxSet) -> Unit,
 ) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(columnCount),
@@ -119,7 +122,7 @@ private fun BoxSetListScreen(
 private fun BoxSetCard(
     boxSet: BoxSet,
     modifier: Modifier = Modifier,
-    onClick: () -> Unit = { },
+    onClick: () -> Unit,
 ) {
     Box(
         modifier = modifier

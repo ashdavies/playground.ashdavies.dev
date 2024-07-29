@@ -18,6 +18,7 @@ kotlin {
 
         commonMain.dependencies {
             implementation(projects.afterParty)
+            implementation(projects.analytics)
             implementation(projects.appCheck.appCheckClient)
             implementation(projects.circuitSupport)
             implementation(projects.composeMaterial)

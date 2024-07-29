@@ -49,6 +49,7 @@ develocity.buildScan {
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 include(
+    ":analytics",
     ":after-party",
     ":app-check:app-check-client",
     ":app-check:app-check-common",

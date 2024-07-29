@@ -34,6 +34,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.screen.Screen
+import io.ashdavies.analytics.OnClick
 import io.ashdavies.paging.LazyPagingItems
 import io.ashdavies.parcelable.Parcelable
 import io.ashdavies.parcelable.Parcelize
@@ -71,9 +72,14 @@ internal fun EventsScreen(
         FadeVisibility(state.pagingItems.itemCount > 0) {
             LazyColumn(Modifier.fillMaxSize()) {
                 items(state.pagingItems.itemCount) {
+                    val item = requireNotNull(state.pagingItems[it])
+
                     EventSection(
-                        event = state.pagingItems[it],
+                        event = item,
                         modifier = Modifier.animateItemPlacement(),
+                        onClick = OnClick("event_item", mapOf("name" to item.name)) {
+                            // Do nothing
+                        },
                     )
                 }
             }
@@ -85,6 +91,7 @@ internal fun EventsScreen(
                     EventSection(
                         event = null,
                         modifier = Modifier.animateItemPlacement(),
+                        onClick = { },
                     )
                 }
             }
@@ -117,10 +124,11 @@ private fun FadeVisibility(
 private fun EventSection(
     event: Event?,
     modifier: Modifier = Modifier,
+    onClick: () -> Unit,
 ) {
     Box(modifier.padding(horizontal = 16.dp, vertical = 8.dp)) {
         Button(
-            onClick = { },
+            onClick = onClick,
             modifier = Modifier.fillMaxWidth(),
             enabled = event != null,
         ) {
