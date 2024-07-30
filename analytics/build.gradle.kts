@@ -8,10 +8,9 @@ android {
 }
 
 kotlin {
-    sourceSets {
-        commonMain.dependencies {
-            implementation(compose.runtime)
-            implementation(libs.gitlive.firebase.analytics)
-        }
+    sourceSets.commonMain.dependencies {
+        implementation(compose.runtime)
+
+        implementation(libs.gitlive.firebase.analytics)
     }
 }
