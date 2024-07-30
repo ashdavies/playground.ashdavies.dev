@@ -23,6 +23,7 @@ kotlin {
             implementation(projects.placeholderHighlight)
             implementation(projects.platformScaffold)
             implementation(projects.platformSupport)
+            implementation(projects.remoteConfig)
             implementation(projects.sqlCommon)
             implementation(projects.sqlCompose)
 
