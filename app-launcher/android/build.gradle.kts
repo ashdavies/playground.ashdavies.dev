@@ -36,10 +36,6 @@ buildConfig {
 
 kotlin {
     sourceSets {
-        commonMain.dependencies {
-            implementation(compose.runtime)
-        }
-
         androidMain.dependencies {
             implementation(projects.appLauncher.common)
             implementation(projects.httpClient)

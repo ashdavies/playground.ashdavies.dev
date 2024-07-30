@@ -23,7 +23,6 @@ kotlin {
 
         implementation(compose.foundation)
         implementation(compose.material3)
-        implementation(compose.runtime)
         implementation(compose.ui)
 
         implementation(libs.androidx.paging.common)

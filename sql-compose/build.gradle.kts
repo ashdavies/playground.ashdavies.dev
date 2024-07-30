@@ -14,8 +14,6 @@ kotlin {
             implementation(projects.platformSupport)
             implementation(projects.sqlDriver)
 
-            implementation(compose.runtime)
-
             implementation(libs.sqldelight.runtime)
         }
     }

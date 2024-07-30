@@ -12,7 +12,6 @@ android {
 kotlin {
     sourceSets.commonMain.dependencies {
         implementation(compose.material3)
-        implementation(compose.runtime)
 
         implementation(libs.androidx.annotation)
     }
