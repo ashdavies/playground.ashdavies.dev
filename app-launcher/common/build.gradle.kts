@@ -31,7 +31,6 @@ kotlin {
 
             implementation(compose.components.resources)
             implementation(compose.material3)
-            implementation(compose.runtime)
             implementation(compose.ui)
 
             implementation(libs.coil.compose)
