@@ -6,5 +6,9 @@ plugins {
 }
 
 kotlin {
+    sourceSets.commonMain.dependencies {
+        implementation(compose.runtime)
+    }
+
     jvm()
 }
