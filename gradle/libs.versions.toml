@@ -29,7 +29,6 @@ androidx-core-splashscreen = "androidx.core:core-splashscreen:1.0.1"
 androidx-credentials-auth = "androidx.credentials:credentials-play-services-auth:1.2.2"
 androidx-paging-common = { module = "androidx.paging:paging-common", version.ref = "androidx-paging" }
 
-apollo-graphql-coroutines-support = { module = "com.apollographql.apollo:apollo-coroutines-support", version.ref = "apollo-graphql" }
 apollo-graphql-runtime = { module = "com.apollographql.apollo:apollo-runtime", version.ref = "apollo-graphql" }
 
 app-cash-turbine = "app.cash.turbine:turbine:1.1.0"

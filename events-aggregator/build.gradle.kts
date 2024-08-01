@@ -9,7 +9,9 @@ plugins {
 }
 
 apollo {
-    generateKotlinModels.set(true)
+    service("github") {
+        packageName = "io.ashdavies.github"
+    }
 }
 
 buildConfig {
@@ -25,8 +27,6 @@ kotlin {
 
     sourceSets.commonMain.dependencies {
         implementation(projects.microYaml)
-
-        implementation(libs.apollo.graphql.coroutines.support)
         implementation(libs.apollo.graphql.runtime)
         implementation(libs.kotlinx.serialization.core)
         implementation(libs.squareup.okhttp)
