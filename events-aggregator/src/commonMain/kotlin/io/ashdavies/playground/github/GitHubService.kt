@@ -1,7 +1,7 @@
 package io.ashdavies.playground.github
 
 import com.apollographql.apollo.ApolloClient
-import com.apollographql.apollo.coroutines.await
+import io.ashdavies.github.EventsQuery
 import io.ashdavies.playground.aggregator.ApolloClient
 import io.ashdavies.playground.apollo.asBlobs
 import io.ashdavies.playground.apollo.entries
@@ -44,9 +44,9 @@ public interface GitHubService {
 @ExperimentalSerializationApi
 public fun GitHubService(client: ApolloClient, yaml: Yaml): GitHubService = object : GitHubService {
     override suspend fun <T : Any> getEvents(mapper: GitHubService.Mapper<T>): List<T> {
-        val entries: List<EventsQuery.AsBlob> = client
+        val entries: List<EventsQuery.OnBlob> = client
             .query(EventsQuery())
-            .await()
+            .execute()
             .entries
             .asBlobs()
 
