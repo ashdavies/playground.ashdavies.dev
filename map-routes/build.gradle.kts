@@ -36,7 +36,6 @@ kotlin {
             implementation(projects.platformSupport)
 
             implementation(compose.material3)
-            implementation(compose.runtime)
 
             implementation(libs.androidx.annotation)
             implementation(libs.ktor.client.core)

@@ -18,7 +18,7 @@ kotlinx-coroutines = "1.8.1"
 kotlinx-serialization = "1.7.1"
 ktor = "2.3.12"
 pinterest-ktlint = "0.50.0"
-slack-circuit = "0.22.2"
+slack-circuit = "0.23.0"
 
 [libraries]
 ajalt-clikt = "com.github.ajalt.clikt:clikt:4.4.0"
@@ -44,6 +44,7 @@ fusesource-jansi = "org.fusesource.jansi:jansi:2.4.1"
 
 gitlive-firebase-analytics = { module = "dev.gitlive:firebase-analytics", version.ref = "gitlive-firebase" }
 gitlive-firebase-app = { module = "dev.gitlive:firebase-app", version.ref = "gitlive-firebase" }
+gitlive-firebase-config = { module = "dev.gitlive:firebase-config", version.ref = "gitlive-firebase" }
 
 google-accompanist-flowlayout = { module = "com.google.accompanist:accompanist-flowlayout", version.ref = "google-accompanist" }
 google-accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "google-accompanist" }

@@ -13,8 +13,6 @@ kotlin {
             implementation(projects.appCheck.appCheckCommon)
             implementation(projects.httpClient)
 
-            implementation(compose.runtime)
-
             implementation(libs.ktor.client.core)
         }
 
