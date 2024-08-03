@@ -6,6 +6,7 @@ import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.serializer
 
 public fun interface CollectionReader<T : Any> {
     public suspend operator fun invoke(
@@ -14,8 +15,8 @@ public fun interface CollectionReader<T : Any> {
     ): List<T>
 }
 
-public suspend operator fun <T : Any> CollectionReader<T>.invoke(
-    deserializer: DeserializationStrategy<T>,
+public suspend inline operator fun <reified T : Any> CollectionReader<T>.invoke(
+    deserializer: DeserializationStrategy<T> = serializer(),
 ): List<T> = invoke(deserializer) { it }
 
 public fun <T : Any> CollectionReader(
