@@ -1,7 +1,9 @@
 package io.ashdavies.cloud
 
+import io.ashdavies.aggregator.AsgEvent
+import io.ashdavies.aggregator.GitHubService
 import io.ashdavies.http.common.models.Event
-import io.ashdavies.playground.github.GitHubService
+import io.ashdavies.http.common.models.EventCfp
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.call
 import io.ktor.server.response.respond
@@ -11,24 +13,8 @@ import io.ktor.server.routing.post
 import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.todayIn
-import kotlinx.serialization.Serializable
 
 private const val DEFAULT_LIMIT = 50
-
-@Serializable
-internal data class ApiEvent(
-    val id: String,
-    val name: String,
-    val website: String,
-    val location: String,
-    val status: String?,
-    val online: Boolean?,
-    val dateStart: String,
-    val dateEnd: String,
-    val cfpStart: String?,
-    val cfpEnd: String?,
-    val cfpSite: String?,
-)
 
 internal fun Route.events() {
     get("/events") {
@@ -44,10 +30,10 @@ internal fun Route.events() {
 
     post("/events:aggregate") {
         val provider = DocumentProvider { firestore.collection("events") }
-        val reader = CollectionReader<ApiEvent>(provider, CollectionQuery(limit = 0))
-        val writer = CollectionWriter(provider, ApiEvent::id)
+        val reader = CollectionReader<Event>(provider, CollectionQuery(limit = 0))
+        val writer = CollectionWriter(provider, Event::id)
 
-        writer(reader.invoke(ApiEvent.serializer()), GitHubService.getEvents(::ApiEvent))
+        writer(reader(), GitHubService { id, value -> value.toEvent(id) })
         call.respond(HttpStatusCode.OK)
     }
 }
@@ -65,6 +51,12 @@ internal fun Map<String, Any?>.encode(prefix: String): Map<String, Any?> = build
         }
     }
 }
+
+private fun AsgEvent.toEvent(id: String): Event = Event(
+    id = id, name = name, website = website, location = location, dateStart = dateStart,
+    dateEnd = dateEnd, status = status, online = online,
+    cfp = cfp?.let { cfp -> EventCfp(start = cfp.start, end = cfp.end, site = cfp.site) },
+)
 
 private fun todayAsString(): String = Clock.System
     .todayIn(TimeZone.currentSystemDefault())

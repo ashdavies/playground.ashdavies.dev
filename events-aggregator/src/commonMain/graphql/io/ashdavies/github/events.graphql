@@ -1,0 +1,16 @@
+query Events {
+  repository(owner: "AndroidStudyGroup", name: "conferences") @nonnull {
+    events: object(expression: "HEAD:_conferences") @nonnull {
+      ... on Tree {
+        entries @nonnull {
+          contents: object @nonnull {
+            ... on Blob {
+              oid
+              text
+            }
+          }
+        }
+      }
+    }
+  }
+}

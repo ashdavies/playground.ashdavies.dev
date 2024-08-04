@@ -1,4 +1,12 @@
+import com.apollographql.apollo.gradle.internal.ApolloDownloadSchemaTask
+import com.apollographql.apollo.gradle.internal.ApolloGenerateSourcesTask
 import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode
+
+private val githubToken: String? by stringPropertyOrNull()
+
+object GraphEndpoints {
+    const val GITHUB = "https://api.github.com/graphql"
+}
 
 plugins {
     id("io.ashdavies.kotlin")
@@ -10,14 +18,19 @@ plugins {
 
 apollo {
     service("github") {
+        introspection {
+            schemaFile.set(file("src/commonMain/graphql/io/ashdavies/github/schema.graphqls"))
+            headers.put("Authorization", "Bearer ${requireNotNull(githubToken)}")
+            endpointUrl.set(GraphEndpoints.GITHUB)
+        }
+
         packageName = "io.ashdavies.github"
     }
 }
 
 buildConfig {
-    val githubToken by stringPropertyOrNull { value ->
-        buildConfigField<String?>("GITHUB_TOKEN", value)
-    }
+    buildConfigField("GITHUB_GRAPHQL_SERVER_URL", GraphEndpoints.GITHUB)
+    buildConfigField("GITHUB_TOKEN", githubToken)
 
     packageName.set("io.ashdavies.playground.aggregator")
 }
@@ -32,4 +45,9 @@ kotlin {
         implementation(libs.squareup.okhttp)
         implementation(libs.squareup.okio)
     }
+}
+
+val downloadGithubApolloSchemaFromIntrospection by tasks.getting(ApolloDownloadSchemaTask::class)
+val generateGithubApolloSources by tasks.getting(ApolloGenerateSourcesTask::class) {
+    dependsOn(downloadGithubApolloSchemaFromIntrospection)
 }
