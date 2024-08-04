@@ -26,10 +26,6 @@ public fun Project.booleanProperty(block: (Boolean) -> Unit = { }): ReadOnlyDele
     return readOnlyDelegateProvider { it.get().toBoolean().also(block) }
 }
 
-public fun Project.booleanPropertyOrNull(block: (Boolean?) -> Unit = { }): ReadOnlyDelegateProvider<Boolean> {
-    return readOnlyDelegateProvider { it.orNull.toBoolean().also(block) }
-}
-
 public fun Project.stringProperty(block: (String) -> Unit = { }): ReadOnlyDelegateProvider<String> {
     return readOnlyDelegateProvider { it.get().also(block) }
 }

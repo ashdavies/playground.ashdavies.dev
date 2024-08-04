@@ -1,14 +1,5 @@
 plugins {
     id("io.ashdavies.kotlin")
-    id("io.ashdavies.properties")
-
-    alias(libs.plugins.build.config)
-}
-
-buildConfig {
-    val dryRun by booleanPropertyOrNull() { value ->
-        buildConfigField("DRY_RUN", value)
-    }
 }
 
 kotlin {

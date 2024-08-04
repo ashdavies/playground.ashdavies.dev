@@ -3,7 +3,6 @@ package io.ashdavies.cloud
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
-import playground.cloud_firestore.BuildConfig
 import kotlin.coroutines.CoroutineContext
 
 public fun interface CollectionWriter<T : Any> {
@@ -34,12 +33,12 @@ public suspend fun <T : Any> CollectionWriter(
 
 private fun <T : Any> operationQueue(oldValue: Map<String, T>, newValue: Map<String, T>) = buildList {
     val newEntries: Map<String, T> = log(newValue - oldValue.keys) { "Writing ${it.size} new entries..." }
-    if (!BuildConfig.DRY_RUN) for ((childPath: String, value: T) in newEntries) {
+    for ((childPath: String, value: T) in newEntries) {
         add(writeOperation(childPath, value))
     }
 
     val oldEntries: Map<String, T> = log(oldValue - newValue.keys) { "Deleting ${it.size} entries..." }
-    if (!BuildConfig.DRY_RUN) for ((childPath: String, _: T) in oldEntries) {
+    for ((childPath: String, _: T) in oldEntries) {
         add(deleteOperation(childPath))
     }
 }
