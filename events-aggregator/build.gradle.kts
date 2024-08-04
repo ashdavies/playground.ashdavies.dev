@@ -24,8 +24,6 @@ apollo {
             endpointUrl.set(GraphEndpoints.GITHUB)
         }
 
-        //mapScalar()
-
         packageName = "io.ashdavies.github"
     }
 }
