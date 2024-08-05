@@ -5,19 +5,16 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.defaultMinSize
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.Chip
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
-import androidx.compose.material3.Button
-import androidx.compose.material3.Icon
+import androidx.compose.material3.Card
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -31,7 +28,6 @@ import androidx.compose.ui.unit.dp
 import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.screen.Screen
 import io.ashdavies.analytics.OnClick
-import io.ashdavies.animation.FadeVisibility
 import io.ashdavies.paging.LazyPagingItems
 import io.ashdavies.parcelable.Parcelable
 import io.ashdavies.parcelable.Parcelize
@@ -40,7 +36,12 @@ import io.ashdavies.placeholder.fade
 import io.ashdavies.placeholder.placeholder
 
 private const val EMPTY_STRING = "No Data Available"
-private const val PLACEHOLDER_COUNT = 8
+
+private enum class EventEmphasis {
+    High,
+    Mid,
+    Standard,
+}
 
 @Parcelize
 internal object EventsScreen : Parcelable, Screen {
@@ -55,10 +56,14 @@ internal object EventsScreen : Parcelable, Screen {
 internal fun EventsScreen(
     state: EventsScreen.State,
     modifier: Modifier = Modifier,
+    showPlaceholders: Int = 8,
 ) {
+    val isRefreshing = state.pagingItems.loadState.isRefreshing
     val pullRefreshState = rememberPullRefreshState(
-        refreshing = state.pagingItems.loadState.isRefreshing,
-        onRefresh = { state.pagingItems.refresh() },
+        refreshing = isRefreshing,
+        onRefresh = OnClick("events_refresh") {
+            state.pagingItems.refresh()
+        },
     )
 
     Box(modifier.pullRefresh(pullRefreshState)) {
@@ -66,85 +71,96 @@ internal fun EventsScreen(
             EventFailure(state.pagingItems.loadState.errorMessage ?: "Unknown Error")
         }
 
-        FadeVisibility(state.pagingItems.itemCount > 0) {
-            LazyColumn(Modifier.fillMaxSize()) {
-                items(state.pagingItems.itemCount) {
-                    val item = requireNotNull(state.pagingItems[it])
-
-                    EventSection(
-                        event = item,
-                        modifier = Modifier.animateItemPlacement(),
-                        onClick = OnClick("event_item", mapOf("name" to item.name)) {
-                            // Do nothing
-                        },
-                    )
-                }
+        LazyColumn(Modifier.fillMaxSize()) {
+            val itemCount = when (isRefreshing) {
+                true -> state.pagingItems.itemCount.coerceAtLeast(showPlaceholders)
+                false -> state.pagingItems.itemCount
             }
-        }
 
-        FadeVisibility(state.pagingItems.loadState.isRefreshing) {
-            LazyColumn(Modifier.fillMaxSize()) {
-                items(PLACEHOLDER_COUNT) {
-                    EventSection(
-                        event = null,
-                        modifier = Modifier.animateItemPlacement(),
-                        onClick = { },
-                    )
-                }
+            items(itemCount) { index ->
+                EventSection(
+                    event = state.pagingItems.getOrNull(index),
+                    modifier = Modifier.animateItemPlacement(),
+                    emphasis = when (index) {
+                        0 -> EventEmphasis.High
+                        1 -> EventEmphasis.Mid
+                        else -> EventEmphasis.Standard
+                    },
+                )
             }
         }
 
         PullRefreshIndicator(
             modifier = Modifier.align(Alignment.TopCenter),
-            refreshing = state.pagingItems.loadState.isRefreshing,
+            refreshing = isRefreshing,
             state = pullRefreshState,
         )
     }
 }
 
+private fun <T : Any> LazyPagingItems<T>.getOrNull(index: Int): T? {
+    return if (index < itemCount) get(index) else null
+}
+
 @Composable
+@ExperimentalMaterialApi
 private fun EventSection(
     event: Event?,
     modifier: Modifier = Modifier,
-    onClick: () -> Unit,
+    emphasis: EventEmphasis,
 ) {
-    Box(modifier.padding(horizontal = 16.dp, vertical = 8.dp)) {
-        Button(
-            onClick = onClick,
-            modifier = Modifier.fillMaxWidth(),
-            enabled = event != null,
-        ) {
-            Row {
-                Icon(
-                    imageVector = Icons.Filled.DateRange,
-                    contentDescription = null,
-                    modifier = Modifier
-                        .align(Alignment.CenterVertically)
-                        .fillMaxHeight(),
+    Card(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(
+                horizontal = 16.dp,
+                vertical = 8.dp,
+            ),
+    ) {
+        Row(Modifier.padding(8.dp)) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 12.dp),
+            ) {
+                PlaceholderText(
+                    text = event?.name,
+                    modifier = Modifier.align(Alignment.Start),
+                    style = when (emphasis) {
+                        EventEmphasis.High -> MaterialTheme.typography.headlineLarge
+                        EventEmphasis.Mid -> MaterialTheme.typography.headlineMedium
+                        EventEmphasis.Standard -> MaterialTheme.typography.headlineSmall
+                    },
                 )
 
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(start = 12.dp),
-                ) {
-                    PlaceholderText(
-                        text = event?.name,
-                        modifier = Modifier.align(Alignment.Start),
-                        style = MaterialTheme.typography.labelLarge,
-                    )
+                PlaceholderText(
+                    text = event?.location,
+                    modifier = Modifier.align(Alignment.Start),
+                    style = when (emphasis) {
+                        EventEmphasis.High -> MaterialTheme.typography.titleLarge
+                        EventEmphasis.Mid -> MaterialTheme.typography.titleMedium
+                        EventEmphasis.Standard -> MaterialTheme.typography.titleSmall
+                    },
+                )
 
-                    PlaceholderText(
-                        text = event?.location,
-                        modifier = Modifier.align(Alignment.Start),
-                        style = MaterialTheme.typography.labelMedium,
-                    )
+                PlaceholderText(
+                    text = event?.dateStart,
+                    modifier = Modifier.align(Alignment.Start),
+                    style = when (emphasis) {
+                        EventEmphasis.High -> MaterialTheme.typography.labelLarge
+                        EventEmphasis.Mid -> MaterialTheme.typography.labelMedium
+                        EventEmphasis.Standard -> MaterialTheme.typography.labelSmall
+                    },
+                )
 
-                    PlaceholderText(
-                        text = event?.dateStart,
-                        modifier = Modifier.align(Alignment.Start),
-                        style = MaterialTheme.typography.labelSmall,
-                    )
+                if (event?.cfpSite != null) {
+                    Chip(
+                        onClick = { },
+                        modifier = Modifier.padding(4.dp),
+                        enabled = false,
+                    ) {
+                        Text("Call for Papers (Until ${event.cfpEnd})")
+                    }
                 }
             }
         }

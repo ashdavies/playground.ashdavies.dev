@@ -11,7 +11,7 @@ import io.ashdavies.http.common.models.Event as ApiEvent
 @OptIn(ExperimentalPagingApi::class)
 internal class EventsRemoteMediator(
     private val eventsQueries: EventsQueries,
-    private val eventsCallable: GetEventsCallable,
+    private val eventsCallable: GetUpcomingEventsCallable,
     private val onInvalidate: () -> Unit,
 ) : RemoteMediator<String, DatabaseEvent>() {
 
@@ -50,7 +50,7 @@ private fun endOfPaginationReached(): RemoteMediator.MediatorResult {
     return RemoteMediator.MediatorResult.Success(endOfPaginationReached = true)
 }
 
-private suspend fun GetEventsCallable.result(
+private suspend fun GetUpcomingEventsCallable.result(
     request: GetEventsRequest,
 ): CallableResult<List<ApiEvent>> = try {
     CallableResult.Success(invoke(request))

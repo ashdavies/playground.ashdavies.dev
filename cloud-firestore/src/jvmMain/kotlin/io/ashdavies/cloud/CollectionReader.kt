@@ -11,18 +11,17 @@ import kotlinx.serialization.serializer
 public fun interface CollectionReader<T : Any> {
     public suspend operator fun invoke(
         deserializer: DeserializationStrategy<T>,
-        transform: (Map<String, *>) -> Map<String, *>,
     ): List<T>
 }
 
-public suspend inline operator fun <reified T : Any> CollectionReader<T>.invoke(
-    deserializer: DeserializationStrategy<T> = serializer(),
-): List<T> = invoke(deserializer) { it }
+public suspend inline operator fun <reified T : Any> CollectionReader<T>.invoke(): List<T> {
+    return invoke(serializer())
+}
 
 public fun <T : Any> CollectionReader(
     provider: DocumentProvider,
     request: CollectionQuery,
-): CollectionReader<T> = CollectionReader { deserializer, transform ->
+): CollectionReader<T> = CollectionReader { deserializer ->
     val reference = provider.invoke {
         orderByAscending = request.orderBy
 
@@ -40,9 +39,7 @@ public fun <T : Any> CollectionReader(
     }
 
     reference.map { snapshot ->
-        val data = snapshot.data
-            .let(transform)
-            .asJsonElement()
+        val data = snapshot.data.asJsonElement()
 
         json.decodeFromJsonElement(
             deserializer = deserializer,

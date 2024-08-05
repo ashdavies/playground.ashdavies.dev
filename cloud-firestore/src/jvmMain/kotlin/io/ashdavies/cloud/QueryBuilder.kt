@@ -20,7 +20,7 @@ internal data class FirestoreQueryBuilder(private var query: Query) : QueryBuild
     }
 
     override var orderByDescending: String by setValue {
-        query = query.orderBy(it, Query.Direction.DESCENDING)
+        query = query.orderBy(it, Query.Direction.ASCENDING)
     }
 
     override var startAt: Any by setValue {
@@ -30,7 +30,6 @@ internal data class FirestoreQueryBuilder(private var query: Query) : QueryBuild
     override var limit: Int by setValue {
         query = query.limit(it)
     }
-
     fun get(): ApiFuture<QuerySnapshot> = query.get()
 }
 

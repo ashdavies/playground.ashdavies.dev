@@ -12,6 +12,7 @@ import com.slack.circuit.retained.rememberRetained
 import com.slack.circuit.runtime.Navigator
 import com.slack.circuit.runtime.screen.Screen
 import io.ashdavies.content.PlatformContext
+import io.ashdavies.events.EventsScreen
 import io.ashdavies.gallery.GalleryScreen
 import io.ashdavies.identity.CredentialQueries
 import io.ashdavies.identity.IdentityManager
@@ -42,7 +43,10 @@ private fun AfterPartyPresenter(
     navigator: Navigator,
 ): AfterPartyScreen.State {
     val identityState by identityManager.state.collectAsState(IdentityState.Unauthenticated)
-    var screen by rememberRetained { mutableStateOf<Screen>(GalleryScreen) }
+    val isHomeEnabled by booleanConfigAsState { isHomeEnabled() }
+
+    val initialScreen = if (isHomeEnabled) GalleryScreen else EventsScreen
+    var screen by rememberRetained { mutableStateOf<Screen>(initialScreen) }
 
     return AfterPartyScreen.State(
         identityState = identityState,
