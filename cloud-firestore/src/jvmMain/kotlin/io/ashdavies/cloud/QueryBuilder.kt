@@ -7,15 +7,30 @@ import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
 public interface QueryBuilder {
-    public var orderBy: String
+    public var orderByAscending: String
+    public var orderByDescending: String
     public var startAt: Any
     public var limit: Int
 }
 
 internal data class FirestoreQueryBuilder(private var query: Query) : QueryBuilder {
-    override var orderBy: String by setValue { query = query.orderBy(it, Query.Direction.DESCENDING) }
-    override var startAt: Any by setValue { query = query.startAt(it) }
-    override var limit: Int by setValue { query = query.limit(it) }
+
+    override var orderByAscending: String by setValue {
+        query = query.orderBy(it, Query.Direction.ASCENDING)
+    }
+
+    override var orderByDescending: String by setValue {
+        query = query.orderBy(it, Query.Direction.DESCENDING)
+    }
+
+    override var startAt: Any by setValue {
+        query = query.startAt(it)
+    }
+
+    override var limit: Int by setValue {
+        query = query.limit(it)
+    }
+
     fun get(): ApiFuture<QuerySnapshot> = query.get()
 }
 

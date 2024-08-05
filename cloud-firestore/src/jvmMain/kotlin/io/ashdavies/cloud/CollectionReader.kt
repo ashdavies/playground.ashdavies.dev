@@ -24,11 +24,12 @@ public fun <T : Any> CollectionReader(
     request: CollectionQuery,
 ): CollectionReader<T> = CollectionReader { deserializer, transform ->
     val reference = provider.invoke {
-        orderBy = request.orderBy
+        orderByAscending = request.orderBy
 
         request.startAt?.let {
             startAt = it
         }
+
         if (request.limit > 0) {
             limit = request.limit
         }
