@@ -38,7 +38,9 @@ import io.ashdavies.placeholder.placeholder
 private const val EMPTY_STRING = "No Data Available"
 
 private enum class EventEmphasis {
-    High, Mid, Standard
+    High,
+    Mid,
+    Standard,
 }
 
 @Parcelize
@@ -156,8 +158,9 @@ private fun EventSection(
                         onClick = { },
                         modifier = Modifier.padding(4.dp),
                         enabled = false,
-                        content =  { Text("Call for Papers (Until ${event.cfpEnd})") }
-                    )
+                    ) {
+                        Text("Call for Papers (Until ${event.cfpEnd})")
+                    }
                 }
             }
         }
