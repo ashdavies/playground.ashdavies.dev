@@ -50,7 +50,7 @@ import kotlin.coroutines.EmptyCoroutineContext
  *
  * @param T the type of value used by [PagingData].
  */
-public class LazyPagingItems<T : Any> internal constructor(
+public class LazyPagingItems<T : Any> constructor(
     /**
      * the [Flow] object which contains a stream of [PagingData] elements.
      */

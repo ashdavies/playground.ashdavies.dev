@@ -7,8 +7,6 @@ import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.remoteconfig.FirebaseRemoteConfigValue
 import dev.gitlive.firebase.remoteconfig.get
 import dev.gitlive.firebase.remoteconfig.remoteConfig
-import kotlinx.coroutines.runBlocking
-import kotlin.properties.ReadOnlyProperty
 
 public interface RemoteConfig {
 
@@ -46,16 +44,4 @@ public suspend fun RemoteConfig.getBoolean(key: String): Boolean {
 
 public suspend fun RemoteConfig.getString(key: String): String {
     return getValue(key) { it.asString() }
-}
-
-public fun <T : Any> suspended(
-    factory: suspend RemoteConfig.() -> T,
-): ReadOnlyProperty<RemoteConfig, suspend () -> T> = ReadOnlyProperty { thisRef, _ ->
-    { factory(thisRef) }
-}
-
-public fun <T : Any> blocking(
-    factory: suspend RemoteConfig.() -> T,
-): ReadOnlyProperty<RemoteConfig, () -> T> = ReadOnlyProperty { thisRef, _ ->
-    { runBlocking { factory(thisRef) } }
 }

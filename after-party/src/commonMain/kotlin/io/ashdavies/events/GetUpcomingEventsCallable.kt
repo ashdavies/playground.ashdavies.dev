@@ -21,7 +21,7 @@ internal data class GetEventsRequest(
 
 internal typealias GetEventsResponse = List<ApiEvent>
 
-internal class GetEventsCallable(
+internal class GetUpcomingEventsCallable(
     httpClient: HttpClient,
 ) : UnaryCallable<GetEventsRequest, GetEventsResponse> {
 
@@ -48,7 +48,7 @@ internal class GetEventsCallable(
         }.joinToString("&")
 
         return httpClient
-            .get("events?$queryAsString")
+            .get("events/upcoming?$queryAsString")
             .body()
     }
 }

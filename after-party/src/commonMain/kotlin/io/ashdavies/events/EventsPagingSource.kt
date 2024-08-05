@@ -6,18 +6,23 @@ import io.ashdavies.network.todayAsString
 
 internal class EventsPagingSource(private val queries: EventsQueries) : PagingSource<String, Event>() {
 
+    private var lastItem: Event? = null
+
     override suspend fun load(params: LoadParams<String>): LoadResult<String, Event> {
-        val query = queries.selectAll(
+        val result = queries.selectAllStartingAtAscending(
             startAt = params.key ?: todayAsString(),
             limit = params.loadSize.toLong(),
         ).executeAsList()
 
-        val nextKey = query
-            .lastOrNull()
-            ?.dateStart
+        val query = when (result.first()) {
+            lastItem -> result.drop(1)
+            else -> result
+        }
+
+        lastItem = query.lastOrNull()
 
         return LoadResult.Page(
-            nextKey = nextKey,
+            nextKey = lastItem?.dateStart,
             prevKey = null,
             data = query,
         )

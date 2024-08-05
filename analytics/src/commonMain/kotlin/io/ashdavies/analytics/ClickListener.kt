@@ -10,26 +10,20 @@ internal typealias OnClick = () -> Unit
 public fun OnClick(
     name: String,
     parameters: Map<String, Any>? = null,
+    analytics: RemoteAnalytics = LocalAnalytics.current,
     action: () -> Unit,
-): OnClick {
-    val analytics = LocalAnalytics.current
-
-    return {
-        analytics.logEvent(name, parameters)
-        action()
-    }
+): OnClick = {
+    analytics.logEvent(name, parameters)
+    action()
 }
 
 @Composable
 public fun <P> OnClickWith(
     name: String,
     parameters: Map<String, Any>? = null,
+    analytics: RemoteAnalytics = LocalAnalytics.current,
     action: (P) -> Unit,
-): OnClickWith<P> {
-    val analytics = LocalAnalytics.current
-
-    return {
-        analytics.logEvent(name, parameters)
-        action(it)
-    }
+): OnClickWith<P> = {
+    analytics.logEvent(name, parameters)
+    action(it)
 }

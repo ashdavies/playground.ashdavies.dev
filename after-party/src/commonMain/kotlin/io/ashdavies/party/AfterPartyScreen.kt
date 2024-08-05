@@ -19,7 +19,6 @@ import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.produceState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -30,9 +29,6 @@ import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.screen.Screen
 import io.ashdavies.analytics.OnClick
 import io.ashdavies.animation.FadeVisibility
-import io.ashdavies.config.RemoteConfig
-import io.ashdavies.config.getBoolean
-import io.ashdavies.config.suspended
 import io.ashdavies.events.EventsScreen
 import io.ashdavies.gallery.GalleryScreen
 import io.ashdavies.gallery.GallerySheetContent
@@ -40,8 +36,6 @@ import io.ashdavies.identity.IdentityState
 import io.ashdavies.material.BottomSheetScaffold
 import io.ashdavies.parcelable.Parcelable
 import io.ashdavies.parcelable.Parcelize
-
-private val RemoteConfig.isProfileEnabled by suspended { getBoolean("profile_enabled") }
 
 public fun afterPartyScreen(): Screen = AfterPartyScreen
 
@@ -67,7 +61,8 @@ internal fun AfterPartyScreen(
     state: AfterPartyScreen.State,
     modifier: Modifier = Modifier,
 ) {
-    val isProfileEnabled by produceState(false) { value = RemoteConfig.isProfileEnabled() }
+    val isProfileEnabled by booleanConfigAsState { isProfileEnabled() }
+    val isHomeEnabled by booleanConfigAsState { isHomeEnabled() }
     val eventSink = state.eventSink
 
     BottomSheetScaffold(
@@ -88,8 +83,10 @@ internal fun AfterPartyScreen(
             )
         },
         bottomBar = {
-            AfterPartyBottomBar { screen ->
-                eventSink(AfterPartyScreen.Event.BottomNav(screen))
+            FadeVisibility(isHomeEnabled) {
+                AfterPartyBottomBar { screen ->
+                    eventSink(AfterPartyScreen.Event.BottomNav(screen))
+                }
             }
         },
         floatingActionButton = { },

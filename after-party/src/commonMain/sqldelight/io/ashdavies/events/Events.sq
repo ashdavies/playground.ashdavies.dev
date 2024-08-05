@@ -15,11 +15,11 @@ CREATE TABLE event(
     cfpSite TEXT DEFAULT NULL
 );
 
-selectAll:
+selectAllStartingAtAscending:
     SELECT *
     FROM event
-    WHERE dateStart <= :startAt
-    ORDER BY dateStart DESC
+    WHERE dateStart >= :startAt
+    ORDER BY dateStart ASC
     LIMIT :limit;
 
 selectById:
