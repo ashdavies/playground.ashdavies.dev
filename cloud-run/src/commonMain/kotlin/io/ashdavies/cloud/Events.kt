@@ -14,15 +14,16 @@ import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.todayIn
 
+private const val DEFAULT_ORDER_BY = "dateStart"
 private const val DEFAULT_LIMIT = 50
 
 internal fun Route.events() {
-    get("/events") {
+    get("/events/upcoming") {
         val startAt = call.request.queryParameters["startAt"] ?: todayAsString()
         val limit = call.request.queryParameters["limit"]?.toInt() ?: DEFAULT_LIMIT
 
         val provider = DocumentProvider { firestore.collection("events") }
-        val query = CollectionQuery(orderBy = "dateStart", startAt, limit)
+        val query = CollectionQuery(DEFAULT_ORDER_BY, startAt, limit)
         val reader = CollectionReader<Event>(provider, query)
 
         call.respond(reader(Event.serializer()) { it.encode("cfp") })

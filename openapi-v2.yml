@@ -20,21 +20,17 @@ paths:
         "200":
           description: "OK"
       security: []
-  /events:
+  /events/upcoming:
     get:
       tags: [ "events" ]
-      summary: "Return events by start date"
-      operationId: "getEvents"
+      summary: "Return upcoming events by start date"
+      operationId: "getUpcomingEvents"
       parameters:
         - name: "startAt"
           in: "query"
           type: "string"
           format: "date"
           description: "The start date to start this query at."
-        - name: "orderBy"
-          in: "query"
-          type: "string"
-          description: "The field to sort by."
         - name: "limit"
           in: "query"
           type: "integer"

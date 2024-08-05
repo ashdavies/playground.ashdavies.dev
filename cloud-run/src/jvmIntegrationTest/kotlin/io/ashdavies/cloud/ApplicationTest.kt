@@ -65,7 +65,7 @@ internal class ApplicationTest {
 
         assertEquals(verify.appId, verify.subject)
 
-        val events = client.get("/events") {
+        val events = client.get("/events/upcoming") {
             contentType(ContentType.Application.Json)
         }.body<List<Event>>()
 
