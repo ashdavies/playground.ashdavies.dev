@@ -26,7 +26,7 @@ internal fun Route.events() {
         val query = CollectionQuery(DEFAULT_ORDER_BY, startAt, limit)
         val reader = CollectionReader<Event>(provider, query)
 
-        call.respond(reader(Event.serializer()) { it.encode("cfp") })
+        call.respond(reader(Event.serializer()))
     }
 
     post("/events:aggregate") {
