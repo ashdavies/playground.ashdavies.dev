@@ -39,25 +39,13 @@ internal fun Route.events() {
     }
 }
 
-@Suppress("UNCHECKED_CAST")
-internal fun Map<String, Any?>.encode(prefix: String): Map<String, Any?> = buildMap {
-    this@encode.forEach { entry ->
-        when (entry.key.startsWith(prefix) && entry.value != null) {
-            false -> put(entry.key, entry.value)
-            true -> {
-                val value = getOrElse(prefix) { mutableMapOf<String, Any?>() } as Map<String, Any?>
-                val key = entry.key.drop(prefix.length).replaceFirstChar { it.lowercase() }
-                put(prefix, value + (key to entry.value))
-            }
-        }
-    }
-}
-
-private fun AsgEvent.toEvent(id: String): Event = Event(
-    id = id, name = name, website = website, location = location, dateStart = dateStart,
-    dateEnd = dateEnd, status = status, online = online,
-    cfp = cfp?.let { cfp -> EventCfp(start = cfp.start, end = cfp.end, site = cfp.site) },
+private fun AsgEvent.toEvent(id: String) = Event(
+    id = id, name = name, website = website, location = location, imageUrl = imageUrl,
+    dateStart = dateStart, dateEnd = dateEnd, status = status, online = online,
+    cfp = cfp?.toEventCfp(),
 )
+
+private fun AsgEvent.Cfp.toEventCfp() = EventCfp(start = start, end = end, site = site)
 
 private fun todayAsString(): String = Clock.System
     .todayIn(TimeZone.currentSystemDefault())

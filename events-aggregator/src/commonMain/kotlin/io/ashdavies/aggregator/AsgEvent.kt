@@ -8,6 +8,7 @@ public data class AsgEvent(
     @SerialName("name") public val name: String,
     @SerialName("website") public val website: String,
     @SerialName("location") public val location: String,
+    @SerialName("imageUrl") public val imageUrl: String? = null,
     @SerialName("online") public val online: Boolean? = false,
     @SerialName("status") public val status: String? = null,
     @SerialName("date_start") public val dateStart: String,

@@ -230,6 +230,8 @@ definitions:
         type: "string"
       location:
         type: "string"
+      imageUrl:
+        type: "string"
       status:
         type: "string"
       online:
