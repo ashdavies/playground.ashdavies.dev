@@ -14,7 +14,7 @@ internal class EventsPagingSource(private val queries: EventsQueries) : PagingSo
             limit = params.loadSize.toLong(),
         ).executeAsList()
 
-        val query = when (result.first()) {
+        val query = when (result.firstOrNull()) {
             lastItem -> result.drop(1)
             else -> result
         }
