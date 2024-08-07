@@ -201,7 +201,7 @@ private fun EventStatusRow(
     Row(modifier) {
         if (cfpEnd != null && LocalDate.parse(cfpEnd) > Today) {
             TextChip(
-                text = "Call for Papers (Until ${cfpEnd})",
+                text = "Call for Papers (Until $cfpEnd)",
                 modifier = Modifier.padding(end = 8.dp),
                 onClick = OnClick("event_cfp") { },
             )
