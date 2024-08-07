@@ -29,7 +29,6 @@ import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.CompositingStrategy
-import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.TextStyle
@@ -56,12 +55,6 @@ private const val EMPTY_STRING = ""
 private val Today = Clock.System.now()
     .toLocalDateTime(TimeZone.currentSystemDefault())
     .date
-
-private enum class EventEmphasis {
-    High,
-    Mid,
-    Standard,
-}
 
 @Parcelize
 internal object EventsScreen : Parcelable, Screen {
@@ -102,9 +95,9 @@ internal fun EventsScreen(
                     event = state.pagingItems.getOrNull(index),
                     modifier = Modifier.animateItemPlacement(),
                     emphasis = when (index) {
-                        0 -> EventEmphasis.High
-                        1 -> EventEmphasis.Mid
-                        else -> EventEmphasis.Standard
+                        0 -> TextEmphasis.Significant
+                        1 -> TextEmphasis.Moderate
+                        else -> TextEmphasis.Standard
                     },
                 )
             }
@@ -122,12 +115,18 @@ private fun <T : Any> LazyPagingItems<T>.getOrNull(index: Int): T? {
     return if (index < itemCount) get(index) else null
 }
 
+private enum class TextEmphasis {
+    Significant,
+    Moderate,
+    Standard,
+}
+
 @Composable
 @ExperimentalMaterialApi
 private fun EventSection(
     event: Event?,
     modifier: Modifier = Modifier,
-    emphasis: EventEmphasis,
+    emphasis: TextEmphasis,
 ) {
     Card(
         modifier = modifier
@@ -138,24 +137,12 @@ private fun EventSection(
             ),
     ) {
         Box(Modifier.height(IntrinsicSize.Min)) {
-            if (event?.imageUrl != null) AsyncImage(
-                model = event.imageUrl,
-                contentDescription = null,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .graphicsLayer(compositingStrategy = CompositingStrategy.Offscreen)
-                    .drawWithContent {
-                        drawContent()
-                        drawRect(
-                            brush = Brush.horizontalGradient(
-                                0.25f to Color.Transparent,
-                                0.5f to Color.Black,
-                            ),
-                            blendMode = BlendMode.DstIn,
-                        )
-                    },
-                contentScale = ContentScale.Crop,
-            )
+            if (event?.imageUrl != null) {
+                EventSectionBackground(
+                    backgroundImageUrl = event.imageUrl,
+                    modifier = Modifier.fillMaxSize(),
+                )
+            }
 
             Column(
                 modifier = Modifier
@@ -169,9 +156,9 @@ private fun EventSection(
                     text = event?.name,
                     modifier = Modifier.align(Alignment.Start),
                     style = when (emphasis) {
-                        EventEmphasis.High -> MaterialTheme.typography.headlineLarge
-                        EventEmphasis.Mid -> MaterialTheme.typography.headlineMedium
-                        EventEmphasis.Standard -> MaterialTheme.typography.headlineSmall
+                        TextEmphasis.Significant -> MaterialTheme.typography.headlineLarge
+                        TextEmphasis.Moderate -> MaterialTheme.typography.headlineMedium
+                        TextEmphasis.Standard -> MaterialTheme.typography.headlineSmall
                     },
                 )
 
@@ -179,9 +166,9 @@ private fun EventSection(
                     text = event?.location,
                     modifier = Modifier.align(Alignment.Start),
                     style = when (emphasis) {
-                        EventEmphasis.High -> MaterialTheme.typography.titleLarge
-                        EventEmphasis.Mid -> MaterialTheme.typography.titleMedium
-                        EventEmphasis.Standard -> MaterialTheme.typography.titleSmall
+                        TextEmphasis.Significant -> MaterialTheme.typography.titleLarge
+                        TextEmphasis.Moderate -> MaterialTheme.typography.titleMedium
+                        TextEmphasis.Standard -> MaterialTheme.typography.titleSmall
                     },
                 )
 
@@ -189,33 +176,70 @@ private fun EventSection(
                     text = event?.dateStart,
                     modifier = Modifier.align(Alignment.Start),
                     style = when (emphasis) {
-                        EventEmphasis.High -> MaterialTheme.typography.labelLarge
-                        EventEmphasis.Mid -> MaterialTheme.typography.labelMedium
-                        EventEmphasis.Standard -> MaterialTheme.typography.labelSmall
+                        TextEmphasis.Significant -> MaterialTheme.typography.labelLarge
+                        TextEmphasis.Moderate -> MaterialTheme.typography.labelMedium
+                        TextEmphasis.Standard -> MaterialTheme.typography.labelSmall
                     },
                 )
 
-                Row {
-                    if (event?.cfpEnd != null && LocalDate.parse(event.cfpEnd) > Today) {
-                        TextChip(
-                            text = "Call for Papers (Until ${event.cfpEnd})",
-                            modifier = Modifier.padding(end = 8.dp),
-                            onClick = OnClick("event_cfp") { },
-                        )
-                    }
-
-                    if (event?.online == true) {
-                        TextChip(
-                            text = "Online Only",
-                            enabled = false,
-                            onClick = { },
-                        )
-                    }
-                }
-
+                EventStatusRow(
+                    cfpEnd = event?.cfpEnd,
+                    isOnlineOnly = event?.online == true,
+                )
             }
         }
     }
+}
+
+@Composable
+@ExperimentalMaterialApi
+private fun EventStatusRow(
+    cfpEnd: String?,
+    isOnlineOnly: Boolean,
+    modifier: Modifier = Modifier,
+) {
+    Row(modifier) {
+        if (cfpEnd != null && LocalDate.parse(cfpEnd) > Today) {
+            TextChip(
+                text = "Call for Papers (Until ${cfpEnd})",
+                modifier = Modifier.padding(end = 8.dp),
+                onClick = OnClick("event_cfp") { },
+            )
+        }
+
+        if (isOnlineOnly) {
+            TextChip(
+                text = "Online Only",
+                enabled = false,
+                onClick = { },
+            )
+        }
+    }
+}
+
+@Composable
+private fun EventSectionBackground(
+    backgroundImageUrl: String,
+    modifier: Modifier = Modifier,
+    colorStopStart: Float = 0.25f,
+    colorStopEnd: Float = 0.5f,
+) {
+    val gradientBrush = Brush.horizontalGradient(
+        colorStopStart to Color.Transparent,
+        colorStopEnd to Color.Black,
+    )
+
+    AsyncImage(
+        model = backgroundImageUrl,
+        contentDescription = null,
+        modifier = modifier
+            .graphicsLayer(compositingStrategy = CompositingStrategy.Offscreen)
+            .drawWithContent {
+                drawContent()
+                drawRect(gradientBrush, blendMode = BlendMode.DstIn)
+            },
+        contentScale = ContentScale.Crop,
+    )
 }
 
 @Composable
@@ -224,14 +248,13 @@ private fun TextChip(
     text: String,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    shape: Shape = MaterialTheme.shapes.small,
     onClick: () -> Unit,
 ) {
     Chip(
         onClick = onClick,
         modifier = modifier,
         enabled = enabled,
-        shape = shape,
+        shape = MaterialTheme.shapes.small,
     ) {
         Text(
             text = text,
