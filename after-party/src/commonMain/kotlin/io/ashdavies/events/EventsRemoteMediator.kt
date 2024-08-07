@@ -67,7 +67,7 @@ private sealed interface CallableResult<out T> {
 
 private fun ApiEvent.asDatabaseEvent(): DatabaseEvent = DatabaseEvent(
     id = id, name = name, website = website, location = location,
-    status = status, online = online, dateStart = dateStart,
-    dateEnd = dateEnd, cfpStart = cfp?.start, cfpEnd = cfp?.end,
-    cfpSite = cfp?.site,
+    imageUrl = imageUrl, status = status, online = online,
+    dateStart = dateStart, dateEnd = dateEnd, cfpStart = cfp?.start,
+    cfpEnd = cfp?.end, cfpSite = cfp?.site,
 )

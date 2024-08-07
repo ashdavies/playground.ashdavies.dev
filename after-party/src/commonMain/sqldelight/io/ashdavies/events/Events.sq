@@ -6,6 +6,7 @@ CREATE TABLE event(
     name TEXT NOT NULL,
     website TEXT NOT NULL,
     location TEXT NOT NULL,
+    imageUrl TEXT DEFAULT NULL,
     status TEXT DEFAULT NULL,
     online INTEGER AS Boolean,
     dateStart TEXT NOT NULL,
