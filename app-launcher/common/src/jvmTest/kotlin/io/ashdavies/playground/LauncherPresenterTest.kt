@@ -3,7 +3,7 @@ package io.ashdavies.playground
 import com.slack.circuit.foundation.NavEvent
 import com.slack.circuit.test.FakeNavigator
 import com.slack.circuit.test.presenterTestOf
-import io.ashdavies.party.afterPartyScreen
+import io.ashdavies.dominion.dominionScreen
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -15,9 +15,9 @@ internal class LauncherPresenterTest {
     @Test
     fun `should navigate to after party screen`() = runTest {
         presenterTestOf({ LauncherPresenter(navigator) }) {
-            awaitItem().eventSink(NavEvent.GoTo(afterPartyScreen()))
+            awaitItem().eventSink(NavEvent.GoTo(dominionScreen()))
 
-            assertEquals(navigator.awaitNextScreen(), afterPartyScreen())
+            assertEquals(navigator.awaitNextScreen(), dominionScreen())
         }
     }
 }

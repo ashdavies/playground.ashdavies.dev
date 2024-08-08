@@ -7,20 +7,12 @@ import com.slack.circuit.foundation.onNavEvent
 import com.slack.circuit.runtime.Navigator
 import com.slack.circuit.runtime.screen.Screen
 import io.ashdavies.dominion.dominionScreen
-import io.ashdavies.party.afterPartyScreen
 import io.ashdavies.routes.routeScreen
 import playground.app_launcher.common.generated.resources.Res
-import playground.app_launcher.common.generated.resources.after_party
 import playground.app_launcher.common.generated.resources.dominion
 import playground.app_launcher.common.generated.resources.routes
 
 private enum class LauncherEntries : LauncherScreen.State.Item {
-    AfterParty {
-        override val imageModel = Res.drawable.after_party
-        override val screen = afterPartyScreen()
-        override val title = "After Party"
-    },
-
     Dominion {
         override val imageModel = Res.drawable.dominion
         override val screen = dominionScreen()

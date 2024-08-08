@@ -17,7 +17,6 @@ kotlin {
         }
 
         commonMain.dependencies {
-            implementation(projects.afterParty)
             implementation(projects.analytics)
             implementation(projects.appCheck.appCheckClient)
             implementation(projects.circuitSupport)
@@ -60,7 +59,6 @@ sqldelight {
     databases {
         create("PlaygroundDatabase") {
             packageName.set(android.namespace)
-            dependency(projects.afterParty)
             dependency(projects.dominionApp)
         }
     }
