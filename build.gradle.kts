@@ -11,7 +11,6 @@ plugins {
     with(libs.plugins) {
         classpath(android.application)
         classpath(android.library)
-        classpath(apollo.graphql)
         classpath(cash.sqldelight)
         classpath(compose.compiler)
         classpath(detekt)

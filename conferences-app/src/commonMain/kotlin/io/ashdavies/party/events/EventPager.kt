@@ -10,13 +10,17 @@ import io.ashdavies.http.LocalHttpClient
 import io.ashdavies.party.network.todayAsString
 import io.ashdavies.party.sql.rememberLocalQueries
 
+private const val PLAYGROUND_BASE_URL = "playground.ashdavies.dev"
 private const val DEFAULT_PAGE_SIZE = 10
 
 @Composable
 @ExperimentalPagingApi
 internal fun rememberEventPager(
     eventsQueries: EventsQueries = rememberLocalQueries { it.eventsQueries },
-    eventsCallable: GetUpcomingEventsCallable = GetUpcomingEventsCallable(LocalHttpClient.current),
+    eventsCallable: UpcomingEventsCallable = UpcomingEventsCallable(
+        httpClient = LocalHttpClient.current,
+        baseUrl = PLAYGROUND_BASE_URL,
+    ),
     initialKey: String = todayAsString(),
     pageSize: Int = DEFAULT_PAGE_SIZE,
 ): Pager<String, Event> = remember(eventsQueries, eventsCallable) {

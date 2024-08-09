@@ -56,7 +56,7 @@ internal fun Application.main() {
     install(CallLogging)
 
     routing {
-        events()
+        events(client)
         firebase(client)
         hello()
         static()

@@ -12,7 +12,7 @@ public fun interface CollectionWriter<T : Any> {
     )
 }
 
-public suspend fun <T : Any> CollectionWriter(
+public fun <T : Any> CollectionWriter(
     provider: DocumentProvider,
     identifier: (T) -> String,
     context: CoroutineContext = Dispatchers.IO,

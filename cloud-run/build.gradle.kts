@@ -64,8 +64,8 @@ kotlin {
         commonMain.dependencies {
             implementation(projects.appCheck.appCheckCommon)
             implementation(projects.appCheck.appCheckSdk)
+            implementation(projects.asgService)
             implementation(projects.cloudFirestore)
-            implementation(projects.eventsAggregator)
             implementation(projects.httpClient)
             implementation(projects.httpCommon)
             implementation(projects.platformSupport)
