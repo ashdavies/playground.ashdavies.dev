@@ -16,7 +16,7 @@ private const val DEFAULT_PAGE_SIZE = 10
 @ExperimentalPagingApi
 internal fun rememberEventPager(
     eventsQueries: EventsQueries = rememberLocalQueries { it.eventsQueries },
-    eventsCallable: GetUpcomingEventsCallable = GetUpcomingEventsCallable(LocalHttpClient.current),
+    eventsCallable: UpcomingEventsCallable = UpcomingEventsCallable(LocalHttpClient.current),
     initialKey: String = todayAsString(),
     pageSize: Int = DEFAULT_PAGE_SIZE,
 ): Pager<String, Event> = remember(eventsQueries, eventsCallable) {

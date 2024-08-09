@@ -39,24 +39,6 @@
     </tr>
 </table>
 
-## Structure
-
-```mermaid
-stateDiagram-v2
-    AppLauncher --> AfterParty
-
-    AfterParty --> AppCheckClient
-    AfterParty --> HttpClient
-
-    CloudRun --> AppCheckSdk
-    CloudRun --> CloudFirestore
-    CloudRun --> EventsAggregator
-    CloudRun --> HttpClient
-
-    DominionApp --> AppCheckClient
-    DominionApp --> HttpClient
-```
-
 ## Modules
 
 ### App-Check [app-check]

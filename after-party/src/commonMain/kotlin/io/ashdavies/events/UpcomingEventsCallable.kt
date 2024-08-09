@@ -1,17 +1,15 @@
 package io.ashdavies.events
 
 import io.ashdavies.http.UnaryCallable
+import io.ashdavies.http.throwClientRequestExceptionAs
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
-import io.ktor.client.plugins.ClientRequestException
-import io.ktor.client.plugins.DefaultRequest
 import io.ktor.client.plugins.HttpCallValidator
 import io.ktor.client.request.get
 import kotlinx.serialization.Serializable
 import io.ashdavies.http.common.models.Event as ApiEvent
 
 private const val NETWORK_PAGE_SIZE = 100
-private const val PLAYGROUND_API_HOST = "playground.ashdavies.dev"
 
 @Serializable
 internal data class GetEventsRequest(
@@ -19,36 +17,27 @@ internal data class GetEventsRequest(
     val limit: Int = NETWORK_PAGE_SIZE,
 )
 
-internal typealias GetEventsResponse = List<ApiEvent>
-
-internal class GetUpcomingEventsCallable(
+internal class UpcomingEventsCallable(
     httpClient: HttpClient,
-) : UnaryCallable<GetEventsRequest, GetEventsResponse> {
+    private val baseUrl: String,
+) : UnaryCallable<GetEventsRequest, List<ApiEvent>> {
 
     private val httpClient = httpClient.config {
-        install(DefaultRequest) {
-            host = PLAYGROUND_API_HOST
-        }
-
         install(HttpCallValidator) {
-            handleResponseExceptionWithRequest { exception, _ ->
-                if (exception is ClientRequestException) {
-                    throw exception.response.body<GetEventsError>()
-                }
-            }
+            throwClientRequestExceptionAs<GetEventsError>()
         }
 
         expectSuccess = true
     }
 
-    override suspend fun invoke(request: GetEventsRequest): GetEventsResponse {
+    override suspend fun invoke(request: GetEventsRequest): List<ApiEvent> {
         val queryAsString = buildList {
             if (request.startAt != null) add("startAt=${request.startAt}")
             add("limit=${request.limit}")
         }.joinToString("&")
 
         return httpClient
-            .get("events/upcoming?$queryAsString")
+            .get("$baseUrl/events/upcoming?$queryAsString")
             .body()
     }
 }
