@@ -37,7 +37,7 @@ internal class UpcomingEventsCallable(
         }.joinToString("&")
 
         return httpClient
-            .get("$baseUrl/events/upcoming?$queryAsString")
+            .get("https://$baseUrl/events/upcoming?$queryAsString")
             .body()
     }
 }
