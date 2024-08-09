@@ -2,6 +2,9 @@ package io.ashdavies.gallery
 
 import app.cash.turbine.test
 import io.ashdavies.http.DefaultHttpConfiguration
+import io.ashdavies.party.gallery.SyncManager
+import io.ashdavies.party.gallery.SyncState
+import io.ashdavies.party.gallery.inMemoryHttpClientEngine
 import io.ashdavies.util.randomUuid
 import io.ktor.client.HttpClient
 import io.ktor.utils.io.ByteReadChannel

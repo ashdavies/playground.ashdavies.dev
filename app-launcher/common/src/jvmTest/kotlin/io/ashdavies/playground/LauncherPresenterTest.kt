@@ -13,7 +13,7 @@ internal class LauncherPresenterTest {
     private val navigator = FakeNavigator(LauncherScreen)
 
     @Test
-    fun `should navigate to after party screen`() = runTest {
+    fun `should navigate to next screen`() = runTest {
         presenterTestOf({ LauncherPresenter(navigator) }) {
             awaitItem().eventSink(NavEvent.GoTo(dominionScreen()))
 

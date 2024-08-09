@@ -39,24 +39,6 @@
     </tr>
 </table>
 
-## Structure
-
-```mermaid
-stateDiagram-v2
-    AppLauncher --> AfterParty
-
-    AfterParty --> AppCheckClient
-    AfterParty --> HttpClient
-
-    CloudRun --> AppCheckSdk
-    CloudRun --> CloudFirestore
-    CloudRun --> EventsAggregator
-    CloudRun --> HttpClient
-
-    DominionApp --> AppCheckClient
-    DominionApp --> HttpClient
-```
-
 ## Modules
 
 ### App-Check [app-check]
@@ -73,11 +55,7 @@ https://firebase.google.com/docs/app-check/custom-provider
 ### Kotlin GB [kotlin-gb]
 ![Experimental](https://img.shields.io/badge/project-experimental-status.svg?colorA=555555&colorB=red&label=&logo=kotlin&logoColor=ffffff&logoWidth=10)
 ![Multiplatform](https://img.shields.io/badge/project-multiplatform-component.svg?colorA=555555&colorB=7F52FF&label=&logo=kotlin&logoColor=ffffff&logoWidth=10)
-Offers a set of Traditional English aliases for Simplified English Kotlin APIs, largely a parody, thus does not comply to the same level of modularisation.  
-
-### Notion Console [notion-console]
-![Experimental](https://img.shields.io/badge/project-experimental-status.svg?colorA=555555&colorB=red&label=&logo=kotlin&logoColor=ffffff&logoWidth=10)
-![JVM](https://img.shields.io/badge/project-jvm-component.svg?colorA=555555&colorB=7F52FF&label=&logo=kotlin&logoColor=ffffff&logoWidth=10)
+Offers a set of Traditional English aliases for Simplified English Kotlin APIs, largely a parody, thus does not comply to the same level of modularisation.
 
 ## Talks
 - Droidcon Berlin 2022

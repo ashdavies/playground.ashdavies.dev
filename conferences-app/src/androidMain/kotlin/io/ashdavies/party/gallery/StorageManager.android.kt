@@ -1,4 +1,4 @@
-package io.ashdavies.gallery
+package io.ashdavies.party.gallery
 
 import io.ashdavies.content.PlatformContext
 import io.ashdavies.party.gallery.PathProvider
@@ -20,6 +20,7 @@ internal actual fun StorageManager(
     }
 
     override suspend fun delete(file: File): Boolean = withContext(coroutineContext) {
+        require(file.exists()) { "File does not exist" }
         file.delete()
     }
 }

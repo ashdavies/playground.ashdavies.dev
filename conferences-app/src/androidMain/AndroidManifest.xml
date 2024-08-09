@@ -8,7 +8,7 @@
         android:icon="@mipmap/ic_launcher">
 
         <activity
-            android:name="io.ashdavies.party.LauncherActivity"
+            android:name="io.ashdavies.party.MainActivity"
             android:configChanges="keyboardHidden|orientation"
             android:exported="true"
             android:label="Playground"
@@ -22,7 +22,7 @@
         </activity>
 
         <provider
-            android:name="io.ashdavies.gallery.ComposeFileProvider"
+            android:name="io.ashdavies.party.gallery.ComposeFileProvider"
             android:authorities="${applicationId}.files"
             android:exported="false"
             android:grantUriPermissions="true">
