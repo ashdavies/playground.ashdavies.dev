@@ -3,7 +3,6 @@ android-compileSdk = "35"
 android-minSdk = "24"
 androidx-activity = "1.9.1"
 androidx-paging = "3.3.1"
-apollo-graphql = "4.0.0"
 cash-sqldelight = "2.0.2"
 coil-kt = "3.0.0-alpha10"
 compose-plugin = "1.6.11"
@@ -28,8 +27,6 @@ androidx-annotation = "androidx.annotation:annotation:1.8.2"
 androidx-core-splashscreen = "androidx.core:core-splashscreen:1.0.1"
 androidx-credentials-auth = "androidx.credentials:credentials-play-services-auth:1.2.2"
 androidx-paging-common = { module = "androidx.paging:paging-common", version.ref = "androidx-paging" }
-
-apollo-graphql-runtime = { module = "com.apollographql.apollo:apollo-runtime", version.ref = "apollo-graphql" }
 
 app-cash-turbine = "app.cash.turbine:turbine:1.1.0"
 
@@ -121,7 +118,6 @@ squareup-okio = "com.squareup.okio:okio:3.9.0"
 [plugins]
 android-application = { id = "com.android.application", version.ref = "google-android" }
 android-library = { id = "com.android.library", version.ref = "google-android" }
-apollo-graphql = { id = "com.apollographql.apollo", version.ref = "apollo-graphql" }
 build-config = "com.github.gmazzo.buildconfig:5.4.0"
 cash-sqldelight = { id = "app.cash.sqldelight", version.ref = "cash-sqldelight" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "jetbrains-kotlin" }

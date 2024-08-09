@@ -12,6 +12,8 @@ import io.ashdavies.routing.ComputeRoutesError
 import io.ashdavies.routing.ComputeRoutesRequest
 import io.ktor.client.HttpClient
 
+private const val ROUTES_BASE_URL = "https://routes.googleapis.com"
+
 @Composable
 internal fun RoutePresenter(
     locationService: LocationService,
@@ -28,7 +30,11 @@ internal fun RoutePresenter(
     }
 
     val computeRoutes = rememberRetained {
-        ComputeRoutesCallable(httpClient, BuildConfig.ANDROID_API_KEY)
+        ComputeRoutesCallable(
+            httpClient = httpClient,
+            baseUrl = ROUTES_BASE_URL,
+            apiKey = BuildConfig.ANDROID_API_KEY,
+        )
     }
 
     var mapState by rememberRetained { mutableStateOf(RouteMapState(startPosition)) }

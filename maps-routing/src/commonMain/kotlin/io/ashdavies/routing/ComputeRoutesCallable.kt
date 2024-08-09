@@ -12,8 +12,6 @@ import io.ktor.client.request.setBody
 import kotlinx.datetime.Clock
 import kotlinx.serialization.Serializable
 
-private const val ROUTES_GOOGLE_APIS = "https://routes.googleapis.com"
-
 private const val HEADER_API_KEY = "X-Goog-Api-Key"
 private const val HEADER_FIELD_MASK = "X-Goog-FieldMask"
 
@@ -21,6 +19,7 @@ private const val FIELD_ENCODED_POLYLINE = "routes.distanceMeters,routes.duratio
 
 public class ComputeRoutesCallable(
     httpClient: HttpClient,
+    private val baseUrl: String,
     apiKey: String,
 ) : UnaryCallable<ComputeRoutesRequest, ComputeRoutesResponse> {
 
@@ -28,8 +27,6 @@ public class ComputeRoutesCallable(
         install(DefaultRequest) {
             header(HEADER_API_KEY, apiKey)
             header(HEADER_FIELD_MASK, FIELD_ENCODED_POLYLINE)
-
-            url(ROUTES_GOOGLE_APIS)
         }
 
         install(HttpCallValidator) {
@@ -46,7 +43,7 @@ public class ComputeRoutesCallable(
     override suspend fun invoke(
         request: ComputeRoutesRequest,
     ): ComputeRoutesResponse = httpClient
-        .post("/directions/v2:computeRoutes") { setBody(request) }
+        .post("$baseUrl/directions/v2:computeRoutes") { setBody(request) }
         .body()
 }
 
