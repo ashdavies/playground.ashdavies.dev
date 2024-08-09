@@ -9,7 +9,6 @@ import androidx.compose.runtime.produceState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.FileProvider
-import io.ashdavies.party.gallery.StorageManager
 
 @Composable
 internal actual fun ImageCapture(
