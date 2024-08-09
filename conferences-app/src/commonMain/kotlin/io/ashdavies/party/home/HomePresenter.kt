@@ -12,13 +12,13 @@ import com.slack.circuit.retained.rememberRetained
 import com.slack.circuit.runtime.Navigator
 import com.slack.circuit.runtime.screen.Screen
 import io.ashdavies.content.PlatformContext
-import io.ashdavies.party.events.EventsScreen
-import io.ashdavies.party.gallery.GalleryScreen
 import io.ashdavies.identity.CredentialQueries
 import io.ashdavies.identity.IdentityManager
 import io.ashdavies.identity.IdentityState
 import io.ashdavies.party.config.booleanConfigAsState
 import io.ashdavies.party.config.isHomeEnabled
+import io.ashdavies.party.events.EventsScreen
+import io.ashdavies.party.gallery.GalleryScreen
 import io.ashdavies.party.sql.rememberLocalQueries
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch

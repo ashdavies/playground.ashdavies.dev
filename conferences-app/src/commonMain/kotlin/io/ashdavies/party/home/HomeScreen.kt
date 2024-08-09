@@ -28,18 +28,18 @@ import com.slack.circuit.runtime.CircuitUiEvent
 import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.screen.Screen
 import io.ashdavies.analytics.OnClick
-import io.ashdavies.party.animation.FadeVisibility
-import io.ashdavies.party.events.EventsScreen
-import io.ashdavies.party.gallery.GalleryScreen
-import io.ashdavies.party.gallery.GallerySheetContent
 import io.ashdavies.identity.IdentityState
 import io.ashdavies.material.BottomSheetScaffold
 import io.ashdavies.parcelable.Parcelable
 import io.ashdavies.parcelable.Parcelize
-import io.ashdavies.party.profile.ProfileActionButton
+import io.ashdavies.party.animation.FadeVisibility
 import io.ashdavies.party.config.booleanConfigAsState
 import io.ashdavies.party.config.isHomeEnabled
 import io.ashdavies.party.config.isProfileEnabled
+import io.ashdavies.party.events.EventsScreen
+import io.ashdavies.party.gallery.GalleryScreen
+import io.ashdavies.party.gallery.GallerySheetContent
+import io.ashdavies.party.profile.ProfileActionButton
 
 @Parcelize
 internal object HomeScreen : Parcelable, Screen {
