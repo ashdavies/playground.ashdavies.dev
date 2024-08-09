@@ -24,7 +24,7 @@ slack-circuit = "0.23.0"
 ajalt-clikt = "com.github.ajalt.clikt:clikt:4.4.0"
 
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity" }
-androidx-annotation = "androidx.annotation:annotation:1.8.1"
+androidx-annotation = "androidx.annotation:annotation:1.8.2"
 androidx-core-splashscreen = "androidx.core:core-splashscreen:1.0.1"
 androidx-credentials-auth = "androidx.credentials:credentials-play-services-auth:1.2.2"
 androidx-paging-common = { module = "androidx.paging:paging-common", version.ref = "androidx-paging" }
