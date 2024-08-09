@@ -7,7 +7,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import app.cash.sqldelight.Transacter
 import com.slack.circuit.foundation.onNavEvent
 import com.slack.circuit.retained.rememberRetained
 import com.slack.circuit.runtime.Navigator
@@ -18,8 +17,6 @@ import io.ashdavies.gallery.GalleryScreen
 import io.ashdavies.identity.CredentialQueries
 import io.ashdavies.identity.IdentityManager
 import io.ashdavies.identity.IdentityState
-import io.ashdavies.playground.PlaygroundDatabase
-import io.ashdavies.sql.LocalTransacter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
