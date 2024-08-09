@@ -1,5 +1,6 @@
 package io.ashdavies.playground
 
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
@@ -26,30 +27,38 @@ private class LauncherCommand : CliktCommand() {
             state = rememberWindowState(size = DpSize(450.dp, 975.dp)),
             title = commandName,
         ) {
-            val circuit = remember { Circuit(PlatformContext.Default) }
+            LauncherApp(
+                route = route,
+                onClose = ::exitApplication,
+            )
+        }
+    }
+}
 
-            CircuitCompositionLocals(circuit) {
-                ProvideHttpClient(
-                    config = {
-                        install(DefaultRequest) {
-                            header("User-Agent", System.getProperty("os.name"))
-                            header("X-API-Key", BuildConfig.BROWSER_API_KEY)
-                        }
-                    },
-                ) {
-                    LauncherContent(PlatformContext.Default) {
-                        val backStack = rememberSaveableBackStack(route)
+@Composable
+internal fun LauncherApp(route: String?, onClose: () -> Unit) {
+    val circuit = remember { Circuit(PlatformContext.Default) }
 
-                        NavigableCircuitContent(
-                            navigator = rememberCircuitNavigator(backStack) { exitApplication() },
-                            backStack = backStack,
-                            decoration = KeyNavigationDecoration(
-                                decoration = circuit.defaultNavDecoration,
-                                onBackInvoked = backStack::pop,
-                            ),
-                        )
-                    }
+    CircuitCompositionLocals(circuit) {
+        ProvideHttpClient(
+            config = {
+                install(DefaultRequest) {
+                    header("User-Agent", System.getProperty("os.name"))
+                    header("X-API-Key", BuildConfig.BROWSER_API_KEY)
                 }
+            },
+        ) {
+            LauncherContent(PlatformContext.Default) {
+                val backStack = rememberSaveableBackStack(route)
+
+                NavigableCircuitContent(
+                    navigator = rememberCircuitNavigator(backStack) { onClose() },
+                    backStack = backStack,
+                    decoration = KeyNavigationDecoration(
+                        decoration = circuit.defaultNavDecoration,
+                        onBackInvoked = backStack::pop,
+                    ),
+                )
             }
         }
     }

@@ -1,6 +1,7 @@
 import io.gitlab.arturbosch.detekt.Detekt
 import io.gitlab.arturbosch.detekt.DetektPlugin
 import io.gitlab.arturbosch.detekt.extensions.DetektExtension
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jlleitschuh.gradle.ktlint.KtlintExtension
 import org.jlleitschuh.gradle.ktlint.KtlintPlugin
@@ -16,14 +17,6 @@ apply<KtlintPlugin>()
 kotlin {
     explicitApi()
     jvm()
-
-    targets.all {
-        compilations.all {
-            compilerOptions.configure {
-                freeCompilerArgs.add("-Xexpect-actual-classes")
-            }
-        }
-    }
 }
 
 private val detektAll by tasks.registering {
@@ -55,5 +48,9 @@ tasks.withType<Detekt> {
 
 tasks.withType<KotlinCompile> {
     val jvmTargetVersion = libs.versions.kotlin.jvmTarget.get()
-    kotlinOptions.jvmTarget = jvmTargetVersion
+
+    compilerOptions {
+        freeCompilerArgs.addAll("-Xexpect-actual-classes")
+        jvmTarget.set(JvmTarget.fromTarget(jvmTargetVersion))
+    }
 }

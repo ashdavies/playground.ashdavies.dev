@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
     `kotlin-dsl`
 }
@@ -22,4 +24,8 @@ dependencies {
 
 kotlin {
     explicitApi()
+}
+
+tasks.withType<KotlinCompile> {
+    compilerOptions.freeCompilerArgs.add("-Xcontext-receivers")
 }

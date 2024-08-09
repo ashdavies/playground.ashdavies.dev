@@ -6,7 +6,7 @@ kotlin {
     androidTarget()
 }
 
-commonExtension {
+pluginManager.commonExtension {
     compileOptions {
         val jvmTargetVersion = libs.versions.kotlin.jvmTarget.get()
         sourceCompatibility(jvmTargetVersion)
