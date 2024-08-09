@@ -1,4 +1,4 @@
-package io.ashdavies.gallery
+package io.ashdavies.party.gallery
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.window.AwtWindow

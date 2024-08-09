@@ -1,4 +1,4 @@
-package io.ashdavies.gallery
+package io.ashdavies.party.gallery
 
 import io.ktor.util.cio.readChannel
 import io.ktor.utils.io.ByteReadChannel

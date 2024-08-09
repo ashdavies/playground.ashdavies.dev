@@ -6,8 +6,6 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.InvalidatingPagingSourceFactory
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
-import io.ashdavies.events.Event
-import io.ashdavies.events.EventsQueries
 import io.ashdavies.http.LocalHttpClient
 import io.ashdavies.party.network.todayAsString
 import io.ashdavies.party.sql.rememberLocalQueries

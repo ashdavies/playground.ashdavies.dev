@@ -1,8 +1,6 @@
 package io.ashdavies.party.gallery
 
 import io.ashdavies.content.PlatformContext
-import io.ashdavies.gallery.Image
-import io.ashdavies.gallery.ImageQueries
 import io.ashdavies.sql.mapToList
 import io.ashdavies.util.randomUuid
 import kotlinx.coroutines.flow.Flow

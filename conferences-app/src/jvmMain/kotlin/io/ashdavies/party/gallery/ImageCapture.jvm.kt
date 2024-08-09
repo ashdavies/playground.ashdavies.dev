@@ -1,8 +1,7 @@
-package io.ashdavies.gallery
+package io.ashdavies.party.gallery
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import io.ashdavies.party.gallery.StorageManager
 import java.io.FilenameFilter
 import javax.imageio.ImageIO
 

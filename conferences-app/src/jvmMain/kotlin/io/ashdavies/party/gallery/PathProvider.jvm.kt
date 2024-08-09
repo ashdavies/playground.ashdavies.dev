@@ -1,7 +1,6 @@
-package io.ashdavies.gallery
+package io.ashdavies.party.gallery
 
 import io.ashdavies.content.PlatformContext
-import io.ashdavies.party.gallery.PathProvider
 
 private val codeSourceLocation = PathProvider::class.java.protectionDomain.codeSource.location
 

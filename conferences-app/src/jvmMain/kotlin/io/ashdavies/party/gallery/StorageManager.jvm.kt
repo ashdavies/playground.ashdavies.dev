@@ -1,8 +1,6 @@
-package io.ashdavies.gallery
+package io.ashdavies.party.gallery
 
 import io.ashdavies.content.PlatformContext
-import io.ashdavies.party.gallery.PathProvider
-import io.ashdavies.party.gallery.StorageManager
 import io.ashdavies.util.randomUuid
 import kotlinx.coroutines.withContext
 import java.io.File

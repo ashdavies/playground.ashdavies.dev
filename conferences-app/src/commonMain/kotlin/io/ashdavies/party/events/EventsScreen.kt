@@ -39,7 +39,6 @@ import coil3.compose.AsyncImage
 import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.screen.Screen
 import io.ashdavies.analytics.OnClick
-import io.ashdavies.events.Event
 import io.ashdavies.paging.LazyPagingItems
 import io.ashdavies.parcelable.Parcelable
 import io.ashdavies.parcelable.Parcelize

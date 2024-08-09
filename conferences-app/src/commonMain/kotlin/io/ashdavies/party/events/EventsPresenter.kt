@@ -7,7 +7,6 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.cachedIn
 import com.slack.circuit.retained.rememberRetained
-import io.ashdavies.events.Event
 import io.ashdavies.paging.collectAsLazyPagingItems
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

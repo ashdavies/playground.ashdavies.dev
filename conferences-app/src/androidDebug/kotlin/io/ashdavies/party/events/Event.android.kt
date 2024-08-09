@@ -1,7 +1,5 @@
 package io.ashdavies.party.events
 
-import io.ashdavies.events.Event
-
 internal val AndroidMakers = Event(
     id = "beec716041736c86e27a4b243229bf382f5348d5",
     name = "Android Makers 2023 by droidcon",

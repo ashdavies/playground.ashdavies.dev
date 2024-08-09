@@ -4,10 +4,9 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
-import io.ashdavies.events.EventsQueries
 import io.ktor.client.network.sockets.SocketTimeoutException
-import io.ashdavies.events.Event as DatabaseEvent
 import io.ashdavies.http.common.models.Event as ApiEvent
+import io.ashdavies.party.events.Event as DatabaseEvent
 
 @OptIn(ExperimentalPagingApi::class)
 internal class EventsRemoteMediator(

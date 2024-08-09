@@ -9,8 +9,6 @@ import androidx.compose.runtime.setValue
 import com.slack.circuit.retained.produceRetainedState
 import com.slack.circuit.retained.rememberRetained
 import io.ashdavies.content.PlatformContext
-import io.ashdavies.gallery.Image
-import io.ashdavies.gallery.ImageQueries
 import io.ashdavies.party.sql.rememberLocalQueries
 import kotlinx.coroutines.launch
 

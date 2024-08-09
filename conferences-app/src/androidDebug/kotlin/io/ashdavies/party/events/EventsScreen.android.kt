@@ -3,10 +3,8 @@ package io.ashdavies.party.events
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.paging.PagingData
-import io.ashdavies.events.Event
 import io.ashdavies.paging.LazyPagingItems
 import io.ashdavies.paging.collectAsLazyPagingItems
-import io.ashdavies.party.events.EventsScreen
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 
