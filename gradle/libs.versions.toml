@@ -104,7 +104,7 @@ slack-circuit-runtime = { module = "com.slack.circuit:circuit-runtime", version.
 slack-circuit-overlay = { module = "com.slack.circuit:circuit-overlay", version.ref = "slack-circuit" }
 slack-circuit-test = { module = "com.slack.circuit:circuit-test", version.ref = "slack-circuit" }
 
-slf4j-simple = "org.slf4j:slf4j-simple:2.0.14"
+slf4j-simple = "org.slf4j:slf4j-simple:2.0.16"
 
 sqldelight-android-driver = { module = "app.cash.sqldelight:android-driver", version.ref = "cash-sqldelight" }
 sqldelight-coroutines-extensions = { module = "app.cash.sqldelight:coroutines-extensions", version.ref = "cash-sqldelight" }
