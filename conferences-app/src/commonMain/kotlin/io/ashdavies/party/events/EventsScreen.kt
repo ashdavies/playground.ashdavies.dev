@@ -36,6 +36,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
+import com.slack.circuit.runtime.CircuitUiEvent
 import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.screen.Screen
 import io.ashdavies.analytics.OnClick
@@ -49,6 +50,7 @@ import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
+import io.ashdavies.party.events.Event as DatabaseEvent
 
 private const val EMPTY_STRING = ""
 
@@ -58,7 +60,15 @@ private val Today = Clock.System.now()
 
 @Parcelize
 internal object EventsScreen : Parcelable, Screen {
-    data class State(val pagingItems: LazyPagingItems<Event>) : CircuitUiState
+
+    sealed interface Event : CircuitUiEvent {
+
+    }
+
+    data class State(
+        val pagingItems: LazyPagingItems<DatabaseEvent>,
+        val isLoading: Boolean,
+    ) : CircuitUiState
 }
 
 @Composable
@@ -71,9 +81,8 @@ internal fun EventsScreen(
     modifier: Modifier = Modifier,
     showPlaceholders: Int = 8,
 ) {
-    val isRefreshing = state.pagingItems.loadState.isRefreshing
     val pullRefreshState = rememberPullRefreshState(
-        refreshing = isRefreshing,
+        refreshing = state.isLoading,
         onRefresh = OnClick("events_refresh") {
             state.pagingItems.refresh()
         },
@@ -85,7 +94,7 @@ internal fun EventsScreen(
         }
 
         LazyColumn(Modifier.fillMaxSize()) {
-            val itemCount = when (isRefreshing) {
+            val itemCount = when (state.isLoading) {
                 true -> state.pagingItems.itemCount.coerceAtLeast(showPlaceholders)
                 false -> state.pagingItems.itemCount
             }
@@ -93,19 +102,19 @@ internal fun EventsScreen(
             items(itemCount) { index ->
                 EventSection(
                     event = state.pagingItems.getOrNull(index),
-                    modifier = Modifier.animateItemPlacement(),
                     emphasis = when (index) {
                         0 -> TextEmphasis.Significant
                         1 -> TextEmphasis.Moderate
                         else -> TextEmphasis.Standard
                     },
+                    modifier = Modifier.animateItemPlacement(),
                 )
             }
         }
 
         PullRefreshIndicator(
             modifier = Modifier.align(Alignment.TopCenter),
-            refreshing = isRefreshing,
+            refreshing = state.isLoading,
             state = pullRefreshState,
         )
     }
@@ -124,9 +133,9 @@ private enum class TextEmphasis {
 @Composable
 @ExperimentalMaterialApi
 private fun EventSection(
-    event: Event?,
-    modifier: Modifier = Modifier,
+    event: DatabaseEvent?,
     emphasis: TextEmphasis,
+    modifier: Modifier = Modifier,
 ) {
     Card(
         modifier = modifier

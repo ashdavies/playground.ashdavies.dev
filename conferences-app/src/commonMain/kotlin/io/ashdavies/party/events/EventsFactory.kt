@@ -1,23 +1,16 @@
 package io.ashdavies.party.events
 
 import com.slack.circuit.runtime.presenter.Presenter
-import com.slack.circuit.runtime.presenter.presenterOf
 import com.slack.circuit.runtime.ui.Ui
-import com.slack.circuit.runtime.ui.ui
+import io.ashdavies.circuit.presenterFactoryOf
+import io.ashdavies.circuit.uiFactoryOf
 
-public fun eventsPresenterFactory(): Presenter.Factory = Presenter.Factory { screen, _, _ ->
-    when (screen) {
-        is EventsScreen -> presenterOf { EventsPresenter() }
-        else -> null
-    }
+public fun eventsPresenterFactory(): Presenter.Factory = presenterFactoryOf<EventsScreen> { _, _ ->
+    EventsPresenter()
 }
 
-public fun eventsUiFactory(): Ui.Factory = Ui.Factory { screen, _ ->
-    when (screen) {
-        is EventsScreen -> ui<EventsScreen.State> { state, modifier ->
-            EventsScreen(state, modifier)
-        }
-
-        else -> null
+public fun eventsUiFactory(): Ui.Factory {
+    return uiFactoryOf<EventsScreen, EventsScreen.State> { _, state, modifier ->
+        EventsScreen(state, modifier)
     }
 }
