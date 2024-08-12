@@ -1,4 +1,4 @@
-package io.ashdavies.cloud
+package io.ashdavies.cloud.google
 
 import kotlinx.serialization.Serializable
 
