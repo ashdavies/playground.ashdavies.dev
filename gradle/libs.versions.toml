@@ -2,7 +2,7 @@
 android-compileSdk = "35"
 android-minSdk = "24"
 androidx-activity = "1.9.1"
-androidx-paging = "3.3.1"
+androidx-paging = "3.3.2"
 cash-sqldelight = "2.0.2"
 coil-kt = "3.0.0-alpha10"
 compose-plugin = "1.6.11"
@@ -51,7 +51,7 @@ google-android-location = "com.google.android.gms:play-services-location:21.3.0"
 google-android-material = "com.google.android.material:material:1.12.0"
 
 google-auth-http = "com.google.auth:google-auth-library-oauth2-http:1.24.0"
-google-cloud-bom = "com.google.cloud:libraries-bom:26.43.0"
+google-cloud-bom = "com.google.cloud:libraries-bom:26.44.0"
 google-cloud-firestore = { module = "com.google.cloud:google-cloud-firestore" }
 
 google-firebase-admin = "com.google.firebase:firebase-admin:9.3.0"
@@ -104,7 +104,7 @@ slack-circuit-runtime = { module = "com.slack.circuit:circuit-runtime", version.
 slack-circuit-overlay = { module = "com.slack.circuit:circuit-overlay", version.ref = "slack-circuit" }
 slack-circuit-test = { module = "com.slack.circuit:circuit-test", version.ref = "slack-circuit" }
 
-slf4j-simple = "org.slf4j:slf4j-simple:2.0.14"
+slf4j-simple = "org.slf4j:slf4j-simple:2.0.16"
 
 sqldelight-android-driver = { module = "app.cash.sqldelight:android-driver", version.ref = "cash-sqldelight" }
 sqldelight-coroutines-extensions = { module = "app.cash.sqldelight:coroutines-extensions", version.ref = "cash-sqldelight" }
