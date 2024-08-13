@@ -1,32 +1,33 @@
 package io.ashdavies.cloud.operations
 
-import io.ashdavies.cloud.CollectionQuery
-import io.ashdavies.cloud.CollectionReader
-import io.ashdavies.cloud.DocumentProvider
+import com.google.cloud.firestore.CollectionReference
+import io.ashdavies.cloud.await
+import io.ashdavies.cloud.decodeFromSnapshot
 import io.ashdavies.http.common.models.Event
 import io.ktor.server.application.ApplicationCall
 import io.ktor.server.response.respond
 import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.todayIn
+import kotlinx.serialization.json.Json
 
-internal object UpcomingEventsDefaults {
-    const val ORDER_BY: String = "dateStart"
-    const val LIMIT: Int = 50
+private object UpcomingEventsDefaults {
+    const val ORDER_BY = "dateStart"
+    const val LIMIT = 50
 }
 
 internal class UpcomingEventsOperation(
-    private val documentProvider: DocumentProvider,
+    private val collectionReference: CollectionReference,
 ) : UnaryOperation {
 
     override suspend fun invoke(call: ApplicationCall) {
-        val startAt = call.request.queryParameters["startAt"] ?: todayAsString()
-        val limit = call.request.queryParameters["limit"]?.toInt() ?: UpcomingEventsDefaults.LIMIT
+        val snapshot = collectionReference
+            .orderBy(UpcomingEventsDefaults.ORDER_BY)
+            .startAt(call.request.queryParameters["startAt"] ?: todayAsString())
+            .limit(call.request.queryParameters["limit"]?.toInt() ?: UpcomingEventsDefaults.LIMIT)
+            .await()
 
-        val query = CollectionQuery(UpcomingEventsDefaults.ORDER_BY, startAt, limit)
-        val reader = CollectionReader<Event>(documentProvider, query)
-
-        call.respond(reader(Event.serializer()))
+        call.respond(Json.decodeFromSnapshot<Event>(snapshot))
     }
 }
 

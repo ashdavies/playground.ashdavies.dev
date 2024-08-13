@@ -2,6 +2,7 @@ package io.ashdavies.cloud
 
 import kotlinx.serialization.SerializationStrategy
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.serializer
 import okio.ByteString.Companion.encode
 
 internal interface Identifier<T : Any> : (T) -> String
@@ -19,4 +20,8 @@ internal class HashIdentifier<T : Any>(
             .md5()
             .hex()
     }
+}
+
+internal inline fun <reified T : Any> Identifier(): Identifier<T> {
+    return HashIdentifier(serializer())
 }
