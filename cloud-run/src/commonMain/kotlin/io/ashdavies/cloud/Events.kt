@@ -1,6 +1,5 @@
 package io.ashdavies.cloud
 
-import io.ashdavies.aggregator.AsgConference
 import io.ashdavies.aggregator.AsgService
 import io.ashdavies.cloud.operations.AggregateEventsOperation
 import io.ashdavies.cloud.operations.UpcomingEventsOperation
@@ -12,14 +11,15 @@ import io.ktor.server.routing.get
 import io.ktor.server.routing.post
 
 internal fun Route.events(httpClient: HttpClient) {
-    val documentProvider = DocumentProvider { firestore.collection("events") }
-    val upcomingEvents = UpcomingEventsOperation(documentProvider)
+    val collectionReference = firestore.collection("events")
+
+    val upcomingEvents = UpcomingEventsOperation(collectionReference)
 
     val aggregateEvents = AggregateEventsOperation(
-        documentProvider = documentProvider,
-        collectionWriter = CollectionWriter(documentProvider, Event::id),
+        collectionReference = collectionReference,
+        collectionWriter = CollectionWriter(collectionReference, Event::id),
         asgService = AsgService(httpClient),
-        identifier = HashIdentifier(AsgConference.serializer()),
+        identifier = Identifier(),
     )
 
     get("/events/upcoming") { upcomingEvents(call) }

@@ -1,5 +1,6 @@
 package io.ashdavies.cloud
 
+import com.google.cloud.firestore.CollectionReference
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
@@ -13,7 +14,7 @@ public fun interface CollectionWriter<T : Any> {
 }
 
 public fun <T : Any> CollectionWriter(
-    provider: DocumentProvider,
+    reference: CollectionReference,
     identifier: (T) -> String,
     context: CoroutineContext = Dispatchers.IO,
 ): CollectionWriter<T> = CollectionWriter { oldValue, newValue ->
@@ -25,7 +26,7 @@ public fun <T : Any> CollectionWriter(
     coroutineScope {
         for (operation in queue) {
             launch(context) {
-                operation(provider)
+                operation(reference)
             }.join()
         }
     }
@@ -44,7 +45,7 @@ private fun <T : Any> operationQueue(oldValue: Map<String, T>, newValue: Map<Str
 }
 
 private fun interface CollectionOperation<T> {
-    suspend operator fun invoke(provider: DocumentProvider)
+    suspend operator fun invoke(reference: CollectionReference)
 }
 
 private fun <T : Any> writeOperation(childPath: String, value: T) = CollectionOperation<T> { reference ->
