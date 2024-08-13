@@ -1,5 +1,6 @@
 package io.ashdavies.cloud
 
+import io.ashdavies.cloud.google.GoogleApiException
 import io.ashdavies.content.PlatformContext
 import io.ashdavies.http.DefaultHttpConfiguration
 import io.ashdavies.http.publicStorage
@@ -35,7 +36,7 @@ public fun main() {
 }
 
 internal fun Application.main() {
-    val client = HttpClient {
+    val httpClient = HttpClient {
         DefaultHttpConfiguration()
 
         install(HttpCache) {
@@ -56,8 +57,8 @@ internal fun Application.main() {
     install(CallLogging)
 
     routing {
-        events(client)
-        firebase(client)
+        events(httpClient)
+        firebase(httpClient)
         hello()
         static()
     }
