@@ -17,7 +17,7 @@ kotlinx-coroutines = "1.8.1"
 kotlinx-serialization = "1.7.1"
 ktor = "2.3.12"
 pinterest-ktlint = "0.50.0"
-slack-circuit = "0.23.0"
+slack-circuit = "0.23.1"
 
 [libraries]
 ajalt-clikt = "com.github.ajalt.clikt:clikt:4.4.0"
