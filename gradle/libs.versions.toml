@@ -50,7 +50,7 @@ google-android-identity = "com.google.android.libraries.identity.googleid:google
 google-android-location = "com.google.android.gms:play-services-location:21.3.0"
 google-android-material = "com.google.android.material:material:1.12.0"
 
-google-auth-http = "com.google.auth:google-auth-library-oauth2-http:1.24.0"
+google-auth-http = "com.google.auth:google-auth-library-oauth2-http:1.24.1"
 google-cloud-bom = "com.google.cloud:libraries-bom:26.44.0"
 google-cloud-firestore = { module = "com.google.cloud:google-cloud-firestore" }
 
