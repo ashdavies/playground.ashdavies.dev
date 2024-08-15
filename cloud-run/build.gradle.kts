@@ -65,7 +65,6 @@ kotlin {
             implementation(projects.appCheck.appCheckCommon)
             implementation(projects.appCheck.appCheckSdk)
             implementation(projects.asgService)
-            implementation(projects.cloudFirestore)
             implementation(projects.httpClient)
             implementation(projects.httpCommon)
             implementation(projects.platformSupport)

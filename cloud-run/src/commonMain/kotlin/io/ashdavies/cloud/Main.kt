@@ -1,21 +1,23 @@
 package io.ashdavies.cloud
 
-import io.ashdavies.cloud.google.GoogleApiException
-import io.ashdavies.content.PlatformContext
-import io.ashdavies.http.DefaultHttpConfiguration
-import io.ashdavies.http.publicStorage
-import io.ashdavies.http.throwClientRequestExceptionAs
-import io.ashdavies.io.resolveCacheDir
-import io.ktor.client.HttpClient
-import io.ktor.client.plugins.HttpCallValidator
-import io.ktor.client.plugins.cache.HttpCache
+import com.google.firebase.auth.FirebaseAuth
+import io.ashdavies.aggregator.AsgService
+import io.ashdavies.check.appCheck
+import io.ashdavies.cloud.operations.AggregateEventsOperation
+import io.ashdavies.cloud.operations.FirebaseAuthOperation
+import io.ashdavies.cloud.operations.FirebaseTokenOperation
+import io.ashdavies.cloud.operations.UpcomingEventsOperation
+import io.ashdavies.cloud.operations.VerifyTokenOperation
+import io.ashdavies.http.common.models.Event
 import io.ktor.http.HttpHeaders
 import io.ktor.serialization.Configuration
 import io.ktor.serialization.kotlinx.json.json
 import io.ktor.server.application.Application
+import io.ktor.server.application.call
 import io.ktor.server.application.install
 import io.ktor.server.cio.CIO
 import io.ktor.server.engine.embeddedServer
+import io.ktor.server.http.content.staticResources
 import io.ktor.server.plugins.callloging.CallLogging
 import io.ktor.server.plugins.compression.Compression
 import io.ktor.server.plugins.compression.CompressionConfig
@@ -23,6 +25,10 @@ import io.ktor.server.plugins.conditionalheaders.ConditionalHeaders
 import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.server.plugins.defaultheaders.DefaultHeaders
 import io.ktor.server.plugins.defaultheaders.DefaultHeadersConfig
+import io.ktor.server.response.respond
+import io.ktor.server.routing.get
+import io.ktor.server.routing.post
+import io.ktor.server.routing.put
 import io.ktor.server.routing.routing
 
 public fun main() {
@@ -36,19 +42,8 @@ public fun main() {
 }
 
 internal fun Application.main() {
-    val httpClient = HttpClient {
-        DefaultHttpConfiguration()
-
-        install(HttpCache) {
-            publicStorage(PlatformContext.Default.resolveCacheDir())
-        }
-
-        install(HttpCallValidator) {
-            throwClientRequestExceptionAs<GoogleApiException>()
-        }
-
-        expectSuccess = true
-    }
+    val eventsCollection = firestore.collection("events")
+    val appCheck = firebaseApp.appCheck(httpClient)
 
     install(DefaultHeaders, DefaultHeadersConfig::headers)
     install(Compression, CompressionConfig::default)
@@ -57,10 +52,41 @@ internal fun Application.main() {
     install(CallLogging)
 
     routing {
-        events(httpClient)
-        firebase(httpClient)
-        hello()
-        static()
+        val upcomingEvents = UpcomingEventsOperation(eventsCollection)
+
+        val aggregateEvents = AggregateEventsOperation(
+            collectionReference = eventsCollection,
+            collectionWriter = CollectionWriter(eventsCollection, Event::id),
+            asgService = AsgService(httpClient),
+            identifier = Identifier(),
+        )
+
+        val firebaseAuth = FirebaseAuthOperation(
+            firebaseAuth = FirebaseAuth.getInstance(firebaseApp),
+            httpClient = httpClient,
+        )
+
+        val firebaseToken = FirebaseTokenOperation(appCheck)
+        val verifyToken = VerifyTokenOperation(appCheck)
+
+        get("/events/upcoming") { upcomingEvents(call) }
+
+        post("/events:aggregate") { aggregateEvents(call) }
+
+        post("/auth") { firebaseAuth(call) }
+
+        post("/token") { firebaseToken(call) }
+
+        put("/token:verify") { verifyToken(call) }
+
+        get("/hello") {
+            call.respond("Hello, World!")
+        }
+
+        staticResources(
+            remotePath = "/.well-known/",
+            basePackage = "well-known",
+        )
     }
 }
 
