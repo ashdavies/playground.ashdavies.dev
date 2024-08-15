@@ -58,7 +58,6 @@ include(
     ":app-launcher:desktop",
     ":asg-service",
     ":circuit-support",
-    ":cloud-firestore",
     ":cloud-run",
     ":compose-material",
     ":conferences-app",
