@@ -18,17 +18,11 @@ android {
     }
 
     val release by signingConfigs.creating {
-        val releaseStoreFile by stringProperty()
-        storeFile = rootProject.file(releaseStoreFile)
+        val releaseStoreFile by stringProperty { storeFile = rootProject.file(it) }
+        val releaseStorePassword by stringProperty { storePassword = it }
 
-        val releaseStorePassword by stringProperty()
-        storePassword = releaseStorePassword
-
-        val releaseKeyAlias by stringProperty()
-        keyAlias = releaseKeyAlias
-
-        val releaseKeyPassword by stringProperty()
-        keyPassword = releaseKeyPassword
+        val releaseKeyAlias by stringProperty { keyAlias = it }
+        val releaseKeyPassword by stringProperty { keyPassword = it }
     }
 
     buildTypes {
@@ -52,13 +46,8 @@ android {
 }
 
 buildConfig {
-    val androidApiKey by stringProperty { value ->
-        buildConfigField("ANDROID_API_KEY", value)
-    }
-
-    val androidStrictMode by booleanProperty { value ->
-        buildConfigField("ANDROID_STRICT_MODE", value)
-    }
+    val androidApiKey by stringPropertyWithTag(::buildConfigField)
+    val androidStrictMode by stringPropertyWithTag(::buildConfigField)
 
     packageName.set(android.namespace)
 }
