@@ -3,10 +3,10 @@
 /.idea
 
 # Android
-/gradle.properties
-**/local.properties
 /captures
 *.hprof
+*.apk
+*.ap_
 
 # Database
 *.db
@@ -22,9 +22,14 @@
 **/*.log
 
 # Gradle
+/gradle.properties
+**/local.properties
 .gradle
 build
-/reports
+
+# Keystore Files
+*.jks
+*.keystore
 
 # Kotlin
 .kotlin/sessions

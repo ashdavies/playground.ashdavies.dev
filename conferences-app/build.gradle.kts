@@ -17,6 +17,32 @@ android {
         res.srcDirs("src/androidMain/res")
     }
 
+    val release by signingConfigs.creating {
+        val releaseStoreFile by stringProperty()
+        storeFile = rootProject.file(releaseStoreFile)
+
+        val releaseStorePassword by stringProperty()
+        storePassword = releaseStorePassword
+
+        val releaseKeyAlias by stringProperty()
+        keyAlias = releaseKeyAlias
+
+        val releaseKeyPassword by stringProperty()
+        keyPassword = releaseKeyPassword
+    }
+
+    buildTypes {
+        debug {
+            applicationIdSuffix = ".debug"
+        }
+
+        release {
+            isMinifyEnabled = true
+            isShrinkResources = true
+            signingConfig = release
+        }
+    }
+
     defaultConfig {
         versionName = "1.0"
         versionCode = 1
