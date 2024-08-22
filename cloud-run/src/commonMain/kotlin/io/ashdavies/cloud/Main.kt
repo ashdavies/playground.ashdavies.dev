@@ -73,11 +73,11 @@ internal fun Application.main() {
 
         post("/events:aggregate") { aggregateEvents(call) }
 
-        post("/auth") { firebaseAuth(call) }
+        post("/firebase/auth") { firebaseAuth(call) }
 
-        post("/token") { firebaseToken(call) }
+        post("/firebase/token") { firebaseToken(call) }
 
-        put("/token:verify") { verifyToken(call) }
+        put("/firebase/token:verify") { verifyToken(call) }
 
         get("/hello") {
             call.respond("Hello, World!")
