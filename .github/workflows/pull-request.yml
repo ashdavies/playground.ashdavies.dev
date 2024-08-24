@@ -7,7 +7,7 @@ concurrency:
 
 jobs:
   build:
-    name: Pre Merge Checks
+    name: Build
     runs-on: ubuntu-latest
 
     permissions:
@@ -27,12 +27,13 @@ jobs:
       - uses: ./.github/actions/setup-gradle
 
       - id: op-secrets
-        uses: 1password/load-secrets-action/configure@v1
+        uses: 1password/load-secrets-action/configure@v2
         with:
           service-account-token: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
           export-env: false
         env:
           GOOGLE_SERVICES: op://development/google-services-(playground-release)/base64
+          SHOULD_FAILE_NOT_FOUND: op://development/should-fail-not-found/should-fail-not-found
 
       - env:
           GOOGLE_SERVICES: ${{ steps.op-secrets.GOOGLE_SERVICES }}

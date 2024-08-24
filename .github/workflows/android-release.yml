@@ -7,7 +7,7 @@ concurrency:
 
 jobs:
   build:
-    name: Pre Merge Checks
+    name: Assemble Release
     runs-on: ubuntu-latest
 
     steps:
@@ -16,7 +16,7 @@ jobs:
       - uses: ./.github/actions/setup-gradle
 
       - id: op-secrets
-        uses: 1password/load-secrets-action/configure@v1
+        uses: 1password/load-secrets-action/configure@v2
         with:
           service-account-token: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
           export-env: false
