@@ -13,11 +13,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Decrypt Google Services
-        env:
-          GOOGLE_SERVICES_PASSPHRASE: ${{ secrets.google_services_passphrase }}
-        run: find . -type f -name "google-services.aes" -exec sh -c 'openssl aes-256-cbc -md sha256 -d -in "$0" -out "${0%.aes*}.json" -k "${GOOGLE_SERVICES_PASSPHRASE}"' {} \;
-
       - uses: ./.github/actions/setup-gradle
 
       - id: op-secrets
@@ -26,14 +21,17 @@ jobs:
           service-account-token: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
           export-env: false
         env:
+          GOOGLE_SERVICES: op://development/google-services-(playground-release)/base64
           KEYSTORE_BASE64: op://development/playground-keystore/keystore-base64
           KEYSTORE_PASSWORD: op//development/playground-keystore/keystore-password
           KEY_ALIAS: op://development/playground-keystore/key-alias
           KEY_PASSWORD: op://development/playground-keystore/key-password
 
       - env:
+          GOOGLE_SERVICES: ${{ steps.op-secrets.GOOGLE_SERVICES }}
           KEYSTORE_BASE64: ${{ steps.op-secrets.KEYSTORE_BASE64 }}
         run: |
+          echo GOOGLE_SERVICES | base64 --decode > google-services.json
           echo KEYSTORE_BASE64 | base64 --decode > keystore.jks
 
       - id: gradle
@@ -41,8 +39,9 @@ jobs:
           ANDROID_API_KEY: ${{ secrets.ANDROID_API_KEY }}
           BROWSER_API_KEY: ${{ secrets.BROWSER_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          KEY_STORE_FILE: keystore.jks
+          KEY_STORE_PASSWORD: ${{ steps.op-secrets.outputs.KEYSTORE_PASSWORD }}
+          RELEASE_KEY_ALIAS: ${{ steps.op-secrets.outputs.KEY_ALIAS }}
+          RELEASE_KEY_PASSWORD: ${{ steps.op-secrets.outputs.KEY_PASSWORD }}
           SERVER_CLIENT_ID: ${{ secrets.SERVER_CLIENT_ID }}
-
-          RELEASE_STORE_FILE: ${{ op-secrets.outputs.KEYSTORE_FILE }}
-          RELEASE_KEY_ALIAS: ${{ op-secrets.outputs.KEY_ALIAS }}
         run: ./gradlew assembleRelease --console=plain
