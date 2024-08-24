@@ -1,0 +1,48 @@
+name: Distribute Release
+on: [ pull_request ]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Pre Merge Checks
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Decrypt Google Services
+        env:
+          GOOGLE_SERVICES_PASSPHRASE: ${{ secrets.google_services_passphrase }}
+        run: find . -type f -name "google-services.aes" -exec sh -c 'openssl aes-256-cbc -md sha256 -d -in "$0" -out "${0%.aes*}.json" -k "${GOOGLE_SERVICES_PASSPHRASE}"' {} \;
+
+      - uses: ./.github/actions/setup-gradle
+
+      - id: op-secrets
+        uses: 1password/load-secrets-action/configure@v1
+        with:
+          service-account-token: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+          export-env: false
+        env:
+          KEYSTORE_BASE64: op://development/playground-keystore/keystore-base64
+          KEYSTORE_PASSWORD: op//development/playground-keystore/keystore-password
+          KEY_ALIAS: op://development/playground-keystore/key-alias
+          KEY_PASSWORD: op://development/playground-keystore/key-password
+
+      - env:
+          KEYSTORE_BASE64: ${{ op-secrets.KEYSTORE_BASE64 }}
+        run: |
+          echo KEYSTORE_BASE64 | base64 --decode > keystore.jks
+
+      - id: gradle
+        env:
+          ANDROID_API_KEY: ${{ secrets.ANDROID_API_KEY }}
+          BROWSER_API_KEY: ${{ secrets.BROWSER_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SERVER_CLIENT_ID: ${{ secrets.SERVER_CLIENT_ID }}
+
+          RELEASE_STORE_FILE: ${{ op-secrets.outputs.KEYSTORE_FILE }}
+          RELEASE_KEY_ALIAS: ${{ op-secrets.outputs.KEY_ALIAS }}
+        run: ./gradlew assembleRelease --console=plain

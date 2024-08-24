@@ -46,13 +46,13 @@ internal class MainActivity : ComponentActivity() {
         }
 
         setContent {
-            LauncherApp { intent.getStringExtra(it) }
+            LauncherApp()
         }
     }
 }
 
 @Composable
-private fun LauncherApp(context: Context = LocalContext.current, extra: (String) -> String?) {
+private fun LauncherApp(context: Context = LocalContext.current) {
     ProvideHttpClient(
         config = {
             install(DefaultRequest) {
