@@ -33,14 +33,11 @@ jobs:
           export-env: false
         env:
           GOOGLE_SERVICES: op://development/google services/playground release/base64
-          HELLO_WORLD: op://development/hello/world
 
       - env:
           GOOGLE_SERVICES: ${{ steps.op-secrets.GOOGLE_SERVICES }}
-          HELLO_WORLD: ${{ steps.op-secrets.HELLO_WORLD }}
         run: |
           echo $GOOGLE_SERVICES | base64 --decode > google-services.json
-          echo "${#HELLO_WORLD} : $HELLO_WORLD"
 
       - id: gradle
         env:

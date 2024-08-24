@@ -21,6 +21,7 @@ jobs:
           service-account-token: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
           export-env: false
         env:
+          HELLO_WORLD: op://development/hello/world
           GOOGLE_SERVICES: op://development/google services/playground release/base64
           KEYSTORE_BASE64: op://development/playground keystore/keystore base64
           KEYSTORE_PASSWORD: op//development/playground keystore/keystore password
@@ -28,9 +29,11 @@ jobs:
           KEY_PASSWORD: op://development/playground keystore/key password
 
       - env:
+          HELLO_WORLD: ${{ steps.op-secrets.HELLO_WORLD }}
           GOOGLE_SERVICES: ${{ steps.op-secrets.GOOGLE_SERVICES }}
           KEYSTORE_BASE64: ${{ steps.op-secrets.KEYSTORE_BASE64 }}
         run: |
+          echo "${#HELLO_WORLD} : $HELLO_WORLD"
           echo GOOGLE_SERVICES | base64 --decode > google-services.json
           echo KEYSTORE_BASE64 | base64 --decode > keystore.jks
 
