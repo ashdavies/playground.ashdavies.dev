@@ -18,11 +18,11 @@ android {
     }
 
     val release by signingConfigs.creating {
-        val keyStoreFile by stringProperty { storeFile = rootProject.file(it) }
-        val keyStorePassword by stringProperty { storePassword = it }
+        val keyStoreFile by stringPropertyOrNull { storeFile = it?.let(rootProject::file) }
+        val keyStorePassword by stringPropertyOrNull { storePassword = it }
 
-        val releaseKeyAlias by stringProperty { keyAlias = it }
-        val releaseKeyPassword by stringProperty { keyPassword = it }
+        val releaseKeyAlias by stringPropertyOrNull { keyAlias = it }
+        val releaseKeyPassword by stringPropertyOrNull { keyPassword = it }
     }
 
     buildTypes {
