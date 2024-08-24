@@ -32,9 +32,8 @@ jobs:
           service-account-token: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
           export-env: false
         env:
-          HELLO_WORLD: op://Development/hello/world
-          GOOGLE_SERVICES: op://Development/google-services-(playground-release)/base64
-          SHOULD_FAIL_NOT_FOUND: op://Development/should-fail-not-found/should-fail-not-found
+          GOOGLE_SERVICES: op://development/google services (playground release)/base64
+          HELLO_WORLD: op://development/hello/world
 
       - env:
           GOOGLE_SERVICES: ${{ steps.op-secrets.GOOGLE_SERVICES }}
