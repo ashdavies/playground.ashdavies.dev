@@ -32,7 +32,7 @@ jobs:
           service-account-token: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
           export-env: false
         env:
-          GOOGLE_SERVICES: op://development/google services (playground release)/base64
+          GOOGLE_SERVICES: op://development/google services/playground release/base64
           HELLO_WORLD: op://development/hello/world
 
       - env:
