@@ -33,12 +33,16 @@ public fun Project.booleanProperty(block: (Boolean) -> Unit = { }): ReadOnlyDele
     return readOnlyDelegateProvider { provider, _ -> provider.get().toBoolean().also(block) }
 }
 
-public fun Project.stringPropertyWithTag(action: (String, String) -> Unit): ReadOnlyDelegateProvider<String> {
-    return readOnlyDelegateProvider { provider, tag -> provider.get().also { action(tag, it) } }
+public fun Project.booleanPropertyWithTag(action: (String, Boolean) -> Unit): ReadOnlyDelegateProvider<Boolean> {
+    return readOnlyDelegateProvider { provider, tag -> provider.get().toBoolean().also { action(tag, it) } }
 }
 
 public fun Project.stringProperty(block: (String) -> Unit = { }): ReadOnlyDelegateProvider<String> {
     return readOnlyDelegateProvider { provider, _ -> provider.get().also(block) }
+}
+
+public fun Project.stringPropertyWithTag(action: (String, String) -> Unit): ReadOnlyDelegateProvider<String> {
+    return readOnlyDelegateProvider { provider, tag -> provider.get().also { action(tag, it) } }
 }
 
 public fun Project.stringPropertyOrNull(block: (String?) -> Unit = { }): ReadOnlyDelegateProvider<String?> {
