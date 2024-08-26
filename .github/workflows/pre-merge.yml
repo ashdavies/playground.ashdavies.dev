@@ -35,14 +35,12 @@ jobs:
         with:
           export-env: false
         env:
-          HELLO_WORLD: op://development/hello/world
           GOOGLE_SERVICES: op://development/google services/playground release/base64
 
       - env:
-          HELLO_WORLD: ${{ steps.op-secrets.outputs.HELLO_WORLD }}
           GOOGLE_SERVICES: ${{ steps.op-secrets.outputs.GOOGLE_SERVICES }}
         run: |
-          echo ${#HELLO_WORLD}
+          echo $GOOGLE_SERVICES | base64 --decode > app-launcher/android/google-services.json
           echo $GOOGLE_SERVICES | base64 --decode > conferences-app/google-services.json
 
       - id: gradle
