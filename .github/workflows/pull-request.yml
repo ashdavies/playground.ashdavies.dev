@@ -17,8 +17,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - id: setup-cloud
-        uses: ./.github/actions/setup-cloud
+      - uses: ./.github/actions/setup-cloud
         with:
           workload_identity_provider: ${{ secrets.GOOGLE_WORKLOAD_IDENTITY }}
           service_account: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
