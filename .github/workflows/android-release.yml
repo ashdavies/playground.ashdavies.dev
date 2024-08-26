@@ -10,6 +10,10 @@ jobs:
     name: Assemble Release
     runs-on: ubuntu-latest
 
+    permissions:
+      pull-requests: 'write'
+      id-token: 'write'
+
     steps:
       - uses: actions/checkout@v3
 
