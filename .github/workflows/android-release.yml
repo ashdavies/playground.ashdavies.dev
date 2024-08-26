@@ -34,15 +34,15 @@ jobs:
         with:
           export-env: false
         env:
-          GOOGLE_SERVICES: "op://development/google services/playground release/base64"
-          KEYSTORE_BASE64: "op://development/playground keystore/keystore base64"
-          KEYSTORE_PASSWORD: "op://development/playground keystore/keystore password"
-          KEY_ALIAS: "op://development/playground keystore/key alias"
-          KEY_PASSWORD: "op://development/playground keystore/key password"
+          GOOGLE_SERVICES: op://development/google services/playground release/base64
+          KEYSTORE_BASE64: op://development/playground keystore/keystore base64
+          KEYSTORE_PASSWORD: op://development/playground keystore/keystore password
+          KEY_ALIAS: op://development/playground keystore/key alias
+          KEY_PASSWORD: op://development/playground keystore/key password
 
       - env:
-          GOOGLE_SERVICES: ${{ steps.op-secrets.GOOGLE_SERVICES }}
-          KEYSTORE_BASE64: ${{ steps.op-secrets.KEYSTORE_BASE64 }}
+          GOOGLE_SERVICES: ${{ steps.op-secrets.outputs.GOOGLE_SERVICES }}
+          KEYSTORE_BASE64: ${{ steps.op-secrets.outputs.KEYSTORE_BASE64 }}
         run: |
           echo $GOOGLE_SERVICES | base64 --decode > app-launcher/android/google-services.json
           echo $GOOGLE_SERVICES | base64 --decode > conferences-app/google-services.json
