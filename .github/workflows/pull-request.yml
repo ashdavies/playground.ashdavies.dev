@@ -26,18 +26,22 @@ jobs:
 
       - uses: ./.github/actions/setup-gradle
 
-      - id: op-secrets
-        uses: 1password/load-secrets-action/configure@v2
+      - uses: 1password/load-secrets-action/configure@v2
         with:
           service-account-token: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+
+      - id: op-secrets
+        uses: 1password/load-secrets-action@v2
+        with:
           export-env: false
         env:
           GOOGLE_SERVICES: op://development/google services/playground release/base64
 
       - env:
-          GOOGLE_SERVICES: ${{ steps.op-secrets.GOOGLE_SERVICES }}
+          GOOGLE_SERVICES: ${{ steps.op-secrets.outputs.GOOGLE_SERVICES }}
         run: |
-          echo $GOOGLE_SERVICES | base64 --decode > google-services.json
+          echo $GOOGLE_SERVICES | base64 --decode > app-launcher/android/google-services.json
+          echo $GOOGLE_SERVICES | base64 --decode > conferences-app/google-services.json
 
       - id: gradle
         env:

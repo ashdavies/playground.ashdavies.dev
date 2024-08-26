@@ -11,7 +11,7 @@ google-accompanist = "0.34.0"
 google-android = "8.5.2"
 google-maps-compose = "4.3.2"
 google-services = "4.4.2"
-jetbrains-kotlin = "2.0.10"
+jetbrains-kotlin = "2.0.20"
 kotlin-jvmTarget = "17"
 kotlinx-coroutines = "1.8.1"
 kotlinx-serialization = "1.7.1"
@@ -55,7 +55,7 @@ google-cloud-bom = "com.google.cloud:libraries-bom:26.44.0"
 google-cloud-firestore = { module = "com.google.cloud:google-cloud-firestore" }
 
 google-firebase-admin = "com.google.firebase:firebase-admin:9.3.0"
-google-firebase-bom = "com.google.firebase:firebase-bom:33.1.2"
+google-firebase-bom = "com.google.firebase:firebase-bom:33.2.0"
 google-firebase-appcheck-playintegrity = { module = "com.google.firebase:firebase-appcheck-playintegrity" }
 
 google-guava-jre = "com.google.guava:guava:33.3.0-jre"
@@ -70,7 +70,7 @@ kotlinx-coroutines-play-services = { module = "org.jetbrains.kotlinx:kotlinx-cor
 kotlinx-coroutines-swing = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-swing", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinx-coroutines" }
 
-kotlinx-datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.6.0"
+kotlinx-datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.6.1"
 
 kotlinx-serialization-core = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version.ref = "kotlinx-serialization" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
@@ -130,4 +130,4 @@ kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref 
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "jetbrains-kotlin" }
 kotlinx-kover = "org.jetbrains.kotlinx.kover:0.8.3"
 ktlint = "org.jlleitschuh.gradle.ktlint:12.1.1"
-openapi-generator = "org.openapi.generator:7.7.0"
+openapi-generator = "org.openapi.generator:7.8.0"
