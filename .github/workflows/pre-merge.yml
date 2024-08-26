@@ -27,8 +27,9 @@ jobs:
       - uses: ./.github/actions/setup-gradle
 
       - id: op-secrets
-        uses: 1password/load-secrets-action/configure@v2
+        uses: 1password/load-secrets-action@v2
         with:
+          service-account-token: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
           export-env: false
         env:
           GOOGLE_SERVICES: op://development/google services/playground release/base64
