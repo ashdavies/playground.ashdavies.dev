@@ -35,8 +35,8 @@ jobs:
         with:
           export-env: false
         env:
-          HELLO_WORLD: op://development/hello/world
-          GOOGLE_SERVICES: op://development/google services/playground release/base64
+          HELLO_WORLD: "op://development/hello/world"
+          GOOGLE_SERVICES: "op://development/google services/playground release/base64"
 
       - env:
           HELLO_WORLD: ${{ steps.op-secrets.HELLO_WORLD }}
