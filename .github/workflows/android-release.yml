@@ -59,3 +59,9 @@ jobs:
           RELEASE_KEY_PASSWORD: ${{ steps.op-secrets.outputs.KEY_PASSWORD }}
           SERVER_CLIENT_ID: ${{ secrets.SERVER_CLIENT_ID }}
         run: ./gradlew assembleRelease --console=plain
+
+      - uses: actions/upload-artifact@v2
+        with:
+          if-no-files-found: error
+          name: apk-release
+          path: "**/*-release/*.apk"

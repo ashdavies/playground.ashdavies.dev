@@ -18,11 +18,20 @@ android {
     }
 
     val release by signingConfigs.creating {
-        val keyStoreFile by stringPropertyOrNull { storeFile = it?.let(rootProject::file) }
-        val keyStorePassword by stringPropertyOrNull { storePassword = it }
+        val keyStoreFile by stringPropertyOrNull()
+        storeFile = keyStoreFile?.let(rootProject::file)
 
-        val releaseKeyAlias by stringPropertyOrNull { keyAlias = it }
-        val releaseKeyPassword by stringPropertyOrNull { keyPassword = it }
+        val keyStorePassword by stringPropertyOrNull()
+        storePassword = keyStorePassword
+
+        val releaseKeyAlias by stringPropertyOrNull()
+        keyAlias = releaseKeyAlias
+
+        val releaseKeyPassword by stringPropertyOrNull()
+        keyPassword = releaseKeyPassword
+
+        enableV3Signing = true
+        enableV4Signing = true
     }
 
     buildTypes {
@@ -38,7 +47,7 @@ android {
 
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                "proguard-rules.pro",
             )
         }
     }
