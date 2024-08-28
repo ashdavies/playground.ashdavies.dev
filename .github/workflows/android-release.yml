@@ -1,5 +1,24 @@
 name: Android Release
-on: [ pull_request ]
+
+on:
+  push:
+    branches:
+      - main
+
+  workflow_dispatch:
+    inputs:
+      log_level:
+        type: choice
+        description: Log Level
+        required: false
+        default: info
+        options:
+          - error
+          - quiet
+          - warning
+          - lifecycle
+          - info
+          - debug
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
