@@ -18,20 +18,27 @@ android {
     }
 
     val release by signingConfigs.creating {
-        val keyStoreFile by stringPropertyOrNull()
-        storeFile = keyStoreFile?.let(rootProject::file)
-
-        val keyStorePassword by stringPropertyOrNull()
-        storePassword = keyStorePassword
-
-        val releaseKeyAlias by stringPropertyOrNull()
-        keyAlias = releaseKeyAlias
-
-        val releaseKeyPassword by stringPropertyOrNull()
-        keyPassword = releaseKeyPassword
+        val debug by signingConfigs.getting
+        initWith(debug)
 
         enableV3Signing = true
         enableV4Signing = true
+
+        val keyStoreFile by stringPropertyOrNull {
+            if (it != null) storeFile = rootProject.file(it)
+        }
+
+        val keyStorePassword by stringPropertyOrNull {
+            if (it != null) storePassword = it
+        }
+
+        val releaseKeyAlias by stringPropertyOrNull {
+            if (it != null) keyAlias = it
+        }
+
+        val releaseKeyPassword by stringPropertyOrNull {
+            if (it != null) keyPassword = it
+        }
     }
 
     buildTypes {
