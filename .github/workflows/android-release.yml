@@ -79,7 +79,7 @@ jobs:
           SERVER_CLIENT_ID: ${{ secrets.SERVER_CLIENT_ID }}
         run: ./gradlew assembleRelease --console=plain
 
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v4
         with:
           if-no-files-found: error
           name: apk-release
