@@ -51,7 +51,7 @@ google-android-location = "com.google.android.gms:play-services-location:21.3.0"
 google-android-material = "com.google.android.material:material:1.12.0"
 
 google-auth-http = "com.google.auth:google-auth-library-oauth2-http:1.24.1"
-google-cloud-bom = "com.google.cloud:libraries-bom:26.44.0"
+google-cloud-bom = "com.google.cloud:libraries-bom:26.45.0"
 google-cloud-firestore = { module = "com.google.cloud:google-cloud-firestore" }
 
 google-firebase-admin = "com.google.firebase:firebase-admin:9.3.0"
@@ -121,7 +121,7 @@ android-library = { id = "com.android.library", version.ref = "google-android" }
 build-config = "com.github.gmazzo.buildconfig:5.4.0"
 cash-sqldelight = { id = "app.cash.sqldelight", version.ref = "cash-sqldelight" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "jetbrains-kotlin" }
-dependency-analysis = "com.autonomousapps.dependency-analysis:1.33.0"
+dependency-analysis = "com.autonomousapps.dependency-analysis:2.0.0"
 detekt = "io.gitlab.arturbosch.detekt:1.23.6"
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
 gradle-doctor = "com.osacky.doctor:0.10.0"
