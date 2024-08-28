@@ -1,0 +1,63 @@
+name: Pull Request
+on: [ pull_request ]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+
+    permissions:
+      pull-requests: 'write'
+      id-token: 'write'
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: ./.github/actions/setup-cloud
+        with:
+          workload_identity_provider: ${{ secrets.GOOGLE_WORKLOAD_IDENTITY }}
+          service_account: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
+          setup_gcloud: false
+
+      - uses: ./.github/actions/setup-gradle
+
+      - uses: 1password/load-secrets-action/configure@v2
+        with:
+          service-account-token: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+
+      - id: op-secrets
+        uses: 1password/load-secrets-action@v2
+        with:
+          export-env: false
+        env:
+          GOOGLE_SERVICES: op://development/google services/playground release/base64
+
+      - env:
+          GOOGLE_SERVICES: ${{ steps.op-secrets.outputs.GOOGLE_SERVICES }}
+        run: |
+          echo $GOOGLE_SERVICES | base64 --decode > app-launcher/android/google-services.json
+          echo $GOOGLE_SERVICES | base64 --decode > conferences-app/google-services.json
+
+      - id: gradle
+        env:
+          ANDROID_API_KEY: ${{ secrets.ANDROID_API_KEY }}
+          BROWSER_API_KEY: ${{ secrets.BROWSER_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SERVER_CLIENT_ID: ${{ secrets.SERVER_CLIENT_ID }}
+        run: ./gradlew build --console=plain
+
+      - name: Gradle Scan Link
+        uses: ./.github/actions/pull-comment
+        if: ${{ steps.gradle.outputs.build-scan-url }}
+        with:
+          message: "Build scan published to ${{ steps.gradle.outputs.build-scan-url }}"
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag: build-scan-url
+
+      - uses: test-summary/action@v2
+        with:
+          paths: "**/build/test-results/test/TEST-*.xml"

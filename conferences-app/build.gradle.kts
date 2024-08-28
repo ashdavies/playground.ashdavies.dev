@@ -17,6 +17,48 @@ android {
         res.srcDirs("src/androidMain/res")
     }
 
+    val release by signingConfigs.creating {
+        val debug by signingConfigs.getting
+        initWith(debug)
+
+        enableV3Signing = true
+        enableV4Signing = true
+
+        val keyStoreFile by stringPropertyOrNull {
+            if (it != null) storeFile = rootProject.file(it)
+        }
+
+        val keyStorePassword by stringPropertyOrNull {
+            if (it != null) storePassword = it
+        }
+
+        val releaseKeyAlias by stringPropertyOrNull {
+            if (it != null) keyAlias = it
+        }
+
+        val releaseKeyPassword by stringPropertyOrNull {
+            if (it != null) keyPassword = it
+        }
+    }
+
+    buildTypes {
+        debug {
+            applicationIdSuffix = ".debug"
+        }
+
+        release {
+            isMinifyEnabled = true
+            isShrinkResources = true
+
+            signingConfig = release
+
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro",
+            )
+        }
+    }
+
     defaultConfig {
         versionName = "1.0"
         versionCode = 1
@@ -26,13 +68,8 @@ android {
 }
 
 buildConfig {
-    val androidApiKey by stringProperty { value ->
-        buildConfigField("ANDROID_API_KEY", value)
-    }
-
-    val androidStrictMode by booleanProperty { value ->
-        buildConfigField("ANDROID_STRICT_MODE", value)
-    }
+    val androidApiKey by stringPropertyWithTag(::buildConfigField)
+    val androidStrictMode by booleanPropertyWithTag(::buildConfigField)
 
     packageName.set(android.namespace)
 }

@@ -1,5 +1,24 @@
-name: Pre Merge Checks
-on: [ pull_request ]
+name: Android Release
+
+on:
+  push:
+    branches:
+      - main
+
+  workflow_dispatch:
+    inputs:
+      log_level:
+        type: choice
+        description: Log Level
+        required: false
+        default: info
+        options:
+          - error
+          - quiet
+          - warning
+          - lifecycle
+          - info
+          - debug
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
@@ -7,7 +26,7 @@ concurrency:
 
 jobs:
   build:
-    name: Pre Merge Checks
+    name: Assemble Release
     runs-on: ubuntu-latest
 
     permissions:
@@ -17,8 +36,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - id: setup-cloud
-        uses: ./.github/actions/setup-cloud
+      - uses: ./.github/actions/setup-cloud
         with:
           workload_identity_provider: ${{ secrets.GOOGLE_WORKLOAD_IDENTITY }}
           service_account: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
@@ -36,29 +54,33 @@ jobs:
           export-env: false
         env:
           GOOGLE_SERVICES: op://development/google services/playground release/base64
+          KEYSTORE_BASE64: op://development/playground keystore/keystore base64
+          KEYSTORE_PASSWORD: op://development/playground keystore/keystore password
+          KEY_ALIAS: op://development/playground keystore/key alias
+          KEY_PASSWORD: op://development/playground keystore/key password
 
       - env:
           GOOGLE_SERVICES: ${{ steps.op-secrets.outputs.GOOGLE_SERVICES }}
+          KEYSTORE_BASE64: ${{ steps.op-secrets.outputs.KEYSTORE_BASE64 }}
         run: |
           echo $GOOGLE_SERVICES | base64 --decode > app-launcher/android/google-services.json
           echo $GOOGLE_SERVICES | base64 --decode > conferences-app/google-services.json
+          echo $KEYSTORE_BASE64 | base64 --decode > keystore.jks
 
       - id: gradle
         env:
           ANDROID_API_KEY: ${{ secrets.ANDROID_API_KEY }}
           BROWSER_API_KEY: ${{ secrets.BROWSER_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          KEY_STORE_FILE: keystore.jks
+          KEY_STORE_PASSWORD: ${{ steps.op-secrets.outputs.KEYSTORE_PASSWORD }}
+          RELEASE_KEY_ALIAS: ${{ steps.op-secrets.outputs.KEY_ALIAS }}
+          RELEASE_KEY_PASSWORD: ${{ steps.op-secrets.outputs.KEY_PASSWORD }}
           SERVER_CLIENT_ID: ${{ secrets.SERVER_CLIENT_ID }}
-        run: ./gradlew build --console=plain
+        run: ./gradlew assembleRelease --console=plain
 
-      - name: Gradle Scan Link
-        uses: ./.github/actions/pull-comment
-        if: ${{ steps.gradle.outputs.build-scan-url }}
+      - uses: actions/upload-artifact@v2
         with:
-          message: "Build scan published to ${{ steps.gradle.outputs.build-scan-url }}"
-          token: ${{ secrets.GITHUB_TOKEN }}
-          tag: build-scan-url
-
-      - uses: test-summary/action@v2
-        with:
-          paths: "**/build/test-results/test/TEST-*.xml"
+          if-no-files-found: error
+          name: apk-release
+          path: "**/*-release.apk"
