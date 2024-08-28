@@ -64,4 +64,4 @@ jobs:
         with:
           if-no-files-found: error
           name: apk-release
-          path: "**/*-release/*.apk"
+          path: "**/*-release.apk"
