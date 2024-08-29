@@ -59,9 +59,17 @@ android {
         }
     }
 
+    compileOptions {
+        isCoreLibraryDesugaringEnabled = true
+    }
+
     defaultConfig {
         versionName = "1.0"
         versionCode = 1
+    }
+
+    dependencies {
+        coreLibraryDesugaring(libs.android.tools.desugarjdk)
     }
 
     namespace = "io.ashdavies.playground"

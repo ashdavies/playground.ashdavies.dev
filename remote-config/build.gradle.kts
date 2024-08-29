@@ -3,6 +3,14 @@ plugins {
 }
 
 android {
+    compileOptions {
+        isCoreLibraryDesugaringEnabled = true
+    }
+
+    dependencies {
+        coreLibraryDesugaring(libs.android.tools.desugarjdk)
+    }
+
     namespace = "io.ashdavies.config"
 }
 
