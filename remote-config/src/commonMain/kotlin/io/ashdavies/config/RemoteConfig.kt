@@ -5,6 +5,7 @@ import com.google.firebase.remoteconfig.ConfigUpdateListener
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigException
 import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.remoteconfig.FirebaseRemoteConfigValue
+import dev.gitlive.firebase.remoteconfig.android
 import dev.gitlive.firebase.remoteconfig.get
 import dev.gitlive.firebase.remoteconfig.remoteConfig
 
