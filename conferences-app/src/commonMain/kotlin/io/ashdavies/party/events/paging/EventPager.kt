@@ -63,8 +63,10 @@ private fun rememberUpcomingEventsCallable(
     val asgCallable by lazy { UpcomingConferencesCallable(httpClient) }
 
     return PagedUpcomingEventsCallable { request ->
-        if (remoteConfig.isPagingEnabled()) pagedCallable(request)
-        else asgCallable(Unit).map(AsgConference::toEvent)
+        when {
+            remoteConfig.isPagingEnabled() -> pagedCallable(request)
+            else -> asgCallable(Unit).map(AsgConference::toEvent)
+        }
     }
 }
 
