@@ -1,9 +1,13 @@
-package io.ashdavies.party.events
+package io.ashdavies.party.events.paging
 
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
+import io.ashdavies.party.events.EventsQueries
+import io.ashdavies.party.events.callable.GetEventsError
+import io.ashdavies.party.events.callable.GetEventsRequest
+import io.ashdavies.party.events.callable.PagedUpcomingEventsCallable
 import io.ktor.client.network.sockets.SocketTimeoutException
 import io.ashdavies.http.common.models.Event as ApiEvent
 import io.ashdavies.party.events.Event as DatabaseEvent
@@ -11,7 +15,7 @@ import io.ashdavies.party.events.Event as DatabaseEvent
 @OptIn(ExperimentalPagingApi::class)
 internal class EventsRemoteMediator(
     private val eventsQueries: EventsQueries,
-    private val eventsCallable: UpcomingEventsCallable,
+    private val eventsCallable: PagedUpcomingEventsCallable,
     private val onInvalidate: () -> Unit,
 ) : RemoteMediator<String, DatabaseEvent>() {
 
@@ -50,7 +54,7 @@ private fun endOfPaginationReached(): RemoteMediator.MediatorResult {
     return RemoteMediator.MediatorResult.Success(endOfPaginationReached = true)
 }
 
-private suspend fun UpcomingEventsCallable.result(
+private suspend fun PagedUpcomingEventsCallable.result(
     request: GetEventsRequest,
 ): CallableResult<List<ApiEvent>> = try {
     CallableResult.Success(invoke(request))

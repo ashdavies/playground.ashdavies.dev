@@ -87,6 +87,7 @@ kotlin {
         commonMain.dependencies {
             implementation(projects.analytics)
             implementation(projects.appCheck.appCheckClient)
+            implementation(projects.asgService)
             implementation(projects.circuitSupport)
             implementation(projects.composeMaterial)
             implementation(projects.httpClient)
@@ -116,6 +117,7 @@ kotlin {
             implementation(libs.kotlinx.collections.immutable)
             implementation(libs.kotlinx.datetime)
             implementation(libs.kotlinx.serialization.core)
+            implementation(libs.kotlinx.serialization.json)
             implementation(libs.ktor.client.core)
             implementation(libs.ktor.client.mock)
             implementation(libs.ktor.http)
