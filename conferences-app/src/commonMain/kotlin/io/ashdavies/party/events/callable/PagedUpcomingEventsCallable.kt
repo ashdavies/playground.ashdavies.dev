@@ -1,4 +1,4 @@
-package io.ashdavies.party.events
+package io.ashdavies.party.events.callable
 
 import io.ashdavies.http.UnaryCallable
 import io.ashdavies.http.throwClientRequestExceptionAs
@@ -11,18 +11,19 @@ import io.ashdavies.http.common.models.Event as ApiEvent
 
 private const val NETWORK_PAGE_SIZE = 100
 
+internal fun interface PagedUpcomingEventsCallable : UnaryCallable<GetEventsRequest, List<ApiEvent>>
+
 @Serializable
 internal data class GetEventsRequest(
     val startAt: String? = null,
     val limit: Int = NETWORK_PAGE_SIZE,
 )
 
-internal class UpcomingEventsCallable(
+internal fun PagedUpcomingEventsCallable(
     httpClient: HttpClient,
-    private val baseUrl: String,
-) : UnaryCallable<GetEventsRequest, List<ApiEvent>> {
-
-    private val httpClient = httpClient.config {
+    baseUrl: String,
+): PagedUpcomingEventsCallable {
+    val errorHandlingHttpClient = httpClient.config {
         install(HttpCallValidator) {
             throwClientRequestExceptionAs<GetEventsError>()
         }
@@ -30,13 +31,13 @@ internal class UpcomingEventsCallable(
         expectSuccess = true
     }
 
-    override suspend fun invoke(request: GetEventsRequest): List<ApiEvent> {
+    return PagedUpcomingEventsCallable { request ->
         val queryAsString = buildList {
             if (request.startAt != null) add("startAt=${request.startAt}")
             add("limit=${request.limit}")
         }.joinToString("&")
 
-        return httpClient
+        errorHandlingHttpClient
             .get("https://$baseUrl/events/upcoming?$queryAsString")
             .body()
     }

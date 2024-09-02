@@ -6,12 +6,13 @@ import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
 
-internal class PastConferencesCallable(
-    private val httpClient: HttpClient,
-    private val baseUrl: String,
-) : UnaryCallable<Unit, List<AsgConference>> {
+internal fun interface PastConferencesCallable : UnaryCallable<Unit, List<AsgConference>>
 
-    override suspend fun invoke(request: Unit): List<AsgConference> = httpClient
+internal fun PastConferencesCallable(
+    httpClient: HttpClient,
+    baseUrl: String,
+) = PastConferencesCallable { _ ->
+    httpClient
         .get("https://$baseUrl/conferences/past.json")
         .body()
 }

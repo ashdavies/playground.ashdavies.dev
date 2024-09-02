@@ -19,3 +19,7 @@ public fun AsgService(httpClient: HttpClient): AsgService = object : AsgService 
         return combined.map(transform)
     }
 }
+
+public fun UpcomingConferencesCallable(httpClient: HttpClient): UpcomingConferencesCallable {
+    return UpcomingConferencesCallable(httpClient, ASG_BASE_URL)
+}
