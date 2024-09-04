@@ -28,9 +28,6 @@ import kotlinx.coroutines.cancel
 import kotlin.coroutines.CoroutineContext
 import io.ashdavies.party.events.Event as DatabaseEvent
 
-private const val PLAYGROUND_BASE_URL = "playground.ashdavies.dev"
-private const val DEFAULT_PAGE_SIZE = 10
-
 private const val COROUTINE_SCOPE = "COROUTINE_SCOPE"
 
 @Composable
@@ -64,7 +61,6 @@ public fun rememberCircuit(
         }
         .build()
 }
-
 
 @Stable
 private class StableCoroutineScope(scope: CoroutineScope) : CoroutineScope by scope
