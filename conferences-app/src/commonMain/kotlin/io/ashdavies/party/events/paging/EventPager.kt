@@ -29,7 +29,7 @@ private const val DEFAULT_PAGE_SIZE = 10
 private suspend fun RemoteConfig.isPagingEnabled() = getBoolean("paging_enabled")
 
 @Composable
-@ExperimentalPagingApi
+@OptIn(ExperimentalPagingApi::class)
 internal fun rememberEventPager(
     eventsQueries: EventsQueries = rememberLocalQueries { it.eventsQueries },
     eventsCallable: PagedUpcomingEventsCallable = rememberUpcomingEventsCallable(),

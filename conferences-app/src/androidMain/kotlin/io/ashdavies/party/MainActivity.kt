@@ -8,11 +8,9 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.pm.PackageInfoCompat
 import com.slack.circuit.backstack.rememberSaveableBackStack
-import com.slack.circuit.foundation.Circuit
 import com.slack.circuit.foundation.CircuitCompositionLocals
 import com.slack.circuit.foundation.NavigableCircuitContent
 import com.slack.circuit.foundation.rememberCircuitNavigator
@@ -24,7 +22,7 @@ import io.ashdavies.http.ProvideHttpClient
 import io.ashdavies.http.publicStorage
 import io.ashdavies.io.resolveCacheDir
 import io.ashdavies.material.dynamicColorScheme
-import io.ashdavies.party.config.Circuit
+import io.ashdavies.party.config.rememberCircuit
 import io.ashdavies.party.home.HomeScreen
 import io.ashdavies.playground.BuildConfig
 import io.ashdavies.playground.PlaygroundDatabase
@@ -67,7 +65,7 @@ private fun LauncherApp(context: Context = LocalContext.current) {
             }
         },
     ) {
-        CircuitCompositionLocals(remember<Circuit> { Circuit(context) }) {
+        CircuitCompositionLocals(rememberCircuit(context)) {
             ContentWithOverlays {
                 ProvideAppCheckToken {
                     val transacter = rememberTransacter(
