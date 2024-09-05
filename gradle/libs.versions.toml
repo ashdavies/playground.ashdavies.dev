@@ -21,7 +21,7 @@ slack-circuit = "0.23.1"
 
 [libraries]
 ajalt-clikt = "com.github.ajalt.clikt:clikt:4.4.0"
-android-tools-desugarjdk = "com.android.tools:desugar_jdk_libs:2.1.1"
+android-tools-desugarjdk = "com.android.tools:desugar_jdk_libs:2.1.2"
 
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity" }
 androidx-annotation = "androidx.annotation:annotation:1.8.2"
