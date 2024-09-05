@@ -1,22 +1,18 @@
 package io.ashdavies.routes
 
 import androidx.compose.runtime.remember
-import com.slack.circuit.runtime.presenter.Presenter
-import com.slack.circuit.runtime.ui.Ui
-import io.ashdavies.circuit.presenterFactoryOf
-import io.ashdavies.circuit.uiFactoryOf
+import com.slack.circuit.foundation.Circuit
+import com.slack.circuit.runtime.presenter.presenterOf
 import io.ashdavies.content.PlatformContext
-import io.ashdavies.content.reportFullyDrawn
 
-public fun routePresenterFactory(context: PlatformContext): Presenter.Factory {
-    return presenterFactoryOf<RouteScreen> { _, _ ->
-        RoutePresenter(remember(context) { LocationService(context) })
+public fun Circuit.Builder.addRoutePresenter(context: PlatformContext): Circuit.Builder {
+    return addPresenter<RouteScreen, RouteScreen.State> { _, _, _ ->
+        presenterOf { RoutePresenter(remember(context) { LocationService(context) }) }
     }
 }
 
-public fun routeUiFactory(context: PlatformContext): Ui.Factory {
-    return uiFactoryOf<RouteScreen, RouteScreen.State> { _, state, modifier ->
+public fun Circuit.Builder.addRouteUi(): Circuit.Builder {
+    return addUi<RouteScreen, RouteScreen.State> { state, modifier ->
         RouteScreen(state, modifier) { state.eventSink(RouteScreen.Event.OnEndPosition(it)) }
-        context.reportFullyDrawn()
     }
 }

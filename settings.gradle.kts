@@ -57,7 +57,6 @@ include(
     ":app-launcher:common",
     ":app-launcher:desktop",
     ":asg-service",
-    ":circuit-support",
     ":cloud-run",
     ":compose-material",
     ":conferences-app",

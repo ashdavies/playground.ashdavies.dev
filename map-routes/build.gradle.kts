@@ -28,11 +28,9 @@ buildConfig {
 kotlin {
     sourceSets {
         commonMain.dependencies {
-            implementation(projects.circuitSupport)
             implementation(projects.httpClient)
             implementation(projects.httpCommon)
             implementation(projects.mapsRouting)
-            implementation(projects.platformScaffold)
             implementation(projects.platformSupport)
 
             implementation(compose.material3)

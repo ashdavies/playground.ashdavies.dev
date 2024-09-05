@@ -18,6 +18,7 @@ import androidx.compose.material3.TopAppBarDefaults.enterAlwaysScrollBehavior
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
@@ -62,6 +63,7 @@ internal object HomeScreen : Parcelable, Screen {
 internal fun HomeScreen(
     state: HomeScreen.State,
     modifier: Modifier = Modifier,
+    onFullyDrawn: () -> Unit,
 ) {
     val isProfileEnabled by booleanConfigAsState { isProfileEnabled() }
     val isHomeEnabled by booleanConfigAsState { isHomeEnabled() }
@@ -102,6 +104,10 @@ internal fun HomeScreen(
                 eventSink(HomeScreen.Event.ChildNav(event))
             },
         )
+    }
+
+    LaunchedEffect(Unit) {
+        onFullyDrawn()
     }
 }
 

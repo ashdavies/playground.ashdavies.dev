@@ -65,16 +65,16 @@ private fun LauncherApp(context: Context = LocalContext.current) {
             }
         },
     ) {
-        CircuitCompositionLocals(rememberCircuit(context)) {
-            ContentWithOverlays {
-                ProvideAppCheckToken {
-                    val transacter = rememberTransacter(
-                        schema = PlaygroundDatabase.Schema,
-                        context = context,
-                    ) { PlaygroundDatabase(it) }
+        ProvideAppCheckToken {
+            val transacter = rememberTransacter(
+                schema = PlaygroundDatabase.Schema,
+                context = context,
+            ) { PlaygroundDatabase(it) }
 
-                    ProvideTransacter(transacter) {
-                        MaterialTheme(dynamicColorScheme()) {
+            ProvideTransacter(transacter) {
+                MaterialTheme(dynamicColorScheme()) {
+                    CircuitCompositionLocals(rememberCircuit(context)) {
+                        ContentWithOverlays {
                             val backStack = rememberSaveableBackStack(HomeScreen)
 
                             NavigableCircuitContent(

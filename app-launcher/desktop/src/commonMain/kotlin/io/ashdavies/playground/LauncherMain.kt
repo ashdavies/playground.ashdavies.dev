@@ -1,7 +1,6 @@
 package io.ashdavies.playground
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
@@ -37,18 +36,18 @@ private class LauncherCommand : CliktCommand() {
 
 @Composable
 internal fun LauncherApp(route: String?, onClose: () -> Unit) {
-    val circuit = remember { Circuit(PlatformContext.Default) }
+    ProvideHttpClient(
+        config = {
+            install(DefaultRequest) {
+                header("User-Agent", System.getProperty("os.name"))
+                header("X-API-Key", BuildConfig.BROWSER_API_KEY)
+            }
+        },
+    ) {
+        LauncherContent(PlatformContext.Default) {
+            val circuit = rememberCircuit(PlatformContext.Default)
 
-    CircuitCompositionLocals(circuit) {
-        ProvideHttpClient(
-            config = {
-                install(DefaultRequest) {
-                    header("User-Agent", System.getProperty("os.name"))
-                    header("X-API-Key", BuildConfig.BROWSER_API_KEY)
-                }
-            },
-        ) {
-            LauncherContent(PlatformContext.Default) {
+            CircuitCompositionLocals(circuit) {
                 val backStack = rememberSaveableBackStack(route)
 
                 NavigableCircuitContent(

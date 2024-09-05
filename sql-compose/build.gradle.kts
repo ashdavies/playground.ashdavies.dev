@@ -10,7 +10,6 @@ android {
 kotlin {
     sourceSets {
         commonMain.dependencies {
-            implementation(projects.platformScaffold)
             implementation(projects.platformSupport)
             implementation(projects.sqlDriver)
 
