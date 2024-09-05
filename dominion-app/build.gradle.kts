@@ -15,7 +15,6 @@ kotlin {
         implementation(projects.analytics)
         implementation(projects.httpClient)
         implementation(projects.pagingCompose)
-        implementation(projects.platformScaffold)
         implementation(projects.platformSupport)
         implementation(projects.sqlCommon)
         implementation(projects.sqlCompose)

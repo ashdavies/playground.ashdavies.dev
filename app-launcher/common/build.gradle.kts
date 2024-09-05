@@ -24,6 +24,7 @@ kotlin {
             implementation(projects.httpClient)
             implementation(projects.identityManager)
             implementation(projects.mapRoutes)
+            implementation(projects.platformScaffold)
             implementation(projects.platformSupport)
             implementation(projects.sqlCompose)
             implementation(projects.sqlDriver)

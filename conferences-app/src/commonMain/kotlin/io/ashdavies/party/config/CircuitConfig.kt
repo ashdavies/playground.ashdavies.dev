@@ -6,6 +6,7 @@ import androidx.paging.Pager
 import com.slack.circuit.foundation.Circuit
 import com.slack.circuit.runtime.presenter.presenterOf
 import io.ashdavies.content.PlatformContext
+import io.ashdavies.content.reportFullyDrawn
 import io.ashdavies.identity.IdentityManager
 import io.ashdavies.party.coroutines.rememberRetainedCoroutineScope
 import io.ashdavies.party.events.EventsPresenter
@@ -43,7 +44,7 @@ public fun rememberCircuit(
             presenterOf { GalleryPresenter(platformContext) }
         }
         .addUi<HomeScreen, HomeScreen.State> { state, modifier ->
-            HomeScreen(state, modifier)
+            HomeScreen(state, modifier, platformContext::reportFullyDrawn)
         }
         .addUi<EventsScreen, EventsScreen.State> { state, modifier ->
             EventsScreen(state, modifier)

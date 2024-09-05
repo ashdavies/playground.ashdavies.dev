@@ -6,6 +6,7 @@ import com.slack.circuit.foundation.Circuit
 import com.slack.circuit.runtime.presenter.presenterOf
 import io.ashdavies.common.PlaygroundDatabase
 import io.ashdavies.content.PlatformContext
+import io.ashdavies.content.reportFullyDrawn
 import io.ashdavies.dominion.addDominionBoxSetDetailsPresenter
 import io.ashdavies.dominion.addDominionBoxSetDetailsUi
 import io.ashdavies.dominion.addDominionBoxSetListPresenter
@@ -30,10 +31,10 @@ public fun rememberCircuit(
         .addDominionBoxSetDetailsPresenter(playgroundDatabase, httpClient)
         .addRoutePresenter(platformContext)
         .addUi<LauncherScreen, LauncherScreen.State> { state, modifier ->
-            LauncherScreen(state, modifier)
+            LauncherScreen(state, modifier, platformContext::reportFullyDrawn)
         }
         .addDominionBoxSetListUi()
         .addDominionBoxSetDetailsUi()
-        .addRouteUi(platformContext)
+        .addRouteUi()
         .build()
 }
