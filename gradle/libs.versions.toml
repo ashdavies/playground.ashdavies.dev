@@ -5,7 +5,8 @@ androidx-activity = "1.9.2"
 androidx-paging = "3.3.2"
 cash-sqldelight = "2.0.2"
 coil-kt = "3.0.0-alpha10"
-compose-plugin = "1.6.11"
+compose-adaptive = "1.0.0-alpha02"
+compose-plugin = "1.7.0-beta01"
 gitlive-firebase = "2.1.0"
 google-accompanist = "0.34.0"
 google-android = "8.6.0"
@@ -36,6 +37,9 @@ auth-jwks-rsa = "com.auth0:jwks-rsa:0.22.1"
 
 coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil-kt" }
 coil-network = { module = "io.coil-kt.coil3:coil-network-ktor2", version.ref = "coil-kt" }
+
+compose-adaptive-layout = { module = "org.jetbrains.compose.material3.adaptive:adaptive-layout", version.ref = "compose-adaptive" }
+compose-adaptive-navigation = { module = "org.jetbrains.compose.material3.adaptive:adaptive-navigation", version.ref = "compose-adaptive" }
 
 fasterxml-jackson-core = "com.fasterxml.jackson.core:jackson-core:2.17.2"
 fusesource-jansi = "org.fusesource.jansi:jansi:2.4.1"

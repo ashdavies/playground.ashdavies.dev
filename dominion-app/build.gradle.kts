@@ -25,6 +25,8 @@ kotlin {
 
         implementation(libs.androidx.paging.common)
         implementation(libs.coil.compose)
+        implementation(libs.compose.adaptive.layout)
+        implementation(libs.compose.adaptive.navigation)
         implementation(libs.kotlinx.collections.immutable)
         implementation(libs.kotlinx.serialization.json)
         implementation(libs.ktor.client.core)

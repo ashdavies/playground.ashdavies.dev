@@ -7,10 +7,8 @@ import com.slack.circuit.runtime.presenter.presenterOf
 import io.ashdavies.common.PlaygroundDatabase
 import io.ashdavies.content.PlatformContext
 import io.ashdavies.content.reportFullyDrawn
-import io.ashdavies.dominion.addDominionBoxSetDetailsPresenter
-import io.ashdavies.dominion.addDominionBoxSetDetailsUi
-import io.ashdavies.dominion.addDominionBoxSetListPresenter
-import io.ashdavies.dominion.addDominionBoxSetListUi
+import io.ashdavies.dominion.addDominionUi
+import io.ashdavies.dominion.addDominionPresenter
 import io.ashdavies.http.LocalHttpClient
 import io.ashdavies.routes.addRoutePresenter
 import io.ashdavies.routes.addRouteUi
@@ -27,14 +25,12 @@ public fun rememberCircuit(
         .addPresenter<LauncherScreen, LauncherScreen.State> { _, navigator, _ ->
             presenterOf { LauncherPresenter(navigator) }
         }
-        .addDominionBoxSetListPresenter(playgroundDatabase, httpClient)
-        .addDominionBoxSetDetailsPresenter(playgroundDatabase, httpClient)
+        .addDominionPresenter(playgroundDatabase, httpClient)
         .addRoutePresenter(platformContext)
         .addUi<LauncherScreen, LauncherScreen.State> { state, modifier ->
             LauncherScreen(state, modifier, platformContext::reportFullyDrawn)
         }
-        .addDominionBoxSetListUi()
-        .addDominionBoxSetDetailsUi()
+        .addDominionUi()
         .addRouteUi()
         .build()
 }

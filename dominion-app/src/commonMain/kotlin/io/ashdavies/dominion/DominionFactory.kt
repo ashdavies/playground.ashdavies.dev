@@ -14,7 +14,7 @@ private fun HttpClient.throwDbConnectionError(): HttpClient = config {
     expectSuccess = true
 }
 
-public fun Circuit.Builder.addDominionBoxSetListPresenter(
+public fun Circuit.Builder.addDominionPresenter(
     playgroundDatabase: PlaygroundDatabase,
     httpClient: HttpClient,
 ): Circuit.Builder {
@@ -22,40 +22,19 @@ public fun Circuit.Builder.addDominionBoxSetListPresenter(
     val dbHttpClient = httpClient.throwDbConnectionError()
     val boxSetStore = BoxSetStore(boxSetQueries, dbHttpClient)
 
-    return addPresenter<DominionScreen.BoxSetList, DominionScreen.BoxSetList.State> { _, navigator, _ ->
-        presenterOf { BoxSetListPresenter(navigator, boxSetStore) }
-    }
-}
-
-public fun Circuit.Builder.addDominionBoxSetDetailsPresenter(
-    playgroundDatabase: PlaygroundDatabase,
-    httpClient: HttpClient,
-): Circuit.Builder {
     val cardsStore = CardsStore(
         cardQueries = playgroundDatabase.cardQueries,
-        httpClient = httpClient.throwDbConnectionError(),
+        httpClient = dbHttpClient,
         refresh = true,
     )
 
-    return addPresenter<DominionScreen.BoxSetDetails, DominionScreen.BoxSetDetails.State> { screen, navigator, _ ->
-        val boxSet = playgroundDatabase.boxSetQueries
-            .selectByTitle(screen.title)
-            .executeAsOne()
-
-        presenterOf {
-            DetailsPresenter(navigator, cardsStore, boxSet)
-        }
+    return addPresenter<DominionScreen.AdaptiveList, DominionScreen.AdaptiveList.State> { _, _, _ ->
+        presenterOf { DominionPresenter(boxSetStore, cardsStore) }
     }
 }
 
-public fun Circuit.Builder.addDominionBoxSetListUi(): Circuit.Builder {
-    return addUi<DominionScreen.BoxSetList, DominionScreen.BoxSetList.State> { state, modifier ->
-        BoxSetListScreen(state, modifier)
-    }
-}
-
-public fun Circuit.Builder.addDominionBoxSetDetailsUi(): Circuit.Builder {
-    return addUi<DominionScreen.BoxSetDetails, DominionScreen.BoxSetDetails.State> { state, modifier ->
-        DetailsScreen(state, modifier)
+public fun Circuit.Builder.addDominionUi(): Circuit.Builder {
+    return addUi<DominionScreen.AdaptiveList, DominionScreen.AdaptiveList.State> { state, modifier ->
+        DominionScreen(state, modifier)
     }
 }
