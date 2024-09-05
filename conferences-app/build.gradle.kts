@@ -88,7 +88,6 @@ kotlin {
             implementation(projects.analytics)
             implementation(projects.appCheck.appCheckClient)
             implementation(projects.asgService)
-            implementation(projects.circuitSupport)
             implementation(projects.composeMaterial)
             implementation(projects.httpClient)
             implementation(projects.httpCommon)
@@ -99,7 +98,6 @@ kotlin {
             implementation(projects.platformSupport)
             implementation(projects.remoteConfig)
             implementation(projects.sqlCommon)
-            implementation(projects.remoteConfig)
             implementation(projects.sqlCompose)
             implementation(projects.sqlDriver)
 

@@ -81,24 +81,6 @@ internal suspend fun HttpClient.categoryImages(
         }
 }
 
-internal fun HttpClient.onClientRequestException(
-    block: suspend (HttpResponse) -> Throwable,
-): HttpClient = onException { cause, _ ->
-    if (cause is ClientRequestException) block(cause.response)
-}
-
-private fun HttpClient.onException(
-    block: CallRequestExceptionHandler,
-): HttpClient = config {
-    validateHttpCall { handleResponseExceptionWithRequest(block) }
-}
-
-private fun HttpClientConfig<*>.validateHttpCall(
-    configure: HttpCallValidator.Config.() -> Unit,
-) {
-    install(HttpCallValidator, configure)
-}
-
 @Serializable
 internal data class DbConnectionError(
     val error: Error,

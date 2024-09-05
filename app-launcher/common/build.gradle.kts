@@ -19,9 +19,9 @@ kotlin {
         commonMain.dependencies {
             implementation(projects.analytics)
             implementation(projects.appCheck.appCheckClient)
-            implementation(projects.circuitSupport)
             implementation(projects.composeMaterial)
             implementation(projects.dominionApp)
+            implementation(projects.httpClient)
             implementation(projects.identityManager)
             implementation(projects.mapRoutes)
             implementation(projects.platformSupport)

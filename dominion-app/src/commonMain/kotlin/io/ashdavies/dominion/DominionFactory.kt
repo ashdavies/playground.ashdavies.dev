@@ -1,79 +1,61 @@
 package io.ashdavies.dominion
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
-import com.slack.circuit.runtime.presenter.Presenter
+import com.slack.circuit.foundation.Circuit
 import com.slack.circuit.runtime.presenter.presenterOf
-import com.slack.circuit.runtime.ui.Ui
-import com.slack.circuit.runtime.ui.ui
-import io.ashdavies.http.LocalHttpClient
+import io.ashdavies.http.throwClientRequestExceptionAs
 import io.ktor.client.HttpClient
-import io.ktor.client.call.body
+import io.ktor.client.plugins.HttpCallValidator
 
-public fun dominionPresenterFactory(): Presenter.Factory {
-    return Presenter.Factory { screen, navigator, _ ->
-        when (screen) {
-            is DominionScreen.BoxSetList -> presenterOf {
-                BoxSetListPresenter(
-                    navigator = navigator,
-                    boxSetStore = rememberBoxSetStore(),
-                )
-            }
+private fun HttpClient.throwDbConnectionError(): HttpClient = config {
+    install(HttpCallValidator) {
+        throwClientRequestExceptionAs<DbConnectionError>()
+    }
 
-            is DominionScreen.BoxSetDetails -> presenterOf {
-                val boxSet = rememberLocalQueries { it.boxSetQueries }
-                    .selectByTitle(screen.title)
-                    .executeAsOne()
+    expectSuccess = true
+}
 
-                DetailsPresenter(
-                    navigator = navigator,
-                    cardsStore = rememberCardsStore(),
-                    boxSet = boxSet,
-                )
-            }
+public fun Circuit.Builder.addDominionBoxSetListPresenter(
+    playgroundDatabase: PlaygroundDatabase,
+    httpClient: HttpClient,
+): Circuit.Builder {
+    val boxSetQueries = playgroundDatabase.boxSetQueries
+    val dbHttpClient = httpClient.throwDbConnectionError()
+    val boxSetStore = BoxSetStore(boxSetQueries, dbHttpClient)
 
-            else -> null
-        }
+    return addPresenter<DominionScreen.BoxSetList, DominionScreen.BoxSetList.State> { _, navigator, _ ->
+        presenterOf { BoxSetListPresenter(navigator, boxSetStore) }
     }
 }
 
-public fun dominionUiFactory(): Ui.Factory = Ui.Factory { screen, _ ->
-    when (screen) {
-        is DominionScreen.BoxSetList -> ui<DominionScreen.BoxSetList.State> { state, modifier ->
-            BoxSetListScreen(state, modifier)
-        }
-
-        is DominionScreen.BoxSetDetails -> ui<DominionScreen.BoxSetDetails.State> { state, modifier ->
-            DetailsScreen(state, modifier)
-        }
-
-        else -> null
-    }
-}
-
-@Composable
-private fun rememberBoxSetStore(
-    boxSetQueries: BoxSetQueries = rememberLocalQueries { it.boxSetQueries },
-    httpClient: HttpClient = LocalHttpClient.current.onClientRequestException {
-        throw it.body<DbConnectionError>()
-    },
-): BoxSetStore = remember(boxSetQueries, httpClient) {
-    BoxSetStore(
-        boxSetQueries = boxSetQueries,
-        httpClient = httpClient,
-    )
-}
-
-@Composable
-private fun rememberCardsStore(
-    cardQueries: CardQueries = rememberLocalQueries { it.cardQueries },
-    httpClient: HttpClient = LocalHttpClient.current.onClientRequestException {
-        throw it.body<DbConnectionError>()
-    },
-): CardsStore = remember(cardQueries, httpClient) {
-    CardsStore(
-        cardQueries = cardQueries,
-        httpClient = httpClient,
+public fun Circuit.Builder.addDominionBoxSetDetailsPresenter(
+    playgroundDatabase: PlaygroundDatabase,
+    httpClient: HttpClient,
+): Circuit.Builder {
+    val cardsStore = CardsStore(
+        cardQueries = playgroundDatabase.cardQueries,
+        httpClient = httpClient.throwDbConnectionError(),
         refresh = true,
     )
+
+    return addPresenter<DominionScreen.BoxSetDetails, DominionScreen.BoxSetDetails.State> { screen, navigator, _ ->
+        val boxSet = playgroundDatabase.boxSetQueries
+            .selectByTitle(screen.title)
+            .executeAsOne()
+
+        presenterOf {
+            DetailsPresenter(navigator, cardsStore, boxSet)
+        }
+    }
+}
+
+public fun Circuit.Builder.addDominionBoxSetListUi(): Circuit.Builder {
+    return addUi<DominionScreen.BoxSetList, DominionScreen.BoxSetList.State> { state, modifier ->
+        BoxSetListScreen(state, modifier)
+    }
+}
+
+public fun Circuit.Builder.addDominionBoxSetDetailsUi(): Circuit.Builder {
+    return addUi<DominionScreen.BoxSetDetails, DominionScreen.BoxSetDetails.State> { state, modifier ->
+        DetailsScreen(state, modifier)
+    }
 }
