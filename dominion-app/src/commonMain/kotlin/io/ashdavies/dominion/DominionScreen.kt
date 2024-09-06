@@ -35,7 +35,6 @@ import androidx.compose.material3.adaptive.navigation.rememberListDetailPaneScaf
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -64,19 +63,24 @@ internal sealed interface DominionScreen : Parcelable, Screen {
     data object AdaptiveList : DominionScreen {
         data class State(
             val boxSetList: List<BoxSet>,
-            val cardList: suspend (BoxSet) -> List<Card>,
+            val cardList: @Composable (BoxSet) -> ImmutableList<Card>,
             val isLoading: Boolean,
         ) : CircuitUiState
     }
 }
 
-private const val DEFAULT_BOX_SET_COLUMN_COUNT = 3
+private const val DEFAULT_BOX_SET_COLUMN_COUNT = 2
 
 private const val DEFAULT_ASPECT_RATIO = 0.62f
 private const val DEFAULT_DETAILS_COLUMN_COUNT = 6
 
 private const val HORIZONTAL_CARD_SPAN = 2
 private const val VERTICAL_CARD_SPAN = 3
+
+private data class AdaptiveScaffoldState(
+    val selectedBoxSet: BoxSet,
+    val selectedCard: Card? = null,
+)
 
 @Composable
 @OptIn(
@@ -87,25 +91,24 @@ internal fun DominionScreen(
     state: DominionScreen.AdaptiveList.State,
     modifier: Modifier = Modifier,
 ) {
-    val scaffoldNavigator = rememberListDetailPaneScaffoldNavigator<BoxSet>()
+    val scaffoldNavigator = rememberListDetailPaneScaffoldNavigator<AdaptiveScaffoldState>()
     val scrollBehavior = enterAlwaysScrollBehavior()
-
-    var boxSet by remember { mutableStateOf<BoxSet?>(null) }
-    var card by remember { mutableStateOf<Card?>(null) }
 
     BackHandler(scaffoldNavigator.canNavigateBack()) {
         scaffoldNavigator.navigateBack()
     }
 
     Scaffold(
+        modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             DetailsTopBar(
-                title = boxSet?.title ?: "Dominion",
+                title = scaffoldNavigator.currentDestination
+                    ?.content?.selectedBoxSet?.title
+                    ?: "Dominion",
                 scrollBehavior = scrollBehavior,
                 onBack = { scaffoldNavigator.navigateBack() },
             )
         },
-        modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
     ) { contentPadding ->
         ListDetailPaneScaffold(
             directive = scaffoldNavigator.scaffoldDirective,
@@ -115,39 +118,52 @@ internal fun DominionScreen(
                     BoxSetList(
                         boxSetList = state.boxSetList.toImmutableList(),
                         contentPadding = contentPadding,
-                        onClick = {
-                            scaffoldNavigator.navigateTo(ListDetailPaneScaffoldRole.Detail, it)
-                            boxSet = it
+                        onClick = { selectedBoxSet ->
+                            scaffoldNavigator.navigateTo(
+                                pane = ListDetailPaneScaffoldRole.Detail,
+                                content = AdaptiveScaffoldState(
+                                    selectedBoxSet = selectedBoxSet,
+                                ),
+                            )
                         },
                     )
                 }
             },
             detailPane = {
                 AnimatedPane {
-                    scaffoldNavigator.currentDestination?.content?.let { boxSet ->
-                        val cardList by produceState(emptyList<Card>()) {
-                            value = state.cardList(boxSet)
-                        }
-
+                    scaffoldNavigator.currentDestination?.content?.let { scaffoldState ->
                         BoxSetCardList(
-                            cards = cardList.toImmutableList(),
-                            contentPadding = contentPadding,
-                            onClick = OnClickWith("expand_card") {
-                                card = it
+                            cards = state.cardList(scaffoldState.selectedBoxSet),
+                            onClick = OnClickWith("expand_card") { card ->
+                                scaffoldNavigator.navigateTo(
+                                    pane = ListDetailPaneScaffoldRole.Extra,
+                                    content = scaffoldState.copy(
+                                        selectedCard = card,
+                                    ),
+                                )
                             },
                         )
                     }
                 }
             },
-            extraPane = card?.let {
-                {
-                    AnimatedPane {
-                        BoxSetCard(
-                            value = it,
-                            modifier = Modifier
-                                .padding(contentPadding)
-                                .fillMaxSize(),
-                        ) { card = null }
+            modifier = modifier,
+            extraPane = {
+                AnimatedPane {
+                    scaffoldNavigator.currentDestination?.content?.let { scaffoldState ->
+                        scaffoldState.selectedCard?.let { card ->
+                            BoxSetCard(
+                                value = card,
+                                modifier = Modifier.fillMaxSize(),
+                                onClick = {
+                                    scaffoldNavigator.navigateTo(
+                                        pane = ListDetailPaneScaffoldRole.Detail,
+                                        content = scaffoldState.copy(
+                                            selectedCard = null,
+                                        ),
+                                    )
+                                },
+                            )
+                        }
                     }
                 }
             },
@@ -168,14 +184,7 @@ private fun DetailsTopBar(
             modifier = Modifier
                 .nestedScroll(scrollBehavior.nestedScrollConnection)
                 .windowInsetsPadding(),
-            navigationIcon = {
-                /*Image(
-                    contentDescription = boxSet.name,
-                    modifier = Modifier.fillMaxWidth(),
-                    urlString = boxSet.image,
-                )*/
-                BackIconButton(onBack)
-            },
+            navigationIcon = { BackIconButton(onBack) },
             scrollBehavior = scrollBehavior,
         )
     }

@@ -11,14 +11,13 @@ internal fun interface CardsStore : suspend (String) -> List<Card>
 internal fun CardsStore(
     cardQueries: CardQueries,
     httpClient: HttpClient,
-    refresh: Boolean = false,
 ): CardsStore = CardsStore local@{ boxSetTitle ->
     val allLocalCards = cardQueries.selectAll().executeAsList()
     val localBoxSetCards = allLocalCards.filter {
         it.boxSet == boxSetTitle
     }
 
-    if (!refresh && localBoxSetCards.isNotEmpty()) {
+    if (localBoxSetCards.isNotEmpty()) {
         return@local localBoxSetCards
     }
 
@@ -30,7 +29,7 @@ internal fun CardsStore(
     val boxSetCards = mutableListOf<Card>()
 
     val allCards = allLocalCards
-        .takeIf { !refresh && it.isNotEmpty() }
+        .takeIf { it.isNotEmpty() }
         ?: httpClient.allCategoryImages().map { (cardTitle, imageInfo) ->
             val isInBoxSet = cardTitle in boxSetCardTitles
 

@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 internal fun DominionPresenter(
@@ -20,7 +21,13 @@ internal fun DominionPresenter(
 
     return DominionScreen.AdaptiveList.State(
         boxSetList = boxSetList,
-        cardList = { cardsStore(it.title) },
+        cardList = @Composable { boxSet ->
+            val cardList by produceState(emptyList<Card>()) {
+                value = cardsStore(boxSet.title)
+            }
+
+            cardList.toImmutableList()
+        },
         isLoading = isLoading,
     )
 }

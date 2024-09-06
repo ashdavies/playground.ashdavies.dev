@@ -25,7 +25,6 @@ public fun Circuit.Builder.addDominionPresenter(
     val cardsStore = CardsStore(
         cardQueries = playgroundDatabase.cardQueries,
         httpClient = dbHttpClient,
-        refresh = true,
     )
 
     return addPresenter<DominionScreen.AdaptiveList, DominionScreen.AdaptiveList.State> { _, _, _ ->
