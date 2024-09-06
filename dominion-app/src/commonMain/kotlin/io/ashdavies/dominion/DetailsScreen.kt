@@ -5,10 +5,13 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -139,7 +142,7 @@ private fun DetailsTopBar(
             title = { Text(title) },
             modifier = Modifier
                 .nestedScroll(scrollBehavior.nestedScrollConnection)
-                .windowInsetsPadding(),
+                .windowInsetsPadding(WindowInsets.systemBars),
             navigationIcon = {
                 /*Image(
                     contentDescription = boxSet.name,
