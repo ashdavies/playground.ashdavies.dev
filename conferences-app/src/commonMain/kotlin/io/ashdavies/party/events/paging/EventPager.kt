@@ -6,6 +6,7 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.InvalidatingPagingSourceFactory
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
+import app.cash.sqldelight.Transacter
 import io.ashdavies.aggregator.AsgConference
 import io.ashdavies.aggregator.UpcomingConferencesCallable
 import io.ashdavies.config.RemoteConfig
@@ -15,7 +16,8 @@ import io.ashdavies.http.common.models.EventCfp
 import io.ashdavies.party.events.EventsQueries
 import io.ashdavies.party.events.callable.PagedUpcomingEventsCallable
 import io.ashdavies.party.network.todayAsString
-import io.ashdavies.party.sql.rememberLocalQueries
+import io.ashdavies.playground.PlaygroundDatabase
+import io.ashdavies.sql.LocalTransacter
 import io.ktor.client.HttpClient
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -69,6 +71,12 @@ private fun rememberUpcomingEventsCallable(
         }
     }
 }
+
+@Composable
+internal fun <T : Transacter> rememberLocalQueries(
+    database: PlaygroundDatabase = LocalTransacter.current as PlaygroundDatabase,
+    transform: (PlaygroundDatabase) -> T,
+): T = remember { transform(database) }
 
 private fun AsgConference.toEvent(): ApiEvent = ApiEvent(
     id = hash(), name = name, website = website, location = location, dateStart = dateStart,

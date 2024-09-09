@@ -7,6 +7,7 @@ import com.slack.circuit.foundation.Circuit
 import com.slack.circuit.runtime.presenter.presenterOf
 import io.ashdavies.content.PlatformContext
 import io.ashdavies.content.reportFullyDrawn
+import io.ashdavies.http.DefaultHttpConfiguration
 import io.ashdavies.identity.IdentityManager
 import io.ashdavies.party.coroutines.rememberRetainedCoroutineScope
 import io.ashdavies.party.events.EventsPresenter
@@ -14,12 +15,16 @@ import io.ashdavies.party.events.EventsScreen
 import io.ashdavies.party.events.paging.rememberEventPager
 import io.ashdavies.party.gallery.GalleryPresenter
 import io.ashdavies.party.gallery.GalleryScreen
+import io.ashdavies.party.gallery.ImageManager
 import io.ashdavies.party.gallery.PathProvider
 import io.ashdavies.party.gallery.StorageManager
+import io.ashdavies.party.gallery.SyncManager
+import io.ashdavies.party.gallery.inMemoryHttpClientEngine
 import io.ashdavies.party.home.HomePresenter
 import io.ashdavies.party.home.HomeScreen
 import io.ashdavies.playground.PlaygroundDatabase
 import io.ashdavies.sql.LocalTransacter
+import io.ktor.client.HttpClient
 import kotlinx.coroutines.CoroutineScope
 import io.ashdavies.party.events.Event as DatabaseEvent
 
@@ -31,6 +36,8 @@ public fun rememberCircuit(
     coroutineScope: CoroutineScope = rememberRetainedCoroutineScope(),
 ): Circuit = remember(platformContext) {
     val identityManager = IdentityManager(platformContext, playgroundDatabase.credentialQueries)
+    val imageManager = ImageManager(platformContext, playgroundDatabase.imageQueries)
+    val syncManager = SyncManager(HttpClient(inMemoryHttpClientEngine(), DefaultHttpConfiguration))
     val storageManager = StorageManager(PathProvider(platformContext))
 
     Circuit.Builder()
@@ -41,7 +48,7 @@ public fun rememberCircuit(
             presenterOf { EventsPresenter(eventPager, coroutineScope) }
         }
         .addPresenter<GalleryScreen, GalleryScreen.State> { _, _, _ ->
-            presenterOf { GalleryPresenter(platformContext) }
+            presenterOf { GalleryPresenter(imageManager, syncManager) }
         }
         .addUi<HomeScreen, HomeScreen.State> { state, modifier ->
             HomeScreen(state, modifier, platformContext::reportFullyDrawn)
