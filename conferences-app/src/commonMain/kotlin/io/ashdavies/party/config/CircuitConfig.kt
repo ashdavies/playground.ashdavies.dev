@@ -13,6 +13,7 @@ import io.ashdavies.party.coroutines.rememberRetainedCoroutineScope
 import io.ashdavies.party.events.EventsPresenter
 import io.ashdavies.party.events.EventsScreen
 import io.ashdavies.party.events.paging.rememberEventPager
+import io.ashdavies.party.gallery.File
 import io.ashdavies.party.gallery.GalleryPresenter
 import io.ashdavies.party.gallery.GalleryScreen
 import io.ashdavies.party.gallery.ImageManager
@@ -20,6 +21,7 @@ import io.ashdavies.party.gallery.PathProvider
 import io.ashdavies.party.gallery.StorageManager
 import io.ashdavies.party.gallery.SyncManager
 import io.ashdavies.party.gallery.inMemoryHttpClientEngine
+import io.ashdavies.party.gallery.readChannel
 import io.ashdavies.party.home.HomePresenter
 import io.ashdavies.party.home.HomeScreen
 import io.ashdavies.playground.PlaygroundDatabase
@@ -37,7 +39,8 @@ public fun rememberCircuit(
 ): Circuit = remember(platformContext) {
     val identityManager = IdentityManager(platformContext, playgroundDatabase.credentialQueries)
     val imageManager = ImageManager(platformContext, playgroundDatabase.imageQueries)
-    val syncManager = SyncManager(HttpClient(inMemoryHttpClientEngine(), DefaultHttpConfiguration))
+    val inMemoryHttpClient = HttpClient(inMemoryHttpClientEngine(), DefaultHttpConfiguration)
+    val syncManager = SyncManager(inMemoryHttpClient, File::readChannel)
     val storageManager = StorageManager(PathProvider(platformContext))
 
     Circuit.Builder()

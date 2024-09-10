@@ -26,7 +26,10 @@ internal enum class SyncState {
     SYNCED,
 }
 
-internal fun SyncManager(client: HttpClient): SyncManager = object : SyncManager {
+internal fun SyncManager(
+    client: HttpClient,
+    reader: File.() -> ByteReadChannel,
+): SyncManager = object : SyncManager {
 
     private val _state = MutableStateFlow<Map<String, SyncState>>(emptyMap())
     private val initialised = AtomicBoolean(false)
@@ -48,7 +51,7 @@ internal fun SyncManager(client: HttpClient): SyncManager = object : SyncManager
         when (initialState) {
             SyncState.NOT_SYNCED -> client.post(getName()) {
                 header(HttpHeaders.ContentLength, length())
-                setBody(readChannel())
+                setBody(reader())
             }
 
             else -> client.put(getName())
