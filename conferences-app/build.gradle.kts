@@ -141,7 +141,10 @@ kotlin {
         }
 
         val androidInstrumentedTest by getting {
-            dependsOn(androidMain.get())
+            dependencies {
+                implementation(libs.androidx.core.splashscreen)
+                implementation(libs.google.android.material)
+            }
         }
 
         jvmMain.dependencies {

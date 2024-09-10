@@ -1,6 +1,5 @@
 package io.ashdavies.party.gallery
 
-import io.ashdavies.http.DefaultHttpConfiguration
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
@@ -28,8 +27,8 @@ internal enum class SyncState {
 }
 
 internal fun SyncManager(
-    client: HttpClient = HttpClient(inMemoryHttpClientEngine(), DefaultHttpConfiguration),
-    reader: File.() -> ByteReadChannel = File::readChannel,
+    client: HttpClient,
+    reader: File.() -> ByteReadChannel,
 ): SyncManager = object : SyncManager {
 
     private val _state = MutableStateFlow<Map<String, SyncState>>(emptyMap())

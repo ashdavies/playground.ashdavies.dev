@@ -3,29 +3,16 @@ package io.ashdavies.party.gallery
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import com.slack.circuit.retained.produceRetainedState
 import com.slack.circuit.retained.rememberRetained
-import io.ashdavies.content.PlatformContext
-import io.ashdavies.party.sql.rememberLocalQueries
 import kotlinx.coroutines.launch
 
 @Composable
 internal fun GalleryPresenter(
-    platformContext: PlatformContext,
-    imageQueries: ImageQueries = rememberLocalQueries { it.imageQueries },
-): GalleryScreen.State = GalleryPresenter(
-    imageManager = remember(imageQueries) {
-        ImageManager(platformContext, imageQueries)
-    },
-)
-
-@Composable
-internal fun GalleryPresenter(
     imageManager: ImageManager,
-    syncManager: SyncManager = remember { SyncManager() },
+    syncManager: SyncManager,
 ): GalleryScreen.State {
     val itemList by produceRetainedState(emptyList<Image>()) {
         imageManager.list.collect { value = it }
