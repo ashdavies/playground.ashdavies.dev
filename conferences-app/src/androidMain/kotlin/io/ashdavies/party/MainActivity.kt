@@ -10,11 +10,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.pm.PackageInfoCompat
-import com.slack.circuit.backstack.rememberSaveableBackStack
-import com.slack.circuit.foundation.CircuitCompositionLocals
-import com.slack.circuit.foundation.NavigableCircuitContent
-import com.slack.circuit.foundation.rememberCircuitNavigator
-import com.slack.circuit.overlay.ContentWithOverlays
 import io.ashdavies.check.ProvideAppCheckToken
 import io.ashdavies.content.enableStrictMode
 import io.ashdavies.content.isDebuggable
@@ -22,7 +17,7 @@ import io.ashdavies.http.ProvideHttpClient
 import io.ashdavies.http.publicStorage
 import io.ashdavies.io.resolveCacheDir
 import io.ashdavies.material.dynamicColorScheme
-import io.ashdavies.party.config.rememberCircuit
+import io.ashdavies.party.config.ParentNavHost
 import io.ashdavies.party.home.HomeScreen
 import io.ashdavies.playground.BuildConfig
 import io.ashdavies.playground.PlaygroundDatabase
@@ -73,16 +68,10 @@ private fun LauncherApp(context: Context = LocalContext.current) {
 
             ProvideTransacter(transacter) {
                 MaterialTheme(dynamicColorScheme()) {
-                    CircuitCompositionLocals(rememberCircuit(context)) {
-                        ContentWithOverlays {
-                            val backStack = rememberSaveableBackStack(HomeScreen)
-
-                            NavigableCircuitContent(
-                                navigator = rememberCircuitNavigator(backStack),
-                                backStack = backStack,
-                            )
-                        }
-                    }
+                    ParentNavHost(
+                        platformContext = context,
+                        startDestination = HomeScreen,
+                    )
                 }
             }
         }

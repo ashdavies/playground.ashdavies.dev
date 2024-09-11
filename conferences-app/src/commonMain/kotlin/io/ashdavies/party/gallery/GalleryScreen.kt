@@ -57,21 +57,21 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil3.compose.rememberAsyncImagePainter
-import com.slack.circuit.foundation.internal.BackHandler
-import com.slack.circuit.runtime.CircuitUiEvent
-import com.slack.circuit.runtime.CircuitUiState
-import com.slack.circuit.runtime.screen.Screen
 import io.ashdavies.analytics.OnClick
 import io.ashdavies.parcelable.Parcelable
 import io.ashdavies.parcelable.Parcelize
+import io.ashdavies.party.home.HomeScreen
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 
 private const val DEFAULT_COLUMN_COUNT = 4
 
 @Parcelize
-internal object GalleryScreen : Parcelable, Screen {
-    sealed interface Event : CircuitUiEvent {
+internal object GalleryScreen : HomeScreen, Parcelable {
+
+    override val name: String = "gallery"
+
+    sealed interface Event {
         sealed interface Capture : Event {
             data class Result(val value: File) : Capture
 
@@ -94,7 +94,7 @@ internal object GalleryScreen : Parcelable, Screen {
         val expandedItem: ExpandedItem? = null,
         val showCapture: Boolean = false,
         val eventSink: (Event) -> Unit,
-    ) : CircuitUiState {
+    ) {
 
         data class StandardItem(
             val title: String,
@@ -156,10 +156,6 @@ internal fun GalleryScreen(
 
                 if (state.expandedItem != null) {
                     GalleryExpandedItem(state.expandedItem)
-
-                    BackHandler(enabled = true) {
-                        eventSink(GalleryScreen.Event.Selection.Collapse)
-                    }
                 }
             }
         }

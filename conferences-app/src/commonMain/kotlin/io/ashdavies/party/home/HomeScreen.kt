@@ -23,17 +23,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
-import com.slack.circuit.foundation.CircuitContent
-import com.slack.circuit.foundation.NavEvent
-import com.slack.circuit.runtime.CircuitUiEvent
-import com.slack.circuit.runtime.CircuitUiState
-import com.slack.circuit.runtime.screen.Screen
 import io.ashdavies.analytics.OnClick
+import io.ashdavies.content.PlatformContext
 import io.ashdavies.identity.IdentityState
 import io.ashdavies.material.BottomSheetScaffold
 import io.ashdavies.parcelable.Parcelable
 import io.ashdavies.parcelable.Parcelize
 import io.ashdavies.party.animation.FadeVisibility
+import io.ashdavies.party.config.ChildNavHost
 import io.ashdavies.party.config.booleanConfigAsState
 import io.ashdavies.party.config.isHomeEnabled
 import io.ashdavies.party.config.isProfileEnabled
@@ -42,26 +39,34 @@ import io.ashdavies.party.gallery.GalleryScreen
 import io.ashdavies.party.gallery.GallerySheetContent
 import io.ashdavies.party.profile.ProfileActionButton
 
-@Parcelize
-internal object HomeScreen : Parcelable, Screen {
-    sealed interface Event : CircuitUiEvent {
-        data class ChildNav(val navEvent: NavEvent) : Event
-        data class BottomNav(val screen: Screen) : Event
+internal interface HomeScreen : Parcelable {
+
+    val name: String
+
+    sealed interface Event {
+        data class ChildNav(val navEvent: HomeScreen) : Event
+        data class BottomNav(val screen: HomeScreen) : Event
 
         data object Login : Event
     }
 
     data class State(
         val identityState: IdentityState,
-        val screen: Screen,
+        val screen: HomeScreen,
         val eventSink: (Event) -> Unit,
-    ) : CircuitUiState
+    )
+
+    @Parcelize
+    companion object : HomeScreen {
+        override val name: String = "home"
+    }
 }
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 internal fun HomeScreen(
     state: HomeScreen.State,
+    context: PlatformContext,
     modifier: Modifier = Modifier,
     onFullyDrawn: () -> Unit,
 ) {
@@ -97,12 +102,10 @@ internal fun HomeScreen(
         isExpanded = false,
         modifier = modifier,
     ) { contentPadding ->
-        CircuitContent(
-            screen = state.screen,
+        ChildNavHost(
+            platformContext = context,
+            startDestination = state.screen,
             modifier = Modifier.padding(contentPadding),
-            onNavEvent = { event ->
-                eventSink(HomeScreen.Event.ChildNav(event))
-            },
         )
     }
 
@@ -138,9 +141,9 @@ internal fun HomeTopBar(
 
 @Composable
 internal fun HomeBottomBar(
-    selected: Screen = HomeScreen,
+    selected: HomeScreen = HomeScreen,
     modifier: Modifier = Modifier,
-    onClick: (Screen) -> Unit = { },
+    onClick: (HomeScreen) -> Unit,
 ) {
     BottomAppBar(modifier) {
         NavigationBar {

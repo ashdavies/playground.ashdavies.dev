@@ -1,10 +1,12 @@
 package io.ashdavies.party.config
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import androidx.paging.Pager
-import com.slack.circuit.foundation.Circuit
-import com.slack.circuit.runtime.presenter.presenterOf
 import io.ashdavies.content.PlatformContext
 import io.ashdavies.content.reportFullyDrawn
 import io.ashdavies.http.DefaultHttpConfiguration
@@ -31,36 +33,65 @@ import kotlinx.coroutines.CoroutineScope
 import io.ashdavies.party.events.Event as DatabaseEvent
 
 @Composable
-public fun rememberCircuit(
+internal fun ParentNavHost(
     platformContext: PlatformContext,
+    startDestination: HomeScreen,
+    navController: NavHostController = rememberNavController(),
+    playgroundDatabase: PlaygroundDatabase = LocalTransacter.current as PlaygroundDatabase,
+    coroutineScope: CoroutineScope = rememberRetainedCoroutineScope(),
+) {
+    val identityManager = IdentityManager(platformContext, playgroundDatabase.credentialQueries)
+
+    NavHost(navController, startDestination.name) {
+        composable("home") {
+            HomeScreen(
+                state = HomePresenter(identityManager, coroutineScope) {
+                    navController.navigate(it.name)
+                },
+                context = platformContext,
+                onFullyDrawn = { platformContext.reportFullyDrawn() },
+            )
+        }
+    }
+}
+
+@Composable
+internal fun ChildNavHost(
+    platformContext: PlatformContext,
+    startDestination: HomeScreen,
+    modifier: Modifier = Modifier,
+    navController: NavHostController = rememberNavController(),
     eventPager: Pager<String, DatabaseEvent> = rememberEventPager(),
     playgroundDatabase: PlaygroundDatabase = LocalTransacter.current as PlaygroundDatabase,
     coroutineScope: CoroutineScope = rememberRetainedCoroutineScope(),
-): Circuit = remember(platformContext) {
-    val identityManager = IdentityManager(platformContext, playgroundDatabase.credentialQueries)
+) {
     val imageManager = ImageManager(platformContext, playgroundDatabase.imageQueries)
     val inMemoryHttpClient = HttpClient(inMemoryHttpClientEngine(), DefaultHttpConfiguration)
     val syncManager = SyncManager(inMemoryHttpClient, File::readChannel)
     val storageManager = StorageManager(PathProvider(platformContext))
 
-    Circuit.Builder()
-        .addPresenter<HomeScreen, HomeScreen.State> { _, navigator, _ ->
-            presenterOf { HomePresenter(identityManager, coroutineScope, navigator) }
+    NavHost(
+        navController = navController,
+        startDestination = startDestination.name,
+        modifier = modifier,
+    ) {
+        composable("events") {
+            EventsScreen(
+                state = EventsPresenter(
+                    eventPager = eventPager,
+                    coroutineScope = coroutineScope,
+                ),
+            )
         }
-        .addPresenter<EventsScreen, EventsScreen.State> { _, _, _ ->
-            presenterOf { EventsPresenter(eventPager, coroutineScope) }
+
+        composable("gallery") {
+            GalleryScreen(
+                state = GalleryPresenter(
+                    imageManager = imageManager,
+                    syncManager = syncManager,
+                ),
+                manager = storageManager,
+            )
         }
-        .addPresenter<GalleryScreen, GalleryScreen.State> { _, _, _ ->
-            presenterOf { GalleryPresenter(imageManager, syncManager) }
-        }
-        .addUi<HomeScreen, HomeScreen.State> { state, modifier ->
-            HomeScreen(state, modifier, platformContext::reportFullyDrawn)
-        }
-        .addUi<EventsScreen, EventsScreen.State> { state, modifier ->
-            EventsScreen(state, modifier)
-        }
-        .addUi<GalleryScreen, GalleryScreen.State> { state, modifier ->
-            GalleryScreen(state, storageManager, modifier)
-        }
-        .build()
+    }
 }

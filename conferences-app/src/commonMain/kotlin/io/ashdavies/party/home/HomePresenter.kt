@@ -4,11 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import com.slack.circuit.foundation.onNavEvent
-import com.slack.circuit.retained.rememberRetained
-import com.slack.circuit.runtime.Navigator
-import com.slack.circuit.runtime.screen.Screen
 import io.ashdavies.identity.IdentityManager
 import io.ashdavies.identity.IdentityState
 import io.ashdavies.party.config.booleanConfigAsState
@@ -22,13 +19,13 @@ import kotlinx.coroutines.launch
 internal fun HomePresenter(
     identityManager: IdentityManager,
     coroutineScope: CoroutineScope,
-    navigator: Navigator,
+    onChildNav: (HomeScreen) -> Unit,
 ): HomeScreen.State {
     val identityState by identityManager.state.collectAsState(IdentityState.Unauthenticated)
     val isHomeEnabled by booleanConfigAsState { isHomeEnabled() }
 
     val initialScreen = if (isHomeEnabled) GalleryScreen else EventsScreen
-    var screen by rememberRetained { mutableStateOf<Screen>(initialScreen) }
+    var screen by remember { mutableStateOf<HomeScreen>(initialScreen) }
 
     return HomeScreen.State(
         identityState = identityState,
@@ -36,7 +33,7 @@ internal fun HomePresenter(
     ) { event ->
         when (event) {
             is HomeScreen.Event.Login -> coroutineScope.launch { identityManager.signIn() }
-            is HomeScreen.Event.ChildNav -> navigator.onNavEvent(event.navEvent)
+            is HomeScreen.Event.ChildNav -> onChildNav(event.navEvent)
             is HomeScreen.Event.BottomNav -> screen = event.screen
         }
     }

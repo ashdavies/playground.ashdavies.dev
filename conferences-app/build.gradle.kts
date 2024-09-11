@@ -107,6 +107,8 @@ kotlin {
             implementation(compose.materialIconsExtended)
             implementation(compose.ui)
 
+            implementation("org.jetbrains.androidx.navigation:navigation-compose:2.7.0-alpha07")
+
             implementation(libs.androidx.core.splashscreen)
             implementation(libs.androidx.paging.common)
             implementation(libs.coil.compose)
@@ -120,8 +122,6 @@ kotlin {
             implementation(libs.ktor.client.mock)
             implementation(libs.ktor.http)
             implementation(libs.ktor.io)
-            implementation(libs.slack.circuit.foundation)
-            implementation(libs.slack.circuit.overlay)
             implementation(libs.sqldelight.runtime)
         }
 

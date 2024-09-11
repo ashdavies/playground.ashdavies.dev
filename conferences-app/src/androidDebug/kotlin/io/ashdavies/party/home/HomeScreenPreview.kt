@@ -30,7 +30,7 @@ internal fun HomeTopAppBarPreview() {
 @Composable
 internal fun HomeBottomSheetPreview() {
     MaterialPreviewTheme {
-        HomeBottomBar(HomeScreen)
+        HomeBottomBar(HomeScreen) { }
     }
 }
 

@@ -36,12 +36,11 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
-import com.slack.circuit.runtime.CircuitUiState
-import com.slack.circuit.runtime.screen.Screen
 import io.ashdavies.analytics.OnClick
 import io.ashdavies.paging.LazyPagingItems
 import io.ashdavies.parcelable.Parcelable
 import io.ashdavies.parcelable.Parcelize
+import io.ashdavies.party.home.HomeScreen
 import io.ashdavies.placeholder.PlaceholderHighlight
 import io.ashdavies.placeholder.fade
 import io.ashdavies.placeholder.placeholder
@@ -57,8 +56,11 @@ private val Today = Clock.System.now()
     .date
 
 @Parcelize
-internal object EventsScreen : Parcelable, Screen {
-    data class State(val pagingItems: LazyPagingItems<Event>) : CircuitUiState
+internal object EventsScreen : HomeScreen, Parcelable {
+
+    override val name: String = "events"
+
+    data class State(val pagingItems: LazyPagingItems<Event>)
 }
 
 @Composable

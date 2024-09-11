@@ -3,10 +3,10 @@ package io.ashdavies.party.gallery
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.produceState
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import com.slack.circuit.retained.produceRetainedState
-import com.slack.circuit.retained.rememberRetained
 import kotlinx.coroutines.launch
 
 @Composable
@@ -14,22 +14,22 @@ internal fun GalleryPresenter(
     imageManager: ImageManager,
     syncManager: SyncManager,
 ): GalleryScreen.State {
-    val itemList by produceRetainedState(emptyList<Image>()) {
+    val itemList by produceState(emptyList<Image>()) {
         imageManager.list.collect { value = it }
     }
 
-    val syncState by produceRetainedState(emptyMap<String, SyncState>()) {
+    val syncState by produceState(emptyMap<String, SyncState>()) {
         syncManager.state.collect { value = it }
     }
 
     val coroutineScope = rememberCoroutineScope()
 
-    var expandedItem by rememberRetained {
+    var expandedItem by remember {
         mutableStateOf<GalleryScreen.State.ExpandedItem?>(null)
     }
 
-    var selected by rememberRetained { mutableStateOf(emptyList<Image>()) }
-    var takePhoto by rememberRetained { mutableStateOf(false) }
+    var selected by remember { mutableStateOf(emptyList<Image>()) }
+    var takePhoto by remember { mutableStateOf(false) }
 
     return GalleryScreen.State(
         itemList = itemList.map {
