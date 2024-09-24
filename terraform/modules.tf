@@ -69,7 +69,7 @@ module "github-repository" {
   ]
   secrets = [
     {
-      plaintext_value = google_firebase_android_app.main.app_id
+      plaintext_value = google_firebase_android_app.release.app_id
       secret_name     = "firebase_android_app_id"
     },
     {
