@@ -6,16 +6,18 @@ locals {
 
 resource "google_firebase_android_app" "debug" {
   provider      = google-beta
+  project       = var.project_id
   display_name  = "Playground Debug"
-  package_name = "io.ashdavies.playground.debug"
+  package_name  = "io.ashdavies.playground.debug"
   sha1_hashes   = ["2f50f8fd822a6592508b5adb58a231c729d616a3"]
   sha256_hashes = ["2ebfd15ae4682189f047b61a4faa903dc330cbf29b3a21f667595a73fb53a1ff"]
 }
 
 resource "google_firebase_android_app" "release" {
   provider      = google-beta
+  project       = var.project_id
   display_name  = "Playground Release"
-  package_name = "io.ashdavies.playground"
+  package_name  = "io.ashdavies.playground"
   sha1_hashes   = ["a75f572e40a926bb1708178c134a1e86faadaa09"]
   sha256_hashes = ["0442b951b2d82cb339a7e4ef9469e71e89b182c7be5efb119f587cc2b19995bc"]
 }
