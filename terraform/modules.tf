@@ -19,10 +19,8 @@ module "cloud-run-build" {
 module "cloud-run-endpoint" {
   source             = "./modules/google/cloud-run-endpoint"
   config_id          = module.cloud-run-endpoint.config_id
-  container_image    = "${var.project_region}-docker.pkg.dev/${var.project_id}/endpoints-release/endpoints-runtime-serverless:${var.esp_tag}-${var.service_name}-${module.cloud-run-endpoint.config_id}"
+  container_image    = "${var.project_region}-docker.pkg.dev/${var.project_id}/endpoints-release/endpoints-runtime-serverless:latest"
   endpoint_name      = "playground.ashdavies.dev"
-  esp_tag            = var.esp_tag
-  gcloud_build_image = var.gcloud_build_image
   image_repository   = "${var.project_region}-docker.pkg.dev/${var.project_id}/endpoints-release"
   location           = var.project_region
   openapi_config     = local.openapi_config
