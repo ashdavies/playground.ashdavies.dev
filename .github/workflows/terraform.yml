@@ -49,12 +49,6 @@ jobs:
           service_account: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
           token_format: access_token
 
-      - uses: docker/login-action@v3
-        with:
-          username: oauth2accesstoken
-          password: ${{ steps.setup-cloud.outputs.access_token }}
-          registry: europe-west1-docker.pkg.dev
-
       - uses: ./.github/actions/setup-gradle
         if: ${{ github.ref == 'refs/heads/main' }}
 

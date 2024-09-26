@@ -1,14 +1,3 @@
-# variable.esp_tag is deprecated
-variable "esp_tag" {
-  description = "ESPv2 version"
-  default     = "2.40.0"
-}
-
-variable "gcloud_build_image" {
-  description = "GCloud build image script"
-  default     = "./gcloud_build_image"
-}
-
 variable "gh_owner" {
   description = "Username of the GitHub repository owner"
   default     = "ashdavies"

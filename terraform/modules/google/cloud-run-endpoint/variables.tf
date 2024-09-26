@@ -14,12 +14,10 @@ variable "endpoint_name" {
   description = ""
 }
 
-variable "esp_tag" {
+variable "esp_version" {
+  type        = string
   description = "ESPv2 version"
-}
-
-variable "gcloud_build_image" {
-  description = "GCloud build image script"
+  default     = "2.40.0"
 }
 
 variable "image_repository" {
