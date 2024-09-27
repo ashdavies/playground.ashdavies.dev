@@ -37,7 +37,7 @@ auth-jwks-rsa = "com.auth0:jwks-rsa:0.22.1"
 coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil-kt" }
 coil-network = { module = "io.coil-kt.coil3:coil-network-ktor2", version.ref = "coil-kt" }
 
-fasterxml-jackson-core = "com.fasterxml.jackson.core:jackson-core:2.17.2"
+fasterxml-jackson-core = "com.fasterxml.jackson.core:jackson-core:2.18.0"
 fusesource-jansi = "org.fusesource.jansi:jansi:2.4.1"
 
 gitlive-firebase-analytics = { module = "dev.gitlive:firebase-analytics", version.ref = "gitlive-firebase" }
