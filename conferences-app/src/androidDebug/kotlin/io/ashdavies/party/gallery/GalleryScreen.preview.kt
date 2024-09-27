@@ -1,6 +1,5 @@
 package io.ashdavies.party.gallery
 
-import android.content.res.Configuration
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
@@ -8,13 +7,12 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.tooling.preview.Preview
+import io.ashdavies.party.tooling.DayNightPreview
 import kotlinx.collections.immutable.persistentListOf
 
 @Composable
-@Preview(heightDp = 120)
+@DayNightPreview
 @OptIn(ExperimentalFoundationApi::class)
-@Preview(heightDp = 120, uiMode = Configuration.UI_MODE_NIGHT_YES)
 internal fun GalleryGridPreview() {
     GalleryPreviewTheme {
         Surface {
@@ -33,9 +31,8 @@ internal fun GalleryGridPreview() {
     }
 }
 
-@Preview
 @Composable
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
+@DayNightPreview
 internal fun GalleryBottomSheetPreview() {
     GalleryPreviewTheme {
         GallerySheetContent(eventSink = { })

@@ -1,17 +1,17 @@
 package io.ashdavies.party.events
 
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.paging.PagingData
 import io.ashdavies.paging.LazyPagingItems
 import io.ashdavies.paging.collectAsLazyPagingItems
+import io.ashdavies.party.tooling.DayNightPreview
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 
 private val DroidconEvents = listOf(AndroidMakers, DroidconBerlin, DroidconLondon)
 
-@Preview
 @Composable
+@DayNightPreview
 internal fun EventsScreenPreview(data: List<Event> = DroidconEvents) {
     EventsScreen(EventsScreen.State(lazyPagingItems(flowOf(PagingData.from(data)))))
 }
