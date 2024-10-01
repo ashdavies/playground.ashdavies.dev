@@ -6,6 +6,7 @@ androidx-paging = "3.3.2"
 cash-sqldelight = "2.0.2"
 coil-kt = "3.0.0-alpha10"
 compose-plugin = "1.6.11"
+detekt = "1.23.7"
 gitlive-firebase = "2.1.0"
 google-accompanist = "0.36.0"
 google-android = "8.6.1"
@@ -36,6 +37,9 @@ auth-jwks-rsa = "com.auth0:jwks-rsa:0.22.1"
 
 coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil-kt" }
 coil-network = { module = "io.coil-kt.coil3:coil-network-ktor2", version.ref = "coil-kt" }
+
+detekt-compose = "io.nlopez.compose.rules:detekt:0.4.12"
+detekt-formatatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
 
 fasterxml-jackson-core = "com.fasterxml.jackson.core:jackson-core:2.18.0"
 fusesource-jansi = "org.fusesource.jansi:jansi:2.4.1"
@@ -123,7 +127,7 @@ build-config = "com.github.gmazzo.buildconfig:5.5.0"
 cash-sqldelight = { id = "app.cash.sqldelight", version.ref = "cash-sqldelight" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "jetbrains-kotlin" }
 dependency-analysis = "com.autonomousapps.dependency-analysis:2.1.1"
-detekt = "io.gitlab.arturbosch.detekt:1.23.7"
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
 gradle-doctor = "com.osacky.doctor:0.10.0"
 jetbrains-compose = { id = "org.jetbrains.compose", version.ref = "compose-plugin" }
