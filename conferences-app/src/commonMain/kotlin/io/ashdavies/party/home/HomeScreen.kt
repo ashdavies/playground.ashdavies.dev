@@ -20,6 +20,7 @@ import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -63,7 +64,7 @@ internal object HomeScreen : Parcelable, Screen {
 internal fun HomeScreen(
     state: HomeScreen.State,
     modifier: Modifier = Modifier,
-    onFullyDrawn: () -> Unit,
+    reportFullyDrawn: () -> Unit,
 ) {
     val isProfileEnabled by booleanConfigAsState { isProfileEnabled() }
     val isHomeEnabled by booleanConfigAsState { isHomeEnabled() }
@@ -71,6 +72,7 @@ internal fun HomeScreen(
 
     BottomSheetScaffold(
         sheetContent = { GallerySheetContent({ }) },
+        modifier = modifier,
         showDragHandle = false,
         topBar = {
             HomeTopBar(
@@ -95,7 +97,6 @@ internal fun HomeScreen(
         },
         floatingActionButton = { },
         isExpanded = false,
-        modifier = modifier,
     ) { contentPadding ->
         CircuitContent(
             screen = state.screen,
@@ -106,16 +107,18 @@ internal fun HomeScreen(
         )
     }
 
+    val latestReportFullyDrawn by rememberUpdatedState(reportFullyDrawn)
+
     LaunchedEffect(Unit) {
-        onFullyDrawn()
+        latestReportFullyDrawn()
     }
 }
 
 @Composable
 @ExperimentalMaterial3Api
 internal fun HomeTopBar(
-    title: String = "Home",
     modifier: Modifier = Modifier,
+    title: String = "Home",
     actions: @Composable RowScope.() -> Unit = { },
     scrollBehavior: TopAppBarScrollBehavior = enterAlwaysScrollBehavior(rememberTopAppBarState()),
 ) {
@@ -138,8 +141,8 @@ internal fun HomeTopBar(
 
 @Composable
 internal fun HomeBottomBar(
-    selected: Screen = HomeScreen,
     modifier: Modifier = Modifier,
+    selected: Screen = HomeScreen,
     onClick: (Screen) -> Unit = { },
 ) {
     BottomAppBar(modifier) {

@@ -33,7 +33,7 @@ internal class KeyNavigationDecoration(
             args = args,
             backStackDepth = backStackDepth,
             modifier = modifier
-                .focusOnPlacement()
+                .focusOnPlacement(remember { FocusRequester() })
                 .onPreviewKeyUp(
                     predicate = predicate,
                     action = onBackInvoked,
@@ -43,13 +43,12 @@ internal class KeyNavigationDecoration(
     }
 }
 
-@Composable
-private fun Modifier.focusOnPlacement(): Modifier {
-    val focusRequester = remember { FocusRequester() }
-    return focusRequester(focusRequester).onPlaced { focusRequester.requestFocus() }
+private fun Modifier.focusOnPlacement(
+    focusRequester: FocusRequester,
+): Modifier = focusRequester(focusRequester).onPlaced {
+    focusRequester.requestFocus()
 }
 
-@Composable
 private fun Modifier.onPreviewKeyUp(
     predicate: (KeyEvent) -> Boolean = { true },
     action: () -> Unit,
