@@ -25,7 +25,6 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -36,35 +35,11 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImagePainter
 import coil3.compose.rememberAsyncImagePainter
-import com.slack.circuit.runtime.Navigator
 import io.ashdavies.analytics.OnClickWith
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 
 private const val DEFAULT_COLUMN_COUNT = 3
-
-@Composable
-internal fun BoxSetListPresenter(
-    navigator: Navigator,
-    boxSetStore: BoxSetStore,
-): DominionScreen.BoxSetList.State {
-    var isLoading by remember { mutableStateOf(true) }
-    val boxSetList by produceState(emptyList<BoxSet>()) {
-        value = boxSetStore()
-        isLoading = false
-    }
-
-    return DominionScreen.BoxSetList.State(
-        boxSetList = boxSetList,
-        isLoading = isLoading,
-    ) { event ->
-        when (event) {
-            is DominionScreen.BoxSetList.Event.ShowBoxSet -> {
-                navigator.goTo(DominionScreen.BoxSetDetails(event.boxSet.title))
-            }
-        }
-    }
-}
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
@@ -102,8 +77,8 @@ internal fun BoxSetListScreen(
 private fun BoxSetListScreen(
     boxSetList: ImmutableList<BoxSet>,
     contentPadding: PaddingValues,
-    columnCount: Int = DEFAULT_COLUMN_COUNT,
     modifier: Modifier = Modifier,
+    columnCount: Int = DEFAULT_COLUMN_COUNT,
     onClick: (BoxSet) -> Unit,
 ) {
     LazyVerticalGrid(
@@ -139,7 +114,7 @@ private fun BoxSetCard(
 
         if (isLoading) {
             CircularProgressIndicator(
-                modifier = modifier
+                modifier = Modifier
                     .fillMaxSize()
                     .padding(48.dp),
             )
@@ -148,7 +123,7 @@ private fun BoxSetCard(
         Image(
             painter = painter,
             contentDescription = boxSet.title,
-            modifier = modifier
+            modifier = Modifier
                 .clickable(onClick = onClick)
                 .fillMaxSize(),
             alignment = Alignment.TopCenter,

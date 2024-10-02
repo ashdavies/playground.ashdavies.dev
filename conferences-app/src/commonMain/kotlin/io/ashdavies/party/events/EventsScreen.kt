@@ -92,13 +92,13 @@ internal fun EventsScreen(
 
             items(itemCount) { index ->
                 EventSection(
-                    event = state.pagingItems.getOrNull(index),
-                    modifier = Modifier.animateItemPlacement(),
                     emphasis = when (index) {
                         0 -> TextEmphasis.Significant
                         1 -> TextEmphasis.Moderate
                         else -> TextEmphasis.Standard
                     },
+                    modifier = Modifier.animateItemPlacement(),
+                    event = state.pagingItems.getOrNull(index),
                 )
             }
         }
@@ -124,9 +124,9 @@ private enum class TextEmphasis {
 @Composable
 @ExperimentalMaterialApi
 private fun EventSection(
-    event: Event?,
-    modifier: Modifier = Modifier,
     emphasis: TextEmphasis,
+    modifier: Modifier = Modifier,
+    event: Event? = null,
 ) {
     Card(
         modifier = modifier

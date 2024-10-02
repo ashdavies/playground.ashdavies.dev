@@ -29,17 +29,11 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults.enterAlwaysScrollBehavior
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.produceState
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
 import coil3.compose.rememberAsyncImagePainter
-import com.slack.circuit.runtime.Navigator
 import io.ashdavies.analytics.OnClickWith
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
@@ -49,38 +43,6 @@ private const val DEFAULT_COLUMN_COUNT = 6
 
 private const val HORIZONTAL_CARD_SPAN = 2
 private const val VERTICAL_CARD_SPAN = 3
-
-@Composable
-internal fun DetailsPresenter(
-    navigator: Navigator,
-    cardsStore: CardsStore,
-    boxSet: BoxSet,
-): DominionScreen.BoxSetDetails.State {
-    var expandedCard by remember { mutableStateOf<Card?>(null) }
-    var isLoading by remember { mutableStateOf(false) }
-
-    val cards by produceState(emptyList<Card>()) {
-        value = cardsStore(boxSet.title)
-        isLoading = false
-    }
-
-    return DominionScreen.BoxSetDetails.State(
-        boxSet = boxSet,
-        cards = cards,
-        expandedCard = expandedCard,
-        isLoading = isLoading,
-    ) { event ->
-        when (event) {
-            is DominionScreen.BoxSetDetails.Event.ExpandCard -> {
-                expandedCard = event.card
-            }
-
-            DominionScreen.BoxSetDetails.Event.Back -> {
-                navigator.pop()
-            }
-        }
-    }
-}
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
@@ -171,9 +133,9 @@ private fun BackIconButton(onClick: () -> Unit) {
 private fun DetailsScreen(
     cards: ImmutableList<Card>,
     contentPadding: PaddingValues,
+    modifier: Modifier = Modifier,
     columnCount: Int = DEFAULT_COLUMN_COUNT,
     onClick: (Card) -> Unit,
-    modifier: Modifier = Modifier,
 ) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(columnCount),
@@ -202,8 +164,8 @@ private fun BoxSetCard(
     modifier: Modifier = Modifier,
     onClick: () -> Unit = { },
 ) {
-    Box(Modifier.padding(4.dp)) {
-        Card(modifier.clickable(onClick = onClick)) {
+    Box(modifier.padding(4.dp)) {
+        Card(Modifier.clickable(onClick = onClick)) {
             Image(
                 painter = rememberAsyncImagePainter(value.image),
                 contentDescription = value.title,

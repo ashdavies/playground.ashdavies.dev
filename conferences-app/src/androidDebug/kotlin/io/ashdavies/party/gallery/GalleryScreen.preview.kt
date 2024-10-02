@@ -7,11 +7,11 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
-import io.ashdavies.party.tooling.DayNightPreview
+import io.ashdavies.party.tooling.PreviewDayNight
 import kotlinx.collections.immutable.persistentListOf
 
 @Composable
-@DayNightPreview
+@PreviewDayNight
 @OptIn(ExperimentalFoundationApi::class)
 internal fun GalleryGridPreview() {
     GalleryPreviewTheme {
@@ -23,16 +23,16 @@ internal fun GalleryGridPreview() {
                     galleryScreenStateItem(state = SyncState.SYNCING),
                     galleryScreenStateItem(state = SyncState.SYNCED),
                 ),
-                isSelecting = true,
-                onSelect = { },
                 onExpand = { },
+                onSelect = { },
+                isSelecting = true,
             )
         }
     }
 }
 
 @Composable
-@DayNightPreview
+@PreviewDayNight
 internal fun GalleryBottomSheetPreview() {
     GalleryPreviewTheme {
         GallerySheetContent(eventSink = { })
