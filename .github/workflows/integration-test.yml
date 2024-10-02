@@ -19,6 +19,12 @@ on:
           - info
           - debug
 
+      monitor_permissions:
+        type: boolean
+        description: Monitor Permissions
+        required: false
+        default: false
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -34,6 +40,9 @@ jobs:
       id-token: 'write'
 
     steps:
+      - uses: GitHubSecurityLab/actions-permissions/monitor@v1
+        if: ${{ github.event.inputs.monitor_permissions == 'true' }}
+
       - name: Checkout Repository
         uses: actions/checkout@v3
 

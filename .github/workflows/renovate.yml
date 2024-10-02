@@ -18,13 +18,20 @@ on:
           - ERROR
           - FATAL
 
+      monitor_permissions:
+        type: boolean
+        description: Monitor Permissions
+        required: false
+        default: false
+
 jobs:
   renovate:
     name: Self-Hosted
     runs-on: ubuntu-latest
+
     steps:
-#     - name: Permissions Monitor
-#       uses: GitHubSecurityLab/actions-permissions/monitor@v1
+      - uses: GitHubSecurityLab/actions-permissions/monitor@v1
+        if: ${{ github.event.inputs.monitor_permissions == 'true' }}
 
       - uses: actions/checkout@v3.5.2
 
