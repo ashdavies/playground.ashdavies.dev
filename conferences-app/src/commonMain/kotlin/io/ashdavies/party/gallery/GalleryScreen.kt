@@ -139,7 +139,7 @@ internal fun GalleryScreen(
         when {
             state.itemList.isEmpty() -> {
                 Box(
-                    modifier = modifier.fillMaxSize(),
+                    modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center,
                     content = { Text("Empty") },
                 )
@@ -148,10 +148,10 @@ internal fun GalleryScreen(
             else -> {
                 GalleryGrid(
                     itemList = state.itemList.toImmutableList(),
-                    isSelecting = isSelecting,
-                    modifier = Modifier.padding(paddingValues),
                     onExpand = { eventSink(GalleryScreen.Event.Selection.Expand(it)) },
                     onSelect = { eventSink(GalleryScreen.Event.Selection.Toggle(it)) },
+                    modifier = Modifier.padding(paddingValues),
+                    isSelecting = isSelecting,
                 )
 
                 if (state.expandedItem != null) {
@@ -207,11 +207,11 @@ private fun GalleryExpandedItem(
 @ExperimentalFoundationApi
 internal fun GalleryGrid(
     itemList: ImmutableList<GalleryScreen.State.StandardItem>,
-    columnCount: Int = DEFAULT_COLUMN_COUNT,
-    isSelecting: Boolean = false,
-    modifier: Modifier = Modifier,
     onExpand: (Int) -> Unit,
     onSelect: (Int) -> Unit,
+    modifier: Modifier = Modifier,
+    columnCount: Int = DEFAULT_COLUMN_COUNT,
+    isSelecting: Boolean = false,
 ) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(columnCount),
@@ -223,10 +223,10 @@ internal fun GalleryGrid(
         itemsIndexed(itemList) { index, item ->
             GalleryItem(
                 item = item,
-                isSelecting = isSelecting,
-                modifier = Modifier.animateItemPlacement(),
                 onSelect = { onSelect(index) },
                 onExpand = { onExpand(index) },
+                modifier = Modifier.animateItemPlacement(),
+                isSelecting = isSelecting,
             )
         }
     }
@@ -236,10 +236,10 @@ internal fun GalleryGrid(
 @ExperimentalFoundationApi
 internal fun GalleryItem(
     item: GalleryScreen.State.StandardItem,
-    isSelecting: Boolean = false,
-    modifier: Modifier = Modifier,
     onSelect: () -> Unit,
     onExpand: () -> Unit,
+    modifier: Modifier = Modifier,
+    isSelecting: Boolean = false,
 ) {
     val itemBorderRadius by animateDpAsState(if (item.isSelected) 12.dp else 8.dp)
     val itemPadding by animateDpAsState(if (item.isSelected) 12.dp else 0.dp)
@@ -306,10 +306,10 @@ internal fun GalleryItem(
 
 @Composable
 private fun SelectedIndicator(
+    modifier: Modifier = Modifier,
     surfaceColor: Color = MaterialTheme.colorScheme.surface,
     onPrimaryContainerColor: Color = MaterialTheme.colorScheme.onPrimaryContainer,
     iconPainter: Painter = rememberVectorPainter(Icons.Filled.CheckCircle),
-    modifier: Modifier = Modifier,
 ) {
     Canvas(modifier) {
         drawCircle(
@@ -327,9 +327,9 @@ private fun SelectedIndicator(
 
 @Composable
 private fun UnselectedIndicator(
+    modifier: Modifier = Modifier,
     highlightColor: Color = Color.White.copy(alpha = 0.5F),
     strokeWidth: Dp = 2.dp,
-    modifier: Modifier = Modifier,
 ) {
     Canvas(modifier) {
         drawCircle(

@@ -27,12 +27,12 @@ import androidx.compose.ui.unit.dp
 @ExperimentalMaterial3Api
 public fun BottomSheetScaffold(
     sheetContent: @Composable ColumnScope.() -> Unit,
+    modifier: Modifier = Modifier,
     topBar: @Composable () -> Unit = { },
     bottomBar: @Composable () -> Unit = { },
     floatingActionButton: @Composable () -> Unit = { },
     showDragHandle: Boolean = true,
     isExpanded: Boolean = false,
-    modifier: Modifier = Modifier,
     content: @Composable (PaddingValues) -> Unit,
 ) {
     val bottomSheetState = rememberStandardBottomSheetState(SheetValue.Hidden, skipHiddenState = false)
