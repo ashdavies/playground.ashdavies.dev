@@ -8,7 +8,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import com.slack.circuit.runtime.Navigator
 
-
 @Composable
 internal fun BoxSetListPresenter(
     navigator: Navigator,
