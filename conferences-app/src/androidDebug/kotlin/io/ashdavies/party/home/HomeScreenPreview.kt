@@ -8,10 +8,10 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import io.ashdavies.identity.IdentityState
 import io.ashdavies.party.profile.ProfileActionButton
-import io.ashdavies.party.tooling.DayNightPreview
+import io.ashdavies.party.tooling.PreviewDayNight
 
 @Composable
-@DayNightPreview
+@PreviewDayNight
 @OptIn(ExperimentalMaterial3Api::class)
 internal fun HomeTopAppBarPreview() {
     MaterialPreviewTheme {
@@ -27,10 +27,10 @@ internal fun HomeTopAppBarPreview() {
 }
 
 @Composable
-@DayNightPreview
+@PreviewDayNight
 internal fun HomeBottomSheetPreview() {
     MaterialPreviewTheme {
-        HomeBottomBar(HomeScreen)
+        HomeBottomBar()
     }
 }
 

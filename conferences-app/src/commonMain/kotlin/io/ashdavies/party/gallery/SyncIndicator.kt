@@ -15,7 +15,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -42,7 +42,7 @@ internal fun SyncIndicator(isSyncing: Boolean, modifier: Modifier = Modifier) {
     val tint by animateColorAsState(if (isSyncing) Color.Orange else Color.LightGreen)
     val scale by animateFloatAsState(if (isSyncing) SYNCING_SCALE else 1f)
 
-    var currentRotation by remember { mutableStateOf(0f) }
+    var currentRotation by remember { mutableFloatStateOf(0f) }
     val rotation = remember { Animatable(currentRotation) }
 
     LaunchedEffect(isSyncing) {
