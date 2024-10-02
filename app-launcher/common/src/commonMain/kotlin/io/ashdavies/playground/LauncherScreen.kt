@@ -23,6 +23,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -62,7 +64,7 @@ internal object LauncherScreen : Parcelable, Screen {
 internal fun LauncherScreen(
     state: LauncherScreen.State,
     modifier: Modifier = Modifier,
-    onFullyDrawn: () -> Unit,
+    reportFullyDrawn: () -> Unit,
 ) {
     val eventSink = state.eventSink
 
@@ -74,7 +76,7 @@ internal fun LauncherScreen(
             items(state.entries) { entry ->
                 LauncherItem(
                     item = entry,
-                    modifier = modifier.padding(24.dp),
+                    modifier = Modifier.padding(24.dp),
                     onClick = OnClick("launcher_goto", mapOf("screen" to entry.screen)) {
                         eventSink(NavEvent.GoTo(entry.screen))
                     },
@@ -83,8 +85,10 @@ internal fun LauncherScreen(
         }
     }
 
+    val latestReportFullyDrawn by rememberUpdatedState(reportFullyDrawn)
+
     LaunchedEffect(Unit) {
-        onFullyDrawn()
+        latestReportFullyDrawn()
     }
 }
 

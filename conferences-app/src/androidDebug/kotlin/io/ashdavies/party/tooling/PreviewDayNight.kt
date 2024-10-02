@@ -5,4 +5,4 @@ import androidx.compose.ui.tooling.preview.Preview
 
 @Preview(name = "Day")
 @Preview(name = "Night", uiMode = Configuration.UI_MODE_NIGHT_YES)
-internal annotation class DayNightPreview
+internal annotation class PreviewDayNight
