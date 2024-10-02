@@ -1,5 +1,30 @@
 name: Pull Request
-on: [ pull_request ]
+
+on:
+  pull_request:
+    branches:
+      - "*"
+
+  workflow_dispatch:
+    inputs:
+      log_level:
+        type: choice
+        description: Log Level
+        required: false
+        default: info
+        options:
+          - error
+          - quiet
+          - warning
+          - lifecycle
+          - info
+          - debug
+
+      monitor_permissions:
+        type: boolean
+        description: Monitor Permissions
+        required: false
+        default: false
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
@@ -9,12 +34,17 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
+    env:
+      GRADLE_OPTS: "-Dorg.gradle.logging.level=${{ github.event.inputs.log_level || 'info' }}"
 
     permissions:
       pull-requests: 'write'
       id-token: 'write'
 
     steps:
+      - uses: GitHubSecurityLab/actions-permissions/monitor@v1
+        if: ${{ github.event.inputs.monitor_permissions == 'true' }}
+
       - uses: actions/checkout@v3
 
       - uses: ./.github/actions/setup-cloud
