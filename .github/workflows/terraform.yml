@@ -11,19 +11,6 @@ on:
 
   workflow_dispatch:
     inputs:
-      log_level:
-        type: choice
-        description: Log Level
-        required: false
-        default: info
-        options:
-          - error
-          - quiet
-          - warning
-          - lifecycle
-          - info
-          - debug
-
       monitor_permissions:
         type: boolean
         description: Monitor Permissions
