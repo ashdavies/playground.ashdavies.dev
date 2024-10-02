@@ -23,6 +23,10 @@ private val detektAll by tasks.registering {
     dependsOn(tasks.withType<Detekt>())
 }
 
+dependencies {
+    add("detektPlugins", libs.detekt.compose)
+}
+
 extensions.configure<DetektExtension> {
     config.setFrom(rootProject.file("detekt-config.yml"))
     buildUponDefaultConfig = true
