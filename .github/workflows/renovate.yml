@@ -6,18 +6,6 @@ on:
 
   workflow_dispatch:
     inputs:
-      log_level:
-        description: 'Log level'
-        required: false
-        default: INFO
-        type: choice
-        options:
-          - DEBUG
-          - INFO
-          - WARN
-          - ERROR
-          - FATAL
-
       monitor_permissions:
         type: boolean
         description: Monitor Permissions
@@ -42,8 +30,6 @@ jobs:
           app_id: ${{ secrets.APP_ID }}
 
       - uses: renovatebot/github-action@v39.1.1
-        env:
-          LOG_LEVEL: ${{ inputs.log_level || 'INFO' }}
         with:
           configurationFile: .github/renovate.json
           token: ${{ steps.generate_token.outputs.token }}

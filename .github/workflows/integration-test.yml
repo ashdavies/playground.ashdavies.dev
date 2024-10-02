@@ -6,19 +6,6 @@ on:
 
   workflow_dispatch:
     inputs:
-      log_level:
-        type: choice
-        description: Log Level
-        required: false
-        default: info
-        options:
-          - error
-          - quiet
-          - warning
-          - lifecycle
-          - info
-          - debug
-
       monitor_permissions:
         type: boolean
         description: Monitor Permissions
@@ -33,8 +20,6 @@ jobs:
   build:
     name: Run Integration Tests
     runs-on: ubuntu-latest
-    env:
-      GRADLE_OPTS: "-Dorg.gradle.logging.level=${{ github.event.inputs.log_level || 'info' }}"
 
     permissions:
       id-token: 'write'
