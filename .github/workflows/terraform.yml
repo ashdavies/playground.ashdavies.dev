@@ -67,7 +67,7 @@ jobs:
 
       - uses: hashicorp/setup-terraform@v3
         with:
-          terraform_version: 1.9.6
+          terraform_version: 1.9.7
 
       - id: init
         run: terraform -chdir=terraform init
