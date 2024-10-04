@@ -77,17 +77,20 @@ internal fun BoxSetListScreen(
 private fun BoxSetListScreen(
     boxSetList: ImmutableList<BoxSet>,
     contentPadding: PaddingValues,
+    onClick: (BoxSet) -> Unit,
     modifier: Modifier = Modifier,
     columnCount: Int = DEFAULT_COLUMN_COUNT,
-    onClick: (BoxSet) -> Unit,
 ) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(columnCount),
         modifier = modifier.padding(4.dp),
         contentPadding = contentPadding,
     ) {
-        items(boxSetList) {
-            BoxSetCard(it) { onClick(it) }
+        items(boxSetList) { boxSet ->
+            BoxSetCard(
+                boxSet = boxSet,
+                onClick = { onClick(boxSet) },
+            )
         }
     }
 }
@@ -96,8 +99,8 @@ private fun BoxSetListScreen(
 @ExperimentalMaterial3Api
 private fun BoxSetCard(
     boxSet: BoxSet,
-    modifier: Modifier = Modifier,
     onClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Box(
         modifier = modifier

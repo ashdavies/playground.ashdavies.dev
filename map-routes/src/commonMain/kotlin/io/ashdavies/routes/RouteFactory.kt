@@ -13,6 +13,10 @@ public fun Circuit.Builder.addRoutePresenter(context: PlatformContext): Circuit.
 
 public fun Circuit.Builder.addRouteUi(): Circuit.Builder {
     return addUi<RouteScreen, RouteScreen.State> { state, modifier ->
-        RouteScreen(state, modifier) { state.eventSink(RouteScreen.Event.OnEndPosition(it)) }
+        RouteScreen(
+            state = state,
+            onEndPosition = { state.eventSink(RouteScreen.Event.OnEndPosition(it)) },
+            modifier = modifier,
+        )
     }
 }
