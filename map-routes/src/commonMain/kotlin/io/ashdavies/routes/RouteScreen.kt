@@ -25,12 +25,12 @@ internal object RouteScreen : Screen {
 @Composable
 internal fun RouteScreen(
     state: RouteScreen.State,
-    modifier: Modifier = Modifier,
     onEndPosition: (LatLng) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     RouteMap(
         state = state.mapState,
-        modifier = modifier,
         onEndPosition = onEndPosition,
+        modifier = modifier,
     )
 }
