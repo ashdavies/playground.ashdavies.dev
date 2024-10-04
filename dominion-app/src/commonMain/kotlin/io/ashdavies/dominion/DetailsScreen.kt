@@ -133,9 +133,9 @@ private fun BackIconButton(onClick: () -> Unit) {
 private fun DetailsScreen(
     cards: ImmutableList<Card>,
     contentPadding: PaddingValues,
+    onClick: (Card) -> Unit,
     modifier: Modifier = Modifier,
     columnCount: Int = DEFAULT_COLUMN_COUNT,
-    onClick: (Card) -> Unit,
 ) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(columnCount),

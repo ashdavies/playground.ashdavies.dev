@@ -7,8 +7,8 @@ import androidx.compose.ui.Modifier
 @Composable
 internal actual fun RouteMap(
     state: RouteMapState,
-    modifier: Modifier,
     onEndPosition: (LatLng) -> Unit,
+    modifier: Modifier,
 ) {
     Text("Unsupported Platform")
 }

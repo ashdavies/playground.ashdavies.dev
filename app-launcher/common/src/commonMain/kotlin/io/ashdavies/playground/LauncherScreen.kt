@@ -76,10 +76,10 @@ internal fun LauncherScreen(
             items(state.entries) { entry ->
                 LauncherItem(
                     item = entry,
-                    modifier = Modifier.padding(24.dp),
                     onClick = OnClick("launcher_goto", mapOf("screen" to entry.screen)) {
                         eventSink(NavEvent.GoTo(entry.screen))
                     },
+                    modifier = Modifier.padding(24.dp),
                 )
             }
         }
@@ -116,8 +116,8 @@ private fun LauncherTopAppBar(modifier: Modifier = Modifier) {
 @ExperimentalMaterial3Api
 private fun LauncherItem(
     item: LauncherScreen.State.Item,
-    modifier: Modifier = Modifier,
     onClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Card(
         modifier = modifier.clickable(

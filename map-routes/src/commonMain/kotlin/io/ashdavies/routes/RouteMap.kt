@@ -19,8 +19,8 @@ internal data class RouteMapState(
 @Composable
 internal expect fun RouteMap(
     state: RouteMapState,
-    modifier: Modifier = Modifier,
     onEndPosition: (LatLng) -> Unit,
+    modifier: Modifier = Modifier,
 )
 
 internal data class LatLng(
