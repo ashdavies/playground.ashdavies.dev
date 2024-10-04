@@ -201,16 +201,16 @@ private fun EventStatusRow(
         if (cfpEnd != null && LocalDate.parse(cfpEnd) > Today) {
             SuggestionChip(
                 text = "Call for Papers (Until $cfpEnd)",
-                modifier = Modifier.padding(end = 8.dp),
                 onClick = OnClick("event_cfp") { },
+                modifier = Modifier.padding(end = 8.dp),
             )
         }
 
         if (isOnlineOnly) {
             SuggestionChip(
                 text = "Online Only",
-                enabled = false,
                 onClick = { },
+                enabled = false,
             )
         }
     }
@@ -244,9 +244,9 @@ private fun EventSectionBackground(
 @Composable
 private fun SuggestionChip(
     text: String,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    onClick: () -> Unit,
 ) {
     SuggestionChip(
         onClick = onClick,
