@@ -20,9 +20,9 @@ import io.ashdavies.identity.IdentityState
 @Composable
 internal fun ProfileActionButton(
     identityState: IdentityState,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier,
     tintColor: Color = MaterialTheme.colorScheme.onBackground,
-    onClick: () -> Unit,
 ) {
     Crossfade(identityState, modifier) { state ->
         when (state) {
