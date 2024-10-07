@@ -6,7 +6,7 @@ buildscript {
         classpath("com.squareup.okio:okio:3.9.1")
             ?.because("androidx.build.gradle.gcpbuildcache uses older versions of okio")
 
-        classpath("org.ow2.asm:asm:9.7")
+        classpath("org.ow2.asm:asm:9.7.1")
             ?.because("com.google.cloud.tools.jib uses older versions of asm")
     }
 }
