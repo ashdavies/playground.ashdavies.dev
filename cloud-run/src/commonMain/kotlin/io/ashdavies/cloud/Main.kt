@@ -13,12 +13,11 @@ import io.ktor.http.HttpHeaders
 import io.ktor.serialization.Configuration
 import io.ktor.serialization.kotlinx.json.json
 import io.ktor.server.application.Application
-import io.ktor.server.application.call
 import io.ktor.server.application.install
 import io.ktor.server.cio.CIO
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.http.content.staticResources
-import io.ktor.server.plugins.callloging.CallLogging
+import io.ktor.server.plugins.calllogging.CallLogging
 import io.ktor.server.plugins.compression.Compression
 import io.ktor.server.plugins.compression.CompressionConfig
 import io.ktor.server.plugins.conditionalheaders.ConditionalHeaders
