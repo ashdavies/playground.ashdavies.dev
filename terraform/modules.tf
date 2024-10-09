@@ -118,9 +118,7 @@ module "github-workload-identity" {
 }
 
 module "gradle-build-cache" {
-  source                   = "terraform-google-modules/cloud-storage/google//modules/simple_bucket"
-  version                  = "6.1.0"
-
+  source                   = "github.com/terraform-google-modules/terraform-google-cloud-storage/modules/simple_bucket"
   location                 = var.project_region
   name                     = "playground-build-cache"
   project_id               = var.project_id
