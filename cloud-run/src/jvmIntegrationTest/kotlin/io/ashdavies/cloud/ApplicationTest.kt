@@ -10,6 +10,7 @@ import io.ktor.client.HttpClientConfig
 import io.ktor.client.call.body
 import io.ktor.client.engine.HttpClientEngineConfig
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiationConfig
 import io.ktor.client.request.get
 import io.ktor.client.request.header
 import io.ktor.client.request.post
@@ -23,7 +24,7 @@ import io.ktor.serialization.kotlinx.json.json
 import io.ktor.server.application.Application
 import io.ktor.server.testing.ApplicationTestBuilder
 import io.ktor.server.testing.testApplication
-import io.ktor.util.KtorDsl
+import io.ktor.utils.io.KtorDsl
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -32,7 +33,7 @@ import kotlin.test.assertTrue
 import kotlin.time.Duration.Companion.minutes
 
 private val DefaultHttpConfig: HttpClientConfig<out HttpClientEngineConfig>.() -> Unit = {
-    install(ContentNegotiation, ContentNegotiation.Config::json)
+    install(ContentNegotiation, ContentNegotiationConfig::json)
 }
 
 @ExperimentalCoroutinesApi
