@@ -7,11 +7,20 @@
       "depNameTemplate": "hashicorp/terraform",
       "depTypeTemplate": "terraform_version",
       "extractVersionTemplate": "v(?<version>.*)",
-      "fileMatch": "^\\.github/workflows/.*\\.yml",
+      "fileMatch": "^\\.github/workflows/.*\\.yml$",
       "matchStrings": [
         "terraform_version: (?<currentValue>.*)"
       ],
       "versioningTemplate": "hashicorp"
+    },
+    {
+      "datasourceTemplate": "maven",
+      "depNameTemplate": "io.gitlab.arturbosch.detekt:io.gitlab.arturbosch.detekt.gradle.plugin",
+      "customType": "regex",
+      "fileMatch": ".gradle.kts$",
+      "matchStrings": [
+        "configure<DetektExtension> {(?s:.)+toolVersion = \"(?<currentValue>[\\d.]*?)\""
+      ]
     }
   ],
   "extends": [
