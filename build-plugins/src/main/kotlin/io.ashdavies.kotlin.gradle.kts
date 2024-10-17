@@ -30,7 +30,7 @@ dependencies {
 extensions.configure<DetektExtension> {
     config.setFrom(rootProject.file("detekt-config.yml"))
     buildUponDefaultConfig = true
-    toolVersion = "1.23.5"
+    toolVersion = "1.23.7"
 }
 
 extensions.configure<KtlintExtension> {
