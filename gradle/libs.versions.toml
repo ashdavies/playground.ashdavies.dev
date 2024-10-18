@@ -29,7 +29,7 @@ androidx-core-splashscreen = "androidx.core:core-splashscreen:1.0.1"
 androidx-credentials-auth = "androidx.credentials:credentials-play-services-auth:1.3.0"
 androidx-paging-common = { module = "androidx.paging:paging-common", version.ref = "androidx-paging" }
 
-app-cash-turbine = "app.cash.turbine:turbine:1.1.0"
+app-cash-turbine = "app.cash.turbine:turbine:1.2.0"
 
 auth-java-jwt = "com.auth0:java-jwt:4.4.0"
 auth-jwks-rsa = "com.auth0:jwks-rsa:0.22.1"
