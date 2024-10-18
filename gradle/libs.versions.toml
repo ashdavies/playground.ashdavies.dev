@@ -29,7 +29,7 @@ androidx-core-splashscreen = "androidx.core:core-splashscreen:1.0.1"
 androidx-credentials-auth = "androidx.credentials:credentials-play-services-auth:1.3.0"
 androidx-paging-common = { module = "androidx.paging:paging-common", version.ref = "androidx-paging" }
 
-app-cash-turbine = "app.cash.turbine:turbine:1.1.0"
+app-cash-turbine = "app.cash.turbine:turbine:1.2.0"
 
 auth-java-jwt = "com.auth0:java-jwt:4.4.0"
 auth-jwks-rsa = "com.auth0:jwks-rsa:0.22.1"
@@ -54,7 +54,7 @@ google-android-location = "com.google.android.gms:play-services-location:21.3.0"
 google-android-material = "com.google.android.material:material:1.12.0"
 
 google-auth-http = "com.google.auth:google-auth-library-oauth2-http:1.28.0"
-google-cloud-bom = "com.google.cloud:libraries-bom:26.48.0"
+google-cloud-bom = "com.google.cloud:libraries-bom:26.49.0"
 google-cloud-firestore = { module = "com.google.cloud:google-cloud-firestore" }
 
 google-firebase-admin = "com.google.firebase:firebase-admin:9.3.0"
