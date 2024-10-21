@@ -19,3 +19,6 @@ naming:
 style:
   MagicNumber:
     ignorePropertyDeclaration: true
+  UnusedPrivateProperty:
+    excludes:
+      - '**/*.gradle.kts'
