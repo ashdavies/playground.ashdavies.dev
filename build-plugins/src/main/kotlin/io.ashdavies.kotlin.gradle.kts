@@ -32,7 +32,18 @@ dependencies {
 }
 
 extensions.configure<DetektExtension> {
-    toolVersion = "1.23.7"
+    val detektPlugin = libs.plugins.detekt.get()
+    toolVersion = "${detektPlugin.version}"
+}
+
+
+tasks.withType<KotlinCompile> {
+    val jvmTargetVersion = libs.versions.kotlin.jvmTarget.get()
+
+    compilerOptions {
+        freeCompilerArgs.addAll("-Xexpect-actual-classes")
+        jvmTarget.set(JvmTarget.fromTarget(jvmTargetVersion))
+    }
 }
 
 extensions.configure<KtlintExtension> {
@@ -42,13 +53,4 @@ extensions.configure<KtlintExtension> {
 
     val ktlintBom = libs.pinterest.ktlint.bom.get()
     version = ktlintBom.version
-}
-
-tasks.withType<KotlinCompile> {
-    val jvmTargetVersion = libs.versions.kotlin.jvmTarget.get()
-
-    compilerOptions {
-        freeCompilerArgs.addAll("-Xexpect-actual-classes")
-        jvmTarget.set(JvmTarget.fromTarget(jvmTargetVersion))
-    }
 }
