@@ -12,15 +12,6 @@
         "terraform_version: (?<currentValue>.*)"
       ],
       "versioningTemplate": "hashicorp"
-    },
-    {
-      "datasourceTemplate": "maven",
-      "depNameTemplate": "io.gitlab.arturbosch.detekt:io.gitlab.arturbosch.detekt.gradle.plugin",
-      "customType": "regex",
-      "fileMatch": ".gradle.kts$",
-      "matchStrings": [
-        "configure<DetektExtension> {(?s:.)+toolVersion = \"(?<currentValue>[\\d.]*?)\""
-      ]
     }
   ],
   "extends": [
