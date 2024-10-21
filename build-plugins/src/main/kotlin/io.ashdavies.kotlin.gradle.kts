@@ -19,13 +19,12 @@ kotlin {
     jvm()
 }
 
-private val detektAll by tasks.registering {
-    val notEmptyDetektTasks = tasks
-        .withType<Detekt>()
-        .toMutableSet()
-        .filter { it.source.files.isNotEmpty() }
-
-    dependsOn(notEmptyDetektTasks)
+private val detektAll by tasks.registering(Detekt::class) {
+    buildUponDefaultConfig = true
+    config.setFrom(rootProject.file("detekt-config.yml"))
+    exclude { "generated" in "$it" }
+    setSource(files(projectDir))
+    parallel = true
 }
 
 dependencies {
@@ -33,8 +32,6 @@ dependencies {
 }
 
 extensions.configure<DetektExtension> {
-    config.setFrom(rootProject.file("detekt-config.yml"))
-    buildUponDefaultConfig = true
     toolVersion = "1.23.7"
 }
 
@@ -47,13 +44,10 @@ extensions.configure<KtlintExtension> {
     version = ktlintBom.version
 }
 
-tasks.withType<Detekt> {
-    val build by tasks.getting {
-        dependsOn(this@withType)
-    }
-
+/*tasks.withType<Detekt> {
     exclude { "generated" in "$it" }
-}
+    parallel = true
+}*/
 
 tasks.withType<KotlinCompile> {
     val jvmTargetVersion = libs.versions.kotlin.jvmTarget.get()
