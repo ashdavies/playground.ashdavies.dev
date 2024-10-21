@@ -19,8 +19,12 @@ kotlin {
     jvm()
 }
 
-private val detektAll by tasks.registering {
-    dependsOn(tasks.withType<Detekt>())
+private val detektAll by tasks.registering(Detekt::class) {
+    buildUponDefaultConfig = true
+    config.setFrom(rootProject.file("detekt-config.yml"))
+    exclude { "generated" in "$it" }
+    setSource(files(projectDir))
+    parallel = true
 }
 
 dependencies {
@@ -28,8 +32,6 @@ dependencies {
 }
 
 extensions.configure<DetektExtension> {
-    config.setFrom(rootProject.file("detekt-config.yml"))
-    buildUponDefaultConfig = true
     toolVersion = "1.23.7"
 }
 
@@ -40,14 +42,6 @@ extensions.configure<KtlintExtension> {
 
     val ktlintBom = libs.pinterest.ktlint.bom.get()
     version = ktlintBom.version
-}
-
-tasks.withType<Detekt> {
-    val build by tasks.getting {
-        dependsOn(this@withType)
-    }
-
-    exclude { "generated" in "$it" }
 }
 
 tasks.withType<KotlinCompile> {
