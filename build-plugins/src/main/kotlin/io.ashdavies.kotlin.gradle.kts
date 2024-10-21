@@ -20,7 +20,12 @@ kotlin {
 }
 
 private val detektAll by tasks.registering {
-    dependsOn(tasks.withType<Detekt>())
+    val notEmptyDetektTasks = tasks
+        .withType<Detekt>()
+        .toMutableSet()
+        .filter { it.source.files.isNotEmpty() }
+
+    dependsOn(notEmptyDetektTasks)
 }
 
 dependencies {
