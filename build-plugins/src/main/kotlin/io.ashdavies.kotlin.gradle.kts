@@ -44,11 +44,6 @@ extensions.configure<KtlintExtension> {
     version = ktlintBom.version
 }
 
-/*tasks.withType<Detekt> {
-    exclude { "generated" in "$it" }
-    parallel = true
-}*/
-
 tasks.withType<KotlinCompile> {
     val jvmTargetVersion = libs.versions.kotlin.jvmTarget.get()
 
