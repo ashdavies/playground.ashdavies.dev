@@ -24,11 +24,11 @@ kotlin {
             implementation(projects.platformSupport)
             implementation(projects.sqlCommon)
 
-            implementation(libs.androidx.credentials.auth)
             implementation(libs.kotlinx.coroutines.core)
         }
 
         androidMain.dependencies {
+            implementation(libs.androidx.credentials.auth)
             implementation(libs.google.android.identity)
         }
     }
