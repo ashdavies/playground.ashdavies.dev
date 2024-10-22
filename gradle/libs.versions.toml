@@ -58,7 +58,7 @@ google-cloud-bom = "com.google.cloud:libraries-bom:26.49.0"
 google-cloud-firestore = { module = "com.google.cloud:google-cloud-firestore" }
 
 google-firebase-admin = "com.google.firebase:firebase-admin:9.3.0"
-google-firebase-bom = "com.google.firebase:firebase-bom:33.4.0"
+google-firebase-bom = "com.google.firebase:firebase-bom:33.5.0"
 google-firebase-appcheck-playintegrity = { module = "com.google.firebase:firebase-appcheck-playintegrity" }
 
 google-guava-jre = "com.google.guava:guava:33.3.1-jre"
