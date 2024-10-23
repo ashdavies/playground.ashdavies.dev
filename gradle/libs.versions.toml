@@ -57,7 +57,7 @@ google-auth-http = "com.google.auth:google-auth-library-oauth2-http:1.29.0"
 google-cloud-bom = "com.google.cloud:libraries-bom:26.49.0"
 google-cloud-firestore = { module = "com.google.cloud:google-cloud-firestore" }
 
-google-firebase-admin = "com.google.firebase:firebase-admin:9.3.0"
+google-firebase-admin = "com.google.firebase:firebase-admin:9.4.1"
 google-firebase-bom = "com.google.firebase:firebase-bom:33.5.0"
 google-firebase-appcheck-playintegrity = { module = "com.google.firebase:firebase-appcheck-playintegrity" }
 
