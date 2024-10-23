@@ -35,7 +35,7 @@ auth-java-jwt = "com.auth0:java-jwt:4.4.0"
 auth-jwks-rsa = "com.auth0:jwks-rsa:0.22.1"
 
 coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil-kt" }
-coil-network = { module = "io.coil-kt.coil3:coil-network-ktor2", version.ref = "coil-kt" }
+coil-network = { module = "io.coil-kt.coil3:coil-network-ktor3", version.ref = "coil-kt" }
 
 detekt-compose = "io.nlopez.compose.rules:detekt:0.4.16"
 
