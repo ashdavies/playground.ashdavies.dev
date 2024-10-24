@@ -64,6 +64,7 @@ include(
     ":http-client",
     ":http-common",
     ":identity-manager",
+    ":key-navigation",
     ":kotlin-gb",
     ":map-routes",
     ":maps-routing",
