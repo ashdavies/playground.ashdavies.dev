@@ -37,8 +37,8 @@ internal fun CardsStore(
             Card(
                 title = cardTitle,
                 format = when {
-                    imageInfo.size.width > imageInfo.size.height -> CardFormat.HORIZONTAL
-                    else -> CardFormat.VERTICAL
+                    imageInfo.size.width > imageInfo.size.height -> CardFormat.Landscape
+                    else -> CardFormat.Portrait
                 },
                 image = imageInfo.url,
                 boxSet = if (isInBoxSet) boxSetTitle else null,

@@ -6,27 +6,28 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import com.slack.circuit.runtime.Navigator
+import kotlinx.collections.immutable.toImmutableList
 
 @Composable
-internal fun BoxSetListPresenter(
-    navigator: Navigator,
+internal fun DominionPresenter(
     boxSetStore: BoxSetStore,
-): DominionScreen.BoxSetList.State {
+    cardsStore: CardsStore,
+): DominionScreen.AdaptiveList.State {
     var isLoading by remember { mutableStateOf(true) }
     val boxSetList by produceState(emptyList<BoxSet>()) {
         value = boxSetStore()
         isLoading = false
     }
 
-    return DominionScreen.BoxSetList.State(
+    return DominionScreen.AdaptiveList.State(
         boxSetList = boxSetList,
-        isLoading = isLoading,
-    ) { event ->
-        when (event) {
-            is DominionScreen.BoxSetList.Event.ShowBoxSet -> {
-                navigator.goTo(DominionScreen.BoxSetDetails(event.boxSet.title))
+        cardList = @Composable { boxSet ->
+            val cardList by produceState(emptyList<Card>()) {
+                value = cardsStore(boxSet.title)
             }
-        }
-    }
+
+            cardList.toImmutableList()
+        },
+        isLoading = isLoading,
+    )
 }
