@@ -23,6 +23,7 @@ kotlin {
         commonMain.dependencies {
             implementation(projects.appLauncher.common)
             implementation(projects.httpClient)
+            implementation(projects.keyNavigation)
             implementation(projects.platformSupport)
 
             implementation(libs.ajalt.clikt)
