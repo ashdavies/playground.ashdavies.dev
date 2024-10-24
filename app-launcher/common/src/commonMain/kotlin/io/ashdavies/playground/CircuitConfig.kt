@@ -7,10 +7,8 @@ import com.slack.circuit.runtime.presenter.presenterOf
 import io.ashdavies.common.PlaygroundDatabase
 import io.ashdavies.content.PlatformContext
 import io.ashdavies.content.reportFullyDrawn
-import io.ashdavies.dominion.addDominionBoxSetDetailsPresenter
-import io.ashdavies.dominion.addDominionBoxSetDetailsUi
-import io.ashdavies.dominion.addDominionBoxSetListPresenter
-import io.ashdavies.dominion.addDominionBoxSetListUi
+import io.ashdavies.dominion.addDominionPresenter
+import io.ashdavies.dominion.addDominionUi
 import io.ashdavies.http.LocalHttpClient
 import io.ashdavies.routes.addRoutePresenter
 import io.ashdavies.routes.addRouteUi
@@ -24,17 +22,23 @@ public fun rememberCircuit(
     httpClient: HttpClient = LocalHttpClient.current,
 ): Circuit = remember(platformContext) {
     Circuit.Builder()
-        .addPresenter<LauncherScreen, LauncherScreen.State> { _, navigator, _ ->
-            presenterOf { LauncherPresenter(navigator) }
-        }
-        .addDominionBoxSetListPresenter(playgroundDatabase, httpClient)
-        .addDominionBoxSetDetailsPresenter(playgroundDatabase, httpClient)
+        .addLauncherPresenter()
+        .addDominionPresenter(playgroundDatabase, httpClient)
         .addRoutePresenter(platformContext)
-        .addUi<LauncherScreen, LauncherScreen.State> { state, modifier ->
-            LauncherScreen(state, modifier, platformContext::reportFullyDrawn)
-        }
-        .addDominionBoxSetListUi()
-        .addDominionBoxSetDetailsUi()
+        .addLauncherUi(platformContext::reportFullyDrawn)
+        .addDominionUi()
         .addRouteUi()
         .build()
+}
+
+private fun Circuit.Builder.addLauncherPresenter(): Circuit.Builder {
+    return addPresenter<LauncherScreen, LauncherScreen.State> { _, navigator, _ ->
+        presenterOf { LauncherPresenter(navigator) }
+    }
+}
+
+private fun Circuit.Builder.addLauncherUi(reportFullyDrawn: () -> Unit): Circuit.Builder {
+    return addUi<LauncherScreen, LauncherScreen.State> { state, modifier ->
+        LauncherScreen(state, modifier, reportFullyDrawn)
+    }
 }

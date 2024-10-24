@@ -5,6 +5,7 @@ androidx-activity = "1.9.3"
 androidx-paging = "3.3.2"
 cash-sqldelight = "2.0.2"
 coil-kt = "3.0.0-rc01"
+compose-adaptive = "1.0.0"
 compose-plugin = "1.7.0"
 gitlive-firebase = "2.1.0"
 google-accompanist = "0.36.0"
@@ -36,6 +37,9 @@ auth-jwks-rsa = "com.auth0:jwks-rsa:0.22.1"
 
 coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil-kt" }
 coil-network = { module = "io.coil-kt.coil3:coil-network-ktor3", version.ref = "coil-kt" }
+
+compose-adaptive-layout = { module = "org.jetbrains.compose.material3.adaptive:adaptive-layout", version.ref = "compose-adaptive" }
+compose-adaptive-navigation = { module = "org.jetbrains.compose.material3.adaptive:adaptive-navigation", version.ref = "compose-adaptive" }
 
 detekt-compose = "io.nlopez.compose.rules:detekt:0.4.16"
 
