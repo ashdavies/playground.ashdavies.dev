@@ -24,8 +24,9 @@ internal actual fun rememberLocationPermissionState(): LocationPermissionState {
             override val shouldShowRationale: Boolean =
                 multiplePermissionState.shouldShowRationale
 
-            override fun launchMultiplePermissionRequest() =
+            override fun launchMultiplePermissionRequest() {
                 multiplePermissionState.launchMultiplePermissionRequest()
+            }
         }
     }
 }
