@@ -44,13 +44,13 @@ internal class MainActivity : ComponentActivity() {
         }
 
         setContent {
-            LauncherApp()
+            ConferencesApp()
         }
     }
 }
 
 @Composable
-private fun LauncherApp(context: Context = LocalContext.current) {
+private fun ConferencesApp(context: Context = LocalContext.current) {
     ProvideHttpClient(
         config = {
             install(DefaultRequest) {

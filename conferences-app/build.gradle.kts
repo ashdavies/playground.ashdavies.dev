@@ -1,3 +1,5 @@
+import org.jetbrains.compose.desktop.application.dsl.TargetFormat
+
 plugins {
     id("com.android.application")
     id("com.google.gms.google-services")
@@ -78,8 +80,25 @@ android {
 buildConfig {
     val androidApiKey by stringPropertyWithTag(::buildConfigField)
     val androidStrictMode by booleanPropertyWithTag(::buildConfigField)
+    val browserApiKey by stringPropertyWithTag(::buildConfigField)
 
     packageName.set(android.namespace)
+}
+
+compose.desktop {
+    application {
+        // https://github.com/Kotlin/kotlinx.coroutines/issues/3914
+        jvmArgs("-Dkotlinx.coroutines.fast.service.loader=false")
+
+        mainClass = "io.ashdavies.party.MainKt"
+
+        nativeDistributions {
+            targetFormats(TargetFormat.Deb, TargetFormat.Dmg)
+
+            packageName = "ConferencesApp"
+            packageVersion = "1.0.0"
+        }
+    }
 }
 
 kotlin {
@@ -111,7 +130,6 @@ kotlin {
             implementation(libs.androidx.paging.common)
             implementation(libs.coil.compose)
             implementation(libs.coil.network)
-            implementation(libs.google.android.material)
             implementation(libs.kotlinx.collections.immutable)
             implementation(libs.kotlinx.datetime)
             implementation(libs.kotlinx.serialization.core)
@@ -134,6 +152,7 @@ kotlin {
 
         androidMain.dependencies {
             implementation(libs.androidx.activity.compose)
+            implementation(libs.google.android.material)
         }
 
         val androidDebug by registering {
@@ -148,7 +167,10 @@ kotlin {
         }
 
         jvmMain.dependencies {
+            implementation(projects.keyNavigation)
             implementation(compose.desktop.currentOs)
+            implementation(libs.gitlive.firebase.app)
+            implementation(libs.gitlive.firebase.config)
         }
     }
 }
