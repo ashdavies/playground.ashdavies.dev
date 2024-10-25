@@ -99,8 +99,10 @@ internal data class ImageInfo(
     )
 }
 
-private fun JsonElement.getContentAsString(key: String): String =
-    jsonObject.getValue(key).jsonPrimitive.content
+private fun JsonElement.getContentAsString(key: String): String {
+    return jsonObject.getValue(key).jsonPrimitive.content
+}
 
-private inline fun <reified T : JsonElement> JsonElement.getOrThrow(key: String): T =
-    jsonObject.getValue(key) as? T ?: error(T::class.simpleName ?: error(T::class))
+private inline fun <reified T : JsonElement> JsonElement.getOrThrow(key: String): T {
+    return jsonObject.getValue(key) as? T ?: error(T::class.simpleName ?: error(T::class))
+}

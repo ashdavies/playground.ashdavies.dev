@@ -17,41 +17,34 @@ public fun FirebaseApp.appCheck(httpClient: HttpClient): AppCheck = AppCheck(
     httpClient = httpClient,
 )
 
-internal fun getProjectId(firebaseApp: FirebaseApp): String =
-    requireNotNull(findExplicitProjectId(firebaseApp)) {
-        "Failed to determine project ID. Initialize the " +
-            "SDK with service account credentials or set project ID as an app option. " +
-            "Alternatively, set the GOOGLE_CLOUD_PROJECT environment variable."
-    }
+internal fun getProjectId(firebaseApp: FirebaseApp): String = requireNotNull(findExplicitProjectId(firebaseApp)) {
+    "Failed to determine project ID. Initialize the " +
+        "SDK with service account credentials or set project ID as an app option. " +
+        "Alternatively, set the GOOGLE_CLOUD_PROJECT environment variable."
+}
 
-internal fun getProjectNumber(): String =
-    requireNotNull(findExplicitProjectNumber()) {
-        "Failed to determine project number. Make sure to initialize " +
-            "the SDK on a Google Cloud Compute Engine with default VM metadata. " +
-            "Alternatively, set the GCP_PROJECT_NUMBER environment variable."
-    }
+internal fun getProjectNumber(): String = requireNotNull(findExplicitProjectNumber()) {
+    "Failed to determine project number. Make sure to initialize " +
+        "the SDK on a Google Cloud Compute Engine with default VM metadata. " +
+        "Alternatively, set the GCP_PROJECT_NUMBER environment variable."
+}
 
-private fun findExplicitProjectId(firebaseApp: FirebaseApp): String? =
-    firebaseApp.options.projectId
-        ?: googleCredentials<ServiceAccountCredentials, String?> { it.projectId }
-        ?: BuildConfig.GOOGLE_CLOUD_PROJECT
-        ?: BuildConfig.GCLOUD_PROJECT
-        ?: BuildConfig.GCP_PROJECT
-        ?: fetchProjectId()
+private fun findExplicitProjectId(firebaseApp: FirebaseApp): String? = firebaseApp.options.projectId
+    ?: googleCredentials<ServiceAccountCredentials, String?> { it.projectId }
+    ?: BuildConfig.GOOGLE_CLOUD_PROJECT
+    ?: BuildConfig.GCLOUD_PROJECT
+    ?: BuildConfig.GCP_PROJECT
+    ?: fetchProjectId()
 
-private fun findExplicitProjectNumber(): String? =
-    BuildConfig.FIREBASE_ANDROID_APP_ID
-        ?.let { it.split(":")[1] }
-        ?: fetchProjectNumber()
+private fun findExplicitProjectNumber(): String? = BuildConfig.FIREBASE_ANDROID_APP_ID
+    ?.let { it.split(":")[1] }
+    ?: fetchProjectNumber()
 
-private inline fun <reified T : GoogleCredentials, R> googleCredentials(transform: (T) -> R): R? =
-    (GoogleCredentials.getApplicationDefault() as? T)?.let(transform)
+private inline fun <reified T : GoogleCredentials, R> googleCredentials(transform: (T) -> R): R? = (GoogleCredentials.getApplicationDefault() as? T)?.let(transform)
 
-private fun fetchProjectId(): String? =
-    fetchComputeMetadataBlocking(path = "project/project-id")
+private fun fetchProjectId(): String? = fetchComputeMetadataBlocking(path = "project/project-id")
 
-private fun fetchProjectNumber(): String? =
-    fetchComputeMetadataBlocking(path = "project/numeric-project-id")
+private fun fetchProjectNumber(): String? = fetchComputeMetadataBlocking(path = "project/numeric-project-id")
 
 private inline fun <reified T> fetchComputeMetadataBlocking(
     httpClient: HttpClient = HttpClient(),
