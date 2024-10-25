@@ -128,7 +128,7 @@ android-library = { id = "com.android.library", version.ref = "google-android" }
 build-config = "com.github.gmazzo.buildconfig:5.5.0"
 cash-sqldelight = { id = "app.cash.sqldelight", version.ref = "cash-sqldelight" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "jetbrains-kotlin" }
-dependency-analysis = "com.autonomousapps.dependency-analysis:2.2.0"
+dependency-analysis = "com.autonomousapps.dependency-analysis:2.3.0"
 detekt = "io.gitlab.arturbosch.detekt:1.23.7"
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
 gradle-doctor = "com.osacky.doctor:0.10.0"
