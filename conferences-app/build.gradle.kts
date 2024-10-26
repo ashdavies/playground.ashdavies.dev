@@ -171,6 +171,9 @@ kotlin {
             implementation(compose.desktop.currentOs)
             implementation(libs.gitlive.firebase.app)
             implementation(libs.gitlive.firebase.config)
+
+            runtimeOnly(libs.kotlinx.coroutines.swing)
+            runtimeOnly(libs.slf4j.simple)
         }
     }
 }
