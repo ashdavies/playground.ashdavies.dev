@@ -87,9 +87,6 @@ buildConfig {
 
 compose.desktop {
     application {
-        // https://github.com/Kotlin/kotlinx.coroutines/issues/3914
-        jvmArgs("-Dkotlinx.coroutines.fast.service.loader=false")
-
         mainClass = "io.ashdavies.party.MainKt"
 
         nativeDistributions {

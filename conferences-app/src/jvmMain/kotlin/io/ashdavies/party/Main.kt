@@ -35,7 +35,10 @@ import io.ktor.client.request.header
 
 public fun main() {
     application {
-        Window(::exitApplication) {
+        Window(
+            onCloseRequest = ::exitApplication,
+            title = "Conferences",
+        ) {
             ConferencesApp(
                 context = PlatformContext.Default,
                 onClose = ::exitApplication,
