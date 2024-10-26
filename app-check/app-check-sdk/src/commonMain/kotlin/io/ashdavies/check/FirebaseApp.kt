@@ -40,7 +40,9 @@ private fun findExplicitProjectNumber(): String? = BuildConfig.FIREBASE_ANDROID_
     ?.let { it.split(":")[1] }
     ?: fetchProjectNumber()
 
-private inline fun <reified T : GoogleCredentials, R> googleCredentials(transform: (T) -> R): R? = (GoogleCredentials.getApplicationDefault() as? T)?.let(transform)
+private inline fun <reified T : GoogleCredentials, R> googleCredentials(transform: (T) -> R): R? {
+    return (GoogleCredentials.getApplicationDefault() as? T)?.let(transform)
+}
 
 private fun fetchProjectId(): String? = fetchComputeMetadataBlocking(path = "project/project-id")
 

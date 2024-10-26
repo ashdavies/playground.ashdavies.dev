@@ -22,7 +22,7 @@ import io.ashdavies.http.publicStorage
 import io.ashdavies.io.resolveCacheDir
 import io.ashdavies.material.dynamicColorScheme
 import io.ashdavies.party.config.rememberCircuit
-import io.ashdavies.party.firebase.LocalConfigValue
+import io.ashdavies.party.firebase.EmptyLocalConfigValue
 import io.ashdavies.party.home.HomeScreen
 import io.ashdavies.playground.BuildConfig
 import io.ashdavies.playground.KeyNavigationDecoration
@@ -104,7 +104,7 @@ private fun ProvideRemoteLocals(content: @Composable () -> Unit) {
             override suspend fun <T : Any> getValue(
                 key: String,
                 transform: (LocalConfigValue) -> T,
-            ): T = transform(LocalConfigValue())
+            ): T = transform(EmptyLocalConfigValue)
         },
         content = content,
     )
