@@ -9,6 +9,7 @@ import androidx.paging.PagingConfig
 import app.cash.sqldelight.Transacter
 import io.ashdavies.aggregator.AsgConference
 import io.ashdavies.aggregator.UpcomingConferencesCallable
+import io.ashdavies.config.LocalRemoteConfig
 import io.ashdavies.config.RemoteConfig
 import io.ashdavies.config.getBoolean
 import io.ashdavies.http.LocalHttpClient
@@ -59,7 +60,7 @@ internal fun rememberEventPager(
 @Composable
 private fun rememberUpcomingEventsCallable(
     httpClient: HttpClient = LocalHttpClient.current,
-    remoteConfig: RemoteConfig = RemoteConfig,
+    remoteConfig: RemoteConfig = LocalRemoteConfig.current,
 ): PagedUpcomingEventsCallable {
     val pagedCallable by lazy { PagedUpcomingEventsCallable(httpClient, PLAYGROUND_BASE_URL) }
     val asgCallable by lazy { UpcomingConferencesCallable(httpClient) }
