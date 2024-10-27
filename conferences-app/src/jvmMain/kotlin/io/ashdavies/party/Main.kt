@@ -1,6 +1,8 @@
 package io.ashdavies.party
 
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
+import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.window.Window
@@ -24,6 +26,7 @@ import io.ashdavies.material.dynamicColorScheme
 import io.ashdavies.party.config.rememberCircuit
 import io.ashdavies.party.firebase.EmptyLocalConfigValue
 import io.ashdavies.party.home.HomeScreen
+import io.ashdavies.party.material.ProvideLocalWindowSizeClass
 import io.ashdavies.playground.BuildConfig
 import io.ashdavies.playground.KeyNavigationDecoration
 import io.ashdavies.playground.PlaygroundDatabase
@@ -77,16 +80,19 @@ private fun ConferencesApp(
 
                         CircuitCompositionLocals(circuit) {
                             ContentWithOverlays {
-                                val backStack = rememberSaveableBackStack(HomeScreen)
+                                @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
+                                ProvideLocalWindowSizeClass(calculateWindowSizeClass()) {
+                                    val backStack = rememberSaveableBackStack(HomeScreen)
 
-                                NavigableCircuitContent(
-                                    navigator = rememberCircuitNavigator(backStack) { onClose() },
-                                    backStack = backStack,
-                                    decoration = KeyNavigationDecoration(
-                                        decoration = circuit.defaultNavDecoration,
-                                        onBackInvoked = backStack::pop,
-                                    ),
-                                )
+                                    NavigableCircuitContent(
+                                        navigator = rememberCircuitNavigator(backStack) { onClose() },
+                                        backStack = backStack,
+                                        decoration = KeyNavigationDecoration(
+                                            decoration = circuit.defaultNavDecoration,
+                                            onBackInvoked = backStack::pop,
+                                        ),
+                                    )
+                                }
                             }
                         }
                     }

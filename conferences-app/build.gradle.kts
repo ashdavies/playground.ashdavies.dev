@@ -117,6 +117,7 @@ kotlin {
             implementation(projects.sqlCompose)
             implementation(projects.sqlDriver)
 
+            implementation(compose.components.resources)
             implementation(compose.foundation)
             implementation(compose.material)
             implementation(compose.material3)
@@ -127,6 +128,7 @@ kotlin {
             implementation(libs.androidx.paging.common)
             implementation(libs.coil.compose)
             implementation(libs.coil.network)
+            implementation(libs.compose.window.size)
             implementation(libs.kotlinx.collections.immutable)
             implementation(libs.kotlinx.datetime)
             implementation(libs.kotlinx.serialization.core)

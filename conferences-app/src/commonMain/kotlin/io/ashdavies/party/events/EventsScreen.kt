@@ -1,6 +1,5 @@
 package io.ashdavies.party.events
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -10,7 +9,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.Divider
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
@@ -20,10 +21,15 @@ import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SuggestionChip
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.windowsizeclass.WindowSizeClass
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Brush
@@ -42,13 +48,19 @@ import io.ashdavies.analytics.OnClick
 import io.ashdavies.paging.LazyPagingItems
 import io.ashdavies.parcelable.Parcelable
 import io.ashdavies.parcelable.Parcelize
+import io.ashdavies.party.material.LocalWindowSizeClass
 import io.ashdavies.placeholder.PlaceholderHighlight
 import io.ashdavies.placeholder.fade
 import io.ashdavies.placeholder.placeholder
 import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
+import kotlinx.datetime.format
 import kotlinx.datetime.toLocalDateTime
+import org.jetbrains.compose.resources.stringResource
+import playground.conferences_app.generated.resources.Res
+import playground.conferences_app.generated.resources.call_for_papers
+import playground.conferences_app.generated.resources.online_only
 
 private const val EMPTY_STRING = ""
 
@@ -62,10 +74,7 @@ internal object EventsScreen : Parcelable, Screen {
 }
 
 @Composable
-@OptIn(
-    ExperimentalFoundationApi::class,
-    ExperimentalMaterialApi::class,
-)
+@OptIn(ExperimentalMaterialApi::class)
 internal fun EventsScreen(
     state: EventsScreen.State,
     modifier: Modifier = Modifier,
@@ -97,7 +106,7 @@ internal fun EventsScreen(
                         1 -> TextEmphasis.Moderate
                         else -> TextEmphasis.Standard
                     },
-                    modifier = Modifier.animateItemPlacement(),
+                    modifier = Modifier.animateItem(),
                     event = state.pagingItems.getOrNull(index),
                 )
             }
@@ -124,9 +133,10 @@ private enum class TextEmphasis {
 @Composable
 @ExperimentalMaterialApi
 private fun EventSection(
+    event: Event?,
     emphasis: TextEmphasis,
     modifier: Modifier = Modifier,
-    event: Event? = null,
+    windowClassSize: WindowSizeClass = LocalWindowSizeClass.current,
 ) {
     Card(
         modifier = modifier
@@ -144,74 +154,118 @@ private fun EventSection(
                 )
             }
 
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(
-                        horizontal = 16.dp,
-                        vertical = 8.dp,
-                    ),
-            ) {
-                PlaceholderText(
-                    text = event?.name,
-                    modifier = Modifier.align(Alignment.Start),
-                    style = when (emphasis) {
-                        TextEmphasis.Significant -> MaterialTheme.typography.headlineLarge
-                        TextEmphasis.Moderate -> MaterialTheme.typography.headlineMedium
-                        TextEmphasis.Standard -> MaterialTheme.typography.headlineSmall
-                    },
-                )
+            Row {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f)
+                        .padding(
+                            horizontal = 16.dp,
+                            vertical = 8.dp,
+                        ),
+                ) {
+                    Row {
+                        PlaceholderText(
+                            text = event?.name,
+                            style = when (emphasis) {
+                                TextEmphasis.Significant -> MaterialTheme.typography.headlineLarge
+                                TextEmphasis.Moderate -> MaterialTheme.typography.headlineMedium
+                                TextEmphasis.Standard -> MaterialTheme.typography.headlineSmall
+                            },
+                        )
 
-                PlaceholderText(
-                    text = event?.location,
-                    modifier = Modifier.align(Alignment.Start),
-                    style = when (emphasis) {
-                        TextEmphasis.Significant -> MaterialTheme.typography.titleLarge
-                        TextEmphasis.Moderate -> MaterialTheme.typography.titleMedium
-                        TextEmphasis.Standard -> MaterialTheme.typography.titleSmall
-                    },
-                )
+                        if (windowClassSize.widthSizeClass == WindowWidthSizeClass.Expanded) {
+                            EventStatusChips(
+                                cfpEnd = event?.cfpEnd,
+                                isOnlineOnly = event?.online == true,
+                                modifier = Modifier.padding(start = 12.dp),
+                            )
+                        }
+                    }
 
-                PlaceholderText(
-                    text = event?.dateStart,
-                    modifier = Modifier.align(Alignment.Start),
-                    style = when (emphasis) {
-                        TextEmphasis.Significant -> MaterialTheme.typography.labelLarge
-                        TextEmphasis.Moderate -> MaterialTheme.typography.labelMedium
-                        TextEmphasis.Standard -> MaterialTheme.typography.labelSmall
-                    },
-                )
+                    PlaceholderText(
+                        text = event?.location,
+                        modifier = Modifier.align(Alignment.Start),
+                        style = when (emphasis) {
+                            TextEmphasis.Significant -> MaterialTheme.typography.titleLarge
+                            TextEmphasis.Moderate -> MaterialTheme.typography.titleMedium
+                            TextEmphasis.Standard -> MaterialTheme.typography.titleSmall
+                        },
+                    )
 
-                EventStatusRow(
-                    cfpEnd = event?.cfpEnd,
-                    isOnlineOnly = event?.online == true,
-                )
+                    if (windowClassSize.widthSizeClass == WindowWidthSizeClass.Compact) {
+                        EventStatusChips(
+                            cfpEnd = event?.cfpEnd,
+                            isOnlineOnly = event?.online == true,
+                        )
+                    }
+                }
+
+                if (event?.dateStart != null) {
+                    EventDateLabel(
+                        dateStart = remember { LocalDate.parse(event.dateStart) },
+                        modifier = Modifier.padding(12.dp),
+                    )
+                }
             }
         }
     }
 }
 
 @Composable
-private fun EventStatusRow(
+private fun EventDateLabel(
+    dateStart: LocalDate,
+    modifier: Modifier = Modifier,
+) {
+    Surface(modifier.clip(MaterialTheme.shapes.small)) {
+        Box(
+            modifier = Modifier.padding(
+                horizontal = 12.dp,
+                vertical = 4.dp,
+            ),
+        ) {
+            Column {
+                Text(
+                    text = dateStart.format(LocalDate.Format { monthName() }),
+                    modifier = Modifier.align(Alignment.CenterHorizontally),
+                    style = MaterialTheme.typography.labelSmall,
+                )
+
+                Text(
+                    text = dateStart.format(LocalDate.Format { dayOfMonth() }),
+                    modifier = Modifier.align(Alignment.CenterHorizontally),
+                    style = MaterialTheme.typography.labelLarge,
+                )
+
+                val currentYear = Clock.System.now()
+                    .toLocalDateTime(TimeZone.currentSystemDefault())
+                    .year
+
+                if (dateStart.year != currentYear) {
+                    Text(
+                        text = dateStart.format(LocalDate.Format { year() }),
+                        style = MaterialTheme.typography.labelSmall,
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun EventStatusChips(
     cfpEnd: String?,
     isOnlineOnly: Boolean,
     modifier: Modifier = Modifier,
 ) {
     Row(modifier) {
         if (cfpEnd != null && LocalDate.parse(cfpEnd) > Today) {
-            SuggestionChip(
-                text = "Call for Papers (Until $cfpEnd)",
-                onClick = OnClick("event_cfp") { },
-                modifier = Modifier.padding(end = 8.dp),
-            )
+            SuggestionChip(stringResource(Res.string.call_for_papers, cfpEnd))
+            Divider(modifier.width(8.dp))
         }
 
         if (isOnlineOnly) {
-            SuggestionChip(
-                text = "Online Only",
-                onClick = { },
-                enabled = false,
-            )
+            SuggestionChip(stringResource(Res.string.online_only))
         }
     }
 }
@@ -244,20 +298,19 @@ private fun EventSectionBackground(
 @Composable
 private fun SuggestionChip(
     text: String,
-    onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    enabled: Boolean = true,
 ) {
     SuggestionChip(
-        onClick = onClick,
+        onClick = { },
         label = {
             Text(
                 text = text,
                 color = LocalContentColor.current,
+                style = MaterialTheme.typography.labelSmall,
             )
         },
         modifier = modifier,
-        enabled = enabled,
+        enabled = false,
         shape = MaterialTheme.shapes.small,
     )
 }
@@ -267,7 +320,7 @@ internal fun PlaceholderText(
     text: String?,
     modifier: Modifier = Modifier,
     verticalPadding: Dp = 2.dp,
-    characters: Int = 12,
+    minWidth: Dp = 64.dp,
     style: TextStyle = LocalTextStyle.current,
 ) {
     Text(
@@ -277,7 +330,7 @@ internal fun PlaceholderText(
         maxLines = 1,
         modifier = modifier
             .padding(vertical = verticalPadding)
-            .defaultMinSize(minWidth = Dp(style.fontSize.value * characters))
+            .defaultMinSize(minWidth = minWidth)
             .placeholder(text == null, highlight = PlaceholderHighlight.fade()),
     )
 }
