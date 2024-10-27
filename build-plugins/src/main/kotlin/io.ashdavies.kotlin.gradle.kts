@@ -1,6 +1,7 @@
 import io.gitlab.arturbosch.detekt.Detekt
 import io.gitlab.arturbosch.detekt.DetektPlugin
 import io.gitlab.arturbosch.detekt.extensions.DetektExtension
+import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jlleitschuh.gradle.ktlint.KtlintExtension
@@ -38,11 +39,10 @@ extensions.configure<DetektExtension> {
 
 
 tasks.withType<KotlinCompile> {
-    val jvmTargetVersion = libs.versions.kotlin.jvmTarget.get()
 
     compilerOptions {
         freeCompilerArgs.addAll("-Xexpect-actual-classes")
-        jvmTarget.set(JvmTarget.fromTarget(jvmTargetVersion))
+        jvmTarget.set(JvmTarget.fromTarget(libs.versions.kotlin.jvmTarget.get()))
     }
 }
 

@@ -1,5 +1,6 @@
 package io.ashdavies.party
 
+import android.app.Activity
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
@@ -7,8 +8,9 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
+import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.pm.PackageInfoCompat
 import com.slack.circuit.backstack.rememberSaveableBackStack
 import com.slack.circuit.foundation.CircuitCompositionLocals
@@ -24,6 +26,7 @@ import io.ashdavies.io.resolveCacheDir
 import io.ashdavies.material.dynamicColorScheme
 import io.ashdavies.party.config.rememberCircuit
 import io.ashdavies.party.home.HomeScreen
+import io.ashdavies.party.material.ProvideLocalWindowSizeClass
 import io.ashdavies.playground.BuildConfig
 import io.ashdavies.playground.PlaygroundDatabase
 import io.ashdavies.sql.ProvideTransacter
@@ -44,43 +47,46 @@ internal class MainActivity : ComponentActivity() {
         }
 
         setContent {
-            ConferencesApp()
+            ConferencesApp(this)
         }
     }
 }
 
 @Composable
-private fun ConferencesApp(context: Context = LocalContext.current) {
+private fun ConferencesApp(activity: Activity) {
     ProvideHttpClient(
         config = {
             install(DefaultRequest) {
-                header("X-Android-Cert", context.getFirstSignatureOrNull())
-                header("X-Android-Package", context.packageName)
+                header("X-Android-Cert", activity.getFirstSignatureOrNull())
+                header("X-Android-Package", activity.packageName)
                 header("X-API-Key", BuildConfig.ANDROID_API_KEY)
                 header("User-Agent", Build.PRODUCT)
             }
 
             install(HttpCache) {
-                publicStorage(context.resolveCacheDir())
+                publicStorage(activity.resolveCacheDir())
             }
         },
     ) {
         ProvideAppCheckToken {
             val transacter = rememberTransacter(
                 schema = PlaygroundDatabase.Schema,
-                context = context,
+                context = activity,
             ) { PlaygroundDatabase(it) }
 
             ProvideTransacter(transacter) {
                 MaterialTheme(dynamicColorScheme()) {
-                    CircuitCompositionLocals(rememberCircuit(context)) {
+                    CircuitCompositionLocals(rememberCircuit(activity)) {
                         ContentWithOverlays {
-                            val backStack = rememberSaveableBackStack(HomeScreen)
+                            @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
+                            ProvideLocalWindowSizeClass(calculateWindowSizeClass(activity)) {
+                                val backStack = rememberSaveableBackStack(HomeScreen)
 
-                            NavigableCircuitContent(
-                                navigator = rememberCircuitNavigator(backStack),
-                                backStack = backStack,
-                            )
+                                NavigableCircuitContent(
+                                    navigator = rememberCircuitNavigator(backStack),
+                                    backStack = backStack,
+                                )
+                            }
                         }
                     }
                 }

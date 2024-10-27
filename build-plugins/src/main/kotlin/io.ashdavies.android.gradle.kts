@@ -1,9 +1,16 @@
+import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     kotlin("multiplatform")
 }
 
 kotlin {
-    androidTarget()
+    androidTarget {
+        val jvmTarget = JvmTarget.fromTarget(libs.versions.kotlin.jvmTarget.get())
+        @OptIn(ExperimentalKotlinGradlePluginApi::class)
+        compilerOptions.jvmTarget.set(jvmTarget)
+    }
 }
 
 pluginManager.commonExtension {
