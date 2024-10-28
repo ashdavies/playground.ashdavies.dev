@@ -101,11 +101,6 @@ internal fun EventsScreen(
 
             items(itemCount) { index ->
                 EventSection(
-                    emphasis = when (index) {
-                        0 -> TextEmphasis.Significant
-                        1 -> TextEmphasis.Moderate
-                        else -> TextEmphasis.Standard
-                    },
                     modifier = Modifier.animateItem(),
                     event = state.pagingItems.getOrNull(index),
                 )
@@ -124,17 +119,10 @@ private fun <T : Any> LazyPagingItems<T>.getOrNull(index: Int): T? {
     return if (index < itemCount) get(index) else null
 }
 
-private enum class TextEmphasis {
-    Significant,
-    Moderate,
-    Standard,
-}
-
 @Composable
 @ExperimentalMaterialApi
 private fun EventSection(
     event: Event?,
-    emphasis: TextEmphasis,
     modifier: Modifier = Modifier,
     windowClassSize: WindowSizeClass = LocalWindowSizeClass.current,
 ) {
@@ -167,11 +155,8 @@ private fun EventSection(
                     Row {
                         PlaceholderText(
                             text = event?.name,
-                            style = when (emphasis) {
-                                TextEmphasis.Significant -> MaterialTheme.typography.headlineLarge
-                                TextEmphasis.Moderate -> MaterialTheme.typography.headlineMedium
-                                TextEmphasis.Standard -> MaterialTheme.typography.headlineSmall
-                            },
+                            style = MaterialTheme.typography.headlineSmall,
+
                         )
 
                         if (windowClassSize.widthSizeClass == WindowWidthSizeClass.Expanded) {
@@ -186,11 +171,8 @@ private fun EventSection(
                     PlaceholderText(
                         text = event?.location,
                         modifier = Modifier.align(Alignment.Start),
-                        style = when (emphasis) {
-                            TextEmphasis.Significant -> MaterialTheme.typography.titleLarge
-                            TextEmphasis.Moderate -> MaterialTheme.typography.titleMedium
-                            TextEmphasis.Standard -> MaterialTheme.typography.titleSmall
-                        },
+                        style = MaterialTheme.typography.titleSmall,
+
                     )
 
                     if (windowClassSize.widthSizeClass == WindowWidthSizeClass.Compact) {
