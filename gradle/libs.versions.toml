@@ -42,7 +42,7 @@ compose-adaptive-layout = { module = "org.jetbrains.compose.material3.adaptive:a
 compose-adaptive-navigation = { module = "org.jetbrains.compose.material3.adaptive:adaptive-navigation", version.ref = "compose-adaptive" }
 compose-window-size = { module = "org.jetbrains.compose.material3:material3-window-size-class", version.ref = "compose-plugin" }
 
-detekt-compose = "io.nlopez.compose.rules:detekt:0.4.16"
+detekt-compose = "io.nlopez.compose.rules:detekt:0.4.17"
 
 fasterxml-jackson-core = "com.fasterxml.jackson.core:jackson-core:2.18.0"
 fusesource-jansi = "org.fusesource.jansi:jansi:2.4.1"
