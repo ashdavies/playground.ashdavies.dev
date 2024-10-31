@@ -16,7 +16,7 @@ jetbrains-kotlin = "2.0.21"
 kotlin-jvmTarget = "17"
 kotlinx-coroutines = "1.9.0"
 kotlinx-serialization = "1.7.3"
-ktor = "3.0.0"
+ktor = "3.0.1"
 pinterest-ktlint = "0.50.0"
 slack-circuit = "0.25.0"
 
