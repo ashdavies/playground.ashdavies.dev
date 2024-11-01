@@ -16,7 +16,7 @@ jetbrains-kotlin = "2.0.21"
 kotlin-jvmTarget = "17"
 kotlinx-coroutines = "1.9.0"
 kotlinx-serialization = "1.7.3"
-ktor = "3.0.0"
+ktor = "3.0.1"
 pinterest-ktlint = "0.50.0"
 slack-circuit = "0.25.0"
 
@@ -25,7 +25,7 @@ ajalt-clikt = "com.github.ajalt.clikt:clikt:5.0.1"
 android-tools-desugarjdk = "com.android.tools:desugar_jdk_libs:2.1.2"
 
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity" }
-androidx-annotation = "androidx.annotation:annotation:1.9.0"
+androidx-annotation = "androidx.annotation:annotation:1.9.1"
 androidx-core-splashscreen = "androidx.core:core-splashscreen:1.0.1"
 androidx-credentials-auth = "androidx.credentials:credentials-play-services-auth:1.3.0"
 androidx-paging-common = { module = "androidx.paging:paging-common", version.ref = "androidx-paging" }
