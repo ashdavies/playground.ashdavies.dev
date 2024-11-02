@@ -18,8 +18,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build:
-    name: Assemble Release
+  build_release:
     runs-on: ubuntu-latest
 
     permissions:
@@ -32,20 +31,13 @@ jobs:
 
       - uses: actions/checkout@v3
 
-      - uses: ./.github/actions/setup-cloud
-        with:
-          workload_identity_provider: ${{ secrets.GOOGLE_WORKLOAD_IDENTITY }}
-          service_account: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
-          setup_gcloud: false
-
       - uses: ./.github/actions/setup-gradle
 
       - uses: 1password/load-secrets-action/configure@v2
         with:
           service-account-token: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
 
-      - id: op-secrets
-        uses: 1password/load-secrets-action@v2
+      - uses: 1password/load-secrets-action@v2
         with:
           export-env: false
         env:
@@ -63,8 +55,7 @@ jobs:
           echo $GOOGLE_SERVICES | base64 --decode > conferences-app/google-services.json
           echo $KEYSTORE_BASE64 | base64 --decode > keystore.jks
 
-      - id: gradle
-        env:
+      - env:
           ANDROID_API_KEY: ${{ secrets.ANDROID_API_KEY }}
           BROWSER_API_KEY: ${{ secrets.BROWSER_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -78,5 +69,28 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           if-no-files-found: error
-          name: apk-release
+          name: android-build-outputs
           path: "**/*-release.apk"
+
+  publish_play_store:
+    needs: [ build_release ]
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: android-build-outputs
+          path: "**/*-release.apk"
+
+      - uses: 1password/load-secrets-action@v2
+        with:
+          export-env: false
+        env:
+          PLAY_STORE_KEY: op//development/service account key
+
+      - env:
+          PLAY_STORE_KEY: ${{ steps.op-secrets.outputs.PLAY_STORE_KEY }}
+        run: |
+          echo $PLAY_STORE_KEY > conferences-app/androidMain/play-store-key.json
+
+      - run: bundle exec fastlane android publish_to_play_store
