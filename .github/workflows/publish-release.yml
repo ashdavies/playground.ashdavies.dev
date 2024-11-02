@@ -57,20 +57,23 @@ jobs:
 
       - env:
           ANDROID_API_KEY: ${{ secrets.ANDROID_API_KEY }}
-          BROWSER_API_KEY: ${{ secrets.BROWSER_API_KEY }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           KEY_STORE_FILE: keystore.jks
           KEY_STORE_PASSWORD: ${{ steps.op-secrets.outputs.KEYSTORE_PASSWORD }}
           RELEASE_KEY_ALIAS: ${{ steps.op-secrets.outputs.KEY_ALIAS }}
           RELEASE_KEY_PASSWORD: ${{ steps.op-secrets.outputs.KEY_PASSWORD }}
           SERVER_CLIENT_ID: ${{ secrets.SERVER_CLIENT_ID }}
-        run: ./gradlew assembleRelease --console=plain
+        run: |
+          ./gradlew -Pandroidx.baselineprofile.skipgeneration=true --console=plain \
+            :conferences-app:assemble \
+            :conferences-app:bundle \
+            -x assembleNonMinifiedRelease \
+            -x bundleNonMinifiedRelease 
 
       - uses: actions/upload-artifact@v4
         with:
           if-no-files-found: error
           name: android-build-outputs
-          path: "**/*-release.apk"
+          path: conferences-app/build/outputs
 
   publish_play_store:
     needs: [ build_release ]
@@ -80,7 +83,7 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           name: android-build-outputs
-          path: "**/*-release.apk"
+          path: conferences-app/build/outputs
 
       - uses: 1password/load-secrets-action@v2
         with:
