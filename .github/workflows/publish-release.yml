@@ -55,6 +55,12 @@ jobs:
           echo $GOOGLE_SERVICES | base64 --decode > conferences-app/google-services.json
           echo $KEYSTORE_BASE64 | base64 --decode > keystore.jks
 
+      - uses: ./.github/actions/setup-cloud
+        with:
+          workload_identity_provider: ${{ secrets.GOOGLE_WORKLOAD_IDENTITY }}
+          service_account: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
+          setup_gcloud: false
+
       - env:
           ANDROID_API_KEY: ${{ secrets.ANDROID_API_KEY }}
           BROWSER_API_KEY: ${{ secrets.BROWSER_API_KEY }}
