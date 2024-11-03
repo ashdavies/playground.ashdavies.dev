@@ -1,18 +1,12 @@
 default_platform(:android)
 
 platform :android do
-  lane :publish_to_crashlytics do
-    gradle(task: "clean assembleRelease")
-    crashlytics
-  end
-
   lane :publish_to_play_store do
-    gradle(task: "clean assembleRelease")
     upload_to_play_store(
       package_name: "io.ashdavies.playground",
       track: "alpha",
-      json_key: "conferences-app/src/androidMain/play-store-key.json"
-      aab: "conferences-app/build/outputs/bundle/release/app-standard-release.aab",
+      json_key: "conferences-app/src/androidMain/play-store-key.json",
+      aab: "conferences-app/build/outputs/bundle/release/conferences-app-release.aab",
       mapping: "conferences-app/build/outputs/mapping/release/mapping.txt",
     )
   end

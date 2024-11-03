@@ -37,7 +37,8 @@ jobs:
         with:
           service-account-token: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
 
-      - uses: 1password/load-secrets-action@v2
+      - id: op-secrets
+        uses: 1password/load-secrets-action@v2
         with:
           export-env: false
         env:
@@ -51,7 +52,6 @@ jobs:
           GOOGLE_SERVICES: ${{ steps.op-secrets.outputs.GOOGLE_SERVICES }}
           KEYSTORE_BASE64: ${{ steps.op-secrets.outputs.KEYSTORE_BASE64 }}
         run: |
-          echo $GOOGLE_SERVICES | base64 --decode > app-launcher/android/google-services.json
           echo $GOOGLE_SERVICES | base64 --decode > conferences-app/google-services.json
           echo $KEYSTORE_BASE64 | base64 --decode > keystore.jks
 
@@ -61,19 +61,23 @@ jobs:
           service_account: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
           setup_gcloud: false
 
+      - id: version-code
+        run: echo "VERSION_CODE=$(( (GITHUB_RUN_NUMBER * 2) + 1000 ))" >> $GITHUB_OUTPUT
+
       - env:
           ANDROID_API_KEY: ${{ secrets.ANDROID_API_KEY }}
+          BROWSER_API_KEY: ${{ secrets.BROWSER_API_KEY }}
           KEY_STORE_FILE: keystore.jks
           KEY_STORE_PASSWORD: ${{ steps.op-secrets.outputs.KEYSTORE_PASSWORD }}
           RELEASE_KEY_ALIAS: ${{ steps.op-secrets.outputs.KEY_ALIAS }}
           RELEASE_KEY_PASSWORD: ${{ steps.op-secrets.outputs.KEY_PASSWORD }}
           SERVER_CLIENT_ID: ${{ secrets.SERVER_CLIENT_ID }}
+          VERSION_CODE: ${{ steps.version-code.outputs.VERSION_CODE }}
         run: |
-          ./gradlew -Pandroidx.baselineprofile.skipgeneration=true --console=plain \
+          ./gradlew \
             :conferences-app:assemble \
             :conferences-app:bundle \
-            -x assembleNonMinifiedRelease \
-            -x bundleNonMinifiedRelease 
+            --console=plain
 
       - uses: actions/upload-artifact@v4
         with:
@@ -86,20 +90,31 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - uses: actions/checkout@v3
+
       - uses: actions/download-artifact@v4
         with:
           name: android-build-outputs
           path: conferences-app/build/outputs
 
-      - uses: 1password/load-secrets-action@v2
+      - uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+
+      - uses: 1password/load-secrets-action/configure@v2
+        with:
+          service-account-token: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+
+      - id: op-secrets
+        uses: 1password/load-secrets-action@v2
         with:
           export-env: false
         env:
-          PLAY_STORE_KEY: op//development/service account key
+          PLAY_STORE_KEY: op://development/service account key/base64
 
       - env:
           PLAY_STORE_KEY: ${{ steps.op-secrets.outputs.PLAY_STORE_KEY }}
         run: |
-          echo $PLAY_STORE_KEY > conferences-app/androidMain/play-store-key.json
+          echo $PLAY_STORE_KEY | base64 --decode > conferences-app/src/androidMain/play-store-key.json
 
       - run: bundle exec fastlane android publish_to_play_store
