@@ -1,13 +1,7 @@
 default_platform(:android)
 
 platform :android do
-  lane :publish_to_crashlytics do
-    gradle(task: "clean assembleRelease")
-    crashlytics
-  end
-
   lane :publish_to_play_store do
-    gradle(task: "clean assembleRelease")
     upload_to_play_store(
       package_name: "io.ashdavies.playground",
       track: "alpha",
