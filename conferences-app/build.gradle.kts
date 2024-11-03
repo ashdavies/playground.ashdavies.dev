@@ -66,8 +66,11 @@ android {
     }
 
     defaultConfig {
-        versionName = "1.0"
-        versionCode = 1
+        val versionCode by stringPropertyOrNull {
+            versionCode = it?.toInt() ?: 1
+        }
+
+        versionName = "1.0.0"
     }
 
     dependencies {
