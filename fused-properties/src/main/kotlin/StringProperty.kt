@@ -9,12 +9,14 @@ public fun interface ReadOnlyDelegateProvider<T> : PropertyDelegateProvider<Any?
 private interface PropertyDefinition {
     val gradlePropertyName: String
     val envPropertyName: String
+    val propertyName: String
 }
 
 private fun PropertyDefinition(propertyName: String) = object : PropertyDefinition {
     private val propertyNameParts = propertyName.split(Regex("(?=[A-Z])"))
     override val gradlePropertyName = propertyNameParts.joinToString(".") { it.lowercase() }
     override val envPropertyName = propertyNameParts.joinToString("_") { it.uppercase() }
+    override val propertyName = propertyName
 }
 
 private fun Project.stringPropertyProvider(definition: PropertyDefinition): Provider<String> {
@@ -27,6 +29,11 @@ private fun Project.stringPropertyProvider(definition: PropertyDefinition): Prov
         .orElse(rootPropertiesProvider.map { it.getProperty(definition.gradlePropertyName) })
         .orElse(providers.gradleProperty(definition.gradlePropertyName))
         .orElse(providers.environmentVariable(definition.envPropertyName))
+        .orElse(provider { error(cannotQueryValueOf(definition.propertyName)) })
+}
+
+private fun cannotQueryValueOf(propertyName: String): String {
+    return "Cannot query the value of $propertyName because it has no value available"
 }
 
 public fun Project.booleanProperty(block: (Boolean) -> Unit = { }): ReadOnlyDelegateProvider<Boolean> {
