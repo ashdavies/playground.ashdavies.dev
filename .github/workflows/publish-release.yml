@@ -37,7 +37,8 @@ jobs:
         with:
           service-account-token: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
 
-      - uses: 1password/load-secrets-action@v2
+      - id: op-secrets
+        uses: 1password/load-secrets-action@v2
         with:
           export-env: false
         env:
@@ -51,7 +52,6 @@ jobs:
           GOOGLE_SERVICES: ${{ steps.op-secrets.outputs.GOOGLE_SERVICES }}
           KEYSTORE_BASE64: ${{ steps.op-secrets.outputs.KEYSTORE_BASE64 }}
         run: |
-          echo $GOOGLE_SERVICES | base64 --decode > app-launcher/android/google-services.json
           echo $GOOGLE_SERVICES | base64 --decode > conferences-app/google-services.json
           echo $KEYSTORE_BASE64 | base64 --decode > keystore.jks
 
