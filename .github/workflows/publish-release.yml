@@ -91,7 +91,12 @@ jobs:
           name: android-build-outputs
           path: conferences-app/build/outputs
 
-      - uses: 1password/load-secrets-action@v2
+      - uses: 1password/load-secrets-action/configure@v2
+        with:
+          service-account-token: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+
+      - id: op-secrets
+        uses: 1password/load-secrets-action@v2
         with:
           export-env: false
         env:
