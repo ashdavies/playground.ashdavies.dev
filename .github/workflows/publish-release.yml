@@ -105,6 +105,6 @@ jobs:
       - env:
           PLAY_STORE_KEY: ${{ steps.op-secrets.outputs.PLAY_STORE_KEY }}
         run: |
-          echo $PLAY_STORE_KEY | base64 --decode > conferences-app/androidMain/play-store-key.json
+          echo $PLAY_STORE_KEY | base64 --decode > conferences-app/src/androidMain/play-store-key.json
 
       - run: bundle exec fastlane android publish_to_play_store
