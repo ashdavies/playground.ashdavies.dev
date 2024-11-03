@@ -61,6 +61,9 @@ jobs:
           service_account: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
           setup_gcloud: false
 
+      - id: version-code
+        run: echo "VERSION_CODE=$(( (GITHUB_RUN_NUMBER * 2) + 1000 ))" >> $GITHUB_OUTPUT
+
       - env:
           ANDROID_API_KEY: ${{ secrets.ANDROID_API_KEY }}
           BROWSER_API_KEY: ${{ secrets.BROWSER_API_KEY }}
@@ -69,7 +72,7 @@ jobs:
           RELEASE_KEY_ALIAS: ${{ steps.op-secrets.outputs.KEY_ALIAS }}
           RELEASE_KEY_PASSWORD: ${{ steps.op-secrets.outputs.KEY_PASSWORD }}
           SERVER_CLIENT_ID: ${{ secrets.SERVER_CLIENT_ID }}
-          VERSION_CODE: ${{ (github.run_number * 2) + 1000 }}
+          VERSION_CODE: ${{ steps.version-code.outputs.VERSION_CODE }}
         run: |
           ./gradlew \
             :conferences-app:assemble \
