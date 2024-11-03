@@ -70,11 +70,10 @@ jobs:
           RELEASE_KEY_PASSWORD: ${{ steps.op-secrets.outputs.KEY_PASSWORD }}
           SERVER_CLIENT_ID: ${{ secrets.SERVER_CLIENT_ID }}
         run: |
-          ./gradlew -Pandroidx.baselineprofile.skipgeneration=true --console=plain \
+          ./gradlew \
             :conferences-app:assemble \
             :conferences-app:bundle \
-            -x assembleNonMinifiedRelease \
-            -x bundleNonMinifiedRelease 
+            --console=plain
 
       - uses: actions/upload-artifact@v4
         with:
