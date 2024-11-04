@@ -69,7 +69,7 @@ google-firebase-appcheck-playintegrity = { module = "com.google.firebase:firebas
 google-guava-jre = "com.google.guava:guava:33.3.1-jre"
 
 google-maps-android-compose = "com.google.maps.android:maps-compose:6.2.0"
-google-maps-android-utils = "com.google.maps.android:android-maps-utils:3.8.2"
+google-maps-android-utils = "com.google.maps.android:android-maps-utils:3.9.0"
 
 kotlinx-collections-immutable = "org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.8"
 
