@@ -26,7 +26,7 @@ import okio.ByteString.Companion.encode
 import io.ashdavies.http.common.models.Event as ApiEvent
 import io.ashdavies.party.events.Event as DatabaseEvent
 
-private const val PLAYGROUND_BASE_URL = "playground.ashdavies.dev"
+private const val PLAYGROUND_BASE_URL = "api.ashdavies.dev"
 private const val DEFAULT_PAGE_SIZE = 10
 
 private suspend fun RemoteConfig.isPagingEnabled() = getBoolean("paging_enabled")

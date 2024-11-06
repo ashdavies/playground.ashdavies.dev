@@ -55,7 +55,7 @@ jobs:
           GOOGLE_SERVICE_ACCOUNT_ID: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
         run: >
           ./gradlew cloud-run:jib
-          --image=europe-west1-docker.pkg.dev/${{ steps.setup-cloud.outputs.project_id }}/cloud-run-source-deploy/playground.ashdavies.dev
+          --image=europe-west1-docker.pkg.dev/${{ steps.setup-cloud.outputs.project_id }}/cloud-run-source-deploy/api.ashdavies.dev
           --no-configuration-cache
           --console=plain
 

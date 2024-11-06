@@ -19,7 +19,7 @@ variable "openapi_config" {
 
 variable "service_name" {
   description = "Google Cloud Run service name"
-  default     = "playground.ashdavies.dev"
+  default     = "api.ashdavies.dev"
 }
 
 variable "project_id" {

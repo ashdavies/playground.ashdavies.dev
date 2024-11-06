@@ -20,7 +20,7 @@ module "cloud-run-endpoint" {
   source             = "./modules/google/cloud-run-endpoint"
   config_id          = module.cloud-run-endpoint.config_id
   container_image    = "${var.project_region}-docker.pkg.dev/${var.project_id}/endpoints-release/endpoints-runtime-serverless:latest"
-  endpoint_name      = "playground.ashdavies.dev"
+  endpoint_name      = "api.ashdavies.dev"
   image_repository   = "${var.project_region}-docker.pkg.dev/${var.project_id}/endpoints-release"
   location           = var.project_region
   openapi_config     = local.openapi_config
