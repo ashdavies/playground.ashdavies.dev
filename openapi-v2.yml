@@ -3,7 +3,7 @@ info:
   title: "playground-api Playground Service"
   description: "Playground Service definition hosted by Cloud Endpoints with a Cloud Run backend"
   version: "1.0.0"
-host: playground.ashdavies.dev
+host: api.ashdavies.dev
 schemes:
   - "https"
 consumes:
