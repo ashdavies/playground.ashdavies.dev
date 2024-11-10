@@ -52,7 +52,7 @@
       ]
     }
   ],
-  "platformCommit": true,
+  "platformCommit": "enabled",
   "repositories": [
     "ashdavies/playground.ashdavies.dev"
   ],
