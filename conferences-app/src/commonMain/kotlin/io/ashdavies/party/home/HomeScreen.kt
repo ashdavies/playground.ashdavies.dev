@@ -118,7 +118,7 @@ internal fun HomeScreen(
 @ExperimentalMaterial3Api
 internal fun HomeTopBar(
     modifier: Modifier = Modifier,
-    title: String = "Home",
+    title: String = "Upcoming Events",
     actions: @Composable RowScope.() -> Unit = { },
     scrollBehavior: TopAppBarScrollBehavior = enterAlwaysScrollBehavior(rememberTopAppBarState()),
 ) {
