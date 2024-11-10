@@ -4,7 +4,7 @@ android-minSdk = "33"
 androidx-activity = "1.9.3"
 androidx-paging = "3.3.2"
 cash-sqldelight = "2.0.2"
-coil-kt = "3.0.0"
+coil-kt = "3.0.1"
 compose-adaptive = "1.0.0"
 compose-plugin = "1.7.0"
 gitlive-firebase = "2.1.0"
@@ -22,7 +22,7 @@ slack-circuit = "0.25.0"
 
 [libraries]
 ajalt-clikt = "com.github.ajalt.clikt:clikt:5.0.1"
-android-tools-desugarjdk = "com.android.tools:desugar_jdk_libs:2.1.2"
+android-tools-desugarjdk = "com.android.tools:desugar_jdk_libs:2.1.3"
 
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity" }
 androidx-annotation = "androidx.annotation:annotation:1.9.1"
@@ -68,7 +68,7 @@ google-firebase-appcheck-playintegrity = { module = "com.google.firebase:firebas
 
 google-guava-jre = "com.google.guava:guava:33.3.1-jre"
 
-google-maps-android-compose = "com.google.maps.android:maps-compose:6.2.0"
+google-maps-android-compose = "com.google.maps.android:maps-compose:6.2.1"
 google-maps-android-utils = "com.google.maps.android:android-maps-utils:3.9.0"
 
 kotlinx-collections-immutable = "org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.8"
