@@ -46,6 +46,8 @@ resource "google_project_iam_custom_role" "main" {
     "run.services.get",
     "run.services.getIamPolicy",
     "run.services.update",
+    "servicemanagement.services.create",
+    "servicemanagement.services.delete",
     "servicemanagement.services.get",
     "servicemanagement.services.update",
     "serviceusage.services.list",

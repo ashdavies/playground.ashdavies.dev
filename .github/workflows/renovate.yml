@@ -29,7 +29,7 @@ jobs:
           private_key: ${{ secrets.PRIVATE_KEY }}
           app_id: ${{ secrets.APP_ID }}
 
-      - uses: renovatebot/github-action@v40.3.2
+      - uses: renovatebot/github-action@v41.0.2
         with:
           configurationFile: .github/renovate.json
           token: ${{ steps.generate_token.outputs.token }}
