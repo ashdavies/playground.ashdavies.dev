@@ -8,7 +8,7 @@ module "api-gateway" {
 }
 
 module "cloud-run-build" {
-  docker_image = "${var.project_region}-docker.pkg.dev/${var.project_id}/cloud-run-source-deploy/playground.ashdavies.dev"
+  docker_image = "${var.project_region}-docker.pkg.dev/${var.project_id}/cloud-run-source-deploy/api.ashdavies.dev"
   source       = "./modules/google/cloud-run-build"
   service_name = "playground-service"
   location     = var.project_region

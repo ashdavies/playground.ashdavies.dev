@@ -20,8 +20,7 @@ jobs:
     steps:
       - uses: GitHubSecurityLab/actions-permissions/monitor@v1
         if: ${{ github.event.inputs.monitor_permissions == 'true' }}
-
-      - uses: actions/checkout@v3.6.0
+      - uses: actions/checkout@v4.2.2
 
       - id: generate_token
         uses: tibdex/github-app-token@v2
@@ -29,7 +28,7 @@ jobs:
           private_key: ${{ secrets.PRIVATE_KEY }}
           app_id: ${{ secrets.APP_ID }}
 
-      - uses: renovatebot/github-action@v40.3.2
+      - uses: renovatebot/github-action@v41.0.2
         with:
           configurationFile: .github/renovate.json
           token: ${{ steps.generate_token.outputs.token }}
