@@ -2,7 +2,7 @@
 android-compileSdk = "35"
 android-minSdk = "33"
 androidx-activity = "1.9.3"
-androidx-paging = "3.3.2"
+androidx-paging = "3.3.4"
 cash-sqldelight = "2.0.2"
 coil-kt = "3.0.2"
 compose-adaptive = "1.0.0"
