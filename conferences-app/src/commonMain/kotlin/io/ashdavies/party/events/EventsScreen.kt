@@ -11,18 +11,16 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.Divider
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.pullrefresh.PullRefreshIndicator
-import androidx.compose.material.pullrefresh.pullRefresh
-import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.Card
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SuggestionChip
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
@@ -74,27 +72,23 @@ internal object EventsScreen : Parcelable, Screen {
 }
 
 @Composable
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 internal fun EventsScreen(
     state: EventsScreen.State,
     modifier: Modifier = Modifier,
     showPlaceholders: Int = 8,
 ) {
-    val isRefreshing = state.pagingItems.loadState.isRefreshing
-    val pullRefreshState = rememberPullRefreshState(
-        refreshing = isRefreshing,
-        onRefresh = OnClick("events_refresh") {
-            state.pagingItems.refresh()
-        },
-    )
-
-    Box(modifier.pullRefresh(pullRefreshState)) {
+    PullToRefreshBox(
+        isRefreshing = state.pagingItems.loadState.isRefreshing,
+        onRefresh = OnClick("events_refresh") { state.pagingItems.refresh() },
+        modifier = modifier,
+    ) {
         if (state.pagingItems.loadState.hasError) {
             EventFailure(state.pagingItems.loadState.errorMessage ?: "Unknown Error")
         }
 
         LazyColumn(Modifier.fillMaxSize()) {
-            val itemCount = when (isRefreshing) {
+            val itemCount = when (state.pagingItems.loadState.isRefreshing) {
                 true -> state.pagingItems.itemCount.coerceAtLeast(showPlaceholders)
                 false -> state.pagingItems.itemCount
             }
@@ -106,12 +100,6 @@ internal fun EventsScreen(
                 )
             }
         }
-
-        PullRefreshIndicator(
-            modifier = Modifier.align(Alignment.TopCenter),
-            refreshing = isRefreshing,
-            state = pullRefreshState,
-        )
     }
 }
 
@@ -120,7 +108,6 @@ private fun <T : Any> LazyPagingItems<T>.getOrNull(index: Int): T? {
 }
 
 @Composable
-@ExperimentalMaterialApi
 private fun EventSection(
     event: Event?,
     modifier: Modifier = Modifier,
@@ -243,7 +230,7 @@ private fun EventStatusChips(
     Row(modifier) {
         if (cfpEnd != null && LocalDate.parse(cfpEnd) > Today) {
             SuggestionChip(stringResource(Res.string.call_for_papers, cfpEnd))
-            Divider(modifier.width(8.dp))
+            HorizontalDivider(modifier.width(8.dp))
         }
 
         if (isOnlineOnly) {
