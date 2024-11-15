@@ -122,9 +122,7 @@ kotlin {
 
             implementation(compose.components.resources)
             implementation(compose.foundation)
-            implementation(compose.material)
             implementation(compose.material3)
-            implementation(compose.materialIconsExtended)
             implementation(compose.ui)
 
             implementation(libs.androidx.core.splashscreen)
@@ -140,6 +138,7 @@ kotlin {
             implementation(libs.ktor.client.mock)
             implementation(libs.ktor.http)
             implementation(libs.ktor.io)
+            implementation(libs.material.icons.core)
             implementation(libs.slack.circuit.foundation)
             implementation(libs.slack.circuit.overlay)
             implementation(libs.sqldelight.runtime)

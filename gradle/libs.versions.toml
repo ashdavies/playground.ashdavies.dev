@@ -102,6 +102,7 @@ ktor-server-default-headers = { module = "io.ktor:ktor-server-default-headers", 
 ktor-server-host-common = { module = "io.ktor:ktor-server-host-common", version.ref = "ktor" }
 ktor-server-test-host = { module = "io.ktor:ktor-server-test-host", version.ref = "ktor" }
 
+material-icons-core = { module = "org.jetbrains.compose.material:material-icons-core", version.ref = "compose-plugin" }
 mosaic-runtime = "com.jakewharton.mosaic:mosaic-runtime:0.14.0"
 pinterest-ktlint-bom = "com.pinterest.ktlint:ktlint-bom:1.4.1"
 
