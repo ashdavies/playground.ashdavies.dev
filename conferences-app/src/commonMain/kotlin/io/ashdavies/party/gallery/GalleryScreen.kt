@@ -150,7 +150,9 @@ internal fun GalleryScreen(
                     itemList = state.itemList.toImmutableList(),
                     onExpand = { eventSink(GalleryScreen.Event.Selection.Expand(it)) },
                     onSelect = { eventSink(GalleryScreen.Event.Selection.Toggle(it)) },
-                    modifier = Modifier.padding(paddingValues),
+                    modifier = Modifier
+                        .padding(paddingValues)
+                        .fillMaxSize(),
                     isSelecting = isSelecting,
                 )
 
@@ -215,7 +217,7 @@ internal fun GalleryGrid(
 ) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(columnCount),
-        modifier = modifier.fillMaxSize(),
+        modifier = modifier,
         horizontalArrangement = spacedBy(12.dp),
         verticalArrangement = spacedBy(12.dp),
         contentPadding = PaddingValues(12.dp),
