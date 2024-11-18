@@ -33,7 +33,6 @@ internal fun GalleryBottomSheetPreview() {
     }
 }
 
-
 private fun galleryScreenStateItem(
     name: String = "Sample Image",
     isSelected: Boolean = false,
