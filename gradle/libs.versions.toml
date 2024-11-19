@@ -48,7 +48,6 @@ fusesource-jansi = "org.fusesource.jansi:jansi:2.4.1"
 gitlive-firebase-analytics = { module = "dev.gitlive:firebase-analytics", version.ref = "gitlive-firebase" }
 gitlive-firebase-app = { module = "dev.gitlive:firebase-app", version.ref = "gitlive-firebase" }
 gitlive-firebase-config = { module = "dev.gitlive:firebase-config", version.ref = "gitlive-firebase" }
-gitlive-firebase-crashlytics = { module = "dev.gitlive:firebase-crashlytics", version.ref = "gitlive-firebase" }
 
 google-accompanist-flowlayout = { module = "com.google.accompanist:accompanist-flowlayout", version.ref = "google-accompanist" }
 google-accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "google-accompanist" }
@@ -58,12 +57,11 @@ google-android-location = "com.google.android.gms:play-services-location:21.3.0"
 google-android-material = "com.google.android.material:material:1.12.0"
 
 google-auth-http = "com.google.auth:google-auth-library-oauth2-http:1.30.0"
-google-cloud-bom = "com.google.cloud:libraries-bom:26.50.0"
-google-cloud-firestore = { module = "com.google.cloud:google-cloud-firestore" }
 
 google-firebase-admin = "com.google.firebase:firebase-admin:9.4.1"
 google-firebase-bom = "com.google.firebase:firebase-bom:33.6.0"
 google-firebase-appcheck-playintegrity = { module = "com.google.firebase:firebase-appcheck-playintegrity" }
+google-firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
 
 google-guava-jre = "com.google.guava:guava:33.3.1-jre"
 

@@ -158,8 +158,10 @@ kotlin {
 
         androidMain.dependencies {
             implementation(libs.androidx.activity.compose)
-            implementation(libs.gitlive.firebase.crashlytics)
             implementation(libs.google.android.material)
+
+            implementation(dependencies.platform(libs.google.firebase.bom))
+            implementation(libs.google.firebase.crashlytics)
         }
 
         val androidDebug by registering {
