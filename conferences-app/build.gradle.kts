@@ -2,6 +2,7 @@ import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
 plugins {
     id("com.android.application")
+    id("com.google.firebase.crashlytics")
     id("com.google.gms.google-services")
 
     id("io.ashdavies.android")
@@ -133,6 +134,9 @@ kotlin {
             implementation(libs.compose.adaptive.layout)
             implementation(libs.compose.adaptive.navigation)
             implementation(libs.compose.window.size)
+            implementation(libs.gitlive.firebase.app)
+            implementation(libs.gitlive.firebase.config)
+            implementation(libs.gitlive.firebase.crashlytics)
             implementation(libs.kotlinx.collections.immutable)
             implementation(libs.kotlinx.datetime)
             implementation(libs.kotlinx.serialization.core)
@@ -172,8 +176,6 @@ kotlin {
         jvmMain.dependencies {
             implementation(projects.keyNavigation)
             implementation(compose.desktop.currentOs)
-            implementation(libs.gitlive.firebase.app)
-            implementation(libs.gitlive.firebase.config)
 
             runtimeOnly(libs.kotlinx.coroutines.swing)
             runtimeOnly(libs.slf4j.simple)

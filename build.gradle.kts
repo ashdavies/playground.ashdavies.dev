@@ -14,6 +14,7 @@ plugins {
         classpath(cash.sqldelight)
         classpath(compose.compiler)
         classpath(detekt)
+        classpath(crashlytics)
         classpath(google.services)
         classpath(jetbrains.compose)
         classpath(kotlin.multiplatform)
