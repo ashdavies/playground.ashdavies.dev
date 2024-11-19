@@ -136,7 +136,6 @@ kotlin {
             implementation(libs.compose.window.size)
             implementation(libs.gitlive.firebase.app)
             implementation(libs.gitlive.firebase.config)
-            implementation(libs.gitlive.firebase.crashlytics)
             implementation(libs.kotlinx.collections.immutable)
             implementation(libs.kotlinx.datetime)
             implementation(libs.kotlinx.serialization.core)
@@ -159,6 +158,7 @@ kotlin {
 
         androidMain.dependencies {
             implementation(libs.androidx.activity.compose)
+            implementation(libs.gitlive.firebase.crashlytics)
             implementation(libs.google.android.material)
         }
 

@@ -45,8 +45,6 @@ import io.ashdavies.party.events.EventsScreen
 import io.ashdavies.party.gallery.GalleryScreen
 import io.ashdavies.party.gallery.GallerySheetContent
 import io.ashdavies.party.profile.ProfileActionButton
-import dev.gitlive.firebase.Firebase
-import dev.gitlive.firebase.crashlytics.crashlytics
 
 @Parcelize
 internal object HomeScreen : Parcelable, Screen {
