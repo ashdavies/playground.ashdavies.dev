@@ -1,6 +1,6 @@
 [versions]
 android-compileSdk = "35"
-android-minSdk = "33"
+android-minSdk = "34"
 androidx-activity = "1.9.3"
 androidx-paging = "3.3.4"
 cash-sqldelight = "2.0.2"
