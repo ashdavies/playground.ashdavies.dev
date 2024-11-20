@@ -2,7 +2,6 @@ package io.ashdavies.playground
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import app.cash.sqldelight.EnumColumnAdapter
 import coil3.EventListener
 import coil3.ImageLoader
 import coil3.compose.setSingletonImageLoaderFactory
