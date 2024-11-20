@@ -4,6 +4,7 @@ platform :android do
   lane :publish_to_play_store do
     upload_to_play_store(
       package_name: "io.ashdavies.playground",
+      release_status: "draft",
       track: "internal",
       json_key: "conferences-app/src/androidMain/play-store-key.json",
       aab: "conferences-app/build/outputs/bundle/release/conferences-app-release.aab",
