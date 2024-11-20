@@ -13,7 +13,6 @@ import coil3.request.ImageRequest
 import io.ashdavies.check.ProvideAppCheckToken
 import io.ashdavies.common.PlaygroundDatabase
 import io.ashdavies.content.PlatformContext
-import io.ashdavies.dominion.Card
 import io.ashdavies.io.resolveCacheDir
 import io.ashdavies.material.dynamicColorScheme
 import io.ashdavies.sql.ProvideTransacter
@@ -57,9 +56,6 @@ public fun LauncherContent(context: PlatformContext, content: @Composable () -> 
         ) { driver ->
             PlaygroundDatabase(
                 driver = driver,
-                CardAdapter = Card.Adapter(
-                    formatAdapter = EnumColumnAdapter(),
-                ),
             )
         }
 
