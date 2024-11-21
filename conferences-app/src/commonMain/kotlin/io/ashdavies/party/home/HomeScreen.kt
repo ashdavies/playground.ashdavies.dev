@@ -89,9 +89,7 @@ internal fun HomeScreen(
                         )
                     }
 
-                    IconButton(onClick = {
-                        throw RuntimeException("Crashlytics")
-                    }) {
+                    IconButton(onClick = { error("Crashlytics") }) {
                         Icon(Icons.Default.Warning, contentDescription = null)
                     }
                 },
