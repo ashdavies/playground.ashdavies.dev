@@ -18,6 +18,7 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SuggestionChip
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
@@ -35,6 +36,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.CompositingStrategy
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
@@ -163,6 +165,7 @@ private fun EventSectionContent(
 
                     if (windowClassSize.widthSizeClass == WindowWidthSizeClass.Expanded) {
                         EventStatusChips(
+                            cfpSite = event?.cfpSite,
                             cfpEnd = event?.cfpEnd,
                             isOnlineOnly = event?.online == true,
                             modifier = Modifier.padding(start = 12.dp),
@@ -178,6 +181,7 @@ private fun EventSectionContent(
 
                 if (windowClassSize.widthSizeClass == WindowWidthSizeClass.Compact) {
                     EventStatusChips(
+                        cfpSite = event?.cfpSite,
                         cfpEnd = event?.cfpEnd,
                         isOnlineOnly = event?.online == true,
                     )
@@ -236,18 +240,44 @@ private fun EventDateLabel(
 
 @Composable
 private fun EventStatusChips(
+    cfpSite: String?,
     cfpEnd: String?,
     isOnlineOnly: Boolean,
     modifier: Modifier = Modifier,
 ) {
     Row(modifier) {
-        if (cfpEnd != null && LocalDate.parse(cfpEnd) > Today) {
-            SuggestionChip(stringResource(Res.string.call_for_papers, cfpEnd))
+        if (cfpEnd != null) {
+            val uriHandler = LocalUriHandler.current
+
+            SuggestionChip(
+                onClick = { uriHandler.openUri(requireNotNull(cfpSite)) },
+                label = {
+                    Text(
+                        text = stringResource(Res.string.call_for_papers, cfpEnd),
+                        color = LocalContentColor.current,
+                        style = MaterialTheme.typography.labelSmall,
+                    )
+                },
+                enabled = cfpSite != null && LocalDate.parse(cfpEnd) > Today,
+                shape = MaterialTheme.shapes.small,
+            )
+
             HorizontalDivider(Modifier.width(8.dp))
         }
 
         if (isOnlineOnly) {
-            SuggestionChip(stringResource(Res.string.online_only))
+            SuggestionChip(
+                onClick = { },
+                label = {
+                    Text(
+                        text = stringResource(Res.string.online_only),
+                        color = LocalContentColor.current,
+                        style = MaterialTheme.typography.labelSmall,
+                    )
+                },
+                enabled = false,
+                shape = MaterialTheme.shapes.small,
+            )
         }
     }
 }
@@ -274,26 +304,6 @@ private fun EventSectionBackground(
                 drawRect(gradientBrush, blendMode = BlendMode.DstIn)
             },
         contentScale = ContentScale.Crop,
-    )
-}
-
-@Composable
-private fun SuggestionChip(
-    text: String,
-    modifier: Modifier = Modifier,
-) {
-    androidx.compose.material3.SuggestionChip(
-        onClick = { },
-        label = {
-            Text(
-                text = text,
-                color = LocalContentColor.current,
-                style = MaterialTheme.typography.labelSmall,
-            )
-        },
-        modifier = modifier,
-        enabled = false,
-        shape = MaterialTheme.shapes.small,
     )
 }
 
