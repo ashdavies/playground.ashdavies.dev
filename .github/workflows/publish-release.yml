@@ -79,7 +79,9 @@ jobs:
             :conferences-app:bundle \
             --console=plain
 
-      - run: ./gradlew validateScreenshotTests
+      - env:
+          ANDROID_API_KEY: ${{ secrets.ANDROID_API_KEY }}
+        run: ./gradlew validateScreenshotTests --console=plain
 
       - uses: actions/upload-artifact@v4
         with:
