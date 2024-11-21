@@ -20,7 +20,6 @@ kotlin {
             implementation(projects.analytics)
             implementation(projects.appCheck.appCheckClient)
             implementation(projects.composeMaterial)
-            implementation(projects.dominionApp)
             implementation(projects.httpClient)
             implementation(projects.identityManager)
             implementation(projects.mapRoutes)
@@ -60,7 +59,6 @@ sqldelight {
     databases {
         create("PlaygroundDatabase") {
             packageName.set(android.namespace)
-            dependency(projects.dominionApp)
         }
     }
 }

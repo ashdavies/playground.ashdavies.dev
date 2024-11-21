@@ -61,7 +61,6 @@ include(
     ":composeApp",
     ":compose-material",
     ":conferences-app",
-    ":dominion-app",
     ":http-client",
     ":http-common",
     ":identity-manager",
