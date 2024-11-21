@@ -82,6 +82,7 @@ jobs:
       - env:
           ANDROID_API_KEY: ${{ secrets.ANDROID_API_KEY }}
           BROWSER_API_KEY: ${{ secrets.BROWSER_API_KEY }}
+          SERVER_CLIENT_ID: ${{ secrets.SERVER_CLIENT_ID }}
         run: ./gradlew validateScreenshotTests --console=plain
 
       - uses: actions/upload-artifact@v4
