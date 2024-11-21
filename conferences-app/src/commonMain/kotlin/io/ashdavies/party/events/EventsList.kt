@@ -298,7 +298,7 @@ private fun SuggestionChip(
 }
 
 @Composable
-internal fun PlaceholderText(
+private fun PlaceholderText(
     text: String?,
     modifier: Modifier = Modifier,
     verticalPadding: Dp = 2.dp,

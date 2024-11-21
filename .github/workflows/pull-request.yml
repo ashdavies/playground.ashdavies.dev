@@ -64,6 +64,8 @@ jobs:
           SERVER_CLIENT_ID: ${{ secrets.SERVER_CLIENT_ID }}
         run: ./gradlew build --console=plain
 
+      - run: ./gradlew validateScreenshotTests
+
       - name: Gradle Scan Link
         uses: ./.github/actions/pull-comment
         if: ${{ steps.gradle.outputs.build-scan-url }}

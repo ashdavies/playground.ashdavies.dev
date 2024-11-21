@@ -46,7 +46,6 @@ internal fun EventsScreen(
         },
         detailPane = {
             AnimatedPane {
-                println("detailPane = ${navigator.currentDestination?.content}")
                 navigator.currentDestination?.content?.let {
                     EventsDetail(it)
                 }
