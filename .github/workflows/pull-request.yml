@@ -70,13 +70,15 @@ jobs:
           SERVER_CLIENT_ID: ${{ secrets.SERVER_CLIENT_ID }}
         run: ./gradlew validateScreenshotTest --console=plain
 
-      - name: Gradle Scan Link
-        uses: ./.github/actions/pull-comment
+      - uses: ./.github/actions/update-screenshots
+        if: failure()
+
+      - uses: thollander/actions-comment-pull-request@v3
         if: ${{ steps.gradle.outputs.build-scan-url }}
         with:
           message: "Build scan published to ${{ steps.gradle.outputs.build-scan-url }}"
-          token: ${{ secrets.GITHUB_TOKEN }}
-          tag: build-scan-url
+          comment-tag: build-scan-url
+          mode: recreate
 
       - uses: test-summary/action@v2
         with:
