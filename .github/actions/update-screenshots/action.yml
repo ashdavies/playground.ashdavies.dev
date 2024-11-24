@@ -43,6 +43,10 @@ runs:
 
     - id: snapshots
       run: |
+        echo $GITHUB_REF
+        echo ${GITHUB_REF#refs/pull/}
+        echo ${${GITHUB_REF#refs/pull/}/\/merge/}
+        
         PR_NUMBER=${${GITHUB_REF#refs/pull/}/\/merge/}
         BRANCH_NAME="snapshots/pr-$PR_NUMBER"
         echo "branch-name=$BRANCH_NAME" >> $GITHUB_OUTPUT
