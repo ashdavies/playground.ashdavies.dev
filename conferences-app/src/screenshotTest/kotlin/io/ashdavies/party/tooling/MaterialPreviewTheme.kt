@@ -22,8 +22,7 @@ internal fun MaterialPreviewTheme(
     MaterialTheme(if (isSystemInDarkTheme()) darkColorScheme() else lightColorScheme()) {
         CompositionLocalProvider(
             value = LocalWindowSizeClass provides WindowSizeClass.calculateFromSize(size),
-            //content = { Surface(content = content) },
-            content = content,
+            content = { Surface(content = content) },
         )
     }
 }
