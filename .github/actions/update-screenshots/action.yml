@@ -8,10 +8,10 @@ runs:
     - uses: ./.github/actions/setup-gradle
 
     - env:
-        ANDROID_API_KEY: ${{ secrets.ANDROID_API_KEY }}
-        BROWSER_API_KEY: ${{ secrets.BROWSER_API_KEY }}
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        SERVER_CLIENT_ID: ${{ secrets.SERVER_CLIENT_ID }}
+        ANDROID_API_KEY:
+        BROWSER_API_KEY:
+        GITHUB_TOKEN:
+        SERVER_CLIENT_ID:
       run: ./gradlew recordPaparazziDebug --console=plain
 
     - run: |
