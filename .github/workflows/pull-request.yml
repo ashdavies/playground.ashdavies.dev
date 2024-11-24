@@ -50,25 +50,25 @@ jobs:
         env:
           GOOGLE_SERVICES: op://development/google services/playground release/base64
 
-      - env:
-          GOOGLE_SERVICES: ${{ steps.op-secrets.outputs.GOOGLE_SERVICES }}
-        run: |
+      - run: |
           echo $GOOGLE_SERVICES | base64 --decode > app-launcher/android/google-services.json
           echo $GOOGLE_SERVICES | base64 --decode > conferences-app/google-services.json
+        env:
+          GOOGLE_SERVICES: ${{ steps.op-secrets.outputs.GOOGLE_SERVICES }}
 
       - id: gradle
+        run: ./gradlew build --console=plain
         env:
           ANDROID_API_KEY: ${{ secrets.ANDROID_API_KEY }}
           BROWSER_API_KEY: ${{ secrets.BROWSER_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SERVER_CLIENT_ID: ${{ secrets.SERVER_CLIENT_ID }}
-        run: ./gradlew build --console=plain
 
-      - env:
+      - run: ./gradlew validateScreenshotTest --console=plain
+        env:
           ANDROID_API_KEY: ${{ secrets.ANDROID_API_KEY }}
           BROWSER_API_KEY: ${{ secrets.BROWSER_API_KEY }}
           SERVER_CLIENT_ID: ${{ secrets.SERVER_CLIENT_ID }}
-        run: ./gradlew validateScreenshotTest --console=plain
 
       - uses: ./.github/actions/update-screenshots
         if: failure()
