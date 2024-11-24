@@ -5,6 +5,21 @@ runs:
   steps:
     - uses: actions/checkout@v4
 
+    - uses: 1password/load-secrets-action/configure@v2
+      with:
+        service-account-token: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+
+    - id: op-secrets
+      uses: 1password/load-secrets-action@v2
+      with:
+        export-env: false
+      env:
+        GOOGLE_SERVICES: op://development/google services/playground release/base64
+
+    - run: echo $GOOGLE_SERVICES | base64 --decode > conferences-app/google-services.json
+      env:
+        GOOGLE_SERVICES: ${{ steps.op-secrets.outputs.GOOGLE_SERVICES }}
+
     - uses: ./.github/actions/setup-gradle
 
     - run: ./gradlew updateScreenshotTest --console=plain
