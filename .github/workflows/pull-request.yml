@@ -72,6 +72,8 @@ jobs:
 
       - uses: ./.github/actions/update-screenshots
         if: failure()
+        with:
+          service-account-token: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
 
       - uses: thollander/actions-comment-pull-request@v3
         if: ${{ steps.gradle.outputs.build-scan-url }}

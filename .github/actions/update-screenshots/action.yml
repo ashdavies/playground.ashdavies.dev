@@ -1,5 +1,10 @@
 name: Update Screenshots
 
+inputs:
+  service_account_token:
+    description: Your 1Password service account token
+    required: true
+
 runs:
   using: composite
   steps:
@@ -7,7 +12,7 @@ runs:
 
     - uses: 1password/load-secrets-action/configure@v2
       with:
-        service-account-token: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+        service-account-token: ${{ inputs.service_account_token }}
 
     - id: op-secrets
       uses: 1password/load-secrets-action@v2
