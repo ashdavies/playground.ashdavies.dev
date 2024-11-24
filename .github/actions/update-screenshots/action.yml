@@ -7,7 +7,7 @@ runs:
 
     - uses: ./.github/actions/setup-gradle
 
-    - run: ./gradlew recordPaparazziDebug --console=plain
+    - run: ./gradlew updateScreenshotTest --console=plain
       shell: bash
       env:
         ANDROID_API_KEY:
