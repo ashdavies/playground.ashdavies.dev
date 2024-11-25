@@ -39,7 +39,7 @@ build
 *.keystore
 
 # Kotlin
-.kotlin/sessions
+.kotlin
 
 # JavaScript
 node_modules/

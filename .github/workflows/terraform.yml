@@ -82,12 +82,12 @@ jobs:
           terraform -chdir=terraform plan >/dev/null -lock-timeout=5m -out=.terraform/terraform.tfplan
           terraform -chdir=terraform show .terraform/terraform.tfplan -no-color
 
-      - uses: ./.github/actions/pull-comment
+      - uses: thollander/actions-comment-pull-request@v3
         if: ${{ github.event_name == 'pull_request' }}
         with:
           message: "```${{ steps.plan.outputs.stdout }}```"
-          token: ${{ secrets.GITHUB_TOKEN }}
-          tag: terraform-plan
+          comment-tag: terraform-plan
+          mode: recreate
 
       - id: apply
         env:

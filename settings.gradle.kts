@@ -58,6 +58,7 @@ include(
     ":app-launcher:desktop",
     ":asg-service",
     ":cloud-run",
+    ":composeApp",
     ":compose-material",
     ":conferences-app",
     ":http-client",

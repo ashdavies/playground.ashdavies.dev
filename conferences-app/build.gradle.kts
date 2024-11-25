@@ -13,6 +13,7 @@ plugins {
 
     alias(libs.plugins.build.config)
     alias(libs.plugins.cash.sqldelight)
+    alias(libs.plugins.compose.screenshot)
 }
 
 android {
@@ -76,7 +77,20 @@ android {
 
     dependencies {
         coreLibraryDesugaring(libs.android.tools.desugarjdk)
+
+        screenshotTestImplementation(compose.material3)
+        screenshotTestImplementation(compose.uiTooling)
+
+        screenshotTestImplementation(libs.androidx.paging.common)
+        screenshotTestImplementation(libs.compose.window.size)
+        screenshotTestImplementation(libs.slack.circuit.runtime)
+        screenshotTestImplementation(libs.kotlinx.collections.immutable)
+
+        screenshotTestImplementation(projects.identityManager)
+        screenshotTestImplementation(projects.pagingCompose)
     }
+
+    experimentalProperties["android.experimental.enableScreenshotTest"] = true
 
     namespace = "io.ashdavies.playground"
 }
@@ -183,6 +197,10 @@ kotlin {
             runtimeOnly(libs.slf4j.simple)
         }
     }
+}
+
+screenshotTests {
+    imageDifferenceThreshold = 0.012f // 1.2 %
 }
 
 sqldelight {

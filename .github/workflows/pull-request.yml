@@ -50,28 +50,41 @@ jobs:
         env:
           GOOGLE_SERVICES: op://development/google services/playground release/base64
 
-      - env:
-          GOOGLE_SERVICES: ${{ steps.op-secrets.outputs.GOOGLE_SERVICES }}
-        run: |
+      - run: |
           echo $GOOGLE_SERVICES | base64 --decode > app-launcher/android/google-services.json
           echo $GOOGLE_SERVICES | base64 --decode > conferences-app/google-services.json
+        env:
+          GOOGLE_SERVICES: ${{ steps.op-secrets.outputs.GOOGLE_SERVICES }}
 
       - id: gradle
+        run: ./gradlew build --console=plain
         env:
           ANDROID_API_KEY: ${{ secrets.ANDROID_API_KEY }}
           BROWSER_API_KEY: ${{ secrets.BROWSER_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SERVER_CLIENT_ID: ${{ secrets.SERVER_CLIENT_ID }}
-        run: ./gradlew build --console=plain
 
-      - name: Gradle Scan Link
-        uses: ./.github/actions/pull-comment
+      - run: ./gradlew validateScreenshotTest --console=plain
+        env:
+          ANDROID_API_KEY: ${{ secrets.ANDROID_API_KEY }}
+          BROWSER_API_KEY: ${{ secrets.BROWSER_API_KEY }}
+          SERVER_CLIENT_ID: ${{ secrets.SERVER_CLIENT_ID }}
+
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          if-no-files-found: error
+          name: screenshot-test-report
+          paths: "**/build/reports/screenshotTest/preview/debug"
+
+      - uses: thollander/actions-comment-pull-request@v3
         if: ${{ steps.gradle.outputs.build-scan-url }}
         with:
           message: "Build scan published to ${{ steps.gradle.outputs.build-scan-url }}"
-          token: ${{ secrets.GITHUB_TOKEN }}
-          tag: build-scan-url
+          comment-tag: build-scan-url
+          mode: recreate
 
       - uses: test-summary/action@v2
+        if: always()
         with:
           paths: "**/build/test-results/test/TEST-*.xml"
