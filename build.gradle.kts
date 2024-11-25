@@ -1,10 +1,3 @@
-buildscript {
-    dependencies {
-        val googleServicesVersion = libs.versions.google.services.get()
-        classpath("com.google.gms:google-services:$googleServicesVersion")
-    }
-}
-
 plugins {
     fun classpath(notation: Provider<PluginDependency>) = alias(notation) apply false
 
