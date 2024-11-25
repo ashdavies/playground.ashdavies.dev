@@ -48,9 +48,9 @@ runs:
         BRANCH_NAME="snapshots/pr-$PR_NUMBER"
         echo "branch-name=$BRANCH_NAME" >> $GITHUB_OUTPUT
         
-        git checkout -b "$BRANCH_NAME"
+        git checkout -b $BRANCH_NAME
         git commit -am "Update screenshots"
-        git push origin
+        git push -u origin $BRANCH_NAME
       shell: bash
 
     - uses: thollander/actions-comment-pull-request@v3
