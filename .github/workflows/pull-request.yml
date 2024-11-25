@@ -72,6 +72,7 @@ jobs:
 
       - id: token
         uses: tibdex/github-app-token@v2
+        if: failure()
         with:
           private_key: ${{ secrets.PRIVATE_KEY }}
           app_id: ${{ secrets.APP_ID }}
