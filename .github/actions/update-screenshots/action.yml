@@ -48,7 +48,7 @@ runs:
         BRANCH_NAME="snapshots/pr-$PR_NUMBER"
         echo "branch-name=$BRANCH_NAME" >> $GITHUB_OUTPUT
         
-        git checkout -b "$NEW_BRANCH_NAME"
+        git checkout -b "$BRANCH_NAME"
         git commit -am "Update screenshots"
         git push origin
       shell: bash
