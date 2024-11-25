@@ -5,6 +5,10 @@ inputs:
     description: Your 1Password service account token
     required: true
 
+  github_token:
+    description: Your GitHub token
+    required: true
+
 runs:
   using: composite
   steps:
@@ -50,7 +54,7 @@ runs:
         
         git checkout -b $BRANCH_NAME
         git commit -am "Update screenshots"
-        git push -u origin $BRANCH_NAME
+        git push -u "https://${{ inputs.github_token }}@github.com/${{ github.repository }}.git" $BRANCH_NAME
       shell: bash
 
     - uses: thollander/actions-comment-pull-request@v3

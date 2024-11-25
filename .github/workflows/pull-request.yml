@@ -70,10 +70,17 @@ jobs:
           BROWSER_API_KEY: ${{ secrets.BROWSER_API_KEY }}
           SERVER_CLIENT_ID: ${{ secrets.SERVER_CLIENT_ID }}
 
+      - id: token
+        uses: tibdex/github-app-token@v2
+        with:
+          private_key: ${{ secrets.PRIVATE_KEY }}
+          app_id: ${{ secrets.APP_ID }}
+
       - uses: ./.github/actions/update-screenshots
         if: failure()
         with:
           service-account-token: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+          github_token: ${{ steps.token.outputs.token }}
 
       - uses: thollander/actions-comment-pull-request@v3
         if: ${{ steps.gradle.outputs.build-scan-url }}
