@@ -70,19 +70,12 @@ jobs:
           BROWSER_API_KEY: ${{ secrets.BROWSER_API_KEY }}
           SERVER_CLIENT_ID: ${{ secrets.SERVER_CLIENT_ID }}
 
-      - run: ./gradlew updateScreenshotTest --console=plain
-        if: failure()
-        env:
-          ANDROID_API_KEY: ${{ secrets.ANDROID_API_KEY }}
-          BROWSER_API_KEY: ${{ secrets.BROWSER_API_KEY }}
-          SERVER_CLIENT_ID: ${{ secrets.SERVER_CLIENT_ID }}
-
       - uses: actions/upload-artifact@v4
         if: failure()
         with:
           if-no-files-found: error
-          name: updated-screenshot-test
-          path: ./**/screenshotTest/**/*.png
+          name: screenshot-test-report
+          paths: "**/build/reports/screenshotTest/preview/debug"
 
       - uses: thollander/actions-comment-pull-request@v3
         if: ${{ steps.gradle.outputs.build-scan-url }}
@@ -92,5 +85,6 @@ jobs:
           mode: recreate
 
       - uses: test-summary/action@v2
+        if: always()
         with:
           paths: "**/build/test-results/test/TEST-*.xml"
