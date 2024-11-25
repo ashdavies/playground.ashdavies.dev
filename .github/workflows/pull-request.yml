@@ -79,7 +79,7 @@ jobs:
       - uses: ./.github/actions/update-screenshots
         if: failure()
         with:
-          service-account-token: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+          service_account_token: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
           github_token: ${{ steps.token.outputs.token }}
 
       - uses: thollander/actions-comment-pull-request@v3
