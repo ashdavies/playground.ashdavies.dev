@@ -4,7 +4,7 @@ android-minSdk = "34"
 androidx-activity = "1.9.3"
 androidx-paging = "3.3.4"
 cash-sqldelight = "2.0.2"
-coil-kt = "3.0.3"
+coil-kt = "3.0.4"
 compose-adaptive = "1.0.1"
 compose-plugin = "1.7.1"
 gitlive-firebase = "2.1.0"
@@ -136,5 +136,5 @@ jetbrains-compose = { id = "org.jetbrains.compose", version.ref = "compose-plugi
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "jetbrains-kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "jetbrains-kotlin" }
 kotlinx-kover = "org.jetbrains.kotlinx.kover:0.8.3"
-ktlint = "org.jlleitschuh.gradle.ktlint:12.1.1"
+ktlint = "org.jlleitschuh.gradle.ktlint:12.1.2"
 openapi-generator = "org.openapi.generator:7.10.0"
