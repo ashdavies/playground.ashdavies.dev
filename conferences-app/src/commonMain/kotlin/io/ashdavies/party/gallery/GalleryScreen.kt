@@ -227,7 +227,7 @@ internal fun GalleryGrid(
                 item = item,
                 onSelect = { onSelect(index) },
                 onExpand = { onExpand(index) },
-                modifier = Modifier.animateItemPlacement(),
+                modifier = Modifier.animateItem(),
                 isSelecting = isSelecting,
             )
         }
