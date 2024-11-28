@@ -87,7 +87,7 @@ module "github-repository" {
 
 module "github-service-account" {
   source        = "terraform-google-modules/service-accounts/google"
-  version       = "4.4.1"
+  version       = "4.4.2"
   providers     = { google = google.impersonated }
   display_name  = "GitHub Service Account"
   names         = ["oidc"]
