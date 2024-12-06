@@ -59,8 +59,8 @@ google-android-material = "com.google.android.material:material:1.12.0"
 google-auth-http = "com.google.auth:google-auth-library-oauth2-http:1.30.0"
 
 google-firebase-admin = "com.google.firebase:firebase-admin:9.4.2"
-google-firebase-bom = "com.google.firebase:firebase-bom:33.6.0"
 google-firebase-appcheck-playintegrity = { module = "com.google.firebase:firebase-appcheck-playintegrity" }
+google-firebase-bom = "com.google.firebase:firebase-bom:33.7.0"
 google-firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
 
 google-guava-jre = "com.google.guava:guava:33.3.1-jre"
@@ -127,7 +127,6 @@ build-config = "com.github.gmazzo.buildconfig:5.5.1"
 cash-sqldelight = { id = "app.cash.sqldelight", version.ref = "cash-sqldelight" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "jetbrains-kotlin" }
 compose-screenshot = "com.android.compose.screenshot:0.0.1-alpha08"
-dependency-analysis = "com.autonomousapps.dependency-analysis:2.3.0"
 detekt = "io.gitlab.arturbosch.detekt:1.23.7"
 crashlytics = "com.google.firebase.crashlytics:3.0.2"
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
