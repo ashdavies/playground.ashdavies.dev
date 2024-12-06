@@ -14,7 +14,6 @@ plugins {
         classpath(kotlin.serialization)
         classpath(ktlint)
 
-        alias(dependency.analysis)
         alias(gradle.doctor)
         alias(kotlinx.kover)
     }
