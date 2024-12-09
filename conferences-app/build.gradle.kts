@@ -28,20 +28,20 @@ android {
         enableV3Signing = true
         enableV4Signing = true
 
-        val keyStoreFile by stringPropertyOrNull {
-            if (it != null) storeFile = rootProject.file(it)
+        val keyStoreFile by stringProperty { _, value ->
+            if (value != null) storeFile = rootProject.file(value)
         }
 
-        val keyStorePassword by stringPropertyOrNull {
-            if (it != null) storePassword = it
+        val keyStorePassword by stringProperty { _, value ->
+            if (value != null) storePassword = value
         }
 
-        val releaseKeyAlias by stringPropertyOrNull {
-            if (it != null) keyAlias = it
+        val releaseKeyAlias by stringProperty { _, value ->
+            if (value != null) keyAlias = value
         }
 
-        val releaseKeyPassword by stringPropertyOrNull {
-            if (it != null) keyPassword = it
+        val releaseKeyPassword by stringProperty { _, value ->
+            if (value != null) keyPassword = value
         }
     }
 
@@ -68,8 +68,8 @@ android {
     }
 
     defaultConfig {
-        val versionCode by stringPropertyOrNull {
-            versionCode = it?.toInt() ?: 1
+        val versionCode by stringProperty { _, value ->
+            versionCode = value?.toInt() ?: 1
         }
 
         versionName = "1.0.0"
@@ -96,9 +96,9 @@ android {
 }
 
 buildConfig {
-    val androidApiKey by stringPropertyWithTag(::buildConfigField)
-    val androidStrictMode by booleanPropertyWithTag(::buildConfigField)
-    val browserApiKey by stringPropertyWithTag(::buildConfigField)
+    val androidApiKey by stringProperty(::buildConfigField)
+    val androidStrictMode by booleanProperty(::buildConfigField)
+    val browserApiKey by stringProperty(::buildConfigField)
 
     packageName.set(android.namespace)
 }

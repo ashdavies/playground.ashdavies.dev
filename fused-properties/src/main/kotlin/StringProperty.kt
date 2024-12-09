@@ -29,37 +29,23 @@ private fun Project.stringPropertyProvider(definition: PropertyDefinition): Prov
         .orElse(providers.environmentVariable(definition.envPropertyName))
 }
 
-public fun Project.booleanProperty(block: (Boolean) -> Unit = { }): ReadOnlyDelegateProvider<Boolean> {
-    return readOnlyDelegateProvider { provider, _ -> provider.get().toBoolean().also(block) }
+public fun Project.booleanProperty(block: (String, Boolean?) -> Unit): ReadOnlyDelegateProvider<Boolean?> {
+    return readOnlyDelegateProvider { provider, tag -> provider.get().toBoolean().also { block(tag, it) } }
 }
 
-public fun Project.booleanPropertyWithTag(action: (String, Boolean) -> Unit): ReadOnlyDelegateProvider<Boolean> {
-    return readOnlyDelegateProvider { provider, tag -> provider.get().toBoolean().also { action(tag, it) } }
-}
-
-public fun Project.stringProperty(block: (String) -> Unit = { }): ReadOnlyDelegateProvider<String> {
-    return readOnlyDelegateProvider { provider, _ -> provider.get().also(block) }
-}
-
-public fun Project.stringPropertyWithTag(action: (String, String) -> Unit): ReadOnlyDelegateProvider<String> {
-    return readOnlyDelegateProvider { provider, tag -> provider.get().also { action(tag, it) } }
-}
-
-public fun Project.stringPropertyOrNull(block: (String?) -> Unit = { }): ReadOnlyDelegateProvider<String?> {
-    return readOnlyDelegateProvider { provider, _ -> provider.orNull.also(block) }
+public fun Project.stringProperty(block: (String, String?) -> Unit): ReadOnlyDelegateProvider<String?> {
+    return readOnlyDelegateProvider { provider, tag -> provider.orNull.also { block(tag, it) } }
 }
 
 private fun <T> Project.readOnlyDelegateProvider(
     transform: (provider: Provider<String>, tag: String) -> T,
 ): ReadOnlyDelegateProvider<T> = ReadOnlyDelegateProvider { _, property ->
     val definition = PropertyDefinition(property.name)
+    val provider = stringPropertyProvider(definition)
 
-    val value = transform(
-        stringPropertyProvider(definition),
-        definition.envPropertyName,
-    )
-
-    ReadOnlyProperty { _, _ -> value }
+    ReadOnlyProperty { _, _ ->
+        transform(provider, definition.envPropertyName)
+    }
 }
 
 private fun <S : Any, T> Provider<S>.mapOrNull(block: (S) -> T?): Provider<T> {

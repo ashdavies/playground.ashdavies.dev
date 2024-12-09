@@ -13,17 +13,9 @@ application {
 }
 
 buildConfig {
-    val firebaseAndroidAppId by stringPropertyOrNull { value ->
-        buildConfigField<String?>("FIREBASE_ANDROID_APP_ID", value)
-    }
-
-    val googleServiceAccountId by stringPropertyOrNull { value ->
-        buildConfigField<String?>("GOOGLE_SERVICE_ACCOUNT_ID", value)
-    }
-
-    val integrationApiKey by stringPropertyOrNull { value ->
-        buildConfigField<String?>("INTEGRATION_API_KEY", value)
-    }
+    val firebaseAndroidAppId by stringProperty(::buildConfigField)
+    val googleServiceAccountId by stringProperty(::buildConfigField)
+    val integrationApiKey by stringProperty(::buildConfigField)
 
     packageName.set("io.ashdavies.cloud")
 }
