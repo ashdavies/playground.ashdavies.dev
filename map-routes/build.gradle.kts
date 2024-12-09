@@ -9,8 +9,8 @@ plugins {
 
 android {
     defaultConfig {
-        val androidApiKey by stringProperty { value ->
-            manifestPlaceholders["ANDROID_API_KEY"] = value
+        val androidApiKey by stringProperty { _, value ->
+            manifestPlaceholders["ANDROID_API_KEY"] = "$value"
         }
     }
 
@@ -18,9 +18,7 @@ android {
 }
 
 buildConfig {
-    val androidApiKey by stringProperty { value ->
-        buildConfigField("ANDROID_API_KEY", value)
-    }
+    val androidApiKey by stringProperty(::buildConfigField)
 
     packageName.set(android.namespace)
 }

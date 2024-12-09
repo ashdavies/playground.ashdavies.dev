@@ -29,24 +29,12 @@ private fun Project.stringPropertyProvider(definition: PropertyDefinition): Prov
         .orElse(providers.environmentVariable(definition.envPropertyName))
 }
 
-public fun Project.booleanProperty(block: (Boolean) -> Unit = { }): ReadOnlyDelegateProvider<Boolean> {
-    return readOnlyDelegateProvider { provider, _ -> provider.get().toBoolean().also(block) }
+public fun Project.booleanProperty(block: (String, Boolean?) -> Unit): ReadOnlyDelegateProvider<Boolean?> {
+    return readOnlyDelegateProvider { provider, tag -> provider.get().toBoolean().also { block(tag, it) } }
 }
 
-public fun Project.booleanPropertyWithTag(action: (String, Boolean) -> Unit): ReadOnlyDelegateProvider<Boolean> {
-    return readOnlyDelegateProvider { provider, tag -> provider.get().toBoolean().also { action(tag, it) } }
-}
-
-public fun Project.stringProperty(block: (String) -> Unit = { }): ReadOnlyDelegateProvider<String> {
-    return readOnlyDelegateProvider { provider, _ -> provider.get().also(block) }
-}
-
-public fun Project.stringPropertyWithTag(action: (String, String) -> Unit): ReadOnlyDelegateProvider<String> {
-    return readOnlyDelegateProvider { provider, tag -> provider.get().also { action(tag, it) } }
-}
-
-public fun Project.stringPropertyOrNull(block: (String?) -> Unit = { }): ReadOnlyDelegateProvider<String?> {
-    return readOnlyDelegateProvider { provider, _ -> provider.orNull.also(block) }
+public fun Project.stringProperty(block: (String, String?) -> Unit): ReadOnlyDelegateProvider<String?> {
+    return readOnlyDelegateProvider { provider, tag -> provider.orNull.also { block(tag, it) } }
 }
 
 private fun <T> Project.readOnlyDelegateProvider(

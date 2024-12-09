@@ -9,9 +9,7 @@ plugins {
 }
 
 buildConfig {
-    val browserApiKey by stringProperty { value ->
-        buildConfigField("BROWSER_API_KEY", value)
-    }
+    val browserApiKey by stringProperty(::buildConfigField)
 
     packageName.set("io.ashdavies.playground")
 }
