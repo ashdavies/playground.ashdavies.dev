@@ -41,11 +41,13 @@ private fun <T> Project.readOnlyDelegateProvider(
     transform: (provider: Provider<String>, tag: String) -> T,
 ): ReadOnlyDelegateProvider<T> = ReadOnlyDelegateProvider { _, property ->
     val definition = PropertyDefinition(property.name)
-    val provider = stringPropertyProvider(definition)
 
-    ReadOnlyProperty { _, _ ->
-        transform(provider, definition.envPropertyName)
-    }
+    val value = transform(
+        stringPropertyProvider(definition),
+        definition.envPropertyName,
+    )
+
+    ReadOnlyProperty { _, _ -> value }
 }
 
 private fun <S : Any, T> Provider<S>.mapOrNull(block: (S) -> T?): Provider<T> {
