@@ -24,7 +24,7 @@ android {
 
 buildConfig {
     val androidApiKey by stringProperty(::buildConfigField)
-    val androidStrictMode by stringProperty(::buildConfigField)
+    val androidStrictMode by booleanProperty(::buildConfigField)
 
     packageName.set(android.namespace)
 }
