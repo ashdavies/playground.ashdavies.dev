@@ -28,6 +28,7 @@ kotlin {
         commonMain.dependencies {
             implementation(projects.httpClient)
             implementation(projects.httpCommon)
+            implementation(projects.kotlinDelegates)
             implementation(projects.mapsRouting)
             implementation(projects.platformSupport)
 

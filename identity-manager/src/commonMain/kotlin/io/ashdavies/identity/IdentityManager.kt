@@ -1,6 +1,7 @@
 package io.ashdavies.identity
 
 import io.ashdavies.content.PlatformContext
+import io.ashdavies.delegates.notNull
 import io.ashdavies.sql.mapToOneOrNull
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -35,7 +36,8 @@ internal fun IdentityManager(
     override val state: Flow<IdentityState> = merge(states, queries)
 
     override suspend fun signIn() {
-        val identityRequest = GoogleIdIdentityRequest(BuildConfig.SERVER_CLIENT_ID)
+        val serverClientId by notNull { BuildConfig.SERVER_CLIENT_ID }
+        val identityRequest = GoogleIdIdentityRequest(serverClientId)
         val identityResponse = try {
             identityService.request(identityRequest)
         } catch (exception: UnsupportedOperationException) {
