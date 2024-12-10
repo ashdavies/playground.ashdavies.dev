@@ -19,6 +19,7 @@ buildConfig {
 kotlin {
     sourceSets {
         commonMain.dependencies {
+            implementation(projects.kotlinDelegates)
             implementation(projects.platformSupport)
             implementation(projects.sqlCommon)
 

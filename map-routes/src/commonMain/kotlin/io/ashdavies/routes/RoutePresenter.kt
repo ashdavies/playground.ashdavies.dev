@@ -6,6 +6,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.slack.circuit.retained.rememberRetained
+import io.ashdavies.delegates.notNull
 import io.ashdavies.http.LocalHttpClient
 import io.ashdavies.routing.ComputeRoutesCallable
 import io.ashdavies.routing.ComputeRoutesError
@@ -29,11 +30,13 @@ internal fun RoutePresenter(
         }
     }
 
+    val androidApiKey by notNull { BuildConfig.ANDROID_API_KEY }
+
     val computeRoutes = rememberRetained {
         ComputeRoutesCallable(
             httpClient = httpClient,
             baseUrl = ROUTES_BASE_URL,
-            apiKey = BuildConfig.ANDROID_API_KEY,
+            apiKey = androidApiKey,
         )
     }
 

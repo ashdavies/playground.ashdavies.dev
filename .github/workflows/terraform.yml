@@ -49,15 +49,15 @@ jobs:
         if: ${{ github.ref == 'refs/heads/main' }}
 
       - if: ${{ github.ref == 'refs/heads/main' }}
-        env:
-          FIREBASE_ANDROID_APP_ID: ${{ secrets.firebase_android_app_id }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GOOGLE_SERVICE_ACCOUNT_ID: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
         run: >
           ./gradlew cloud-run:jib
           --image=europe-west1-docker.pkg.dev/${{ steps.setup-cloud.outputs.project_id }}/cloud-run-source-deploy/api.ashdavies.dev
           --no-configuration-cache
           --console=plain
+#        env:
+#          FIREBASE_ANDROID_APP_ID: ${{ secrets.firebase_android_app_id }}
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#          GOOGLE_SERVICE_ACCOUNT_ID: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
 
       - id: token
         uses: tibdex/github-app-token@v2
