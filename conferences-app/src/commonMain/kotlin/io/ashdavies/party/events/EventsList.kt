@@ -22,8 +22,6 @@ import androidx.compose.material3.SuggestionChip
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
-import androidx.compose.material3.windowsizeclass.WindowSizeClass
-import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -44,7 +42,6 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import io.ashdavies.analytics.OnClick
 import io.ashdavies.paging.LazyPagingItems
-import io.ashdavies.party.material.LocalWindowSizeClass
 import io.ashdavies.placeholder.PlaceholderHighlight
 import io.ashdavies.placeholder.fade
 import io.ashdavies.placeholder.placeholder
@@ -137,7 +134,6 @@ private fun EventSection(
 private fun EventSectionContent(
     event: Event?,
     modifier: Modifier = Modifier,
-    windowClassSize: WindowSizeClass = LocalWindowSizeClass.current,
 ) {
     Box(modifier.height(IntrinsicSize.Min)) {
         if (event?.imageUrl != null) {
@@ -162,15 +158,6 @@ private fun EventSectionContent(
                         text = event?.name,
                         style = MaterialTheme.typography.headlineSmall,
                     )
-
-                    if (windowClassSize.widthSizeClass == WindowWidthSizeClass.Expanded) {
-                        EventStatusChips(
-                            cfpSite = event?.cfpSite,
-                            cfpEnd = event?.cfpEnd,
-                            isOnlineOnly = event?.online == true,
-                            modifier = Modifier.padding(start = 12.dp),
-                        )
-                    }
                 }
 
                 PlaceholderText(
@@ -179,13 +166,11 @@ private fun EventSectionContent(
                     style = MaterialTheme.typography.titleSmall,
                 )
 
-                if (windowClassSize.widthSizeClass == WindowWidthSizeClass.Compact) {
-                    EventStatusChips(
-                        cfpSite = event?.cfpSite,
-                        cfpEnd = event?.cfpEnd,
-                        isOnlineOnly = event?.online == true,
-                    )
-                }
+                EventStatusChips(
+                    cfpSite = event?.cfpSite,
+                    cfpEnd = event?.cfpEnd,
+                    isOnlineOnly = event?.online == true,
+                )
             }
 
             if (event?.dateStart != null) {
