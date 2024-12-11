@@ -12,7 +12,7 @@ internal class HomeScreenTests {
     @Composable
     @PreviewDayNight
     @OptIn(ExperimentalMaterial3Api::class)
-    fun HomeTopAppBarPreview() {
+    private fun HomeTopAppBarPreview() {
         MaterialPreviewTheme {
             HomeTopBar(
                 actions = {
@@ -27,7 +27,7 @@ internal class HomeScreenTests {
 
     @Composable
     @PreviewDayNight
-    fun HomeBottomSheetPreview() {
+    private fun HomeBottomSheetPreview() {
         MaterialPreviewTheme {
             HomeBottomBar()
         }

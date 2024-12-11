@@ -4,11 +4,11 @@ import androidx.compose.runtime.Composable
 import io.ashdavies.party.tooling.MaterialPreviewTheme
 import io.ashdavies.party.tooling.PreviewDayNight
 
-internal class EventsDetailTest {
+internal class EventsDetailTests {
 
     @Composable
     @PreviewDayNight
-    fun EventsDetailPreview() {
+    private fun EventsDetailPreview() {
         MaterialPreviewTheme {
             EventsDetail(DroidconBerlin)
         }

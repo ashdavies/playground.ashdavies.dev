@@ -6,12 +6,12 @@ import io.ashdavies.party.tooling.MaterialPreviewTheme
 import io.ashdavies.party.tooling.PreviewDayNight
 import kotlinx.collections.immutable.persistentListOf
 
-internal class GalleryListTest {
+internal class GalleryScreenTests {
 
     @Composable
     @PreviewDayNight
     @OptIn(ExperimentalFoundationApi::class)
-    fun GalleryGridPreview() {
+    private fun GalleryGridPreview() {
         MaterialPreviewTheme {
             GalleryGrid(
                 itemList = persistentListOf(
@@ -29,7 +29,7 @@ internal class GalleryListTest {
 
     @Composable
     @PreviewDayNight
-    fun GalleryBottomSheetPreview() {
+    private fun GalleryBottomSheetPreview() {
         MaterialPreviewTheme {
             GallerySheetContent(eventSink = { })
         }

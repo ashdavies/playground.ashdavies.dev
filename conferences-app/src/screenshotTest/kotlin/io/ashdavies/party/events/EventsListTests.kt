@@ -11,11 +11,11 @@ import kotlinx.coroutines.flow.flowOf
 
 private val DroidconEvents = listOf(AndroidMakers, DroidconBerlin, DroidconLondon)
 
-internal class EventsListTest {
+internal class EventsListTests {
 
     @Composable
     @PreviewDayNight
-    fun EventsListPreview(data: List<Event> = DroidconEvents) {
+    private fun EventsListPreview(data: List<Event> = DroidconEvents) {
         MaterialPreviewTheme {
             EventsList(
                 state = EventsScreen.State(lazyPagingItems(flowOf(PagingData.from(data)))),
