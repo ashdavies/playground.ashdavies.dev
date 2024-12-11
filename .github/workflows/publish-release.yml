@@ -70,20 +70,15 @@ jobs:
             :conferences-app:bundle \
             --console=plain
         env:
-#          ANDROID_API_KEY: ${{ secrets.ANDROID_API_KEY }}
-#          BROWSER_API_KEY: ${{ secrets.BROWSER_API_KEY }}
+          ANDROID_API_KEY: ${{ secrets.ANDROID_API_KEY }}
+          BROWSER_API_KEY: ${{ secrets.BROWSER_API_KEY }}
           KEY_STORE_FILE: keystore.jks
           KEY_STORE_PASSWORD: ${{ steps.op-secrets.outputs.KEYSTORE_PASSWORD }}
           RELEASE_KEY_ALIAS: ${{ steps.op-secrets.outputs.KEY_ALIAS }}
           RELEASE_KEY_PASSWORD: ${{ steps.op-secrets.outputs.KEY_PASSWORD }}
-#          SERVER_CLIENT_ID: ${{ secrets.SERVER_CLIENT_ID }}
           VERSION_CODE: ${{ steps.version-code.outputs.VERSION_CODE }}
 
       - run: ./gradlew validateScreenshotTest --console=plain
-#        env:
-#          ANDROID_API_KEY: ${{ secrets.ANDROID_API_KEY }}
-#          BROWSER_API_KEY: ${{ secrets.BROWSER_API_KEY }}
-#          SERVER_CLIENT_ID: ${{ secrets.SERVER_CLIENT_ID }}
 
       - uses: actions/upload-artifact@v4
         with:

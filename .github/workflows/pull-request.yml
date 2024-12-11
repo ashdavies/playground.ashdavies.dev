@@ -58,18 +58,9 @@ jobs:
 
       - id: gradle
         run: ./gradlew build --console=plain
-#        env:
-#          ANDROID_API_KEY: ${{ secrets.ANDROID_API_KEY }}
-#          BROWSER_API_KEY: ${{ secrets.BROWSER_API_KEY }}
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#          SERVER_CLIENT_ID: ${{ secrets.SERVER_CLIENT_ID }}
 
       - id: screenshot-validation
         run: ./gradlew validateScreenshotTest --console=plain
-#        env:
-#          ANDROID_API_KEY: ${{ secrets.ANDROID_API_KEY }}
-#          BROWSER_API_KEY: ${{ secrets.BROWSER_API_KEY }}
-#          SERVER_CLIENT_ID: ${{ secrets.SERVER_CLIENT_ID }}
 
       - uses: actions/upload-artifact@v4
         if: failure() && steps.screenshot-validation.outcome == 'failure'
