@@ -42,7 +42,6 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import io.ashdavies.analytics.OnClick
 import io.ashdavies.paging.LazyPagingItems
-import io.ashdavies.party.material.LocalWindowSizeClass
 import io.ashdavies.placeholder.PlaceholderHighlight
 import io.ashdavies.placeholder.fade
 import io.ashdavies.placeholder.placeholder
