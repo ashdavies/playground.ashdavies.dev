@@ -19,6 +19,8 @@ naming:
 style:
   MagicNumber:
     ignorePropertyDeclaration: true
+  UnusedPrivateMember:
+    ignoreAnnotated: ['Preview', 'PreviewDayNight']
   UnusedPrivateProperty:
     excludes:
       - '**/*.gradle.kts'
