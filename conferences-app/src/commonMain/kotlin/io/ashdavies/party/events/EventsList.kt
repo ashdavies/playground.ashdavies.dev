@@ -10,11 +10,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyItemScope
+import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
@@ -50,6 +50,7 @@ import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.format
 import kotlinx.datetime.toLocalDateTime
+import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
 import playground.conferences_app.generated.resources.Res
 import playground.conferences_app.generated.resources.call_for_papers
@@ -81,21 +82,38 @@ internal fun EventsList(
         }
 
         LazyColumn(Modifier.fillMaxSize()) {
-            val itemCount = when {
-                isRefreshing -> state.pagingItems.itemCount.coerceAtLeast(PLACEHOLDER_COUNT)
-                else -> state.pagingItems.itemCount
-            }
-
-            items(itemCount) { index ->
-                EventSection(
-                    onClick = { onClick(requireNotNull(state.pagingItems[index])) },
-                    modifier = Modifier.animateItem(),
+            itemsIndexed(
+                items = state.pagingItems,
+                placeholderCount = if (isRefreshing) PLACEHOLDER_COUNT else 0,
+            ) { index, item ->
+                EventItemContent(
+                    modifier = Modifier
+                        .animateItem()
+                        .clickable(
+                            enabled = item != null,
+                            onClickLabel = item?.name,
+                            onClick = { onClick(requireNotNull(state.pagingItems[index])) },
+                        )
+                        .fillMaxWidth()
+                        .padding(
+                            horizontal = 16.dp,
+                            vertical = 8.dp,
+                        ),
                     event = state.pagingItems.rememberItemOrNull(index, isRefreshing),
                 )
             }
         }
     }
 }
+
+private inline fun <T : Any> LazyListScope.itemsIndexed(
+    items: LazyPagingItems<T>,
+    placeholderCount: Int,
+    crossinline itemContent: @Composable LazyItemScope.(index: Int, item: T?) -> Unit,
+) = items(
+    count = items.itemCount.coerceAtLeast(placeholderCount),
+    itemContent = { itemContent(it, items[it]) },
+)
 
 @Composable
 private fun <T : Any> LazyPagingItems<T>.rememberItemOrNull(
@@ -106,81 +124,86 @@ private fun <T : Any> LazyPagingItems<T>.rememberItemOrNull(
 }
 
 @Composable
-private fun EventSection(
+private fun EventItemContent(
     event: Event?,
-    onClick: (Event) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Card(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(
-                horizontal = 16.dp,
-                vertical = 8.dp,
-            )
-            .clickable(
-                enabled = event != null,
-                onClickLabel = event?.name,
-                onClick = { onClick(event!!) },
-            ),
-    ) {
-        EventSectionContent(
-            event = event,
-        )
+    Card(modifier) {
+        Box(Modifier.height(IntrinsicSize.Min)) {
+            if (event?.imageUrl != null) {
+                EventSectionBackground(
+                    backgroundImageUrl = event.imageUrl,
+                    modifier = Modifier.fillMaxSize(),
+                )
+            }
+
+            Row {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f)
+                        .padding(
+                            horizontal = 16.dp,
+                            vertical = 8.dp,
+                        ),
+                ) {
+                    Row {
+                        PlaceholderText(
+                            text = event?.name,
+                            style = MaterialTheme.typography.headlineSmall,
+                        )
+                    }
+
+                    PlaceholderText(
+                        text = event?.location,
+                        modifier = Modifier.align(Alignment.Start),
+                        style = MaterialTheme.typography.titleSmall,
+                    )
+
+                    if (event?.cfpEnd != null) {
+                        val uriHandler = LocalUriHandler.current
+
+                        SuggestionChip(
+                            onClick = { uriHandler.openUri(requireNotNull(event.cfpSite)) },
+                            label = { SmallLabelText(Res.string.call_for_papers, event.cfpEnd) },
+                            enabled = event.cfpSite != null && LocalDate.parse(event.cfpEnd) > Today,
+                            shape = MaterialTheme.shapes.small,
+                        )
+                    }
+
+                    if (event?.online == true) {
+                        SuggestionChip(
+                            onClick = { },
+                            label = { SmallLabelText(Res.string.online_only) },
+                            enabled = false,
+                            shape = MaterialTheme.shapes.small,
+                        )
+                    }
+                }
+
+                if (event?.dateStart != null) {
+                    EventDateLabel(
+                        dateStart = remember { LocalDate.parse(event.dateStart) },
+                        modifier = Modifier.padding(12.dp),
+                    )
+                }
+            }
+        }
     }
 }
 
 @Composable
-private fun EventSectionContent(
-    event: Event?,
+private fun SmallLabelText(
+    resource: StringResource,
+    vararg formatArgs: Any,
     modifier: Modifier = Modifier,
 ) {
-    Box(modifier.height(IntrinsicSize.Min)) {
-        if (event?.imageUrl != null) {
-            EventSectionBackground(
-                backgroundImageUrl = event.imageUrl,
-                modifier = Modifier.fillMaxSize(),
-            )
-        }
-
-        Row {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f)
-                    .padding(
-                        horizontal = 16.dp,
-                        vertical = 8.dp,
-                    ),
-            ) {
-                Row {
-                    PlaceholderText(
-                        text = event?.name,
-                        style = MaterialTheme.typography.headlineSmall,
-                    )
-                }
-
-                PlaceholderText(
-                    text = event?.location,
-                    modifier = Modifier.align(Alignment.Start),
-                    style = MaterialTheme.typography.titleSmall,
-                )
-
-                EventStatusChips(
-                    cfpSite = event?.cfpSite,
-                    cfpEnd = event?.cfpEnd,
-                    isOnlineOnly = event?.online == true,
-                )
-            }
-
-            if (event?.dateStart != null) {
-                EventDateLabel(
-                    dateStart = remember { LocalDate.parse(event.dateStart) },
-                    modifier = Modifier.padding(12.dp),
-                )
-            }
-        }
-    }
+    Text(
+        text = stringResource(resource, formatArgs),
+        modifier = modifier,
+        color = LocalContentColor.current,
+        style = MaterialTheme.typography.labelSmall,
+    )
 }
 
 @Composable
@@ -219,50 +242,6 @@ private fun EventDateLabel(
                     )
                 }
             }
-        }
-    }
-}
-
-@Composable
-private fun EventStatusChips(
-    cfpSite: String?,
-    cfpEnd: String?,
-    isOnlineOnly: Boolean,
-    modifier: Modifier = Modifier,
-) {
-    Row(modifier) {
-        if (cfpEnd != null) {
-            val uriHandler = LocalUriHandler.current
-
-            SuggestionChip(
-                onClick = { uriHandler.openUri(requireNotNull(cfpSite)) },
-                label = {
-                    Text(
-                        text = stringResource(Res.string.call_for_papers, cfpEnd),
-                        color = LocalContentColor.current,
-                        style = MaterialTheme.typography.labelSmall,
-                    )
-                },
-                enabled = cfpSite != null && LocalDate.parse(cfpEnd) > Today,
-                shape = MaterialTheme.shapes.small,
-            )
-
-            HorizontalDivider(Modifier.width(8.dp))
-        }
-
-        if (isOnlineOnly) {
-            SuggestionChip(
-                onClick = { },
-                label = {
-                    Text(
-                        text = stringResource(Res.string.online_only),
-                        color = LocalContentColor.current,
-                        style = MaterialTheme.typography.labelSmall,
-                    )
-                },
-                enabled = false,
-                shape = MaterialTheme.shapes.small,
-            )
         }
     }
 }
