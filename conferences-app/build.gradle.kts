@@ -63,10 +63,6 @@ android {
         }
     }
 
-    compileOptions {
-        isCoreLibraryDesugaringEnabled = true
-    }
-
     defaultConfig {
         val versionCode by stringProperty { _, value ->
             versionCode = value?.toInt() ?: 1
@@ -76,8 +72,6 @@ android {
     }
 
     dependencies {
-        coreLibraryDesugaring(libs.android.tools.desugarjdk)
-
         screenshotTestImplementation(compose.material3)
         screenshotTestImplementation(compose.uiTooling)
 
@@ -148,8 +142,6 @@ kotlin {
             implementation(libs.compose.adaptive.layout)
             implementation(libs.compose.adaptive.navigation)
             implementation(libs.compose.window.size)
-            implementation(libs.gitlive.firebase.app)
-            implementation(libs.gitlive.firebase.config)
             implementation(libs.kotlinx.collections.immutable)
             implementation(libs.kotlinx.datetime)
             implementation(libs.kotlinx.serialization.core)

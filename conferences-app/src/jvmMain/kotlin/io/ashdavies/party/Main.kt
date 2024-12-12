@@ -15,7 +15,8 @@ import com.slack.circuit.overlay.ContentWithOverlays
 import io.ashdavies.analytics.LocalAnalytics
 import io.ashdavies.analytics.RemoteAnalytics
 import io.ashdavies.check.ProvideAppCheckToken
-import io.ashdavies.config.LocalConfigValue
+import io.ashdavies.config.Default
+import io.ashdavies.config.RemoteConfigValue
 import io.ashdavies.config.LocalRemoteConfig
 import io.ashdavies.config.RemoteConfig
 import io.ashdavies.content.PlatformContext
@@ -24,7 +25,6 @@ import io.ashdavies.http.publicStorage
 import io.ashdavies.io.resolveCacheDir
 import io.ashdavies.material.dynamicColorScheme
 import io.ashdavies.party.config.rememberCircuit
-import io.ashdavies.party.firebase.EmptyLocalConfigValue
 import io.ashdavies.party.home.HomeScreen
 import io.ashdavies.party.material.ProvideLocalWindowSizeClass
 import io.ashdavies.playground.BuildConfig
@@ -106,12 +106,7 @@ private fun ConferencesApp(
 private fun ProvideRemoteLocals(content: @Composable () -> Unit) {
     CompositionLocalProvider(
         LocalAnalytics provides RemoteAnalytics { _, _ -> },
-        LocalRemoteConfig provides object : RemoteConfig {
-            override suspend fun <T : Any> getValue(
-                key: String,
-                transform: (LocalConfigValue) -> T,
-            ): T = transform(EmptyLocalConfigValue)
-        },
+        LocalRemoteConfig provides RemoteConfig.Default,
         content = content,
     )
 }
