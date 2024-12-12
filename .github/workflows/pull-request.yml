@@ -56,8 +56,10 @@ jobs:
         env:
           GOOGLE_SERVICES: ${{ steps.op-secrets.outputs.GOOGLE_SERVICES }}
 
-      - id: gradle
+      - id: gradle-build
         run: ./gradlew build --console=plain
+
+      - run: ./gradlew detektAll --continue --console=plain
 
       - id: screenshot-validation
         run: ./gradlew validateScreenshotTest --console=plain
@@ -70,7 +72,7 @@ jobs:
           path: "**/build/reports/screenshotTest/preview/debug"
 
       - uses: thollander/actions-comment-pull-request@v3
-        if: ${{ steps.gradle.outputs.build-scan-url }}
+        if: ${{ steps.gradle-build.outputs.build-scan-url }}
         with:
           message: "Build scan published to ${{ steps.gradle.outputs.build-scan-url }}"
           comment-tag: build-scan-url
