@@ -11,7 +11,7 @@
             android:name="io.ashdavies.party.MainActivity"
             android:configChanges="keyboardHidden|orientation"
             android:exported="true"
-            android:label="Playground"
+            android:label="Conferences"
             android:theme="@style/Theme.Material3.DynamicColors.DayNight">
 
             <intent-filter>
