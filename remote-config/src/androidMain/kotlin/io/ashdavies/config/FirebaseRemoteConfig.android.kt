@@ -21,11 +21,11 @@ private val _firebaseRemoteConfig by lazy {
 
 internal actual val firebaseRemoteConfig = object : RemoteConfig {
     override suspend fun <T : Any> getValue(key: String, transform: (RemoteConfigValue) -> T): T {
-        return transform(RemoteConfigValue(_firebaseRemoteConfig.getValue(key)))
+        return transform(remoteConfigValue(_firebaseRemoteConfig.getValue(key)))
     }
 }
 
-private fun RemoteConfigValue(value: FirebaseRemoteConfigValue) = object : RemoteConfigValue {
+private fun remoteConfigValue(value: FirebaseRemoteConfigValue) = object : RemoteConfigValue {
     override fun asLong(): Long = value.asLong()
     override fun asDouble(): Double = value.asDouble()
     override fun asString(): String = value.asString()
