@@ -7,7 +7,6 @@ cash-sqldelight = "2.0.2"
 coil-kt = "3.0.4"
 compose-adaptive = "1.0.1"
 compose-plugin = "1.7.1"
-gitlive-firebase = "2.1.0"
 google-accompanist = "0.36.0"
 google-android = "8.7.3"
 google-maps-compose = "4.3.2"
@@ -22,7 +21,6 @@ slack-circuit = "0.25.0"
 
 [libraries]
 ajalt-clikt = "com.github.ajalt.clikt:clikt:5.0.2"
-android-tools-desugarjdk = "com.android.tools:desugar_jdk_libs:2.1.3"
 
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity" }
 androidx-annotation = "androidx.annotation:annotation:1.9.1"
@@ -45,10 +43,6 @@ compose-window-size = { module = "org.jetbrains.compose.material3:material3-wind
 detekt-compose = "io.nlopez.compose.rules:detekt:0.4.22"
 fusesource-jansi = "org.fusesource.jansi:jansi:2.4.1"
 
-gitlive-firebase-analytics = { module = "dev.gitlive:firebase-analytics", version.ref = "gitlive-firebase" }
-gitlive-firebase-app = { module = "dev.gitlive:firebase-app", version.ref = "gitlive-firebase" }
-gitlive-firebase-config = { module = "dev.gitlive:firebase-config", version.ref = "gitlive-firebase" }
-
 google-accompanist-flowlayout = { module = "com.google.accompanist:accompanist-flowlayout", version.ref = "google-accompanist" }
 google-accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "google-accompanist" }
 
@@ -60,7 +54,9 @@ google-auth-http = "com.google.auth:google-auth-library-oauth2-http:1.30.1"
 
 google-firebase-admin = "com.google.firebase:firebase-admin:9.4.2"
 google-firebase-appcheck-playintegrity = { module = "com.google.firebase:firebase-appcheck-playintegrity" }
+google-firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
 google-firebase-bom = "com.google.firebase:firebase-bom:33.7.0"
+google-firebase-config = { module = "com.google.firebase:firebase-config" }
 google-firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
 
 google-guava-jre = "com.google.guava:guava:33.3.1-jre"

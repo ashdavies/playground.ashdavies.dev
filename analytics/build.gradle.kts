@@ -8,7 +8,8 @@ android {
 }
 
 kotlin {
-    sourceSets.commonMain.dependencies {
-        implementation(libs.gitlive.firebase.analytics)
+    sourceSets.androidMain.dependencies {
+        implementation(dependencies.platform(libs.google.firebase.bom))
+        implementation(libs.google.firebase.analytics)
     }
 }
