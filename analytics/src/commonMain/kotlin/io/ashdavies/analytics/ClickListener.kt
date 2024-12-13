@@ -27,3 +27,12 @@ public fun <P> OnClickWith(
     analytics.logEvent(name, parameters)
     action(it)
 }
+
+private fun RemoteAnalytics.logEvent(
+    name: String,
+    parameters: Map<String, Any>?,
+) = logEvent(name) {
+    parameters?.forEach { (key, value) ->
+        param(key, value.toString())
+    }
+}
