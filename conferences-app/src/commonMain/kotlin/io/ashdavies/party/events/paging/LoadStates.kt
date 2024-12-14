@@ -1,4 +1,4 @@
-package io.ashdavies.party.events
+package io.ashdavies.party.events.paging
 
 import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState

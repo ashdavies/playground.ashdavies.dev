@@ -1,4 +1,4 @@
-package io.ashdavies.party.gallery
+package io.ashdavies.party.past
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -7,10 +7,15 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import com.slack.circuit.retained.produceRetainedState
 import com.slack.circuit.retained.rememberRetained
+import io.ashdavies.party.gallery.File
+import io.ashdavies.party.gallery.Image
+import io.ashdavies.party.gallery.ImageManager
+import io.ashdavies.party.gallery.SyncManager
+import io.ashdavies.party.gallery.SyncState
 import kotlinx.coroutines.launch
 
 @Composable
-internal fun GalleryPresenter(
+internal fun PastEventsPresenter(
     imageManager: ImageManager,
     syncManager: SyncManager,
 ): GalleryScreen.State {

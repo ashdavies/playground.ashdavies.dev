@@ -1,4 +1,4 @@
-package io.ashdavies.party.gallery
+package io.ashdavies.party.past
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.Crossfade
@@ -35,7 +35,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults.enterAlwaysScrollBehavior
 import androidx.compose.material3.rememberTopAppBarState
@@ -62,8 +61,18 @@ import com.slack.circuit.runtime.CircuitUiEvent
 import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.screen.Screen
 import io.ashdavies.analytics.OnClick
+import io.ashdavies.material.BottomSheetScaffold
 import io.ashdavies.parcelable.Parcelable
 import io.ashdavies.parcelable.Parcelize
+import io.ashdavies.party.animation.FadeVisibility
+import io.ashdavies.party.config.booleanConfigAsState
+import io.ashdavies.party.config.galleryCapture
+import io.ashdavies.party.gallery.File
+import io.ashdavies.party.gallery.GallerySheetContent
+import io.ashdavies.party.gallery.ImageCapture
+import io.ashdavies.party.gallery.StorageManager
+import io.ashdavies.party.gallery.SyncIndicator
+import io.ashdavies.party.gallery.SyncState
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 
@@ -116,24 +125,31 @@ internal object GalleryScreen : Parcelable, Screen {
     ExperimentalMaterial3Api::class,
 )
 @Composable
-internal fun GalleryScreen(
+internal fun PastEventListScreen(
     state: GalleryScreen.State,
     manager: StorageManager,
     modifier: Modifier = Modifier,
 ) {
+    val isGalleryCaptureEnabled by booleanConfigAsState { galleryCapture() }
     val scrollBehavior = enterAlwaysScrollBehavior(rememberTopAppBarState())
     val isSelecting = state.itemList.any { it.isSelected }
     val eventSink = state.eventSink
 
-    Scaffold(
-        floatingActionButton = {
-            GalleryActionButton(
-                onClick = OnClick("gallery_capture") {
-                    eventSink(GalleryScreen.Event.Capture.Request)
-                },
-                isActive = state.showCapture,
-            )
+    BottomSheetScaffold(
+        sheetContent = {
+            GallerySheetContent(eventSink)
         },
+        floatingActionButton = {
+            FadeVisibility(isGalleryCaptureEnabled) {
+                GalleryActionButton(
+                    onClick = OnClick("gallery_capture") {
+                        eventSink(GalleryScreen.Event.Capture.Request)
+                    },
+                    isActive = state.showCapture,
+                )
+            }
+        },
+        showDragHandle = false,
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
     ) { paddingValues ->
         when {

@@ -12,9 +12,9 @@ import com.slack.circuit.runtime.screen.Screen
 import io.ashdavies.identity.IdentityManager
 import io.ashdavies.identity.IdentityState
 import io.ashdavies.party.config.booleanConfigAsState
-import io.ashdavies.party.config.isHomeEnabled
-import io.ashdavies.party.events.EventsScreen
-import io.ashdavies.party.gallery.GalleryScreen
+import io.ashdavies.party.config.showPastEvents
+import io.ashdavies.party.past.GalleryScreen
+import io.ashdavies.party.upcoming.UpcomingEventsScreen
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -25,9 +25,9 @@ internal fun HomePresenter(
     navigator: Navigator,
 ): HomeScreen.State {
     val identityState by identityManager.state.collectAsState(IdentityState.Unauthenticated)
-    val isHomeEnabled by booleanConfigAsState { isHomeEnabled() }
+    val isHomeEnabled by booleanConfigAsState { showPastEvents() }
 
-    val initialScreen = if (isHomeEnabled) GalleryScreen else EventsScreen
+    val initialScreen = if (isHomeEnabled) GalleryScreen else UpcomingEventsScreen
     var screen by rememberRetained { mutableStateOf<Screen>(initialScreen) }
 
     return HomeScreen.State(

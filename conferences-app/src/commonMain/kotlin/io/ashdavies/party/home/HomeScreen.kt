@@ -4,8 +4,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.List
-import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -15,6 +13,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarDefaults.enterAlwaysScrollBehavior
@@ -34,17 +33,17 @@ import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.screen.Screen
 import io.ashdavies.analytics.OnClick
 import io.ashdavies.identity.IdentityState
-import io.ashdavies.material.BottomSheetScaffold
 import io.ashdavies.parcelable.Parcelable
 import io.ashdavies.parcelable.Parcelize
 import io.ashdavies.party.animation.FadeVisibility
 import io.ashdavies.party.config.booleanConfigAsState
-import io.ashdavies.party.config.isHomeEnabled
 import io.ashdavies.party.config.isProfileEnabled
-import io.ashdavies.party.events.EventsScreen
-import io.ashdavies.party.gallery.GalleryScreen
-import io.ashdavies.party.gallery.GallerySheetContent
+import io.ashdavies.party.config.showPastEvents
+import io.ashdavies.party.material.icons.EventList
+import io.ashdavies.party.material.icons.EventUpcoming
+import io.ashdavies.party.past.GalleryScreen
 import io.ashdavies.party.profile.ProfileActionButton
+import io.ashdavies.party.upcoming.UpcomingEventsScreen
 
 @Parcelize
 internal object HomeScreen : Parcelable, Screen {
@@ -70,13 +69,11 @@ internal fun HomeScreen(
     reportFullyDrawn: () -> Unit,
 ) {
     val isProfileEnabled by booleanConfigAsState { isProfileEnabled() }
-    val isHomeEnabled by booleanConfigAsState { isHomeEnabled() }
+    val showPastEvents by booleanConfigAsState { showPastEvents() }
     val eventSink = state.eventSink
 
-    BottomSheetScaffold(
-        sheetContent = { GallerySheetContent({ }) },
+    Scaffold(
         modifier = modifier,
-        showDragHandle = false,
         topBar = {
             HomeTopBar(
                 actions = {
@@ -96,14 +93,13 @@ internal fun HomeScreen(
             )
         },
         bottomBar = {
-            FadeVisibility(isHomeEnabled) {
+            FadeVisibility(showPastEvents) {
                 HomeBottomBar { screen ->
                     eventSink(HomeScreen.Event.BottomNav(screen))
                 }
             }
         },
         floatingActionButton = { },
-        isExpanded = false,
     ) { contentPadding ->
         CircuitContent(
             screen = state.screen,
@@ -155,15 +151,15 @@ internal fun HomeBottomBar(
     BottomAppBar(modifier) {
         NavigationBar {
             NavigationBarItem(
-                selected = selected is GalleryScreen,
-                onClick = { onClick(GalleryScreen) },
-                icon = { NavigationBarImage(Icons.Default.Home) },
+                selected = selected is UpcomingEventsScreen,
+                onClick = { onClick(UpcomingEventsScreen) },
+                icon = { NavigationBarImage(Icons.Outlined.EventUpcoming) },
             )
 
             NavigationBarItem(
-                selected = selected is EventsScreen,
-                onClick = { onClick(EventsScreen) },
-                icon = { NavigationBarImage(Icons.AutoMirrored.Filled.List) },
+                selected = selected is GalleryScreen,
+                onClick = { onClick(GalleryScreen) },
+                icon = { NavigationBarImage(Icons.Outlined.EventList) },
             )
         }
     }
