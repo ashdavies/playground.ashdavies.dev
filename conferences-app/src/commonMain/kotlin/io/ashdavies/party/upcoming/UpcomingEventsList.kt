@@ -1,4 +1,4 @@
-package io.ashdavies.party.events
+package io.ashdavies.party.upcoming
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -42,6 +42,10 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import io.ashdavies.analytics.OnClick
 import io.ashdavies.paging.LazyPagingItems
+import io.ashdavies.party.events.Event
+import io.ashdavies.party.events.monthName
+import io.ashdavies.party.events.paging.errorMessage
+import io.ashdavies.party.events.paging.isRefreshing
 import io.ashdavies.placeholder.PlaceholderHighlight
 import io.ashdavies.placeholder.fade
 import io.ashdavies.placeholder.placeholder
@@ -64,8 +68,8 @@ private val Today = Clock.System.now()
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-internal fun EventsList(
-    state: EventsScreen.State,
+internal fun UpcomingEventsList(
+    state: UpcomingEventsScreen.State,
     onClick: (Event) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -87,10 +91,22 @@ internal fun EventsList(
             }
 
             items(itemCount) { index ->
-                EventSection(
-                    onClick = { onClick(requireNotNull(state.pagingItems[index])) },
-                    modifier = Modifier.animateItem(),
-                    event = state.pagingItems.rememberItemOrNull(index, isRefreshing),
+                val event = state.pagingItems.rememberItemOrNull(index, isRefreshing)
+
+                EventItemContent(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(
+                            horizontal = 16.dp,
+                            vertical = 8.dp,
+                        )
+                        .clickable(
+                            enabled = event != null,
+                            onClickLabel = event?.name,
+                            onClick = { onClick(event!!) },
+                        )
+                        .animateItem(),
+                    event = event,
                 )
             }
         }
@@ -98,86 +114,60 @@ internal fun EventsList(
 }
 
 @Composable
-private fun <T : Any> LazyPagingItems<T>.rememberItemOrNull(
-    index: Int,
-    key: Any? = null,
-): T? = remember(key, index) {
-    if (index < itemCount) get(index) else null
+private fun <T : Any> LazyPagingItems<T>.rememberItemOrNull(index: Int, key: Any? = null): T? {
+    return remember(key, index) { if (index < itemCount) get(index) else null }
 }
 
 @Composable
-private fun EventSection(
-    event: Event?,
-    onClick: (Event) -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    Card(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(
-                horizontal = 16.dp,
-                vertical = 8.dp,
-            )
-            .clickable(
-                enabled = event != null,
-                onClickLabel = event?.name,
-                onClick = { onClick(event!!) },
-            ),
-    ) {
-        EventSectionContent(
-            event = event,
-        )
-    }
-}
-
-@Composable
-private fun EventSectionContent(
+private fun EventItemContent(
     event: Event?,
     modifier: Modifier = Modifier,
 ) {
-    Box(modifier.height(IntrinsicSize.Min)) {
-        if (event?.imageUrl != null) {
-            EventSectionBackground(
-                backgroundImageUrl = event.imageUrl,
-                modifier = Modifier.fillMaxSize(),
-            )
-        }
+    Card(modifier) {
+        Box(Modifier.height(IntrinsicSize.Min)) {
+            if (event?.imageUrl != null) {
+                EventSectionBackground(
+                    backgroundImageUrl = event.imageUrl,
+                    modifier = Modifier.fillMaxSize(),
+                )
+            }
 
-        Row {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f)
-                    .padding(
-                        horizontal = 16.dp,
-                        vertical = 8.dp,
-                    ),
-            ) {
-                Row {
+            Row {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f)
+                        .padding(
+                            horizontal = 16.dp,
+                            vertical = 8.dp,
+                        ),
+                ) {
+                    Row {
+                        PlaceholderText(
+                            text = event?.name,
+                            style = MaterialTheme.typography.headlineSmall,
+                        )
+                    }
+
                     PlaceholderText(
-                        text = event?.name,
-                        style = MaterialTheme.typography.headlineSmall,
+                        text = event?.location,
+                        modifier = Modifier.align(Alignment.Start),
+                        style = MaterialTheme.typography.titleSmall,
+                    )
+
+                    EventStatusChips(
+                        cfpSite = event?.cfpSite,
+                        cfpEnd = event?.cfpEnd,
+                        isOnlineOnly = event?.online == true,
                     )
                 }
 
-                PlaceholderText(
-                    text = event?.location,
-                    modifier = Modifier.align(Alignment.Start),
-                    style = MaterialTheme.typography.titleSmall,
-                )
-
-                EventStatusChips(
-                    cfpSite = event?.cfpSite,
-                    cfpEnd = event?.cfpEnd,
-                    isOnlineOnly = event?.online == true,
-                )
-            }
-
-            if (event?.dateStart != null) {
-                EventDateLabel(
-                    dateStart = remember { LocalDate.parse(event.dateStart) },
-                    modifier = Modifier.padding(12.dp),
-                )
+                if (event?.dateStart != null) {
+                    EventDateLabel(
+                        dateStart = remember { LocalDate.parse(event.dateStart) },
+                        modifier = Modifier.padding(12.dp),
+                    )
+                }
             }
         }
     }

@@ -2,6 +2,8 @@ package io.ashdavies.party.gallery
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.runtime.Composable
+import io.ashdavies.party.past.GalleryGrid
+import io.ashdavies.party.past.GalleryScreen
 import io.ashdavies.party.tooling.MaterialPreviewTheme
 import io.ashdavies.party.tooling.PreviewDayNight
 import kotlinx.collections.immutable.persistentListOf

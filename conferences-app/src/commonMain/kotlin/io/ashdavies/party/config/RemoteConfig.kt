@@ -9,7 +9,9 @@ import io.ashdavies.config.getBoolean
 
 internal suspend fun RemoteConfig.isProfileEnabled() = getBoolean("profile_enabled")
 
-internal suspend fun RemoteConfig.isHomeEnabled() = getBoolean("home_enabled")
+internal suspend fun RemoteConfig.galleryCapture() = getBoolean("gallery_capture")
+
+internal suspend fun RemoteConfig.showPastEvents() = getBoolean("past_events")
 
 @Composable
 internal fun booleanConfigAsState(

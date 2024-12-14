@@ -6,6 +6,8 @@ import io.ashdavies.paging.LazyPagingItems
 import io.ashdavies.paging.collectAsLazyPagingItems
 import io.ashdavies.party.tooling.MaterialPreviewTheme
 import io.ashdavies.party.tooling.PreviewDayNight
+import io.ashdavies.party.upcoming.UpcomingEventsScreen
+import io.ashdavies.party.upcoming.UpcomingEventsList
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 
@@ -17,8 +19,8 @@ internal class EventsListTests {
     @PreviewDayNight
     private fun EventsListPreview(data: List<Event> = DroidconEvents) {
         MaterialPreviewTheme {
-            EventsList(
-                state = EventsScreen.State(lazyPagingItems(flowOf(PagingData.from(data)))),
+            UpcomingEventsList(
+                state = UpcomingEventsScreen.State(lazyPagingItems(flowOf(PagingData.from(data)))),
                 onClick = { },
             )
         }

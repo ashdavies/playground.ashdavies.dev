@@ -1,4 +1,4 @@
-package io.ashdavies.party.events
+package io.ashdavies.party.upcoming
 
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
 import androidx.compose.material3.adaptive.layout.AnimatedPane
@@ -15,16 +15,18 @@ import com.slack.circuit.runtime.screen.Screen
 import io.ashdavies.paging.LazyPagingItems
 import io.ashdavies.parcelable.Parcelable
 import io.ashdavies.parcelable.Parcelize
+import io.ashdavies.party.events.Event
+import io.ashdavies.party.events.EventsDetail
 
 @Parcelize
-internal object EventsScreen : Parcelable, Screen {
+internal object UpcomingEventsScreen : Parcelable, Screen {
     data class State(val pagingItems: LazyPagingItems<Event>) : CircuitUiState
 }
 
 @Composable
 @OptIn(ExperimentalMaterial3AdaptiveApi::class)
-internal fun EventsScreen(
-    state: EventsScreen.State,
+internal fun UpcomingEventsScreen(
+    state: UpcomingEventsScreen.State,
     modifier: Modifier = Modifier,
 ) {
     val navigator = rememberListDetailPaneScaffoldNavigator<Event>()
@@ -38,7 +40,7 @@ internal fun EventsScreen(
         value = navigator.scaffoldValue,
         listPane = {
             AnimatedPane {
-                EventsList(
+                UpcomingEventsList(
                     state = state,
                     onClick = navigator::navigateToDetail,
                 )
