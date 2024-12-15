@@ -5,19 +5,6 @@
     <string name="profile">Profile</string>
     <string name="events">Events</string>
 
-    <string name="january">Jan</string>
-    <string name="february">Feb</string>
-    <string name="march">Mar</string>
-    <string name="april">Apr</string>
-    <string name="may">May</string>
-    <string name="june">Jun</string>
-    <string name="july">Jul</string>
-    <string name="august">Aug</string>
-    <string name="september">Sep</string>
-    <string name="october">Oct</string>
-    <string name="november">Nov</string>
-    <string name="december">Dec</string>
-
     <string name="call_for_papers">Call for Papers (Until %1$s)</string>
     <string name="online_only">Online Only</string>
 </resources>
