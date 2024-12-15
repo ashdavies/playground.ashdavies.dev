@@ -16,7 +16,7 @@ import io.ashdavies.paging.LazyPagingItems
 import io.ashdavies.parcelable.Parcelable
 import io.ashdavies.parcelable.Parcelize
 import io.ashdavies.party.events.Event
-import io.ashdavies.party.events.EventsDetail
+import io.ashdavies.party.events.EventsDetailPane
 
 @Parcelize
 internal object UpcomingEventsScreen : Parcelable, Screen {
@@ -40,7 +40,7 @@ internal fun UpcomingEventsScreen(
         value = navigator.scaffoldValue,
         listPane = {
             AnimatedPane {
-                UpcomingEventsList(
+                UpcomingEventsPane(
                     state = state,
                     onClick = navigator::navigateToDetail,
                 )
@@ -49,7 +49,7 @@ internal fun UpcomingEventsScreen(
         detailPane = {
             AnimatedPane {
                 navigator.currentDestination?.content?.let {
-                    EventsDetail(it)
+                    EventsDetailPane(it)
                 }
             }
         },

@@ -76,6 +76,7 @@ import io.ashdavies.party.gallery.SyncState
 import io.ashdavies.party.material.BottomSheetScaffold
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import org.jetbrains.compose.resources.stringResource
 import playground.conferences_app.generated.resources.Res
 import playground.conferences_app.generated.resources.past_events
 
@@ -123,11 +124,8 @@ internal object GalleryScreen : Parcelable, Screen {
     }
 }
 
-@OptIn(
-    ExperimentalFoundationApi::class,
-    ExperimentalMaterial3Api::class,
-)
 @Composable
+@OptIn(ExperimentalMaterial3Api::class)
 internal fun PastEventListScreen(
     state: GalleryScreen.State,
     manager: StorageManager,
@@ -141,7 +139,7 @@ internal fun PastEventListScreen(
     BottomSheetScaffold(
         sheetContent = { GallerySheetContent(eventSink) },
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
-        topBar = { EventsTopBar(Res.string.past_events, actions = { }) },
+        topBar = { EventsTopBar(stringResource(Res.string.past_events)) },
         floatingActionButton = {
             FadeVisibility(isGalleryCaptureEnabled) {
                 GalleryActionButton(
@@ -224,7 +222,6 @@ private fun GalleryExpandedItem(
 }
 
 @Composable
-@ExperimentalFoundationApi
 internal fun GalleryGrid(
     itemList: ImmutableList<GalleryScreen.State.StandardItem>,
     onExpand: (Int) -> Unit,
@@ -253,7 +250,7 @@ internal fun GalleryGrid(
 }
 
 @Composable
-@ExperimentalFoundationApi
+@OptIn(ExperimentalFoundationApi::class)
 internal fun GalleryItem(
     item: GalleryScreen.State.StandardItem,
     onSelect: () -> Unit,
