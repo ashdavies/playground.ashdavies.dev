@@ -43,7 +43,6 @@ import coil3.compose.AsyncImage
 import io.ashdavies.analytics.OnClick
 import io.ashdavies.paging.LazyPagingItems
 import io.ashdavies.party.events.Event
-import io.ashdavies.party.events.monthName
 import io.ashdavies.party.events.paging.errorMessage
 import io.ashdavies.party.events.paging.isRefreshing
 import io.ashdavies.placeholder.PlaceholderHighlight
@@ -53,6 +52,7 @@ import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.format
+import kotlinx.datetime.format.MonthNames
 import kotlinx.datetime.toLocalDateTime
 import org.jetbrains.compose.resources.stringResource
 import playground.conferences_app.generated.resources.Res
@@ -187,7 +187,7 @@ private fun EventDateLabel(
         ) {
             Column {
                 Text(
-                    text = dateStart.format(LocalDate.Format { monthName() }),
+                    text = dateStart.format(LocalDate.Format { monthName(MonthNames.ENGLISH_ABBREVIATED) }),
                     modifier = Modifier.align(Alignment.CenterHorizontally),
                     style = MaterialTheme.typography.labelSmall,
                 )
