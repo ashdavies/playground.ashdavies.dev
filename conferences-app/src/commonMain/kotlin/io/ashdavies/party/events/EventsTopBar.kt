@@ -8,20 +8,18 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import org.jetbrains.compose.resources.StringResource
-import org.jetbrains.compose.resources.stringResource
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 internal fun EventsTopBar(
-    title: StringResource,
-    actions: @Composable RowScope.() -> Unit,
+    title: String,
     modifier: Modifier = Modifier,
+    actions: @Composable RowScope.() -> Unit = { },
 ) {
     CenterAlignedTopAppBar(
         title = {
             Text(
-                text = stringResource(title),
+                text = title,
                 color = MaterialTheme.colorScheme.onBackground,
                 style = MaterialTheme.typography.titleLarge,
             )

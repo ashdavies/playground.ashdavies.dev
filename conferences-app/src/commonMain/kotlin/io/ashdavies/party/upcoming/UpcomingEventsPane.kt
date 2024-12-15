@@ -75,7 +75,7 @@ private val Today = Clock.System.now()
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-internal fun UpcomingEventsList(
+internal fun UpcomingEventsPane(
     state: UpcomingEventsScreen.State,
     onClick: (Event) -> Unit,
     modifier: Modifier = Modifier,
@@ -86,7 +86,7 @@ internal fun UpcomingEventsList(
         modifier = modifier,
         topBar = {
             EventsTopBar(
-                title = Res.string.upcoming_events,
+                title = stringResource(Res.string.upcoming_events),
                 actions = {
                     IconButton(onClick = { error("Crashlytics") }) {
                         Icon(Icons.Default.Warning, contentDescription = null)

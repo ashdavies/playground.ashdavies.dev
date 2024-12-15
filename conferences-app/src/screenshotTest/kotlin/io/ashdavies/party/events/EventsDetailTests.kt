@@ -10,7 +10,7 @@ internal class EventsDetailTests {
     @PreviewDayNight
     private fun EventsDetailPreview() {
         MaterialPreviewTheme {
-            EventsDetail(DroidconBerlin)
+            EventsDetailPane(DroidconBerlin)
         }
     }
 }
