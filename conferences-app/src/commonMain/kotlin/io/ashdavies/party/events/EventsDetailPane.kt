@@ -43,16 +43,21 @@ internal fun EventsDetailPane(
                 )
             }
 
-            Card {
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        horizontal = 16.dp,
+                        vertical = 8.dp,
+                    ),
+            ) {
                 EventsDetailDate(
                     dateStart = event.dateStart,
                     dateEnd = event.dateEnd,
-                    modifier = Modifier.padding(top = 8.dp),
                 )
 
                 EventsDetailLocation(
                     location = event.location,
-                    modifier = Modifier.padding(top = 8.dp),
                 )
             }
         }
