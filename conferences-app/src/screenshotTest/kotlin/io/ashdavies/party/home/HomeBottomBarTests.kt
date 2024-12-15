@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import io.ashdavies.party.tooling.MaterialPreviewTheme
 import io.ashdavies.party.tooling.PreviewDayNight
 
-internal class HomeBottomBarTest {
+internal class HomeBottomBarTests {
 
     @Composable
     @PreviewDayNight
