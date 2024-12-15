@@ -9,7 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.ashdavies.analytics.OnClick
-import io.ashdavies.material.BottomSheetItem
+import io.ashdavies.party.material.BottomSheetItem
 import io.ashdavies.party.past.GalleryScreen
 
 @Composable

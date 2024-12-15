@@ -12,12 +12,17 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SuggestionChip
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -43,6 +48,7 @@ import coil3.compose.AsyncImage
 import io.ashdavies.analytics.OnClick
 import io.ashdavies.paging.LazyPagingItems
 import io.ashdavies.party.events.Event
+import io.ashdavies.party.events.EventsTopBar
 import io.ashdavies.party.events.paging.errorMessage
 import io.ashdavies.party.events.paging.isRefreshing
 import io.ashdavies.placeholder.PlaceholderHighlight
@@ -58,6 +64,7 @@ import org.jetbrains.compose.resources.stringResource
 import playground.conferences_app.generated.resources.Res
 import playground.conferences_app.generated.resources.call_for_papers
 import playground.conferences_app.generated.resources.online_only
+import playground.conferences_app.generated.resources.upcoming_events
 
 private const val PLACEHOLDER_COUNT = 8
 private const val EMPTY_STRING = ""
@@ -75,39 +82,53 @@ internal fun UpcomingEventsList(
 ) {
     val isRefreshing = state.pagingItems.loadState.isRefreshing
 
-    PullToRefreshBox(
-        isRefreshing = isRefreshing,
-        onRefresh = OnClick("events_refresh") { state.pagingItems.refresh() },
+    Scaffold(
         modifier = modifier,
-    ) {
-        if (state.pagingItems.loadState.hasError) {
-            EventFailure(state.pagingItems.loadState.errorMessage ?: "Unknown Error")
-        }
-
-        LazyColumn(Modifier.fillMaxSize()) {
-            val itemCount = when {
-                isRefreshing -> state.pagingItems.itemCount.coerceAtLeast(PLACEHOLDER_COUNT)
-                else -> state.pagingItems.itemCount
+        topBar = {
+            EventsTopBar(
+                title = Res.string.upcoming_events,
+                actions = {
+                    IconButton(onClick = { error("Crashlytics") }) {
+                        Icon(Icons.Default.Warning, contentDescription = null)
+                    }
+                },
+            )
+        },
+    ) { contentPadding ->
+        PullToRefreshBox(
+            isRefreshing = isRefreshing,
+            onRefresh = OnClick("events_refresh") { state.pagingItems.refresh() },
+            modifier = Modifier.padding(contentPadding),
+        ) {
+            if (state.pagingItems.loadState.hasError) {
+                EventFailure(state.pagingItems.loadState.errorMessage ?: "Unknown Error")
             }
 
-            items(itemCount) { index ->
-                val event = state.pagingItems.rememberItemOrNull(index, isRefreshing)
+            LazyColumn(Modifier.fillMaxSize()) {
+                val itemCount = when {
+                    isRefreshing -> state.pagingItems.itemCount.coerceAtLeast(PLACEHOLDER_COUNT)
+                    else -> state.pagingItems.itemCount
+                }
 
-                EventItemContent(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(
-                            horizontal = 16.dp,
-                            vertical = 8.dp,
-                        )
-                        .clickable(
-                            enabled = event != null,
-                            onClickLabel = event?.name,
-                            onClick = { onClick(event!!) },
-                        )
-                        .animateItem(),
-                    event = event,
-                )
+                items(itemCount) { index ->
+                    val event = state.pagingItems.rememberItemOrNull(index, isRefreshing)
+
+                    EventItemContent(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(
+                                horizontal = 16.dp,
+                                vertical = 8.dp,
+                            )
+                            .clickable(
+                                enabled = event != null,
+                                onClickLabel = event?.name,
+                                onClick = { onClick(event!!) },
+                            )
+                            .animateItem(),
+                        event = event,
+                    )
+                }
             }
         }
     }

@@ -61,20 +61,23 @@ import com.slack.circuit.runtime.CircuitUiEvent
 import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.screen.Screen
 import io.ashdavies.analytics.OnClick
-import io.ashdavies.material.BottomSheetScaffold
 import io.ashdavies.parcelable.Parcelable
 import io.ashdavies.parcelable.Parcelize
 import io.ashdavies.party.animation.FadeVisibility
 import io.ashdavies.party.config.booleanConfigAsState
 import io.ashdavies.party.config.galleryCapture
+import io.ashdavies.party.events.EventsTopBar
 import io.ashdavies.party.gallery.File
 import io.ashdavies.party.gallery.GallerySheetContent
 import io.ashdavies.party.gallery.ImageCapture
 import io.ashdavies.party.gallery.StorageManager
 import io.ashdavies.party.gallery.SyncIndicator
 import io.ashdavies.party.gallery.SyncState
+import io.ashdavies.party.material.BottomSheetScaffold
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import playground.conferences_app.generated.resources.Res
+import playground.conferences_app.generated.resources.past_events
 
 private const val DEFAULT_COLUMN_COUNT = 4
 
@@ -136,9 +139,9 @@ internal fun PastEventListScreen(
     val eventSink = state.eventSink
 
     BottomSheetScaffold(
-        sheetContent = {
-            GallerySheetContent(eventSink)
-        },
+        sheetContent = { GallerySheetContent(eventSink) },
+        modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+        topBar = { EventsTopBar(Res.string.past_events, actions = { }) },
         floatingActionButton = {
             FadeVisibility(isGalleryCaptureEnabled) {
                 GalleryActionButton(
@@ -150,7 +153,6 @@ internal fun PastEventListScreen(
             }
         },
         showDragHandle = false,
-        modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
     ) { paddingValues ->
         when {
             state.itemList.isEmpty() -> {

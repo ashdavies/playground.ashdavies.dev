@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="application">Conferences</string>
-    <string name="upcoming">Upcoming</string>
-    <string name="profile">Profile</string>
-    <string name="events">Events</string>
+    <string name="application_name">Conferences</string>
+    <string name="upcoming_events">Upcoming Events</string>
+    <string name="past_events">Past Events</string>
 
     <string name="call_for_papers">Call for Papers (Until %1$s)</string>
     <string name="online_only">Online Only</string>
