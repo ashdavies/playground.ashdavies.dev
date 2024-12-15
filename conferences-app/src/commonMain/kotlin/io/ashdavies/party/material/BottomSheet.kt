@@ -1,4 +1,4 @@
-package io.ashdavies.material
+package io.ashdavies.party.material
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
@@ -25,7 +25,7 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 @ExperimentalMaterial3Api
-public fun BottomSheetScaffold(
+internal fun BottomSheetScaffold(
     sheetContent: @Composable ColumnScope.() -> Unit,
     modifier: Modifier = Modifier,
     topBar: @Composable () -> Unit = { },

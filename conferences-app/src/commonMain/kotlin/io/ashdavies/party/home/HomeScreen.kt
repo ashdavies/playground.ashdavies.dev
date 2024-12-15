@@ -1,24 +1,17 @@
 package io.ashdavies.party.home
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.exclude
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.BottomAppBar
-import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
+import androidx.compose.material3.ScaffoldDefaults
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.TopAppBarDefaults.enterAlwaysScrollBehavior
-import androidx.compose.material3.TopAppBarScrollBehavior
-import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -31,18 +24,14 @@ import com.slack.circuit.foundation.NavEvent
 import com.slack.circuit.runtime.CircuitUiEvent
 import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.screen.Screen
-import io.ashdavies.analytics.OnClick
 import io.ashdavies.identity.IdentityState
 import io.ashdavies.parcelable.Parcelable
 import io.ashdavies.parcelable.Parcelize
 import io.ashdavies.party.animation.FadeVisibility
 import io.ashdavies.party.config.booleanConfigAsState
-import io.ashdavies.party.config.isProfileEnabled
-import io.ashdavies.party.config.showPastEvents
 import io.ashdavies.party.material.icons.EventList
 import io.ashdavies.party.material.icons.EventUpcoming
 import io.ashdavies.party.past.GalleryScreen
-import io.ashdavies.party.profile.ProfileActionButton
 import io.ashdavies.party.upcoming.UpcomingEventsScreen
 
 @Parcelize
@@ -68,30 +57,11 @@ internal fun HomeScreen(
     modifier: Modifier = Modifier,
     reportFullyDrawn: () -> Unit,
 ) {
-    val isProfileEnabled by booleanConfigAsState { isProfileEnabled() }
-    val showPastEvents by booleanConfigAsState { showPastEvents() }
+    val showPastEvents by booleanConfigAsState { true }
     val eventSink = state.eventSink
 
     Scaffold(
         modifier = modifier,
-        topBar = {
-            HomeTopBar(
-                actions = {
-                    FadeVisibility(isProfileEnabled) {
-                        ProfileActionButton(
-                            identityState = state.identityState,
-                            onClick = OnClick("profile_login") {
-                                eventSink(HomeScreen.Event.Login)
-                            },
-                        )
-                    }
-
-                    IconButton(onClick = { error("Crashlytics") }) {
-                        Icon(Icons.Default.Warning, contentDescription = null)
-                    }
-                },
-            )
-        },
         bottomBar = {
             FadeVisibility(showPastEvents) {
                 HomeBottomBar { screen ->
@@ -100,6 +70,9 @@ internal fun HomeScreen(
             }
         },
         floatingActionButton = { },
+        contentWindowInsets = ScaffoldDefaults.contentWindowInsets.exclude(
+            insets = TopAppBarDefaults.windowInsets,
+        ),
     ) { contentPadding ->
         CircuitContent(
             screen = state.screen,
@@ -115,31 +88,6 @@ internal fun HomeScreen(
     LaunchedEffect(Unit) {
         latestReportFullyDrawn()
     }
-}
-
-@Composable
-@ExperimentalMaterial3Api
-internal fun HomeTopBar(
-    modifier: Modifier = Modifier,
-    title: String = "Upcoming Events",
-    actions: @Composable RowScope.() -> Unit = { },
-    scrollBehavior: TopAppBarScrollBehavior = enterAlwaysScrollBehavior(rememberTopAppBarState()),
-) {
-    CenterAlignedTopAppBar(
-        title = {
-            Text(
-                text = title,
-                style = MaterialTheme.typography.titleLarge,
-                color = MaterialTheme.colorScheme.onBackground,
-            )
-        },
-        modifier = modifier,
-        colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-            containerColor = MaterialTheme.colorScheme.background,
-        ),
-        actions = actions,
-        scrollBehavior = scrollBehavior,
-    )
 }
 
 @Composable
