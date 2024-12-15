@@ -1,20 +1,21 @@
-package io.ashdavies.party.home
+package io.ashdavies.party.events
 
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import io.ashdavies.identity.IdentityState
 import io.ashdavies.party.profile.ProfileActionButton
 import io.ashdavies.party.tooling.MaterialPreviewTheme
 import io.ashdavies.party.tooling.PreviewDayNight
+import playground.conferences_app.generated.resources.Res
+import playground.conferences_app.generated.resources.upcoming_events
 
-internal class HomeScreenTests {
+internal class EventsTopBarTests {
 
     @Composable
     @PreviewDayNight
-    @OptIn(ExperimentalMaterial3Api::class)
-    private fun HomeTopAppBarPreview() {
+    private fun EventsTopBarPreview() {
         MaterialPreviewTheme {
-            HomeTopBar(
+            EventsTopBar(
+                title = Res.string.upcoming_events,
                 actions = {
                     ProfileActionButton(
                         identityState = IdentityState.Unauthenticated,
@@ -22,14 +23,6 @@ internal class HomeScreenTests {
                     )
                 },
             )
-        }
-    }
-
-    @Composable
-    @PreviewDayNight
-    private fun HomeBottomSheetPreview() {
-        MaterialPreviewTheme {
-            HomeBottomBar()
         }
     }
 }

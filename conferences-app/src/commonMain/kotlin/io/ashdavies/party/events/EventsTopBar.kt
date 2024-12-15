@@ -12,7 +12,7 @@ import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
-@ExperimentalMaterial3Api
+@OptIn(ExperimentalMaterial3Api::class)
 internal fun EventsTopBar(
     title: StringResource,
     actions: @Composable RowScope.() -> Unit,

@@ -72,6 +72,7 @@ android {
     }
 
     dependencies {
+        screenshotTestImplementation(compose.components.resources)
         screenshotTestImplementation(compose.material3)
         screenshotTestImplementation(compose.uiTooling)
 
