@@ -2,8 +2,9 @@ package io.ashdavies.party.gallery
 
 import io.ashdavies.content.PlatformContext
 import io.ashdavies.sql.mapToList
-import io.ashdavies.util.randomUuid
 import kotlinx.coroutines.flow.Flow
+import kotlin.uuid.ExperimentalUuidApi
+import kotlin.uuid.Uuid
 
 internal interface ImageManager {
     val list: Flow<List<Image>>
@@ -28,9 +29,10 @@ internal fun ImageManager(
         .selectAll()
         .mapToList()
 
+    @OptIn(ExperimentalUuidApi::class)
     override fun add(file: File) {
         val image = Image(
-            uuid = randomUuid(),
+            uuid = "${Uuid.random()}",
             name = file.getName(),
             path = file.getAbsolutePath(),
         )
