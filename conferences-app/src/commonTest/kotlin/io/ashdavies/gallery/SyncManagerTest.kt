@@ -5,14 +5,16 @@ import io.ashdavies.http.DefaultHttpConfiguration
 import io.ashdavies.party.gallery.SyncManager
 import io.ashdavies.party.gallery.SyncState
 import io.ashdavies.party.gallery.inMemoryHttpClientEngine
-import io.ashdavies.util.randomUuid
 import io.ktor.client.HttpClient
 import io.ktor.utils.io.ByteReadChannel
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.uuid.ExperimentalUuidApi
+import kotlin.uuid.Uuid
 
-private val RandomImage = "${randomUuid()}.jpg"
+@OptIn(ExperimentalUuidApi::class)
+private val RandomImage = "${Uuid.random()}.jpg"
 
 internal class SyncManagerTest {
 
