@@ -86,7 +86,7 @@ internal constructor(
     private var itemSnapshotList by mutableStateOf(pagingDataPresenter.snapshot())
 
     /** The number of items which can be accessed. */
-    private val itemCount: Int
+    public val itemCount: Int
         get() = itemSnapshotList.size
 
     private fun updateItemSnapshotList() {
