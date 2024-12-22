@@ -69,7 +69,7 @@ internal constructor(
             PagingDataPresenter<T>(
                 mainContext = mainDispatcher,
                 cachedPagingData =
-                    if (flow is SharedFlow<PagingData<T>>) flow.replayCache.firstOrNull() else null,
+                if (flow is SharedFlow<PagingData<T>>) flow.replayCache.firstOrNull() else null,
             ) {
             override suspend fun presentPagingDataEvent(
                 event: PagingDataEvent<T>,
@@ -124,15 +124,15 @@ internal constructor(
 
     /** A [CombinedLoadStates] object which represents the current loading state. */
     public var loadState: CombinedLoadStates by
-    mutableStateOf(
-        pagingDataPresenter.loadStateFlow.value
-            ?: CombinedLoadStates(
-                refresh = InitialLoadStates.refresh,
-                prepend = InitialLoadStates.prepend,
-                append = InitialLoadStates.append,
-                source = InitialLoadStates,
-            ),
-    )
+        mutableStateOf(
+            pagingDataPresenter.loadStateFlow.value
+                ?: CombinedLoadStates(
+                    refresh = InitialLoadStates.refresh,
+                    prepend = InitialLoadStates.prepend,
+                    append = InitialLoadStates.append,
+                    source = InitialLoadStates,
+                ),
+        )
         private set
 
     internal suspend fun collectLoadState() {
@@ -160,7 +160,6 @@ private val InitialLoadStates =
 public fun <T : Any> Flow<PagingData<T>>.collectAsLazyPagingItems(
     context: CoroutineContext = EmptyCoroutineContext,
 ): LazyPagingItems<T> {
-
     val lazyPagingItems = remember(this) { LazyPagingItems(this) }
 
     LaunchedEffect(lazyPagingItems) {
