@@ -44,9 +44,9 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.paging.compose.LazyPagingItems
 import coil3.compose.AsyncImage
 import io.ashdavies.analytics.OnClick
-import io.ashdavies.paging.LazyPagingItems
 import io.ashdavies.party.events.Event
 import io.ashdavies.party.events.EventsTopBar
 import io.ashdavies.party.events.paging.errorMessage
