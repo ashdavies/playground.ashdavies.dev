@@ -3,8 +3,8 @@ package io.ashdavies.party.upcoming
 import androidx.compose.runtime.Composable
 import androidx.paging.Pager
 import androidx.paging.cachedIn
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.slack.circuit.retained.rememberRetained
-import io.ashdavies.paging.collectAsLazyPagingItems
 import io.ashdavies.party.events.Event
 import kotlinx.coroutines.CoroutineScope
 

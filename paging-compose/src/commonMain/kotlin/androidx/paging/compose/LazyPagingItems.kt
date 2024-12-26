@@ -1,5 +1,3 @@
-package io.ashdavies.paging
-
 /*
  * Copyright 2020 The Android Open Source Project
  *
@@ -16,6 +14,9 @@ package io.ashdavies.paging
  * limitations under the License.
  */
 
+package androidx.paging.compose
+
+import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -32,13 +33,13 @@ import androidx.paging.PagingDataPresenter
 import androidx.paging.PagingSource
 import androidx.paging.RemoteMediator
 import kotlinx.coroutines.Dispatchers
+import kotlin.coroutines.CoroutineContext
+import kotlin.coroutines.EmptyCoroutineContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.withContext
-import kotlin.coroutines.CoroutineContext
-import kotlin.coroutines.EmptyCoroutineContext
 
 /**
  * The class responsible for accessing the data from a [Flow] of [PagingData]. In order to obtain an
@@ -49,12 +50,13 @@ import kotlin.coroutines.EmptyCoroutineContext
  * Previewing [LazyPagingItems] is supported on a list of mock data. See sample for how to preview
  * mock data.
  *
+ * @sample androidx.paging.compose.samples.PagingPreview
  * @param T the type of value used by [PagingData].
  */
 public class LazyPagingItems<T : Any>
 internal constructor(
     /** the [Flow] object which contains a stream of [PagingData] elements. */
-    private val flow: Flow<PagingData<T>>,
+    private val flow: Flow<PagingData<T>>
 ) {
     private val mainDispatcher = Dispatchers.Main
 
@@ -69,7 +71,7 @@ internal constructor(
             PagingDataPresenter<T>(
                 mainContext = mainDispatcher,
                 cachedPagingData =
-                if (flow is SharedFlow<PagingData<T>>) flow.replayCache.firstOrNull() else null,
+                    if (flow is SharedFlow<PagingData<T>>) flow.replayCache.firstOrNull() else null
             ) {
             override suspend fun presentPagingDataEvent(
                 event: PagingDataEvent<T>,
@@ -83,10 +85,11 @@ internal constructor(
      * placeholders if they are enabled. Note that similarly to [peek] accessing the items in a list
      * will not trigger any loads. Use [get] to achieve such behavior.
      */
-    private var itemSnapshotList by mutableStateOf(pagingDataPresenter.snapshot())
+    var itemSnapshotList by mutableStateOf(pagingDataPresenter.snapshot())
+        private set
 
     /** The number of items which can be accessed. */
-    public val itemCount: Int
+    val itemCount: Int
         get() = itemSnapshotList.size
 
     private fun updateItemSnapshotList() {
@@ -99,9 +102,35 @@ internal constructor(
      *
      * @see peek
      */
-    public operator fun get(index: Int): T? {
+    operator fun get(index: Int): T? {
         pagingDataPresenter[index] // this registers the value load
         return itemSnapshotList[index]
+    }
+
+    /**
+     * Returns the presented item at the specified position, without notifying Paging of the item
+     * access that would normally trigger page loads.
+     *
+     * @param index Index of the presented item to return, including placeholders.
+     * @return The presented item at position [index], `null` if it is a placeholder
+     */
+    fun peek(index: Int): T? {
+        return itemSnapshotList[index]
+    }
+
+    /**
+     * Retry any failed load requests that would result in a [LoadState.Error] update to this
+     * [LazyPagingItems].
+     *
+     * Unlike [refresh], this does not invalidate [PagingSource], it only retries failed loads
+     * within the same generation of [PagingData].
+     *
+     * [LoadState.Error] can be generated from two types of load requests:
+     * * [PagingSource.load] returning [PagingSource.LoadResult.Error]
+     * * [RemoteMediator.load] returning [RemoteMediator.MediatorResult.Error]
+     */
+    fun retry() {
+        pagingDataPresenter.retry()
     }
 
     /**
@@ -118,7 +147,7 @@ internal constructor(
      *
      * @see PagingSource.invalidate
      */
-    public fun refresh() {
+    fun refresh() {
         pagingDataPresenter.refresh()
     }
 
@@ -130,8 +159,8 @@ internal constructor(
                     refresh = InitialLoadStates.refresh,
                     prepend = InitialLoadStates.prepend,
                     append = InitialLoadStates.append,
-                    source = InitialLoadStates,
-                ),
+                    source = InitialLoadStates
+                )
         )
         private set
 
@@ -153,13 +182,15 @@ private val InitialLoadStates =
  * instance. The [LazyPagingItems] instance can be used for lazy foundations such as
  * [LazyListScope.items] in order to display the data obtained from a [Flow] of [PagingData].
  *
+ * @sample androidx.paging.compose.samples.PagingBackendSample
  * @param context the [CoroutineContext] to perform the collection of [PagingData] and
  *   [CombinedLoadStates].
  */
 @Composable
 public fun <T : Any> Flow<PagingData<T>>.collectAsLazyPagingItems(
-    context: CoroutineContext = EmptyCoroutineContext,
+    context: CoroutineContext = EmptyCoroutineContext
 ): LazyPagingItems<T> {
+
     val lazyPagingItems = remember(this) { LazyPagingItems(this) }
 
     LaunchedEffect(lazyPagingItems) {

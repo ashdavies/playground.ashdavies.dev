@@ -2,12 +2,12 @@ package io.ashdavies.party.events
 
 import androidx.compose.runtime.Composable
 import androidx.paging.PagingData
-import io.ashdavies.paging.LazyPagingItems
-import io.ashdavies.paging.collectAsLazyPagingItems
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
 import io.ashdavies.party.tooling.MaterialPreviewTheme
 import io.ashdavies.party.tooling.PreviewDayNight
-import io.ashdavies.party.upcoming.UpcomingEventsScreen
 import io.ashdavies.party.upcoming.UpcomingEventsPane
+import io.ashdavies.party.upcoming.UpcomingEventsScreen
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 
