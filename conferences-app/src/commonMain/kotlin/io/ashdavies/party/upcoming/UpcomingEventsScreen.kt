@@ -9,10 +9,10 @@ import androidx.compose.material3.adaptive.navigation.ThreePaneScaffoldNavigator
 import androidx.compose.material3.adaptive.navigation.rememberListDetailPaneScaffoldNavigator
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.paging.compose.LazyPagingItems
 import com.slack.circuit.foundation.internal.BackHandler
 import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.screen.Screen
-import io.ashdavies.paging.LazyPagingItems
 import io.ashdavies.parcelable.Parcelable
 import io.ashdavies.parcelable.Parcelize
 import io.ashdavies.party.events.Event
