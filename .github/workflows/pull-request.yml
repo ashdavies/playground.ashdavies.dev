@@ -61,6 +61,7 @@ jobs:
 
       - run: ./gradlew detektAll --continue --console=plain
 
+      # run ./gradlew updateDebugScreenshotTest
       - id: screenshot-validation
         run: ./gradlew validateScreenshotTest --console=plain
 
