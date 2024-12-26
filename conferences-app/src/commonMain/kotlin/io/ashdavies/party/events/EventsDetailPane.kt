@@ -1,24 +1,31 @@
 package io.ashdavies.party.events
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Event
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material.icons.outlined.MyLocation
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
+import io.ashdavies.party.material.padding
+import io.ashdavies.party.material.spacing
+import kotlinx.datetime.LocalDate
 import okio.ByteString.Companion.encode
 
 @Composable
@@ -28,34 +35,40 @@ internal fun EventsDetailPane(
 ) {
     Scaffold(
         modifier = modifier,
-        topBar = { EventsTopBar(event.name) },
+        topBar = {
+            EventsTopBar(
+                title = event.name,
+                actions = {
+                    IconButton(onClick = { error("Crashlytics") }) {
+                        Icon(Icons.Default.Warning, contentDescription = null)
+                    }
+                },
+            )
+        },
     ) { contentPadding ->
         Column(Modifier.padding(contentPadding)) {
-            Card(
-                modifier = Modifier.padding(
-                    horizontal = 16.dp,
-                    vertical = 8.dp,
-                ),
-            ) {
-                EventsDetailImage(
-                    imageUrl = event.imageUrl,
-                    name = event.name,
-                )
+            Card(Modifier.padding(MaterialTheme.spacing.large)) {
+                Box {
+                    EventsDetailImage(
+                        imageUrl = event.imageUrl,
+                        name = event.name,
+                    )
+
+                    EventDateLabel(
+                        dateStart = remember { LocalDate.parse(event.dateStart) },
+                        dateEnd = remember { LocalDate.parse(event.dateEnd) },
+                        modifier = Modifier
+                            .padding(MaterialTheme.spacing.large)
+                            .align(Alignment.TopEnd),
+                    )
+                }
             }
 
             Card(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(
-                        horizontal = 16.dp,
-                        vertical = 8.dp,
-                    ),
+                    .padding(MaterialTheme.spacing.large)
+                    .fillMaxWidth(),
             ) {
-                EventsDetailDate(
-                    dateStart = event.dateStart,
-                    dateEnd = event.dateEnd,
-                )
-
                 EventsDetailLocation(
                     location = event.location,
                 )
@@ -79,28 +92,6 @@ private fun EventsDetailImage(
             .height(200.dp),
         placeholder = null,
     )
-}
-
-@Composable
-private fun EventsDetailDate(
-    dateStart: String,
-    dateEnd: String,
-    modifier: Modifier = Modifier,
-) {
-    Row(
-        modifier = modifier,
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        Icon(
-            imageVector = Icons.Outlined.Event,
-            contentDescription = null,
-            modifier = Modifier.padding(16.dp),
-        )
-
-        Column {
-            Text("$dateStart - $dateEnd")
-        }
-    }
 }
 
 @Composable
