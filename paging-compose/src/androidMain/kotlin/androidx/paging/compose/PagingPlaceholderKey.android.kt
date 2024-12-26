@@ -37,8 +37,7 @@ private data class PagingPlaceholderKey(private val index: Int) : Parcelable {
         @JvmField
         val CREATOR: Parcelable.Creator<PagingPlaceholderKey> =
             object : Parcelable.Creator<PagingPlaceholderKey> {
-                override fun createFromParcel(parcel: Parcel) =
-                    PagingPlaceholderKey(parcel.readInt())
+                override fun createFromParcel(parcel: Parcel) = PagingPlaceholderKey(parcel.readInt())
 
                 override fun newArray(size: Int) = arrayOfNulls<PagingPlaceholderKey?>(size)
             }

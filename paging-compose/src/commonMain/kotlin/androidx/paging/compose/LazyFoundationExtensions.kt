@@ -38,7 +38,7 @@ import androidx.paging.PagingConfig
  *   will be kept as the first visible one.
  */
 public fun <T : Any> LazyPagingItems<T>.itemKey(
-    key: ((item: @JvmSuppressWildcards T) -> Any)? = null
+    key: ((item: @JvmSuppressWildcards T) -> Any)? = null,
 ): (index: Int) -> Any {
     return { index ->
         if (key == null) {
@@ -68,7 +68,7 @@ public fun <T : Any> LazyPagingItems<T>.itemKey(
  *   type will be considered compatible.
  */
 public fun <T : Any> LazyPagingItems<T>.itemContentType(
-    contentType: ((item: @JvmSuppressWildcards T) -> Any?)? = null
+    contentType: ((item: @JvmSuppressWildcards T) -> Any?)? = null,
 ): (index: Int) -> Any? {
     return { index ->
         if (contentType == null) {

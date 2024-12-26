@@ -33,13 +33,13 @@ import androidx.paging.PagingDataPresenter
 import androidx.paging.PagingSource
 import androidx.paging.RemoteMediator
 import kotlinx.coroutines.Dispatchers
-import kotlin.coroutines.CoroutineContext
-import kotlin.coroutines.EmptyCoroutineContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.withContext
+import kotlin.coroutines.CoroutineContext
+import kotlin.coroutines.EmptyCoroutineContext
 
 /**
  * The class responsible for accessing the data from a [Flow] of [PagingData]. In order to obtain an
@@ -56,7 +56,7 @@ import kotlinx.coroutines.withContext
 public class LazyPagingItems<T : Any>
 internal constructor(
     /** the [Flow] object which contains a stream of [PagingData] elements. */
-    private val flow: Flow<PagingData<T>>
+    private val flow: Flow<PagingData<T>>,
 ) {
     private val mainDispatcher = Dispatchers.Main
 
@@ -71,7 +71,7 @@ internal constructor(
             PagingDataPresenter<T>(
                 mainContext = mainDispatcher,
                 cachedPagingData =
-                    if (flow is SharedFlow<PagingData<T>>) flow.replayCache.firstOrNull() else null
+                if (flow is SharedFlow<PagingData<T>>) flow.replayCache.firstOrNull() else null,
             ) {
             override suspend fun presentPagingDataEvent(
                 event: PagingDataEvent<T>,
@@ -159,8 +159,8 @@ internal constructor(
                     refresh = InitialLoadStates.refresh,
                     prepend = InitialLoadStates.prepend,
                     append = InitialLoadStates.append,
-                    source = InitialLoadStates
-                )
+                    source = InitialLoadStates,
+                ),
         )
         private set
 
@@ -188,9 +188,8 @@ private val InitialLoadStates =
  */
 @Composable
 public fun <T : Any> Flow<PagingData<T>>.collectAsLazyPagingItems(
-    context: CoroutineContext = EmptyCoroutineContext
+    context: CoroutineContext = EmptyCoroutineContext,
 ): LazyPagingItems<T> {
-
     val lazyPagingItems = remember(this) { LazyPagingItems(this) }
 
     LaunchedEffect(lazyPagingItems) {
