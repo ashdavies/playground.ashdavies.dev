@@ -1,14 +1,17 @@
 package io.ashdavies.party.upcoming
 
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.material3.adaptive.layout.AnimatedPane
 import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffold
 import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffoldRole
+import androidx.compose.material3.adaptive.layout.calculatePaneScaffoldDirective
 import androidx.compose.material3.adaptive.navigation.BackNavigationBehavior
 import androidx.compose.material3.adaptive.navigation.ThreePaneScaffoldNavigator
 import androidx.compose.material3.adaptive.navigation.rememberListDetailPaneScaffoldNavigator
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.paging.compose.LazyPagingItems
 import com.slack.circuit.foundation.internal.BackHandler
 import com.slack.circuit.runtime.CircuitUiState
@@ -29,7 +32,11 @@ internal fun UpcomingEventsScreen(
     state: UpcomingEventsScreen.State,
     modifier: Modifier = Modifier,
 ) {
-    val navigator = rememberListDetailPaneScaffoldNavigator<Event>()
+    val navigator = rememberListDetailPaneScaffoldNavigator<Event>(
+        scaffoldDirective = calculatePaneScaffoldDirective(
+            windowAdaptiveInfo = currentWindowAdaptiveInfo(),
+        ).copy(horizontalPartitionSpacerSize = 0.dp),
+    )
 
     BackHandler(navigator.canNavigateBack(BackNavigationBehavior.PopUntilContentChange)) {
         navigator.navigateBack(BackNavigationBehavior.PopUntilContentChange)
@@ -43,6 +50,9 @@ internal fun UpcomingEventsScreen(
                 UpcomingEventsPane(
                     state = state,
                     onClick = navigator::navigateToDetail,
+                    selectedItem = navigator
+                        .currentDestination
+                        ?.content,
                 )
             }
         },
@@ -61,5 +71,3 @@ internal fun UpcomingEventsScreen(
 private fun <T> ThreePaneScaffoldNavigator<T>.navigateToDetail(content: T? = null) {
     navigateTo(ListDetailPaneScaffoldRole.Detail, content)
 }
-
-// TODO NavigableListDetailPaneScaffold

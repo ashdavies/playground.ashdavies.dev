@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,19 +13,14 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SuggestionChip
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
@@ -44,29 +40,31 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.paging.compose.LazyPagingItems
 import coil3.compose.AsyncImage
 import io.ashdavies.analytics.OnClick
 import io.ashdavies.party.events.Event
+import io.ashdavies.party.events.EventDateLabel
 import io.ashdavies.party.events.EventsTopBar
 import io.ashdavies.party.events.paging.errorMessage
 import io.ashdavies.party.events.paging.isRefreshing
+import io.ashdavies.party.material.padding
+import io.ashdavies.party.material.spacing
+import io.ashdavies.party.paging.items
 import io.ashdavies.placeholder.PlaceholderHighlight
 import io.ashdavies.placeholder.fade
 import io.ashdavies.placeholder.placeholder
 import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
-import kotlinx.datetime.format
-import kotlinx.datetime.format.MonthNames
+import kotlinx.datetime.daysUntil
 import kotlinx.datetime.toLocalDateTime
 import org.jetbrains.compose.resources.stringResource
 import playground.conferences_app.generated.resources.Res
-import playground.conferences_app.generated.resources.call_for_papers
+import playground.conferences_app.generated.resources.call_for_papers_closed
+import playground.conferences_app.generated.resources.call_for_papers_open
 import playground.conferences_app.generated.resources.online_only
 import playground.conferences_app.generated.resources.upcoming_events
 
-private const val PLACEHOLDER_COUNT = 8
 private const val EMPTY_STRING = ""
 
 private val Today = Clock.System.now()
@@ -79,21 +77,13 @@ internal fun UpcomingEventsPane(
     state: UpcomingEventsScreen.State,
     onClick: (Event) -> Unit,
     modifier: Modifier = Modifier,
+    selectedItem: Event? = null,
 ) {
     val isRefreshing = state.pagingItems.loadState.isRefreshing
 
     Scaffold(
         modifier = modifier,
-        topBar = {
-            EventsTopBar(
-                title = stringResource(Res.string.upcoming_events),
-                actions = {
-                    IconButton(onClick = { error("Crashlytics") }) {
-                        Icon(Icons.Default.Warning, contentDescription = null)
-                    }
-                },
-            )
-        },
+        topBar = { EventsTopBar(stringResource(Res.string.upcoming_events)) },
     ) { contentPadding ->
         PullToRefreshBox(
             isRefreshing = isRefreshing,
@@ -105,28 +95,20 @@ internal fun UpcomingEventsPane(
             }
 
             LazyColumn(Modifier.fillMaxSize()) {
-                val itemCount = when {
-                    isRefreshing -> state.pagingItems.itemCount.coerceAtLeast(PLACEHOLDER_COUNT)
-                    else -> state.pagingItems.itemCount
-                }
-
-                items(itemCount) { index ->
-                    val event = state.pagingItems.rememberItemOrNull(index, isRefreshing)
-
+                items(state.pagingItems) { event ->
                     EventItemContent(
+                        event = event,
+                        isSelected = event == selectedItem,
                         modifier = Modifier
+                            .animateItem() // TODO Slow animation on addition
                             .fillMaxWidth()
-                            .padding(
-                                horizontal = 16.dp,
-                                vertical = 8.dp,
-                            )
+                            .padding(MaterialTheme.spacing.large)
+                            .clip(MaterialTheme.shapes.medium)
                             .clickable(
                                 enabled = event != null,
                                 onClickLabel = event?.name,
                                 onClick = { onClick(event!!) },
-                            )
-                            .animateItem(),
-                        event = event,
+                            ),
                     )
                 }
             }
@@ -135,16 +117,20 @@ internal fun UpcomingEventsPane(
 }
 
 @Composable
-private fun <T : Any> LazyPagingItems<T>.rememberItemOrNull(index: Int, key: Any? = null): T? {
-    return remember(key, index) { if (index < itemCount) get(index) else null }
-}
-
-@Composable
 private fun EventItemContent(
     event: Event?,
+    isSelected: Boolean,
     modifier: Modifier = Modifier,
 ) {
-    Card(modifier) {
+    Card(
+        modifier = modifier,
+        colors = CardDefaults.cardColors(
+            containerColor = when {
+                isSelected -> MaterialTheme.colorScheme.surfaceVariant
+                else -> Color.Unspecified
+            },
+        ),
+    ) {
         Box(Modifier.height(IntrinsicSize.Min)) {
             if (event?.imageUrl != null) {
                 EventSectionBackground(
@@ -153,82 +139,42 @@ private fun EventItemContent(
                 )
             }
 
-            Row {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(1f)
-                        .padding(
-                            horizontal = 16.dp,
-                            vertical = 8.dp,
-                        ),
-                ) {
-                    Row {
+            Column(
+                modifier = Modifier.padding(MaterialTheme.spacing.large),
+            ) {
+                Row {
+                    Column(
+                        modifier = Modifier.weight(1f),
+                    ) {
                         PlaceholderText(
                             text = event?.name,
                             style = MaterialTheme.typography.headlineSmall,
                         )
+
+                        PlaceholderText(
+                            text = event?.location,
+                            modifier = Modifier.align(Alignment.Start),
+                            style = MaterialTheme.typography.titleSmall,
+                        )
                     }
 
-                    PlaceholderText(
-                        text = event?.location,
-                        modifier = Modifier.align(Alignment.Start),
-                        style = MaterialTheme.typography.titleSmall,
-                    )
+                    if (event?.dateStart != null) {
+                        Spacer(
+                            modifier = Modifier.width(MaterialTheme.spacing.large.horizontal),
+                        )
 
-                    EventStatusChips(
-                        cfpSite = event?.cfpSite,
-                        cfpEnd = event?.cfpEnd,
-                        isOnlineOnly = event?.online == true,
-                    )
+                        EventDateLabel(
+                            dateStart = remember { LocalDate.parse(event.dateStart) },
+                            dateEnd = remember { LocalDate.parse(event.dateEnd) },
+                        )
+                    }
                 }
 
-                if (event?.dateStart != null) {
-                    EventDateLabel(
-                        dateStart = remember { LocalDate.parse(event.dateStart) },
-                        modifier = Modifier.padding(12.dp),
-                    )
-                }
-            }
-        }
-    }
-}
-
-@Composable
-private fun EventDateLabel(
-    dateStart: LocalDate,
-    modifier: Modifier = Modifier,
-) {
-    Surface(modifier.clip(MaterialTheme.shapes.small)) {
-        Box(
-            modifier = Modifier.padding(
-                horizontal = 12.dp,
-                vertical = 4.dp,
-            ),
-        ) {
-            Column {
-                Text(
-                    text = dateStart.format(LocalDate.Format { monthName(MonthNames.ENGLISH_ABBREVIATED) }),
-                    modifier = Modifier.align(Alignment.CenterHorizontally),
-                    style = MaterialTheme.typography.labelSmall,
+                EventStatusChips(
+                    cfpSite = event?.cfpSite,
+                    cfpEnd = event?.cfpEnd,
+                    isOnlineOnly = event?.online == true,
                 )
-
-                Text(
-                    text = dateStart.format(LocalDate.Format { dayOfMonth() }),
-                    modifier = Modifier.align(Alignment.CenterHorizontally),
-                    style = MaterialTheme.typography.labelLarge,
-                )
-
-                val currentYear = Clock.System.now()
-                    .toLocalDateTime(TimeZone.currentSystemDefault())
-                    .year
-
-                if (dateStart.year != currentYear) {
-                    Text(
-                        text = dateStart.format(LocalDate.Format { year() }),
-                        style = MaterialTheme.typography.labelSmall,
-                    )
-                }
             }
         }
     }
@@ -241,39 +187,54 @@ private fun EventStatusChips(
     isOnlineOnly: Boolean,
     modifier: Modifier = Modifier,
 ) {
-    Row(modifier) {
-        if (cfpEnd != null) {
-            val uriHandler = LocalUriHandler.current
-
-            SuggestionChip(
-                onClick = { uriHandler.openUri(requireNotNull(cfpSite)) },
-                label = {
-                    Text(
-                        text = stringResource(Res.string.call_for_papers, cfpEnd),
-                        color = LocalContentColor.current,
-                        style = MaterialTheme.typography.labelSmall,
-                    )
-                },
-                enabled = cfpSite != null && LocalDate.parse(cfpEnd) > Today,
-                shape = MaterialTheme.shapes.small,
-            )
-
-            HorizontalDivider(Modifier.width(8.dp))
+    Column(modifier) {
+        if (cfpEnd != null && isOnlineOnly) {
+            Spacer(Modifier.height(MaterialTheme.spacing.large.vertical))
         }
 
-        if (isOnlineOnly) {
-            SuggestionChip(
-                onClick = { },
-                label = {
-                    Text(
-                        text = stringResource(Res.string.online_only),
-                        color = LocalContentColor.current,
-                        style = MaterialTheme.typography.labelSmall,
-                    )
-                },
-                enabled = false,
-                shape = MaterialTheme.shapes.small,
-            )
+        Row {
+            if (cfpEnd != null) {
+                val daysUntilCfpEnd = Today.daysUntil(LocalDate.parse(cfpEnd))
+                val uriHandler = LocalUriHandler.current
+
+                SuggestionChip(
+                    onClick = { uriHandler.openUri(requireNotNull(cfpSite)) },
+                    label = {
+                        Text(
+                            text = when {
+                                daysUntilCfpEnd > 0 -> stringResource(
+                                    Res.string.call_for_papers_open,
+                                    daysUntilCfpEnd,
+                                )
+
+                                else -> stringResource(Res.string.call_for_papers_closed)
+                            },
+                            color = LocalContentColor.current,
+                            style = MaterialTheme.typography.labelSmall,
+                        )
+                    },
+                    enabled = cfpSite != null && daysUntilCfpEnd > 0,
+                    shape = MaterialTheme.shapes.small,
+                )
+            }
+
+            if (cfpEnd != null && isOnlineOnly) {
+                Spacer(Modifier.width(MaterialTheme.spacing.large.horizontal))
+            }
+
+            if (isOnlineOnly) {
+                SuggestionChip(
+                    onClick = { },
+                    label = {
+                        Text(
+                            text = stringResource(Res.string.online_only),
+                            color = LocalContentColor.current,
+                            style = MaterialTheme.typography.labelSmall,
+                        )
+                    },
+                    shape = MaterialTheme.shapes.small,
+                )
+            }
         }
     }
 }
@@ -327,7 +288,7 @@ private fun PlaceholderText(
 private fun EventFailure(message: String, modifier: Modifier = Modifier) {
     Text(
         text = message,
-        modifier = modifier.padding(16.dp, 12.dp),
+        modifier = modifier.padding(MaterialTheme.spacing.large),
         color = MaterialTheme.colorScheme.error,
     )
 }
