@@ -130,6 +130,6 @@ gradle-doctor = "com.osacky.doctor:0.10.0"
 jetbrains-compose = { id = "org.jetbrains.compose", version.ref = "compose-plugin" }
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "jetbrains-kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "jetbrains-kotlin" }
-kotlinx-kover = "org.jetbrains.kotlinx.kover:0.9.0"
+kotlinx-kover = "org.jetbrains.kotlinx.kover:0.9.1"
 ktlint = "org.jlleitschuh.gradle.ktlint:12.1.2"
 openapi-generator = "org.openapi.generator:7.10.0"
