@@ -1,6 +1,6 @@
 module "project-services" {
   source        = "terraform-google-modules/project-factory/google//modules/project_services"
-  version       = "17.1.0"
+  version       = "18.0.0"
   project_id    = var.project
   activate_apis = [
     "apigateway.googleapis.com",
