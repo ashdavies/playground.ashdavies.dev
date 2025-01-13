@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 internal fun EventsTopBar(
     title: String,
     modifier: Modifier = Modifier,
+    navigationIcon: @Composable () -> Unit = { },
     actions: @Composable RowScope.() -> Unit = { },
 ) {
     CenterAlignedTopAppBar(
@@ -25,6 +26,7 @@ internal fun EventsTopBar(
             )
         },
         modifier = modifier,
+        navigationIcon = navigationIcon,
         colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
             containerColor = MaterialTheme.colorScheme.background,
         ),

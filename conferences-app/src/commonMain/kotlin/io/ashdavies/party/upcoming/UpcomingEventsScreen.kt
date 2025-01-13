@@ -59,7 +59,10 @@ internal fun UpcomingEventsScreen(
         detailPane = {
             AnimatedPane {
                 navigator.currentDestination?.content?.let {
-                    EventsDetailPane(it)
+                    EventsDetailPane(
+                        event = it,
+                        onBackClick = navigator::navigateBack,
+                    )
                 }
             }
         },

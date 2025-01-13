@@ -1,5 +1,6 @@
 package io.ashdavies.party.events
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material3.MaterialTheme
@@ -31,6 +32,7 @@ internal fun EventDateLabel(
     ) {
         Column(
             modifier = Modifier.padding(MaterialTheme.spacing.small),
+            verticalArrangement = Arrangement.aligned(Alignment.CenterVertically),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             val startMonth = dateStart.format(LocalDate.Format { monthName(MonthNames.ENGLISH_ABBREVIATED) })

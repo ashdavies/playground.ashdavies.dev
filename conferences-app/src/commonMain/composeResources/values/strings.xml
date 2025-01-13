@@ -4,7 +4,8 @@
     <string name="upcoming_events">Upcoming Events</string>
     <string name="past_events">Past Events</string>
 
-    <string name="call_for_papers_open">Call for Papers (%1$s days left)</string>
+    <string name="call_for_papers_open">CfP Open</string>
+    <string name="call_for_papers_days_remaining">Call for Papers (%1$s days remaining)</string>
     <string name="call_for_papers_closed">Call for Papers (Closed)</string>
 
     <string name="online_only">Online Only</string>

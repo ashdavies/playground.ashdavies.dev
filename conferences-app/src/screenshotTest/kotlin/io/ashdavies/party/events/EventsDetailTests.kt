@@ -10,7 +10,10 @@ internal class EventsDetailTests {
     @PreviewDayNight
     private fun EventsDetailPreview() {
         MaterialPreviewTheme {
-            EventsDetailPane(DroidconBerlin)
+            EventsDetailPane(
+                event = DroidconBerlin,
+                onBackClick = { },
+            )
         }
     }
 }
