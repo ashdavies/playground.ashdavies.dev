@@ -1,12 +1,13 @@
 package io.ashdavies.party.upcoming
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -20,7 +21,7 @@ import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SuggestionChip
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
@@ -28,23 +29,22 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.drawWithContent
-import androidx.compose.ui.graphics.BlendMode
+import androidx.compose.ui.draw.paint
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.CompositingStrategy
-import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import coil3.compose.AsyncImage
+import coil3.compose.rememberAsyncImagePainter
 import io.ashdavies.analytics.OnClick
 import io.ashdavies.party.events.Event
 import io.ashdavies.party.events.EventDateLabel
 import io.ashdavies.party.events.EventsTopBar
+import io.ashdavies.party.events.daysUntilCfpEnd
 import io.ashdavies.party.events.paging.errorMessage
 import io.ashdavies.party.events.paging.isRefreshing
 import io.ashdavies.party.material.padding
@@ -53,23 +53,14 @@ import io.ashdavies.party.paging.items
 import io.ashdavies.placeholder.PlaceholderHighlight
 import io.ashdavies.placeholder.fade
 import io.ashdavies.placeholder.placeholder
-import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDate
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.daysUntil
-import kotlinx.datetime.toLocalDateTime
 import org.jetbrains.compose.resources.stringResource
 import playground.conferences_app.generated.resources.Res
-import playground.conferences_app.generated.resources.call_for_papers_closed
 import playground.conferences_app.generated.resources.call_for_papers_open
 import playground.conferences_app.generated.resources.online_only
 import playground.conferences_app.generated.resources.upcoming_events
 
 private const val EMPTY_STRING = ""
-
-private val Today = Clock.System.now()
-    .toLocalDateTime(TimeZone.currentSystemDefault())
-    .date
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
@@ -108,7 +99,8 @@ internal fun UpcomingEventsPane(
                                 enabled = event != null,
                                 onClickLabel = event?.name,
                                 onClick = { onClick(event!!) },
-                            ),
+                            )
+                            .paint(rememberBackgroundPainter(event?.imageUrl)),
                     )
                 }
             }
@@ -131,135 +123,101 @@ private fun EventItemContent(
             },
         ),
     ) {
-        Box(Modifier.height(IntrinsicSize.Min)) {
-            if (event?.imageUrl != null) {
-                EventSectionBackground(
-                    backgroundImageUrl = event.imageUrl,
-                    modifier = Modifier.fillMaxSize(),
+        Row(
+            modifier = Modifier
+                .padding(MaterialTheme.spacing.large)
+                .height(IntrinsicSize.Max),
+            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small.horizontal),
+        ) {
+            Column(Modifier.weight(1f)) {
+                PlaceholderText(
+                    text = event?.name,
+                    style = MaterialTheme.typography.headlineSmall,
+                )
+
+                PlaceholderText(
+                    text = event?.location,
+                    modifier = Modifier.align(Alignment.Start),
+                    style = MaterialTheme.typography.titleSmall,
                 )
             }
 
-            Column(
-                modifier = Modifier.padding(MaterialTheme.spacing.large),
-            ) {
-                Row {
-                    Column(
-                        modifier = Modifier.weight(1f),
-                    ) {
-                        PlaceholderText(
-                            text = event?.name,
-                            style = MaterialTheme.typography.headlineSmall,
-                        )
-
-                        PlaceholderText(
-                            text = event?.location,
-                            modifier = Modifier.align(Alignment.Start),
-                            style = MaterialTheme.typography.titleSmall,
-                        )
-                    }
-
-                    if (event?.dateStart != null) {
-                        Spacer(
-                            modifier = Modifier.width(MaterialTheme.spacing.large.horizontal),
-                        )
-
-                        EventDateLabel(
-                            dateStart = remember { LocalDate.parse(event.dateStart) },
-                            dateEnd = remember { LocalDate.parse(event.dateEnd) },
-                        )
-                    }
+            if (event?.cfpEnd != null && daysUntilCfpEnd(LocalDate.parse(event.cfpEnd)) > 0) {
+                Column {
+                    EventLabel(
+                        text = stringResource(Res.string.call_for_papers_open),
+                        modifier = Modifier.fillMaxHeight(),
+                    )
                 }
+            }
 
-                EventStatusChips(
-                    cfpSite = event?.cfpSite,
-                    cfpEnd = event?.cfpEnd,
-                    isOnlineOnly = event?.online == true,
-                )
+            if (event?.online != false) {
+                Column {
+                    EventLabel(
+                        text = stringResource(Res.string.online_only),
+                        modifier = Modifier.fillMaxHeight(),
+                    )
+                }
+            }
+
+            if (event?.dateStart != null) {
+                Column {
+                    EventDateLabel(
+                        dateStart = remember { LocalDate.parse(event.dateStart) },
+                        dateEnd = remember { LocalDate.parse(event.dateEnd) },
+                        modifier = Modifier.fillMaxHeight(),
+                    )
+                }
             }
         }
     }
 }
 
 @Composable
-private fun EventStatusChips(
-    cfpSite: String?,
-    cfpEnd: String?,
-    isOnlineOnly: Boolean,
+private fun EventLabel(
+    text: String,
     modifier: Modifier = Modifier,
 ) {
-    Column(modifier) {
-        if (cfpEnd != null && isOnlineOnly) {
-            Spacer(Modifier.height(MaterialTheme.spacing.large.vertical))
-        }
-
-        Row {
-            if (cfpEnd != null) {
-                val daysUntilCfpEnd = Today.daysUntil(LocalDate.parse(cfpEnd))
-                val uriHandler = LocalUriHandler.current
-
-                SuggestionChip(
-                    onClick = { uriHandler.openUri(requireNotNull(cfpSite)) },
-                    label = {
-                        Text(
-                            text = when {
-                                daysUntilCfpEnd > 0 -> stringResource(
-                                    Res.string.call_for_papers_open,
-                                    daysUntilCfpEnd,
-                                )
-
-                                else -> stringResource(Res.string.call_for_papers_closed)
-                            },
-                            color = LocalContentColor.current,
-                            style = MaterialTheme.typography.labelSmall,
-                        )
-                    },
-                    enabled = cfpSite != null && daysUntilCfpEnd > 0,
-                    shape = MaterialTheme.shapes.small,
-                )
-            }
-
-            if (cfpEnd != null && isOnlineOnly) {
-                Spacer(Modifier.width(MaterialTheme.spacing.large.horizontal))
-            }
-
-            if (isOnlineOnly) {
-                SuggestionChip(
-                    onClick = { },
-                    label = {
-                        Text(
-                            text = stringResource(Res.string.online_only),
-                            color = LocalContentColor.current,
-                            style = MaterialTheme.typography.labelSmall,
-                        )
-                    },
-                    shape = MaterialTheme.shapes.small,
-                )
-            }
+    Surface(
+        modifier = modifier,
+        shape = MaterialTheme.shapes.small,
+        color = Color.Transparent,
+        border = BorderStroke(
+            width = 1.0.dp,
+            color = MaterialTheme.colorScheme.outline,
+        ),
+    ) {
+        Column(
+            modifier = Modifier.fillMaxHeight(),
+            verticalArrangement = Arrangement.Center,
+        ) {
+            Text(
+                text = text,
+                modifier = Modifier
+                    .padding(MaterialTheme.spacing.small)
+                    .width(32.dp),
+                color = LocalContentColor.current,
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.labelSmall,
+            )
         }
     }
 }
 
 @Composable
-private fun EventSectionBackground(
-    backgroundImageUrl: String,
-    modifier: Modifier = Modifier,
+private fun rememberBackgroundPainter(
+    backgroundImageUrl: String?,
     colorStopStart: Float = 0.25f,
     colorStopEnd: Float = 0.5f,
-) {
-    val gradientBrush = Brush.horizontalGradient(
+): Painter {
+    @Suppress("UNUSED_VARIABLE")
+    val brush = Brush.horizontalGradient(
         colorStopStart to Color.Transparent,
         colorStopEnd to Color.Black,
     )
 
-    AsyncImage(
+    return rememberAsyncImagePainter(
         model = backgroundImageUrl,
-        contentDescription = null,
-        modifier = modifier
-            .graphicsLayer(compositingStrategy = CompositingStrategy.Offscreen)
-            .drawWithContent {
-                drawContent()
-                drawRect(gradientBrush, blendMode = BlendMode.DstIn)
-            },
         contentScale = ContentScale.Crop,
     )
 }
