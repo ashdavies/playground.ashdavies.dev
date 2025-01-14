@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.exclude
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.PhotoLibrary
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -27,11 +28,12 @@ import com.slack.circuit.runtime.screen.Screen
 import io.ashdavies.identity.IdentityState
 import io.ashdavies.parcelable.Parcelable
 import io.ashdavies.parcelable.Parcelize
-import io.ashdavies.party.animation.FadeVisibility
 import io.ashdavies.party.config.booleanConfigAsState
+import io.ashdavies.party.config.isGalleryEnabled
+import io.ashdavies.party.gallery.GalleryScreen
 import io.ashdavies.party.material.icons.EventList
 import io.ashdavies.party.material.icons.EventUpcoming
-import io.ashdavies.party.past.GalleryScreen
+import io.ashdavies.party.past.PastEventsScreen
 import io.ashdavies.party.upcoming.UpcomingEventsScreen
 
 @Parcelize
@@ -57,19 +59,16 @@ internal fun HomeScreen(
     modifier: Modifier = Modifier,
     reportFullyDrawn: () -> Unit,
 ) {
-    val showPastEvents by booleanConfigAsState { true }
+    val latestReportFullyDrawn by rememberUpdatedState(reportFullyDrawn)
     val eventSink = state.eventSink
 
     Scaffold(
         modifier = modifier,
         bottomBar = {
-            FadeVisibility(showPastEvents) {
-                HomeBottomBar { screen ->
-                    eventSink(HomeScreen.Event.BottomNav(screen))
-                }
+            HomeBottomBar { screen ->
+                eventSink(HomeScreen.Event.BottomNav(screen))
             }
         },
-        floatingActionButton = { },
         contentWindowInsets = ScaffoldDefaults.contentWindowInsets.exclude(
             insets = TopAppBarDefaults.windowInsets,
         ),
@@ -83,8 +82,6 @@ internal fun HomeScreen(
         )
     }
 
-    val latestReportFullyDrawn by rememberUpdatedState(reportFullyDrawn)
-
     LaunchedEffect(Unit) {
         latestReportFullyDrawn()
     }
@@ -96,6 +93,8 @@ internal fun HomeBottomBar(
     selected: Screen = HomeScreen,
     onClick: (Screen) -> Unit = { },
 ) {
+    val isGalleryEnabled by booleanConfigAsState { isGalleryEnabled() }
+
     BottomAppBar(modifier) {
         NavigationBar {
             NavigationBarItem(
@@ -104,9 +103,17 @@ internal fun HomeBottomBar(
                 icon = { NavigationBarImage(Icons.Outlined.EventUpcoming) },
             )
 
+            if (isGalleryEnabled) {
+                NavigationBarItem(
+                    selected = selected is GalleryScreen,
+                    onClick = { onClick(GalleryScreen) },
+                    icon = { NavigationBarImage(Icons.Outlined.PhotoLibrary) },
+                )
+            }
+
             NavigationBarItem(
-                selected = selected is GalleryScreen,
-                onClick = { onClick(GalleryScreen) },
+                selected = selected is PastEventsScreen,
+                onClick = { onClick(PastEventsScreen) },
                 icon = { NavigationBarImage(Icons.Outlined.EventList) },
             )
         }
