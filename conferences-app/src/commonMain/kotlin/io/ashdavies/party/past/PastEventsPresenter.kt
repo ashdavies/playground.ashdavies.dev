@@ -2,86 +2,34 @@ package io.ashdavies.party.past
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
-import com.slack.circuit.retained.produceRetainedState
-import com.slack.circuit.retained.rememberRetained
-import io.ashdavies.party.gallery.File
-import io.ashdavies.party.gallery.Image
-import io.ashdavies.party.gallery.ImageManager
-import io.ashdavies.party.gallery.SyncManager
-import io.ashdavies.party.gallery.SyncState
-import kotlinx.coroutines.launch
+import androidx.compose.runtime.produceState
+import io.ashdavies.aggregator.AsgConference
+import io.ashdavies.aggregator.callable.PastConferencesCallable
+import io.ashdavies.party.events.Event
+import kotlinx.collections.immutable.toImmutableList
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
+import okio.ByteString.Companion.encode
 
 @Composable
 internal fun PastEventsPresenter(
-    imageManager: ImageManager,
-    syncManager: SyncManager,
-): GalleryScreen.State {
-    val itemList by produceRetainedState(emptyList<Image>()) {
-        imageManager.list.collect { value = it }
+    pastConferencesCallable: PastConferencesCallable,
+): PastEventsScreen.State {
+    val itemList by produceState(emptyList()) {
+        value = pastConferencesCallable(Unit).map { it.toEvent() }
     }
 
-    val syncState by produceRetainedState(emptyMap<String, SyncState>()) {
-        syncManager.state.collect { value = it }
-    }
-
-    val coroutineScope = rememberCoroutineScope()
-
-    var expandedItem by rememberRetained {
-        mutableStateOf<GalleryScreen.State.ExpandedItem?>(null)
-    }
-
-    var selected by rememberRetained { mutableStateOf(emptyList<Image>()) }
-    var takePhoto by rememberRetained { mutableStateOf(false) }
-
-    return GalleryScreen.State(
-        itemList = itemList.map {
-            GalleryScreen.State.StandardItem(
-                title = it.name,
-                imageModel = File(it.path),
-                isSelected = it in selected,
-                state = syncState[it.name] ?: SyncState.NOT_SYNCED,
-            )
-        },
-        expandedItem = expandedItem,
-        showCapture = takePhoto,
-    ) { event ->
-        when (event) {
-            is GalleryScreen.Event.Capture.Result -> coroutineScope.launch {
-                imageManager.add(event.value)
-                takePhoto = false
-            }
-
-            is GalleryScreen.Event.Capture.Cancel -> takePhoto = false
-            is GalleryScreen.Event.Capture.Request -> takePhoto = true
-
-            is GalleryScreen.Event.Selection.Expand -> {
-                expandedItem = GalleryScreen.State.ExpandedItem(
-                    contentDescription = itemList[event.index].name,
-                    imageModel = File(itemList[event.index].path),
-                    isExpanded = true,
-                )
-            }
-
-            is GalleryScreen.Event.Selection.Toggle -> itemList[event.index].also {
-                if (it in selected) selected -= it else selected += it
-            }
-
-            is GalleryScreen.Event.Selection.Collapse -> {
-                expandedItem = expandedItem?.copy(isExpanded = false)
-            }
-
-            is GalleryScreen.Event.Selection.Delete -> coroutineScope.launch {
-                selected.forEach { imageManager.remove(it) }
-                selected = emptyList()
-            }
-
-            is GalleryScreen.Event.Selection.Sync -> coroutineScope.launch {
-                selected.forEach { syncManager.sync(it.path) }
-                selected = emptyList()
-            }
-        }
-    }
+    return PastEventsScreen.State(
+        itemList = itemList.toImmutableList(),
+    )
 }
+
+internal fun AsgConference.toEvent(): Event = Event(
+    id = hash(), name = name, website = website, location = location, dateStart = dateStart,
+    dateEnd = dateEnd, imageUrl = imageUrl, status = status, online = online,
+    cfpStart = cfp?.start, cfpEnd = cfp?.end, cfpSite = cfp?.site,
+)
+
+private inline fun <reified T : Any> T.hash() = Json
+    .encodeToString(this)
+    .encode().md5().hex()

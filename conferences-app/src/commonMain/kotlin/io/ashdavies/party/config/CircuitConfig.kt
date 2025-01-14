@@ -11,13 +11,17 @@ import com.slack.circuit.runtime.Navigator
 import com.slack.circuit.runtime.presenter.Presenter
 import com.slack.circuit.runtime.presenter.presenterOf
 import com.slack.circuit.runtime.screen.Screen
+import io.ashdavies.aggregator.PastConferencesCallable
 import io.ashdavies.content.PlatformContext
 import io.ashdavies.content.reportFullyDrawn
 import io.ashdavies.http.DefaultHttpConfiguration
+import io.ashdavies.http.LocalHttpClient
 import io.ashdavies.identity.IdentityManager
 import io.ashdavies.party.coroutines.rememberRetainedCoroutineScope
 import io.ashdavies.party.events.paging.rememberEventPager
 import io.ashdavies.party.gallery.File
+import io.ashdavies.party.gallery.GalleryPresenter
+import io.ashdavies.party.gallery.GalleryScreen
 import io.ashdavies.party.gallery.ImageManager
 import io.ashdavies.party.gallery.PathProvider
 import io.ashdavies.party.gallery.StorageManager
@@ -26,9 +30,8 @@ import io.ashdavies.party.gallery.inMemoryHttpClientEngine
 import io.ashdavies.party.gallery.readChannel
 import io.ashdavies.party.home.HomePresenter
 import io.ashdavies.party.home.HomeScreen
-import io.ashdavies.party.past.GalleryScreen
-import io.ashdavies.party.past.PastEventListScreen
 import io.ashdavies.party.past.PastEventsPresenter
+import io.ashdavies.party.past.PastEventsScreen
 import io.ashdavies.party.upcoming.UpcomingEventsPresenter
 import io.ashdavies.party.upcoming.UpcomingEventsScreen
 import io.ashdavies.playground.PlaygroundDatabase
@@ -69,10 +72,21 @@ public fun rememberCircuit(
         )
         .addCircuit<GalleryScreen, GalleryScreen.State>(
             presenterFactory = { _, _, _ ->
-                presenterOf { PastEventsPresenter(imageManager, syncManager) }
+                presenterOf { GalleryPresenter(imageManager, syncManager) }
             },
             uiFactory = { state, modifier ->
-                PastEventListScreen(state, storageManager, modifier)
+                GalleryScreen(state, storageManager, modifier)
+            },
+        )
+        .addCircuit<PastEventsScreen, PastEventsScreen.State>(
+            presenterFactory = { _, _, _ ->
+                presenterOf {
+                    val callable = PastConferencesCallable(LocalHttpClient.current)
+                    PastEventsPresenter(callable)
+                }
+            },
+            uiFactory = { state, modifier ->
+                PastEventsScreen(state, modifier)
             },
         )
         .build()

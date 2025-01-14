@@ -6,7 +6,7 @@ import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
 
-internal fun interface PastConferencesCallable : UnaryCallable<Unit, List<AsgConference>>
+public fun interface PastConferencesCallable : UnaryCallable<Unit, List<AsgConference>>
 
 internal fun PastConferencesCallable(
     httpClient: HttpClient,

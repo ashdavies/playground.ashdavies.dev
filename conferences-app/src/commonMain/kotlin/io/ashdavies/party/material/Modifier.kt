@@ -5,7 +5,4 @@ import androidx.compose.runtime.Stable
 import androidx.compose.ui.Modifier
 
 @Stable
-internal fun Modifier.padding(spacing: Spacing) = padding(
-    horizontal = spacing.horizontal,
-    vertical = spacing.vertical,
-)
+internal fun Modifier.padding(spacing: Spacing) = padding(spacing.values)
