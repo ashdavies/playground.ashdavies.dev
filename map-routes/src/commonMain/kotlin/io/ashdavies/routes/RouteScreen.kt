@@ -7,8 +7,6 @@ import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.screen.Screen
 import io.ashdavies.parcelable.Parcelize
 
-public fun routeScreen(): Screen = RouteScreen
-
 @Parcelize
 internal object RouteScreen : Screen {
     sealed interface Event : CircuitUiEvent {
