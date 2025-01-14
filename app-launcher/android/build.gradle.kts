@@ -33,6 +33,7 @@ kotlin {
     sourceSets {
         androidMain.dependencies {
             implementation(projects.appLauncher.common)
+
             implementation(projects.httpClient)
             implementation(projects.platformScaffold)
             implementation(projects.platformSupport)
