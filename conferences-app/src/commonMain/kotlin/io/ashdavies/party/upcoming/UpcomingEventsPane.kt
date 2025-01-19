@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -45,11 +46,8 @@ import io.ashdavies.party.events.Event
 import io.ashdavies.party.events.EventDateLabel
 import io.ashdavies.party.events.EventsTopBar
 import io.ashdavies.party.events.daysUntilCfpEnd
-import io.ashdavies.party.events.paging.errorMessage
-import io.ashdavies.party.events.paging.isRefreshing
 import io.ashdavies.party.material.padding
 import io.ashdavies.party.material.spacing
-import io.ashdavies.party.paging.items
 import io.ashdavies.placeholder.PlaceholderHighlight
 import io.ashdavies.placeholder.fade
 import io.ashdavies.placeholder.placeholder
@@ -60,48 +58,52 @@ import playground.conferences_app.generated.resources.call_for_papers_open
 import playground.conferences_app.generated.resources.online_only
 import playground.conferences_app.generated.resources.upcoming_events
 
-private const val EMPTY_STRING = ""
-
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 internal fun UpcomingEventsPane(
     state: UpcomingEventsScreen.State,
-    onClick: (Event) -> Unit,
+    onClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
-    selectedItem: Event? = null,
 ) {
-    val isRefreshing = state.pagingItems.loadState.isRefreshing
+    val eventSink = state.eventSink
 
     Scaffold(
         modifier = modifier,
         topBar = { EventsTopBar(stringResource(Res.string.upcoming_events)) },
     ) { contentPadding ->
         PullToRefreshBox(
-            isRefreshing = isRefreshing,
-            onRefresh = OnClick("events_refresh") { state.pagingItems.refresh() },
+            isRefreshing = state.isRefreshing,
+            onRefresh = OnClick("events_refresh") { eventSink(UpcomingEventsScreen.Event.Refresh) },
             modifier = Modifier.padding(contentPadding),
         ) {
-            if (state.pagingItems.loadState.hasError) {
-                EventFailure(state.pagingItems.loadState.errorMessage ?: "Unknown Error")
+            if (state.errorMessage != null) {
+                EventFailure(state.errorMessage)
             }
 
             LazyColumn(Modifier.fillMaxSize()) {
-                items(state.pagingItems) { event ->
-                    EventItemContent(
-                        event = event,
-                        isSelected = event == selectedItem,
-                        modifier = Modifier
-                            .animateItem() // TODO Slow animation on addition
-                            .fillMaxWidth()
-                            .padding(MaterialTheme.spacing.large)
-                            .clip(MaterialTheme.shapes.medium)
-                            .clickable(
-                                enabled = event != null,
-                                onClickLabel = event?.name,
-                                onClick = { onClick(event!!) },
-                            )
-                            .paint(rememberBackgroundPainter(event?.imageUrl)),
-                    )
+                itemsIndexed(state.itemList) { index, item ->
+                    val itemModifier = Modifier
+                        .animateItem() // TODO Slow animation on addition
+                        .fillMaxWidth()
+                        .padding(MaterialTheme.spacing.large)
+                        .clip(MaterialTheme.shapes.medium)
+
+                    when (item) {
+                        is Event -> EventItemContent(
+                            event = item,
+                            isSelected = index == state.selectedIndex,
+                            modifier = itemModifier
+                                .paint(rememberBackgroundPainter(item.imageUrl))
+                                .clickable { onClick(index) },
+
+                        )
+
+                        null -> EventItemContent(
+                            event = null,
+                            isSelected = false,
+                            modifier = itemModifier,
+                        )
+                    }
                 }
             }
         }
@@ -232,7 +234,7 @@ private fun PlaceholderText(
 ) {
     Text(
         overflow = TextOverflow.Ellipsis,
-        text = text ?: EMPTY_STRING,
+        text = text ?: "",
         style = style,
         maxLines = 1,
         modifier = modifier

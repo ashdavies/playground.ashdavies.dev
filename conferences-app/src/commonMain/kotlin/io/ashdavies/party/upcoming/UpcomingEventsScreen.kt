@@ -12,18 +12,28 @@ import androidx.compose.material3.adaptive.navigation.rememberListDetailPaneScaf
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.paging.compose.LazyPagingItems
 import com.slack.circuit.foundation.internal.BackHandler
 import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.screen.Screen
 import io.ashdavies.parcelable.Parcelable
 import io.ashdavies.parcelable.Parcelize
-import io.ashdavies.party.events.Event
 import io.ashdavies.party.events.EventsDetailPane
+import kotlinx.collections.immutable.ImmutableList
+import io.ashdavies.party.events.Event as DatabaseEvent
 
 @Parcelize
 internal object UpcomingEventsScreen : Parcelable, Screen {
-    data class State(val pagingItems: LazyPagingItems<Event>) : CircuitUiState
+    sealed interface Event {
+        data object Refresh : Event
+    }
+
+    data class State(
+        val itemList: ImmutableList<DatabaseEvent?>,
+        val selectedIndex: Int?,
+        val isRefreshing: Boolean,
+        val errorMessage: String?,
+        val eventSink: (Event) -> Unit,
+    ) : CircuitUiState
 }
 
 @Composable
@@ -32,7 +42,7 @@ internal fun UpcomingEventsScreen(
     state: UpcomingEventsScreen.State,
     modifier: Modifier = Modifier,
 ) {
-    val navigator = rememberListDetailPaneScaffoldNavigator<Event>(
+    val navigator = rememberListDetailPaneScaffoldNavigator<Int>(
         scaffoldDirective = calculatePaneScaffoldDirective(
             windowAdaptiveInfo = currentWindowAdaptiveInfo(),
         ).copy(horizontalPartitionSpacerSize = 0.dp),
@@ -50,9 +60,6 @@ internal fun UpcomingEventsScreen(
                 UpcomingEventsPane(
                     state = state,
                     onClick = navigator::navigateToDetail,
-                    selectedItem = navigator
-                        .currentDestination
-                        ?.content,
                 )
             }
         },
@@ -60,7 +67,7 @@ internal fun UpcomingEventsScreen(
             AnimatedPane {
                 navigator.currentDestination?.content?.let {
                     EventsDetailPane(
-                        event = it,
+                        item = requireNotNull(state.itemList[it]),
                         onBackClick = navigator::navigateBack,
                     )
                 }

@@ -39,7 +39,7 @@ import playground.conferences_app.generated.resources.call_for_papers_days_remai
 
 @Composable
 internal fun EventsDetailPane(
-    event: Event,
+    item: Event,
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
     windowSizeClass: WindowSizeClass = LocalWindowSizeClass.current,
@@ -48,7 +48,7 @@ internal fun EventsDetailPane(
         modifier = modifier,
         topBar = {
             EventsTopBar(
-                title = event.name,
+                title = item.name,
                 actions = {
                     IconButton(onClick = { error("Crashlytics") }) {
                         Icon(Icons.Default.Warning, contentDescription = null)
@@ -71,13 +71,13 @@ internal fun EventsDetailPane(
             Card(Modifier.padding(MaterialTheme.spacing.large)) {
                 Box {
                     EventsDetailImage(
-                        imageUrl = event.imageUrl,
-                        name = event.name,
+                        imageUrl = item.imageUrl,
+                        name = item.name,
                     )
 
                     EventDateLabel(
-                        dateStart = remember { LocalDate.parse(event.dateStart) },
-                        dateEnd = remember { LocalDate.parse(event.dateEnd) },
+                        dateStart = remember { LocalDate.parse(item.dateStart) },
+                        dateEnd = remember { LocalDate.parse(item.dateEnd) },
                         modifier = Modifier
                             .padding(MaterialTheme.spacing.large)
                             .align(Alignment.TopEnd),
@@ -86,13 +86,13 @@ internal fun EventsDetailPane(
             }
 
             EventsDetailLocation(
-                location = event.location,
+                location = item.location,
             )
 
-            if (event.cfpEnd != null) {
+            if (item.cfpEnd != null) {
                 EventsDetailCfp(
-                    cfpEnd = event.cfpEnd,
-                    cfpSite = event.cfpSite,
+                    cfpEnd = item.cfpEnd,
+                    cfpSite = item.cfpSite,
                 )
             }
         }
