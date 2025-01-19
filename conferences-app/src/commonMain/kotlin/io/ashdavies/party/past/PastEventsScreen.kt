@@ -39,6 +39,11 @@ import org.jetbrains.compose.resources.stringResource
 import playground.conferences_app.generated.resources.Res
 import playground.conferences_app.generated.resources.past_events
 
+internal object PastEventsDefaults {
+    const val MIN_COLUMN_COUNT = 2
+    const val MAX_COLUMN_COUNT = 5
+}
+
 @Parcelize
 internal object PastEventsScreen : Parcelable, Screen {
     sealed interface Event {
@@ -69,8 +74,8 @@ internal fun PastEventsScreen(
     modifier: Modifier = Modifier,
 ) {
     val columnCount = when (LocalWindowSizeClass.current.widthSizeClass) {
-        WindowWidthSizeClass.Compact -> 2
-        else -> 5
+        WindowWidthSizeClass.Compact -> PastEventsDefaults.MIN_COLUMN_COUNT
+        else -> PastEventsDefaults.MAX_COLUMN_COUNT
     }
 
     val eventSink = state.eventSink
