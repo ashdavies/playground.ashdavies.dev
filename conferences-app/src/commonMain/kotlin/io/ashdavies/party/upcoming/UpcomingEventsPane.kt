@@ -96,7 +96,7 @@ internal fun UpcomingEventsPane(
                                 .paint(rememberBackgroundPainter(item.imageUrl))
                                 .clickable { onClick(index) },
 
-                            )
+                        )
 
                         null -> EventItemContent(
                             event = null,
