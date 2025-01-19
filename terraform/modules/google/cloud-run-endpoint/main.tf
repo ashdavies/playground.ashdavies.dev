@@ -1,6 +1,32 @@
+resource "google_cloud_run_service" "main" {
+  depends_on = [null_resource.main]
+  name       = var.service_name
+  location   = var.location
+  project    = var.project
 
-data "external" "esp_version" {
-  program = ["bash", "${path.module}/scripts/esp_full_version", "${var.esp_version}"]
+  template {
+    spec {
+      containers {
+        image = data.google_artifact_registry_docker_image.main.self_link
+      }
+    }
+  }
+
+  traffic {
+    percent         = 100
+    latest_revision = true
+  }
+
+  lifecycle {
+    prevent_destroy = true
+  }
+}
+
+data "google_artifact_registry_docker_image" "main" {
+  depends_on    = [null_resource.main]
+  location      = var.location
+  repository_id = var.repository_id
+  image_name    = var.image_name
 }
 
 resource "null_resource" "main" {
@@ -21,33 +47,12 @@ resource "null_resource" "main" {
   }
 }
 
-resource "google_cloud_run_service" "main" {
-  name       = var.service_name
-  location   = var.location
-  project    = var.project
-
-  template {
-    spec {
-      containers {
-        image = var.container_image
-      }
-    }
-  }
-
-  traffic {
-    percent         = 100
-    latest_revision = true
-  }
-
-  autogenerate_revision_name = true
-
-  lifecycle {
-    prevent_destroy = true
-  }
-}
-
 resource "google_endpoints_service" "main" {
   openapi_config = var.openapi_config
   service_name   = var.endpoint_name
   project        = var.project
+}
+
+data "external" "esp_version" {
+  program = ["bash", "${path.module}/scripts/esp_full_version", var.esp_version]
 }

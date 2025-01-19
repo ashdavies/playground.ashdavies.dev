@@ -8,18 +8,20 @@ module "api-gateway" {
 }
 
 module "cloud-run-build" {
-  docker_image = "${var.project_region}-docker.pkg.dev/${var.project_id}/cloud-run-source-deploy/api.ashdavies.dev"
-  source       = "./modules/google/cloud-run-build"
-  service_name = "playground-service"
-  location     = var.project_region
-  project      = var.project_id
+  image_name    = "api.ashdavies.dev"
+  location      = var.project_region
+  project       = var.project_id
+  repository_id = "cloud-run-source-deploy"
+  service_name  = "playground-service"
+  source        = "./modules/google/cloud-run-build"
 }
 
 # module.cloud-run-endpoint is deprecated
 module "cloud-run-endpoint" {
   source             = "./modules/google/cloud-run-endpoint"
   config_id          = module.cloud-run-endpoint.config_id
-  container_image    = "${var.project_region}-docker.pkg.dev/${var.project_id}/endpoints-release/endpoints-runtime-serverless:latest"
+  image_name         = "endpoints-runtime-serverless"
+  repository_id      = "endpoints-release"
   endpoint_name      = "api.ashdavies.dev"
   image_repository   = "${var.project_region}-docker.pkg.dev/${var.project_id}/endpoints-release"
   location           = var.project_region
