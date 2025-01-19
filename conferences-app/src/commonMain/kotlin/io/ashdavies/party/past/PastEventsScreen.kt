@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.BottomAppBarDefaults
@@ -31,6 +32,7 @@ import io.ashdavies.parcelable.Parcelable
 import io.ashdavies.parcelable.Parcelize
 import io.ashdavies.party.events.EventsTopBar
 import io.ashdavies.party.material.LocalWindowSizeClass
+import io.ashdavies.party.material.padding
 import io.ashdavies.party.material.spacing
 import io.ashdavies.party.material.values
 import kotlinx.collections.immutable.ImmutableList
@@ -59,6 +61,7 @@ internal object PastEventsScreen : Parcelable, Screen {
         data class Item(
             val uuid: String,
             val title: String,
+            val group: String,
             val subtitle: String,
             val attended: Boolean,
         )
@@ -70,6 +73,11 @@ internal fun PastEventsScreen(
     state: PastEventsScreen.State,
     modifier: Modifier = Modifier,
 ) {
+    val columnCount = when (LocalWindowSizeClass.current.widthSizeClass) {
+        WindowWidthSizeClass.Compact -> 3
+        else -> 5
+    }
+
     val eventSink = state.eventSink
 
     Scaffold(
@@ -80,25 +88,30 @@ internal fun PastEventsScreen(
         ),
     ) { contentPadding ->
         LazyVerticalGrid(
-            columns = GridCells.Fixed(
-                count = when (LocalWindowSizeClass.current.widthSizeClass) {
-                    WindowWidthSizeClass.Compact -> 3
-                    else -> 5
-                },
-            ),
+            columns = GridCells.Fixed(columnCount),
             modifier = Modifier.padding(contentPadding),
             contentPadding = MaterialTheme.spacing.large.values,
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small.vertical),
             horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small.horizontal),
         ) {
-            items(state.itemList) { item ->
-                PastEventItem(
-                    item = item,
-                    modifier = Modifier
-                        .clickable { eventSink(PastEventsScreen.Event.MarkAttendance(item.uuid, !item.attended)) }
-                        .aspectRatio(PastEventsDefaults.ASPECT_RATIO)
-                        .animateItem(),
-                )
+            state.itemList.groupBy { it.group }.forEach { (group, items) ->
+                item(span = { GridItemSpan(columnCount) }) {
+                    Text(
+                        text = group,
+                        modifier = Modifier.padding(MaterialTheme.spacing.medium),
+                        style = MaterialTheme.typography.labelLarge,
+                    )
+                }
+
+                items(items) { item ->
+                    PastEventItem(
+                        item = item,
+                        modifier = Modifier
+                            .clickable { eventSink(PastEventsScreen.Event.MarkAttendance(item.uuid, !item.attended)) }
+                            .aspectRatio(PastEventsDefaults.ASPECT_RATIO)
+                            .animateItem(),
+                    )
+                }
             }
         }
     }

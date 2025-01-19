@@ -39,6 +39,7 @@ internal fun PastEventsPresenter(
                 uuid = uuid,
                 title = "${it.name} ${startDate.year}",
                 subtitle = it.location,
+                group = "${startDate.year}",
                 attended = uuid in attendanceList,
             )
         }
