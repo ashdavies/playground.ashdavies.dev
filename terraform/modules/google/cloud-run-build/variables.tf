@@ -1,8 +1,6 @@
-variable "docker_image" {
+variable "image_name" {
   description = <<EOT
-  Docker image name. This is most often a reference to a container located in the container
-  registry, such as europe-west1-docker.pkg.dev/project/cloud-run-source-deploy/artifact.
-  More info: https://kubernetes.io/docs/concepts/containers/images
+  "The image name to fetch. If no digest or tag is provided, then the latest modified image will be used."
   EOT
 }
 
@@ -26,6 +24,10 @@ variable "percent" {
 
 variable "project" {
   description = "The project for the resource."
+}
+
+variable "repository_id" {
+  description = "The last part of the repository name to fetch from."
 }
 
 variable "service_name" {
