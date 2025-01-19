@@ -8,7 +8,7 @@ import com.slack.circuit.retained.rememberRetained
 import io.ashdavies.party.events.Event
 import io.ashdavies.party.events.paging.errorMessage
 import io.ashdavies.party.events.paging.isRefreshing
-import kotlinx.collections.immutable.toPersistentList
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.CoroutineScope
 
 @Composable
@@ -23,7 +23,7 @@ internal fun UpcomingEventsPresenter(
     return UpcomingEventsScreen.State(
         itemList = pagingItems
             .itemSnapshotList
-            .toPersistentList(),
+            .toImmutableList(),
         selectedIndex = null,
         isRefreshing = pagingItems.loadState.isRefreshing,
         errorMessage = pagingItems.loadState.errorMessage,

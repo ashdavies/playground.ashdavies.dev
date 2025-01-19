@@ -8,8 +8,8 @@ import io.ashdavies.party.tooling.MaterialPreviewTheme
 import io.ashdavies.party.tooling.PreviewDayNight
 import io.ashdavies.party.upcoming.UpcomingEventsPane
 import io.ashdavies.party.upcoming.UpcomingEventsScreen
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
 
 private val DroidconEvents = listOf(AndroidMakers, DroidconBerlin, DroidconLondon)
 
@@ -20,7 +20,13 @@ internal class EventsListTests {
     private fun EventsListPreview(data: List<Event> = DroidconEvents) {
         MaterialPreviewTheme {
             UpcomingEventsPane(
-                state = UpcomingEventsScreen.State(lazyPagingItems(flowOf(PagingData.from(data)))),
+                state = UpcomingEventsScreen.State(
+                    itemList = data.toImmutableList(),
+                    selectedIndex = null,
+                    isRefreshing = false,
+                    errorMessage = null,
+                    eventSink = { },
+                ),
                 onClick = { },
             )
         }
