@@ -1,6 +1,7 @@
 package io.ashdavies.party.past
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
@@ -28,10 +29,8 @@ import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.screen.Screen
 import io.ashdavies.parcelable.Parcelable
 import io.ashdavies.parcelable.Parcelize
-import io.ashdavies.party.events.Event
 import io.ashdavies.party.events.EventsTopBar
 import io.ashdavies.party.material.LocalWindowSizeClass
-import io.ashdavies.party.material.padding
 import io.ashdavies.party.material.spacing
 import io.ashdavies.party.material.values
 import kotlinx.collections.immutable.ImmutableList
@@ -45,7 +44,25 @@ internal object PastEventsDefaults {
 
 @Parcelize
 internal object PastEventsScreen : Parcelable, Screen {
-    data class State(val itemList: ImmutableList<Event>) : CircuitUiState
+    sealed interface Event {
+        data class MarkAttendance(
+            val id: String,
+            val value: Boolean,
+        ) : Event
+    }
+
+    data class State(
+        val itemList: ImmutableList<Item>,
+        val eventSink: (Event) -> Unit,
+    ) : CircuitUiState {
+
+        data class Item(
+            val uuid: String,
+            val title: String,
+            val subtitle: String,
+            val attended: Boolean,
+        )
+    }
 }
 
 @Composable
@@ -53,6 +70,8 @@ internal fun PastEventsScreen(
     state: PastEventsScreen.State,
     modifier: Modifier = Modifier,
 ) {
+    val eventSink = state.eventSink
+
     Scaffold(
         modifier = modifier,
         topBar = { EventsTopBar(stringResource(Res.string.past_events)) },
@@ -72,10 +91,11 @@ internal fun PastEventsScreen(
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small.vertical),
             horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small.horizontal),
         ) {
-            items(state.itemList) { event ->
-                EventItemContent(
-                    name = event.name,
+            items(state.itemList) { item ->
+                PastEventItem(
+                    item = item,
                     modifier = Modifier
+                        .clickable { eventSink(PastEventsScreen.Event.MarkAttendance(item.uuid, !item.attended)) }
                         .aspectRatio(PastEventsDefaults.ASPECT_RATIO)
                         .animateItem(),
                 )
@@ -85,14 +105,17 @@ internal fun PastEventsScreen(
 }
 
 @Composable
-private fun EventItemContent(
-    name: String,
+private fun PastEventItem(
+    item: PastEventsScreen.State.Item,
     modifier: Modifier = Modifier,
 ) {
     Surface(
         modifier = modifier,
         shape = MaterialTheme.shapes.small,
-        color = Color.Transparent,
+        color = when (item.attended) {
+            true -> MaterialTheme.colorScheme.surfaceContainerHighest
+            false -> Color.Transparent
+        },
         border = BorderStroke(
             width = 1.0.dp,
             color = MaterialTheme.colorScheme.outline,
@@ -103,9 +126,19 @@ private fun EventItemContent(
             verticalArrangement = Arrangement.Center,
         ) {
             Text(
-                text = name,
+                text = item.title,
                 modifier = Modifier
-                    .padding(MaterialTheme.spacing.small)
+                    .padding(horizontal = MaterialTheme.spacing.small.horizontal)
+                    .fillMaxWidth(),
+                color = LocalContentColor.current,
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.labelMedium,
+            )
+
+            Text(
+                text = item.subtitle,
+                modifier = Modifier
+                    .padding(horizontal = MaterialTheme.spacing.small.horizontal)
                     .fillMaxWidth(),
                 color = LocalContentColor.current,
                 textAlign = TextAlign.Center,

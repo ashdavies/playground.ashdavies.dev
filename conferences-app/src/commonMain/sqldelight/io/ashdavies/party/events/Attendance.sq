@@ -1,0 +1,18 @@
+CREATE TABLE attendance(
+    id TEXT NOT NULL UNIQUE PRIMARY KEY,
+    registeredOn TEXT
+);
+
+selectAll:
+    SELECT *
+    FROM attendance
+    ORDER BY registeredOn;
+
+insert:
+    INSERT INTO attendance VALUES (?, ?);
+
+delete:
+    DELETE FROM attendance WHERE id = :id;
+
+deleteAll:
+    DELETE FROM attendance;

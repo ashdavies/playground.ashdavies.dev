@@ -38,6 +38,7 @@ import io.ashdavies.playground.PlaygroundDatabase
 import io.ashdavies.sql.LocalTransacter
 import io.ktor.client.HttpClient
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import io.ashdavies.party.events.Event as DatabaseEvent
 
 @Composable
@@ -81,8 +82,11 @@ public fun rememberCircuit(
         .addCircuit<PastEventsScreen, PastEventsScreen.State>(
             presenterFactory = { _, _, _ ->
                 presenterOf {
-                    val callable = PastConferencesCallable(LocalHttpClient.current)
-                    PastEventsPresenter(callable)
+                    PastEventsPresenter(
+                        pastConferencesCallable = PastConferencesCallable(LocalHttpClient.current),
+                        attendanceQueries = playgroundDatabase.attendanceQueries,
+                        ioDispatcher = Dispatchers.IO,
+                    )
                 }
             },
             uiFactory = { state, modifier ->

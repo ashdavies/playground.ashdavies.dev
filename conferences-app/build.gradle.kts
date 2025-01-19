@@ -153,6 +153,8 @@ kotlin {
             implementation(libs.ktor.io)
             implementation(libs.slack.circuit.foundation)
             implementation(libs.slack.circuit.overlay)
+            implementation(libs.sqldelight.coroutines.extensions)
+            implementation(libs.sqldelight.paging3.extensions)
             implementation(libs.sqldelight.runtime)
         }
 
