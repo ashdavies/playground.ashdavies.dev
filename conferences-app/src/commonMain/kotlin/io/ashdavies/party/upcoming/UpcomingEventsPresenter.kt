@@ -6,6 +6,9 @@ import androidx.paging.cachedIn
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.slack.circuit.retained.rememberRetained
 import io.ashdavies.party.events.Event
+import io.ashdavies.party.events.paging.errorMessage
+import io.ashdavies.party.events.paging.isRefreshing
+import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.CoroutineScope
 
 @Composable
@@ -18,6 +21,15 @@ internal fun UpcomingEventsPresenter(
     }.collectAsLazyPagingItems()
 
     return UpcomingEventsScreen.State(
-        pagingItems = pagingItems,
-    )
+        itemList = pagingItems
+            .itemSnapshotList
+            .toPersistentList(),
+        selectedIndex = null,
+        isRefreshing = pagingItems.loadState.isRefreshing,
+        errorMessage = pagingItems.loadState.errorMessage,
+    ) { event ->
+        if (event is UpcomingEventsScreen.Event.Refresh) {
+            pagingItems.refresh()
+        }
+    }
 }
