@@ -22,6 +22,19 @@ resource "google_cloud_run_service" "main" {
   }
 }
 
+resource "google_cloud_run_domain_mapping" "main" {
+  name     = var.endpoint_name
+  location = google_cloud_run_service.main.location
+
+  metadata {
+    namespace = var.project
+  }
+
+  spec {
+    route_name = google_cloud_run_service.main.name
+  }
+}
+
 data "google_artifact_registry_docker_image" "main" {
   depends_on    = [null_resource.main]
   location      = var.location
