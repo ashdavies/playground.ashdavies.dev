@@ -4,7 +4,6 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.exclude
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -40,10 +39,6 @@ import org.jetbrains.compose.resources.stringResource
 import playground.conferences_app.generated.resources.Res
 import playground.conferences_app.generated.resources.past_events
 
-internal object PastEventsDefaults {
-    const val ASPECT_RATIO = 3 / 1f
-}
-
 @Parcelize
 internal object PastEventsScreen : Parcelable, Screen {
     sealed interface Event {
@@ -74,7 +69,7 @@ internal fun PastEventsScreen(
     modifier: Modifier = Modifier,
 ) {
     val columnCount = when (LocalWindowSizeClass.current.widthSizeClass) {
-        WindowWidthSizeClass.Compact -> 3
+        WindowWidthSizeClass.Compact -> 2
         else -> 5
     }
 
@@ -108,7 +103,6 @@ internal fun PastEventsScreen(
                         item = item,
                         modifier = Modifier
                             .clickable { eventSink(PastEventsScreen.Event.MarkAttendance(item.uuid, !item.attended)) }
-                            .aspectRatio(PastEventsDefaults.ASPECT_RATIO)
                             .animateItem(),
                     )
                 }
@@ -135,14 +129,14 @@ private fun PastEventItem(
         ),
     ) {
         Column(
-            modifier = Modifier.fillMaxHeight(),
+            modifier = Modifier
+                .padding(MaterialTheme.spacing.medium)
+                .fillMaxHeight(),
             verticalArrangement = Arrangement.Center,
         ) {
             Text(
                 text = item.title,
-                modifier = Modifier
-                    .padding(horizontal = MaterialTheme.spacing.small.horizontal)
-                    .fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth(),
                 color = LocalContentColor.current,
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.labelMedium,
@@ -150,9 +144,7 @@ private fun PastEventItem(
 
             Text(
                 text = item.subtitle,
-                modifier = Modifier
-                    .padding(horizontal = MaterialTheme.spacing.small.horizontal)
-                    .fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth(),
                 color = LocalContentColor.current,
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.labelSmall,
