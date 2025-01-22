@@ -60,7 +60,7 @@ google-firebase-crashlytics = { module = "com.google.firebase:firebase-crashlyti
 google-guava-jre = "com.google.guava:guava:33.4.0-jre"
 
 google-maps-android-compose = "com.google.maps.android:maps-compose:6.4.1"
-google-maps-android-utils = "com.google.maps.android:android-maps-utils:3.9.0"
+google-maps-android-utils = "com.google.maps.android:android-maps-utils:3.10.0"
 
 kotlinx-collections-immutable = "org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.8"
 
