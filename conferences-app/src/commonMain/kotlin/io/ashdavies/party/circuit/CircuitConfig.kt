@@ -1,4 +1,4 @@
-package io.ashdavies.party.config
+package io.ashdavies.party.circuit
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -17,7 +17,6 @@ import io.ashdavies.content.reportFullyDrawn
 import io.ashdavies.http.DefaultHttpConfiguration
 import io.ashdavies.http.LocalHttpClient
 import io.ashdavies.identity.IdentityManager
-import io.ashdavies.party.coroutines.rememberRetainedCoroutineScope
 import io.ashdavies.party.events.paging.rememberEventPager
 import io.ashdavies.party.gallery.File
 import io.ashdavies.party.gallery.GalleryPresenter
@@ -37,7 +36,6 @@ import io.ashdavies.party.upcoming.UpcomingEventsScreen
 import io.ashdavies.playground.PlaygroundDatabase
 import io.ashdavies.sql.LocalTransacter
 import io.ktor.client.HttpClient
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import io.ashdavies.party.events.Event as DatabaseEvent
 
@@ -46,7 +44,6 @@ public fun rememberCircuit(
     platformContext: PlatformContext,
     eventPager: Pager<String, DatabaseEvent> = rememberEventPager(),
     playgroundDatabase: PlaygroundDatabase = LocalTransacter.current as PlaygroundDatabase,
-    coroutineScope: CoroutineScope = rememberRetainedCoroutineScope(),
 ): Circuit = remember(platformContext) {
     val identityManager = IdentityManager(platformContext, playgroundDatabase.credentialQueries)
     val imageManager = ImageManager(platformContext, playgroundDatabase.imageQueries)
@@ -57,7 +54,7 @@ public fun rememberCircuit(
     Circuit.Builder()
         .addCircuit<HomeScreen, HomeScreen.State>(
             presenterFactory = { _, navigator, _ ->
-                presenterOf { HomePresenter(identityManager, coroutineScope, navigator) }
+                presenterOf { HomePresenter(identityManager, navigator) }
             },
             uiFactory = { state, modifier ->
                 HomeScreen(state, modifier, platformContext::reportFullyDrawn)
@@ -65,7 +62,7 @@ public fun rememberCircuit(
         )
         .addCircuit<UpcomingEventsScreen, UpcomingEventsScreen.State>(
             presenterFactory = { _, _, _ ->
-                presenterOf { UpcomingEventsPresenter(eventPager, coroutineScope) }
+                presenterOf { UpcomingEventsPresenter(eventPager) }
             },
             uiFactory = { state, modifier ->
                 UpcomingEventsScreen(state, modifier)

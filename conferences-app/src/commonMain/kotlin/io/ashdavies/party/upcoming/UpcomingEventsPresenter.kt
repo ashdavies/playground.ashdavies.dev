@@ -1,6 +1,7 @@
 package io.ashdavies.party.upcoming
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.paging.Pager
 import androidx.paging.cachedIn
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -9,13 +10,12 @@ import io.ashdavies.party.events.Event
 import io.ashdavies.party.events.paging.errorMessage
 import io.ashdavies.party.events.paging.isRefreshing
 import kotlinx.collections.immutable.toImmutableList
-import kotlinx.coroutines.CoroutineScope
 
 @Composable
 internal fun UpcomingEventsPresenter(
     eventPager: Pager<String, Event>,
-    coroutineScope: CoroutineScope,
 ): UpcomingEventsScreen.State {
+    val coroutineScope = rememberCoroutineScope()
     val pagingItems = rememberRetained(coroutineScope) {
         eventPager.flow.cachedIn(coroutineScope)
     }.collectAsLazyPagingItems()
@@ -28,8 +28,8 @@ internal fun UpcomingEventsPresenter(
         isRefreshing = pagingItems.loadState.isRefreshing,
         errorMessage = pagingItems.loadState.errorMessage,
     ) { event ->
-        if (event is UpcomingEventsScreen.Event.Refresh) {
-            pagingItems.refresh()
+        when (event) {
+            is UpcomingEventsScreen.Event.Refresh -> pagingItems.refresh()
         }
     }
 }

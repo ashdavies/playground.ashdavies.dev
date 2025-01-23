@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import com.slack.circuit.foundation.onNavEvent
 import com.slack.circuit.retained.rememberRetained
@@ -12,17 +13,16 @@ import com.slack.circuit.runtime.screen.Screen
 import io.ashdavies.identity.IdentityManager
 import io.ashdavies.identity.IdentityState
 import io.ashdavies.party.upcoming.UpcomingEventsScreen
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @Composable
 internal fun HomePresenter(
     identityManager: IdentityManager,
-    coroutineScope: CoroutineScope,
     navigator: Navigator,
 ): HomeScreen.State {
     val identityState by identityManager.state.collectAsState(IdentityState.Unauthenticated)
     var screen by rememberRetained { mutableStateOf<Screen>(UpcomingEventsScreen) }
+    val coroutineScope = rememberCoroutineScope()
 
     return HomeScreen.State(
         identityState = identityState,
