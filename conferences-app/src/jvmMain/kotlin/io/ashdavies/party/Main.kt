@@ -23,7 +23,7 @@ import io.ashdavies.http.ProvideHttpClient
 import io.ashdavies.http.publicStorage
 import io.ashdavies.io.resolveCacheDir
 import io.ashdavies.material.dynamicColorScheme
-import io.ashdavies.party.config.rememberCircuit
+import io.ashdavies.party.circuit.rememberCircuit
 import io.ashdavies.party.home.HomeScreen
 import io.ashdavies.party.material.ProvideLocalWindowSizeClass
 import io.ashdavies.playground.BuildConfig
