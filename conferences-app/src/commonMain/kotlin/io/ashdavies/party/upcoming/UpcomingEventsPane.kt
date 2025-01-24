@@ -48,6 +48,7 @@ import io.ashdavies.party.events.EventsTopBar
 import io.ashdavies.party.events.daysUntilCfpEnd
 import io.ashdavies.party.material.padding
 import io.ashdavies.party.material.spacing
+import io.ashdavies.party.material.values
 import io.ashdavies.placeholder.PlaceholderHighlight
 import io.ashdavies.placeholder.fade
 import io.ashdavies.placeholder.placeholder
@@ -80,12 +81,15 @@ internal fun UpcomingEventsPane(
                 EventFailure(state.errorMessage)
             }
 
-            LazyColumn(Modifier.fillMaxSize()) {
+            LazyColumn(
+                modifier = Modifier.fillMaxSize(),
+                contentPadding = MaterialTheme.spacing.large.values,
+                verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.large.vertical),
+            ) {
                 itemsIndexed(state.itemList) { index, item ->
                     val itemModifier = Modifier
                         .animateItem() // TODO Slow animation on addition
                         .fillMaxWidth()
-                        .padding(MaterialTheme.spacing.large)
                         .clip(MaterialTheme.shapes.medium)
 
                     when (item) {

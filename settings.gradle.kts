@@ -26,7 +26,7 @@ dependencyResolutionManagement.repositories {
 plugins {
     id("androidx.build.gradle.gcpbuildcache") version "1.0.0"
     id("com.google.cloud.tools.jib") version "3.4.4" apply false
-    id("com.gradle.develocity") version "3.19"
+    id("com.gradle.develocity") version "3.19.1"
 }
 
 buildCache {
