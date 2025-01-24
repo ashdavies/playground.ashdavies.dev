@@ -51,7 +51,6 @@ jobs:
           GOOGLE_SERVICES: op://development/google services/playground release/base64
 
       - run: |
-          echo $GOOGLE_SERVICES | base64 --decode > app-launcher/android/google-services.json
           echo $GOOGLE_SERVICES | base64 --decode > conferences-app/google-services.json
         env:
           GOOGLE_SERVICES: ${{ steps.op-secrets.outputs.GOOGLE_SERVICES }}
