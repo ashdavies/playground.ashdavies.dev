@@ -28,7 +28,7 @@ androidx-paging-common = { module = "androidx.paging:paging-common", version.ref
 
 app-cash-turbine = "app.cash.turbine:turbine:1.2.0"
 
-auth-java-jwt = "com.auth0:java-jwt:4.4.0"
+auth-java-jwt = "com.auth0:java-jwt:4.5.0"
 auth-jwks-rsa = "com.auth0:jwks-rsa:0.22.1"
 
 coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil-kt" }
