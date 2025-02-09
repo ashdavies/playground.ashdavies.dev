@@ -12,6 +12,7 @@ import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.input.key.type
 import androidx.compose.ui.layout.onPlaced
+import com.slack.circuit.backstack.NavArgument
 import com.slack.circuit.backstack.NavDecoration
 import com.slack.circuit.foundation.NavigatorDefaults
 import kotlinx.collections.immutable.ImmutableList
@@ -23,7 +24,7 @@ public class KeyNavigationDecoration(
 ) : NavDecoration {
 
     @Composable
-    override fun <T> DecoratedContent(
+    override fun <T : NavArgument> DecoratedContent(
         args: ImmutableList<T>,
         backStackDepth: Int,
         modifier: Modifier,

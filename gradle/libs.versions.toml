@@ -17,7 +17,7 @@ kotlinx-coroutines = "1.10.1"
 kotlinx-serialization = "1.8.0"
 ktor = "3.0.3"
 pinterest-ktlint = "0.50.0"
-slack-circuit = "0.25.0"
+slack-circuit = "0.26.0"
 
 [libraries]
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity" }
@@ -48,7 +48,7 @@ google-android-identity = "com.google.android.libraries.identity.googleid:google
 google-android-location = "com.google.android.gms:play-services-location:21.3.0"
 google-android-material = "com.google.android.material:material:1.12.0"
 
-google-auth-http = "com.google.auth:google-auth-library-oauth2-http:1.32.0"
+google-auth-http = "com.google.auth:google-auth-library-oauth2-http:1.32.1"
 
 google-firebase-admin = "com.google.firebase:firebase-admin:9.4.3"
 google-firebase-appcheck-playintegrity = { module = "com.google.firebase:firebase-appcheck-playintegrity" }
