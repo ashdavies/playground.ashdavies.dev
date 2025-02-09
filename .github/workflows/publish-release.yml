@@ -99,8 +99,8 @@ jobs:
           path: conferences-app/build/outputs
 
       - uses: ruby/setup-ruby@v1
-        with:
-          bundler-cache: true
+      #  with:
+      #    bundler-cache: true
 
       - uses: 1password/load-secrets-action/configure@v2
         with:
