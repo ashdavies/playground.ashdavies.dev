@@ -33,7 +33,7 @@ module "cloud-run-endpoint" {
 # module endpoint-iam-binding is deprecated
 module "endpoint-iam-binding" {
   source             = "terraform-google-modules/iam/google//modules/cloud_run_services_iam"
-  version            = "8.0.0"
+  version            = "8.1.0"
   bindings           = { "roles/run.invoker" = ["allUsers"] }
   cloud_run_services = [module.cloud-run-endpoint.name]
   location           = var.project_region
