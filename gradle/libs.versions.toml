@@ -8,7 +8,7 @@ coil-kt = "3.1.0"
 compose-adaptive = "1.0.1"
 compose-plugin = "1.7.3"
 google-accompanist = "0.37.0"
-google-android = "8.8.0"
+google-android = "8.8.1"
 google-maps-compose = "4.3.2"
 google-services = "4.4.2"
 jetbrains-kotlin = "2.1.10"
@@ -17,7 +17,7 @@ kotlinx-coroutines = "1.10.1"
 kotlinx-serialization = "1.8.0"
 ktor = "3.1.0"
 pinterest-ktlint = "0.50.0"
-slack-circuit = "0.26.0"
+slack-circuit = "0.26.1"
 
 [libraries]
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity" }
