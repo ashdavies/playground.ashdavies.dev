@@ -1,0 +1,2 @@
+json_key_file("conferences-app/src/androidMain/play-store-key.json")
+package_name("io.ashdavies.playground")
