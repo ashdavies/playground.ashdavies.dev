@@ -2,22 +2,22 @@
 android-compileSdk = "35"
 android-minSdk = "34"
 androidx-activity = "1.10.0"
-androidx-paging = "3.3.5"
+androidx-paging = "3.3.6"
 cash-sqldelight = "2.0.2"
 coil-kt = "3.1.0"
 compose-adaptive = "1.0.1"
 compose-plugin = "1.7.3"
 google-accompanist = "0.37.0"
-google-android = "8.8.0"
+google-android = "8.8.1"
 google-maps-compose = "4.3.2"
 google-services = "4.4.2"
 jetbrains-kotlin = "2.1.10"
 kotlin-jvmTarget = "17"
 kotlinx-coroutines = "1.10.1"
 kotlinx-serialization = "1.8.0"
-ktor = "3.0.3"
+ktor = "3.1.0"
 pinterest-ktlint = "0.50.0"
-slack-circuit = "0.26.0"
+slack-circuit = "0.26.1"
 
 [libraries]
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity" }
@@ -95,7 +95,7 @@ ktor-server-default-headers = { module = "io.ktor:ktor-server-default-headers", 
 ktor-server-host-common = { module = "io.ktor:ktor-server-host-common", version.ref = "ktor" }
 ktor-server-test-host = { module = "io.ktor:ktor-server-test-host", version.ref = "ktor" }
 
-mosaic-runtime = "com.jakewharton.mosaic:mosaic-runtime:0.15.0"
+mosaic-runtime = "com.jakewharton.mosaic:mosaic-runtime:0.16.0"
 pinterest-ktlint-bom = "com.pinterest.ktlint:ktlint-bom:1.5.0"
 
 slack-circuit-foundation = { module = "com.slack.circuit:circuit-foundation", version.ref = "slack-circuit" }
