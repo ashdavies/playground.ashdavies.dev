@@ -30,6 +30,8 @@ jobs:
         if: ${{ github.event.inputs.monitor_permissions == 'true' }}
 
       - uses: actions/checkout@v4
+        with:
+          lfs: 'true'
 
       - uses: ./.github/actions/setup-cloud
         with:
