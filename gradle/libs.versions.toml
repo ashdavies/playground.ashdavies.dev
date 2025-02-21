@@ -121,7 +121,7 @@ build-config = "com.github.gmazzo.buildconfig:5.5.1"
 cash-sqldelight = { id = "app.cash.sqldelight", version.ref = "cash-sqldelight" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "jetbrains-kotlin" }
 compose-screenshot = "com.android.compose.screenshot:0.0.1-alpha08"
-detekt = "io.gitlab.arturbosch.detekt:1.23.7"
+detekt = "io.gitlab.arturbosch.detekt:1.23.8"
 crashlytics = "com.google.firebase.crashlytics:3.0.3"
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
 gradle-doctor = "com.osacky.doctor:0.10.0"
