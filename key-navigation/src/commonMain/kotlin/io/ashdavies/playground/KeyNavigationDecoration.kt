@@ -18,7 +18,7 @@ import com.slack.circuit.foundation.NavigatorDefaults
 import kotlinx.collections.immutable.ImmutableList
 
 public class KeyNavigationDecoration(
-    private val decoration: NavDecoration = NavigatorDefaults.DefaultDecoration,
+    private val decoration: NavDecoration = NavigatorDefaults.EmptyDecoration,
     private val predicate: (KeyEvent) -> Boolean = { it.key == Key.Escape },
     private val onBackInvoked: () -> Unit,
 ) : NavDecoration {
