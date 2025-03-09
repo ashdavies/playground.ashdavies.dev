@@ -6,6 +6,7 @@ platform :android do
       track: "internal",
       aab: "conferences-app/build/outputs/bundle/release/conferences-app-release.aab",
       mapping: "conferences-app/build/outputs/mapping/release/mapping.txt",
+      skip_upload_images: true,
     )
   end
 end
