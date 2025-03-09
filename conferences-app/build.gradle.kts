@@ -1,4 +1,5 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     id("com.android.application")
@@ -196,6 +197,7 @@ kotlin {
 
 screenshotTests {
     imageDifferenceThreshold = 0.012f // 1.2 %
+
 }
 
 sqldelight {
@@ -204,5 +206,14 @@ sqldelight {
             packageName.set(android.namespace)
             dependency(projects.identityManager)
         }
+    }
+}
+
+tasks.withType<KotlinCompile>().all {
+    // https://issuetracker.google.com/issues/399153010
+    val indexOfSuffix = name.indexOf("ScreenshotTestKotlin")
+    if (indexOfSuffix > 0) {
+        val moduleNameSuffix = name.substring(7 until indexOfSuffix)
+        compilerOptions.moduleName = "conferences-app_$moduleNameSuffix"
     }
 }
