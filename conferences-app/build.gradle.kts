@@ -197,7 +197,6 @@ kotlin {
 
 screenshotTests {
     imageDifferenceThreshold = 0.012f // 1.2 %
-
 }
 
 sqldelight {
