@@ -6,9 +6,6 @@ import kotlinx.collections.immutable.persistentListOf
 import org.junit.Rule
 import kotlin.test.Test
 
-/**
- * TODO: Collapse into single screen function
- */
 internal class GalleryScreenTests {
 
     @get:Rule
