@@ -1,5 +1,4 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     id("com.android.application")
@@ -13,8 +12,8 @@ plugins {
     id("io.ashdavies.properties")
 
     alias(libs.plugins.build.config)
+    alias(libs.plugins.cash.paparazzi)
     alias(libs.plugins.cash.sqldelight)
-    alias(libs.plugins.compose.screenshot)
 }
 
 android {
@@ -71,22 +70,6 @@ android {
 
         versionName = "1.0.0-$versionCode"
     }
-
-    dependencies {
-        screenshotTestImplementation(compose.components.resources)
-        screenshotTestImplementation(compose.material3)
-        screenshotTestImplementation(compose.uiTooling)
-
-        screenshotTestImplementation(libs.androidx.paging.common)
-        screenshotTestImplementation(libs.compose.window.size)
-        screenshotTestImplementation(libs.slack.circuit.runtime)
-        screenshotTestImplementation(libs.kotlinx.collections.immutable)
-
-        screenshotTestImplementation(projects.identityManager)
-        screenshotTestImplementation(projects.pagingCompose)
-    }
-
-    experimentalProperties["android.experimental.enableScreenshotTest"] = true
 
     namespace = "io.ashdavies.playground"
 }
@@ -195,24 +178,11 @@ kotlin {
     }
 }
 
-screenshotTests {
-    imageDifferenceThreshold = 0.012f // 1.2 %
-}
-
 sqldelight {
     databases {
         create("PlaygroundDatabase") {
             packageName.set(android.namespace)
             dependency(projects.identityManager)
         }
-    }
-}
-
-tasks.withType<KotlinCompile>().all {
-    // https://issuetracker.google.com/issues/399153010
-    val indexOfSuffix = name.indexOf("ScreenshotTestKotlin")
-    if (indexOfSuffix > 0) {
-        val moduleNameSuffix = name.substring(7 until indexOfSuffix)
-        compilerOptions.moduleName = "conferences-app_$moduleNameSuffix"
     }
 }
