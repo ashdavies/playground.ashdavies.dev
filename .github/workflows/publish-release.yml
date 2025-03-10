@@ -80,7 +80,7 @@ jobs:
           RELEASE_KEY_PASSWORD: ${{ steps.op-secrets.outputs.KEY_PASSWORD }}
           VERSION_CODE: ${{ steps.version-code.outputs.VERSION_CODE }}
 
-      - run: ./gradlew validateScreenshotTest --console=plain
+      - run: ./gradlew verifyPaparazziDebug --console=plain
 
       - uses: actions/upload-artifact@v4
         with:
