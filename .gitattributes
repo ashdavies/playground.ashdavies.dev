@@ -1,2 +1,2 @@
-**/screenshotTest/**/*.png filter=lfs diff=lfs merge=lfs -text
 fastlane/**/*screenShots/*.png filter=lfs diff=lfs merge=lfs -text
+**/snapshots/**/*.png filter=lfs diff=lfs merge=lfs -text

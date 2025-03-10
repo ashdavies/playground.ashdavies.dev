@@ -1,9 +1,11 @@
 package io.ashdavies.party.gallery
 
 import app.cash.paparazzi.Paparazzi
+import io.ashdavies.content.PlatformContext
 import io.ashdavies.party.tooling.MaterialPreviewTheme
 import kotlinx.collections.immutable.persistentListOf
 import org.junit.Rule
+import kotlin.io.path.createTempFile
 import kotlin.test.Test
 
 internal class GalleryScreenTests {
@@ -12,31 +14,35 @@ internal class GalleryScreenTests {
     val paparazzi = Paparazzi()
 
     @Test
-    fun galleryGrid() {
+    fun compose() {
         paparazzi.snapshot {
             MaterialPreviewTheme {
-                GalleryGrid(
-                    itemList = persistentListOf(
-                        galleryScreenStateItem(),
-                        galleryScreenStateItem(isSelected = true),
-                        galleryScreenStateItem(state = SyncState.SYNCING),
-                        galleryScreenStateItem(state = SyncState.SYNCED),
+                GalleryScreen(
+                    state = GalleryScreen.State(
+                        itemList = persistentListOf(
+                            galleryScreenStateItem(),
+                            galleryScreenStateItem(isSelected = true),
+                            galleryScreenStateItem(state = SyncState.SYNCING),
+                            galleryScreenStateItem(state = SyncState.SYNCED),
+                        ),
+                        expandedItem = null,
+                        showCapture = false,
+                        eventSink = { },
                     ),
-                    onExpand = { },
-                    onSelect = { },
-                    isSelecting = true,
+                    manager = tempFileStorageManager(),
                 )
             }
         }
     }
+}
 
-    @Test
-    fun gallerySheetContent() {
-        paparazzi.snapshot {
-            MaterialPreviewTheme {
-                GallerySheetContent(eventSink = { })
-            }
-        }
+private fun tempFileStorageManager() = object : StorageManager {
+    override suspend fun create(platformContext: PlatformContext): File {
+        return createTempFile().toFile()
+    }
+
+    override suspend fun delete(file: File): Boolean {
+        return file.delete()
     }
 }
 
