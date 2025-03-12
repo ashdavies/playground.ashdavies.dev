@@ -8,4 +8,4 @@
 [![Issues](https://img.shields.io/github/issues-pr/ashdavies/playground.ashdavies.dev.svg)](https://github.com/ashdavies/playground.ashdavies.dev/pulls)
 [![License](https://img.shields.io/github/license/ashdavies/playground.ashdavies.dev.svg)](https://github.com/ashdavies/playground.ashdavies.dev/blob/main/LICENSE)
 
-![](art/conferences-app-desktop.png)
+![](art/lanyard-app-desktop.png)

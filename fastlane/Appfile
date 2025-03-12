@@ -1,2 +1,2 @@
-json_key_file("conferences-app/src/androidMain/play-store-key.json")
-package_name("io.ashdavies.playground")
+json_key_file("lanyard-app/src/androidMain/play-store-key.json")
+package_name("io.ashdavies.lanyard")
