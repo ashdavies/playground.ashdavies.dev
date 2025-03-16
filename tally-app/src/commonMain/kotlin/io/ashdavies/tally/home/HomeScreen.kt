@@ -88,7 +88,7 @@ internal fun HomeScreen(
 }
 
 @Composable
-internal fun HomeBottomBar(
+private fun HomeBottomBar(
     modifier: Modifier = Modifier,
     selected: Screen = HomeScreen,
     onClick: (Screen) -> Unit = { },
