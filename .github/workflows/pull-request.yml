@@ -53,7 +53,7 @@ jobs:
           GOOGLE_SERVICES: op://development/google services/playground release/base64
 
       - run: |
-          echo $GOOGLE_SERVICES | base64 --decode > lanyard-app/google-services.json
+          echo $GOOGLE_SERVICES | base64 --decode > tally-app/google-services.json
         env:
           GOOGLE_SERVICES: ${{ steps.op-secrets.outputs.GOOGLE_SERVICES }}
 

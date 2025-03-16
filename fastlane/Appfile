@@ -1,2 +1,2 @@
-json_key_file("lanyard-app/src/androidMain/play-store-key.json")
-package_name("io.ashdavies.lanyard")
+json_key_file("tally-app/src/androidMain/play-store-key.json")
+package_name("io.ashdavies.tally")

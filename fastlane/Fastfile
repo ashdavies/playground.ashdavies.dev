@@ -4,8 +4,8 @@ platform :android do
   lane :publish_to_play_store do
     upload_to_play_store(
       track: "internal",
-      aab: "lanyard-app/build/outputs/bundle/release/lanyard-app-release.aab",
-      mapping: "lanyard-app/build/outputs/mapping/release/mapping.txt",
+      aab: "tally-app/build/outputs/bundle/release/tally-app-release.aab",
+      mapping: "tally-app/build/outputs/mapping/release/mapping.txt",
       skip_upload_images: true,
     )
   end

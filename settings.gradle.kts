@@ -61,7 +61,6 @@ include(
     ":key-navigation",
     ":kotlin-delegates",
     ":kotlin-gb",
-    ":lanyard-app",
     ":map-routes",
     ":maps-routing",
     ":nsd-manager",
@@ -74,6 +73,7 @@ include(
     ":sql-common",
     ":sql-compose",
     ":sql-driver",
+    ":tally-app",
 )
 
 rootProject.name = "playground"
