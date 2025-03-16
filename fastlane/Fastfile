@@ -4,8 +4,8 @@ platform :android do
   lane :publish_to_play_store do
     upload_to_play_store(
       track: "internal",
-      aab: "conferences-app/build/outputs/bundle/release/conferences-app-release.aab",
-      mapping: "conferences-app/build/outputs/mapping/release/mapping.txt",
+      aab: "tally-app/build/outputs/bundle/release/tally-app-release.aab",
+      mapping: "tally-app/build/outputs/mapping/release/mapping.txt",
       skip_upload_images: true,
     )
   end

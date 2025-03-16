@@ -55,7 +55,6 @@ include(
     ":cloud-run",
     ":composeApp",
     ":compose-material",
-    ":conferences-app",
     ":http-client",
     ":http-common",
     ":identity-manager",
@@ -74,6 +73,7 @@ include(
     ":sql-common",
     ":sql-compose",
     ":sql-driver",
+    ":tally-app",
 )
 
 rootProject.name = "playground"
