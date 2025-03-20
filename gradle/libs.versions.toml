@@ -57,7 +57,7 @@ google-firebase-bom = "com.google.firebase:firebase-bom:33.10.0"
 google-firebase-config = { module = "com.google.firebase:firebase-config" }
 google-firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
 
-google-guava-jre = "com.google.guava:guava:33.4.0-jre"
+google-guava-jre = "com.google.guava:guava:33.4.5-jre"
 
 google-maps-android-compose = "com.google.maps.android:maps-compose:6.5.1"
 google-maps-android-utils = "com.google.maps.android:android-maps-utils:3.11.2"
