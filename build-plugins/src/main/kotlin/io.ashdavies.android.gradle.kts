@@ -1,5 +1,6 @@
-import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
+private val jvmTargetVersion = libs.versions.kotlin.jvmTarget.get()
 
 plugins {
     kotlin("multiplatform")
@@ -7,15 +8,12 @@ plugins {
 
 kotlin {
     androidTarget {
-        val jvmTarget = JvmTarget.fromTarget(libs.versions.kotlin.jvmTarget.get())
-        @OptIn(ExperimentalKotlinGradlePluginApi::class)
-        compilerOptions.jvmTarget.set(jvmTarget)
+        compilerOptions.jvmTarget.set(JvmTarget.fromTarget(jvmTargetVersion))
     }
 }
 
 pluginManager.commonExtension {
     compileOptions {
-        val jvmTargetVersion = libs.versions.kotlin.jvmTarget.get()
         sourceCompatibility(jvmTargetVersion)
         targetCompatibility(jvmTargetVersion)
     }

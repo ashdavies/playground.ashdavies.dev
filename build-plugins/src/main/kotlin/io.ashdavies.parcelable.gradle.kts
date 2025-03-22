@@ -10,7 +10,6 @@ plugins {
 
 kotlin {
     androidTarget {
-        @OptIn(ExperimentalKotlinGradlePluginApi::class)
         compilerOptions {
             val additionalAnnotation = "org.jetbrains.kotlin.parcelize:additionalAnnotation"
             val parcelizeAnnotation = "io.ashdavies.parcelable.Parcelize"
