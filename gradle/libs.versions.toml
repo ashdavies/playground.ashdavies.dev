@@ -53,7 +53,7 @@ google-auth-http = "com.google.auth:google-auth-library-oauth2-http:1.33.1"
 google-firebase-admin = "com.google.firebase:firebase-admin:9.4.3"
 google-firebase-appcheck-playintegrity = { module = "com.google.firebase:firebase-appcheck-playintegrity" }
 google-firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
-google-firebase-bom = "com.google.firebase:firebase-bom:33.10.0"
+google-firebase-bom = "com.google.firebase:firebase-bom:33.11.0"
 google-firebase-config = { module = "com.google.firebase:firebase-config" }
 google-firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
 
