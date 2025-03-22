@@ -46,12 +46,12 @@ google-auth-http = "com.google.auth:google-auth-library-oauth2-http:1.33.1"
 google-firebase-admin = "com.google.firebase:firebase-admin:9.4.3"
 google-firebase-appcheck-playintegrity = { module = "com.google.firebase:firebase-appcheck-playintegrity" }
 google-firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
-google-firebase-bom = "com.google.firebase:firebase-bom:33.10.0"
+google-firebase-bom = "com.google.firebase:firebase-bom:33.11.0"
 google-firebase-config = { module = "com.google.firebase:firebase-config" }
 google-firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
-google-guava-jre = "com.google.guava:guava:33.4.0-jre"
-google-maps-android-compose = "com.google.maps.android:maps-compose:6.5.0"
-google-maps-android-utils = "com.google.maps.android:android-maps-utils:3.11.1"
+google-guava-jre = "com.google.guava:guava:33.4.5-jre"
+google-maps-android-compose = "com.google.maps.android:maps-compose:6.5.2"
+google-maps-android-utils = "com.google.maps.android:android-maps-utils:3.11.2"
 
 kotlinx-collections-immutable = "org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.8"
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
