@@ -120,7 +120,6 @@ kotlin {
             implementation(compose.materialIconsExtended)
             implementation(compose.ui)
 
-            implementation(libs.androidx.core.splashscreen)
             implementation(libs.androidx.paging.common)
             implementation(libs.coil.compose)
             implementation(libs.coil.network)
@@ -151,6 +150,7 @@ kotlin {
 
         androidMain.dependencies {
             implementation(libs.androidx.activity.compose)
+            implementation(libs.androidx.core.splashscreen)
             implementation(libs.google.android.material)
 
             implementation(dependencies.platform(libs.google.firebase.bom))
