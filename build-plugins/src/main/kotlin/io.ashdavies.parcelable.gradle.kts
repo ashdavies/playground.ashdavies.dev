@@ -1,6 +1,4 @@
-import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
-
-pluginManager.withAndroidPlugin {
+project.withAndroidPlugin {
     plugins { id("kotlin-parcelize") }
 }
 

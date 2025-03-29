@@ -25,7 +25,3 @@ dependencies {
 kotlin {
     explicitApi()
 }
-
-tasks.withType<KotlinCompile> {
-    compilerOptions.freeCompilerArgs.add("-Xcontext-receivers")
-}
