@@ -71,7 +71,7 @@ android {
         versionName = "1.0.0-$versionCode"
     }
 
-    namespace = "io.ashdavies.playground"
+    namespace = "io.ashdavies.tally"
 }
 
 buildConfig {
