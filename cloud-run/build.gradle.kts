@@ -98,7 +98,7 @@ kotlin {
 val jvmJar by tasks.getting(Jar::class)
 
 tasks.register<BuildImageTask>("buildImage") {
-    image.set(project.properties.getValue("image") as String)
+    image.set(project.property("image") as String)
     jarFile.set(jvmJar.archiveFile.get().asFile)
     mainClass.set(CloudRunConfig.MAIN_CLASS)
     dependsOn(jvmJar)
