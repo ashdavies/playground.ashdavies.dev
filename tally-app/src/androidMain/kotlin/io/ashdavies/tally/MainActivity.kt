@@ -24,8 +24,6 @@ import io.ashdavies.http.ProvideHttpClient
 import io.ashdavies.http.publicStorage
 import io.ashdavies.io.resolveCacheDir
 import io.ashdavies.material.dynamicColorScheme
-import io.ashdavies.playground.BuildConfig
-import io.ashdavies.playground.PlaygroundDatabase
 import io.ashdavies.sql.ProvideTransacter
 import io.ashdavies.sql.rememberTransacter
 import io.ashdavies.tally.circuit.rememberCircuit

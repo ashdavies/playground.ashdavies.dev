@@ -17,8 +17,8 @@ import io.ashdavies.content.reportFullyDrawn
 import io.ashdavies.http.DefaultHttpConfiguration
 import io.ashdavies.http.LocalHttpClient
 import io.ashdavies.identity.IdentityManager
-import io.ashdavies.playground.PlaygroundDatabase
 import io.ashdavies.sql.LocalTransacter
+import io.ashdavies.tally.PlaygroundDatabase
 import io.ashdavies.tally.events.paging.rememberEventPager
 import io.ashdavies.tally.gallery.File
 import io.ashdavies.tally.gallery.GalleryPresenter

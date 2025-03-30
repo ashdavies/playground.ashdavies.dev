@@ -44,7 +44,7 @@ jobs:
         with:
           export-env: false
         env:
-          GOOGLE_SERVICES: op://development/google services/playground release/base64
+          GOOGLE_SERVICES: op://development/google services/tally/base64
           KEYSTORE_BASE64: op://development/playground keystore/keystore base64
           KEYSTORE_PASSWORD: op://development/playground keystore/keystore password
           KEY_ALIAS: op://development/playground keystore/key alias
