@@ -3,7 +3,6 @@ import com.android.build.gradle.LibraryExtension
 import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
 import org.gradle.api.Project
 import org.gradle.api.plugins.AppliedPlugin
-import org.gradle.api.plugins.PluginManager
 import org.gradle.kotlin.dsl.configure
 
 private val Project.androidApplicationPlugin
@@ -12,8 +11,7 @@ private val Project.androidApplicationPlugin
 private val Project.androidLibraryPlugin
     get() = libs.plugins.android.library.get()
 
-context(Project)
-internal fun PluginManager.commonExtension(action: CommonExtension<*, *, *, *, *, *>.() -> Unit) {
+internal fun Project.commonExtension(action: CommonExtension<*, *, *, *, *, *>.() -> Unit) {
     pluginManager.withPlugin(androidApplicationPlugin.pluginId) {
         extensions.configure<BaseAppModuleExtension>(action)
     }
@@ -23,8 +21,7 @@ internal fun PluginManager.commonExtension(action: CommonExtension<*, *, *, *, *
     }
 }
 
-context(Project)
-internal fun PluginManager.withAndroidPlugin(action: AppliedPlugin.() -> Unit) {
+internal fun Project.withAndroidPlugin(action: AppliedPlugin.() -> Unit) {
     pluginManager.withPlugin(androidApplicationPlugin.pluginId, action)
     pluginManager.withPlugin(androidLibraryPlugin.pluginId, action)
 }

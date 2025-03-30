@@ -14,7 +14,7 @@ jetbrains-kotlin = "2.1.20"
 kotlin-jvmTarget = "17"
 kotlinx-coroutines = "1.10.1"
 kotlinx-serialization = "1.8.0"
-ktor = "3.1.1"
+ktor = "3.1.2"
 slack-circuit = "0.27.0"
 
 [libraries]
@@ -52,6 +52,8 @@ google-firebase-crashlytics = { module = "com.google.firebase:firebase-crashlyti
 google-guava-jre = "com.google.guava:guava:33.4.6-jre"
 google-maps-android-compose = "com.google.maps.android:maps-compose:6.5.2"
 google-maps-android-utils = "com.google.maps.android:android-maps-utils:3.11.2"
+
+jib-core = "com.google.cloud.tools:jib-core:0.27.2"
 
 kotlinx-collections-immutable = "org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.8"
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }

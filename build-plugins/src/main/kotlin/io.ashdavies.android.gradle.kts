@@ -12,7 +12,7 @@ kotlin {
     }
 }
 
-pluginManager.commonExtension {
+project.commonExtension {
     compileOptions {
         sourceCompatibility(jvmTargetVersion)
         targetCompatibility(jvmTargetVersion)

@@ -1,5 +1,9 @@
+private object CloudRunConfig {
+    const val PACKAGE_NAME = "io.ashdavies.cloud"
+    const val MAIN_CLASS = "${PACKAGE_NAME}.Main"
+}
+
 plugins {
-    id("com.google.cloud.tools.jib")
     id("io.ashdavies.kotlin")
     id("io.ashdavies.properties")
 
@@ -9,7 +13,7 @@ plugins {
 }
 
 application {
-    mainClass.set("io.ashdavies.cloud.MainKt")
+    mainClass.set(CloudRunConfig.MAIN_CLASS)
 }
 
 buildConfig {
@@ -17,11 +21,7 @@ buildConfig {
     val googleServiceAccountId by stringProperty(::buildConfigField)
     val integrationApiKey by stringProperty(::buildConfigField)
 
-    packageName.set("io.ashdavies.cloud")
-}
-
-jib {
-    container.mainClass = application.mainClass.get()
+    packageName.set(CloudRunConfig.PACKAGE_NAME)
 }
 
 kotlin {
@@ -95,6 +95,11 @@ kotlin {
     }
 }
 
-tasks.withType<com.google.cloud.tools.jib.gradle.JibTask> {
-    dependsOn("build")
+val jvmJar by tasks.getting(Jar::class)
+
+tasks.register<BuildImageTask>("buildImage") {
+    image.set(project.property("image") as String)
+    jarFile.set(jvmJar.archiveFile.get().asFile)
+    mainClass.set(CloudRunConfig.MAIN_CLASS)
+    dependsOn(jvmJar)
 }

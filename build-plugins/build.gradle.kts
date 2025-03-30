@@ -20,12 +20,10 @@ dependencies {
         implementation(plugin(kotlin.serialization))
         implementation(plugin(ktlint))
     }
+
+    implementation(libs.jib.core)
 }
 
 kotlin {
     explicitApi()
-}
-
-tasks.withType<KotlinCompile> {
-    compilerOptions.freeCompilerArgs.add("-Xcontext-receivers")
 }
