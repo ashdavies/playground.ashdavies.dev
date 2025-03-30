@@ -18,6 +18,7 @@ import io.ashdavies.http.DefaultHttpConfiguration
 import io.ashdavies.http.LocalHttpClient
 import io.ashdavies.identity.IdentityManager
 import io.ashdavies.sql.LocalTransacter
+import io.ashdavies.tally.PlaygroundDatabase
 import io.ashdavies.tally.events.paging.rememberEventPager
 import io.ashdavies.tally.gallery.File
 import io.ashdavies.tally.gallery.GalleryPresenter
@@ -34,7 +35,6 @@ import io.ashdavies.tally.past.PastEventsPresenter
 import io.ashdavies.tally.past.PastEventsScreen
 import io.ashdavies.tally.upcoming.UpcomingEventsPresenter
 import io.ashdavies.tally.upcoming.UpcomingEventsScreen
-import io.ashdavies.tally.PlaygroundDatabase
 import io.ktor.client.HttpClient
 import kotlinx.coroutines.Dispatchers
 import io.ashdavies.tally.events.Event as DatabaseEvent
