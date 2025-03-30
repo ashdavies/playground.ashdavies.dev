@@ -14,11 +14,11 @@ import io.ashdavies.config.RemoteConfig
 import io.ashdavies.config.getBoolean
 import io.ashdavies.http.LocalHttpClient
 import io.ashdavies.http.common.models.EventCfp
-import io.ashdavies.playground.PlaygroundDatabase
 import io.ashdavies.sql.LocalTransacter
 import io.ashdavies.tally.events.EventsQueries
 import io.ashdavies.tally.events.callable.PagedUpcomingEventsCallable
 import io.ashdavies.tally.network.todayAsString
+import io.ashdavies.tally.PlaygroundDatabase
 import io.ktor.client.HttpClient
 import kotlinx.serialization.json.Json
 import okio.ByteString.Companion.encode
