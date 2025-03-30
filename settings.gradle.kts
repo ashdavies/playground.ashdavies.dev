@@ -1,14 +1,6 @@
 import androidx.build.gradle.gcpbuildcache.GcpBuildCache
 import androidx.build.gradle.gcpbuildcache.GcpBuildCacheServiceFactory
 
-buildscript {
-    dependencies {
-        classpath("org.ow2.asm:asm:9.7.1")?.run {
-            because("com.google.cloud.tools.jib uses older versions of asm")
-        }
-    }
-}
-
 pluginManagement.repositories {
     includeBuild("build-plugins")
     includeBuild("fused-properties")
@@ -25,7 +17,6 @@ dependencyResolutionManagement.repositories {
 
 plugins {
     id("androidx.build.gradle.gcpbuildcache") version "1.0.0"
-    id("com.google.cloud.tools.jib") version "3.4.5" apply false
     id("com.gradle.develocity") version "3.19.2"
 }
 
