@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
+
 private object CloudRunConfig {
     const val PACKAGE_NAME = "io.ashdavies.cloud"
     const val MAIN_CLASS = "${PACKAGE_NAME}.Main"
@@ -7,13 +9,7 @@ plugins {
     id("io.ashdavies.kotlin")
     id("io.ashdavies.properties")
 
-    application
-
     alias(libs.plugins.build.config)
-}
-
-application {
-    mainClass.set(CloudRunConfig.MAIN_CLASS)
 }
 
 buildConfig {
@@ -28,6 +24,13 @@ kotlin {
     explicitApiWarning()
 
     jvm {
+        @OptIn(ExperimentalKotlinGradlePluginApi::class)
+        binaries {
+            executable {
+                mainClass.set(CloudRunConfig.MAIN_CLASS)
+            }
+        }
+
         compilations {
             val main by compilations.getting
             val test by compilations.getting
@@ -48,8 +51,6 @@ kotlin {
 
             integrationTest.associateWith(test)
         }
-
-        withJava()
     }
 
     sourceSets {
