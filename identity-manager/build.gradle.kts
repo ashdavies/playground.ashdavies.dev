@@ -13,6 +13,7 @@ android {
 buildConfig {
     val serverClientId by stringProperty(::buildConfigField)
 
+    className.set("BuildConfig")
     packageName.set(android.namespace)
 }
 

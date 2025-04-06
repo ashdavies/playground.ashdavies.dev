@@ -79,6 +79,7 @@ buildConfig {
     val androidStrictMode by booleanProperty(::buildConfigField)
     val browserApiKey by stringProperty(::buildConfigField)
 
+    className.set("BuildConfig")
     packageName.set(android.namespace)
 }
 
