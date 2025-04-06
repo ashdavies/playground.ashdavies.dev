@@ -1,3 +1,4 @@
+import com.android.tools.r8.internal.cL
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
 plugins {
@@ -79,6 +80,7 @@ buildConfig {
     val androidStrictMode by booleanProperty(::buildConfigField)
     val browserApiKey by stringProperty(::buildConfigField)
 
+    className.set("BuildConfig")
     packageName.set(android.namespace)
 }
 
