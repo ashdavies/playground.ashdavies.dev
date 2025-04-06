@@ -69,9 +69,14 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: failure() && steps.screenshot-validation.outcome == 'failure'
         with:
-          if-no-files-found: error
           name: screenshot-test-report
           path: "**/build/reports/screenshotTest/preview/debug"
+
+      - uses: actions/upload-artifact@v4
+        if: failure() && steps.screenshot-validation.outcome == 'failure'
+        with:
+          name: missing-rules
+          path: "**/build/outputs/mapping/release/missing_rules.txt"
 
       - uses: thollander/actions-comment-pull-request@v3
         if: ${{ steps.gradle-build.outputs.build-scan-url }}
