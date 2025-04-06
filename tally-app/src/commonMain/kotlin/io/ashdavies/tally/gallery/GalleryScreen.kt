@@ -94,9 +94,9 @@ internal object GalleryScreen : Parcelable, Screen {
     }
 
     internal data class State(
-        val itemList: List<StandardItem> = emptyList(),
-        val expandedItem: ExpandedItem? = null,
-        val showCapture: Boolean = false,
+        val itemList: List<StandardItem>,
+        val expandedItem: ExpandedItem?,
+        val showCapture: Boolean,
         val eventSink: (Event) -> Unit,
     ) : CircuitUiState {
 

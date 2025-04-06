@@ -46,10 +46,10 @@ public fun rememberCircuit(
     playgroundDatabase: PlaygroundDatabase = LocalTransacter.current as PlaygroundDatabase,
 ): Circuit = remember(platformContext) {
     val identityManager = IdentityManager(platformContext, playgroundDatabase.credentialQueries)
-    val imageManager = ImageManager(platformContext, playgroundDatabase.imageQueries)
+    val storageManager = StorageManager(platformContext, PathProvider(platformContext), Dispatchers.IO)
+    val imageManager = ImageManager(storageManager, playgroundDatabase.imageQueries)
     val inMemoryHttpClient = HttpClient(inMemoryHttpClientEngine(), DefaultHttpConfiguration)
     val syncManager = SyncManager(inMemoryHttpClient, File::readChannel)
-    val storageManager = StorageManager(PathProvider(platformContext))
 
     Circuit.Builder()
         .addCircuit<HomeScreen, HomeScreen.State>(

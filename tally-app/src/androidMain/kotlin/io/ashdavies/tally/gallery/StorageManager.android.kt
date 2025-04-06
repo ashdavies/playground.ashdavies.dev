@@ -8,12 +8,13 @@ import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
 internal actual fun StorageManager(
+    platformContext: PlatformContext,
     pathProvider: PathProvider,
     coroutineContext: CoroutineContext,
 ): StorageManager = object : StorageManager {
 
     @OptIn(ExperimentalUuidApi::class)
-    override suspend fun create(platformContext: PlatformContext): File = withContext(coroutineContext) {
+    override suspend fun create(): File = withContext(coroutineContext) {
         File(pathProvider.getImagesPath(), "${Uuid.random()}.jpg").apply {
             require(createNewFile()) { "File already exists" }
         }

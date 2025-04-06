@@ -7,5 +7,5 @@ internal fun interface PathProvider {
 }
 
 internal expect fun PathProvider(
-    context: PlatformContext,
+    platformContext: PlatformContext,
 ): PathProvider

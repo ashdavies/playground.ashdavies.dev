@@ -1,6 +1,5 @@
 package io.ashdavies.tally.gallery
 
-import io.ashdavies.content.PlatformContext
 import io.ashdavies.sql.mapToList
 import kotlinx.coroutines.flow.Flow
 import kotlin.uuid.ExperimentalUuidApi
@@ -13,19 +12,11 @@ internal interface ImageManager {
 }
 
 internal fun ImageManager(
-    context: PlatformContext,
-    queries: ImageQueries,
-): ImageManager = ImageManager(
-    storage = StorageManager(PathProvider(context)),
-    queries = queries,
-)
-
-internal fun ImageManager(
-    storage: StorageManager,
-    queries: ImageQueries,
+    storageManager: StorageManager,
+    imageQueries: ImageQueries,
 ): ImageManager = object : ImageManager {
 
-    override val list: Flow<List<Image>> = queries
+    override val list: Flow<List<Image>> = imageQueries
         .selectAll()
         .mapToList()
 
@@ -37,11 +28,11 @@ internal fun ImageManager(
             path = file.getAbsolutePath(),
         )
 
-        queries.insertOrReplace(image)
+        imageQueries.insertOrReplace(image)
     }
 
     override suspend fun remove(image: Image) {
-        storage.delete(File(image.path))
-        queries.deleteById(image.uuid)
+        storageManager.delete(File(image.path))
+        imageQueries.deleteById(image.uuid)
     }
 }

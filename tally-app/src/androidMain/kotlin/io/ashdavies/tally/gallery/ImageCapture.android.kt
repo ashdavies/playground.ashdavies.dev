@@ -18,7 +18,7 @@ internal actual fun ImageCapture(
 ) {
     val context = LocalContext.current
     val fileState by produceState<File?>(null) {
-        value = manager.create(context)
+        value = manager.create()
     }
 
     fileState?.let { file ->

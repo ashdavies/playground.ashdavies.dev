@@ -32,14 +32,17 @@ internal class AggregateEventsOperation(
 
         collectionWriter(
             oldValue = Json.decodeFromSnapshot(snapshot),
-            newValue = asgService { it.toEvent(identifier(it)) },
+            newValue = asgService { it.toEvent(identifier(it), null) },
         )
 
         call.respond(HttpStatusCode.OK)
     }
 }
 
-private fun AsgConference.toEvent(id: String) = Event(
+private fun AsgConference.toEvent(
+    id: String,
+    imageUrl: String?,
+) = Event(
     id = id,
     name = name,
     website = website,
