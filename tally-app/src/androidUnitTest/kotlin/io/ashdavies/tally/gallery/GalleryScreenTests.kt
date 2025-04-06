@@ -1,7 +1,6 @@
 package io.ashdavies.tally.gallery
 
 import app.cash.paparazzi.Paparazzi
-import io.ashdavies.content.PlatformContext
 import io.ashdavies.tally.tooling.MaterialPreviewTheme
 import kotlinx.collections.immutable.persistentListOf
 import org.junit.Rule
@@ -37,13 +36,8 @@ internal class GalleryScreenTests {
 }
 
 private fun tempFileStorageManager() = object : StorageManager {
-    override suspend fun create(platformContext: PlatformContext): File {
-        return createTempFile().toFile()
-    }
-
-    override suspend fun delete(file: File): Boolean {
-        return file.delete()
-    }
+    override suspend fun create(): File = createTempFile().toFile()
+    override suspend fun delete(file: File): Boolean = file.delete()
 }
 
 private fun galleryScreenStateItem(
