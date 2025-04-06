@@ -67,7 +67,7 @@ private fun rememberUpcomingEventsCallable(
     return PagedUpcomingEventsCallable { request ->
         when {
             remoteConfig.isPagingEnabled() -> pagedCallable(request)
-            else -> asgCallable(Unit).map(AsgConference::toEvent)
+            else -> asgCallable(Unit).map { it.toEvent(null) }
         }
     }
 }
@@ -78,7 +78,7 @@ internal fun <T : Transacter> rememberLocalQueries(
     transform: (PlaygroundDatabase) -> T,
 ): T = remember { transform(database) }
 
-private fun AsgConference.toEvent(): ApiEvent = ApiEvent(
+private fun AsgConference.toEvent(imageUrl: String?): ApiEvent = ApiEvent(
     id = hash(), name = name, website = website, location = location, dateStart = dateStart,
     dateEnd = dateEnd, imageUrl = imageUrl, status = status, online = online,
     cfp = cfp?.let { EventCfp(start = it.start, end = it.end, site = it.site) },

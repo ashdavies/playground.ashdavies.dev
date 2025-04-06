@@ -7,7 +7,6 @@ public data class AsgConference(
     public val name: String,
     public val website: String,
     public val location: String,
-    public val imageUrl: String? = null,
     public val online: Boolean? = false,
     public val status: String? = null,
     public val dateStart: String,
