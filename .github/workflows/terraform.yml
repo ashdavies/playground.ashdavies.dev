@@ -50,7 +50,7 @@ jobs:
 
       - if: ${{ github.ref == 'refs/heads/main' }}
         run: |
-          ./gradlew cloud-run:buildImage \
+          ./gradlew cloud-run:deploy \
             -Pimage=europe-west1-docker.pkg.dev/${{ steps.setup-cloud.outputs.project_id }}/cloud-run-source-deploy/api.ashdavies.dev \
             --no-configuration-cache \
             --console=plain

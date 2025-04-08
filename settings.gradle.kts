@@ -1,8 +1,21 @@
 import androidx.build.gradle.gcpbuildcache.GcpBuildCache
 import androidx.build.gradle.gcpbuildcache.GcpBuildCacheServiceFactory
 
+buildscript {
+    dependencies {
+        classpath("com.google.cloud.tools:jib-core:0.27.3")?.because(
+            """
+                android.application depends upon org.apache.commons:commons-compress:1.21
+                gcpbuildcache depends upon org.apache.httpcomponents:httpclient:4.5.14
+                @see https://github.com/GoogleContainerTools/jib/issues/4235
+            """.trimIndent()
+        )
+    }
+}
+
 pluginManagement.repositories {
     includeBuild("build-plugins")
+    includeBuild("cloud-build")
     includeBuild("fused-properties")
 
     gradlePluginPortal()
