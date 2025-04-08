@@ -20,8 +20,6 @@ dependencies {
         implementation(plugin(kotlin.serialization))
         implementation(plugin(ktlint))
     }
-
-    implementation(libs.jib.core)
 }
 
 kotlin {
