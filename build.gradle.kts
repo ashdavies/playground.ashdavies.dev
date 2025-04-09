@@ -11,7 +11,6 @@ plugins {
         classpath(google.services)
         classpath(jetbrains.compose)
         classpath(kotlin.multiplatform)
-        classpath(kotlin.serialization)
         classpath(ktlint)
 
         alias(gradle.doctor)

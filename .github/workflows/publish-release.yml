@@ -120,4 +120,4 @@ jobs:
         run: |
           echo $PLAY_STORE_KEY | base64 --decode > tally-app/src/androidMain/play-store-key.json
 
-      - run: bundle install && bundle exec fastlane android publish_to_play_store
+#      - run: bundle install && bundle exec fastlane android publish_to_play_store
