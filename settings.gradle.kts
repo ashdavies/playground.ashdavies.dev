@@ -3,7 +3,7 @@ import androidx.build.gradle.gcpbuildcache.GcpBuildCacheServiceFactory
 
 buildscript {
     dependencies {
-        classpath("org.apache.commons:commons-compress:1.26.0")?.because(
+        classpath("org.apache.commons:commons-compress:1.27.1")?.because(
             """
                 android.application depends upon org.apache.commons:commons-compress:1.21
                 https://github.com/GoogleContainerTools/jib/issues/4235
