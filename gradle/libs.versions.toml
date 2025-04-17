@@ -51,7 +51,7 @@ google-firebase-config = { module = "com.google.firebase:firebase-config" }
 google-firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
 google-guava-jre = "com.google.guava:guava:33.4.8-jre"
 google-maps-android-compose = "com.google.maps.android:maps-compose:6.5.2"
-google-maps-android-utils = "com.google.maps.android:android-maps-utils:3.11.2"
+google-maps-android-utils = "com.google.maps.android:android-maps-utils:3.12.0"
 
 jib-core = "com.google.cloud.tools:jib-core:0.27.3"
 
