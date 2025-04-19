@@ -12,6 +12,7 @@ import com.slack.circuit.foundation.CircuitCompositionLocals
 import com.slack.circuit.foundation.NavigableCircuitContent
 import com.slack.circuit.foundation.rememberCircuitNavigator
 import com.slack.circuit.overlay.ContentWithOverlays
+import dev.zacsweers.metro.createGraph
 import io.ashdavies.analytics.LocalAnalytics
 import io.ashdavies.analytics.RemoteAnalytics
 import io.ashdavies.check.ProvideAppCheckToken
@@ -73,7 +74,7 @@ private fun TallyApp(
 
                 ProvideTransacter(transacter) {
                     MaterialTheme(dynamicColorScheme()) {
-                        val circuit = rememberCircuit(context)
+                        val circuit = rememberCircuit(createGraph())
 
                         CircuitCompositionLocals(circuit) {
                             ContentWithOverlays {

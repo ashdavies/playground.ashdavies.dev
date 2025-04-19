@@ -3,7 +3,6 @@ package io.ashdavies.tally.circuit
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.paging.Pager
 import com.slack.circuit.foundation.Circuit
 import com.slack.circuit.runtime.CircuitContext
 import com.slack.circuit.runtime.CircuitUiState
@@ -12,57 +11,32 @@ import com.slack.circuit.runtime.presenter.Presenter
 import com.slack.circuit.runtime.presenter.presenterOf
 import com.slack.circuit.runtime.screen.Screen
 import io.ashdavies.aggregator.PastConferencesCallable
-import io.ashdavies.content.PlatformContext
-import io.ashdavies.content.reportFullyDrawn
-import io.ashdavies.http.DefaultHttpConfiguration
 import io.ashdavies.http.LocalHttpClient
-import io.ashdavies.identity.IdentityManager
-import io.ashdavies.sql.LocalTransacter
-import io.ashdavies.tally.PlaygroundDatabase
-import io.ashdavies.tally.events.paging.rememberEventPager
-import io.ashdavies.tally.gallery.File
 import io.ashdavies.tally.gallery.GalleryPresenter
 import io.ashdavies.tally.gallery.GalleryScreen
-import io.ashdavies.tally.gallery.ImageManager
-import io.ashdavies.tally.gallery.PathProvider
-import io.ashdavies.tally.gallery.StorageManager
-import io.ashdavies.tally.gallery.SyncManager
-import io.ashdavies.tally.gallery.inMemoryHttpClientEngine
-import io.ashdavies.tally.gallery.readChannel
 import io.ashdavies.tally.home.HomePresenter
 import io.ashdavies.tally.home.HomeScreen
+import io.ashdavies.tally.metro.TallyAppGraph
 import io.ashdavies.tally.past.PastEventsPresenter
 import io.ashdavies.tally.past.PastEventsScreen
 import io.ashdavies.tally.upcoming.UpcomingEventsPresenter
 import io.ashdavies.tally.upcoming.UpcomingEventsScreen
-import io.ktor.client.HttpClient
 import kotlinx.coroutines.Dispatchers
-import io.ashdavies.tally.events.Event as DatabaseEvent
 
 @Composable
-public fun rememberCircuit(
-    platformContext: PlatformContext,
-    eventPager: Pager<String, DatabaseEvent> = rememberEventPager(),
-    playgroundDatabase: PlaygroundDatabase = LocalTransacter.current as PlaygroundDatabase,
-): Circuit = remember(platformContext) {
-    val identityManager = IdentityManager(platformContext, playgroundDatabase.credentialQueries)
-    val storageManager = StorageManager(platformContext, PathProvider(platformContext), Dispatchers.IO)
-    val imageManager = ImageManager(storageManager, playgroundDatabase.imageQueries)
-    val inMemoryHttpClient = HttpClient(inMemoryHttpClientEngine(), DefaultHttpConfiguration)
-    val syncManager = SyncManager(inMemoryHttpClient, File::readChannel)
-
+internal fun rememberCircuit(appGraph: TallyAppGraph): Circuit = remember(appGraph) {
     Circuit.Builder()
         .addCircuit<HomeScreen, HomeScreen.State>(
             presenterFactory = { _, navigator, _ ->
-                presenterOf { HomePresenter(identityManager, navigator) }
+                presenterOf { HomePresenter(appGraph.identityManager, navigator) }
             },
             uiFactory = { state, modifier ->
-                HomeScreen(state, modifier, platformContext::reportFullyDrawn)
+                HomeScreen(state, modifier, appGraph.drawnReporter::reportFullyDrawn)
             },
         )
         .addCircuit<UpcomingEventsScreen, UpcomingEventsScreen.State>(
             presenterFactory = { _, _, _ ->
-                presenterOf { UpcomingEventsPresenter(eventPager) }
+                presenterOf { UpcomingEventsPresenter(appGraph.eventPager) }
             },
             uiFactory = { state, modifier ->
                 UpcomingEventsScreen(state, modifier)
@@ -70,19 +44,19 @@ public fun rememberCircuit(
         )
         .addCircuit<GalleryScreen, GalleryScreen.State>(
             presenterFactory = { _, _, _ ->
-                presenterOf { GalleryPresenter(imageManager, syncManager) }
+                presenterOf { GalleryPresenter(appGraph.imageManager, appGraph.syncManager) }
             },
             uiFactory = { state, modifier ->
-                GalleryScreen(state, storageManager, modifier)
+                GalleryScreen(state, appGraph.storageManager, modifier)
             },
         )
         .addCircuit<PastEventsScreen, PastEventsScreen.State>(
             presenterFactory = { _, _, _ ->
                 presenterOf {
                     PastEventsPresenter(
-                        pastConferencesCallable = PastConferencesCallable(LocalHttpClient.current),
-                        attendanceQueries = playgroundDatabase.attendanceQueries,
-                        ioDispatcher = Dispatchers.IO,
+                        pastConferencesCallable = appGraph.pastPreferencesCallable,
+                        attendanceQueries = appGraph.attendanceQueriesProvider(),
+                        ioDispatcher = appGraph.ioDispatcher,
                     )
                 }
             },
