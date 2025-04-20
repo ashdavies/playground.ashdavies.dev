@@ -28,7 +28,6 @@ import io.ashdavies.sql.ProvideTransacter
 import io.ashdavies.sql.rememberTransacter
 import io.ashdavies.tally.circuit.rememberCircuit
 import io.ashdavies.tally.home.HomeScreen
-import io.ashdavies.tally.material.ProvideLocalWindowSizeClass
 import io.ktor.client.plugins.DefaultRequest
 import io.ktor.client.plugins.cache.HttpCache
 import io.ktor.client.request.header
@@ -77,19 +76,16 @@ private fun TallyApp(
 
                         CircuitCompositionLocals(circuit) {
                             ContentWithOverlays {
-                                @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
-                                ProvideLocalWindowSizeClass(calculateWindowSizeClass()) {
-                                    val backStack = rememberSaveableBackStack(HomeScreen)
+                                val backStack = rememberSaveableBackStack(HomeScreen)
 
-                                    NavigableCircuitContent(
-                                        navigator = rememberCircuitNavigator(backStack) { onClose() },
-                                        backStack = backStack,
-                                        decoration = KeyNavigationDecoration(
-                                            decoration = circuit.defaultNavDecoration,
-                                            onBackInvoked = backStack::pop,
-                                        ),
-                                    )
-                                }
+                                NavigableCircuitContent(
+                                    navigator = rememberCircuitNavigator(backStack) { onClose() },
+                                    backStack = backStack,
+                                    decoration = KeyNavigationDecoration(
+                                        decoration = circuit.defaultNavDecoration,
+                                        onBackInvoked = backStack::pop,
+                                    ),
+                                )
                             }
                         }
                     }
