@@ -28,7 +28,6 @@ import io.ashdavies.sql.ProvideTransacter
 import io.ashdavies.sql.rememberTransacter
 import io.ashdavies.tally.circuit.rememberCircuit
 import io.ashdavies.tally.home.HomeScreen
-import io.ashdavies.tally.material.ProvideLocalWindowSizeClass
 import io.ktor.client.plugins.DefaultRequest
 import io.ktor.client.plugins.cache.HttpCache
 import io.ktor.client.request.header
@@ -76,15 +75,12 @@ private fun TallyApp(activity: Activity) {
                 MaterialTheme(dynamicColorScheme()) {
                     CircuitCompositionLocals(rememberCircuit(activity)) {
                         ContentWithOverlays {
-                            @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
-                            ProvideLocalWindowSizeClass(calculateWindowSizeClass(activity)) {
-                                val backStack = rememberSaveableBackStack(HomeScreen)
+                            val backStack = rememberSaveableBackStack(HomeScreen)
 
-                                NavigableCircuitContent(
-                                    navigator = rememberCircuitNavigator(backStack),
-                                    backStack = backStack,
-                                )
-                            }
+                            NavigableCircuitContent(
+                                navigator = rememberCircuitNavigator(backStack),
+                                backStack = backStack,
+                            )
                         }
                     }
                 }
