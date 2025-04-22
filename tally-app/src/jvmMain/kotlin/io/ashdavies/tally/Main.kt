@@ -15,9 +15,6 @@ import com.slack.circuit.overlay.ContentWithOverlays
 import io.ashdavies.analytics.LocalAnalytics
 import io.ashdavies.analytics.RemoteAnalytics
 import io.ashdavies.check.ProvideAppCheckToken
-import io.ashdavies.config.Default
-import io.ashdavies.config.LocalRemoteConfig
-import io.ashdavies.config.RemoteConfig
 import io.ashdavies.content.PlatformContext
 import io.ashdavies.http.ProvideHttpClient
 import io.ashdavies.http.publicStorage
@@ -103,7 +100,6 @@ private fun TallyApp(
 private fun ProvideRemoteLocals(content: @Composable () -> Unit) {
     CompositionLocalProvider(
         LocalAnalytics provides RemoteAnalytics { _, _ -> },
-        LocalRemoteConfig provides RemoteConfig.Default,
         content = content,
     )
 }
