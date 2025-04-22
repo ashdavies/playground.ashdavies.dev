@@ -64,7 +64,7 @@ internal fun HomeScreen(
     Scaffold(
         modifier = modifier,
         bottomBar = {
-            HomeBottomBar(state.isGalleryEnabled) { screen ->
+            HomeBottomBar(isGalleryEnabled = state.isGalleryEnabled) { screen ->
                 eventSink(HomeScreen.Event.BottomNav(screen))
             }
         },
@@ -88,9 +88,9 @@ internal fun HomeScreen(
 
 @Composable
 internal fun HomeBottomBar(
-    isGalleryEnabled: Boolean,
     modifier: Modifier = Modifier,
     selected: Screen = HomeScreen,
+    isGalleryEnabled: Boolean = false,
     onClick: (Screen) -> Unit = { },
 ) {
     BottomAppBar(modifier) {
