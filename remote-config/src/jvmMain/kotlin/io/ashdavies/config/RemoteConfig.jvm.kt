@@ -1,9 +1,6 @@
 package io.ashdavies.config
 
-public val RemoteConfig.Companion.Default: RemoteConfig
-    get() = emptyRemoteConfig
-
-private val emptyRemoteConfig = object : RemoteConfig {
+public actual fun RemoteConfig(): RemoteConfig = object : RemoteConfig {
     override suspend fun <T : Any> getValue(key: String, transform: (RemoteConfigValue) -> T): T {
         return transform(EmptyLocalConfigValue)
     }

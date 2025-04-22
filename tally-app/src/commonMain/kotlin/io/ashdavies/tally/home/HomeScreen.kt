@@ -28,8 +28,6 @@ import com.slack.circuit.runtime.screen.Screen
 import io.ashdavies.identity.IdentityState
 import io.ashdavies.parcelable.Parcelable
 import io.ashdavies.parcelable.Parcelize
-import io.ashdavies.tally.config.booleanConfigAsState
-import io.ashdavies.tally.config.isGalleryEnabled
 import io.ashdavies.tally.gallery.GalleryScreen
 import io.ashdavies.tally.material.icons.EventList
 import io.ashdavies.tally.material.icons.EventUpcoming
@@ -46,8 +44,9 @@ internal object HomeScreen : Parcelable, Screen {
     }
 
     data class State(
-        val identityState: IdentityState,
         val screen: Screen,
+        val identityState: IdentityState,
+        val isGalleryEnabled: Boolean,
         val eventSink: (Event) -> Unit,
     ) : CircuitUiState
 }
@@ -65,7 +64,7 @@ internal fun HomeScreen(
     Scaffold(
         modifier = modifier,
         bottomBar = {
-            HomeBottomBar { screen ->
+            HomeBottomBar(isGalleryEnabled = state.isGalleryEnabled) { screen ->
                 eventSink(HomeScreen.Event.BottomNav(screen))
             }
         },
@@ -91,10 +90,9 @@ internal fun HomeScreen(
 internal fun HomeBottomBar(
     modifier: Modifier = Modifier,
     selected: Screen = HomeScreen,
+    isGalleryEnabled: Boolean = false,
     onClick: (Screen) -> Unit = { },
 ) {
-    val isGalleryEnabled by booleanConfigAsState { isGalleryEnabled() }
-
     BottomAppBar(modifier) {
         NavigationBar {
             NavigationBarItem(

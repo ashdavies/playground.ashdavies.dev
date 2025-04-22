@@ -13,6 +13,7 @@ import com.slack.circuit.runtime.presenter.Presenter
 import com.slack.circuit.runtime.presenter.presenterOf
 import com.slack.circuit.runtime.screen.Screen
 import io.ashdavies.aggregator.PastConferencesCallable
+import io.ashdavies.config.RemoteConfig
 import io.ashdavies.content.PlatformContext
 import io.ashdavies.content.reportFullyDrawn
 import io.ashdavies.http.DefaultHttpConfiguration
@@ -47,62 +48,112 @@ public fun rememberCircuit(
     eventPager: Pager<String, DatabaseEvent> = rememberEventPager(),
     playgroundDatabase: PlaygroundDatabase = LocalTransacter.current as PlaygroundDatabase,
 ): Circuit = remember(platformContext) {
-    val identityManager = IdentityManager(platformContext, playgroundDatabase.credentialQueries)
-    val storageManager =
-        StorageManager(platformContext, PathProvider(platformContext), Dispatchers.IO)
-    val imageManager = ImageManager(storageManager, playgroundDatabase.imageQueries)
-    val inMemoryHttpClient = HttpClient(inMemoryHttpClientEngine(), DefaultHttpConfiguration)
-    val syncManager = SyncManager(inMemoryHttpClient, File::readChannel)
+    val storageManager = StorageManager(
+        platformContext = platformContext,
+        pathProvider = PathProvider(platformContext),
+        coroutineContext = Dispatchers.IO,
+    )
 
     Circuit.Builder()
-        .addCircuit<HomeScreen, HomeScreen.State>(
-            presenterFactory = { _, navigator, _ ->
-                presenterOf { HomePresenter(identityManager, navigator) }
-            },
-            uiFactory = { state, modifier ->
-                HomeScreen(state, modifier, platformContext::reportFullyDrawn)
-            },
-        )
-        .addCircuit<UpcomingEventsScreen, UpcomingEventsScreen.State>(
-            presenterFactory = { _, _, _ ->
-                presenterOf { UpcomingEventsPresenter(eventPager) }
-            },
-            uiFactory = { state, modifier ->
-                UpcomingEventsScreen(
-                    state = state,
-                    windowSizeClass = windowSizeClass,
-                    modifier = modifier,
-                )
-            },
-        )
-        .addCircuit<GalleryScreen, GalleryScreen.State>(
-            presenterFactory = { _, _, _ ->
-                presenterOf { GalleryPresenter(imageManager, syncManager) }
-            },
-            uiFactory = { state, modifier ->
-                GalleryScreen(state, storageManager, modifier)
-            },
-        )
-        .addCircuit<PastEventsScreen, PastEventsScreen.State>(
-            presenterFactory = { _, _, _ ->
-                presenterOf {
-                    PastEventsPresenter(
-                        pastConferencesCallable = PastConferencesCallable(LocalHttpClient.current),
-                        attendanceQueries = playgroundDatabase.attendanceQueries,
-                        ioDispatcher = Dispatchers.IO,
-                    )
-                }
-            },
-            uiFactory = { state, modifier ->
-                PastEventsScreen(
-                    state = state,
-                    windowSizeClass = windowSizeClass,
-                    modifier = modifier,
-                )
-            },
-        )
+        .addHomeScreenCircuit(platformContext, playgroundDatabase)
+        .addUpcomingEventsScreenCircuit(eventPager, windowSizeClass)
+        .addGalleryScreenCircuit(storageManager, playgroundDatabase)
+        .addPastEventsScreenCircuit(playgroundDatabase, windowSizeClass)
         .build()
 }
+
+private fun Circuit.Builder.addHomeScreenCircuit(
+    platformContext: PlatformContext,
+    playgroundDatabase: PlaygroundDatabase,
+): Circuit.Builder = addCircuit<HomeScreen, HomeScreen.State>(
+    presenterFactory = { _, navigator, _ ->
+        presenterOf {
+            HomePresenter(
+                remoteConfig = RemoteConfig(),
+                identityManager = IdentityManager(
+                    platformContext = platformContext,
+                    credentialQueries = playgroundDatabase.credentialQueries,
+                ),
+                navigator = navigator,
+            )
+        }
+    },
+    uiFactory = { state, modifier ->
+        HomeScreen(
+            state = state,
+            modifier = modifier,
+            reportFullyDrawn = platformContext::reportFullyDrawn,
+        )
+    },
+)
+
+private fun Circuit.Builder.addUpcomingEventsScreenCircuit(
+    eventPager: Pager<String, DatabaseEvent>,
+    windowSizeClass: WindowSizeClass,
+): Circuit.Builder = addCircuit<UpcomingEventsScreen, UpcomingEventsScreen.State>(
+    presenterFactory = { _, _, _ ->
+        presenterOf { UpcomingEventsPresenter(eventPager) }
+    },
+    uiFactory = { state, modifier ->
+        UpcomingEventsScreen(
+            state = state,
+            windowSizeClass = windowSizeClass,
+            modifier = modifier,
+        )
+    },
+)
+
+private fun Circuit.Builder.addGalleryScreenCircuit(
+    storageManager: StorageManager,
+    playgroundDatabase: PlaygroundDatabase,
+): Circuit.Builder = addCircuit<GalleryScreen, GalleryScreen.State>(
+    presenterFactory = { _, _, _ ->
+        presenterOf {
+            GalleryPresenter(
+                imageManager = ImageManager(
+                    storageManager = storageManager,
+                    imageQueries = playgroundDatabase.imageQueries,
+                ),
+                syncManager = SyncManager(
+                    client = HttpClient(
+                        engine = inMemoryHttpClientEngine(),
+                        block = DefaultHttpConfiguration,
+                    ),
+                    reader = File::readChannel,
+                ),
+            )
+        }
+    },
+    uiFactory = { state, modifier ->
+        GalleryScreen(
+            state = state,
+            manager = storageManager,
+            modifier = modifier,
+        )
+    },
+)
+
+private fun Circuit.Builder.addPastEventsScreenCircuit(
+    playgroundDatabase: PlaygroundDatabase,
+    windowSizeClass: WindowSizeClass,
+): Circuit.Builder = addCircuit<PastEventsScreen, PastEventsScreen.State>(
+    presenterFactory = { _, _, _ ->
+        presenterOf {
+            PastEventsPresenter(
+                pastConferencesCallable = PastConferencesCallable(LocalHttpClient.current),
+                attendanceQueries = playgroundDatabase.attendanceQueries,
+                ioDispatcher = Dispatchers.IO,
+            )
+        }
+    },
+    uiFactory = { state, modifier ->
+        PastEventsScreen(
+            state = state,
+            windowSizeClass = windowSizeClass,
+            modifier = modifier,
+        )
+    },
+)
 
 private inline fun <reified S : Screen, UiState : CircuitUiState> Circuit.Builder.addCircuit(
     crossinline presenterFactory: (screen: S, navigator: Navigator, context: CircuitContext) -> Presenter<UiState>,

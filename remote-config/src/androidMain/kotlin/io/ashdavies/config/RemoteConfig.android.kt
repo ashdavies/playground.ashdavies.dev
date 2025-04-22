@@ -7,8 +7,7 @@ import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 
 private const val ONE_MINUTE_IN_SECONDS = 3600L
 
-@Suppress("ObjectPropertyName")
-private val _firebaseRemoteConfig by lazy {
+private val firebaseRemoteConfig by lazy {
     Firebase.remoteConfig.apply {
         val configSettings = remoteConfigSettings {
             minimumFetchIntervalInSeconds = ONE_MINUTE_IN_SECONDS
@@ -19,9 +18,9 @@ private val _firebaseRemoteConfig by lazy {
     }
 }
 
-internal actual val firebaseRemoteConfig = object : RemoteConfig {
+public actual fun RemoteConfig(): RemoteConfig = object : RemoteConfig {
     override suspend fun <T : Any> getValue(key: String, transform: (RemoteConfigValue) -> T): T {
-        return transform(remoteConfigValue(_firebaseRemoteConfig.getValue(key)))
+        return transform(remoteConfigValue(firebaseRemoteConfig.getValue(key)))
     }
 }
 
