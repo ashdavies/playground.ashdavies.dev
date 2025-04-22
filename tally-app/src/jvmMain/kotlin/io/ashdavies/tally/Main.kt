@@ -28,7 +28,6 @@ import io.ashdavies.sql.ProvideTransacter
 import io.ashdavies.sql.rememberTransacter
 import io.ashdavies.tally.circuit.rememberCircuit
 import io.ashdavies.tally.home.HomeScreen
-import io.ashdavies.tally.material.ProvideLocalWindowSizeClass
 import io.ktor.client.plugins.DefaultRequest
 import io.ktor.client.plugins.cache.HttpCache
 import io.ktor.client.request.header
@@ -40,7 +39,7 @@ public fun main() {
             title = "Tally",
         ) {
             TallyApp(
-                context = PlatformContext.Default,
+                platformContext = PlatformContext.Default,
                 onClose = ::exitApplication,
             )
         }
@@ -49,7 +48,7 @@ public fun main() {
 
 @Composable
 private fun TallyApp(
-    context: PlatformContext,
+    platformContext: PlatformContext,
     onClose: () -> Unit,
 ) {
     ProvideHttpClient(
@@ -60,7 +59,7 @@ private fun TallyApp(
             }
 
             install(HttpCache) {
-                publicStorage(context.resolveCacheDir())
+                publicStorage(platformContext.resolveCacheDir())
             }
         },
     ) {
@@ -68,28 +67,29 @@ private fun TallyApp(
             ProvideAppCheckToken {
                 val transacter = rememberTransacter(
                     schema = PlaygroundDatabase.Schema,
-                    context = context,
+                    context = platformContext,
                 ) { PlaygroundDatabase(it) }
 
                 ProvideTransacter(transacter) {
                     MaterialTheme(dynamicColorScheme()) {
-                        val circuit = rememberCircuit(context)
+                        @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
+                        val circuit = rememberCircuit(
+                            platformContext = platformContext,
+                            windowSizeClass = calculateWindowSizeClass(),
+                        )
 
                         CircuitCompositionLocals(circuit) {
                             ContentWithOverlays {
-                                @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
-                                ProvideLocalWindowSizeClass(calculateWindowSizeClass()) {
-                                    val backStack = rememberSaveableBackStack(HomeScreen)
+                                val backStack = rememberSaveableBackStack(HomeScreen)
 
-                                    NavigableCircuitContent(
-                                        navigator = rememberCircuitNavigator(backStack) { onClose() },
-                                        backStack = backStack,
-                                        decoration = KeyNavigationDecoration(
-                                            decoration = circuit.defaultNavDecoration,
-                                            onBackInvoked = backStack::pop,
-                                        ),
-                                    )
-                                }
+                                NavigableCircuitContent(
+                                    navigator = rememberCircuitNavigator(backStack) { onClose() },
+                                    backStack = backStack,
+                                    decoration = KeyNavigationDecoration(
+                                        decoration = circuit.defaultNavDecoration,
+                                        onBackInvoked = backStack::pop,
+                                    ),
+                                )
                             }
                         }
                     }

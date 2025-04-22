@@ -9,6 +9,8 @@ import androidx.compose.material3.adaptive.layout.calculatePaneScaffoldDirective
 import androidx.compose.material3.adaptive.navigation.BackNavigationBehavior
 import androidx.compose.material3.adaptive.navigation.ThreePaneScaffoldNavigator
 import androidx.compose.material3.adaptive.navigation.rememberListDetailPaneScaffoldNavigator
+import androidx.compose.material3.windowsizeclass.WindowSizeClass
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -17,7 +19,9 @@ import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.screen.Screen
 import io.ashdavies.parcelable.Parcelable
 import io.ashdavies.parcelable.Parcelize
+import io.ashdavies.tally.animation.FadeVisibility
 import io.ashdavies.tally.events.EventsDetailPane
+import io.ashdavies.tally.material.BackButton
 import kotlinx.collections.immutable.ImmutableList
 import io.ashdavies.tally.events.Event as DatabaseEvent
 
@@ -40,6 +44,7 @@ internal object UpcomingEventsScreen : Parcelable, Screen {
 @OptIn(ExperimentalMaterial3AdaptiveApi::class)
 internal fun UpcomingEventsScreen(
     state: UpcomingEventsScreen.State,
+    windowSizeClass: WindowSizeClass,
     modifier: Modifier = Modifier,
 ) {
     val navigator = rememberListDetailPaneScaffoldNavigator<Int>(
@@ -68,7 +73,11 @@ internal fun UpcomingEventsScreen(
                 navigator.currentDestination?.content?.let {
                     EventsDetailPane(
                         item = requireNotNull(state.itemList[it]),
-                        onBackClick = navigator::navigateBack,
+                        navigationIcon = {
+                            FadeVisibility(windowSizeClass.widthSizeClass != WindowWidthSizeClass.Compact) {
+                                BackButton(navigator::navigateBack)
+                            }
+                        },
                     )
                 }
             }
