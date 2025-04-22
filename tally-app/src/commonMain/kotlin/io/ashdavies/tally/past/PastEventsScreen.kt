@@ -19,6 +19,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.ScaffoldDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -30,7 +31,6 @@ import com.slack.circuit.runtime.screen.Screen
 import io.ashdavies.parcelable.Parcelable
 import io.ashdavies.parcelable.Parcelize
 import io.ashdavies.tally.events.EventsTopBar
-import io.ashdavies.tally.material.LocalWindowSizeClass
 import io.ashdavies.tally.material.padding
 import io.ashdavies.tally.material.spacing
 import io.ashdavies.tally.material.values
@@ -71,9 +71,10 @@ internal object PastEventsScreen : Parcelable, Screen {
 @Composable
 internal fun PastEventsScreen(
     state: PastEventsScreen.State,
+    windowSizeClass: WindowSizeClass,
     modifier: Modifier = Modifier,
 ) {
-    val columnCount = when (LocalWindowSizeClass.current.widthSizeClass) {
+    val columnCount = when (windowSizeClass.widthSizeClass) {
         WindowWidthSizeClass.Compact -> PastEventsDefaults.MIN_COLUMN_COUNT
         else -> PastEventsDefaults.MAX_COLUMN_COUNT
     }
@@ -107,7 +108,14 @@ internal fun PastEventsScreen(
                     PastEventItem(
                         item = item,
                         modifier = Modifier
-                            .clickable { eventSink(PastEventsScreen.Event.MarkAttendance(item.uuid, !item.attended)) }
+                            .clickable {
+                                eventSink(
+                                    PastEventsScreen.Event.MarkAttendance(
+                                        id = item.uuid,
+                                        value = !item.attended,
+                                    ),
+                                )
+                            }
                             .animateItem(),
                     )
                 }

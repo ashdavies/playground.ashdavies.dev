@@ -1,5 +1,6 @@
 package io.ashdavies.tally.circuit
 
+import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -42,11 +43,13 @@ import io.ashdavies.tally.events.Event as DatabaseEvent
 @Composable
 public fun rememberCircuit(
     platformContext: PlatformContext,
+    windowSizeClass: WindowSizeClass,
     eventPager: Pager<String, DatabaseEvent> = rememberEventPager(),
     playgroundDatabase: PlaygroundDatabase = LocalTransacter.current as PlaygroundDatabase,
 ): Circuit = remember(platformContext) {
     val identityManager = IdentityManager(platformContext, playgroundDatabase.credentialQueries)
-    val storageManager = StorageManager(platformContext, PathProvider(platformContext), Dispatchers.IO)
+    val storageManager =
+        StorageManager(platformContext, PathProvider(platformContext), Dispatchers.IO)
     val imageManager = ImageManager(storageManager, playgroundDatabase.imageQueries)
     val inMemoryHttpClient = HttpClient(inMemoryHttpClientEngine(), DefaultHttpConfiguration)
     val syncManager = SyncManager(inMemoryHttpClient, File::readChannel)
@@ -65,7 +68,11 @@ public fun rememberCircuit(
                 presenterOf { UpcomingEventsPresenter(eventPager) }
             },
             uiFactory = { state, modifier ->
-                UpcomingEventsScreen(state, modifier)
+                UpcomingEventsScreen(
+                    state = state,
+                    windowSizeClass = windowSizeClass,
+                    modifier = modifier,
+                )
             },
         )
         .addCircuit<GalleryScreen, GalleryScreen.State>(
@@ -87,7 +94,11 @@ public fun rememberCircuit(
                 }
             },
             uiFactory = { state, modifier ->
-                PastEventsScreen(state, modifier)
+                PastEventsScreen(
+                    state = state,
+                    windowSizeClass = windowSizeClass,
+                    modifier = modifier,
+                )
             },
         )
         .build()

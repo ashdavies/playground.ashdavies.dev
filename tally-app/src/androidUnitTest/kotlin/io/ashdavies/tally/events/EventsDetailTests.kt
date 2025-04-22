@@ -16,7 +16,7 @@ internal class EventsDetailTests {
             MaterialPreviewTheme {
                 EventsDetailPane(
                     item = DroidconBerlin,
-                    onBackClick = { },
+                    navigationIcon = { },
                 )
             }
         }
