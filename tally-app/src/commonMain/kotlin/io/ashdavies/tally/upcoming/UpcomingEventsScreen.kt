@@ -74,8 +74,7 @@ internal fun UpcomingEventsScreen(
                     EventsDetailPane(
                         item = requireNotNull(state.itemList[it]),
                         navigationIcon = {
-                            println("=== ${windowSizeClass.widthSizeClass}")
-                            FadeVisibility(windowSizeClass.widthSizeClass != WindowWidthSizeClass.Compact) {
+                            FadeVisibility(windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact) {
                                 BackButton(navigator::navigateBack)
                             }
                         },
