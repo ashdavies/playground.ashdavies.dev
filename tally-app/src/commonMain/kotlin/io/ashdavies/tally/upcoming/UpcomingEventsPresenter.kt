@@ -6,6 +6,8 @@ import androidx.paging.Pager
 import androidx.paging.cachedIn
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.slack.circuit.retained.rememberRetained
+import io.ashdavies.analytics.RemoteAnalytics
+import io.ashdavies.analytics.logEvent
 import io.ashdavies.tally.events.Event
 import io.ashdavies.tally.events.paging.errorMessage
 import io.ashdavies.tally.events.paging.isRefreshing
@@ -14,6 +16,7 @@ import kotlinx.collections.immutable.toImmutableList
 @Composable
 internal fun UpcomingEventsPresenter(
     eventPager: Pager<String, Event>,
+    remoteAnalytics: RemoteAnalytics,
 ): UpcomingEventsScreen.State {
     val coroutineScope = rememberCoroutineScope()
     val pagingItems = rememberRetained(coroutineScope) {
@@ -29,7 +32,10 @@ internal fun UpcomingEventsPresenter(
         errorMessage = pagingItems.loadState.errorMessage,
     ) { event ->
         when (event) {
-            is UpcomingEventsScreen.Event.Refresh -> pagingItems.refresh()
+            is UpcomingEventsScreen.Event.Refresh -> {
+                remoteAnalytics.logEvent("events_refresh")
+                pagingItems.refresh()
+            }
         }
     }
 }

@@ -41,7 +41,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil3.compose.rememberAsyncImagePainter
-import io.ashdavies.analytics.OnClick
 import io.ashdavies.placeholder.PlaceholderHighlight
 import io.ashdavies.placeholder.fade
 import io.ashdavies.placeholder.placeholder
@@ -74,7 +73,7 @@ internal fun UpcomingEventsPane(
     ) { contentPadding ->
         PullToRefreshBox(
             isRefreshing = state.isRefreshing,
-            onRefresh = OnClick("events_refresh") { eventSink(UpcomingEventsScreen.Event.Refresh) },
+            onRefresh = { eventSink(UpcomingEventsScreen.Event.Refresh) },
             modifier = Modifier.padding(contentPadding),
         ) {
             if (state.errorMessage != null) {

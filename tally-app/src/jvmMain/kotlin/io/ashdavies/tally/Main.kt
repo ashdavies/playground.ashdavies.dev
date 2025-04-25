@@ -4,7 +4,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import com.slack.circuit.backstack.rememberSaveableBackStack
@@ -12,8 +11,6 @@ import com.slack.circuit.foundation.CircuitCompositionLocals
 import com.slack.circuit.foundation.NavigableCircuitContent
 import com.slack.circuit.foundation.rememberCircuitNavigator
 import com.slack.circuit.overlay.ContentWithOverlays
-import io.ashdavies.analytics.LocalAnalytics
-import io.ashdavies.analytics.RemoteAnalytics
 import io.ashdavies.check.ProvideAppCheckToken
 import io.ashdavies.content.PlatformContext
 import io.ashdavies.http.ProvideHttpClient
@@ -60,46 +57,36 @@ private fun TallyApp(
             }
         },
     ) {
-        ProvideRemoteLocals {
-            ProvideAppCheckToken {
-                val transacter = rememberTransacter(
-                    schema = PlaygroundDatabase.Schema,
-                    context = platformContext,
-                ) { PlaygroundDatabase(it) }
+        ProvideAppCheckToken {
+            val transacter = rememberTransacter(
+                schema = PlaygroundDatabase.Schema,
+                context = platformContext,
+            ) { PlaygroundDatabase(it) }
 
-                ProvideTransacter(transacter) {
-                    MaterialTheme(dynamicColorScheme()) {
-                        @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
-                        val circuit = rememberCircuit(
-                            platformContext = platformContext,
-                            windowSizeClass = calculateWindowSizeClass(),
-                        )
+            ProvideTransacter(transacter) {
+                MaterialTheme(dynamicColorScheme()) {
+                    @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
+                    val circuit = rememberCircuit(
+                        platformContext = platformContext,
+                        windowSizeClass = calculateWindowSizeClass(),
+                    )
 
-                        CircuitCompositionLocals(circuit) {
-                            ContentWithOverlays {
-                                val backStack = rememberSaveableBackStack(HomeScreen)
+                    CircuitCompositionLocals(circuit) {
+                        ContentWithOverlays {
+                            val backStack = rememberSaveableBackStack(HomeScreen)
 
-                                NavigableCircuitContent(
-                                    navigator = rememberCircuitNavigator(backStack) { onClose() },
-                                    backStack = backStack,
-                                    decoration = KeyNavigationDecoration(
-                                        decoration = circuit.defaultNavDecoration,
-                                        onBackInvoked = backStack::pop,
-                                    ),
-                                )
-                            }
+                            NavigableCircuitContent(
+                                navigator = rememberCircuitNavigator(backStack) { onClose() },
+                                backStack = backStack,
+                                decoration = KeyNavigationDecoration(
+                                    decoration = circuit.defaultNavDecoration,
+                                    onBackInvoked = backStack::pop,
+                                ),
+                            )
                         }
                     }
                 }
             }
         }
     }
-}
-
-@Composable
-private fun ProvideRemoteLocals(content: @Composable () -> Unit) {
-    CompositionLocalProvider(
-        LocalAnalytics provides RemoteAnalytics { _, _ -> },
-        content = content,
-    )
 }
