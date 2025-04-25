@@ -4,6 +4,6 @@ import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.analytics.logEvent
 import com.google.firebase.ktx.Firebase
 
-internal actual val firebaseAnalytics = RemoteAnalytics { name, block ->
+public actual fun RemoteAnalytics(): RemoteAnalytics = RemoteAnalytics { name, block ->
     Firebase.analytics.logEvent(name) { block(ParametersBuilder(::param)) }
 }

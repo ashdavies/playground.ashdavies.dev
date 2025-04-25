@@ -13,6 +13,7 @@ import com.slack.circuit.runtime.presenter.Presenter
 import com.slack.circuit.runtime.presenter.presenterOf
 import com.slack.circuit.runtime.screen.Screen
 import io.ashdavies.aggregator.PastConferencesCallable
+import io.ashdavies.analytics.RemoteAnalytics
 import io.ashdavies.config.RemoteConfig
 import io.ashdavies.content.PlatformContext
 import io.ashdavies.content.reportFullyDrawn
@@ -48,6 +49,7 @@ public fun rememberCircuit(
     eventPager: Pager<String, DatabaseEvent> = rememberEventPager(),
     playgroundDatabase: PlaygroundDatabase = LocalTransacter.current as PlaygroundDatabase,
 ): Circuit = remember(platformContext) {
+    val remoteAnalytics = RemoteAnalytics()
     val storageManager = StorageManager(
         platformContext = platformContext,
         pathProvider = PathProvider(platformContext),
@@ -56,8 +58,8 @@ public fun rememberCircuit(
 
     Circuit.Builder()
         .addHomeScreenCircuit(platformContext, playgroundDatabase)
-        .addUpcomingEventsScreenCircuit(eventPager, windowSizeClass)
-        .addGalleryScreenCircuit(storageManager, playgroundDatabase)
+        .addUpcomingEventsScreenCircuit(eventPager, remoteAnalytics, windowSizeClass)
+        .addGalleryScreenCircuit(storageManager, playgroundDatabase, remoteAnalytics)
         .addPastEventsScreenCircuit(playgroundDatabase, windowSizeClass)
         .build()
 }
@@ -89,10 +91,16 @@ private fun Circuit.Builder.addHomeScreenCircuit(
 
 private fun Circuit.Builder.addUpcomingEventsScreenCircuit(
     eventPager: Pager<String, DatabaseEvent>,
+    remoteAnalytics: RemoteAnalytics,
     windowSizeClass: WindowSizeClass,
 ): Circuit.Builder = addCircuit<UpcomingEventsScreen, UpcomingEventsScreen.State>(
     presenterFactory = { _, _, _ ->
-        presenterOf { UpcomingEventsPresenter(eventPager) }
+        presenterOf {
+            UpcomingEventsPresenter(
+                eventPager = eventPager,
+                remoteAnalytics = remoteAnalytics,
+            )
+        }
     },
     uiFactory = { state, modifier ->
         UpcomingEventsScreen(
@@ -106,6 +114,7 @@ private fun Circuit.Builder.addUpcomingEventsScreenCircuit(
 private fun Circuit.Builder.addGalleryScreenCircuit(
     storageManager: StorageManager,
     playgroundDatabase: PlaygroundDatabase,
+    remoteAnalytics: RemoteAnalytics,
 ): Circuit.Builder = addCircuit<GalleryScreen, GalleryScreen.State>(
     presenterFactory = { _, _, _ ->
         presenterOf {
@@ -121,6 +130,7 @@ private fun Circuit.Builder.addGalleryScreenCircuit(
                     ),
                     reader = File::readChannel,
                 ),
+                remoteAnalytics = remoteAnalytics,
             )
         }
     },

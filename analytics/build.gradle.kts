@@ -1,5 +1,4 @@
 plugins {
-    id("io.ashdavies.compose")
     id("io.ashdavies.default")
 }
 

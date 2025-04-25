@@ -7,3 +7,9 @@ public fun interface RemoteAnalytics {
 public fun interface ParametersBuilder {
     public fun param(key: String, value: String)
 }
+
+public expect fun RemoteAnalytics(): RemoteAnalytics
+
+public fun RemoteAnalytics.logEvent(name: String) {
+    logEvent(name) { }
+}

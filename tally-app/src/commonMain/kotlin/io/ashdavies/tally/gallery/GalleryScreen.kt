@@ -60,7 +60,6 @@ import com.slack.circuit.foundation.internal.BackHandler
 import com.slack.circuit.runtime.CircuitUiEvent
 import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.screen.Screen
-import io.ashdavies.analytics.OnClick
 import io.ashdavies.parcelable.Parcelable
 import io.ashdavies.parcelable.Parcelize
 import io.ashdavies.tally.events.EventsTopBar
@@ -132,9 +131,7 @@ internal fun GalleryScreen(
         topBar = { EventsTopBar(stringResource(Res.string.past_events)) },
         floatingActionButton = {
             GalleryActionButton(
-                onClick = OnClick("gallery_capture") {
-                    eventSink(GalleryScreen.Event.Capture.Request)
-                },
+                { eventSink(GalleryScreen.Event.Capture.Request) },
                 isActive = state.showCapture,
             )
         },
