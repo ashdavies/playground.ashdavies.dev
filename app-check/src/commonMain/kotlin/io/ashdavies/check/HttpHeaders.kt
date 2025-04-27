@@ -1,4 +1,4 @@
-package io.ashdavies.http
+package io.ashdavies.check
 
 import io.ktor.http.HttpHeaders
 

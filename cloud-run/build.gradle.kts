@@ -56,8 +56,7 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            implementation(projects.appCheck.appCheckCommon)
-            implementation(projects.appCheck.appCheckSdk)
+            implementation(projects.appCheck)
             implementation(projects.asgService)
             implementation(projects.httpClient)
             implementation(projects.httpCommon)

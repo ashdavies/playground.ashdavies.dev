@@ -1,6 +1,6 @@
 package io.ashdavies.cloud
 
-import io.ashdavies.http.AppCheckToken
+import io.ashdavies.check.AppCheckToken
 import io.ashdavies.http.common.models.AppCheckToken
 import io.ashdavies.http.common.models.DecodedToken
 import io.ashdavies.http.common.models.Event

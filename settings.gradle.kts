@@ -55,9 +55,7 @@ enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 include(
     ":analytics",
-    ":app-check:app-check-client",
-    ":app-check:app-check-common",
-    ":app-check:app-check-sdk",
+    ":app-check",
     ":asg-service",
     ":cloud-run",
     ":composeApp",

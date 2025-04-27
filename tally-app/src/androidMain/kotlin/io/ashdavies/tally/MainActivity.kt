@@ -12,12 +12,13 @@ import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSiz
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.core.content.pm.PackageInfoCompat
+import com.google.firebase.appcheck.FirebaseAppCheck
+import com.google.firebase.appcheck.playintegrity.PlayIntegrityAppCheckProviderFactory
 import com.slack.circuit.backstack.rememberSaveableBackStack
 import com.slack.circuit.foundation.CircuitCompositionLocals
 import com.slack.circuit.foundation.NavigableCircuitContent
 import com.slack.circuit.foundation.rememberCircuitNavigator
 import com.slack.circuit.overlay.ContentWithOverlays
-import io.ashdavies.check.ProvideAppCheckToken
 import io.ashdavies.content.enableStrictMode
 import io.ashdavies.content.isDebuggable
 import io.ashdavies.http.ProvideHttpClient
@@ -28,6 +29,7 @@ import io.ashdavies.sql.ProvideTransacter
 import io.ashdavies.sql.rememberTransacter
 import io.ashdavies.tally.circuit.rememberCircuit
 import io.ashdavies.tally.home.HomeScreen
+import io.ashdavies.tally.security.FirebaseAppCheckHeader
 import io.ktor.client.plugins.DefaultRequest
 import io.ktor.client.plugins.cache.HttpCache
 import io.ktor.client.request.header
@@ -60,34 +62,39 @@ private fun TallyApp(activity: Activity) {
                 header("User-Agent", Build.PRODUCT)
             }
 
+            install(FirebaseAppCheckHeader) {
+                val factory = PlayIntegrityAppCheckProviderFactory.getInstance()
+                val appCheck = FirebaseAppCheck.getInstance()
+
+                appCheck.installAppCheckProviderFactory(factory)
+            }
+
             install(HttpCache) {
                 publicStorage(activity.resolveCacheDir())
             }
         },
     ) {
-        ProvideAppCheckToken {
-            val transacter = rememberTransacter(
-                schema = PlaygroundDatabase.Schema,
-                context = activity,
-            ) { PlaygroundDatabase(it) }
+        val transacter = rememberTransacter(
+            schema = PlaygroundDatabase.Schema,
+            context = activity,
+        ) { PlaygroundDatabase(it) }
 
-            ProvideTransacter(transacter) {
-                MaterialTheme(dynamicColorScheme()) {
-                    @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
-                    val circuit = rememberCircuit(
-                        platformContext = activity,
-                        windowSizeClass = calculateWindowSizeClass(activity),
-                    )
+        ProvideTransacter(transacter) {
+            MaterialTheme(dynamicColorScheme()) {
+                @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
+                val circuit = rememberCircuit(
+                    platformContext = activity,
+                    windowSizeClass = calculateWindowSizeClass(activity),
+                )
 
-                    CircuitCompositionLocals(circuit) {
-                        ContentWithOverlays {
-                            val backStack = rememberSaveableBackStack(HomeScreen)
+                CircuitCompositionLocals(circuit) {
+                    ContentWithOverlays {
+                        val backStack = rememberSaveableBackStack(HomeScreen)
 
-                            NavigableCircuitContent(
-                                navigator = rememberCircuitNavigator(backStack),
-                                backStack = backStack,
-                            )
-                        }
+                        NavigableCircuitContent(
+                            navigator = rememberCircuitNavigator(backStack),
+                            backStack = backStack,
+                        )
                     }
                 }
             }

@@ -11,7 +11,6 @@ import com.slack.circuit.foundation.CircuitCompositionLocals
 import com.slack.circuit.foundation.NavigableCircuitContent
 import com.slack.circuit.foundation.rememberCircuitNavigator
 import com.slack.circuit.overlay.ContentWithOverlays
-import io.ashdavies.check.ProvideAppCheckToken
 import io.ashdavies.content.PlatformContext
 import io.ashdavies.http.ProvideHttpClient
 import io.ashdavies.http.publicStorage
@@ -57,33 +56,31 @@ private fun TallyApp(
             }
         },
     ) {
-        ProvideAppCheckToken {
-            val transacter = rememberTransacter(
-                schema = PlaygroundDatabase.Schema,
-                context = platformContext,
-            ) { PlaygroundDatabase(it) }
+        val transacter = rememberTransacter(
+            schema = PlaygroundDatabase.Schema,
+            context = platformContext,
+        ) { PlaygroundDatabase(it) }
 
-            ProvideTransacter(transacter) {
-                MaterialTheme(dynamicColorScheme()) {
-                    @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
-                    val circuit = rememberCircuit(
-                        platformContext = platformContext,
-                        windowSizeClass = calculateWindowSizeClass(),
-                    )
+        ProvideTransacter(transacter) {
+            MaterialTheme(dynamicColorScheme()) {
+                @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
+                val circuit = rememberCircuit(
+                    platformContext = platformContext,
+                    windowSizeClass = calculateWindowSizeClass(),
+                )
 
-                    CircuitCompositionLocals(circuit) {
-                        ContentWithOverlays {
-                            val backStack = rememberSaveableBackStack(HomeScreen)
+                CircuitCompositionLocals(circuit) {
+                    ContentWithOverlays {
+                        val backStack = rememberSaveableBackStack(HomeScreen)
 
-                            NavigableCircuitContent(
-                                navigator = rememberCircuitNavigator(backStack) { onClose() },
-                                backStack = backStack,
-                                decoration = KeyNavigationDecoration(
-                                    decoration = circuit.defaultNavDecoration,
-                                    onBackInvoked = backStack::pop,
-                                ),
-                            )
-                        }
+                        NavigableCircuitContent(
+                            navigator = rememberCircuitNavigator(backStack) { onClose() },
+                            backStack = backStack,
+                            decoration = KeyNavigationDecoration(
+                                decoration = circuit.defaultNavDecoration,
+                                onBackInvoked = backStack::pop,
+                            ),
+                        )
                     }
                 }
             }
