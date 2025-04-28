@@ -100,7 +100,6 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             implementation(projects.analytics)
-            implementation(projects.appCheck.appCheckClient)
             implementation(projects.asgService)
             implementation(projects.composeMaterial)
             implementation(projects.httpClient)
@@ -155,6 +154,7 @@ kotlin {
             implementation(libs.google.android.material)
 
             implementation(dependencies.platform(libs.google.firebase.bom))
+            implementation(libs.google.firebase.appcheck.playintegrity)
             implementation(libs.google.firebase.crashlytics)
         }
 
