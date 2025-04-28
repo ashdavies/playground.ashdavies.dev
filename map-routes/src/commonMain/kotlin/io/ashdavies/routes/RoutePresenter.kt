@@ -7,7 +7,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.slack.circuit.retained.rememberRetained
 import io.ashdavies.delegates.notNull
-import io.ashdavies.http.LocalHttpClient
 import io.ashdavies.routing.ComputeRoutesCallable
 import io.ashdavies.routing.ComputeRoutesError
 import io.ashdavies.routing.ComputeRoutesRequest
@@ -18,7 +17,7 @@ private const val ROUTES_BASE_URL = "https://routes.googleapis.com"
 @Composable
 internal fun RoutePresenter(
     locationService: LocationService,
-    httpClient: HttpClient = LocalHttpClient.current,
+    httpClient: HttpClient,
 ): RouteScreen.State {
     var startPosition by rememberRetained { mutableStateOf(KnownLocations.Berlin) }
     val locationPermissionState = rememberLocationPermissionState()

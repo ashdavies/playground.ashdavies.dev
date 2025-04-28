@@ -18,15 +18,18 @@ import io.ashdavies.config.RemoteConfig
 import io.ashdavies.content.PlatformContext
 import io.ashdavies.content.reportFullyDrawn
 import io.ashdavies.http.DefaultHttpConfiguration
-import io.ashdavies.http.LocalHttpClient
+import io.ashdavies.identity.CredentialQueries
 import io.ashdavies.identity.IdentityManager
 import io.ashdavies.sql.LocalTransacter
 import io.ashdavies.tally.PlaygroundDatabase
+import io.ashdavies.tally.events.AttendanceQueries
+import io.ashdavies.tally.events.paging.PagedUpcomingEventsCallable
 import io.ashdavies.tally.events.paging.rememberEventPager
 import io.ashdavies.tally.gallery.File
 import io.ashdavies.tally.gallery.GalleryPresenter
 import io.ashdavies.tally.gallery.GalleryScreen
 import io.ashdavies.tally.gallery.ImageManager
+import io.ashdavies.tally.gallery.ImageQueries
 import io.ashdavies.tally.gallery.PathProvider
 import io.ashdavies.tally.gallery.StorageManager
 import io.ashdavies.tally.gallery.SyncManager
@@ -45,28 +48,46 @@ import io.ashdavies.tally.events.Event as DatabaseEvent
 @Composable
 public fun rememberCircuit(
     platformContext: PlatformContext,
+    httpClient: HttpClient,
     windowSizeClass: WindowSizeClass,
-    eventPager: Pager<String, DatabaseEvent> = rememberEventPager(),
-    playgroundDatabase: PlaygroundDatabase = LocalTransacter.current as PlaygroundDatabase,
-): Circuit = remember(platformContext) {
-    val remoteAnalytics = RemoteAnalytics()
-    val storageManager = StorageManager(
-        platformContext = platformContext,
-        pathProvider = PathProvider(platformContext),
-        coroutineContext = Dispatchers.IO,
+): Circuit {
+    val playgroundDatabase = LocalTransacter.current as PlaygroundDatabase
+
+    val eventPager = rememberEventPager(
+        eventsCallable = PagedUpcomingEventsCallable(
+            httpClient = httpClient,
+            remoteConfig = remember { RemoteConfig() },
+        ),
     )
 
-    Circuit.Builder()
-        .addHomeScreenCircuit(platformContext, playgroundDatabase)
-        .addUpcomingEventsScreenCircuit(eventPager, remoteAnalytics, windowSizeClass)
-        .addGalleryScreenCircuit(storageManager, playgroundDatabase, remoteAnalytics)
-        .addPastEventsScreenCircuit(playgroundDatabase, windowSizeClass)
-        .build()
+    return remember(platformContext) {
+        val remoteAnalytics = RemoteAnalytics()
+        val storageManager = StorageManager(
+            platformContext = platformContext,
+            pathProvider = PathProvider(platformContext),
+            coroutineContext = Dispatchers.IO,
+        )
+
+        Circuit.Builder()
+            .addHomeScreenCircuit(platformContext, playgroundDatabase.credentialQueries)
+            .addUpcomingEventsScreenCircuit(eventPager, remoteAnalytics, windowSizeClass)
+            .addGalleryScreenCircuit(
+                storageManager,
+                playgroundDatabase.imageQueries,
+                remoteAnalytics,
+            )
+            .addPastEventsScreenCircuit(
+                httpClient,
+                playgroundDatabase.attendanceQueries,
+                windowSizeClass,
+            )
+            .build()
+    }
 }
 
 private fun Circuit.Builder.addHomeScreenCircuit(
     platformContext: PlatformContext,
-    playgroundDatabase: PlaygroundDatabase,
+    credentialQueries: CredentialQueries,
 ): Circuit.Builder = addCircuit<HomeScreen, HomeScreen.State>(
     presenterFactory = { _, navigator, _ ->
         presenterOf {
@@ -74,7 +95,7 @@ private fun Circuit.Builder.addHomeScreenCircuit(
                 remoteConfig = RemoteConfig(),
                 identityManager = IdentityManager(
                     platformContext = platformContext,
-                    credentialQueries = playgroundDatabase.credentialQueries,
+                    credentialQueries = credentialQueries,
                 ),
                 navigator = navigator,
             )
@@ -113,7 +134,7 @@ private fun Circuit.Builder.addUpcomingEventsScreenCircuit(
 
 private fun Circuit.Builder.addGalleryScreenCircuit(
     storageManager: StorageManager,
-    playgroundDatabase: PlaygroundDatabase,
+    imageQueries: ImageQueries,
     remoteAnalytics: RemoteAnalytics,
 ): Circuit.Builder = addCircuit<GalleryScreen, GalleryScreen.State>(
     presenterFactory = { _, _, _ ->
@@ -121,7 +142,7 @@ private fun Circuit.Builder.addGalleryScreenCircuit(
             GalleryPresenter(
                 imageManager = ImageManager(
                     storageManager = storageManager,
-                    imageQueries = playgroundDatabase.imageQueries,
+                    imageQueries = imageQueries,
                 ),
                 syncManager = SyncManager(
                     client = HttpClient(
@@ -144,14 +165,15 @@ private fun Circuit.Builder.addGalleryScreenCircuit(
 )
 
 private fun Circuit.Builder.addPastEventsScreenCircuit(
-    playgroundDatabase: PlaygroundDatabase,
+    httpClient: HttpClient,
+    attendanceQueries: AttendanceQueries,
     windowSizeClass: WindowSizeClass,
 ): Circuit.Builder = addCircuit<PastEventsScreen, PastEventsScreen.State>(
     presenterFactory = { _, _, _ ->
         presenterOf {
             PastEventsPresenter(
-                pastConferencesCallable = PastConferencesCallable(LocalHttpClient.current),
-                attendanceQueries = playgroundDatabase.attendanceQueries,
+                pastConferencesCallable = PastConferencesCallable(httpClient),
+                attendanceQueries = attendanceQueries,
                 ioDispatcher = Dispatchers.IO,
             )
         }

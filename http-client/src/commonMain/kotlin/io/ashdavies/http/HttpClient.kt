@@ -1,9 +1,5 @@
 package io.ashdavies.http
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.ProvidableCompositionLocal
-import androidx.compose.runtime.staticCompositionLocalOf
 import io.ktor.client.HttpClient
 import io.ktor.client.HttpClientConfig
 import io.ktor.client.plugins.DefaultRequest
@@ -18,12 +14,9 @@ import io.ktor.http.contentType
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 
-public val LocalHttpClient: ProvidableCompositionLocal<HttpClient> = staticCompositionLocalOf {
-    HttpClient(DefaultHttpConfiguration)
-}
-
-public fun HttpClientConfig<*>.default() {
+public fun defaultHttpClient(block: HttpClientConfig<*>.() -> Unit): HttpClient = HttpClient {
     DefaultHttpConfiguration()
+    block()
 }
 
 public val DefaultHttpConfiguration: HttpClientConfig<*>.() -> Unit = {
@@ -40,15 +33,4 @@ public val DefaultHttpConfiguration: HttpClientConfig<*>.() -> Unit = {
         logger = Logger.SIMPLE
         level = LogLevel.ALL
     }
-}
-
-@Composable
-public fun ProvideHttpClient(
-    config: HttpClientConfig<*>.() -> Unit,
-    content: @Composable () -> Unit,
-) {
-    CompositionLocalProvider(
-        LocalHttpClient provides LocalHttpClient.current.config(config),
-        content = content,
-    )
 }

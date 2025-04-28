@@ -11,6 +11,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.core.content.pm.PackageInfoCompat
 import com.google.firebase.appcheck.FirebaseAppCheck
 import com.google.firebase.appcheck.playintegrity.PlayIntegrityAppCheckProviderFactory
@@ -21,7 +22,7 @@ import com.slack.circuit.foundation.rememberCircuitNavigator
 import com.slack.circuit.overlay.ContentWithOverlays
 import io.ashdavies.content.enableStrictMode
 import io.ashdavies.content.isDebuggable
-import io.ashdavies.http.ProvideHttpClient
+import io.ashdavies.http.defaultHttpClient
 import io.ashdavies.http.publicStorage
 import io.ashdavies.io.resolveCacheDir
 import io.ashdavies.material.dynamicColorScheme
@@ -53,51 +54,53 @@ internal class MainActivity : ComponentActivity() {
 
 @Composable
 private fun TallyApp(activity: Activity) {
-    ProvideHttpClient(
-        config = {
-            install(DefaultRequest) {
-                header("X-Android-Cert", activity.getFirstSignatureOrNull())
-                header("X-Android-Package", activity.packageName)
-                header("X-API-Key", BuildConfig.ANDROID_API_KEY)
-                header("User-Agent", Build.PRODUCT)
-            }
+    val transacter = rememberTransacter(
+        schema = PlaygroundDatabase.Schema,
+        context = activity,
+    ) { PlaygroundDatabase(it) }
 
-            install(FirebaseAppCheckHeader) {
-                val factory = PlayIntegrityAppCheckProviderFactory.getInstance()
-                val appCheck = FirebaseAppCheck.getInstance()
+    ProvideTransacter(transacter) {
+        MaterialTheme(dynamicColorScheme()) {
+            @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
+            val circuit = rememberCircuit(
+                platformContext = activity,
+                httpClient = rememberHttpClient(activity),
+                windowSizeClass = calculateWindowSizeClass(activity),
+            )
 
-                appCheck.installAppCheckProviderFactory(factory)
-            }
+            CircuitCompositionLocals(circuit) {
+                ContentWithOverlays {
+                    val backStack = rememberSaveableBackStack(HomeScreen)
 
-            install(HttpCache) {
-                publicStorage(activity.resolveCacheDir())
-            }
-        },
-    ) {
-        val transacter = rememberTransacter(
-            schema = PlaygroundDatabase.Schema,
-            context = activity,
-        ) { PlaygroundDatabase(it) }
-
-        ProvideTransacter(transacter) {
-            MaterialTheme(dynamicColorScheme()) {
-                @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
-                val circuit = rememberCircuit(
-                    platformContext = activity,
-                    windowSizeClass = calculateWindowSizeClass(activity),
-                )
-
-                CircuitCompositionLocals(circuit) {
-                    ContentWithOverlays {
-                        val backStack = rememberSaveableBackStack(HomeScreen)
-
-                        NavigableCircuitContent(
-                            navigator = rememberCircuitNavigator(backStack),
-                            backStack = backStack,
-                        )
-                    }
+                    NavigableCircuitContent(
+                        navigator = rememberCircuitNavigator(backStack),
+                        backStack = backStack,
+                    )
                 }
             }
+        }
+    }
+}
+
+@Composable
+private fun rememberHttpClient(activity: Activity) = remember(activity) {
+    defaultHttpClient {
+        install(DefaultRequest) {
+            header("X-Android-Cert", activity.getFirstSignatureOrNull())
+            header("X-Android-Package", activity.packageName)
+            header("X-API-Key", BuildConfig.ANDROID_API_KEY)
+            header("User-Agent", Build.PRODUCT)
+        }
+
+        install(FirebaseAppCheckHeader) {
+            val factory = PlayIntegrityAppCheckProviderFactory.getInstance()
+            val appCheck = FirebaseAppCheck.getInstance()
+
+            appCheck.installAppCheckProviderFactory(factory)
+        }
+
+        install(HttpCache) {
+            publicStorage(activity.resolveCacheDir())
         }
     }
 }
