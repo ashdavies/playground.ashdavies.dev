@@ -100,6 +100,7 @@ private fun rememberHttpClient(activity: Activity) = remember(activity) {
 }
 
 @Composable
+@Suppress("RememberReturnType")
 private fun rememberPlaygroundDatabase(context: PlatformContext) = remember(context) {
     DatabaseFactory(
         schema = PlaygroundDatabase.Schema,
