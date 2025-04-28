@@ -2,8 +2,6 @@ complexity:
   LongParameterList:
     ignoreDefaultParameters: true
 Compose:
-  CompositionLocalAllowlist:
-    active: false
   ComposableNaming:
     excludes: ['**/*Presenter.kt']
 naming:
