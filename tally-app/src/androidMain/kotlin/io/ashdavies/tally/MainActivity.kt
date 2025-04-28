@@ -20,14 +20,14 @@ import com.slack.circuit.foundation.CircuitCompositionLocals
 import com.slack.circuit.foundation.NavigableCircuitContent
 import com.slack.circuit.foundation.rememberCircuitNavigator
 import com.slack.circuit.overlay.ContentWithOverlays
+import io.ashdavies.content.PlatformContext
 import io.ashdavies.content.enableStrictMode
 import io.ashdavies.content.isDebuggable
 import io.ashdavies.http.defaultHttpClient
 import io.ashdavies.http.publicStorage
 import io.ashdavies.io.resolveCacheDir
 import io.ashdavies.material.dynamicColorScheme
-import io.ashdavies.sql.ProvideTransacter
-import io.ashdavies.sql.rememberTransacter
+import io.ashdavies.sql.DatabaseFactory
 import io.ashdavies.tally.circuit.rememberCircuit
 import io.ashdavies.tally.home.HomeScreen
 import io.ashdavies.tally.security.FirebaseAppCheckHeader
@@ -54,29 +54,23 @@ internal class MainActivity : ComponentActivity() {
 
 @Composable
 private fun TallyApp(activity: Activity) {
-    val transacter = rememberTransacter(
-        schema = PlaygroundDatabase.Schema,
-        context = activity,
-    ) { PlaygroundDatabase(it) }
+    MaterialTheme(dynamicColorScheme()) {
+        @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
+        val circuit = rememberCircuit(
+            playgroundDatabase = rememberPlaygroundDatabase(activity),
+            platformContext = activity,
+            httpClient = rememberHttpClient(activity),
+            windowSizeClass = calculateWindowSizeClass(activity),
+        )
 
-    ProvideTransacter(transacter) {
-        MaterialTheme(dynamicColorScheme()) {
-            @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
-            val circuit = rememberCircuit(
-                platformContext = activity,
-                httpClient = rememberHttpClient(activity),
-                windowSizeClass = calculateWindowSizeClass(activity),
-            )
+        CircuitCompositionLocals(circuit) {
+            ContentWithOverlays {
+                val backStack = rememberSaveableBackStack(HomeScreen)
 
-            CircuitCompositionLocals(circuit) {
-                ContentWithOverlays {
-                    val backStack = rememberSaveableBackStack(HomeScreen)
-
-                    NavigableCircuitContent(
-                        navigator = rememberCircuitNavigator(backStack),
-                        backStack = backStack,
-                    )
-                }
+                NavigableCircuitContent(
+                    navigator = rememberCircuitNavigator(backStack),
+                    backStack = backStack,
+                )
             }
         }
     }
@@ -103,6 +97,16 @@ private fun rememberHttpClient(activity: Activity) = remember(activity) {
             publicStorage(activity.resolveCacheDir())
         }
     }
+}
+
+@Composable
+@Suppress("RememberReturnType")
+private fun rememberPlaygroundDatabase(context: PlatformContext) = remember(context) {
+    DatabaseFactory(
+        schema = PlaygroundDatabase.Schema,
+        context = context,
+        factory = { PlaygroundDatabase(it) },
+    )
 }
 
 private fun Context.getFirstSignatureOrNull(): String? {
