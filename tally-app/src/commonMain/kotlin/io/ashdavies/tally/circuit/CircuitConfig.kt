@@ -20,7 +20,6 @@ import io.ashdavies.content.reportFullyDrawn
 import io.ashdavies.http.DefaultHttpConfiguration
 import io.ashdavies.identity.CredentialQueries
 import io.ashdavies.identity.IdentityManager
-import io.ashdavies.sql.LocalTransacter
 import io.ashdavies.tally.PlaygroundDatabase
 import io.ashdavies.tally.events.AttendanceQueries
 import io.ashdavies.tally.events.paging.PagedUpcomingEventsCallable
@@ -47,17 +46,17 @@ import io.ashdavies.tally.events.Event as DatabaseEvent
 
 @Composable
 public fun rememberCircuit(
+    playgroundDatabase: PlaygroundDatabase,
     platformContext: PlatformContext,
     httpClient: HttpClient,
     windowSizeClass: WindowSizeClass,
 ): Circuit {
-    val playgroundDatabase = LocalTransacter.current as PlaygroundDatabase
-
     val eventPager = rememberEventPager(
         eventsCallable = PagedUpcomingEventsCallable(
             httpClient = httpClient,
             remoteConfig = remember { RemoteConfig() },
         ),
+        eventsQueries = playgroundDatabase.eventsQueries,
     )
 
     return remember(platformContext) {

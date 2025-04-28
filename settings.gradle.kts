@@ -76,7 +76,6 @@ include(
     ":platform-support",
     ":remote-config",
     ":sql-common",
-    ":sql-compose",
     ":sql-driver",
     ":tally-app",
 )

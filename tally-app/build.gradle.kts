@@ -111,7 +111,6 @@ kotlin {
             implementation(projects.platformSupport)
             implementation(projects.remoteConfig)
             implementation(projects.sqlCommon)
-            implementation(projects.sqlCompose)
             implementation(projects.sqlDriver)
 
             implementation(compose.components.resources)

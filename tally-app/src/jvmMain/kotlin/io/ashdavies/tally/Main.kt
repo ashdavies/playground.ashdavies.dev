@@ -18,8 +18,7 @@ import io.ashdavies.http.publicStorage
 import io.ashdavies.io.resolveCacheDir
 import io.ashdavies.material.dynamicColorScheme
 import io.ashdavies.playground.KeyNavigationDecoration
-import io.ashdavies.sql.ProvideTransacter
-import io.ashdavies.sql.rememberTransacter
+import io.ashdavies.sql.DatabaseFactory
 import io.ashdavies.tally.circuit.rememberCircuit
 import io.ashdavies.tally.home.HomeScreen
 import io.ktor.client.plugins.DefaultRequest
@@ -45,36 +44,39 @@ private fun TallyApp(
     platformContext: PlatformContext,
     onClose: () -> Unit,
 ) {
-    val transacter = rememberTransacter(
-        schema = PlaygroundDatabase.Schema,
-        context = platformContext,
-    ) { PlaygroundDatabase(it) }
+    MaterialTheme(dynamicColorScheme()) {
+        @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
+        val circuit = rememberCircuit(
+            playgroundDatabase = rememberPlaygroundDatabase(platformContext),
+            platformContext = platformContext,
+            httpClient = rememberHttpClient(platformContext),
+            windowSizeClass = calculateWindowSizeClass(),
+        )
 
-    ProvideTransacter(transacter) {
-        MaterialTheme(dynamicColorScheme()) {
-            @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
-            val circuit = rememberCircuit(
-                platformContext = platformContext,
-                httpClient = rememberHttpClient(platformContext),
-                windowSizeClass = calculateWindowSizeClass(),
-            )
+        CircuitCompositionLocals(circuit) {
+            ContentWithOverlays {
+                val backStack = rememberSaveableBackStack(HomeScreen)
 
-            CircuitCompositionLocals(circuit) {
-                ContentWithOverlays {
-                    val backStack = rememberSaveableBackStack(HomeScreen)
-
-                    NavigableCircuitContent(
-                        navigator = rememberCircuitNavigator(backStack) { onClose() },
-                        backStack = backStack,
-                        decoration = KeyNavigationDecoration(
-                            decoration = circuit.defaultNavDecoration,
-                            onBackInvoked = backStack::pop,
-                        ),
-                    )
-                }
+                NavigableCircuitContent(
+                    navigator = rememberCircuitNavigator(backStack) { onClose() },
+                    backStack = backStack,
+                    decoration = KeyNavigationDecoration(
+                        decoration = circuit.defaultNavDecoration,
+                        onBackInvoked = backStack::pop,
+                    ),
+                )
             }
         }
     }
+}
+
+@Composable
+private fun rememberPlaygroundDatabase(context: PlatformContext) = remember {
+    DatabaseFactory(
+        schema = PlaygroundDatabase.Schema,
+        context = context,
+        factory = { PlaygroundDatabase(it) },
+    )
 }
 
 @Composable

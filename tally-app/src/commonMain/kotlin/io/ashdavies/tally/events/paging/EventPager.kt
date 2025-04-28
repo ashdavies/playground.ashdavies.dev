@@ -6,14 +6,11 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.InvalidatingPagingSourceFactory
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
-import app.cash.sqldelight.Transacter
 import io.ashdavies.aggregator.AsgConference
 import io.ashdavies.aggregator.UpcomingConferencesCallable
 import io.ashdavies.config.RemoteConfig
 import io.ashdavies.config.getBoolean
 import io.ashdavies.http.common.models.EventCfp
-import io.ashdavies.sql.LocalTransacter
-import io.ashdavies.tally.PlaygroundDatabase
 import io.ashdavies.tally.events.EventsQueries
 import io.ashdavies.tally.events.callable.PagedUpcomingEventsCallable
 import io.ashdavies.tally.network.todayAsString
@@ -32,7 +29,7 @@ private suspend fun RemoteConfig.isPagingEnabled() = getBoolean("paging_enabled"
 @OptIn(ExperimentalPagingApi::class)
 internal fun rememberEventPager(
     eventsCallable: PagedUpcomingEventsCallable,
-    eventsQueries: EventsQueries = rememberLocalQueries { it.eventsQueries },
+    eventsQueries: EventsQueries,
     initialKey: String = todayAsString(),
     pageSize: Int = DEFAULT_PAGE_SIZE,
 ): Pager<String, DatabaseEvent> = remember(eventsQueries, eventsCallable) {
@@ -68,12 +65,6 @@ internal fun PagedUpcomingEventsCallable(
         }
     }
 }
-
-@Composable
-internal fun <T : Transacter> rememberLocalQueries(
-    database: PlaygroundDatabase = LocalTransacter.current as PlaygroundDatabase,
-    transform: (PlaygroundDatabase) -> T,
-): T = remember { transform(database) }
 
 private fun AsgConference.toEvent(imageUrl: String?): ApiEvent = ApiEvent(
     id = hash(), name = name, website = website, location = location, dateStart = dateStart,
