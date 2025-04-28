@@ -11,7 +11,6 @@ import io.ashdavies.aggregator.AsgConference
 import io.ashdavies.aggregator.UpcomingConferencesCallable
 import io.ashdavies.config.RemoteConfig
 import io.ashdavies.config.getBoolean
-import io.ashdavies.http.LocalHttpClient
 import io.ashdavies.http.common.models.EventCfp
 import io.ashdavies.sql.LocalTransacter
 import io.ashdavies.tally.PlaygroundDatabase
@@ -32,8 +31,8 @@ private suspend fun RemoteConfig.isPagingEnabled() = getBoolean("paging_enabled"
 @Composable
 @OptIn(ExperimentalPagingApi::class)
 internal fun rememberEventPager(
+    eventsCallable: PagedUpcomingEventsCallable,
     eventsQueries: EventsQueries = rememberLocalQueries { it.eventsQueries },
-    eventsCallable: PagedUpcomingEventsCallable = rememberUpcomingEventsCallable(),
     initialKey: String = todayAsString(),
     pageSize: Int = DEFAULT_PAGE_SIZE,
 ): Pager<String, DatabaseEvent> = remember(eventsQueries, eventsCallable) {
@@ -55,10 +54,9 @@ internal fun rememberEventPager(
     )
 }
 
-@Composable
-private fun rememberUpcomingEventsCallable(
-    httpClient: HttpClient = LocalHttpClient.current,
-    remoteConfig: RemoteConfig = RemoteConfig(),
+internal fun PagedUpcomingEventsCallable(
+    httpClient: HttpClient,
+    remoteConfig: RemoteConfig,
 ): PagedUpcomingEventsCallable {
     val pagedCallable by lazy { PagedUpcomingEventsCallable(httpClient, PLAYGROUND_BASE_URL) }
     val asgCallable by lazy { UpcomingConferencesCallable(httpClient) }

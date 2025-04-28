@@ -1,13 +1,18 @@
 package io.ashdavies.routes
 
-import androidx.compose.runtime.remember
 import com.slack.circuit.foundation.Circuit
 import com.slack.circuit.runtime.presenter.presenterOf
-import io.ashdavies.content.PlatformContext
+import io.ktor.client.HttpClient
 
-public fun Circuit.Builder.addRoutePresenter(context: PlatformContext): Circuit.Builder {
-    return addPresenter<RouteScreen, RouteScreen.State> { _, _, _ ->
-        presenterOf { RoutePresenter(remember(context) { LocationService(context) }) }
+internal fun Circuit.Builder.addRoutePresenter(
+    httpClient: HttpClient,
+    locationService: LocationService,
+): Circuit.Builder = addPresenter<RouteScreen, RouteScreen.State> { _, _, _ ->
+    presenterOf {
+        RoutePresenter(
+            locationService = locationService,
+            httpClient = httpClient,
+        )
     }
 }
 
