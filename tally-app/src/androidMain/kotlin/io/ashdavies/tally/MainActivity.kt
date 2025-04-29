@@ -22,7 +22,6 @@ import com.slack.circuit.foundation.rememberCircuitNavigator
 import com.slack.circuit.overlay.ContentWithOverlays
 import io.ashdavies.content.PlatformContext
 import io.ashdavies.content.enableStrictMode
-import io.ashdavies.content.isDebuggable
 import io.ashdavies.http.defaultHttpClient
 import io.ashdavies.http.publicStorage
 import io.ashdavies.io.resolveCacheDir
@@ -40,11 +39,9 @@ import java.util.Locale
 internal class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
 
-        if (BuildConfig.ANDROID_STRICT_MODE) {
-            enableStrictMode(isDebuggable())
-        }
+        enableEdgeToEdge()
+        enableStrictMode(false)
 
         setContent {
             TallyApp(this)
