@@ -14,7 +14,7 @@ public fun rememberCircuit(
     val locationService = LocationService(platformContext)
 
     Circuit.Builder()
-        .addRoutePresenter(httpClient, locationService)
-        .addRouteUi()
+        .addRoutesPresenter(httpClient, locationService)
+        .addRoutesUi()
         .build()
 }

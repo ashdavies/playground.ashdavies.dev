@@ -4,12 +4,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.ui.Modifier
 import io.ashdavies.routing.ComputeRoutesResponse
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 @Stable
-internal data class RouteMapState(
+internal data class RoutesMapState(
     val startPosition: LatLng = KnownLocations.Berlin,
     val endPosition: LatLng? = null,
     val routes: List<ComputeRoutesResponse.Route> = emptyList(),
@@ -17,8 +14,8 @@ internal data class RouteMapState(
 )
 
 @Composable
-internal expect fun RouteMap(
-    state: RouteMapState,
+internal expect fun RoutesMap(
+    state: RoutesMapState,
     onEndPosition: (LatLng) -> Unit,
     modifier: Modifier = Modifier,
 )
@@ -26,13 +23,4 @@ internal expect fun RouteMap(
 internal data class LatLng(
     val latitude: Double,
     val longitude: Double,
-) {
-    init {
-        val coroutineScope = CoroutineScope(Dispatchers.Main)
-        coroutineScope.launch { doSomething() }
-    }
-
-    private suspend fun doSomething() {
-        println("Doing something")
-    }
-}
+)

@@ -15,10 +15,10 @@ import io.ktor.client.HttpClient
 private const val ROUTES_BASE_URL = "https://routes.googleapis.com"
 
 @Composable
-internal fun RoutePresenter(
+internal fun RoutesPresenter(
     locationService: LocationService,
     httpClient: HttpClient,
-): RouteScreen.State {
+): RoutesScreen.State {
     var startPosition by rememberRetained { mutableStateOf(KnownLocations.Berlin) }
     val locationPermissionState = rememberLocationPermissionState()
 
@@ -39,7 +39,7 @@ internal fun RoutePresenter(
         )
     }
 
-    var mapState by rememberRetained { mutableStateOf(RouteMapState(startPosition)) }
+    var mapState by rememberRetained { mutableStateOf(RoutesMapState(startPosition)) }
     var errorMessage = null as String?
 
     LaunchedEffect(mapState.endPosition) {
@@ -58,7 +58,7 @@ internal fun RoutePresenter(
         }
     }
 
-    return RouteScreen.State(
+    return RoutesScreen.State(
         mapState = mapState,
         errorMessage = errorMessage,
     ) { }

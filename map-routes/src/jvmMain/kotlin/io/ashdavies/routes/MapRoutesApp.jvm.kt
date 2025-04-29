@@ -24,7 +24,7 @@ internal fun MapRoutesApp(onClose: () -> Unit) {
     val circuit = rememberCircuit(PlatformContext.Default, httpClient)
 
     CircuitCompositionLocals(circuit) {
-        val backStack = rememberSaveableBackStack(RouteScreen)
+        val backStack = rememberSaveableBackStack(RoutesScreen)
 
         NavigableCircuitContent(
             navigator = rememberCircuitNavigator(backStack) { onClose() },
