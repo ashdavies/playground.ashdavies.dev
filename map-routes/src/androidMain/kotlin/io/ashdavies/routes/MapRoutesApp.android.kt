@@ -26,7 +26,7 @@ internal fun MapRoutesApp(context: Context = LocalContext.current) {
 
     CircuitCompositionLocals(rememberCircuit(context, httpClient)) {
         ContentWithOverlays {
-            val backStack = rememberSaveableBackStack(RouteScreen)
+            val backStack = rememberSaveableBackStack(RoutesScreen)
 
             NavigableCircuitContent(
                 navigator = rememberCircuitNavigator(backStack),

@@ -8,8 +8,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 
 @Composable
-internal actual fun RouteMap(
-    state: RouteMapState,
+internal actual fun RoutesMap(
+    state: RoutesMapState,
     onEndPosition: (LatLng) -> Unit,
     modifier: Modifier,
 ) {

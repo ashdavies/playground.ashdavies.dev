@@ -20,8 +20,8 @@ import com.google.android.gms.maps.model.LatLng as GmsLatLng
 private const val CAMERA_ANIMATE_DURATION = 2_000
 
 @Composable
-internal actual fun RouteMap(
-    state: RouteMapState,
+internal actual fun RoutesMap(
+    state: RoutesMapState,
     onEndPosition: (LatLng) -> Unit,
     modifier: Modifier,
 ) {
