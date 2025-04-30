@@ -15,16 +15,14 @@ import io.ashdavies.playground.KeyNavigationDecoration
 
 @Composable
 internal fun MapRoutesApp(graph: RoutesGraph, onClose: () -> Unit) {
-    val circuit = rememberCircuit(graph)
-
-    CircuitCompositionLocals(circuit) {
+    CircuitCompositionLocals(graph.circuit) {
         val backStack = rememberSaveableBackStack(RoutesScreen)
 
         NavigableCircuitContent(
             navigator = rememberCircuitNavigator(backStack) { onClose() },
             backStack = backStack,
             decoration = KeyNavigationDecoration(
-                decoration = circuit.defaultNavDecoration,
+                decoration = graph.circuit.defaultNavDecoration,
                 onBackInvoked = backStack::pop,
             ),
         )

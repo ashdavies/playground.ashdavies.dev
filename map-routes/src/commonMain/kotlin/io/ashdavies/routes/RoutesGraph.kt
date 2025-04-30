@@ -1,5 +1,6 @@
 package io.ashdavies.routes
 
+import com.slack.circuit.foundation.Circuit
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesTo
 import dev.zacsweers.metro.DependencyGraph
@@ -19,8 +20,7 @@ import io.ktor.client.request.header
 @DependencyGraph(AppScope::class)
 internal interface RoutesGraph {
 
-    val locationService: LocationService
-    val httpClient: HttpClient
+    val circuit: Circuit
 
     @DependencyGraph.Factory
     fun interface Factory {

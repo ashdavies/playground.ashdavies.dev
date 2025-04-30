@@ -15,7 +15,7 @@ import io.ashdavies.content.enableStrictMode
 
 @Composable
 internal fun MapRoutesApp(graph: RoutesGraph) {
-    CircuitCompositionLocals(rememberCircuit(graph)) {
+    CircuitCompositionLocals(graph.circuit) {
         ContentWithOverlays {
             val backStack = rememberSaveableBackStack(RoutesScreen)
 
