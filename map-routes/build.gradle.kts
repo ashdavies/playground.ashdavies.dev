@@ -10,6 +10,7 @@ plugins {
     id("io.ashdavies.properties")
 
     alias(libs.plugins.build.config)
+    alias(libs.plugins.zac.metro)
 }
 
 android {
@@ -68,6 +69,7 @@ kotlin {
             implementation(libs.androidx.annotation)
             implementation(libs.ktor.client.core)
             implementation(libs.slack.circuit.foundation)
+            implementation(libs.squareup.okio)
         }
 
         androidMain.dependencies {
@@ -80,7 +82,6 @@ kotlin {
             implementation(libs.google.maps.android.utils)
             implementation(libs.kotlinx.coroutines.play.services)
             implementation(libs.slack.circuit.overlay)
-            implementation(libs.squareup.okio)
         }
 
         jvmMain.dependencies {

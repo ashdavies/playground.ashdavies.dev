@@ -1,7 +1,5 @@
 package io.ashdavies.routes
 
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import com.slack.circuit.runtime.CircuitUiEvent
 import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.screen.Screen
@@ -14,21 +12,8 @@ internal object RoutesScreen : Screen {
     }
 
     data class State(
-        val mapState: RoutesMapState = RoutesMapState(),
-        val errorMessage: String? = null,
+        val mapState: RoutesMapState,
+        val errorMessage: String?,
         val eventSink: (Event) -> Unit,
     ) : CircuitUiState
-}
-
-@Composable
-internal fun RoutesScreen(
-    state: RoutesScreen.State,
-    onEndPosition: (LatLng) -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    RoutesMap(
-        state = state.mapState,
-        onEndPosition = onEndPosition,
-        modifier = modifier,
-    )
 }

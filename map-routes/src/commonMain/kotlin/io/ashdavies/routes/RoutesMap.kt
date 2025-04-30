@@ -7,10 +7,10 @@ import io.ashdavies.routing.ComputeRoutesResponse
 
 @Stable
 internal data class RoutesMapState(
-    val startPosition: LatLng = KnownLocations.Berlin,
-    val endPosition: LatLng? = null,
-    val routes: List<ComputeRoutesResponse.Route> = emptyList(),
-    val zoomLevel: Float = 12f,
+    val startPosition: LatLng,
+    val endPosition: LatLng?,
+    val routes: List<ComputeRoutesResponse.Route>,
+    val zoomLevel: Float,
 )
 
 @Composable
