@@ -22,7 +22,6 @@ private const val CAMERA_ANIMATE_DURATION = 2_000
 @Composable
 internal actual fun RoutesMap(
     state: RoutesMapState,
-    onEndPosition: (LatLng) -> Unit,
     modifier: Modifier,
 ) {
     val cameraPositionState = rememberCameraPositionState()

@@ -20,7 +20,6 @@ public fun Circuit.Builder.addRoutesUi(): Circuit.Builder {
     return addUi<RoutesScreen, RoutesScreen.State> { state, modifier ->
         RoutesScreen(
             state = state,
-            onEndPosition = { state.eventSink(RoutesScreen.Event.OnEndPosition(it)) },
             modifier = modifier,
         )
     }

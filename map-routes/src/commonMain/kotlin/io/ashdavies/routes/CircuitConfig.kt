@@ -7,14 +7,9 @@ import io.ashdavies.content.PlatformContext
 import io.ktor.client.HttpClient
 
 @Composable
-public fun rememberCircuit(
-    platformContext: PlatformContext,
-    httpClient: HttpClient,
-): Circuit = remember(platformContext) {
-    val locationService = LocationService(platformContext)
-
+internal fun rememberCircuit(graph: RoutesGraph): Circuit = remember(graph) {
     Circuit.Builder()
-        .addRoutesPresenter(httpClient, locationService)
+        .addRoutesPresenter(graph.httpClient, graph.locationService)
         .addRoutesUi()
         .build()
 }

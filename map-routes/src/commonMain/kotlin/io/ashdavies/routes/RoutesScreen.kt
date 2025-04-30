@@ -14,8 +14,8 @@ internal object RoutesScreen : Screen {
     }
 
     data class State(
-        val mapState: RoutesMapState = RoutesMapState(),
-        val errorMessage: String? = null,
+        val mapState: RoutesMapState,
+        val errorMessage: String?,
         val eventSink: (Event) -> Unit,
     ) : CircuitUiState
 }
@@ -23,12 +23,11 @@ internal object RoutesScreen : Screen {
 @Composable
 internal fun RoutesScreen(
     state: RoutesScreen.State,
-    onEndPosition: (LatLng) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     RoutesMap(
         state = state.mapState,
-        onEndPosition = onEndPosition,
+        onEndPosition = { state.eventSink(RoutesScreen.Event.OnEndPosition(it)) },
         modifier = modifier,
     )
 }
