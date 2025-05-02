@@ -42,7 +42,7 @@ google-accompanist-permissions = { module = "com.google.accompanist:accompanist-
 google-android-identity = "com.google.android.libraries.identity.googleid:googleid:1.1.1"
 google-android-location = "com.google.android.gms:play-services-location:21.3.0"
 google-android-material = "com.google.android.material:material:1.12.0"
-google-auth-http = "com.google.auth:google-auth-library-oauth2-http:1.33.1"
+google-auth-http = "com.google.auth:google-auth-library-oauth2-http:1.34.0"
 google-firebase-admin = "com.google.firebase:firebase-admin:9.4.3"
 google-firebase-appcheck-playintegrity = { module = "com.google.firebase:firebase-appcheck-playintegrity" }
 google-firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
