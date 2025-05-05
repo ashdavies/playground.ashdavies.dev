@@ -14,16 +14,16 @@ import io.ashdavies.tally.events.paging.isRefreshing
 import kotlinx.collections.immutable.toImmutableList
 
 @Composable
-internal fun UpcomingEventsPresenter(
+internal fun UpcomingPresenter(
     eventPager: Pager<String, Event>,
     remoteAnalytics: RemoteAnalytics,
-): UpcomingEventsScreen.State {
+): UpcomingScreen.State {
     val coroutineScope = rememberCoroutineScope()
     val pagingItems = rememberRetained(coroutineScope) {
         eventPager.flow.cachedIn(coroutineScope)
     }.collectAsLazyPagingItems()
 
-    return UpcomingEventsScreen.State(
+    return UpcomingScreen.State(
         itemList = pagingItems
             .itemSnapshotList
             .toImmutableList(),
@@ -32,7 +32,7 @@ internal fun UpcomingEventsPresenter(
         errorMessage = pagingItems.loadState.errorMessage,
     ) { event ->
         when (event) {
-            is UpcomingEventsScreen.Event.Refresh -> {
+            is UpcomingScreen.Event.Refresh -> {
                 remoteAnalytics.logEvent("events_refresh")
                 pagingItems.refresh()
             }

@@ -15,7 +15,7 @@ import io.ashdavies.identity.IdentityManager
 import io.ashdavies.identity.IdentityState
 import io.ashdavies.tally.config.booleanConfigAsState
 import io.ashdavies.tally.config.isGalleryEnabled
-import io.ashdavies.tally.upcoming.UpcomingEventsScreen
+import io.ashdavies.tally.upcoming.UpcomingScreen
 import kotlinx.coroutines.launch
 
 @Composable
@@ -26,7 +26,7 @@ internal fun HomePresenter(
 ): HomeScreen.State {
     val identityState by identityManager.state.collectAsState(IdentityState.Unauthenticated)
     val isGalleryEnabled by remoteConfig.booleanConfigAsState { isGalleryEnabled() }
-    var screen by rememberRetained { mutableStateOf<Screen>(UpcomingEventsScreen) }
+    var screen by rememberRetained { mutableStateOf<Screen>(UpcomingScreen) }
     val coroutineScope = rememberCoroutineScope()
 
     return HomeScreen.State(

@@ -16,11 +16,11 @@ import kotlinx.serialization.json.Json
 import okio.ByteString.Companion.encode
 
 @Composable
-internal fun PastEventsPresenter(
+internal fun PastPresenter(
     pastConferencesCallable: PastConferencesCallable,
     attendanceQueries: AttendanceQueries,
     ioDispatcher: CoroutineDispatcher,
-): PastEventsScreen.State {
+): PastScreen.State {
     val attendanceList by attendanceQueries
         .selectAll { id, _ -> id }
         .asFlow()
@@ -35,7 +35,7 @@ internal fun PastEventsPresenter(
                 .md5()
                 .hex()
 
-            PastEventsScreen.State.Item(
+            PastScreen.State.Item(
                 uuid = uuid,
                 title = "${it.name} ${startDate.year}",
                 subtitle = it.location,
@@ -45,11 +45,11 @@ internal fun PastEventsPresenter(
         }
     }
 
-    return PastEventsScreen.State(
+    return PastScreen.State(
         itemList = itemList.toImmutableList(),
     ) { event ->
         when (event) {
-            is PastEventsScreen.Event.MarkAttendance -> when (event.value) {
+            is PastScreen.Event.MarkAttendance -> when (event.value) {
                 true -> attendanceQueries.insert(event.id, "${Clock.System.now()}")
                 false -> attendanceQueries.delete(event.id)
             }

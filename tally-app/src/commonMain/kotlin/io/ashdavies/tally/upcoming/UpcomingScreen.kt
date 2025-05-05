@@ -26,7 +26,7 @@ import kotlinx.collections.immutable.ImmutableList
 import io.ashdavies.tally.events.Event as DatabaseEvent
 
 @Parcelize
-internal object UpcomingEventsScreen : Parcelable, Screen {
+internal object UpcomingScreen : Parcelable, Screen {
     sealed interface Event {
         data object Refresh : Event
     }
@@ -43,7 +43,7 @@ internal object UpcomingEventsScreen : Parcelable, Screen {
 @Composable
 @OptIn(ExperimentalMaterial3AdaptiveApi::class)
 internal fun UpcomingEventsScreen(
-    state: UpcomingEventsScreen.State,
+    state: UpcomingScreen.State,
     windowSizeClass: WindowSizeClass,
     modifier: Modifier = Modifier,
 ) {
@@ -62,7 +62,7 @@ internal fun UpcomingEventsScreen(
         value = navigator.scaffoldValue,
         listPane = {
             AnimatedPane {
-                UpcomingEventsPane(
+                UpcomingPane(
                     state = state,
                     onClick = navigator::navigateToDetail,
                 )

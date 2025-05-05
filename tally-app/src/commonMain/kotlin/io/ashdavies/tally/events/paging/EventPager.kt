@@ -1,7 +1,5 @@
 package io.ashdavies.tally.events.paging
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.InvalidatingPagingSourceFactory
 import androidx.paging.Pager
@@ -25,28 +23,25 @@ private const val DEFAULT_PAGE_SIZE = 10
 
 private suspend fun RemoteConfig.isPagingEnabled() = getBoolean("paging_enabled")
 
-@Composable
+internal typealias EventPager = Pager<String, DatabaseEvent>
+
 @OptIn(ExperimentalPagingApi::class)
-internal fun rememberEventPager(
+internal fun EventPager(
     eventsCallable: PagedUpcomingEventsCallable,
     eventsQueries: EventsQueries,
-    initialKey: String = todayAsString(),
-    pageSize: Int = DEFAULT_PAGE_SIZE,
-): Pager<String, DatabaseEvent> = remember(eventsQueries, eventsCallable) {
+): EventPager {
     val pagingSourceFactory = InvalidatingPagingSourceFactory {
         EventsPagingSource(eventsQueries)
     }
 
-    val remoteMediator = EventsRemoteMediator(
-        eventsQueries = eventsQueries,
-        eventsCallable = eventsCallable,
-        onInvalidate = pagingSourceFactory::invalidate,
-    )
-
-    Pager(
-        config = PagingConfig(pageSize),
-        initialKey = initialKey,
-        remoteMediator = remoteMediator,
+    return Pager(
+        config = PagingConfig(DEFAULT_PAGE_SIZE),
+        initialKey = todayAsString(),
+        remoteMediator = EventsRemoteMediator(
+            eventsQueries = eventsQueries,
+            eventsCallable = eventsCallable,
+            onInvalidate = pagingSourceFactory::invalidate,
+        ),
         pagingSourceFactory = pagingSourceFactory,
     )
 }

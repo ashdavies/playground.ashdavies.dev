@@ -31,8 +31,8 @@ import io.ashdavies.parcelable.Parcelize
 import io.ashdavies.tally.gallery.GalleryScreen
 import io.ashdavies.tally.material.icons.EventList
 import io.ashdavies.tally.material.icons.EventUpcoming
-import io.ashdavies.tally.past.PastEventsScreen
-import io.ashdavies.tally.upcoming.UpcomingEventsScreen
+import io.ashdavies.tally.past.PastScreen
+import io.ashdavies.tally.upcoming.UpcomingScreen
 
 @Parcelize
 internal object HomeScreen : Parcelable, Screen {
@@ -96,8 +96,8 @@ internal fun HomeBottomBar(
     BottomAppBar(modifier) {
         NavigationBar {
             NavigationBarItem(
-                selected = selected is UpcomingEventsScreen,
-                onClick = { onClick(UpcomingEventsScreen) },
+                selected = selected is UpcomingScreen,
+                onClick = { onClick(UpcomingScreen) },
                 icon = { NavigationBarImage(Icons.Outlined.EventUpcoming) },
             )
 
@@ -110,8 +110,8 @@ internal fun HomeBottomBar(
             }
 
             NavigationBarItem(
-                selected = selected is PastEventsScreen,
-                onClick = { onClick(PastEventsScreen) },
+                selected = selected is PastScreen,
+                onClick = { onClick(PastScreen) },
                 icon = { NavigationBarImage(Icons.Outlined.EventList) },
             )
         }
