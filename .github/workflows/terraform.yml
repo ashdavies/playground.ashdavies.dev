@@ -38,10 +38,18 @@ jobs:
 
       - uses: actions/checkout@v4
 
+      - id: op-secrets
+        uses: 1password/load-secrets-action@v2
+        with:
+          export-env: false
+        env:
+          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+          WORKLOAD_IDENTITY_PROVIDER:  op://development/Playground Secrets/Google/Workload Identity
+
       - id: setup-cloud
         uses: ./.github/actions/setup-cloud
         with:
-          workload_identity_provider: ${{ secrets.GOOGLE_WORKLOAD_IDENTITY }}
+          workload_identity_provider: ${{ op-secrets.outputs.WORKLOAD_IDENTITY_PROVIDER }}
           service_account: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
           token_format: access_token
 
@@ -65,11 +73,13 @@ jobs:
         with:
           terraform_version: 1.11.4
 
-      - id: init
-        run: terraform -chdir=terraform init
+      - uses: 1password/install-cli-action@v1
+
+      - run: terraform -chdir=terraform init
 
       - id: plan
         env:
+          TF_VAR_op_service_account_token: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
           TF_VAR_gh_token: ${{ steps.token.outputs.token }}
           TF_LOG: ${{ inputs.debug && 'DEBUG' || 'ERROR' }}
           TF_INPUT: false
@@ -85,8 +95,7 @@ jobs:
           comment-tag: terraform-plan
           mode: recreate
 
-      - id: apply
-        env:
+      - env:
           TF_LOG: ${{ inputs.debug && 'DEBUG' || 'ERROR' }}
           TF_VAR_gh_token: ${{ steps.token.outputs.token }}
           TF_INPUT: false
