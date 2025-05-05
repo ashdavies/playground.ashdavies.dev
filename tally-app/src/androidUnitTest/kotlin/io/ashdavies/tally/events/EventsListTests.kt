@@ -2,8 +2,8 @@ package io.ashdavies.tally.events
 
 import app.cash.paparazzi.Paparazzi
 import io.ashdavies.tally.tooling.MaterialPreviewTheme
-import io.ashdavies.tally.upcoming.UpcomingEventsPane
-import io.ashdavies.tally.upcoming.UpcomingEventsScreen
+import io.ashdavies.tally.upcoming.UpcomingPane
+import io.ashdavies.tally.upcoming.UpcomingScreen
 import kotlinx.collections.immutable.toImmutableList
 import org.junit.Rule
 import kotlin.test.Test
@@ -19,8 +19,8 @@ internal class EventsListTests {
     fun compose() {
         paparazzi.snapshot {
             MaterialPreviewTheme {
-                UpcomingEventsPane(
-                    state = UpcomingEventsScreen.State(
+                UpcomingPane(
+                    state = UpcomingScreen.State(
                         itemList = DroidconEvents.toImmutableList(),
                         selectedIndex = null,
                         isRefreshing = false,

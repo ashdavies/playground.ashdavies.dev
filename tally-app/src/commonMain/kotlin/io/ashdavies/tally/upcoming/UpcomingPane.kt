@@ -60,8 +60,8 @@ import playground.tally_app.generated.resources.upcoming_events
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-internal fun UpcomingEventsPane(
-    state: UpcomingEventsScreen.State,
+internal fun UpcomingPane(
+    state: UpcomingScreen.State,
     onClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -73,7 +73,7 @@ internal fun UpcomingEventsPane(
     ) { contentPadding ->
         PullToRefreshBox(
             isRefreshing = state.isRefreshing,
-            onRefresh = { eventSink(UpcomingEventsScreen.Event.Refresh) },
+            onRefresh = { eventSink(UpcomingScreen.Event.Refresh) },
             modifier = Modifier.padding(contentPadding),
         ) {
             if (state.errorMessage != null) {

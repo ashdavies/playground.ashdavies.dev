@@ -39,13 +39,13 @@ import org.jetbrains.compose.resources.stringResource
 import playground.tally_app.generated.resources.Res
 import playground.tally_app.generated.resources.past_events
 
-internal object PastEventsDefaults {
+internal object PastScreenDefaults {
     const val MIN_COLUMN_COUNT = 2
     const val MAX_COLUMN_COUNT = 5
 }
 
 @Parcelize
-internal object PastEventsScreen : Parcelable, Screen {
+internal object PastScreen : Parcelable, Screen {
     sealed interface Event {
         data class MarkAttendance(
             val id: String,
@@ -69,14 +69,14 @@ internal object PastEventsScreen : Parcelable, Screen {
 }
 
 @Composable
-internal fun PastEventsScreen(
-    state: PastEventsScreen.State,
+internal fun PastScreen(
+    state: PastScreen.State,
     windowSizeClass: WindowSizeClass,
     modifier: Modifier = Modifier,
 ) {
     val columnCount = when (windowSizeClass.widthSizeClass) {
-        WindowWidthSizeClass.Compact -> PastEventsDefaults.MIN_COLUMN_COUNT
-        else -> PastEventsDefaults.MAX_COLUMN_COUNT
+        WindowWidthSizeClass.Compact -> PastScreenDefaults.MIN_COLUMN_COUNT
+        else -> PastScreenDefaults.MAX_COLUMN_COUNT
     }
 
     val eventSink = state.eventSink
@@ -110,7 +110,7 @@ internal fun PastEventsScreen(
                         modifier = Modifier
                             .clickable {
                                 eventSink(
-                                    PastEventsScreen.Event.MarkAttendance(
+                                    PastScreen.Event.MarkAttendance(
                                         id = item.uuid,
                                         value = !item.attended,
                                     ),
@@ -126,7 +126,7 @@ internal fun PastEventsScreen(
 
 @Composable
 private fun PastEventItem(
-    item: PastEventsScreen.State.Item,
+    item: PastScreen.State.Item,
     modifier: Modifier = Modifier,
 ) {
     Surface(
