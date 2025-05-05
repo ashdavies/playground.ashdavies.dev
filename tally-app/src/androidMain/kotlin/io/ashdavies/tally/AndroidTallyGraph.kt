@@ -3,9 +3,13 @@ package io.ashdavies.tally
 import android.app.Activity
 import android.content.Context
 import android.os.Build
+import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.core.content.pm.PackageInfoCompat
 import com.google.firebase.appcheck.FirebaseAppCheck
 import com.google.firebase.appcheck.playintegrity.PlayIntegrityAppCheckProviderFactory
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.DependencyGraph
+import dev.zacsweers.metro.Provides
 import io.ashdavies.content.PlatformContext
 import io.ashdavies.http.defaultHttpClient
 import io.ashdavies.http.publicStorage
@@ -19,8 +23,10 @@ import io.ktor.client.request.header
 import java.security.MessageDigest
 import java.util.Locale
 
-internal object AndroidTallyModule {
+@DependencyGraph(AppScope::class)
+internal interface AndroidTallyGraph : TallyGraph {
 
+    @Provides
     fun httpClient(activity: Activity): HttpClient = defaultHttpClient {
         install(DefaultRequest) {
             header("X-Android-Cert", activity.getFirstSignatureOrNull())
@@ -41,11 +47,21 @@ internal object AndroidTallyModule {
         }
     }
 
+    @Provides
     fun playgroundDatabase(context: PlatformContext): PlaygroundDatabase = DatabaseFactory(
         schema = PlaygroundDatabase.Schema,
         context = context,
         factory = { PlaygroundDatabase(it) },
     )
+
+    @DependencyGraph.Factory
+    fun interface Factory {
+
+        fun create(
+            @Provides context: PlatformContext,
+            @Provides windowSizeClass: WindowSizeClass,
+        ): AndroidTallyGraph
+    }
 }
 
 private fun Context.getFirstSignatureOrNull(): String? {

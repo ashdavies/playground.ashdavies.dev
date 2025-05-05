@@ -12,10 +12,10 @@ import com.slack.circuit.foundation.CircuitCompositionLocals
 import com.slack.circuit.foundation.NavigableCircuitContent
 import com.slack.circuit.foundation.rememberCircuitNavigator
 import com.slack.circuit.overlay.ContentWithOverlays
+import dev.zacsweers.metro.createGraphFactory
 import io.ashdavies.content.PlatformContext
 import io.ashdavies.material.dynamicColorScheme
 import io.ashdavies.playground.KeyNavigationDecoration
-import io.ashdavies.tally.circuit.CircuitModule
 import io.ashdavies.tally.home.HomeScreen
 
 public fun main() {
@@ -25,7 +25,7 @@ public fun main() {
             title = "Tally",
         ) {
             TallyApp(
-                platformContext = PlatformContext.Default,
+                context = PlatformContext.Default,
                 onClose = ::exitApplication,
             )
         }
@@ -34,23 +34,19 @@ public fun main() {
 
 @Composable
 private fun TallyApp(
-    platformContext: PlatformContext,
+    context: PlatformContext,
     onClose: () -> Unit,
 ) {
     MaterialTheme(dynamicColorScheme()) {
         @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
         val windowSizeClass = calculateWindowSizeClass()
 
-        val circuit = remember(platformContext, windowSizeClass) {
-            CircuitModule.circuit(
-                playgroundDatabase = JvmTallyModule.playgroundDatabase(platformContext),
-                platformContext = platformContext,
-                httpClient = JvmTallyModule.httpClient(platformContext),
-                windowSizeClass = windowSizeClass,
-            )
+        val tallyGraph = remember(context, windowSizeClass) {
+            val factory = createGraphFactory<JvmTallyGraph.Factory>()
+            factory.create(context, windowSizeClass)
         }
 
-        CircuitCompositionLocals(circuit) {
+        CircuitCompositionLocals(tallyGraph.circuit) {
             ContentWithOverlays {
                 val backStack = rememberSaveableBackStack(HomeScreen)
 
@@ -58,7 +54,7 @@ private fun TallyApp(
                     navigator = rememberCircuitNavigator(backStack) { onClose() },
                     backStack = backStack,
                     decoration = KeyNavigationDecoration(
-                        decoration = circuit.defaultNavDecoration,
+                        decoration = tallyGraph.circuit.defaultNavDecoration,
                         onBackInvoked = backStack::pop,
                     ),
                 )

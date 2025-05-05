@@ -1,5 +1,9 @@
 package io.ashdavies.tally
 
+import androidx.compose.material3.windowsizeclass.WindowSizeClass
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.DependencyGraph
+import dev.zacsweers.metro.Provides
 import io.ashdavies.content.PlatformContext
 import io.ashdavies.http.defaultHttpClient
 import io.ashdavies.http.publicStorage
@@ -10,8 +14,10 @@ import io.ktor.client.plugins.DefaultRequest
 import io.ktor.client.plugins.cache.HttpCache
 import io.ktor.client.request.header
 
-internal object JvmTallyModule {
+@DependencyGraph(AppScope::class)
+internal interface JvmTallyGraph : TallyGraph {
 
+    @Provides
     fun httpClient(context: PlatformContext): HttpClient = defaultHttpClient {
         install(DefaultRequest) {
             header("User-Agent", System.getProperty("os.name"))
@@ -23,9 +29,19 @@ internal object JvmTallyModule {
         }
     }
 
-    fun playgroundDatabase(context: PlatformContext) = DatabaseFactory(
+    @Provides
+    fun playgroundDatabase(context: PlatformContext): PlaygroundDatabase = DatabaseFactory(
         schema = PlaygroundDatabase.Schema,
         context = context,
         factory = { PlaygroundDatabase(it) },
     )
+
+    @DependencyGraph.Factory
+    fun interface Factory {
+
+        fun create(
+            @Provides context: PlatformContext,
+            @Provides windowSizeClass: WindowSizeClass,
+        ): JvmTallyGraph
+    }
 }
