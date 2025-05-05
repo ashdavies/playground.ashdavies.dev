@@ -31,10 +31,18 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
+      - id: op-secrets
+        uses: 1password/load-secrets-action@v2
+        with:
+          export-env: false
+        env:
+          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+          WORKLOAD_IDENTITY_PROVIDER:  op://development/Playground Secrets/Google/Workload Identity
+
       - id: setup-cloud
         uses: ./.github/actions/setup-cloud
         with:
-          workload_identity_provider: ${{ secrets.GOOGLE_WORKLOAD_IDENTITY }}
+          workload_identity_provider: ${{ op-secrets.outputs.WORKLOAD_IDENTITY_PROVIDER }}
           service_account: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
           setup_gcloud: false
 
