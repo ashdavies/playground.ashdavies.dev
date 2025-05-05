@@ -8,6 +8,7 @@ import androidx.core.content.pm.PackageInfoCompat
 import com.google.firebase.appcheck.FirebaseAppCheck
 import com.google.firebase.appcheck.playintegrity.PlayIntegrityAppCheckProviderFactory
 import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.Binds
 import dev.zacsweers.metro.DependencyGraph
 import dev.zacsweers.metro.Provides
 import io.ashdavies.content.PlatformContext
@@ -25,6 +26,9 @@ import java.util.Locale
 
 @DependencyGraph(AppScope::class)
 internal interface AndroidTallyGraph : TallyGraph {
+
+    @Binds
+    fun Activity.platformContext(): PlatformContext
 
     @Provides
     fun httpClient(activity: Activity): HttpClient = defaultHttpClient {
@@ -58,7 +62,7 @@ internal interface AndroidTallyGraph : TallyGraph {
     fun interface Factory {
 
         fun create(
-            @Provides context: PlatformContext,
+            @Provides activity: Activity,
             @Provides windowSizeClass: WindowSizeClass,
         ): AndroidTallyGraph
     }
