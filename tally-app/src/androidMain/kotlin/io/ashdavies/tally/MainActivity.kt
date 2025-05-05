@@ -15,9 +15,9 @@ import com.slack.circuit.foundation.CircuitCompositionLocals
 import com.slack.circuit.foundation.NavigableCircuitContent
 import com.slack.circuit.foundation.rememberCircuitNavigator
 import com.slack.circuit.overlay.ContentWithOverlays
+import dev.zacsweers.metro.createGraphFactory
 import io.ashdavies.content.enableStrictMode
 import io.ashdavies.material.dynamicColorScheme
-import io.ashdavies.tally.circuit.CircuitModule
 import io.ashdavies.tally.home.HomeScreen
 
 internal class MainActivity : ComponentActivity() {
@@ -39,16 +39,12 @@ private fun TallyApp(activity: Activity) {
         @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
         val windowSizeClass = calculateWindowSizeClass(activity)
 
-        val circuit = remember(activity, windowSizeClass) {
-            CircuitModule.circuit(
-                playgroundDatabase = AndroidTallyModule.playgroundDatabase(activity),
-                platformContext = activity,
-                httpClient = AndroidTallyModule.httpClient(activity),
-                windowSizeClass = windowSizeClass,
-            )
+        val tallyGraph = remember(activity, windowSizeClass) {
+            val factory = createGraphFactory<AndroidTallyGraph.Factory>()
+            factory.create(activity, windowSizeClass)
         }
 
-        CircuitCompositionLocals(circuit) {
+        CircuitCompositionLocals(tallyGraph.circuit) {
             ContentWithOverlays {
                 val backStack = rememberSaveableBackStack(HomeScreen)
 

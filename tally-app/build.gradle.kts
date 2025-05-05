@@ -14,6 +14,7 @@ plugins {
     alias(libs.plugins.build.config)
     alias(libs.plugins.cash.paparazzi)
     alias(libs.plugins.cash.sqldelight)
+    alias(libs.plugins.zac.metro)
 }
 
 android {
