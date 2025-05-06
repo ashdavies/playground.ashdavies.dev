@@ -2,6 +2,7 @@ name: Terraform
 
 on:
   pull_request:
+    types: [labeled, opened, synchronize, reopened]
     branches:
       - "*"
 
@@ -36,6 +37,12 @@ jobs:
       - uses: GitHubSecurityLab/actions-permissions/monitor@v1
         if: ${{ github.event.inputs.monitor_permissions == 'true' }}
 
+      - id: config
+        run: |
+          has_deploy_label=${{ github.event.pull_request && contains(toJson(github.event.pull_request.labels.*.name), '\"Terraform\"') }}
+          is_main=${{ github.ref_name == 'main' }}
+          echo "dry_run=$([ "$is_main" = 'true' ] && [ "$has_deploy_label" = 'true' ] && echo false || echo true)" >> $GITHUB_OUTPUT
+
       - uses: actions/checkout@v4
 
       - id: op-secrets
@@ -54,9 +61,9 @@ jobs:
           token_format: access_token
 
       - uses: ./.github/actions/setup-gradle
-        if: ${{ github.ref == 'refs/heads/main' }}
+        if: steps.config.outputs.dry_run == 'false'
 
-      - if: ${{ github.ref == 'refs/heads/main' }}
+      - if: steps.config.outputs.dry_run == 'false'
         run: |
           ./gradlew cloud-run:deploy \
             -Pimage=europe-west1-docker.pkg.dev/${{ steps.setup-cloud.outputs.project_id }}/cloud-run-source-deploy/api.ashdavies.dev \
@@ -83,7 +90,7 @@ jobs:
           TF_VAR_gh_token: ${{ steps.token.outputs.token }}
           TF_LOG: ${{ inputs.debug && 'DEBUG' || 'ERROR' }}
           TF_INPUT: false
-        if: ${{ github.event_name == 'pull_request' }}
+        if: steps.config.outputs.dry_run == 'true'
         run: |
           terraform -chdir=terraform plan >/dev/null -lock-timeout=5m -out=.terraform/terraform.tfplan
           terraform -chdir=terraform show .terraform/terraform.tfplan -no-color
@@ -99,5 +106,5 @@ jobs:
           TF_LOG: ${{ inputs.debug && 'DEBUG' || 'ERROR' }}
           TF_VAR_gh_token: ${{ steps.token.outputs.token }}
           TF_INPUT: false
-        if: ${{ github.ref == 'refs/heads/main' }}
+        if: steps.config.outputs.dry_run == 'false'
         run: terraform -chdir=terraform apply -auto-approve -lock-timeout=5m
