@@ -49,7 +49,7 @@ jobs:
       - id: setup-cloud
         uses: ./.github/actions/setup-cloud
         with:
-          workload_identity_provider: ${{ op-secrets.outputs.WORKLOAD_IDENTITY_PROVIDER }}
+          workload_identity_provider: ${{ steps.op-secrets.outputs.WORKLOAD_IDENTITY_PROVIDER }}
           service_account: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
           token_format: access_token
 
