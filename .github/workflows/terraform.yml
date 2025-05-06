@@ -53,9 +53,9 @@ jobs:
           token_format: access_token
 
       - uses: ./.github/actions/setup-gradle
-        if: ${{ steps.config.outputs.dry_run == "false" }}
+        if: steps.config.outputs.dry_run == "false"
 
-      - if: ${{ steps.config.outputs.dry_run == "false" }}
+      - if: steps.config.outputs.dry_run == "false"
         run: |
           ./gradlew cloud-run:deploy \
             -Pimage=europe-west1-docker.pkg.dev/${{ steps.setup-cloud.outputs.project_id }}/cloud-run-source-deploy/api.ashdavies.dev \
@@ -80,7 +80,7 @@ jobs:
           TF_VAR_gh_token: ${{ steps.token.outputs.token }}
           TF_LOG: ${{ inputs.debug && 'DEBUG' || 'ERROR' }}
           TF_INPUT: false
-        if: ${{ steps.config.outputs.dry_run == "true" }}
+        if: steps.config.outputs.dry_run == "true"
         run: |
           terraform -chdir=terraform plan >/dev/null -lock-timeout=5m -out=.terraform/terraform.tfplan
           terraform -chdir=terraform show .terraform/terraform.tfplan -no-color
@@ -97,5 +97,5 @@ jobs:
           TF_LOG: ${{ inputs.debug && 'DEBUG' || 'ERROR' }}
           TF_VAR_gh_token: ${{ steps.token.outputs.token }}
           TF_INPUT: false
-        if: ${{ steps.config.outputs.dry_run == "false" }}
+        if: steps.config.outputs.dry_run == "false"
         run: terraform -chdir=terraform apply -auto-approve -lock-timeout=5m
