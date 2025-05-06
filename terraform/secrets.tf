@@ -1,4 +1,4 @@
-resource "onepassword_item" "Playground Secrets" {
+resource "onepassword_item" "playground_secrets" {
   vault    = var.op_vault
 
   title    = "Playground Secrets"
