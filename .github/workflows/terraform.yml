@@ -39,7 +39,7 @@ jobs:
 
       - id: config
         run: |
-          has_terraform_label=${{ contains(github.event.pull_request.labels.*.name, "Terraform') }}
+          has_terraform_label=${{ contains(github.event.pull_request.labels.*.name, 'Terraform') }}
           echo $has_terraform_label
 
           has_deploy_label=${{ contains(github.event.pull_request.labels.*.name, '\"Deploy\"') }}
