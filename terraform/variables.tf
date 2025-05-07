@@ -1,3 +1,11 @@
+variable "op_service_account_token" {
+  description = "A valid token for the 1Password Service Account."
+}
+
+variable "op_vault_uuid" {
+  description = "The UUID of the vault the item is in."
+}
+
 variable "gh_owner" {
   description = "Username of the GitHub repository owner"
   default     = "ashdavies"

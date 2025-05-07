@@ -72,11 +72,12 @@ jobs:
         with:
           terraform_version: 1.11.4
 
-      - id: init
-        run: terraform -chdir=terraform init
+      - run: terraform -chdir=terraform init
 
-      - id: plan
+      - id: terraform-plan
         env:
+          TF_VAR_op_service_account_token: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+          TF_VAR_op_vault_uuid: ${{ secrets.OP_VAULT_UUID }}
           TF_VAR_gh_token: ${{ steps.token.outputs.token }}
           TF_LOG: ${{ inputs.debug && 'DEBUG' || 'ERROR' }}
           TF_INPUT: false
@@ -88,7 +89,7 @@ jobs:
       - uses: thollander/actions-comment-pull-request@v3
         if: ${{ github.event_name == 'pull_request' }}
         with:
-          message: "```${{ steps.plan.outputs.stdout }}```"
+          message: "```${{ steps.terraform-plan.outputs.stdout }}```"
           comment-tag: terraform-plan
           mode: recreate
 

@@ -5,6 +5,10 @@ data "google_service_account_access_token" "default" {
   lifetime               = "1200s"
 }
 
+provider "onepassword" {
+    service_account_token = var.op_service_account_token
+}
+
 provider "github" {
   token  = var.gh_token
   owner  = var.gh_owner
