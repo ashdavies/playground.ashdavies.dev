@@ -41,7 +41,7 @@ jobs:
         run: |
           has_terraform_label=${{ contains(github.event.pull_request.labels.*.name, 'Terraform') }}
           is_main=${{ github.ref_name == 'main' }}
-          echo "dry_run=$([[ has_terraform_label || is_main ]] && false || true)"
+          echo "dry_run=$([[ has_terraform_label || is_main ]] && 'false' || 'true')"
 
       - uses: actions/checkout@v4
 
