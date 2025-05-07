@@ -1,5 +1,5 @@
 resource "onepassword_item" "playground_secrets" {
-  vault    = var.op_vault
+  vault    = var.op_vault_uuid
 
   title    = "Playground Secrets"
   category = "password"
