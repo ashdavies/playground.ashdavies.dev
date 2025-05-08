@@ -45,7 +45,7 @@ jobs:
           is_main=$([[ "${{ github.ref_name == 'main' }}" == "true" ]] && echo true || echo false)
           echo $is_main
           
-          echo "dry_run=$([[ $has_terraform_label || $is_main ]] && echo 'false' || echo 'true')"
+          echo "dry_run=$([[ $has_terraform_label || $is_main ]] && echo 'false' || echo 'true')" >> "$GITHUB_OUTPUT"
 
       - uses: actions/checkout@v4
 
