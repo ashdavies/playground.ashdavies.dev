@@ -45,6 +45,8 @@ jobs:
 
       - uses: actions/checkout@v4
 
+      - uses: 1password/install-cli-action@v1
+
       - id: setup-cloud
         uses: ./.github/actions/setup-cloud
         with:
@@ -71,7 +73,7 @@ jobs:
       - uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: 1.11.4
-
+  
       - run: terraform -chdir=terraform init
 
       - id: terraform-plan
