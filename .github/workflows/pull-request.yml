@@ -38,6 +38,7 @@ jobs:
         with:
           export-env: false
         env:
+          GOOGLE_SERVICES: op://development/google services/tally/base64
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
           WORKLOAD_IDENTITY_PROVIDER:  op://development/Playground Secrets/Google/Workload Identity
 
@@ -48,17 +49,6 @@ jobs:
           setup_gcloud: false
 
       - uses: ./.github/actions/setup-gradle
-
-      - uses: 1password/load-secrets-action/configure@v2
-        with:
-          service-account-token: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
-
-      - id: op-secrets
-        uses: 1password/load-secrets-action@v2
-        with:
-          export-env: false
-        env:
-          GOOGLE_SERVICES: op://development/google services/tally/base64
 
       - run: |
           echo $GOOGLE_SERVICES | base64 --decode > tally-app/google-services.json

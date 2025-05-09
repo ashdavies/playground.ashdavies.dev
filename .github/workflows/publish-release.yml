@@ -35,10 +35,6 @@ jobs:
 
       - uses: ./.github/actions/setup-gradle
 
-      - uses: 1password/load-secrets-action/configure@v2
-        with:
-          service-account-token: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
-
       - id: op-secrets
         uses: 1password/load-secrets-action@v2
         with:
@@ -49,6 +45,9 @@ jobs:
           KEYSTORE_PASSWORD: op://development/playground keystore/keystore password
           KEY_ALIAS: op://development/playground keystore/key alias
           KEY_PASSWORD: op://development/playground keystore/key password
+          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+          PLAY_STORE_KEY: op://development/service account key/base64
+          WORKLOAD_IDENTITY_PROVIDER:  op://development/Playground Secrets/Google/Workload Identity
 
       - env:
           GOOGLE_SERVICES: ${{ steps.op-secrets.outputs.GOOGLE_SERVICES }}
@@ -56,14 +55,6 @@ jobs:
         run: |
           echo $GOOGLE_SERVICES | base64 --decode > tally-app/google-services.json
           echo $KEYSTORE_BASE64 | base64 --decode > keystore.jks
-
-      - id: op-secrets
-        uses: 1password/load-secrets-action@v2
-        with:
-          export-env: false
-        env:
-          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
-          WORKLOAD_IDENTITY_PROVIDER:  op://development/Playground Secrets/Google/Workload Identity
 
       - uses: ./.github/actions/setup-cloud
         with:
@@ -111,17 +102,6 @@ jobs:
       - uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
-
-      - uses: 1password/load-secrets-action/configure@v2
-        with:
-          service-account-token: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
-
-      - id: op-secrets
-        uses: 1password/load-secrets-action@v2
-        with:
-          export-env: false
-        env:
-          PLAY_STORE_KEY: op://development/service account key/base64
 
       - env:
           PLAY_STORE_KEY: ${{ steps.op-secrets.outputs.PLAY_STORE_KEY }}
