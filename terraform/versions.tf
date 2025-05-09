@@ -9,6 +9,11 @@ terraform {
       source  = "hashicorp/google"
       version = "6.33.0"
     }
+
+    onepassword = {
+      source = "1Password/onepassword"
+      version = "2.1.2"
+    }
   }
 
   required_version = "1.11.4"

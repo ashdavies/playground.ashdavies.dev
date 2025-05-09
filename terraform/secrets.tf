@@ -1,8 +1,8 @@
-resource "onepassword_item" "Playground Secrets" {
-  vault    = var.op_vault
+resource "onepassword_item" "playground_secrets" {
+  vault    = var.op_vault_uuid
 
   title    = "Playground Secrets"
-  category = "password"
+  category = "secure_note"
 
   section {
     label = "Google"

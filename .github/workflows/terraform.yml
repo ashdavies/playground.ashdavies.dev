@@ -39,12 +39,16 @@ jobs:
 
       - id: config
         run: |
-          has_deploy_label=${{ github.event.pull_request && contains(toJson(github.event.pull_request.labels.*.name), '\"Terraform\"') }}
-          is_main=${{ github.ref_name == 'main' }}
-          echo "dry_run=$([ "$is_main" = 'true' ] && [ "$has_deploy_label" = 'true' ] && echo false || echo true)" >> $GITHUB_OUTPUT
+          has_terraform_label=$([[ "${{ contains(github.event.pull_request.labels.*.name, 'Terraform') }}" == "true" ]] && echo true || echo false)
+          is_main=$([[ "${{ github.ref_name == 'main' }}" == "true" ]] && echo true || echo false)
+          dry_run=$([[ $has_terraform_label || $is_main ]] && echo false || echo true)
+
+          echo "dry_run=$dry_run" >> "$GITHUB_OUTPUT"
 
       - uses: actions/checkout@v4
 
+      - uses: 1password/install-cli-action@v1
+      
       - id: op-secrets
         uses: 1password/load-secrets-action@v2
         with:
@@ -79,18 +83,17 @@ jobs:
       - uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: 1.11.4
-
-      - uses: 1password/install-cli-action@v1
-
+  
       - run: terraform -chdir=terraform init
 
-      - id: plan
+      - id: terraform-plan
+        if: steps.config.outputs.dry_run == 'true'
         env:
           TF_VAR_op_service_account_token: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+          TF_VAR_op_vault_uuid: ${{ secrets.OP_VAULT_UUID }}
           TF_VAR_gh_token: ${{ steps.token.outputs.token }}
           TF_LOG: ${{ inputs.debug && 'DEBUG' || 'ERROR' }}
           TF_INPUT: false
-        if: steps.config.outputs.dry_run == 'true'
         run: |
           terraform -chdir=terraform plan >/dev/null -lock-timeout=5m -out=.terraform/terraform.tfplan
           terraform -chdir=terraform show .terraform/terraform.tfplan -no-color
@@ -98,13 +101,15 @@ jobs:
       - uses: thollander/actions-comment-pull-request@v3
         if: ${{ github.event_name == 'pull_request' }}
         with:
-          message: "```${{ steps.plan.outputs.stdout }}```"
+          message: "```${{ steps.terraform-plan.outputs.stdout }}```"
           comment-tag: terraform-plan
           mode: recreate
 
-      - env:
-          TF_LOG: ${{ inputs.debug && 'DEBUG' || 'ERROR' }}
+      - if: steps.config.outputs.dry_run == 'false'
+        env:
+          TF_VAR_op_service_account_token: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+          TF_VAR_op_vault_uuid: ${{ secrets.OP_VAULT_UUID }}
           TF_VAR_gh_token: ${{ steps.token.outputs.token }}
+          TF_LOG: ${{ inputs.debug && 'DEBUG' || 'ERROR' }}
           TF_INPUT: false
-        if: steps.config.outputs.dry_run == 'false'
         run: terraform -chdir=terraform apply -auto-approve -lock-timeout=5m
