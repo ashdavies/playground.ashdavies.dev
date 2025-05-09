@@ -39,9 +39,11 @@ jobs:
 
       - id: config
         run: |
-          has_deploy_label=${{ github.event.pull_request && contains(toJson(github.event.pull_request.labels.*.name), '\"Terraform\"') }}
-          is_main=${{ github.ref_name == 'main' }}
-          echo "dry_run=$([ "$is_main" = 'true' ] && [ "$has_deploy_label" = 'true' ] && echo false || echo true)" >> $GITHUB_OUTPUT
+          has_terraform_label=$([[ "${{ contains(github.event.pull_request.labels.*.name, 'Terraform') }}" == "true" ]] && echo true || echo false)
+          is_main=$([[ "${{ github.ref_name == 'main' }}" == "true" ]] && echo true || echo false)
+          dry_run=$([[ $has_terraform_label || $is_main ]] && echo false || echo true)
+
+          echo "dry_run=$dry_run" >> "$GITHUB_OUTPUT"
 
       - uses: actions/checkout@v4
 
