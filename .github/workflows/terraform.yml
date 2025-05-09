@@ -45,7 +45,7 @@ jobs:
           is_main=$([[ "${{ github.ref_name == 'main' }}" == "true" ]] && echo true || echo false)
           echo "is_main=$is_main"
           
-          dry_run=[[ $has_terraform_label || $is_main ]] && echo 'false' || echo 'true'
+          dry_run=$([[ $has_terraform_label || $is_main ]] && echo false || echo true)
           echo "dry_run=$dry_run"
           
           echo "dry_run=$dry_run" >> "$GITHUB_OUTPUT"
