@@ -1,13 +1,3 @@
-resource "github_actions_secret" "main" {
-  for_each        = {
-    for secret in var.secrets: secret.secret_name => secret
-  }
-
-  repository      = github_repository.main.name
-  plaintext_value = each.value.plaintext_value
-  secret_name     = each.value.secret_name
-}
-
 resource "github_repository" "main" {
   description            = var.description
   name                   = var.repository
