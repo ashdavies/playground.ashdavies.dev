@@ -72,17 +72,6 @@ module "github-repository" {
       color       = "e99695"
     }
   ]
-  secrets = [
-    {
-      plaintext_value = google_firebase_android_app.release.app_id
-      secret_name     = "firebase_android_app_id"
-    },
-    {
-      plaintext_value = module.github-service-account.email
-      secret_name     = "google_service_account_id"
-    }
-
-  ]
   topics = [
     "compose-multiplatform",
     "kotlin-multiplatform",

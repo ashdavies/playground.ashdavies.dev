@@ -36,7 +36,7 @@ jobs:
         with:
           export-env: false
         env:
-          FIREBASE_ANDROID_APP_ID: op:://Development/Firebase/Android App ID
+          FIREBASE_ANDROID_APP_ID: op:://Development/Playground Secrets/Firebase/Android App ID
           GOOGLE_SERVICE_ACCOUNT_ID: op://Development/Playground Secrets/Google/Service Account ID
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
           WORKLOAD_IDENTITY_PROVIDER:  op://Development/Playground Secrets/Google/Workload Identity
@@ -53,8 +53,8 @@ jobs:
       - name: Run Gradle Tasks
         id: gradle_build
         env:
-          FIREBASE_ANDROID_APP_ID: ${{ steps.op-secrets.outputs.firebase_android_app_id }}
-          GOOGLE_SERVICE_ACCOUNT_ID: ${{ steops.op-secrets.outputs.GOOGLE_SERVICE_ACCOUNT_ID }}
+          FIREBASE_ANDROID_APP_ID: ${{ steps.op-secrets.outputs.FIREBASE_ANDROID_APP_ID }}
+          GOOGLE_SERVICE_ACCOUNT_ID: ${{ steps.op-secrets.outputs.GOOGLE_SERVICE_ACCOUNT_ID }}
           INTEGRATION_API_KEY: ${{ secrets.integration_api_key }}
         run: ./gradlew cloud-run:integrationTest --console=plain
 
