@@ -99,7 +99,7 @@ jobs:
           terraform -chdir=terraform show .terraform/terraform.tfplan -no-color
 
       - uses: thollander/actions-comment-pull-request@v3
-        if: ${{ github.event_name == 'pull_request' }}
+        if: ${{ github.event_name == 'pull_request' && steps.terraform-plan.outputs.stdout != '' }}
         with:
           message: "```${{ steps.terraform-plan.outputs.stdout }}```"
           comment-tag: terraform-plan

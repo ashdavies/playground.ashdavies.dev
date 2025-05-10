@@ -6,9 +6,9 @@ androidx-paging = "3.3.6"
 cash-sqldelight = "2.0.2"
 coil-kt = "3.1.0"
 compose-adaptive = "1.1.0"
-compose-plugin = "1.7.3"
+compose-plugin = "1.8.0"
 google-accompanist = "0.37.3"
-google-android = "8.9.2"
+google-android = "8.10.0"
 google-services = "4.4.2"
 jetbrains-kotlin = "2.1.20"
 kotlin-jvmTarget = "17"
@@ -101,7 +101,7 @@ squareup-okio = "com.squareup.okio:okio:3.11.0"
 [plugins]
 android-application = { id = "com.android.application", version.ref = "google-android" }
 android-library = { id = "com.android.library", version.ref = "google-android" }
-build-config = "com.github.gmazzo.buildconfig:5.5.4"
+build-config = "com.github.gmazzo.buildconfig:5.6.5"
 cash-paparazzi = "app.cash.paparazzi:1.3.5"
 cash-sqldelight = { id = "app.cash.sqldelight", version.ref = "cash-sqldelight" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "jetbrains-kotlin" }
