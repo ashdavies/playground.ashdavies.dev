@@ -50,7 +50,7 @@ internal fun UpcomingEventsScreen(
     modifier: Modifier = Modifier,
 ) {
     val scaffoldDirective = calculatePaneScaffoldDirective(currentWindowAdaptiveInfo())
-    val scaffoldNavigator = rememberListDetailPaneScaffoldNavigator(
+    val scaffoldNavigator = rememberListDetailPaneScaffoldNavigator<Int>(
         scaffoldDirective = scaffoldDirective.copy(
             horizontalPartitionSpacerSize = 0.dp,
         ),
