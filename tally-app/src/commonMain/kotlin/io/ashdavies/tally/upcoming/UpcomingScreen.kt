@@ -6,7 +6,6 @@ import androidx.compose.material3.adaptive.layout.AnimatedPane
 import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffold
 import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffoldRole
 import androidx.compose.material3.adaptive.layout.calculatePaneScaffoldDirective
-import androidx.compose.material3.adaptive.navigation.ThreePaneScaffoldNavigator
 import androidx.compose.material3.adaptive.navigation.rememberListDetailPaneScaffoldNavigator
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
@@ -15,7 +14,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.slack.circuit.foundation.internal.BackHandler
 import com.slack.circuit.runtime.CircuitUiState
@@ -51,9 +49,14 @@ internal fun UpcomingEventsScreen(
     windowSizeClass: WindowSizeClass,
     modifier: Modifier = Modifier,
 ) {
-    val scaffoldNavigator = rememberListDetailPaneScaffoldNavigator<Int>(0.dp)
-    val coroutineScope = rememberCoroutineScope()
+    val scaffoldDirective = calculatePaneScaffoldDirective(currentWindowAdaptiveInfo())
+    val scaffoldNavigator = rememberListDetailPaneScaffoldNavigator(
+        scaffoldDirective = scaffoldDirective.copy(
+            horizontalPartitionSpacerSize = 0.dp,
+        ),
+    )
 
+    val coroutineScope = rememberCoroutineScope()
     val onBack by rememberUpdatedState<() -> Unit> {
         coroutineScope.launch { scaffoldNavigator.navigateBack() }
     }
@@ -69,7 +72,10 @@ internal fun UpcomingEventsScreen(
                     state = state,
                     onClick = {
                         coroutineScope.launch {
-                            scaffoldNavigator.navigateToDetail()
+                            scaffoldNavigator.navigateTo(
+                                pane = ListDetailPaneScaffoldRole.Detail,
+                                contentKey = it,
+                            )
                         }
                     },
                 )
@@ -91,19 +97,4 @@ internal fun UpcomingEventsScreen(
         },
         modifier = modifier,
     )
-}
-
-@Composable
-@ExperimentalMaterial3AdaptiveApi
-private fun <T> rememberListDetailPaneScaffoldNavigator(
-    horizontalPartitionSpacerSize: Dp,
-): ThreePaneScaffoldNavigator<T> = rememberListDetailPaneScaffoldNavigator<T>(
-    scaffoldDirective = calculatePaneScaffoldDirective(
-        windowAdaptiveInfo = currentWindowAdaptiveInfo(),
-    ).copy(horizontalPartitionSpacerSize = horizontalPartitionSpacerSize),
-)
-
-@ExperimentalMaterial3AdaptiveApi
-private suspend fun <T> ThreePaneScaffoldNavigator<T>.navigateToDetail(content: T? = null) {
-    navigateTo(ListDetailPaneScaffoldRole.Detail, content)
 }
