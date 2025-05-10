@@ -38,14 +38,15 @@ jobs:
         with:
           export-env: false
         env:
-          GOOGLE_SERVICES: op://development/google services/tally/base64
+          GOOGLE_SERVICE_ACCOUNT_ID: op://Development/Playground Secrets/Google/Service Account ID
+          GOOGLE_SERVICES: op://Development/google services/tally/base64
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
-          WORKLOAD_IDENTITY_PROVIDER:  op://development/Playground Secrets/Google/Workload Identity
+          WORKLOAD_IDENTITY_PROVIDER:  op://Development/Playground Secrets/Google/Workload Identity
 
       - uses: ./.github/actions/setup-cloud
         with:
           workload_identity_provider: ${{ steps.op-secrets.outputs.WORKLOAD_IDENTITY_PROVIDER }}
-          service_account: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
+          service_account: ${{ steps.op-secrets.outputs.GOOGLE_SERVICE_ACCOUNT_ID }}
           setup_gcloud: false
 
       - uses: ./.github/actions/setup-gradle
