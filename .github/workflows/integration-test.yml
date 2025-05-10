@@ -36,10 +36,10 @@ jobs:
         with:
           export-env: false
         env:
-          FIREBASE_ANDROID_APP_ID: op://development/Playground Secrets/Firebase/Android App ID
-          GOOGLE_SERVICE_ACCOUNT_ID: op://development/Playground Secrets/Google/Service Account ID
+          FIREBASE_ANDROID_APP_ID: op:://Development/Playground Secrets/Firebase/Android App ID
+          GOOGLE_SERVICE_ACCOUNT_ID: op://Development/Playground Secrets/Google/Service Account ID
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
-          WORKLOAD_IDENTITY_PROVIDER:  op://development/Playground Secrets/Google/Workload Identity
+          WORKLOAD_IDENTITY_PROVIDER:  op://Development/Playground Secrets/Google/Workload Identity
 
       - id: setup-cloud
         uses: ./.github/actions/setup-cloud
