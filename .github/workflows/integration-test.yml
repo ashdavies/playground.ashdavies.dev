@@ -36,7 +36,7 @@ jobs:
         with:
           export-env: false
         env:
-          FIREBASE_ANDROID_APP_ID: op:://Development/Playground Secrets/Firebase/Android App ID
+          FIREBASE_ANDROID_APP_ID: op://Development/Playground Secrets/Firebase/Android App ID
           GOOGLE_SERVICE_ACCOUNT_ID: op://Development/Playground Secrets/Google/Service Account ID
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
           WORKLOAD_IDENTITY_PROVIDER:  op://Development/Playground Secrets/Google/Workload Identity
