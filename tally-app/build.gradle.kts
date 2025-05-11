@@ -1,4 +1,11 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
+import org.jetbrains.compose.reload.ComposeHotRun
+import org.jetbrains.kotlin.compose.compiler.gradle.ComposeFeatureFlag
+
+private object TallyAppConfig {
+    const val PACKAGE_NAME = "io.ashdavies.tally"
+    const val MAIN_CLASS = "${PACKAGE_NAME}.MainKt"
+}
 
 plugins {
     id("com.android.application")
@@ -14,6 +21,7 @@ plugins {
     alias(libs.plugins.build.config)
     alias(libs.plugins.cash.paparazzi)
     alias(libs.plugins.cash.sqldelight)
+    alias(libs.plugins.compose.hotReload)
     alias(libs.plugins.zac.metro)
 }
 
@@ -72,7 +80,7 @@ android {
         versionName = "1.0.0-$versionCode"
     }
 
-    namespace = "io.ashdavies.tally"
+    namespace = TallyAppConfig.PACKAGE_NAME
 }
 
 buildConfig {
@@ -83,9 +91,13 @@ buildConfig {
     packageName.set(android.namespace)
 }
 
+composeCompiler {
+    featureFlags.add(ComposeFeatureFlag.OptimizeNonSkippingGroups)
+}
+
 compose.desktop {
     application {
-        mainClass = "io.ashdavies.tally.MainKt"
+        mainClass = TallyAppConfig.MAIN_CLASS
 
         nativeDistributions {
             targetFormats(TargetFormat.Deb, TargetFormat.Dmg)
@@ -185,4 +197,8 @@ sqldelight {
             dependency(projects.identityManager)
         }
     }
+}
+
+tasks.withType<ComposeHotRun>().configureEach {
+    mainClass.set(TallyAppConfig.MAIN_CLASS)
 }
