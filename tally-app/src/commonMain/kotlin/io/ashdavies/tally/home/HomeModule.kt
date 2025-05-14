@@ -30,6 +30,7 @@ internal interface HomeModule {
         credentialQueries: CredentialQueries,
     ): Presenter.Factory = presenterFactoryOf<HomeScreen, HomeScreen.State> { navigator, _ ->
         HomePresenter(
+            platformContext = platformContext,
             remoteConfig = RemoteConfig(),
             identityManager = IdentityManager(
                 platformContext = platformContext,

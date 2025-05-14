@@ -42,6 +42,8 @@ internal interface GalleryModule {
         )
     }
 
+    @IntoSet
+    @Provides
     fun galleryUiFactory(
         storageManager: StorageManager,
     ): Ui.Factory = uiFactoryOf<GalleryScreen, GalleryScreen.State> { state, modifier ->
