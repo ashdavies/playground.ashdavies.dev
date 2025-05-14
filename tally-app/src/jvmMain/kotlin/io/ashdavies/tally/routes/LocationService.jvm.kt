@@ -1,4 +1,4 @@
-package io.ashdavies.routes
+package io.ashdavies.tally.routes
 
 import io.ashdavies.content.PlatformContext
 import io.ashdavies.tally.routes.LocationService

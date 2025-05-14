@@ -1,12 +1,10 @@
-package io.ashdavies.routes
+package io.ashdavies.tally.routes
 
 import android.Manifest.permission.ACCESS_COARSE_LOCATION
 import android.Manifest.permission.ACCESS_FINE_LOCATION
 import androidx.annotation.RequiresPermission
 import com.google.android.gms.location.LocationServices
 import io.ashdavies.content.PlatformContext
-import io.ashdavies.tally.routes.LatLng
-import io.ashdavies.tally.routes.LocationService
 import kotlinx.coroutines.tasks.await
 
 internal actual fun LocationService(context: PlatformContext): LocationService {
