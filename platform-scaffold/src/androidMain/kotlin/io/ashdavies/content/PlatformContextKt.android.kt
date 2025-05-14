@@ -7,7 +7,7 @@ import android.content.pm.ApplicationInfo
 private val PlatformContext.activity: Activity
     get() = requireNotNull(findActivity()) { "Could not find activity!" }
 
-public fun PlatformContext.isDebuggable(): Boolean {
+public actual fun PlatformContext.isDebuggable(): Boolean {
     return applicationInfo.flags != 0 and ApplicationInfo.FLAG_DEBUGGABLE
 }
 

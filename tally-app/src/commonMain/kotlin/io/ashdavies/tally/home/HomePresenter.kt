@@ -11,6 +11,8 @@ import com.slack.circuit.retained.rememberRetained
 import com.slack.circuit.runtime.Navigator
 import com.slack.circuit.runtime.screen.Screen
 import io.ashdavies.config.RemoteConfig
+import io.ashdavies.content.PlatformContext
+import io.ashdavies.content.isDebuggable
 import io.ashdavies.identity.IdentityManager
 import io.ashdavies.identity.IdentityState
 import io.ashdavies.tally.config.booleanConfigAsState
@@ -21,20 +23,24 @@ import kotlinx.coroutines.launch
 
 @Composable
 internal fun HomePresenter(
+    platformContext: PlatformContext,
     remoteConfig: RemoteConfig,
     identityManager: IdentityManager,
     navigator: Navigator,
 ): HomeScreen.State {
-    val identityState by identityManager.state.collectAsState(IdentityState.Unauthenticated)
+    var screen by rememberRetained { mutableStateOf<Screen>(UpcomingScreen) }
+    val isDebuggable = platformContext.isDebuggable()
+
     val isGalleryEnabled by remoteConfig.booleanConfigAsState { isGalleryEnabled() }
     val isRoutesEnabled by remoteConfig.booleanConfigAsState { isRoutesEnabled() }
-    var screen by rememberRetained { mutableStateOf<Screen>(UpcomingScreen) }
+
+    val identityState by identityManager.state.collectAsState(IdentityState.Unauthenticated)
     val coroutineScope = rememberCoroutineScope()
 
     return HomeScreen.State(
         screen = screen,
-        isGalleryEnabled = isGalleryEnabled,
-        isRoutesEnabled = isRoutesEnabled,
+        isGalleryEnabled = isDebuggable || isGalleryEnabled,
+        isRoutesEnabled = isDebuggable || isRoutesEnabled,
         identityState = identityState,
     ) { event ->
         when (event) {
