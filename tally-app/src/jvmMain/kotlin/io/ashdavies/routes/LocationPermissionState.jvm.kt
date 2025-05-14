@@ -1,6 +1,7 @@
 package io.ashdavies.routes
 
 import androidx.compose.runtime.Composable
+import io.ashdavies.tally.routes.LocationPermissionState
 
 @Composable
 internal actual fun rememberLocationPermissionState(): LocationPermissionState {

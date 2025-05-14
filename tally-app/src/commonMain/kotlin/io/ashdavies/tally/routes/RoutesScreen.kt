@@ -1,4 +1,4 @@
-package io.ashdavies.routes
+package io.ashdavies.tally.routes
 
 import com.slack.circuit.runtime.CircuitUiEvent
 import com.slack.circuit.runtime.CircuitUiState

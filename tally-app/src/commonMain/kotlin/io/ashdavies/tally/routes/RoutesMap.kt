@@ -1,4 +1,4 @@
-package io.ashdavies.routes
+package io.ashdavies.tally.routes
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable

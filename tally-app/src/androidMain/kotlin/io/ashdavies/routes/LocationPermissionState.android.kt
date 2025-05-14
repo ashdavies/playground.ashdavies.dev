@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
+import io.ashdavies.tally.routes.LocationPermissionState
 
 @Composable
 @OptIn(ExperimentalPermissionsApi::class)

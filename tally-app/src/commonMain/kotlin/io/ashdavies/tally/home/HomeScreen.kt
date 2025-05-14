@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.exclude
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.PhotoLibrary
+import androidx.compose.material.icons.outlined.Route
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -32,6 +33,7 @@ import io.ashdavies.tally.gallery.GalleryScreen
 import io.ashdavies.tally.material.icons.EventList
 import io.ashdavies.tally.material.icons.EventUpcoming
 import io.ashdavies.tally.past.PastScreen
+import io.ashdavies.tally.routes.RoutesScreen
 import io.ashdavies.tally.upcoming.UpcomingScreen
 
 @Parcelize
@@ -47,6 +49,7 @@ internal object HomeScreen : Parcelable, Screen {
         val screen: Screen,
         val identityState: IdentityState,
         val isGalleryEnabled: Boolean,
+        val isRoutesEnabled: Boolean,
         val eventSink: (Event) -> Unit,
     ) : CircuitUiState
 }
@@ -64,7 +67,10 @@ internal fun HomeScreen(
     Scaffold(
         modifier = modifier,
         bottomBar = {
-            HomeBottomBar(isGalleryEnabled = state.isGalleryEnabled) { screen ->
+            HomeBottomBar(
+                isGalleryEnabled = state.isGalleryEnabled,
+                isRoutesEnabled = state.isRoutesEnabled,
+            ) { screen ->
                 eventSink(HomeScreen.Event.BottomNav(screen))
             }
         },
@@ -91,6 +97,7 @@ internal fun HomeBottomBar(
     modifier: Modifier = Modifier,
     selected: Screen = HomeScreen,
     isGalleryEnabled: Boolean = false,
+    isRoutesEnabled: Boolean = false,
     onClick: (Screen) -> Unit = { },
 ) {
     BottomAppBar(modifier) {
@@ -106,6 +113,14 @@ internal fun HomeBottomBar(
                     selected = selected is GalleryScreen,
                     onClick = { onClick(GalleryScreen) },
                     icon = { NavigationBarImage(Icons.Outlined.PhotoLibrary) },
+                )
+            }
+
+            if (isRoutesEnabled) {
+                NavigationBarItem(
+                    selected = selected is RoutesScreen,
+                    onClick = { onClick(RoutesScreen) },
+                    icon = { NavigationBarImage(Icons.Outlined.Route) },
                 )
             }
 

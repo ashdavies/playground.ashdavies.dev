@@ -8,6 +8,8 @@ import io.ashdavies.config.getBoolean
 
 internal suspend fun RemoteConfig.isGalleryEnabled() = getBoolean("gallery_enabled")
 
+internal suspend fun RemoteConfig.isRoutesEnabled() = getBoolean("routes_enabled")
+
 @Composable
 internal fun RemoteConfig.booleanConfigAsState(
     initialValue: Boolean = false,
