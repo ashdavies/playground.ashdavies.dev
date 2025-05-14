@@ -67,7 +67,6 @@ include(
     ":key-navigation",
     ":kotlin-delegates",
     ":kotlin-gb",
-    ":map-routes",
     ":maps-routing",
     ":nsd-manager",
     ":paging-compose",

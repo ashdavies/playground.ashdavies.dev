@@ -73,6 +73,10 @@ android {
     }
 
     defaultConfig {
+        val androidApiKey by stringProperty { _, value ->
+            manifestPlaceholders["ANDROID_API_KEY"] = "$value"
+        }
+
         val versionCode by stringProperty { _, value ->
             versionCode = value?.toInt() ?: 1
         }
@@ -117,6 +121,8 @@ kotlin {
             implementation(projects.httpClient)
             implementation(projects.httpCommon)
             implementation(projects.identityManager)
+            implementation(projects.kotlinDelegates)
+            implementation(projects.mapsRouting)
             implementation(projects.pagingCompose)
             implementation(projects.placeholderHighlight)
             implementation(projects.platformScaffold)
@@ -131,6 +137,7 @@ kotlin {
             implementation(compose.materialIconsExtended)
             implementation(compose.ui)
 
+            implementation(libs.androidx.annotation)
             implementation(libs.androidx.paging.common)
             implementation(libs.coil.compose)
             implementation(libs.coil.network)
@@ -150,6 +157,7 @@ kotlin {
             implementation(libs.sqldelight.coroutines.extensions)
             implementation(libs.sqldelight.paging3.extensions)
             implementation(libs.sqldelight.runtime)
+            implementation(libs.squareup.okio)
         }
 
         commonTest.dependencies {
@@ -162,11 +170,18 @@ kotlin {
         androidMain.dependencies {
             implementation(libs.androidx.activity.compose)
             implementation(libs.androidx.core.splashscreen)
+            implementation(libs.google.accompanist.permissions)
+            implementation(libs.google.android.location)
             implementation(libs.google.android.material)
+            implementation(libs.google.maps.android.compose)
+            implementation(libs.google.maps.android.utils)
 
             implementation(dependencies.platform(libs.google.firebase.bom))
             implementation(libs.google.firebase.appcheck.playintegrity)
             implementation(libs.google.firebase.crashlytics)
+
+            implementation(libs.kotlinx.coroutines.play.services)
+            implementation(libs.slack.circuit.overlay)
         }
 
         val androidDebug by registering {
@@ -181,8 +196,8 @@ kotlin {
         }
 
         jvmMain.dependencies {
-            implementation(projects.keyNavigation)
             implementation(compose.desktop.currentOs)
+            implementation(projects.keyNavigation)
 
             runtimeOnly(libs.kotlinx.coroutines.swing)
             runtimeOnly(libs.slf4j.simple)

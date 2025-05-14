@@ -1,4 +1,4 @@
-package io.ashdavies.routes
+package io.ashdavies.tally.routes
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
