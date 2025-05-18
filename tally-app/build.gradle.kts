@@ -143,6 +143,7 @@ kotlin {
             implementation(libs.coil.network)
             implementation(libs.compose.adaptive.layout)
             implementation(libs.compose.adaptive.navigation)
+            implementation(libs.compose.back.handler)
             implementation(libs.compose.window.size)
             implementation(libs.kotlinx.collections.immutable)
             implementation(libs.kotlinx.datetime)
