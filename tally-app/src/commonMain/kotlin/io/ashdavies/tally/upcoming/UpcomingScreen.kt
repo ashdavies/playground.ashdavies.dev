@@ -13,9 +13,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.backhandler.BackHandler
 import androidx.compose.ui.unit.dp
-import com.slack.circuit.foundation.internal.BackHandler
 import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.screen.Screen
 import io.ashdavies.parcelable.Parcelable
@@ -61,6 +62,7 @@ internal fun UpcomingEventsScreen(
         coroutineScope.launch { scaffoldNavigator.navigateBack() }
     }
 
+    @OptIn(ExperimentalComposeUiApi::class)
     BackHandler(scaffoldNavigator.canNavigateBack(), onBack)
 
     ListDetailPaneScaffold(
