@@ -51,33 +51,6 @@ module "github-api-key" {
   secret_name  = "integration_api_key"
 }
 
-module "github-repository" {
-  source      = "./modules/github/repository"
-  repository  = var.gh_repo_name
-  description = "Playground"
-  labels      = [
-    {
-      description = "Indicates an unexpected problem or unintended behavior",
-      color       = "D73A4A"
-      name        = "Bug",
-    },
-    {
-      name        = "Enhancement"
-      description = "Indicates new feature requests"
-      color       = "c5def5"
-    },
-    {
-      name        = "Terraform"
-      description = "Execute terraform workflow"
-      color       = "e99695"
-    }
-  ]
-  topics = [
-    "compose-multiplatform",
-    "kotlin-multiplatform",
-  ]
-}
-
 module "github-service-account" {
   source        = "terraform-google-modules/service-accounts/google"
   version       = "4.5.3"
