@@ -12,6 +12,10 @@ resource "github_repository" "main" {
     "compose-multiplatform",
     "kotlin-multiplatform",
   ]
+
+  lifecycle {
+    prevent_destroy = true
+  }
 }
 
 resource "github_issue_labels" "main" {
