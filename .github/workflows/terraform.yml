@@ -40,10 +40,14 @@ jobs:
       - id: config
         run: |
           has_terraform_label=$([[ "${{ contains(github.event.pull_request.labels.*.name, 'Terraform') }}" == "true" ]] && echo true || echo false)
+          echo "has_terraform_label=$has_terraform_label"
+          
           is_main=$([[ "${{ github.ref_name == 'main' }}" == "true" ]] && echo true || echo false)
+          echo "is_main=$is_main"
+          
           dry_run=$([[ ! $has_terraform_label && ! $is_main ]] && echo true || echo false)
-
           echo "dry_run=$dry_run"
+
           echo "dry_run=false" >> "$GITHUB_OUTPUT"
 
       - uses: actions/checkout@v4
@@ -66,15 +70,15 @@ jobs:
           service_account: ${{ steps.op-secrets.outputs.GOOGLE_SERVICE_ACCOUNT_ID }}
           token_format: access_token
 
-      - uses: ./.github/actions/setup-gradle
-        if: steps.config.outputs.dry_run == 'false'
+#      - uses: ./.github/actions/setup-gradle
+#        if: steps.config.outputs.dry_run == 'false'
 
-      - if: steps.config.outputs.dry_run == 'false'
-        run: |
-          ./gradlew cloud-run:deploy \
-            -Pimage=europe-west1-docker.pkg.dev/${{ steps.setup-cloud.outputs.project_id }}/cloud-run-source-deploy/api.ashdavies.dev \
-            --no-configuration-cache \
-            --console=plain
+#      - if: steps.config.outputs.dry_run == 'false'
+#        run: |
+#          ./gradlew cloud-run:deploy \
+#            -Pimage=europe-west1-docker.pkg.dev/${{ steps.setup-cloud.outputs.project_id }}/cloud-run-source-deploy/api.ashdavies.dev \
+#            --no-configuration-cache \
+#            --console=plain
 
       - id: token
         uses: tibdex/github-app-token@v2
@@ -107,11 +111,11 @@ jobs:
           comment-tag: terraform-plan
           mode: recreate
 
-      - if: steps.config.outputs.dry_run == 'false'
-        env:
-          TF_VAR_op_service_account_token: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
-          TF_VAR_op_vault_uuid: ${{ secrets.OP_VAULT_UUID }}
-          TF_VAR_gh_token: ${{ steps.token.outputs.token }}
-          TF_LOG: ${{ inputs.debug && 'DEBUG' || 'ERROR' }}
-          TF_INPUT: false
-        run: terraform -chdir=terraform apply -auto-approve -lock-timeout=5m
+#      - if: steps.config.outputs.dry_run == 'false'
+#        env:
+#          TF_VAR_op_service_account_token: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+#          TF_VAR_op_vault_uuid: ${{ secrets.OP_VAULT_UUID }}
+#          TF_VAR_gh_token: ${{ steps.token.outputs.token }}
+#          TF_LOG: ${{ inputs.debug && 'DEBUG' || 'ERROR' }}
+#          TF_INPUT: false
+#        run: terraform -chdir=terraform apply -auto-approve -lock-timeout=5m
