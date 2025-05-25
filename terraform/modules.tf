@@ -65,11 +65,6 @@ module "github-repository" {
       name        = "Enhancement"
       description = "Indicates new feature requests"
       color       = "c5def5"
-    },
-    {
-      name        = "Terraform"
-      description = "Execute terraform workflow"
-      color       = "e99695"
     }
   ]
   topics = [
