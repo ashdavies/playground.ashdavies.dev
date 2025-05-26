@@ -10,6 +10,11 @@ terraform {
       version = "6.35.0"
     }
 
+    google-beta = {
+      source  = "hashicorp/google-beta"
+      version = "6.36.1"
+    }
+
     onepassword = {
       source  = "1Password/onepassword"
       version = "2.1.2"
