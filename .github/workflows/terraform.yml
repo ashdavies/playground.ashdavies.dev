@@ -89,6 +89,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
 
+      - run: tflint -f compact
+
       - id: terraform-plan
         if: github.event_name == 'pull_request'
         env:
