@@ -58,7 +58,7 @@ moved {
 
 module "github-service-account" {
   source        = "terraform-google-modules/service-accounts/google"
-  version       = "4.5.3"
+  version       = "4.5.4"
   providers     = { google = google.impersonated }
   display_name  = "GitHub Service Account"
   names         = ["oidc"]
