@@ -51,6 +51,11 @@ module "github-api-key" {
   secret_name  = "integration_api_key"
 }
 
+moved {
+  from = module.github-repository.github_repository.main
+  to   = github_repository.main
+}
+
 module "github-service-account" {
   source        = "terraform-google-modules/service-accounts/google"
   version       = "4.5.3"
