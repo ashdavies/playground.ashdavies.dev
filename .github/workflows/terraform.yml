@@ -79,6 +79,16 @@ jobs:
   
       - run: terraform -chdir=terraform init
 
+      - uses: terraform-linters/setup-tflint@v4
+        if: github.event_name == 'pull_request'
+        with:
+          tflint_version: v0.52.0
+
+      - run: tflint --init --chdir=terraform
+        if: github.event_name == 'pull_request'
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+
       - id: terraform-plan
         if: github.event_name == 'pull_request'
         env:

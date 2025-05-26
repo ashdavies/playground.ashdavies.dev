@@ -1,6 +1,6 @@
 resource "github_repository" "main" {
-  name                   = var.gh_repo_name
-  description            = "Playground"
+  name        = var.gh_repo_name
+  description = "Playground"
 
   has_issues             = true
   has_projects           = false
@@ -9,7 +9,7 @@ resource "github_repository" "main" {
   allow_auto_merge       = true
   delete_branch_on_merge = true
 
-  topics                 = [
+  topics = [
     "compose-multiplatform",
     "kotlin-multiplatform",
   ]

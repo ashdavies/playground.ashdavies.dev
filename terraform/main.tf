@@ -24,9 +24,9 @@ resource "google_firebase_android_app" "release" {
 
 # google_project_service.main is deprecated
 resource "google_project_service" "main" {
-  service            = module.cloud-run-endpoint.service_name
-  depends_on         = [module.cloud-run-endpoint]
-  project            = var.project_id
+  service    = module.cloud-run-endpoint.service_name
+  depends_on = [module.cloud-run-endpoint]
+  project    = var.project_id
 }
 
 resource "google_project_iam_custom_role" "main" {
