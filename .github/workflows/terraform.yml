@@ -35,20 +35,7 @@ jobs:
 
     steps:
       - uses: GitHubSecurityLab/actions-permissions/monitor@v1
-        if: ${{ github.event.inputs.monitor_permissions == 'true' }}
-
-      - id: config
-        run: |
-          has_terraform_label=$([[ "${{ contains(github.event.pull_request.labels.*.name, 'Terraform') }}" == "true" ]] && echo true || echo false)
-          echo "has_terraform_label=$has_terraform_label"
-          
-          is_main=$([[ "${{ github.ref_name == 'main' }}" == "true" ]] && echo true || echo false)
-          echo "is_main=$is_main"
-          
-          dry_run=$([[ ! $has_terraform_label && ! $is_main ]] && echo true || echo false)
-          echo "dry_run=$dry_run"
-
-          echo "dry_run=false" >> "$GITHUB_OUTPUT"
+        if: github.event.inputs.monitor_permissions == 'true'
 
       - uses: actions/checkout@v4
 
@@ -70,15 +57,15 @@ jobs:
           service_account: ${{ steps.op-secrets.outputs.GOOGLE_SERVICE_ACCOUNT_ID }}
           token_format: access_token
 
-#      - uses: ./.github/actions/setup-gradle
-#        if: steps.config.outputs.dry_run == 'false'
+      - uses: ./.github/actions/setup-gradle
+        if: github.ref == 'refs/heads/main'
 
-#      - if: steps.config.outputs.dry_run == 'false'
-#        run: |
-#          ./gradlew cloud-run:deploy \
-#            -Pimage=europe-west1-docker.pkg.dev/${{ steps.setup-cloud.outputs.project_id }}/cloud-run-source-deploy/api.ashdavies.dev \
-#            --no-configuration-cache \
-#            --console=plain
+      - if: github.ref == 'refs/heads/main'
+        run: |
+          ./gradlew cloud-run:deploy \
+            -Pimage=europe-west1-docker.pkg.dev/${{ steps.setup-cloud.outputs.project_id }}/cloud-run-source-deploy/api.ashdavies.dev \
+            --no-configuration-cache \
+            --console=plain
 
       - id: token
         uses: tibdex/github-app-token@v2
@@ -88,12 +75,12 @@ jobs:
 
       - uses: hashicorp/setup-terraform@v3
         with:
-          terraform_version: 1.12.0
+          terraform_version: 1.12.1
   
       - run: terraform -chdir=terraform init
 
       - id: terraform-plan
-        if: steps.config.outputs.dry_run == 'true'
+        if: github.event_name == 'pull_request'
         env:
           TF_VAR_op_service_account_token: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
           TF_VAR_op_vault_uuid: ${{ secrets.OP_VAULT_UUID }}
@@ -105,17 +92,17 @@ jobs:
           terraform -chdir=terraform show .terraform/terraform.tfplan -no-color
 
       - uses: thollander/actions-comment-pull-request@v3
-        if: ${{ github.event_name == 'pull_request' && steps.terraform-plan.outputs.stdout != '' }}
+        if: github.event_name == 'pull_request' && steps.terraform-plan.outputs.stdout != ''
         with:
           message: "```${{ steps.terraform-plan.outputs.stdout }}```"
           comment-tag: terraform-plan
           mode: recreate
 
-#      - if: steps.config.outputs.dry_run == 'false'
-#        env:
-#          TF_VAR_op_service_account_token: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
-#          TF_VAR_op_vault_uuid: ${{ secrets.OP_VAULT_UUID }}
-#          TF_VAR_gh_token: ${{ steps.token.outputs.token }}
-#          TF_LOG: ${{ inputs.debug && 'DEBUG' || 'ERROR' }}
-#          TF_INPUT: false
-#        run: terraform -chdir=terraform apply -auto-approve -lock-timeout=5m
+      - if: github.ref == 'refs/heads/main'
+        env:
+          TF_VAR_op_service_account_token: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+          TF_VAR_op_vault_uuid: ${{ secrets.OP_VAULT_UUID }}
+          TF_VAR_gh_token: ${{ steps.token.outputs.token }}
+          TF_LOG: ${{ inputs.debug && 'DEBUG' || 'ERROR' }}
+          TF_INPUT: false
+        run: terraform -chdir=terraform apply -auto-approve -lock-timeout=5m
