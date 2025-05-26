@@ -76,8 +76,6 @@ jobs:
       - uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: 1.12.1
-  
-      - run: terraform -chdir=terraform init
 
       - uses: terraform-linters/setup-tflint@v4
         if: github.event_name == 'pull_request'
@@ -90,6 +88,8 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
 
       - run: tflint --chdir=terraform --format=compact --minimum-failure-severity=warning
+
+      - run: terraform -chdir=terraform init
 
       - id: terraform-plan
         if: github.event_name == 'pull_request'
