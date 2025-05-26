@@ -89,7 +89,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
 
-      - run: tflint -f compact
+      - run: tflint --chdir=terraform --format=compact --minimum-failure-severity=warning
 
       - id: terraform-plan
         if: github.event_name == 'pull_request'
