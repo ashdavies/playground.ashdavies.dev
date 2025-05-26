@@ -51,14 +51,9 @@ module "github-api-key" {
   secret_name  = "integration_api_key"
 }
 
-module "github-repository" {
-  source      = "./modules/github/repository"
-  repository  = var.gh_repo_name
-  description = "Playground"
-  topics = [
-    "compose-multiplatform",
-    "kotlin-multiplatform",
-  ]
+moved {
+  from = module.github-repository.github_repository.main
+  to   = github_repository.main
 }
 
 module "github-service-account" {
