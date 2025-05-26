@@ -55,18 +55,6 @@ module "github-repository" {
   source      = "./modules/github/repository"
   repository  = var.gh_repo_name
   description = "Playground"
-  labels      = [
-    {
-      description = "Indicates an unexpected problem or unintended behavior",
-      color       = "D73A4A"
-      name        = "Bug",
-    },
-    {
-      name        = "Enhancement"
-      description = "Indicates new feature requests"
-      color       = "c5def5"
-    }
-  ]
   topics = [
     "compose-multiplatform",
     "kotlin-multiplatform",
