@@ -18,16 +18,16 @@ module "cloud-run-build" {
 
 # module.cloud-run-endpoint is deprecated
 module "cloud-run-endpoint" {
-  source             = "./modules/google/cloud-run-endpoint"
-  config_id          = module.cloud-run-endpoint.config_id
-  image_name         = "endpoints-runtime-serverless"
-  repository_id      = "endpoints-release"
-  endpoint_name      = "api.ashdavies.dev"
-  image_repository   = "${var.project_region}-docker.pkg.dev/${var.project_id}/endpoints-release"
-  location           = var.project_region
-  openapi_config     = local.openapi_config
-  project            = var.project_id
-  service_name       = "playground-endpoint"
+  source           = "./modules/google/cloud-run-endpoint"
+  config_id        = module.cloud-run-endpoint.config_id
+  image_name       = "endpoints-runtime-serverless"
+  repository_id    = "endpoints-release"
+  endpoint_name    = "api.ashdavies.dev"
+  image_repository = "${var.project_region}-docker.pkg.dev/${var.project_id}/endpoints-release"
+  location         = var.project_region
+  openapi_config   = local.openapi_config
+  project          = var.project_id
+  service_name     = "playground-endpoint"
 }
 
 # module endpoint-iam-binding is deprecated
@@ -57,13 +57,13 @@ moved {
 }
 
 module "github-service-account" {
-  source        = "terraform-google-modules/service-accounts/google"
-  version       = "4.5.4"
-  providers     = { google = google.impersonated }
-  display_name  = "GitHub Service Account"
-  names         = ["oidc"]
-  prefix        = "gh"
-  project_id    = var.project_id
+  source       = "terraform-google-modules/service-accounts/google"
+  version      = "4.5.4"
+  providers    = { google = google.impersonated }
+  display_name = "GitHub Service Account"
+  names        = ["oidc"]
+  prefix       = "gh"
+  project_id   = var.project_id
   project_roles = [
     "${var.project_id}=>${google_project_iam_custom_role.main.id}",
     "${var.project_id}=>roles/serviceusage.serviceUsageConsumer",
@@ -80,7 +80,7 @@ module "github-workload-identity" {
   pool_id     = "gh-oidc-pool"
   project_id  = var.project_id
   provider_id = "gh-oidc-provider"
-  sa_mapping  = {
+  sa_mapping = {
     (module.github-service-account.service_account.account_id) = {
       attribute = "attribute.repository/${var.gh_owner}/${var.gh_repo_name}"
       sa_name   = module.github-service-account.service_account.name
@@ -89,19 +89,21 @@ module "github-workload-identity" {
 }
 
 module "gradle-build-cache" {
-  source                   = "github.com/terraform-google-modules/terraform-google-cloud-storage/modules/simple_bucket"
-  location                 = var.project_region
-  name                     = "playground-build-cache"
-  project_id               = var.project_id
+  source     = "terraform-google-modules/cloud-storage/google//modules/simple_bucket"
+  version    = "~> 10.0"
 
-  bucket_policy_only       = true
-  iam_members              = [
+  name       = "playground-build-cache"
+  project_id = var.project_id
+  location   = var.project_region
+
+  bucket_policy_only = true
+  iam_members = [
     {
       member = module.github-service-account.iam_email
       role   = "roles/storage.admin"
     }
   ]
-  lifecycle_rules          = [
+  lifecycle_rules = [
     {
       action = {
         type = "Delete"

@@ -6,12 +6,12 @@ data "google_service_account_access_token" "default" {
 }
 
 provider "onepassword" {
-    service_account_token = var.op_service_account_token
+  service_account_token = var.op_service_account_token
 }
 
 provider "github" {
-  token  = var.gh_token
-  owner  = var.gh_owner
+  token = var.gh_token
+  owner = var.gh_owner
 }
 
 provider "google" {
