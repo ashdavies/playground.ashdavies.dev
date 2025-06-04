@@ -26,6 +26,17 @@
   "ignoreUnstable": true,
   "packageRules": [
     {
+      "matchFiles": [
+        "gradle/libs.versions.toml"
+      ],
+      "matchStrings": [
+        "google-android = \"(?<currentValue>.*?)\""
+      ],
+      "schedule": [
+        "* * 1 */3 *"
+      ]
+    },
+    {
       "matchDatasources": [
         "maven"
       ],
