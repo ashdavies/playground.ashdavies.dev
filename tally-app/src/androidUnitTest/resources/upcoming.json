@@ -1,0 +1,124 @@
+[
+  {
+    "name": "Droidcon",
+    "website": "https://bd.droidcon.com/",
+    "location": "Bangladesh",
+    "dateStart": "2025-06-20",
+    "dateEnd": "2025-06-21"
+  },
+  {
+    "name": "Droidcon",
+    "website": "https://nyc.droidcon.com/",
+    "location": "New York City, NY, USA",
+    "dateStart": "2025-06-25",
+    "dateEnd": "2025-06-26",
+    "cfp": {
+      "start": "2025-02-03",
+      "end": "2025-04-27",
+      "site": "https://sessionize.com/droidcon-nyc-2025/"
+    }
+  },
+  {
+    "name": "Droidcon",
+    "website": "https://amman.droidcon.com/",
+    "location": "Amman, Jordan",
+    "dateStart": "2025-07-14",
+    "dateEnd": "2025-07-16",
+    "cfp": {
+      "start": "2024-11-01",
+      "end": "2025-04-30",
+      "site": "https://sessionize.com/droidcon-amman-2025/"
+    }
+  },
+  {
+    "name": "Droidcon",
+    "website": "https://www.lisbon.droidcon.com/",
+    "location": "Lisbon, Portugal",
+    "dateStart": "2025-09-04",
+    "dateEnd": "2025-09-05",
+    "cfp": {
+      "start": "2025-02-01",
+      "end": "2025-05-31",
+      "site": "https://sessionize.com/droidcon-lisbon-2025/"
+    }
+  },
+  {
+    "name": "DroidKaigi",
+    "website": "https://2025.droidkaigi.jp/en/",
+    "location": "Tokyo, Japan",
+    "dateStart": "2025-09-10",
+    "dateEnd": "2025-09-12",
+    "cfp": {
+      "start": "2025-04-25",
+      "end": "2025-06-01",
+      "site": "https://sessionize.com/droidkaigi2025/"
+    }
+  },
+  {
+    "name": "Droidcon",
+    "website": "https://berlin.droidcon.com/",
+    "location": "Berlin, Germany",
+    "dateStart": "2025-09-24",
+    "dateEnd": "2025-09-26",
+    "cfp": {
+      "start": "2025-02-03",
+      "end": "2025-07-01",
+      "site": "https://sessionize.com/droidcon-berlin-2025/"
+    }
+  },
+  {
+    "name": "Droidcon",
+    "website": "https://london.droidcon.com/",
+    "location": "London, UK",
+    "dateStart": "2025-10-30",
+    "dateEnd": "2025-10-31",
+    "cfp": {
+      "start": "2025-04-09",
+      "end": "2025-08-15",
+      "site": "https://sessionize.com/droidcon-london-2025"
+    }
+  },
+  {
+    "name": "Droidcon",
+    "website": "https://droidcon.co.ke/",
+    "location": "Nairobi, Kenya",
+    "dateStart": "2025-11-05",
+    "dateEnd": "2025-11-07",
+    "cfp": {
+      "start": "2025-04-07",
+      "end": "2025-08-03",
+      "site": "https://sessionize.com/droidcon-fluttercon-kenya-2025"
+    }
+  },
+  {
+    "name": "Droidcon",
+    "website": "https://it.droidcon.com/2025/",
+    "location": "Turin, Italy",
+    "dateStart": "2025-11-19",
+    "dateEnd": "2025-11-20",
+    "cfp": {
+      "start": "2025-05-16",
+      "end": "2025-09-15",
+      "site": "https://papers.synesthesia.it/droidcon-2025/cfp"
+    }
+  },
+  {
+    "name": "Kotlin Dev Day",
+    "website": "https://kotlindevday.com/",
+    "location": "Amsterdam, Netherlands",
+    "dateStart": "2025-11-27",
+    "dateEnd": "2025-11-27",
+    "cfp": {
+      "start": "2025-06-02",
+      "end": "2025-07-31",
+      "site": "https://sessionize.com/kotlin-dev-day-amsterdam"
+    }
+  },
+  {
+    "name": "Droidcon",
+    "website": "https://india.droidcon.com/",
+    "location": "Bengaluru, India",
+    "dateStart": "2025-12-12",
+    "dateEnd": "2025-12-13"
+  }
+]

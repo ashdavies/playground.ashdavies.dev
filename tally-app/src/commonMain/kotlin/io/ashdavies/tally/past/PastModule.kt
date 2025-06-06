@@ -7,7 +7,7 @@ import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesTo
 import dev.zacsweers.metro.IntoSet
 import dev.zacsweers.metro.Provides
-import io.ashdavies.aggregator.PastConferencesCallable
+import io.ashdavies.asg.PastConferencesCallable
 import io.ashdavies.tally.PlaygroundDatabase
 import io.ashdavies.tally.circuit.presenterFactoryOf
 import io.ashdavies.tally.circuit.uiFactoryOf
