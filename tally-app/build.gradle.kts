@@ -189,13 +189,6 @@ kotlin {
             dependencies.implementation(compose.uiTooling)
         }
 
-        val androidInstrumentedTest by getting {
-            dependencies {
-                implementation(libs.androidx.core.splashscreen)
-                implementation(libs.google.android.material)
-            }
-        }
-
         jvmMain.dependencies {
             implementation(compose.desktop.currentOs)
             implementation(projects.keyNavigation)

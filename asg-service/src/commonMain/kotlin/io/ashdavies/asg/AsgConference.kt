@@ -1,4 +1,4 @@
-package io.ashdavies.aggregator
+package io.ashdavies.asg
 
 import kotlinx.serialization.Serializable
 

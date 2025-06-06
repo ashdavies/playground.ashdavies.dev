@@ -1,7 +1,7 @@
-package io.ashdavies.aggregator
+package io.ashdavies.asg
 
-import io.ashdavies.aggregator.callable.PastConferencesCallable
-import io.ashdavies.aggregator.callable.UpcomingConferencesCallable
+import io.ashdavies.asg.callable.PastConferencesCallable
+import io.ashdavies.asg.callable.UpcomingConferencesCallable
 import io.ashdavies.http.invoke
 import io.ktor.client.HttpClient
 

@@ -4,8 +4,8 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.InvalidatingPagingSourceFactory
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
-import io.ashdavies.aggregator.AsgConference
-import io.ashdavies.aggregator.UpcomingConferencesCallable
+import io.ashdavies.asg.AsgConference
+import io.ashdavies.asg.UpcomingConferencesCallable
 import io.ashdavies.config.RemoteConfig
 import io.ashdavies.config.getBoolean
 import io.ashdavies.http.common.models.EventCfp

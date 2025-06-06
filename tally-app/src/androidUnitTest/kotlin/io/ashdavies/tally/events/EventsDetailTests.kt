@@ -2,6 +2,7 @@ package io.ashdavies.tally.events
 
 import app.cash.paparazzi.Paparazzi
 import io.ashdavies.tally.tooling.MaterialPreviewTheme
+import io.ashdavies.tally.tooling.UnitTestResources
 import org.junit.Rule
 import kotlin.test.Test
 
@@ -15,7 +16,9 @@ internal class EventsDetailTests {
         paparazzi.snapshot {
             MaterialPreviewTheme {
                 EventsDetailPane(
-                    item = DroidconBerlin,
+                    item = UnitTestResources
+                        .upcomingEventsList
+                        .first(),
                     navigationIcon = { },
                 )
             }

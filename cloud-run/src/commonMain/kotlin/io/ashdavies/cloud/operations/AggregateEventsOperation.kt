@@ -1,8 +1,8 @@
 package io.ashdavies.cloud.operations
 
 import com.google.cloud.firestore.CollectionReference
-import io.ashdavies.aggregator.AsgConference
-import io.ashdavies.aggregator.AsgService
+import io.ashdavies.asg.AsgConference
+import io.ashdavies.asg.AsgService
 import io.ashdavies.cloud.CollectionWriter
 import io.ashdavies.cloud.Identifier
 import io.ashdavies.cloud.await

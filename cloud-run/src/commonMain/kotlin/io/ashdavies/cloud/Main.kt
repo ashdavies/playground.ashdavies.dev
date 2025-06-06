@@ -1,7 +1,7 @@
 package io.ashdavies.cloud
 
 import com.google.firebase.auth.FirebaseAuth
-import io.ashdavies.aggregator.AsgService
+import io.ashdavies.asg.AsgService
 import io.ashdavies.check.appCheck
 import io.ashdavies.cloud.operations.AggregateEventsOperation
 import io.ashdavies.cloud.operations.FirebaseAuthOperation
