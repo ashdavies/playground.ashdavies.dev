@@ -26,11 +26,9 @@
   "ignoreUnstable": true,
   "packageRules": [
     {
-      "matchFiles": [
-        "gradle/libs.versions.toml"
-      ],
-      "matchStrings": [
-        "google-android = \"(?<currentValue>.*?)\""
+      "matchPackagePatterns": [
+        "com.android.application",
+        "com.android.library",
       ],
       "schedule": [
         "* * 1 */3 *"
