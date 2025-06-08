@@ -108,7 +108,7 @@ cash-sqldelight = { id = "app.cash.sqldelight", version.ref = "cash-sqldelight" 
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "jetbrains-kotlin" }
 compose-hotReload = "org.jetbrains.compose.hot-reload:1.0.0-alpha10"
 detekt = "io.gitlab.arturbosch.detekt:1.23.8"
-crashlytics = "com.google.firebase.crashlytics:3.0.3"
+crashlytics = "com.google.firebase.crashlytics:3.0.4"
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
 gradle-doctor = "com.osacky.doctor:0.11.0"
 jetbrains-compose = { id = "org.jetbrains.compose", version.ref = "compose-plugin" }
@@ -116,4 +116,4 @@ kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref 
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "jetbrains-kotlin" }
 kotlinx-kover = "org.jetbrains.kotlinx.kover:0.9.1"
 ktlint = "org.jlleitschuh.gradle.ktlint:12.3.0"
-zac-metro = "dev.zacsweers.metro:0.3.5"
+zac-metro = "dev.zacsweers.metro:0.3.7"
