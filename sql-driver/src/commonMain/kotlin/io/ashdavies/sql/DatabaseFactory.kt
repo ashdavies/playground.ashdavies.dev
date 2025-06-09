@@ -7,13 +7,11 @@ import app.cash.sqldelight.db.SqlSchema
 import io.ashdavies.content.PlatformContext
 
 public object DatabaseFactory {
-    public operator fun <S : SqlSchema<QueryResult.Value<Unit>>, T : Transacter> invoke(
+    public suspend operator fun <S : SqlSchema<QueryResult.AsyncValue<Unit>>, T : Transacter> invoke(
         schema: S,
         context: PlatformContext,
         factory: (SqlDriver) -> T,
-    ): T = DriverFactory(
-        schema = schema,
-        context = context,
-        name = "database.db",
-    ).let(factory)
+    ): T = DriverFactory(schema, context, "database.db")
+        .also { schema.create(it).await() }
+        .let(factory)
 }

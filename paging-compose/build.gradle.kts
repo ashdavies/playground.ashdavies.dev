@@ -13,7 +13,7 @@ kotlin {
     explicitApi = ExplicitApiMode.Disabled
 
     sourceSets.commonMain.dependencies {
-        implementation(libs.androidx.paging.common)
+        //implementation(libs.androidx.paging.common)
         implementation(compose.foundation)
     }
 }

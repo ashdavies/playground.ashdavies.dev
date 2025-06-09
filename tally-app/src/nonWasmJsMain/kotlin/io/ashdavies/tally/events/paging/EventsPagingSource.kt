@@ -10,7 +10,7 @@ internal class EventsPagingSource(private val queries: EventsQueries) : PagingSo
 
     private var lastItem: Event? = null
 
-    override suspend fun load(params: LoadParams<String>): LoadResult<String, Event> {
+    override suspend fun load(params: PagingSource.LoadParams<String>): LoadResult<String, Event> {
         val result = queries.selectAllStartingAtAscending(
             startAt = params.key ?: todayAsString(),
             limit = params.loadSize.toLong(),

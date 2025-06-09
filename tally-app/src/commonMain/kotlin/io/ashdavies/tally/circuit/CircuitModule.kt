@@ -8,6 +8,7 @@ import dev.zacsweers.metro.ContributesTo
 import dev.zacsweers.metro.Multibinds
 import dev.zacsweers.metro.Provides
 import dev.zacsweers.metro.SingleIn
+import kotlin.jvm.JvmSuppressWildcards
 
 @ContributesTo(AppScope::class)
 internal interface CircuitModule {

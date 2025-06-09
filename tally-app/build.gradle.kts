@@ -1,6 +1,8 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.compose.reload.ComposeHotRun
 import org.jetbrains.kotlin.compose.compiler.gradle.ComposeFeatureFlag
+import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
+import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 
 private object TallyAppConfig {
     const val PACKAGE_NAME = "io.ashdavies.tally"
@@ -113,6 +115,12 @@ compose.desktop {
 }
 
 kotlin {
+    @OptIn(ExperimentalWasmDsl::class)
+    wasmJs {
+        binaries.executable()
+        browser()
+    }
+
     sourceSets {
         commonMain.dependencies {
             implementation(projects.analytics)
@@ -123,7 +131,6 @@ kotlin {
             implementation(projects.identityManager)
             implementation(projects.kotlinDelegates)
             implementation(projects.mapsRouting)
-            implementation(projects.pagingCompose)
             implementation(projects.placeholderHighlight)
             implementation(projects.platformScaffold)
             implementation(projects.platformSupport)
@@ -138,7 +145,6 @@ kotlin {
             implementation(compose.ui)
 
             implementation(libs.androidx.annotation)
-            implementation(libs.androidx.paging.common)
             implementation(libs.coil.compose)
             implementation(libs.coil.network)
             implementation(libs.compose.adaptive.layout)
@@ -156,8 +162,7 @@ kotlin {
             implementation(libs.slack.circuit.foundation)
             implementation(libs.slack.circuit.overlay)
             implementation(libs.sqldelight.coroutines.extensions)
-            implementation(libs.sqldelight.paging3.extensions)
-            implementation(libs.sqldelight.runtime)
+            // implementation(libs.sqldelight.runtime)
             implementation(libs.squareup.okio)
         }
 
@@ -168,33 +173,60 @@ kotlin {
             implementation(libs.kotlinx.coroutines.test)
         }
 
-        androidMain.dependencies {
-            implementation(libs.androidx.activity.compose)
-            implementation(libs.androidx.core.splashscreen)
-            implementation(libs.google.accompanist.permissions)
-            implementation(libs.google.android.location)
-            implementation(libs.google.android.material)
-            implementation(libs.google.maps.android.compose)
-            implementation(libs.google.maps.android.utils)
+        val nonWasmJsMain by creating {
+            dependsOn(commonMain.get())
 
-            implementation(dependencies.platform(libs.google.firebase.bom))
-            implementation(libs.google.firebase.appcheck.playintegrity)
-            implementation(libs.google.firebase.crashlytics)
+            dependencies {
+                implementation(libs.androidx.paging.common)
+            }
+        }
 
-            implementation(libs.kotlinx.coroutines.play.services)
-            implementation(libs.slack.circuit.overlay)
+        androidMain {
+            dependsOn(nonWasmJsMain)
+
+            dependencies {
+                implementation(libs.androidx.activity.compose)
+                implementation(libs.androidx.core.splashscreen)
+                implementation(libs.google.accompanist.permissions)
+                implementation(libs.google.android.location)
+                implementation(libs.google.android.material)
+                implementation(libs.google.maps.android.compose)
+                implementation(libs.google.maps.android.utils)
+
+                implementation(dependencies.platform(libs.google.firebase.bom))
+                implementation(libs.google.firebase.appcheck.playintegrity)
+                implementation(libs.google.firebase.crashlytics)
+
+                implementation(libs.kotlinx.coroutines.play.services)
+                implementation(libs.slack.circuit.overlay)
+            }
         }
 
         val androidDebug by registering {
             dependencies.implementation(compose.uiTooling)
         }
 
-        jvmMain.dependencies {
-            implementation(compose.desktop.currentOs)
-            implementation(projects.keyNavigation)
+        jvmMain {
+            dependsOn(nonWasmJsMain)
 
-            runtimeOnly(libs.kotlinx.coroutines.swing)
-            runtimeOnly(libs.slf4j.simple)
+            dependencies {
+                implementation(compose.desktop.currentOs)
+                implementation(projects.keyNavigation)
+
+                runtimeOnly(libs.kotlinx.coroutines.swing)
+                runtimeOnly(libs.slf4j.simple)
+            }
+        }
+
+        wasmJsMain.dependencies {
+            implementation(compose.foundation)
+            implementation(compose.material3)
+            implementation(compose.runtime)
+            implementation(compose.ui)
+
+            implementation(libs.compose.window.size)
+            implementation(libs.slack.circuit.foundation)
+            implementation(libs.slack.circuit.overlay)
         }
     }
 }
@@ -203,6 +235,8 @@ sqldelight {
     databases {
         create("PlaygroundDatabase") {
             packageName.set(android.namespace)
+            generateAsync = true
+
             dependency(projects.identityManager)
         }
     }

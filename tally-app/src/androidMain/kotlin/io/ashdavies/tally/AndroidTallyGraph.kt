@@ -21,6 +21,7 @@ import io.ktor.client.HttpClient
 import io.ktor.client.plugins.DefaultRequest
 import io.ktor.client.plugins.cache.HttpCache
 import io.ktor.client.request.header
+import kotlinx.coroutines.runBlocking
 import java.security.MessageDigest
 import java.util.Locale
 
@@ -51,12 +52,17 @@ internal interface AndroidTallyGraph : TallyGraph {
         }
     }
 
+    // TODO Create platform extension for synchronous access
+    // TODO Create dispatcher provider for IO
+
     @Provides
-    fun playgroundDatabase(context: PlatformContext): PlaygroundDatabase = DatabaseFactory(
-        schema = PlaygroundDatabase.Schema,
-        context = context,
-        factory = { PlaygroundDatabase(it) },
-    )
+    fun playgroundDatabase(context: PlatformContext): PlaygroundDatabase = runBlocking {
+        DatabaseFactory(
+            schema = PlaygroundDatabase.Schema,
+            context = context,
+            factory = { PlaygroundDatabase(it) },
+        )
+    }
 
     @DependencyGraph.Factory
     fun interface Factory {

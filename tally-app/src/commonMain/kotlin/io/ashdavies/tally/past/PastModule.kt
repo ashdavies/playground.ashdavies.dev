@@ -32,7 +32,7 @@ internal interface PastModule {
         PastPresenter(
             pastConferencesCallable = PastConferencesCallable(httpClient),
             attendanceQueries = attendanceQueries,
-            ioDispatcher = Dispatchers.IO,
+            ioDispatcher = Dispatchers.Default,
         )
     }
 
