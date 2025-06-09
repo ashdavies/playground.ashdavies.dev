@@ -5,7 +5,7 @@ import io.ashdavies.tally.events.Event
 import io.ashdavies.tally.events.EventsQueries
 import kotlinx.coroutines.Dispatchers
 
-internal fun ConferencePagingSource(eventsQueries: EventsQueries) = QueryPagingSource<Long, Event>(
+internal fun EventsPagingSource(eventsQueries: EventsQueries) = QueryPagingSource<Long, Event>(
     transacter = eventsQueries,
     context = Dispatchers.IO,
     pageBoundariesProvider = { anchor, limit ->

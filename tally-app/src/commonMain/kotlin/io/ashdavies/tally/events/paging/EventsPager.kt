@@ -30,7 +30,7 @@ internal fun EventPager(
     eventsQueries: EventsQueries,
 ): EventPager {
     val pagingSourceFactory = InvalidatingPagingSourceFactory {
-        ConferencePagingSource(eventsQueries)
+        EventsPagingSource(eventsQueries)
     }
 
     return Pager(
