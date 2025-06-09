@@ -4,25 +4,25 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
-import io.ashdavies.tally.events.Conference
-import io.ashdavies.tally.events.ConferenceQueries
+import io.ashdavies.tally.events.Event
+import io.ashdavies.tally.events.EventsQueries
 import io.ashdavies.tally.events.callable.GetEventsError
 import io.ashdavies.tally.events.callable.GetEventsRequest
-import io.ashdavies.tally.events.callable.PagedUpcomingConferencesCallable
+import io.ashdavies.tally.events.callable.PagedUpcomingEventsCallable
 import io.ktor.client.network.sockets.*
 import io.ashdavies.http.common.models.Event as ApiEvent
 
 @OptIn(ExperimentalPagingApi::class)
-internal class ConferencesRemoteMediator(
-    private val conferenceQueries: ConferenceQueries,
-    private val eventsCallable: PagedUpcomingConferencesCallable,
+internal class EventsRemoteMediator(
+    private val eventsQueries: EventsQueries,
+    private val eventsCallable: PagedUpcomingEventsCallable,
     private val onInvalidate: () -> Unit,
-) : RemoteMediator<Long, Conference>() {
+) : RemoteMediator<Long, Event>() {
 
     @Suppress("ReturnCount")
     override suspend fun load(
         loadType: LoadType,
-        state: PagingState<Long, Conference>,
+        state: PagingState<Long, Event>,
     ): MediatorResult {
         val loadKey = when (loadType) {
             LoadType.APPEND -> state.lastItemOrNull() ?: return endOfPaginationReached()
@@ -33,13 +33,13 @@ internal class ConferencesRemoteMediator(
         return when (val result = eventsCallable.result(GetEventsRequest(loadKey?.dateStart))) {
             is CallableResult.Error<*> -> MediatorResult.Error(result.throwable)
             is CallableResult.Success -> {
-                conferenceQueries.transaction {
+                eventsQueries.transaction {
                     if (loadType == LoadType.REFRESH) {
-                        conferenceQueries.deleteAll()
+                        eventsQueries.deleteAll()
                     }
 
                     result.value.forEach {
-                        conferenceQueries.insertOrReplace(
+                        eventsQueries.insertOrReplace(
                             name = it.name,
                             website = it.website,
                             location = it.location,
@@ -68,7 +68,7 @@ private fun endOfPaginationReached(): RemoteMediator.MediatorResult {
     return RemoteMediator.MediatorResult.Success(endOfPaginationReached = true)
 }
 
-private suspend fun PagedUpcomingConferencesCallable.result(
+private suspend fun PagedUpcomingEventsCallable.result(
     request: GetEventsRequest,
 ): CallableResult<List<ApiEvent>> = try {
     CallableResult.Success(invoke(request))

@@ -8,7 +8,6 @@ import io.ashdavies.analytics.RemoteAnalytics
 import io.ashdavies.config.RemoteConfig
 import io.ashdavies.content.PlatformContext
 import io.ashdavies.tally.events.paging.EventPager
-import io.ashdavies.tally.events.paging.ConferencePager
 import io.ashdavies.tally.events.paging.PagedUpcomingEventsCallable
 import io.ashdavies.tally.gallery.PathProvider
 import io.ashdavies.tally.gallery.StorageManager
@@ -23,12 +22,12 @@ internal interface TallyModule {
         httpClient: HttpClient,
         remoteConfig: RemoteConfig,
         playgroundDatabase: PlaygroundDatabase,
-    ): EventPager = ConferencePager(
-        conferencesCallable = PagedUpcomingEventsCallable(
+    ): EventPager = EventPager(
+        eventsCallable = PagedUpcomingEventsCallable(
             httpClient = httpClient,
             remoteConfig = remoteConfig,
         ),
-        conferenceQueries = playgroundDatabase.conferenceQueries,
+        eventsQueries = playgroundDatabase.eventsQueries,
     )
 
     @Provides
