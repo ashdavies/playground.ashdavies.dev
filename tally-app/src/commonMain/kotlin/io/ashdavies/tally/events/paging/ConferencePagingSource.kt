@@ -1,21 +1,21 @@
 package io.ashdavies.tally.events.paging
 
 import app.cash.sqldelight.paging3.QueryPagingSource
-import io.ashdavies.tally.events.Event
-import io.ashdavies.tally.events.EventsQueries
+import io.ashdavies.tally.events.Conference
+import io.ashdavies.tally.events.ConferenceQueries
 import kotlinx.coroutines.Dispatchers
 
-internal fun EventsPagingSource(eventsQueries: EventsQueries) = QueryPagingSource<Long, Event>(
-    transacter = eventsQueries,
+internal fun ConferencePagingSource(conferenceQueries: ConferenceQueries) = QueryPagingSource<Long, Conference>(
+    transacter = conferenceQueries,
     context = Dispatchers.IO,
     pageBoundariesProvider = { anchor, limit ->
-        eventsQueries.pageBoundariesAscending(
+        conferenceQueries.pageBoundariesAscending(
             limit = limit,
             anchor = anchor,
         )
     },
     queryProvider = { beginInclusive, endExclusive ->
-        eventsQueries.keyedQueryAscending(
+        conferenceQueries.keyedQueryAscending(
             beginInclusive = beginInclusive,
             endExclusive = endExclusive,
         )

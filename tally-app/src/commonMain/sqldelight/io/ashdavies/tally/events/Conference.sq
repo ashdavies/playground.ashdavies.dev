@@ -1,7 +1,8 @@
 import kotlin.Boolean;
 
-CREATE TABLE event(
+CREATE TABLE conference(
     id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+
     name TEXT NOT NULL,
     website TEXT NOT NULL,
     location TEXT NOT NULL,
@@ -12,12 +13,14 @@ CREATE TABLE event(
     dateEnd TEXT NOT NULL,
     cfpStart TEXT DEFAULT NULL,
     cfpEnd TEXT DEFAULT NULL,
-    cfpSite TEXT DEFAULT NULL
+    cfpSite TEXT DEFAULT NULL,
+
+    UNIQUE(name, dateStart)
 );
 
 keyedQueryAscending:
     SELECT *
-    FROM event
+    FROM conference
     WHERE id >= :beginInclusive AND (id < :endExclusive OR :endExclusive IS NULL)
     ORDER BY dateStart ASC;
 
@@ -31,13 +34,15 @@ pageBoundariesAscending:
                 WHEN :anchor IS NOT NULL AND id = :anchor THEN 1
                 ELSE 0
             END page_boundary
-        FROM event
+        FROM conference
         ORDER BY id DESC
     )
     WHERE page_boundary = 1;
 
 insertOrReplace:
-    INSERT OR REPLACE INTO event VALUES ?;
+    INSERT OR REPLACE
+    INTO conference(name, website, location, imageUrl, status, online, dateStart, dateEnd, cfpStart, cfpEnd, cfpSite)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
 
 deleteAll:
-    DELETE FROM event;
+    DELETE FROM conference;

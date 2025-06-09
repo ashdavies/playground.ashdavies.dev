@@ -9,37 +9,38 @@ import io.ashdavies.asg.UpcomingConferencesCallable
 import io.ashdavies.config.RemoteConfig
 import io.ashdavies.config.getBoolean
 import io.ashdavies.http.common.models.EventCfp
-import io.ashdavies.tally.events.EventsQueries
+import io.ashdavies.tally.events.Conference
+import io.ashdavies.tally.events.ConferenceQueries
+import io.ashdavies.tally.events.callable.PagedUpcomingConferencesCallable
 import io.ashdavies.tally.events.callable.PagedUpcomingEventsCallable
 import io.ashdavies.tally.network.todayAsString
-import io.ktor.client.HttpClient
+import io.ktor.client.*
 import kotlinx.serialization.json.Json
 import okio.ByteString.Companion.encode
 import io.ashdavies.http.common.models.Event as ApiEvent
-import io.ashdavies.tally.events.Event as DatabaseEvent
 
 private const val PLAYGROUND_BASE_URL = "api.ashdavies.dev"
 private const val DEFAULT_PAGE_SIZE = 10
 
 private suspend fun RemoteConfig.isPagingEnabled() = getBoolean("paging_enabled")
 
-internal typealias EventPager = Pager<String, DatabaseEvent>
+internal typealias EventPager = Pager<Long, Conference>
 
 @OptIn(ExperimentalPagingApi::class)
-internal fun EventPager(
-    eventsCallable: PagedUpcomingEventsCallable,
-    eventsQueries: EventsQueries,
+internal fun ConferencePager(
+    conferencesCallable: PagedUpcomingConferencesCallable,
+    conferenceQueries: ConferenceQueries,
 ): EventPager {
     val pagingSourceFactory = InvalidatingPagingSourceFactory {
-        EventsPagingSource(eventsQueries)
+        ConferencePagingSource(conferenceQueries)
     }
 
     return Pager(
         config = PagingConfig(DEFAULT_PAGE_SIZE),
-        initialKey = todayAsString(),
-        remoteMediator = EventsRemoteMediator(
-            eventsQueries = eventsQueries,
-            eventsCallable = eventsCallable,
+        initialKey = 0L,
+        remoteMediator = ConferencesRemoteMediator(
+            conferenceQueries = conferenceQueries,
+            eventsCallable = conferencesCallable,
             onInvalidate = pagingSourceFactory::invalidate,
         ),
         pagingSourceFactory = pagingSourceFactory,
@@ -49,11 +50,11 @@ internal fun EventPager(
 internal fun PagedUpcomingEventsCallable(
     httpClient: HttpClient,
     remoteConfig: RemoteConfig,
-): PagedUpcomingEventsCallable {
+): PagedUpcomingConferencesCallable {
     val pagedCallable by lazy { PagedUpcomingEventsCallable(httpClient, PLAYGROUND_BASE_URL) }
     val asgCallable by lazy { UpcomingConferencesCallable(httpClient) }
 
-    return PagedUpcomingEventsCallable { request ->
+    return PagedUpcomingConferencesCallable { request ->
         when {
             remoteConfig.isPagingEnabled() -> pagedCallable(request)
             else -> asgCallable(Unit).map { it.toEvent(null) }

@@ -11,7 +11,7 @@ import io.ashdavies.http.common.models.Event as ApiEvent
 
 private const val NETWORK_PAGE_SIZE = 100
 
-internal fun interface PagedUpcomingEventsCallable : UnaryCallable<GetEventsRequest, List<ApiEvent>>
+internal fun interface PagedUpcomingConferencesCallable : UnaryCallable<GetEventsRequest, List<ApiEvent>>
 
 @Serializable
 internal data class GetEventsRequest(
@@ -22,7 +22,7 @@ internal data class GetEventsRequest(
 internal fun PagedUpcomingEventsCallable(
     httpClient: HttpClient,
     baseUrl: String,
-): PagedUpcomingEventsCallable {
+): PagedUpcomingConferencesCallable {
     val errorHandlingHttpClient = httpClient.config {
         install(HttpCallValidator) {
             throwClientRequestExceptionAs<GetEventsError>()
@@ -31,7 +31,7 @@ internal fun PagedUpcomingEventsCallable(
         expectSuccess = true
     }
 
-    return PagedUpcomingEventsCallable { request ->
+    return PagedUpcomingConferencesCallable { request ->
         val queryAsString = buildList {
             if (request.startAt != null) add("startAt=${request.startAt}")
             add("limit=${request.limit}")

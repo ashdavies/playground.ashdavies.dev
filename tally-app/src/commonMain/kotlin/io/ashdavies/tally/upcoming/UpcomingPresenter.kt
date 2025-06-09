@@ -8,14 +8,14 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import com.slack.circuit.retained.rememberRetained
 import io.ashdavies.analytics.RemoteAnalytics
 import io.ashdavies.analytics.logEvent
-import io.ashdavies.tally.events.Event
+import io.ashdavies.tally.events.Conference
 import io.ashdavies.tally.events.paging.errorMessage
 import io.ashdavies.tally.events.paging.isRefreshing
 import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 internal fun UpcomingPresenter(
-    eventPager: Pager<String, Event>,
+    eventPager: Pager<Long, Conference>,
     remoteAnalytics: RemoteAnalytics,
 ): UpcomingScreen.State {
     val coroutineScope = rememberCoroutineScope()
