@@ -2,13 +2,13 @@ package io.ashdavies.tally.events.paging
 
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.InvalidatingPagingSourceFactory
-import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import io.ashdavies.asg.AsgConference
 import io.ashdavies.asg.UpcomingConferencesCallable
 import io.ashdavies.config.RemoteConfig
 import io.ashdavies.config.getBoolean
 import io.ashdavies.http.common.models.EventCfp
+import io.ashdavies.paging.Pager
 import io.ashdavies.tally.events.EventsQueries
 import io.ashdavies.tally.events.callable.PagedUpcomingEventsCallable
 import io.ktor.client.HttpClient

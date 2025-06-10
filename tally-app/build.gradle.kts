@@ -124,6 +124,7 @@ kotlin {
             implementation(projects.kotlinDelegates)
             implementation(projects.mapsRouting)
             implementation(projects.pagingCompose)
+            implementation(projects.pagingMultiplatform)
             implementation(projects.placeholderHighlight)
             implementation(projects.platformScaffold)
             implementation(projects.platformSupport)
@@ -138,7 +139,6 @@ kotlin {
             implementation(compose.ui)
 
             implementation(libs.androidx.annotation)
-            implementation(libs.androidx.paging.common)
             implementation(libs.coil.compose)
             implementation(libs.coil.network)
             implementation(libs.compose.adaptive.layout)
