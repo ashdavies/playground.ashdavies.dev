@@ -1,34 +1,26 @@
 package io.ashdavies.tally.events.paging
 
-import androidx.paging.PagingSource
-import androidx.paging.PagingState
+import app.cash.paging.PagingSource
+import app.cash.sqldelight.paging3.QueryPagingSource
 import io.ashdavies.tally.events.Event
 import io.ashdavies.tally.events.EventsQueries
-import io.ashdavies.tally.network.todayAsString
+import kotlinx.coroutines.Dispatchers
 
-internal class EventsPagingSource(private val queries: EventsQueries) : PagingSource<String, Event>() {
+internal typealias EventsPagingSource = PagingSource<Long, Event>
 
-    private var lastItem: Event? = null
-
-    override suspend fun load(params: LoadParams<String>): LoadResult<String, Event> {
-        val result = queries.selectAllStartingAtAscending(
-            startAt = params.key ?: todayAsString(),
-            limit = params.loadSize.toLong(),
-        ).executeAsList()
-
-        val query = when (result.firstOrNull()) {
-            lastItem -> result.drop(1)
-            else -> result
-        }
-
-        lastItem = query.lastOrNull()
-
-        return LoadResult.Page(
-            nextKey = lastItem?.dateStart,
-            prevKey = null,
-            data = query,
+internal fun EventsPagingSource(eventsQueries: EventsQueries): EventsPagingSource = QueryPagingSource(
+    transacter = eventsQueries,
+    context = Dispatchers.IO,
+    pageBoundariesProvider = { anchor, limit ->
+        eventsQueries.pageBoundariesAscending(
+            limit = limit,
+            anchor = anchor,
         )
-    }
-
-    override fun getRefreshKey(state: PagingState<String, Event>): String? = null
-}
+    },
+    queryProvider = { beginInclusive, endExclusive ->
+        eventsQueries.keyedQueryAscending(
+            beginInclusive = beginInclusive,
+            endExclusive = endExclusive,
+        )
+    },
+)

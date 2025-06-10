@@ -15,7 +15,7 @@ import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 internal fun UpcomingPresenter(
-    eventPager: Pager<String, Event>,
+    eventPager: Pager<Long, Event>,
     remoteAnalytics: RemoteAnalytics,
 ): UpcomingScreen.State {
     val coroutineScope = rememberCoroutineScope()

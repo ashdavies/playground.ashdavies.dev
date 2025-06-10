@@ -203,6 +203,7 @@ sqldelight {
     databases {
         create("PlaygroundDatabase") {
             packageName.set(android.namespace)
+            dialect(libs.sqldelight.sqlite.dialect)
             dependency(projects.identityManager)
         }
     }
