@@ -7,25 +7,23 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.decodeFromStream
 import java.io.File
 import java.io.FileInputStream
-import kotlin.uuid.ExperimentalUuidApi
-import kotlin.uuid.Uuid
 
 internal object UnitTestResources {
     val upcomingEventsList: List<Event> by lazy(LazyThreadSafetyMode.NONE) {
-        decodeFromResource<List<AsgConference>>("upcoming.json").map {
+        decodeFromResource<List<AsgConference>>("upcoming.json").mapIndexed { index, item ->
             Event(
-                id = randomUuidAsString(),
-                name = it.name,
-                website = it.website,
-                location = it.location,
+                id = index.toLong(),
+                name = item.name,
+                website = item.website,
+                location = item.location,
                 imageUrl = null,
-                status = it.status,
-                online = it.online,
-                dateStart = it.dateStart,
-                dateEnd = it.dateEnd,
-                cfpStart = it.cfp?.start,
-                cfpEnd = it.cfp?.end,
-                cfpSite = it.cfp?.site,
+                status = item.status,
+                online = item.online,
+                dateStart = item.dateStart,
+                dateEnd = item.dateEnd,
+                cfpStart = item.cfp?.start,
+                cfpEnd = item.cfp?.end,
+                cfpSite = item.cfp?.site,
             )
         }
     }
@@ -35,6 +33,3 @@ internal object UnitTestResources {
 private inline fun <reified T> decodeFromResource(name: String): T {
     return Json.decodeFromStream(FileInputStream(File("src/androidUnitTest/resources/$name")))
 }
-
-@OptIn(ExperimentalUuidApi::class)
-private fun randomUuidAsString() = "${Uuid.random()}"
