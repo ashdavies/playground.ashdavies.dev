@@ -131,6 +131,7 @@ kotlin {
             implementation(projects.identityManager)
             implementation(projects.kotlinDelegates)
             implementation(projects.mapsRouting)
+            implementation(projects.pagingCompose)
             implementation(projects.placeholderHighlight)
             implementation(projects.platformScaffold)
             implementation(projects.platformSupport)
@@ -145,6 +146,7 @@ kotlin {
             implementation(compose.ui)
 
             implementation(libs.androidx.annotation)
+            implementation(libs.androidx.paging.common)
             implementation(libs.coil.compose)
             implementation(libs.coil.network)
             implementation(libs.compose.adaptive.layout)
@@ -162,7 +164,8 @@ kotlin {
             implementation(libs.slack.circuit.foundation)
             implementation(libs.slack.circuit.overlay)
             implementation(libs.sqldelight.coroutines.extensions)
-            // implementation(libs.sqldelight.runtime)
+            implementation(libs.sqldelight.paging3.extensions)
+            implementation(libs.sqldelight.runtime)
             implementation(libs.squareup.okio)
         }
 
@@ -235,9 +238,9 @@ sqldelight {
     databases {
         create("PlaygroundDatabase") {
             packageName.set(android.namespace)
-            generateAsync = true
-
+            dialect(libs.sqldelight.sqlite.dialect)
             dependency(projects.identityManager)
+            generateAsync = true
         }
     }
 }

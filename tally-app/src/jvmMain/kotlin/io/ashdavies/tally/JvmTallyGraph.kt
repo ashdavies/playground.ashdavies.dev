@@ -13,6 +13,7 @@ import io.ktor.client.HttpClient
 import io.ktor.client.plugins.DefaultRequest
 import io.ktor.client.plugins.cache.HttpCache
 import io.ktor.client.request.header
+import kotlinx.coroutines.runBlocking
 
 @DependencyGraph(AppScope::class)
 internal interface JvmTallyGraph : TallyGraph {
@@ -30,11 +31,13 @@ internal interface JvmTallyGraph : TallyGraph {
     }
 
     @Provides
-    fun playgroundDatabase(context: PlatformContext): PlaygroundDatabase = DatabaseFactory(
-        schema = PlaygroundDatabase.Schema,
-        context = context,
-        factory = { PlaygroundDatabase(it) },
-    )
+    fun playgroundDatabase(context: PlatformContext): PlaygroundDatabase = runBlocking {
+        DatabaseFactory(
+            schema = PlaygroundDatabase.Schema,
+            context = context,
+            factory = { PlaygroundDatabase(it) },
+        )
+    }
 
     @DependencyGraph.Factory
     fun interface Factory {

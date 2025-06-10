@@ -11,10 +11,9 @@ import io.ashdavies.config.getBoolean
 import io.ashdavies.http.common.models.EventCfp
 import io.ashdavies.tally.events.EventsQueries
 import io.ashdavies.tally.events.callable.PagedUpcomingEventsCallable
-import io.ashdavies.tally.network.todayAsString
 import io.ktor.client.HttpClient
 import kotlinx.serialization.json.Json
-import okio.ByteString.Companion.encodeUtf8
+import okio.ByteString.Companion.encode
 import io.ashdavies.http.common.models.Event as ApiEvent
 import io.ashdavies.tally.events.Event as DatabaseEvent
 
@@ -23,7 +22,7 @@ private const val DEFAULT_PAGE_SIZE = 10
 
 private suspend fun RemoteConfig.isPagingEnabled() = getBoolean("paging_enabled")
 
-internal typealias EventPager = Pager<String, DatabaseEvent>
+internal typealias EventPager = Pager<Long, DatabaseEvent>
 
 @OptIn(ExperimentalPagingApi::class)
 internal fun EventPager(
@@ -36,7 +35,7 @@ internal fun EventPager(
 
     return Pager(
         config = PagingConfig(DEFAULT_PAGE_SIZE),
-        initialKey = todayAsString(),
+        initialKey = 0L,
         remoteMediator = EventsRemoteMediator(
             eventsQueries = eventsQueries,
             eventsCallable = eventsCallable,
@@ -69,4 +68,4 @@ private fun AsgConference.toEvent(imageUrl: String?): ApiEvent = ApiEvent(
 
 private inline fun <reified T : Any> T.hash() = Json
     .encodeToString(this)
-    .encodeUtf8().md5().hex()
+    .encode().md5().hex()

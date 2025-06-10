@@ -7,7 +7,7 @@ import kotlin.uuid.Uuid
 
 internal interface ImageManager {
     val list: Flow<List<Image>>
-    fun add(file: File)
+    suspend fun add(file: File)
     suspend fun remove(image: Image)
 }
 
@@ -21,7 +21,7 @@ internal fun ImageManager(
         .mapToList()
 
     @OptIn(ExperimentalUuidApi::class)
-    override fun add(file: File) {
+    override suspend fun add(file: File) {
         val image = Image(
             uuid = "${Uuid.random()}",
             name = file.getName(),
