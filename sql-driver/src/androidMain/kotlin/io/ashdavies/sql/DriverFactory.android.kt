@@ -1,11 +1,11 @@
 package io.ashdavies.sql
 
+import app.cash.sqldelight.async.coroutines.synchronous
 import app.cash.sqldelight.db.QueryResult
 import app.cash.sqldelight.db.SqlDriver
 import app.cash.sqldelight.db.SqlSchema
 import app.cash.sqldelight.driver.android.AndroidSqliteDriver
 import io.ashdavies.content.PlatformContext
-import app.cash.sqldelight.async.coroutines.synchronous
 
 public actual object DriverFactory {
     public actual operator fun invoke(
