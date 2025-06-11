@@ -49,9 +49,7 @@ internal fun PastPresenter(
 
     val coroutineScope = rememberCoroutineScope()
 
-    return PastScreen.State(
-        itemList = itemList.toImmutableList(),
-    ) { event ->
+    return PastScreen.State(itemList.toImmutableList()) { event ->
         when (event) {
             is PastScreen.Event.MarkAttendance -> coroutineScope.launch {
                 when (event.value) {
