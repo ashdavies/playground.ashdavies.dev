@@ -38,6 +38,7 @@ sqldelight {
     databases {
         create("PlaygroundDatabase") {
             packageName.set(android.namespace)
+            generateAsync = true
         }
     }
 }
