@@ -7,7 +7,7 @@ import io.ashdavies.content.PlatformContext
 
 public expect object DriverFactory {
     public operator fun invoke(
-        schema: SqlSchema<QueryResult.Value<Unit>>,
+        schema: SqlSchema<QueryResult.AsyncValue<Unit>>,
         context: PlatformContext,
         name: String,
     ): SqlDriver

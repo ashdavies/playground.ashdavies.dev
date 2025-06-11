@@ -92,6 +92,7 @@ slack-circuit-overlay = { module = "com.slack.circuit:circuit-overlay", version.
 slf4j-simple = "org.slf4j:slf4j-simple:2.0.17"
 
 sqldelight-android-driver = { module = "app.cash.sqldelight:android-driver", version.ref = "cash-sqldelight" }
+sqldelight-async-extensions = { module = "app.cash.sqldelight:async-extensions", version.ref = "cash-sqldelight" }
 sqldelight-coroutines-extensions = { module = "app.cash.sqldelight:coroutines-extensions", version.ref = "cash-sqldelight" }
 sqldelight-runtime = { module = "app.cash.sqldelight:runtime", version.ref = "cash-sqldelight" }
 sqldelight-paging3-extensions = { module = "app.cash.sqldelight:androidx-paging3-extensions", version.ref = "cash-sqldelight" }

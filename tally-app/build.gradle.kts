@@ -202,7 +202,9 @@ kotlin {
 sqldelight {
     databases {
         create("PlaygroundDatabase") {
-            packageName.set(android.namespace)
+            packageName = android.namespace
+            generateAsync = true
+
             dialect(libs.sqldelight.sqlite.dialect)
             dependency(projects.identityManager)
         }

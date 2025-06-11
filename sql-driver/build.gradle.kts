@@ -12,6 +12,7 @@ kotlin {
             implementation(projects.platformSupport)
 
             implementation(libs.kotlinx.coroutines.core)
+            implementation(libs.sqldelight.async.extensions)
             implementation(libs.sqldelight.coroutines.extensions)
             implementation(libs.sqldelight.runtime)
         }
