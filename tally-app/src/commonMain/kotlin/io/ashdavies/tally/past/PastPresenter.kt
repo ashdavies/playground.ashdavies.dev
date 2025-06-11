@@ -4,12 +4,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.produceState
+import androidx.compose.runtime.rememberCoroutineScope
 import app.cash.sqldelight.coroutines.asFlow
 import app.cash.sqldelight.coroutines.mapToList
 import io.ashdavies.asg.callable.PastConferencesCallable
 import io.ashdavies.tally.events.AttendanceQueries
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDate
 import kotlinx.serialization.json.Json
@@ -45,13 +47,15 @@ internal fun PastPresenter(
         }
     }
 
-    return PastScreen.State(
-        itemList = itemList.toImmutableList(),
-    ) { event ->
+    val coroutineScope = rememberCoroutineScope()
+
+    return PastScreen.State(itemList.toImmutableList()) { event ->
         when (event) {
-            is PastScreen.Event.MarkAttendance -> when (event.value) {
-                true -> attendanceQueries.insert(event.id, "${Clock.System.now()}")
-                false -> attendanceQueries.delete(event.id)
+            is PastScreen.Event.MarkAttendance -> coroutineScope.launch {
+                when (event.value) {
+                    true -> attendanceQueries.insert(event.id, "${Clock.System.now()}")
+                    false -> attendanceQueries.delete(event.id)
+                }
             }
         }
     }
