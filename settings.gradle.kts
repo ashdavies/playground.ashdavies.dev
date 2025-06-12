@@ -69,7 +69,7 @@ include(
     ":kotlin-gb",
     ":maps-routing",
     ":nsd-manager",
-    ":paging-compose",
+    ":paging-multiplatform",
     ":parcelable-support",
     ":placeholder-highlight",
     ":platform-scaffold",

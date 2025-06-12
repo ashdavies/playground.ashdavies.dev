@@ -1,6 +1,7 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.compose.reload.ComposeHotRun
 import org.jetbrains.kotlin.compose.compiler.gradle.ComposeFeatureFlag
+import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 
 private object TallyAppConfig {
     const val PACKAGE_NAME = "io.ashdavies.tally"
@@ -113,6 +114,16 @@ compose.desktop {
 }
 
 kotlin {
+    @OptIn(ExperimentalKotlinGradlePluginApi::class)
+    applyDefaultHierarchyTemplate {
+        common {
+            group("androidJvm") {
+                withAndroidTarget()
+                withJvm()
+            }
+        }
+    }
+
     sourceSets {
         commonMain.dependencies {
             implementation(projects.analytics)
@@ -123,7 +134,7 @@ kotlin {
             implementation(projects.identityManager)
             implementation(projects.kotlinDelegates)
             implementation(projects.mapsRouting)
-            implementation(projects.pagingCompose)
+            implementation(projects.pagingMultiplatform)
             implementation(projects.placeholderHighlight)
             implementation(projects.platformScaffold)
             implementation(projects.platformSupport)
@@ -138,7 +149,6 @@ kotlin {
             implementation(compose.ui)
 
             implementation(libs.androidx.annotation)
-            implementation(libs.androidx.paging.common)
             implementation(libs.coil.compose)
             implementation(libs.coil.network)
             implementation(libs.compose.adaptive.layout)
