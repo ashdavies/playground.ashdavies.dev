@@ -8,9 +8,12 @@ import dev.zacsweers.metro.ContributesTo
 import dev.zacsweers.metro.IntoSet
 import dev.zacsweers.metro.Provides
 import io.ashdavies.analytics.RemoteAnalytics
+import io.ashdavies.paging.Pager
+import io.ashdavies.paging.rememberPagingState
 import io.ashdavies.tally.circuit.presenterFactoryOf
 import io.ashdavies.tally.circuit.uiFactoryOf
-import io.ashdavies.tally.events.paging.EventPager
+import io.ashdavies.tally.coroutines.rememberRetainedCoroutineScope
+import io.ashdavies.tally.events.Event
 
 @ContributesTo(AppScope::class)
 internal interface UpcomingModule {
@@ -18,11 +21,14 @@ internal interface UpcomingModule {
     @IntoSet
     @Provides
     fun upcomingPresenterFactory(
-        eventPager: EventPager,
+        eventPager: Pager<*, Event>,
         remoteAnalytics: RemoteAnalytics,
     ): Presenter.Factory = presenterFactoryOf<UpcomingScreen, UpcomingScreen.State> { _, _ ->
         UpcomingPresenter(
-            eventPager = eventPager,
+            pagingState = rememberPagingState(
+                retainedCoroutineScope = rememberRetainedCoroutineScope(),
+                pager = eventPager,
+            ),
             remoteAnalytics = remoteAnalytics,
         )
     }

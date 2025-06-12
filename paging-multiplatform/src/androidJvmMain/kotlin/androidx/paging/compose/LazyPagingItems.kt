@@ -85,7 +85,7 @@ internal constructor(
      * placeholders if they are enabled. Note that similarly to [peek] accessing the items in a list
      * will not trigger any loads. Use [get] to achieve such behavior.
      */
-    var itemSnapshotList by mutableStateOf(pagingDataPresenter.snapshot())
+    var itemSnapshotList: ItemSnapshotList<T> by mutableStateOf(pagingDataPresenter.snapshot())
         private set
 
     /** The number of items which can be accessed. */

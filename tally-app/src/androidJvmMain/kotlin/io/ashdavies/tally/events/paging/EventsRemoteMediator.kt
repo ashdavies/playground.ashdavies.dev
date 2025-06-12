@@ -6,24 +6,18 @@ import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import io.ashdavies.tally.events.Event
 import io.ashdavies.tally.events.EventsQueries
-import io.ashdavies.tally.events.callable.GetEventsError
-import io.ashdavies.tally.events.callable.GetEventsRequest
-import io.ashdavies.tally.events.callable.PagedUpcomingEventsCallable
 import io.ktor.client.network.sockets.SocketTimeoutException
 import io.ashdavies.http.common.models.Event as ApiEvent
 
 @OptIn(ExperimentalPagingApi::class)
 internal class EventsRemoteMediator(
     private val eventsQueries: EventsQueries,
-    private val eventsCallable: PagedUpcomingEventsCallable,
+    private val eventsCallable: UpcomingEventsCallable,
     private val onInvalidate: () -> Unit,
 ) : RemoteMediator<Long, Event>() {
 
     @Suppress("ReturnCount")
-    override suspend fun load(
-        loadType: LoadType,
-        state: PagingState<Long, Event>,
-    ): MediatorResult {
+    override suspend fun load(loadType: LoadType, state: PagingState<Long, Event>): MediatorResult {
         val loadKey = when (loadType) {
             LoadType.APPEND -> state.lastItemOrNull() ?: return endOfPaginationReached()
             LoadType.PREPEND -> return endOfPaginationReached()
@@ -68,7 +62,7 @@ private fun endOfPaginationReached(): RemoteMediator.MediatorResult {
     return RemoteMediator.MediatorResult.Success(endOfPaginationReached = true)
 }
 
-private suspend fun PagedUpcomingEventsCallable.result(
+private suspend fun UpcomingEventsCallable.result(
     request: GetEventsRequest,
 ): CallableResult<List<ApiEvent>> = try {
     CallableResult.Success(invoke(request))

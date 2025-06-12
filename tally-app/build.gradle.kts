@@ -115,6 +115,16 @@ compose.desktop {
 }
 
 kotlin {
+    @OptIn(ExperimentalKotlinGradlePluginApi::class)
+    applyDefaultHierarchyTemplate {
+        common {
+            group("androidJvm") {
+                withAndroidTarget()
+                withJvm()
+            }
+        }
+    }
+
     @OptIn(ExperimentalWasmDsl::class)
     wasmJs {
         binaries.executable()
@@ -131,7 +141,7 @@ kotlin {
             implementation(projects.identityManager)
             implementation(projects.kotlinDelegates)
             implementation(projects.mapsRouting)
-            implementation(projects.pagingCompose)
+            implementation(projects.pagingMultiplatform)
             implementation(projects.pagingMultiplatform)
             implementation(projects.placeholderHighlight)
             implementation(projects.platformScaffold)
