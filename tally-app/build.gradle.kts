@@ -132,6 +132,13 @@ kotlin {
     }
 
     sourceSets {
+        val androidJvmMain by getting {
+            dependencies {
+                implementation(libs.androidx.paging.common)
+                implementation(libs.sqldelight.paging3.extensions)
+            }
+        }
+
         commonMain.dependencies {
             implementation(projects.analytics)
             implementation(projects.asgService)
@@ -141,7 +148,6 @@ kotlin {
             implementation(projects.identityManager)
             implementation(projects.kotlinDelegates)
             implementation(projects.mapsRouting)
-            implementation(projects.pagingMultiplatform)
             implementation(projects.pagingMultiplatform)
             implementation(projects.placeholderHighlight)
             implementation(projects.platformScaffold)
@@ -185,49 +191,33 @@ kotlin {
             implementation(libs.kotlinx.coroutines.test)
         }
 
-        val nonWasmJsMain by creating {
-            dependsOn(commonMain.get())
+        androidMain.dependencies {
+            implementation(libs.androidx.activity.compose)
+            implementation(libs.androidx.core.splashscreen)
+            implementation(libs.google.accompanist.permissions)
+            implementation(libs.google.android.location)
+            implementation(libs.google.android.material)
+            implementation(libs.google.maps.android.compose)
+            implementation(libs.google.maps.android.utils)
 
-            dependencies {
-                implementation(libs.androidx.paging.common)
-            }
-        }
+            implementation(dependencies.platform(libs.google.firebase.bom))
+            implementation(libs.google.firebase.appcheck.playintegrity)
+            implementation(libs.google.firebase.crashlytics)
 
-        androidMain {
-            dependsOn(nonWasmJsMain)
-
-            dependencies {
-                implementation(libs.androidx.activity.compose)
-                implementation(libs.androidx.core.splashscreen)
-                implementation(libs.google.accompanist.permissions)
-                implementation(libs.google.android.location)
-                implementation(libs.google.android.material)
-                implementation(libs.google.maps.android.compose)
-                implementation(libs.google.maps.android.utils)
-
-                implementation(dependencies.platform(libs.google.firebase.bom))
-                implementation(libs.google.firebase.appcheck.playintegrity)
-                implementation(libs.google.firebase.crashlytics)
-
-                implementation(libs.kotlinx.coroutines.play.services)
-                implementation(libs.slack.circuit.overlay)
-            }
+            implementation(libs.kotlinx.coroutines.play.services)
+            implementation(libs.slack.circuit.overlay)
         }
 
         val androidDebug by registering {
             dependencies.implementation(compose.uiTooling)
         }
 
-        jvmMain {
-            dependsOn(nonWasmJsMain)
+        jvmMain.dependencies {
+            implementation(compose.desktop.currentOs)
+            implementation(projects.keyNavigation)
 
-            dependencies {
-                implementation(compose.desktop.currentOs)
-                implementation(projects.keyNavigation)
-
-                runtimeOnly(libs.kotlinx.coroutines.swing)
-                runtimeOnly(libs.slf4j.simple)
-            }
+            runtimeOnly(libs.kotlinx.coroutines.swing)
+            runtimeOnly(libs.slf4j.simple)
         }
 
         wasmJsMain.dependencies {
