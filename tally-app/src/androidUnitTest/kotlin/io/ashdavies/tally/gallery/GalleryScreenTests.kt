@@ -1,7 +1,6 @@
 package io.ashdavies.tally.gallery
 
 import app.cash.paparazzi.Paparazzi
-import io.ashdavies.tally.events.paging.File
 import io.ashdavies.tally.tooling.MaterialPreviewTheme
 import kotlinx.collections.immutable.persistentListOf
 import org.junit.Rule
