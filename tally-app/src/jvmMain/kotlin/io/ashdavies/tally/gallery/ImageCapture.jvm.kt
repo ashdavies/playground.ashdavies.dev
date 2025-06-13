@@ -2,7 +2,6 @@ package io.ashdavies.tally.gallery
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import io.ashdavies.tally.events.paging.File
 import java.io.File
 import java.io.FilenameFilter
 import javax.imageio.ImageIO
