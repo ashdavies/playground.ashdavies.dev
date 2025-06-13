@@ -22,7 +22,8 @@ kotlin {
 private val detektAll by tasks.registering(Detekt::class) {
     buildUponDefaultConfig = true
     config.setFrom(rootProject.file("detekt-config.yml"))
-    exclude { "generated" in "$it" }
+    include("**/io/ashdavies/**")
+    exclude("**/generated/**")
     setSource(files(projectDir))
     parallel = true
 }

@@ -1,4 +1,20 @@
-package io.ashdavies.placeholder
+/*
+ * Copyright 2021 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package com.google.accompanist.placeholder
 
 import androidx.compose.animation.core.FiniteAnimationSpec
 import androidx.compose.animation.core.InfiniteRepeatableSpec
@@ -8,9 +24,9 @@ import androidx.compose.animation.core.Transition
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.rememberTransition
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.core.updateTransition
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -46,6 +62,16 @@ public object PlaceholderDefaults {
             repeatMode = RepeatMode.Reverse,
         )
     }
+
+    /**
+     * The default [InfiniteRepeatableSpec] to use for [shimmer].
+     */
+    public val shimmerAnimationSpec: InfiniteRepeatableSpec<Float> by lazy {
+        infiniteRepeatable(
+            animation = tween(durationMillis = 1700, delayMillis = 200),
+            repeatMode = RepeatMode.Restart,
+        )
+    }
 }
 
 /**
@@ -55,7 +81,7 @@ public object PlaceholderDefaults {
  * in the 'Placeholder Material' library.
  *
  * You can provide a [PlaceholderHighlight] which runs an highlight animation on the placeholder.
- * The [[fade] implementation is provided for easy usage.
+ * The [shimmer] and [fade] implementations are provided for easy usage.
  *
  * A cross-fade transition will be applied to the content and placeholder UI when the [visible]
  * value changes. The transition can be customized via the [contentFadeTransitionSpec] and
@@ -103,7 +129,7 @@ public fun Modifier.placeholder(
     val transitionState = remember { MutableTransitionState(visible) }.apply {
         targetState = visible
     }
-    val transition = updateTransition(transitionState, "placeholder_crossfade")
+    val transition = rememberTransition(transitionState, "placeholder_crossfade")
 
     val placeholderAlpha by transition.animateFloat(
         transitionSpec = placeholderFadeTransitionSpec,
