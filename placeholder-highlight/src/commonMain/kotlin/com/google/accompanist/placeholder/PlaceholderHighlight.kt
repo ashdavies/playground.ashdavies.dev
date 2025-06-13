@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-@file:Suppress("DEPRECATION")
-
 package com.google.accompanist.placeholder
 
 import androidx.annotation.FloatRange
@@ -34,13 +32,6 @@ import kotlin.math.max
  * A class which provides a brush to paint placeholder based on progress.
  */
 @Stable
-@Deprecated(
-    """
-accompanist/placeholder is deprecated and the API is no longer maintained. 
-We recommend forking the implementation and customising it to your needs. 
-For more information please visit https://google.github.io/accompanist/placeholder
-""",
-)
 public interface PlaceholderHighlight {
     /**
      * The optional [AnimationSpec] to use when running the animation for this highlight.
@@ -72,18 +63,9 @@ public interface PlaceholderHighlight {
 /**
  * Creates a [Fade] brush with the given initial and target colors.
  *
- * @sample com.google.accompanist.sample.placeholder.DocSample_Foundation_PlaceholderFade
- *
  * @param highlightColor the color of the highlight which is faded in/out.
  * @param animationSpec the [AnimationSpec] to configure the animation.
  */
-@Deprecated(
-    """
-accompanist/placeholder is deprecated and the API is no longer maintained. 
-We recommend forking the implementation and customising it to your needs. 
-For more information please visit https://google.github.io/accompanist/placeholder
-""",
-)
 public fun PlaceholderHighlight.Companion.fade(
     highlightColor: Color,
     animationSpec: InfiniteRepeatableSpec<Float> = PlaceholderDefaults.fadeAnimationSpec,
@@ -99,20 +81,11 @@ public fun PlaceholderHighlight.Companion.fade(
  * During that time it is also faded in, from 0f..progressForMaxAlpha, and then faded out from
  * progressForMaxAlpha..1f.
  *
- * @sample com.google.accompanist.sample.placeholder.DocSample_Foundation_PlaceholderShimmer
- *
  * @param highlightColor the color of the highlight 'shimmer'.
  * @param animationSpec the [AnimationSpec] to configure the animation.
  * @param progressForMaxAlpha The progress where the shimmer should be at it's peak opacity.
  * Defaults to 0.6f.
  */
-@Deprecated(
-    """
-accompanist/placeholder is deprecated and the API is no longer maintained. 
-We recommend forking the implementation and customising it to your needs. 
-For more information please visit https://google.github.io/accompanist/placeholder
-""",
-)
 public fun PlaceholderHighlight.Companion.shimmer(
     highlightColor: Color,
     animationSpec: InfiniteRepeatableSpec<Float> = PlaceholderDefaults.shimmerAnimationSpec,
