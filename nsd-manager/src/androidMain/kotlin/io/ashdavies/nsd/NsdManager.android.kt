@@ -88,14 +88,14 @@ public actual fun NsdManager.discoverServices(
 
 public actual fun NsdManager.resolveService(
     serviceInfo: NsdServiceInfo,
-    coroutineDispatcher: CoroutineDispatcher,
+    dispatcher: CoroutineDispatcher,
 ): Flow<NsdServiceInfo> {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-        return resolveServiceApi34(serviceInfo, coroutineDispatcher)
+        return resolveServiceApi34(serviceInfo, dispatcher)
     }
 
     return flow {
-        withContext(coroutineDispatcher) {
+        withContext(dispatcher) {
             emit(resolveServiceApi16(serviceInfo))
         }
     }

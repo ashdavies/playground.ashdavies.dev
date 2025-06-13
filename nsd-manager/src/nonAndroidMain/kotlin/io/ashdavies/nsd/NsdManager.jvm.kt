@@ -26,7 +26,7 @@ public actual fun NsdManager.discoverServices(
 
 public actual fun NsdManager.resolveService(
     serviceInfo: NsdServiceInfo,
-    coroutineDispatcher: CoroutineDispatcher,
+    dispatcher: CoroutineDispatcher,
 ): Flow<NsdServiceInfo> = unsupportedOperation()
 
 private fun unsupportedOperation(): Nothing {

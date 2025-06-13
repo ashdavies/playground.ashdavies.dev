@@ -1,5 +1,6 @@
 package io.ashdavies.nsd
 
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
@@ -29,7 +30,10 @@ public sealed interface NsdState {
     ) : NsdState
 }
 
-public fun NsdAgent(manager: NsdManager): NsdAgent = NsdAgent { serviceName ->
+public fun NsdAgent(
+    manager: NsdManager,
+    dispatcher: CoroutineDispatcher,
+): NsdAgent = NsdAgent { serviceName ->
     channelFlow {
         send(NsdState.Discovering)
 
@@ -44,7 +48,10 @@ public fun NsdAgent(manager: NsdManager): NsdAgent = NsdAgent { serviceName ->
                 serviceInfo.asFlow()
             }
             .flatMapMerge { serviceInfo ->
-                manager.resolveService(serviceInfo)
+                manager.resolveService(
+                    serviceInfo = serviceInfo,
+                    dispatcher = dispatcher,
+                )
             }
             .collect { serviceInfo ->
                 val hostAddress = serviceInfo.getHostAddressOrNull()
