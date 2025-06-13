@@ -1,9 +1,24 @@
-package io.ashdavies.placeholder
+/*
+ * Copyright 2022 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
-import androidx.annotation.FloatRange
-import androidx.compose.animation.core.AnimationSpec
+@file:Suppress("DEPRECATION")
+
+package com.google.accompanist.placeholder.material3
+
 import androidx.compose.animation.core.FiniteAnimationSpec
-import androidx.compose.animation.core.InfiniteRepeatableSpec
 import androidx.compose.animation.core.Transition
 import androidx.compose.animation.core.spring
 import androidx.compose.material3.MaterialTheme
@@ -15,6 +30,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.graphics.isSpecified
+import com.google.accompanist.placeholder.PlaceholderDefaults
+import com.google.accompanist.placeholder.PlaceholderHighlight
+import com.google.accompanist.placeholder.placeholder
 
 /**
  * Returns the value used as the the `color` parameter value on [Modifier.placeholder].
@@ -25,6 +43,13 @@ import androidx.compose.ui.graphics.isSpecified
  * @param contentAlpha The alpha component to set on [contentColor] when compositing the color
  * on top of [backgroundColor]. Defaults to `0.1f`.
  */
+@Deprecated(
+    """
+accompanist/placeholder is deprecated and the API is no longer maintained. 
+We recommend forking the implementation and customising it to your needs. 
+For more information please visit https://google.github.io/accompanist/placeholder
+""",
+)
 @Composable
 public fun PlaceholderDefaults.color(
     backgroundColor: Color = MaterialTheme.colorScheme.surface,
@@ -40,11 +65,41 @@ public fun PlaceholderDefaults.color(
  * `MaterialTheme.colorScheme.surface`.
  * @param alpha The alpha component to set on [backgroundColor]. Defaults to `0.3f`.
  */
+@Deprecated(
+    """
+accompanist/placeholder is deprecated and the API is no longer maintained. 
+We recommend forking the implementation and customising it to your needs. 
+For more information please visit https://google.github.io/accompanist/placeholder
+""",
+)
 @Composable
 public fun PlaceholderDefaults.fadeHighlightColor(
     backgroundColor: Color = MaterialTheme.colorScheme.surface,
     alpha: Float = 0.3f,
 ): Color = backgroundColor.copy(alpha = alpha)
+
+/**
+ * Returns the value used as the the `highlightColor` parameter value of
+ * [PlaceholderHighlight.Companion.shimmer].
+ *
+ * @param backgroundColor The current background color of the layout. Defaults to
+ * `MaterialTheme.colorScheme.inverseSurface`.
+ * @param alpha The alpha component to set on [backgroundColor]. Defaults to `0.75f`.
+ */
+@Deprecated(
+    """
+accompanist/placeholder is deprecated and the API is no longer maintained. 
+We recommend forking the implementation and customising it to your needs. 
+For more information please visit https://google.github.io/accompanist/placeholder
+""",
+)
+@Composable
+public fun PlaceholderDefaults.shimmerHighlightColor(
+    backgroundColor: Color = MaterialTheme.colorScheme.inverseSurface,
+    alpha: Float = 0.75f,
+): Color {
+    return backgroundColor.copy(alpha = alpha)
+}
 
 /**
  * Draws some skeleton UI which is typically used whilst content is 'loading'.
@@ -57,11 +112,13 @@ public fun PlaceholderDefaults.fadeHighlightColor(
  * [placeholderFadeTransitionSpec] parameters.
  *
  * You can provide a [PlaceholderHighlight] which runs an highlight animation on the placeholder.
- * The [fade] implementation is provided for easy usage.
+ * The [shimmer] and [fade] implementations are provided for easy usage.
  *
  * You can find more information on the pattern at the Material Theming
  * [Placeholder UI](https://material.io/design/communication/launch-screen.html#placeholder-ui)
  * guidelines.
+ *
+ * @sample com.google.accompanist.sample.placeholder.DocSample_Material_Placeholder
  *
  * @param visible whether the placeholder should be visible or not.
  * @param color the color used to draw the placeholder UI. If [Color.Unspecified] is provided,
@@ -74,6 +131,13 @@ public fun PlaceholderDefaults.fadeHighlightColor(
  * @param contentFadeTransitionSpec The transition spec to use when fading the content
  * on/off screen. The boolean parameter defined for the transition is [visible].
  */
+@Deprecated(
+    """
+accompanist/placeholder is deprecated and the API is no longer maintained. 
+We recommend forking the implementation and customising it to your needs. 
+For more information please visit https://google.github.io/accompanist/placeholder
+""",
+)
 public fun Modifier.placeholder(
     visible: Boolean,
     color: Color = Color.Unspecified,
@@ -91,17 +155,3 @@ public fun Modifier.placeholder(
         contentFadeTransitionSpec = contentFadeTransitionSpec,
     )
 }
-
-/**
- * Creates a [PlaceholderHighlight] which fades in an appropriate color, using the
- * given [animationSpec].
- *
- * @param animationSpec the [AnimationSpec] to configure the animation.
- */
-@Composable
-public fun PlaceholderHighlight.Companion.fade(
-    animationSpec: InfiniteRepeatableSpec<Float> = PlaceholderDefaults.fadeAnimationSpec,
-): PlaceholderHighlight = PlaceholderHighlight.fade(
-    highlightColor = PlaceholderDefaults.fadeHighlightColor(),
-    animationSpec = animationSpec,
-)

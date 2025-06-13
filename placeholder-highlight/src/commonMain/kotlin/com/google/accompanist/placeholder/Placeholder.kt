@@ -1,4 +1,22 @@
-package io.ashdavies.placeholder
+/*
+ * Copyright 2021 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+@file:Suppress("DEPRECATION")
+
+package com.google.accompanist.placeholder
 
 import androidx.compose.animation.core.FiniteAnimationSpec
 import androidx.compose.animation.core.InfiniteRepeatableSpec
@@ -36,6 +54,13 @@ import androidx.compose.ui.unit.LayoutDirection
 /**
  * Contains default values used by [Modifier.placeholder] and [PlaceholderHighlight].
  */
+@Deprecated(
+    """
+accompanist/placeholder is deprecated and the API is no longer maintained. 
+We recommend forking the implementation and customising it to your needs. 
+For more information please visit https://google.github.io/accompanist/placeholder
+""",
+)
 public object PlaceholderDefaults {
     /**
      * The default [InfiniteRepeatableSpec] to use for [fade].
@@ -44,6 +69,16 @@ public object PlaceholderDefaults {
         infiniteRepeatable(
             animation = tween(delayMillis = 200, durationMillis = 600),
             repeatMode = RepeatMode.Reverse,
+        )
+    }
+
+    /**
+     * The default [InfiniteRepeatableSpec] to use for [shimmer].
+     */
+    public val shimmerAnimationSpec: InfiniteRepeatableSpec<Float> by lazy {
+        infiniteRepeatable(
+            animation = tween(durationMillis = 1700, delayMillis = 200),
+            repeatMode = RepeatMode.Restart,
         )
     }
 }
@@ -55,7 +90,7 @@ public object PlaceholderDefaults {
  * in the 'Placeholder Material' library.
  *
  * You can provide a [PlaceholderHighlight] which runs an highlight animation on the placeholder.
- * The [[fade] implementation is provided for easy usage.
+ * The [shimmer] and [fade] implementations are provided for easy usage.
  *
  * A cross-fade transition will be applied to the content and placeholder UI when the [visible]
  * value changes. The transition can be customized via the [contentFadeTransitionSpec] and
@@ -64,6 +99,8 @@ public object PlaceholderDefaults {
  * You can find more information on the pattern at the Material Theming
  * [Placeholder UI](https://material.io/design/communication/launch-screen.html#placeholder-ui)
  * guidelines.
+ *
+ * @sample com.google.accompanist.sample.placeholder.DocSample_Foundation_Placeholder
  *
  * @param visible whether the placeholder should be visible or not.
  * @param color the color used to draw the placeholder UI.
@@ -74,6 +111,13 @@ public object PlaceholderDefaults {
  * @param contentFadeTransitionSpec The transition spec to use when fading the content
  * on/off screen. The boolean parameter defined for the transition is [visible].
  */
+@Deprecated(
+    """
+accompanist/placeholder is deprecated and the API is no longer maintained. 
+We recommend forking the implementation and customising it to your needs. 
+For more information please visit https://google.github.io/accompanist/placeholder
+""",
+)
 public fun Modifier.placeholder(
     visible: Boolean,
     color: Color,

@@ -41,9 +41,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil3.compose.rememberAsyncImagePainter
-import io.ashdavies.placeholder.PlaceholderHighlight
-import io.ashdavies.placeholder.fade
-import io.ashdavies.placeholder.placeholder
+import com.google.accompanist.placeholder.PlaceholderHighlight
+import com.google.accompanist.placeholder.material3.fade
+import com.google.accompanist.placeholder.material3.placeholder
 import io.ashdavies.tally.events.Event
 import io.ashdavies.tally.events.EventDateLabel
 import io.ashdavies.tally.events.EventsTopBar
