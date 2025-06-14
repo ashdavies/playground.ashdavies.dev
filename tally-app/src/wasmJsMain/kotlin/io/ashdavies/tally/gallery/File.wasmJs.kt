@@ -1,7 +1,7 @@
 package io.ashdavies.tally.gallery
 
-public actual class File actual constructor(path: String) {
-    public actual fun getAbsolutePath(): String = TODO()
-    public actual fun getName(): String = TODO()
-    public actual fun length(): Long = TODO()
+public actual class File actual constructor(private val path: String) {
+    public actual fun getAbsolutePath(): String = path
+    public actual fun getName(): String = path.substringAfterLast("/")
+    public actual fun length(): Long = 0L
 }
