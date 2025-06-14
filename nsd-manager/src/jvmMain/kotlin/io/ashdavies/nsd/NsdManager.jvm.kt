@@ -1,6 +1,5 @@
 package io.ashdavies.nsd
 
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 
 public actual class NsdManager
