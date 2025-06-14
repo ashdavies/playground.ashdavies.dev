@@ -15,4 +15,3 @@ private class StubLocationPermissionState : LocationPermissionState {
 
     override fun launchMultiplePermissionRequest() = Unit
 }
-
