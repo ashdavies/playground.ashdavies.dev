@@ -1,8 +1,6 @@
 plugins {
-    id("com.android.library")
-    id("io.ashdavies.android")
     id("io.ashdavies.compose")
-    kotlin("multiplatform")
+    id("io.ashdavies.default")
 }
 
 android {

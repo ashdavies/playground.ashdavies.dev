@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDate
 import kotlinx.serialization.json.Json
-import okio.ByteString.Companion.encode
+import okio.ByteString.Companion.encodeUtf8
 
 @Composable
 internal fun PastPresenter(
@@ -33,7 +33,7 @@ internal fun PastPresenter(
         value = pastConferencesCallable(Unit).map {
             val startDate = LocalDate.parse(it.dateStart)
             val uuid = Json.encodeToString(it)
-                .encode()
+                .encodeUtf8()
                 .md5()
                 .hex()
 

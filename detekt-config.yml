@@ -1,4 +1,6 @@
 complexity:
+  LongMethod:
+    excludes: [ ]
   LongParameterList:
     ignoreDefaultParameters: true
 Compose:
@@ -12,10 +14,10 @@ naming:
     functionPattern: '[\w]+'
   MatchingDeclarationName:
     excludes:
-      - '**/*.android.kt'
-      - '**/*.jvm.kt'
+    multiplatformTargets: ['android', 'jvm', 'wasmJs']
 style:
   MagicNumber:
+    excludes:
     ignorePropertyDeclaration: true
   UnusedPrivateMember:
     ignoreAnnotated: ['Preview', 'PreviewDayNight']

@@ -27,6 +27,6 @@ internal interface TallyModule {
     fun storageManager(context: PlatformContext): StorageManager = StorageManager(
         platformContext = context,
         pathProvider = PathProvider(context),
-        coroutineContext = Dispatchers.IO,
+        coroutineContext = Dispatchers.Default,
     )
 }

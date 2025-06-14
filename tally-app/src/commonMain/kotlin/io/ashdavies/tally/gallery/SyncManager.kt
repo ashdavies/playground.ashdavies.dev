@@ -13,7 +13,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.update
-import java.util.concurrent.atomic.AtomicBoolean
+import kotlin.concurrent.atomics.AtomicBoolean
+import kotlin.concurrent.atomics.ExperimentalAtomicApi
 
 internal interface SyncManager {
     val state: Flow<Map<String, SyncState>>
@@ -26,6 +27,7 @@ internal enum class SyncState {
     SYNCED,
 }
 
+@OptIn(ExperimentalAtomicApi::class)
 internal fun SyncManager(
     client: HttpClient,
     reader: File.() -> ByteReadChannel,
@@ -35,7 +37,12 @@ internal fun SyncManager(
     private val initialised = AtomicBoolean(false)
 
     override val state: Flow<Map<String, SyncState>> = channelFlow {
-        if (initialised.compareAndSet(false, true)) {
+        val isInitialised = initialised.compareAndSet(
+            expectedValue = true,
+            newValue = true,
+        )
+
+        if (!isInitialised) {
             val initialValue = client.get("/").body<List<String>>()
             _state.value = initialValue.associateWith { SyncState.SYNCED }
         }

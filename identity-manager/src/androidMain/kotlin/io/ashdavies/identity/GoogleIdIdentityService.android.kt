@@ -11,31 +11,39 @@ import com.google.android.libraries.identity.googleid.GetSignInWithGoogleOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import io.ashdavies.content.PlatformContext
 
-internal actual class GoogleIdIdentityService actual constructor(
-    private val context: PlatformContext,
-) : IdentityService<GoogleIdIdentityRequest> {
-
-    private val credentialManager: CredentialManager by lazy(LazyThreadSafetyMode.NONE) {
+internal actual fun GoogleIdIdentityService(context: PlatformContext): GoogleIdIdentityService {
+    val credentialManager by lazy(LazyThreadSafetyMode.NONE) {
         CredentialManager.create(context)
     }
 
-    override suspend fun request(request: GoogleIdIdentityRequest): IdentityResponse {
+    return GoogleIdIdentityService { request ->
         val getCredentialResponse = try {
-            getCredential(request, filterByAuthorizedAccounts = true)
+            credentialManager.getCredential(
+                context = context,
+                request = request,
+                filterByAuthorizedAccounts = true,
+            )
         } catch (ignored: GetCredentialException) {
             try {
-                getCredential(request, filterByAuthorizedAccounts = false)
+                credentialManager.getCredential(
+                    context = context,
+                    request = request,
+                    filterByAuthorizedAccounts = false,
+                )
             } catch (ignored: GetCredentialException) {
                 val signInWithGoogleOption = GetSignInWithGoogleOption
                     .Builder(request.serverClientId)
                     .setNonce(request.nonce)
                     .build()
 
-                getCredential(signInWithGoogleOption)
+                credentialManager.getCredential(
+                    context = context,
+                    option = signInWithGoogleOption,
+                )
             }
         }
 
-        return when (val credential = getCredentialResponse.credential) {
+        when (val credential = getCredentialResponse.credential) {
             is GoogleIdTokenCredential -> IdentityResponse(
                 uuid = credential.id,
                 pictureProfileUrl = credential
@@ -61,31 +69,36 @@ internal actual class GoogleIdIdentityService actual constructor(
             else -> throw UnsupportedOperationException("Unrecognised credential $credential")
         }
     }
+}
 
-    private suspend fun getCredential(
-        request: GoogleIdIdentityRequest,
-        filterByAuthorizedAccounts: Boolean,
-    ): GetCredentialResponse {
-        val googleIdOption = GetGoogleIdOption.Builder()
-            .setFilterByAuthorizedAccounts(filterByAuthorizedAccounts)
-            .setAutoSelectEnabled(request.autoSelectEnabled)
-            .setServerClientId(request.serverClientId)
-            .setNonce(request.nonce)
-            .build()
+private suspend fun CredentialManager.getCredential(
+    context: PlatformContext,
+    request: GoogleIdIdentityRequest,
+    filterByAuthorizedAccounts: Boolean,
+): GetCredentialResponse {
+    val googleIdOption = GetGoogleIdOption.Builder()
+        .setFilterByAuthorizedAccounts(filterByAuthorizedAccounts)
+        .setAutoSelectEnabled(request.autoSelectEnabled)
+        .setServerClientId(request.serverClientId)
+        .setNonce(request.nonce)
+        .build()
 
-        return getCredential(googleIdOption)
-    }
+    return getCredential(
+        context = context,
+        option = googleIdOption,
+    )
+}
 
-    private suspend fun getCredential(
-        option: CredentialOption,
-    ): GetCredentialResponse {
-        val request = GetCredentialRequest.Builder()
-            .addCredentialOption(option)
-            .build()
+private suspend fun CredentialManager.getCredential(
+    context: PlatformContext,
+    option: CredentialOption,
+): GetCredentialResponse {
+    val request = GetCredentialRequest.Builder()
+        .addCredentialOption(option)
+        .build()
 
-        return credentialManager.getCredential(
-            context = context,
-            request = request,
-        )
-    }
+    return getCredential(
+        context = context,
+        request = request,
+    )
 }

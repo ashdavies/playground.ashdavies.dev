@@ -5,7 +5,19 @@ import okio.Path
 import okio.Path.Companion.toOkioPath
 import java.io.File
 
-internal enum class OS {
+public actual fun PlatformContext.resolveCacheDir(relative: String): Path {
+    val cacheDir = when (currentOS) {
+        OS.MacOS -> File(System.getProperty("user.home"), "Library/Caches/playground")
+        OS.Linux -> File(System.getProperty("user.home"), ".cache/playground")
+        OS.Windows -> File(System.getenv("AppData"), "playground/cache")
+    }
+
+    return cacheDir
+        .resolve(relative)
+        .toOkioPath()
+}
+
+private enum class OS {
     Linux,
     Windows,
     MacOS,
@@ -20,16 +32,4 @@ private val currentOS: OS by lazy {
         os.startsWith("Linux", ignoreCase = true) -> OS.Linux
         else -> error("Unknown OS name: $os")
     }
-}
-
-public actual fun PlatformContext.resolveCacheDir(relative: String): Path {
-    val cacheDir = when (currentOS) {
-        OS.MacOS -> File(System.getProperty("user.home"), "Library/Caches/playground")
-        OS.Linux -> File(System.getProperty("user.home"), ".cache/playground")
-        OS.Windows -> File(System.getenv("AppData"), "playground/cache")
-    }
-
-    return cacheDir
-        .resolve(relative)
-        .toOkioPath()
 }
