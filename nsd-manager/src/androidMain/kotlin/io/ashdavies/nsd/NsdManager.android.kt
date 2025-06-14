@@ -1,20 +1,15 @@
 package io.ashdavies.nsd
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.asExecutor
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.channelFlow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.suspendCancellableCoroutine
-import kotlinx.coroutines.withContext
 import java.net.Inet4Address
 import java.net.Inet6Address
-import kotlin.coroutines.resumeWithException
 import android.net.nsd.NsdManager as AndroidNsdManager
 import android.net.nsd.NsdServiceInfo as AndroidNsdServiceInfo
 
@@ -24,25 +19,15 @@ public actual typealias NsdServiceInfo = AndroidNsdServiceInfo
 
 public actual fun NsdServiceInfo.getHostAddressOrNull(
     type: NsdHostAddress.Type,
-): NsdHostAddress? {
-    val hostAddressList = when {
-        Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE -> hostAddresses
-        else -> {
-            @Suppress("DEPRECATION")
-            listOf(host)
+): NsdHostAddress? = hostAddresses
+    .firstOrNull {
+        when (type) {
+            NsdHostAddress.Type.IPv4 -> it is Inet4Address
+            NsdHostAddress.Type.IPv6 -> it is Inet6Address
         }
     }
-
-    return hostAddressList
-        .firstOrNull {
-            when (type) {
-                NsdHostAddress.Type.IPv4 -> it is Inet4Address
-                NsdHostAddress.Type.IPv6 -> it is Inet6Address
-            }
-        }
-        ?.hostAddress
-        ?.let { NsdHostAddress(it, type) }
-}
+    ?.hostAddress
+    ?.let { NsdHostAddress(it, type) }
 
 public actual fun NsdManager.discoverServices(
     serviceType: String,
@@ -86,48 +71,7 @@ public actual fun NsdManager.discoverServices(
     }
 }
 
-public actual fun NsdManager.resolveService(
-    serviceInfo: NsdServiceInfo,
-    coroutineDispatcher: CoroutineDispatcher,
-): Flow<NsdServiceInfo> {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-        return resolveServiceApi34(serviceInfo, coroutineDispatcher)
-    }
-
-    return flow {
-        withContext(coroutineDispatcher) {
-            emit(resolveServiceApi16(serviceInfo))
-        }
-    }
-}
-
-private suspend fun NsdManager.resolveServiceApi16(
-    serviceInfo: NsdServiceInfo,
-): NsdServiceInfo = suspendCancellableCoroutine { continuation ->
-    val listener = object : AndroidNsdManager.ResolveListener {
-        override fun onResolveFailed(serviceInfo: NsdServiceInfo, errorCode: Int) {
-            continuation.resumeWithException(
-                IllegalStateException("Service resolution failed with an error ($errorCode)"),
-            )
-        }
-
-        override fun onServiceResolved(serviceInfo: NsdServiceInfo) {
-            continuation.resumeWith(Result.success(serviceInfo))
-        }
-    }
-
-    @Suppress("DEPRECATION")
-    resolveService(
-        /* serviceInfo = */ serviceInfo,
-        /* listener = */ listener,
-    )
-}
-
-@RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
-private fun NsdManager.resolveServiceApi34(
-    serviceInfo: NsdServiceInfo,
-    coroutineDispatcher: CoroutineDispatcher,
-): Flow<NsdServiceInfo> = callbackFlow {
+public actual fun NsdManager.resolveService(serviceInfo: NsdServiceInfo): Flow<NsdServiceInfo> = callbackFlow {
     val callback = object : AndroidNsdManager.ServiceInfoCallback {
         override fun onServiceInfoCallbackRegistrationFailed(errorCode: Int) {
             cancel("Service info callback registration failed ($errorCode)")
@@ -144,11 +88,8 @@ private fun NsdManager.resolveServiceApi34(
         }
     }
 
-    registerServiceInfoCallback(
-        /* serviceInfo = */ serviceInfo,
-        /* executor = */ coroutineDispatcher.asExecutor(),
-        /* listener = */ callback,
-    )
-
+    val dispatcher = coroutineContext[CoroutineDispatcher] ?: Dispatchers.Unconfined
     awaitClose { unregisterServiceInfoCallback(callback) }
+
+    registerServiceInfoCallback(serviceInfo, dispatcher.asExecutor(), callback)
 }

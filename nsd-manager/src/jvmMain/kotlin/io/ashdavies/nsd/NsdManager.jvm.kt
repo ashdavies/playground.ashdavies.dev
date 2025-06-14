@@ -1,6 +1,5 @@
 package io.ashdavies.nsd
 
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 
 public actual class NsdManager
@@ -26,7 +25,6 @@ public actual fun NsdManager.discoverServices(
 
 public actual fun NsdManager.resolveService(
     serviceInfo: NsdServiceInfo,
-    coroutineDispatcher: CoroutineDispatcher,
 ): Flow<NsdServiceInfo> = unsupportedOperation()
 
 private fun unsupportedOperation(): Nothing {

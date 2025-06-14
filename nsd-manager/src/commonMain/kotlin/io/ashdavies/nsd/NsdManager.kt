@@ -1,7 +1,5 @@
 package io.ashdavies.nsd
 
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 
 public data class NsdHostAddress(
@@ -32,5 +30,4 @@ public expect fun NsdManager.discoverServices(
 
 public expect fun NsdManager.resolveService(
     serviceInfo: NsdServiceInfo,
-    coroutineDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ): Flow<NsdServiceInfo>
