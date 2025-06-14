@@ -48,10 +48,7 @@ public fun NsdAgent(
                 serviceInfo.asFlow()
             }
             .flatMapMerge { serviceInfo ->
-                manager.resolveService(
-                    serviceInfo = serviceInfo,
-                    dispatcher = dispatcher,
-                )
+                manager.resolveService(serviceInfo)
             }
             .collect { serviceInfo ->
                 val hostAddress = serviceInfo.getHostAddressOrNull()
