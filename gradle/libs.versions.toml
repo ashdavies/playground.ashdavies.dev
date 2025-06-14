@@ -99,7 +99,7 @@ sqldelight-paging3-extensions = { module = "app.cash.sqldelight:androidx-paging3
 sqldelight-sqlite-dialect = { group = "app.cash.sqldelight", name = "sqlite-3-38-dialect", version.ref = "cash-sqldelight"}
 sqldelight-sqlite-driver = { module = "app.cash.sqldelight:sqlite-driver", version.ref = "cash-sqldelight" }
 
-squareup-okio = "com.squareup.okio:okio:3.12.0"
+squareup-okio = "com.squareup.okio:okio:3.13.0"
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "google-android" }
