@@ -5,17 +5,16 @@ import app.cash.sqldelight.coroutines.asFlow
 import app.cash.sqldelight.coroutines.mapToList
 import app.cash.sqldelight.coroutines.mapToOne
 import app.cash.sqldelight.coroutines.mapToOneOrNull
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlin.coroutines.CoroutineContext
 
 public fun <T : Any> Query<T>.mapToList(
-    context: CoroutineContext = Dispatchers.Default,
+    context: CoroutineContext,
 ): Flow<List<T>> = mapToList(context) { it }
 
 public fun <T : Any, R : Any?> Query<T>.mapToList(
-    context: CoroutineContext = Dispatchers.Default,
+    context: CoroutineContext,
     transform: suspend (value: T) -> R,
 ): Flow<List<R>> = asFlow()
     .mapToList(context)
@@ -28,19 +27,19 @@ private fun <T : Any, R : Any?> Flow<List<T>>.mapList(
 }
 
 public fun <T : Any, R : Any?> Query<T>.mapToOneOrNull(
-    context: CoroutineContext = Dispatchers.Default,
+    context: CoroutineContext,
     transform: suspend (value: T?) -> R,
 ): Flow<R> = asFlow()
     .mapToOneOrNull(context)
     .map(transform)
 
 public fun <T : Any, R : Any> Query<T>.mapToOne(
-    context: CoroutineContext = Dispatchers.Default,
+    context: CoroutineContext,
     transform: suspend (value: T) -> R,
 ): Flow<R> = asFlow()
     .mapToOne(context)
     .map(transform)
 
 public fun <T : Any> Query<T>.mapToOne(
-    context: CoroutineContext = Dispatchers.Default,
+    context: CoroutineContext,
 ): Flow<T> = mapToOne(context) { it }
