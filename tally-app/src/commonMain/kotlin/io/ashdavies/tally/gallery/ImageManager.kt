@@ -1,6 +1,7 @@
 package io.ashdavies.tally.gallery
 
 import io.ashdavies.sql.mapToList
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
@@ -16,9 +17,9 @@ internal fun ImageManager(
     imageQueries: ImageQueries,
 ): ImageManager = object : ImageManager {
 
-    override val list: Flow<List<Image>> = imageQueries
+    override val list = imageQueries
         .selectAll()
-        .mapToList()
+        .mapToList(Dispatchers.Default)
 
     @OptIn(ExperimentalUuidApi::class)
     override suspend fun add(file: File) {

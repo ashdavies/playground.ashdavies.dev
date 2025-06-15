@@ -3,6 +3,7 @@ package io.ashdavies.identity
 import io.ashdavies.content.PlatformContext
 import io.ashdavies.delegates.notNull
 import io.ashdavies.sql.mapToOneOrNull
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.merge
@@ -29,7 +30,7 @@ internal fun IdentityManager(
 
     private val states = MutableStateFlow<IdentityState>(IdentityState.Unauthenticated)
 
-    private val queries = credentialQueries.selectAll().mapToOneOrNull {
+    private val queries = credentialQueries.selectAll().mapToOneOrNull(Dispatchers.Default) {
         if (it != null) IdentityState.Authenticated(it.profilePictureUrl) else IdentityState.Unauthenticated
     }
 
