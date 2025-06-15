@@ -39,7 +39,7 @@ jobs:
           export-env: false
         env:
           GOOGLE_SERVICE_ACCOUNT_ID: op://Development/Playground Secrets/Google/Service Account ID
-          GOOGLE_SERVICES: op://Development/google services/tally/base64
+          GOOGLE_SERVICES: op://Development/Google Services/Playground/base64
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
           WORKLOAD_IDENTITY_PROVIDER:  op://Development/Playground Secrets/Google/Workload Identity
 
