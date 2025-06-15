@@ -4,9 +4,9 @@ import io.ashdavies.content.PlatformContext
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
-internal expect class GoogleIdIdentityService(
-    context: PlatformContext,
-) : IdentityService<GoogleIdIdentityRequest>
+internal typealias GoogleIdIdentityService = IdentityService<GoogleIdIdentityRequest>
+
+internal expect fun GoogleIdIdentityService(context: PlatformContext): GoogleIdIdentityService
 
 @OptIn(ExperimentalUuidApi::class)
 internal data class GoogleIdIdentityRequest(

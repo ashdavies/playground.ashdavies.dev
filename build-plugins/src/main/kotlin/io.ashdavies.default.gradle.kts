@@ -3,4 +3,5 @@ plugins {
 
     id("io.ashdavies.android")
     id("io.ashdavies.kotlin")
+    id("io.ashdavies.wasm")
 }

@@ -11,9 +11,7 @@ naming:
     excludes: ['**/*Test.kt']
     functionPattern: '[\w]+'
   MatchingDeclarationName:
-    excludes:
-      - '**/*.android.kt'
-      - '**/*.jvm.kt'
+    multiplatformTargets: ['android', 'jvm', 'wasmJs']
 style:
   MagicNumber:
     ignorePropertyDeclaration: true

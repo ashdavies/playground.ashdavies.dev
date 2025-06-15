@@ -11,11 +11,11 @@ import kotlinx.coroutines.flow.map
 import kotlin.coroutines.CoroutineContext
 
 public fun <T : Any> Query<T>.mapToList(
-    context: CoroutineContext = Dispatchers.IO,
+    context: CoroutineContext = Dispatchers.Default,
 ): Flow<List<T>> = mapToList(context) { it }
 
 public fun <T : Any, R : Any?> Query<T>.mapToList(
-    context: CoroutineContext = Dispatchers.IO,
+    context: CoroutineContext = Dispatchers.Default,
     transform: suspend (value: T) -> R,
 ): Flow<List<R>> = asFlow()
     .mapToList(context)
@@ -28,19 +28,19 @@ private fun <T : Any, R : Any?> Flow<List<T>>.mapList(
 }
 
 public fun <T : Any, R : Any?> Query<T>.mapToOneOrNull(
-    context: CoroutineContext = Dispatchers.IO,
+    context: CoroutineContext = Dispatchers.Default,
     transform: suspend (value: T?) -> R,
 ): Flow<R> = asFlow()
     .mapToOneOrNull(context)
     .map(transform)
 
 public fun <T : Any, R : Any> Query<T>.mapToOne(
-    context: CoroutineContext = Dispatchers.IO,
+    context: CoroutineContext = Dispatchers.Default,
     transform: suspend (value: T) -> R,
 ): Flow<R> = asFlow()
     .mapToOne(context)
     .map(transform)
 
 public fun <T : Any> Query<T>.mapToOne(
-    context: CoroutineContext = Dispatchers.IO,
+    context: CoroutineContext = Dispatchers.Default,
 ): Flow<T> = mapToOne(context) { it }

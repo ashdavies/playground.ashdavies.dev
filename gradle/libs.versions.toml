@@ -16,6 +16,8 @@ kotlinx-coroutines = "1.10.2"
 kotlinx-serialization = "1.8.1"
 ktor = "3.2.0"
 slack-circuit = "0.28.1"
+sqlJs = "1.8.0"
+webPack = "9.1.0"
 
 [libraries]
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity" }
@@ -68,6 +70,7 @@ kotlinx-serialization-properties = { module = "org.jetbrains.kotlinx:kotlinx-ser
 
 ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
+ktor-client-js = { module = "io.ktor:ktor-client-js", version.ref = "ktor" }
 ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
 ktor-client-mock = { module = "io.ktor:ktor-client-mock", version.ref = "ktor" }
 ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
@@ -98,6 +101,7 @@ sqldelight-runtime = { module = "app.cash.sqldelight:runtime", version.ref = "ca
 sqldelight-paging3-extensions = { module = "app.cash.sqldelight:androidx-paging3-extensions", version.ref = "cash-sqldelight" }
 sqldelight-sqlite-dialect = { group = "app.cash.sqldelight", name = "sqlite-3-38-dialect", version.ref = "cash-sqldelight"}
 sqldelight-sqlite-driver = { module = "app.cash.sqldelight:sqlite-driver", version.ref = "cash-sqldelight" }
+sqldelight-web-driver = { module = "app.cash.sqldelight:web-worker-driver", version.ref = "cash-sqldelight" }
 
 squareup-okio = "com.squareup.okio:okio:3.13.0"
 

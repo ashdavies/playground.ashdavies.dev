@@ -2,6 +2,7 @@ import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.compose.reload.ComposeHotRun
 import org.jetbrains.kotlin.compose.compiler.gradle.ComposeFeatureFlag
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
+import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 
 private object TallyAppConfig {
     const val PACKAGE_NAME = "io.ashdavies.tally"
@@ -124,7 +125,27 @@ kotlin {
         }
     }
 
+    @OptIn(ExperimentalWasmDsl::class)
+    wasmJs {
+        binaries.executable()
+
+        browser {
+            testTask {
+                useKarma {
+                    useFirefoxDeveloperHeadless()
+                }
+            }
+        }
+    }
+
     sourceSets {
+        val androidJvmMain by getting {
+            dependencies {
+                implementation(libs.androidx.paging.common)
+                implementation(libs.sqldelight.paging3.extensions)
+            }
+        }
+
         commonMain.dependencies {
             implementation(projects.analytics)
             implementation(projects.asgService)
@@ -166,7 +187,6 @@ kotlin {
             implementation(libs.slack.circuit.foundation)
             implementation(libs.slack.circuit.overlay)
             implementation(libs.sqldelight.coroutines.extensions)
-            implementation(libs.sqldelight.paging3.extensions)
             implementation(libs.sqldelight.runtime)
             implementation(libs.squareup.okio)
         }
@@ -206,6 +226,17 @@ kotlin {
             runtimeOnly(libs.kotlinx.coroutines.swing)
             runtimeOnly(libs.slf4j.simple)
         }
+
+        wasmJsMain.dependencies {
+            implementation(compose.foundation)
+            implementation(compose.material3)
+            implementation(compose.runtime)
+            implementation(compose.ui)
+
+            implementation(libs.compose.window.size)
+            implementation(libs.slack.circuit.foundation)
+            implementation(libs.slack.circuit.overlay)
+        }
     }
 }
 
@@ -217,6 +248,7 @@ sqldelight {
 
             dialect(libs.sqldelight.sqlite.dialect)
             dependency(projects.identityManager)
+            generateAsync = true
         }
     }
 }
