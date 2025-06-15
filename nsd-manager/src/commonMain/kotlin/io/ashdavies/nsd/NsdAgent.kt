@@ -30,10 +30,7 @@ public sealed interface NsdState {
     ) : NsdState
 }
 
-public fun NsdAgent(
-    manager: NsdManager,
-    dispatcher: CoroutineDispatcher,
-): NsdAgent = NsdAgent { serviceName ->
+public fun NsdAgent(manager: NsdManager): NsdAgent = NsdAgent { serviceName ->
     channelFlow {
         send(NsdState.Discovering)
 
