@@ -41,7 +41,7 @@ jobs:
           export-env: false
         env:
           GOOGLE_SERVICE_ACCOUNT_ID: op://Development/Playground Secrets/Google/Service Account ID
-          GOOGLE_SERVICES: op://Development/google services/tally/base64
+          GOOGLE_SERVICES: op://Development/Google Services/Playground/base64
           KEYSTORE_BASE64: op://Development/playground keystore/keystore base64
           KEYSTORE_PASSWORD: op://Development/playground keystore/keystore password
           KEY_ALIAS: op://Development/playground keystore/key alias
