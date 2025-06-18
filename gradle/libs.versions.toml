@@ -5,8 +5,8 @@ androidx-activity = "1.10.1"
 androidx-paging = "3.3.6"
 cash-sqldelight = "2.1.0"
 coil-kt = "3.2.0"
-compose-adaptive = "1.1.1"
-compose-plugin = "1.8.1"
+compose-adaptive = "1.1.2"
+compose-plugin = "1.8.2"
 google-accompanist = "0.37.3"
 google-android = "8.10.1"
 google-services = "4.4.2"
@@ -108,7 +108,7 @@ squareup-okio = "com.squareup.okio:okio:3.13.0"
 [plugins]
 android-application = { id = "com.android.application", version.ref = "google-android" }
 android-library = { id = "com.android.library", version.ref = "google-android" }
-build-config = "com.github.gmazzo.buildconfig:5.6.5"
+build-config = "com.github.gmazzo.buildconfig:5.6.6"
 cash-paparazzi = "app.cash.paparazzi:1.3.5"
 cash-sqldelight = { id = "app.cash.sqldelight", version.ref = "cash-sqldelight" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "jetbrains-kotlin" }
@@ -122,4 +122,4 @@ kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref 
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "jetbrains-kotlin" }
 kotlinx-kover = "org.jetbrains.kotlinx.kover:0.9.1"
 ktlint = "org.jlleitschuh.gradle.ktlint:12.3.0"
-zac-metro = "dev.zacsweers.metro:0.3.7"
+zac-metro = "dev.zacsweers.metro:0.3.8"
