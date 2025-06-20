@@ -7,7 +7,9 @@
       "depNameTemplate": "hashicorp/terraform",
       "depTypeTemplate": "terraform_version",
       "extractVersionTemplate": "v(?<version>.*)",
-      "fileMatch": "^\\.github/workflows/.*\\.yml$",
+      "managerFilePatterns": [
+        "/^\\.github/workflows/.*\\.yml$/"
+      ],
       "matchStrings": [
         "terraform_version: (?<currentValue>.*)"
       ],
