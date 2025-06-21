@@ -38,23 +38,13 @@
       ]
     },
     {
-      "matchPackageNames": [
-        "actions/checkout"
-      ],
-      "extends": [
-        "schedule:monthly"
-      ]
-    },
-    {
-      "matchPackageNames": [
-        "renovatebot/github-action"
-      ],
-      "extends": [
-        "schedule:monthly"
-      ]
+      "matchUpdateTypes": ["minor", "patch"],
+      "matchCurrentVersion": "!/^0/",
+      "automerge": true
     }
   ],
   "platformCommit": "enabled",
+  "prHourlyLimit": 1,
   "repositories": [
     "ashdavies/playground.ashdavies.dev"
   ],
