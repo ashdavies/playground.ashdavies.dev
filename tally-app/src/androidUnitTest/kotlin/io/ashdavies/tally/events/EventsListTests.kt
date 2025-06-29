@@ -3,6 +3,7 @@ package io.ashdavies.tally.events
 import app.cash.paparazzi.Paparazzi
 import io.ashdavies.tally.tooling.MaterialPreviewTheme
 import io.ashdavies.tally.tooling.UnitTestResources
+import io.ashdavies.tally.tooling.upcomingEventsList
 import io.ashdavies.tally.upcoming.UpcomingPane
 import io.ashdavies.tally.upcoming.UpcomingScreen
 import kotlinx.collections.immutable.toImmutableList
@@ -21,7 +22,7 @@ internal class EventsListTests {
                 UpcomingPane(
                     state = UpcomingScreen.State(
                         itemList = UnitTestResources
-                            .upcomingEventsList
+                            .upcomingEventsList()
                             .toImmutableList(),
                         selectedIndex = null,
                         isRefreshing = false,

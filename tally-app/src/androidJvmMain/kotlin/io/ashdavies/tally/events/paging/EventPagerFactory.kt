@@ -8,18 +8,27 @@ import app.cash.sqldelight.paging3.QueryPagingSource
 import io.ashdavies.tally.events.Event
 import io.ashdavies.tally.events.EventsQueries
 import kotlinx.coroutines.Dispatchers
+import kotlinx.datetime.Clock
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.todayIn
+import org.jetbrains.annotations.VisibleForTesting
+import kotlin.coroutines.CoroutineContext
 
-private const val DEFAULT_PAGE_SIZE = 10
+private object EventPagerDefaults {
+    const val PAGE_SIZE = 10
+}
 
 @OptIn(ExperimentalPagingApi::class)
 internal fun eventPager(
     eventsCallable: UpcomingEventsCallable,
     eventsQueries: EventsQueries,
+    pageSize: Int = EventPagerDefaults.PAGE_SIZE,
+    context: CoroutineContext = Dispatchers.IO,
 ): Pager<Long, Event> {
     val pagingSourceFactory = InvalidatingPagingSourceFactory {
         QueryPagingSource<Long, Event>(
             transacter = eventsQueries,
-            context = Dispatchers.IO,
+            context = context,
             pageBoundariesProvider = { anchor, limit ->
                 eventsQueries.pageBoundariesAscending(
                     limit = limit,
@@ -36,8 +45,8 @@ internal fun eventPager(
     }
 
     return Pager(
-        config = PagingConfig(DEFAULT_PAGE_SIZE),
-        initialKey = 0L,
+        config = PagingConfig(pageSize),
+        initialKey = null,
         remoteMediator = EventsRemoteMediator(
             eventsQueries = eventsQueries,
             eventsCallable = eventsCallable,
@@ -46,3 +55,8 @@ internal fun eventPager(
         pagingSourceFactory = pagingSourceFactory,
     )
 }
+
+@VisibleForTesting
+internal fun todayAsString(): String = Clock.System
+    .todayIn(TimeZone.currentSystemDefault())
+    .toString()
