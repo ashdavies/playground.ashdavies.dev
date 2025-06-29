@@ -5,6 +5,7 @@ import io.ashdavies.asg.UpcomingConferencesCallable
 import io.ashdavies.config.RemoteConfig
 import io.ashdavies.config.getBoolean
 import io.ashdavies.http.UnaryCallable
+import io.ashdavies.http.asSequence
 import io.ashdavies.http.common.models.EventCfp
 import io.ashdavies.http.throwClientRequestExceptionAs
 import io.ktor.client.HttpClient
@@ -36,7 +37,12 @@ internal fun UpcomingEventsCallable(httpClient: HttpClient, remoteConfig: Remote
     return UpcomingEventsCallable { request ->
         when {
             remoteConfig.isPagingEnabled() -> pagedCallable(request)
-            else -> asgCallable(Unit).map { it.toEvent(null) }
+            else -> asgCallable.asSequence(Unit) { response ->
+                response
+                    .filter { request.startAt == null || it.dateStart > request.startAt }
+                    .take(request.limit)
+                    .map { it.toEvent(null) }
+            }
         }
     }
 }

@@ -227,6 +227,11 @@ kotlin {
             runtimeOnly(libs.slf4j.simple)
         }
 
+        jvmTest.dependencies {
+            implementation(libs.androidx.paging.testing)
+            implementation(libs.sqldelight.sqlite.driver)
+        }
+
         wasmJsMain.dependencies {
             implementation(compose.foundation)
             implementation(compose.material3)

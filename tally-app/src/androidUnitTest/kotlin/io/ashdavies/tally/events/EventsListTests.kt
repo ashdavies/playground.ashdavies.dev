@@ -21,7 +21,7 @@ internal class EventsListTests {
                 UpcomingPane(
                     state = UpcomingScreen.State(
                         itemList = UnitTestResources
-                            .upcomingEventsList
+                            .upcomingTallyEventList
                             .toImmutableList(),
                         selectedIndex = null,
                         isRefreshing = false,
