@@ -10,14 +10,14 @@ import io.ktor.client.network.sockets.SocketTimeoutException
 import io.ashdavies.http.common.models.Event as ApiEvent
 
 @OptIn(ExperimentalPagingApi::class)
-internal class EventsRemoteMediator(
+internal class EventsRemoteMediator<T : Any>(
     private val eventsQueries: EventsQueries,
     private val eventsCallable: UpcomingEventsCallable,
     private val onInvalidate: () -> Unit,
-) : RemoteMediator<Long, Event>() {
+) : RemoteMediator<T, Event>() {
 
     @Suppress("ReturnCount")
-    override suspend fun load(loadType: LoadType, state: PagingState<Long, Event>): MediatorResult {
+    override suspend fun load(loadType: LoadType, state: PagingState<T, Event>): MediatorResult {
         val loadKey = when (loadType) {
             LoadType.APPEND -> state.lastItemOrNull() ?: return endOfPaginationReached()
             LoadType.PREPEND -> return endOfPaginationReached()
@@ -27,13 +27,11 @@ internal class EventsRemoteMediator(
         return when (val result = eventsCallable.result(GetEventsRequest(loadKey?.dateStart))) {
             is CallableResult.Error<*> -> MediatorResult.Error(result.throwable)
             is CallableResult.Success -> {
-                eventsQueries.transaction {
-                    if (loadType == LoadType.REFRESH) {
-                        eventsQueries.deleteAll()
-                    }
+                var rowsInserted = 0L
 
+                eventsQueries.transaction {
                     result.value.forEach {
-                        eventsQueries.insertOrReplace(
+                        rowsInserted += eventsQueries.insertOrIgnore(
                             name = it.name,
                             website = it.website,
                             location = it.location,
@@ -51,7 +49,7 @@ internal class EventsRemoteMediator(
 
                 onInvalidate()
 
-                MediatorResult.Success(result.value.isEmpty())
+                MediatorResult.Success(rowsInserted == 0L)
             }
         }
     }
