@@ -9,7 +9,7 @@ import java.io.FileInputStream
 internal object UnitTestResources {
 
     @OptIn(ExperimentalSerializationApi::class)
-    inline fun <reified T> decodeFromResource(sourceSet: String/* = "androidJvmTest"*/, name: String): T {
+    inline fun <reified T> decodeFromResource(sourceSet: String, name: String): T {
         return Json.decodeFromStream(FileInputStream(File("src/$sourceSet/resources/$name")))
     }
 }

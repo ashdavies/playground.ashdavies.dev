@@ -27,7 +27,7 @@ internal class EventsRemoteMediator<T : Any>(
         return when (val result = eventsCallable.result(GetEventsRequest(loadKey?.dateStart))) {
             is CallableResult.Error<*> -> MediatorResult.Error(result.throwable)
             is CallableResult.Success -> {
-                var rowsInserted  = 0L
+                var rowsInserted = 0L
 
                 eventsQueries.transaction {
                     result.value.forEach {
