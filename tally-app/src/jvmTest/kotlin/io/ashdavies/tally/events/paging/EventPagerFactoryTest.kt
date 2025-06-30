@@ -39,8 +39,18 @@ internal class EventPagerFactoryTest {
         val pageSize = 12
 
         val upcomingApiEventList = List(Random.nextInt(upcomingApiEventListSize)) { it }
-            .runningFold(LocalDate.nearFuture()) { acc, index -> if (index % pageSize == 1) LocalDate.nearFuture(acc) else acc }
-            .map { startDate -> tallyConf(knownLocationDeque.removeFirst().city, startDate) }
+            .runningFold(LocalDate.nearFuture()) { acc, index ->
+                when (index % pageSize) {
+                    0 -> LocalDate.nearFuture(acc)
+                    else -> acc
+                }
+            }
+            .map { startDate ->
+                tallyConf(
+                    location = knownLocationDeque.removeFirst().city,
+                    dateStart = startDate,
+                )
+            }
 
         val eventPager = eventPager(
             eventsCallable = { upcomingApiEventList },
