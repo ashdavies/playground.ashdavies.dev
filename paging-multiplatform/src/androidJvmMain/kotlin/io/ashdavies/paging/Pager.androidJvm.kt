@@ -21,9 +21,7 @@ public actual fun <T : Any> rememberPagingState(
         pager.flow.cachedIn(retainedCoroutineScope)
     }.collectAsLazyPagingItems()
 
-    return remember(pagingItems) {
-        PagingState(pagingItems)
-    }
+    return PagingState(pagingItems)
 }
 
 private fun <T : Any> PagingState(pagingItems: LazyPagingItems<T>): PagingState<T> = object : PagingState<T> {
