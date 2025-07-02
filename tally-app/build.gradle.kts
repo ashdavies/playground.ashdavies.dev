@@ -128,14 +128,7 @@ kotlin {
     @OptIn(ExperimentalWasmDsl::class)
     wasmJs {
         binaries.executable()
-
-        browser {
-            testTask {
-                useKarma {
-                    useFirefoxDeveloperHeadless()
-                }
-            }
-        }
+        browser()
     }
 
     sourceSets {
