@@ -12,12 +12,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import io.ashdavies.tally.material.padding
 import io.ashdavies.tally.material.spacing
-import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.format
 import kotlinx.datetime.format.MonthNames
 import kotlinx.datetime.toLocalDateTime
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 
 private const val HYPHEN = "-"
 
@@ -71,6 +72,7 @@ internal fun EventDateLabel(
                 }
             }
 
+            @OptIn(ExperimentalTime::class)
             val currentYear = Clock.System.now()
                 .toLocalDateTime(TimeZone.currentSystemDefault())
                 .year

@@ -6,10 +6,11 @@ import io.ashdavies.cloud.decodeFromSnapshot
 import io.ashdavies.http.common.models.Event
 import io.ktor.server.application.ApplicationCall
 import io.ktor.server.response.respond
-import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.todayIn
 import kotlinx.serialization.json.Json
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 
 private object UpcomingEventsDefaults {
     const val ORDER_BY = "dateStart"
@@ -31,6 +32,7 @@ internal class UpcomingEventsOperation(
     }
 }
 
+@OptIn(ExperimentalTime::class)
 private fun todayAsString(): String = Clock.System
     .todayIn(TimeZone.currentSystemDefault())
     .toString()

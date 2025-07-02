@@ -12,10 +12,11 @@ import io.ashdavies.tally.events.AttendanceQueries
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
-import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDate
 import kotlinx.serialization.json.Json
 import okio.ByteString.Companion.encodeUtf8
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 
 @Composable
 internal fun PastPresenter(
@@ -49,6 +50,7 @@ internal fun PastPresenter(
 
     val coroutineScope = rememberCoroutineScope()
 
+    @OptIn(ExperimentalTime::class)
     return PastScreen.State(itemList.toImmutableList()) { event ->
         when (event) {
             is PastScreen.Event.MarkAttendance -> coroutineScope.launch {

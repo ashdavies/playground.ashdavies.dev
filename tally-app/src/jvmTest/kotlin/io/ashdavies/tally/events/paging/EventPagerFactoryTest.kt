@@ -8,7 +8,6 @@ import io.ashdavies.tally.PlaygroundDatabase
 import io.ashdavies.tally.tooling.UnitTestResources
 import io.ashdavies.tally.tooling.locations
 import kotlinx.coroutines.test.runTest
-import kotlinx.datetime.Clock
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
@@ -17,7 +16,9 @@ import kotlinx.datetime.toLocalDateTime
 import org.junit.Test
 import kotlin.random.Random
 import kotlin.test.assertEquals
+import kotlin.time.Clock
 import kotlin.time.Duration.Companion.seconds
+import kotlin.time.ExperimentalTime
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 import io.ashdavies.http.common.models.Event as ApiEvent
@@ -67,12 +68,13 @@ internal class EventPagerFactoryTest {
     }
 }
 
-fun LocalDate.Companion.nearFuture(
+@OptIn(ExperimentalTime::class)
+private fun LocalDate.Companion.nearFuture(
     startAt: LocalDate = Clock.System.now()
         .toLocalDateTime(TimeZone.UTC)
         .date,
     random: Int = Random.nextInt(52),
-): LocalDate = startAt.plus(random, DateTimeUnit.WEEK)
+) = startAt.plus(random, DateTimeUnit.WEEK)
 
 @OptIn(ExperimentalUuidApi::class)
 private fun tallyConf(location: String, dateStart: LocalDate) = ApiEvent(
