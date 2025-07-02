@@ -9,8 +9,9 @@ import io.ktor.client.plugins.HttpCallValidator
 import io.ktor.client.request.header
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
-import kotlinx.datetime.Clock
 import kotlinx.serialization.Serializable
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 
 private const val HEADER_API_KEY = "X-Goog-Api-Key"
 private const val HEADER_FIELD_MASK = "X-Goog-FieldMask"
@@ -57,6 +58,7 @@ public data class ComputeRoutesRequest(
     val units: Units,
 ) {
 
+    @OptIn(ExperimentalTime::class)
     public constructor(
         origin: LatLng,
         destination: LatLng,
