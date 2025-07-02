@@ -9,6 +9,7 @@ import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlin.time.ExperimentalTime
 
 private const val GOOGLE_TOKEN_ENDPOINT = "https://accounts.google.com/o/oauth2/token"
 
@@ -20,6 +21,7 @@ private val FIREBASE_CLAIMS_SCOPES = listOf(
     "https://www.googleapis.com/auth/userinfo.email",
 )
 
+@OptIn(ExperimentalTime::class)
 internal suspend fun bearerResponse(
     httpClient: HttpClient,
     algorithm: Algorithm,
