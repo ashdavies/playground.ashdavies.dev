@@ -8,10 +8,6 @@ import app.cash.sqldelight.paging3.QueryPagingSource
 import io.ashdavies.tally.events.Event
 import io.ashdavies.tally.events.EventsQueries
 import kotlinx.coroutines.Dispatchers
-import kotlinx.datetime.Clock
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.todayIn
-import org.jetbrains.annotations.VisibleForTesting
 import kotlin.coroutines.CoroutineContext
 
 private object EventPagerDefaults {
@@ -55,8 +51,3 @@ internal fun eventPager(
         pagingSourceFactory = pagingSourceFactory,
     )
 }
-
-@VisibleForTesting
-internal fun todayAsString(): String = Clock.System
-    .todayIn(TimeZone.currentSystemDefault())
-    .toString()

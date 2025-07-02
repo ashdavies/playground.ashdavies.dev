@@ -1,5 +1,7 @@
 package io.ashdavies.check
 
+import kotlin.time.ExperimentalTime
+
 private const val APP_CHECK_ENDPOINT = "https://firebaseappcheck.googleapis.com/"
 
 public interface AppCheckVerifier {
@@ -31,6 +33,7 @@ internal fun AppCheckVerifier(
             appId: String,
         ) -> T,
     ): T {
+        @OptIn(ExperimentalTime::class)
         val jwt = Jwt.verify(GoogleAlgorithm(cryptoSigner), token) {
             issuer = "$APP_CHECK_ENDPOINT$projectNumber"
         }
