@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalTime::class)
+
 package io.ashdavies.check
 
 import com.auth0.jwt.JWT
@@ -5,10 +7,11 @@ import com.auth0.jwt.JWTCreator
 import com.auth0.jwt.JWTVerifier
 import com.auth0.jwt.algorithms.Algorithm
 import com.auth0.jwt.interfaces.DecodedJWT
-import kotlinx.datetime.Clock
-import kotlinx.datetime.Instant
-import kotlinx.datetime.toJavaInstant
+import kotlin.time.Clock
 import kotlin.time.Duration.Companion.hours
+import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
+import kotlin.time.toJavaInstant
 
 private const val APP_CHECK_ENDPOINT = "https://firebaseappcheck.googleapis.com"
 private const val APP_CHECK_AUDIENCE = "$APP_CHECK_ENDPOINT/google.firebase.appcheck.v1.TokenExchangeService"
