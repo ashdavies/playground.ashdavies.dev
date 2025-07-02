@@ -6,13 +6,16 @@ import io.ktor.client.request.header
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.http.HttpHeaders
-import kotlinx.datetime.Clock
 import kotlinx.serialization.Serializable
+import kotlin.time.Clock
 import kotlin.time.Duration.Companion.hours
 import kotlin.time.Duration.Companion.seconds
+import kotlin.time.ExperimentalTime
 
 private const val CUSTOM_EXCHANGE_URL_TEMPLATE =
-    "https://firebaseappcheck.googleapis.com/v1/projects/%s/apps/%s:exchangeCustomToken"
+    "https://firebaseappcheck.googleapis.com/" +
+        "v1/projects/%s/apps" +
+        "/%s:exchangeCustomToken"
 
 public interface AppCheckGenerator {
     public suspend fun <T : Any> createToken(
@@ -38,6 +41,7 @@ internal fun AppCheckGenerator(
     ): T {
         val algorithm = GoogleAlgorithm(cryptoSigner)
 
+        @OptIn(ExperimentalTime::class)
         val customToken = Jwt.create(algorithm) {
             it.expiresAt = Clock.System.now() + 1.hours
             it.issuer = cryptoSigner.getAccount()
@@ -51,11 +55,12 @@ internal fun AppCheckGenerator(
             appId = appId,
         )
 
-        val result = httpClient.post(String.format(CUSTOM_EXCHANGE_URL_TEMPLATE, projectId, appId)) {
-            header(HttpHeaders.Authorization, "Bearer ${bearerResponse.accessToken}")
-            header("X-Firebase-Client", "fire-admin-node/10.2.0")
-            setBody(mapOf("customToken" to customToken))
-        }.body<CustomTokenResponse>()
+        val result =
+            httpClient.post(String.format(CUSTOM_EXCHANGE_URL_TEMPLATE, projectId, appId)) {
+                header(HttpHeaders.Authorization, "Bearer ${bearerResponse.accessToken}")
+                header("X-Firebase-Client", "fire-admin-node/10.2.0")
+                setBody(mapOf("customToken" to customToken))
+            }.body<CustomTokenResponse>()
 
         val ttlSeconds = result.ttl
             .substring(0, result.ttl.length - 1)
