@@ -19,8 +19,8 @@ resource "github_repository" "main" {
   }
 }
 
-resource "github_issue_labels" "feature" {
+resource "github_issue_label" "feature" {
   repository  = var.gh_repo_name
   name        = "Feature"
-  color       = "#14a88d"
+  color       = "14a88d"
 }
