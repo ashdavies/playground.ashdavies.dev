@@ -8,31 +8,27 @@ import dev.zacsweers.metro.ContributesTo
 import dev.zacsweers.metro.IntoSet
 import dev.zacsweers.metro.Provides
 import io.ashdavies.asg.PastConferencesCallable
+import io.ashdavies.sql.DatabaseFactory
+import io.ashdavies.sql.map
 import io.ashdavies.tally.PlaygroundDatabase
 import io.ashdavies.tally.circuit.presenterFactoryOf
 import io.ashdavies.tally.circuit.uiFactoryOf
-import io.ashdavies.tally.events.AttendanceQueries
 import io.ktor.client.HttpClient
 import kotlinx.coroutines.Dispatchers
 
 @ContributesTo(AppScope::class)
 internal interface PastModule {
 
-    @Provides
-    fun attendanceQueries(database: PlaygroundDatabase): AttendanceQueries {
-        return database.attendanceQueries
-    }
-
     @IntoSet
     @Provides
     fun pastPresenterFactory(
         httpClient: HttpClient,
-        attendanceQueries: AttendanceQueries,
+        databaseFactory: DatabaseFactory<PlaygroundDatabase>,
     ): Presenter.Factory = presenterFactoryOf<PastScreen, PastScreen.State> { _, _ ->
         PastPresenter(
             pastConferencesCallable = PastConferencesCallable(httpClient),
-            attendanceQueries = attendanceQueries,
-            ioDispatcher = Dispatchers.Default,
+            attendanceQueries = databaseFactory.map { it.attendanceQueries },
+            coroutineContext = Dispatchers.Default,
         )
     }
 

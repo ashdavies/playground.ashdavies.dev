@@ -128,7 +128,11 @@ kotlin {
     @OptIn(ExperimentalWasmDsl::class)
     wasmJs {
         binaries.executable()
-        browser()
+        browser {
+            commonWebpackConfig {
+                outputFileName = "tally-app.js"
+            }
+        }
     }
 
     sourceSets {
@@ -246,7 +250,6 @@ sqldelight {
 
             dialect(libs.sqldelight.sqlite.dialect)
             dependency(projects.identityManager)
-            generateAsync = true
         }
     }
 }
