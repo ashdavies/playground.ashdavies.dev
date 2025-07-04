@@ -25,6 +25,7 @@ kotlin {
             implementation(projects.sqlCommon)
 
             implementation(libs.kotlinx.coroutines.core)
+            implementation(libs.sqldelight.coroutines.extensions)
         }
 
         androidMain.dependencies {

@@ -70,7 +70,7 @@ internal interface AndroidTallyGraph : TallyGraph {
     }
 
     @Provides
-    fun playgroundDatabase(context: PlatformContext): PlaygroundDatabase = DatabaseFactory(
+    fun databaseFactory(context: PlatformContext): DatabaseFactory<PlaygroundDatabase> = DatabaseFactory(
         schema = PlaygroundDatabase.Schema,
         context = context,
         factory = { PlaygroundDatabase(it) },

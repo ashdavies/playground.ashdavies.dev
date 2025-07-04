@@ -1,8 +1,10 @@
 package io.ashdavies.tally.gallery
 
-import io.ashdavies.sql.mapToList
-import kotlinx.coroutines.Dispatchers
+import app.cash.sqldelight.coroutines.mapToList
+import io.ashdavies.sql.Suspended
+import io.ashdavies.sql.mapAsFlow
 import kotlinx.coroutines.flow.Flow
+import kotlin.coroutines.CoroutineContext
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
@@ -14,12 +16,13 @@ internal interface ImageManager {
 
 internal fun ImageManager(
     storageManager: StorageManager,
-    imageQueries: ImageQueries,
+    imageQueries: Suspended<ImageQueries>,
+    coroutineContext: CoroutineContext,
 ): ImageManager = object : ImageManager {
 
     override val list = imageQueries
-        .selectAll()
-        .mapToList(Dispatchers.Default)
+        .mapAsFlow { it.selectAll() }
+        .mapToList(coroutineContext)
 
     @OptIn(ExperimentalUuidApi::class)
     override suspend fun add(file: File) {
@@ -29,11 +32,11 @@ internal fun ImageManager(
             path = file.getAbsolutePath(),
         )
 
-        imageQueries.insertOrReplace(image)
+        imageQueries().insertOrReplace(image)
     }
 
     override suspend fun remove(image: Image) {
         storageManager.delete(File(image.path))
-        imageQueries.deleteById(image.uuid)
+        imageQueries().deleteById(image.uuid)
     }
 }
