@@ -29,7 +29,7 @@ internal interface WasmTallyGraph : TallyGraph {
     fun eventPager(): Pager<*, Event> = Pager<Any, _>()
 
     @Provides
-    fun playgroundDatabase(context: PlatformContext): PlaygroundDatabase = DatabaseFactory(
+    fun databaseFactory(context: PlatformContext): DatabaseFactory<PlaygroundDatabase> = DatabaseFactory(
         schema = PlaygroundDatabase.Schema,
         context = context,
         factory = { PlaygroundDatabase(it) },

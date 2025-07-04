@@ -10,6 +10,7 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             implementation(projects.platformSupport)
+            implementation(projects.sqlCommon)
 
             implementation(libs.kotlinx.coroutines.core)
             implementation(libs.sqldelight.async.extensions)
@@ -28,14 +29,10 @@ kotlin {
         wasmJsMain.dependencies {
             implementation(libs.sqldelight.web.driver)
 
-            val sqlDelightVersion = libs.versions.cash.sqldelight.get()
-            implementation(npm("@cashapp/sqldelight-sqljs-worker", sqlDelightVersion))
+            implementation(npm("@cashapp/sqldelight-sqljs-worker", libs.versions.cash.sqldelight.get()))
+            implementation(npm("sql.js", libs.versions.sqlJs.get()))
 
-            val sqlJsVersion = libs.versions.sqlJs.get()
-            implementation(npm("sql.js", sqlJsVersion))
-
-            val webPackVersion = libs.versions.webPack.get()
-            implementation(devNpm("copy-webpack-plugin", webPackVersion))
+            implementation(devNpm("copy-webpack-plugin", libs.versions.webPack.get()))
         }
     }
 }
