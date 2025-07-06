@@ -5,9 +5,11 @@ import androidx.paging.InvalidatingPagingSourceFactory
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import app.cash.sqldelight.paging3.QueryPagingSource
+import io.ashdavies.sql.Suspended
 import io.ashdavies.tally.events.Event
 import io.ashdavies.tally.events.EventsQueries
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
 import kotlin.coroutines.CoroutineContext
 
 private object EventPagerDefaults {
@@ -17,22 +19,23 @@ private object EventPagerDefaults {
 @OptIn(ExperimentalPagingApi::class)
 internal fun eventPager(
     eventsCallable: UpcomingEventsCallable,
-    eventsQueries: EventsQueries,
+    eventsQueries: Suspended<EventsQueries>,
     pageSize: Int = EventPagerDefaults.PAGE_SIZE,
     context: CoroutineContext = Dispatchers.IO,
 ): Pager<Long, Event> {
+    val eventsQueriesBlocking by lazy { runBlocking { eventsQueries() } }
     val pagingSourceFactory = InvalidatingPagingSourceFactory {
         QueryPagingSource<Long, Event>(
-            transacter = eventsQueries,
+            transacter = eventsQueriesBlocking,
             context = context,
             pageBoundariesProvider = { anchor, limit ->
-                eventsQueries.pageBoundariesAscending(
+                eventsQueriesBlocking.pageBoundariesAscending(
                     limit = limit,
                     anchor = anchor,
                 )
             },
             queryProvider = { beginInclusive, endExclusive ->
-                eventsQueries.keyedQueryAscending(
+                eventsQueriesBlocking.keyedQueryAscending(
                     beginInclusive = beginInclusive,
                     endExclusive = endExclusive,
                 )
@@ -44,7 +47,7 @@ internal fun eventPager(
         config = PagingConfig(pageSize),
         initialKey = null,
         remoteMediator = EventsRemoteMediator(
-            eventsQueries = { eventsQueries },
+            eventsQueries = eventsQueries,
             eventsCallable = eventsCallable,
             onInvalidate = pagingSourceFactory::invalidate,
         ),
