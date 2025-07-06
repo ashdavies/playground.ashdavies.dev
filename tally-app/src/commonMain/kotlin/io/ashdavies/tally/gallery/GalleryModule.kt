@@ -8,28 +8,29 @@ import dev.zacsweers.metro.IntoSet
 import dev.zacsweers.metro.Provides
 import io.ashdavies.analytics.RemoteAnalytics
 import io.ashdavies.http.DefaultHttpConfiguration
+import io.ashdavies.sql.DatabaseFactory
+import io.ashdavies.sql.map
 import io.ashdavies.tally.PlaygroundDatabase
 import io.ashdavies.tally.circuit.presenterFactoryOf
 import io.ashdavies.tally.circuit.uiFactoryOf
 import io.ktor.client.HttpClient
+import kotlinx.coroutines.Dispatchers
 
 @ContributesTo(AppScope::class)
 internal interface GalleryModule {
-
-    @Provides
-    fun imageQueries(database: PlaygroundDatabase): ImageQueries = database.imageQueries
 
     @IntoSet
     @Provides
     fun galleryPresenterFactory(
         storageManager: StorageManager,
-        imageQueries: ImageQueries,
+        databaseFactory: DatabaseFactory<PlaygroundDatabase>,
         remoteAnalytics: RemoteAnalytics,
     ): Presenter.Factory = presenterFactoryOf<GalleryScreen, GalleryScreen.State> { _, _ ->
         GalleryPresenter(
             imageManager = ImageManager(
                 storageManager = storageManager,
-                imageQueries = imageQueries,
+                imageQueries = databaseFactory.map { it.imageQueries },
+                coroutineContext = Dispatchers.Default,
             ),
             syncManager = SyncManager(
                 client = HttpClient(

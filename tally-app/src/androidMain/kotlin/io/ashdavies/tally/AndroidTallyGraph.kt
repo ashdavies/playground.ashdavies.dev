@@ -18,6 +18,7 @@ import io.ashdavies.http.publicStorage
 import io.ashdavies.io.resolveCacheDir
 import io.ashdavies.paging.Pager
 import io.ashdavies.sql.DatabaseFactory
+import io.ashdavies.sql.map
 import io.ashdavies.tally.events.Event
 import io.ashdavies.tally.events.paging.UpcomingEventsCallable
 import io.ashdavies.tally.events.paging.eventPager
@@ -39,13 +40,15 @@ internal interface AndroidTallyGraph : TallyGraph {
     fun eventPager(
         httpClient: HttpClient,
         remoteConfig: RemoteConfig,
-        playgroundDatabase: PlaygroundDatabase,
+        databaseFactory: DatabaseFactory<PlaygroundDatabase>,
     ): Pager<*, Event> = eventPager(
         eventsCallable = UpcomingEventsCallable(
             httpClient = httpClient,
             remoteConfig = remoteConfig,
         ),
-        eventsQueries = playgroundDatabase.eventsQueries,
+        eventsQueries = databaseFactory.map {
+            it.eventsQueries
+        },
     )
 
     @Provides
@@ -70,7 +73,7 @@ internal interface AndroidTallyGraph : TallyGraph {
     }
 
     @Provides
-    fun playgroundDatabase(context: PlatformContext): PlaygroundDatabase = DatabaseFactory(
+    fun databaseFactory(context: PlatformContext): DatabaseFactory<PlaygroundDatabase> = DatabaseFactory(
         schema = PlaygroundDatabase.Schema,
         context = context,
         factory = { PlaygroundDatabase(it) },
