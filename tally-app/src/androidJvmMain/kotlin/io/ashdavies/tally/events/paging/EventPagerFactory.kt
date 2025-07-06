@@ -44,7 +44,7 @@ internal fun eventPager(
         config = PagingConfig(pageSize),
         initialKey = null,
         remoteMediator = EventsRemoteMediator(
-            eventsQueries = eventsQueries,
+            eventsQueries = { eventsQueries },
             eventsCallable = eventsCallable,
             onInvalidate = pagingSourceFactory::invalidate,
         ),

@@ -1,13 +1,19 @@
 package io.ashdavies.sql
 
-import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
+import kotlin.concurrent.atomics.ExperimentalAtomicApi
 import kotlin.coroutines.CoroutineContext
 
 public typealias Suspended<T> = suspend () -> T
+
+public suspend operator fun <T, R> Suspended<T>.invoke(transform: (T) -> R): R {
+    return transform(invoke())
+}
 
 public fun <T, R> Suspended<T>.map(
     context: CoroutineContext = Dispatchers.Default,
@@ -23,15 +29,16 @@ public fun <T, R> Suspended<T>.mapAsFlow(
     transform(invoke())
 }.asFlow()
 
+@OptIn(ExperimentalAtomicApi::class)
 public fun <T> Suspended(
     context: CoroutineContext = Dispatchers.Default,
-    initializer: suspend () -> T,
+    initializer: Suspended<T>,
 ): Suspended<T> = object : Suspended<T> {
-    private val deferred = CompletableDeferred<T>()
-    override suspend fun invoke(): T {
-        if (!deferred.isCompleted) {
-            deferred.complete(withContext(context) { initializer() })
-        }
-        return deferred.await()
+
+    private val mutex = Mutex()
+    private var value: T? = null
+
+    override suspend operator fun invoke(): T = value ?: mutex.withLock {
+        value ?: withContext(context) { initializer().also { value = it } }
     }
 }

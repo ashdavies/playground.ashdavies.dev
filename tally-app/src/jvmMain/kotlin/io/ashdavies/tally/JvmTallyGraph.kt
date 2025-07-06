@@ -11,6 +11,8 @@ import io.ashdavies.http.publicStorage
 import io.ashdavies.io.resolveCacheDir
 import io.ashdavies.paging.Pager
 import io.ashdavies.sql.DatabaseFactory
+import io.ashdavies.sql.Suspended
+import io.ashdavies.sql.invoke
 import io.ashdavies.tally.events.Event
 import io.ashdavies.tally.events.paging.UpcomingEventsCallable
 import io.ashdavies.tally.events.paging.eventPager
@@ -26,14 +28,18 @@ internal interface JvmTallyGraph : TallyGraph {
     fun eventPager(
         httpClient: HttpClient,
         remoteConfig: RemoteConfig,
-        playgroundDatabase: PlaygroundDatabase,
-    ): Pager<*, Event> = eventPager(
-        eventsCallable = UpcomingEventsCallable(
-            httpClient = httpClient,
-            remoteConfig = remoteConfig,
-        ),
-        eventsQueries = playgroundDatabase.eventsQueries,
-    )
+        databaseFactory: DatabaseFactory<PlaygroundDatabase>,
+    ): Suspended<Pager<*, Event>> = suspend {
+        eventPager(
+            eventsCallable = UpcomingEventsCallable(
+                httpClient = httpClient,
+                remoteConfig = remoteConfig,
+            ),
+            eventsQueries = databaseFactory {
+                it.eventsQueries
+            },
+        )
+    }
 
     @Provides
     fun httpClient(context: PlatformContext): HttpClient = defaultHttpClient {
