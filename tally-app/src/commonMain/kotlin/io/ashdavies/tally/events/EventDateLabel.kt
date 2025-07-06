@@ -39,8 +39,8 @@ internal fun EventDateLabel(
             val startMonth = dateStart.format(LocalDate.Format { monthName(MonthNames.ENGLISH_ABBREVIATED) })
             val endMonth = dateEnd.format(LocalDate.Format { monthName(MonthNames.ENGLISH_ABBREVIATED) })
 
-            val startDay = dateStart.format(LocalDate.Format { dayOfMonth() })
-            val endDay = dateEnd.format(LocalDate.Format { dayOfMonth() })
+            val startDay = dateStart.format(LocalDate.Format { day() })
+            val endDay = dateEnd.format(LocalDate.Format { day() })
 
             when {
                 startMonth != endMonth -> Row(verticalAlignment = Alignment.CenterVertically) {
