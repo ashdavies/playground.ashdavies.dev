@@ -15,7 +15,6 @@ import io.ashdavies.tally.material.spacing
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.format
-import kotlinx.datetime.format.MonthNames
 import kotlinx.datetime.toLocalDateTime
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
@@ -28,19 +27,17 @@ internal fun EventDateLabel(
     dateEnd: LocalDate,
     modifier: Modifier = Modifier,
 ) {
-    Surface(
-        modifier = modifier.clip(MaterialTheme.shapes.small),
-    ) {
+    Surface(modifier.clip(MaterialTheme.shapes.small)) {
         Column(
             modifier = Modifier.padding(MaterialTheme.spacing.small),
             verticalArrangement = Arrangement.aligned(Alignment.CenterVertically),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            val startMonth = dateStart.format(LocalDate.Format { monthName(MonthNames.ENGLISH_ABBREVIATED) })
-            val endMonth = dateEnd.format(LocalDate.Format { monthName(MonthNames.ENGLISH_ABBREVIATED) })
+            val startMonth = dateStart.monthAsString()
+            val endMonth = dateEnd.monthAsString()
 
-            val startDay = dateStart.format(LocalDate.Format { day() })
-            val endDay = dateEnd.format(LocalDate.Format { day() })
+            val startDay = dateStart.dayAsString()
+            val endDay = dateEnd.dayAsString()
 
             when {
                 startMonth != endMonth -> Row(verticalAlignment = Alignment.CenterVertically) {
