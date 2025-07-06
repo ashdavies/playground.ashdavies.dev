@@ -8,7 +8,7 @@ import app.cash.sqldelight.driver.android.AndroidSqliteDriver
 import io.ashdavies.content.PlatformContext
 
 public actual object DriverFactory {
-    public actual operator fun invoke(
+    public actual suspend operator fun invoke(
         schema: SqlSchema<QueryResult.AsyncValue<Unit>>,
         context: PlatformContext,
         name: String,

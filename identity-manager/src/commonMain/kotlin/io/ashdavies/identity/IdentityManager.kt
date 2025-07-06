@@ -1,12 +1,14 @@
 package io.ashdavies.identity
 
-import io.ashdavies.content.PlatformContext
+import app.cash.sqldelight.coroutines.mapToOneOrNull
 import io.ashdavies.delegates.notNull
-import io.ashdavies.sql.mapToOneOrNull
-import kotlinx.coroutines.Dispatchers
+import io.ashdavies.sql.Suspended
+import io.ashdavies.sql.mapAsFlow
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
+import kotlin.coroutines.CoroutineContext
 
 public interface IdentityManager {
     public val state: Flow<IdentityState>
@@ -14,25 +16,17 @@ public interface IdentityManager {
 }
 
 public fun IdentityManager(
-    platformContext: PlatformContext,
-    credentialQueries: CredentialQueries,
-): IdentityManager = IdentityManager(
-    credentialQueries = credentialQueries,
-    identityService = GoogleIdIdentityService(
-        context = platformContext,
-    ),
-)
-
-internal fun IdentityManager(
-    credentialQueries: CredentialQueries,
+    credentialQueries: Suspended<CredentialQueries>,
     identityService: GoogleIdIdentityService,
+    coroutineContext: CoroutineContext,
 ): IdentityManager = object : IdentityManager {
 
     private val states = MutableStateFlow<IdentityState>(IdentityState.Unauthenticated)
 
-    private val queries = credentialQueries.selectAll().mapToOneOrNull(Dispatchers.Default) {
-        if (it != null) IdentityState.Authenticated(it.profilePictureUrl) else IdentityState.Unauthenticated
-    }
+    private val queries = credentialQueries
+        .mapAsFlow(coroutineContext) { it.selectAll() }
+        .mapToOneOrNull(coroutineContext)
+        .map(::IdentityState)
 
     override val state: Flow<IdentityState> = merge(states, queries)
 
@@ -46,11 +40,16 @@ internal fun IdentityManager(
             return
         }
 
-        credentialQueries.insertOrReplace(
+        credentialQueries().insertOrReplace(
             credential = Credential(
                 uuid = identityResponse.uuid,
                 profilePictureUrl = identityResponse.pictureProfileUrl,
             ),
         )
     }
+}
+
+private fun IdentityState(credential: Credential?): IdentityState = when (credential) {
+    is Credential -> IdentityState.Authenticated(credential.profilePictureUrl)
+    else -> IdentityState.Unauthenticated
 }
