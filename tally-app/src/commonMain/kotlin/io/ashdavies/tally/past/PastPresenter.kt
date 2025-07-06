@@ -5,29 +5,29 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.produceState
 import androidx.compose.runtime.rememberCoroutineScope
-import app.cash.sqldelight.coroutines.asFlow
 import app.cash.sqldelight.coroutines.mapToList
 import io.ashdavies.asg.callable.PastConferencesCallable
+import io.ashdavies.sql.Suspended
+import io.ashdavies.sql.mapAsFlow
 import io.ashdavies.tally.events.AttendanceQueries
 import kotlinx.collections.immutable.toImmutableList
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
 import kotlinx.serialization.json.Json
 import okio.ByteString.Companion.encodeUtf8
+import kotlin.coroutines.CoroutineContext
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 
 @Composable
 internal fun PastPresenter(
     pastConferencesCallable: PastConferencesCallable,
-    attendanceQueries: AttendanceQueries,
-    ioDispatcher: CoroutineDispatcher,
+    attendanceQueries: Suspended<AttendanceQueries>,
+    coroutineContext: CoroutineContext,
 ): PastScreen.State {
     val attendanceList by attendanceQueries
-        .selectAll { id, _ -> id }
-        .asFlow()
-        .mapToList(ioDispatcher)
+        .mapAsFlow { it.selectAll { id, _ -> id } }
+        .mapToList(coroutineContext)
         .collectAsState(emptyList())
 
     val itemList by produceState(emptyList(), attendanceList) {
@@ -55,8 +55,8 @@ internal fun PastPresenter(
         when (event) {
             is PastScreen.Event.MarkAttendance -> coroutineScope.launch {
                 when (event.value) {
-                    true -> attendanceQueries.insert(event.id, "${Clock.System.now()}")
-                    false -> attendanceQueries.delete(event.id)
+                    true -> attendanceQueries().insert(event.id, "${Clock.System.now()}")
+                    false -> attendanceQueries().delete(event.id)
                 }
             }
         }

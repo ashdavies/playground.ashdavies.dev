@@ -11,7 +11,7 @@ import com.google.android.libraries.identity.googleid.GetSignInWithGoogleOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import io.ashdavies.content.PlatformContext
 
-internal actual fun GoogleIdIdentityService(context: PlatformContext): GoogleIdIdentityService {
+public actual fun GoogleIdIdentityService(context: PlatformContext): GoogleIdIdentityService {
     val credentialManager by lazy(LazyThreadSafetyMode.NONE) {
         CredentialManager.create(context)
     }
