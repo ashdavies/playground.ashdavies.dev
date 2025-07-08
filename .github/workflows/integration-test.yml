@@ -56,10 +56,15 @@ jobs:
           FIREBASE_ANDROID_APP_ID: ${{ steps.op-secrets.outputs.FIREBASE_ANDROID_APP_ID }}
           GOOGLE_SERVICE_ACCOUNT_ID: ${{ steps.op-secrets.outputs.GOOGLE_SERVICE_ACCOUNT_ID }}
           INTEGRATION_API_KEY: ${{ secrets.integration_api_key }}
-        run: ./gradlew cloud-run:integrationTest --stacktrace --console=plain
+        run: ./gradlew cloud-run:integrationTest --console=plain
 
-      - name: Produce Test Summary
-        uses: test-summary/action@v2
+      - uses: test-summary/action@v2
         with:
-          paths: "**/build/test-results/test/TEST-*.xml"
+          paths: "**/build/test-results/integrationTest/TEST-*.xml"
         if: ${{ always() }}
+
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: test-results
+          path: "**/build/reports/tests/integrationTest"
