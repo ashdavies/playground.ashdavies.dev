@@ -56,7 +56,7 @@ jobs:
           FIREBASE_ANDROID_APP_ID: ${{ steps.op-secrets.outputs.FIREBASE_ANDROID_APP_ID }}
           GOOGLE_SERVICE_ACCOUNT_ID: ${{ steps.op-secrets.outputs.GOOGLE_SERVICE_ACCOUNT_ID }}
           INTEGRATION_API_KEY: ${{ secrets.integration_api_key }}
-        run: ./gradlew cloud-run:integrationTest --console=plain
+        run: ./gradlew cloud-run:integrationTest --stacktrace --console=plain
 
       - name: Produce Test Summary
         uses: test-summary/action@v2
