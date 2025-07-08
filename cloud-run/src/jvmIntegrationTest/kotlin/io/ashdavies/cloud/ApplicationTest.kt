@@ -37,6 +37,8 @@ import kotlin.test.assertTrue
 import kotlin.test.fail
 import kotlin.time.Duration.Companion.minutes
 
+private const val APP_NOT_REGISTERED_ERROR = "App not registered: "
+
 private val DefaultHttpConfig: HttpClientConfig<out HttpClientEngineConfig>.() -> Unit = {
     install(ContentNegotiation, ContentNegotiationConfig::json)
 }
@@ -65,9 +67,10 @@ internal class ApplicationTest {
 
         if (!response.status.isSuccess()) {
             val error = response.body<GoogleApiException>()
-            val appId = error.error.message.substringAfter("App not registered: ")
+            val message = error.error.message
 
-            if (appId != BuildConfig.FIREBASE_ANDROID_APP_ID) {
+            if (message.startsWith(APP_NOT_REGISTERED_ERROR)) {
+                val appId = message.substringAfter("App not registered: ")
                 val expectedAppIdEncoded = BuildConfig.FIREBASE_ANDROID_APP_ID
                     ?.encode()
                     ?.sha256()
@@ -75,11 +78,11 @@ internal class ApplicationTest {
                 val actualAppIdEncoded = appId
                     .encode()
                     .sha256()
-                
+
                 fail("Expected app ID $expectedAppIdEncoded, but got $actualAppIdEncoded")
             }
 
-            fail(error.error.message)
+            fail(message)
         }
 
         val token = response.body<AppCheckToken>()
