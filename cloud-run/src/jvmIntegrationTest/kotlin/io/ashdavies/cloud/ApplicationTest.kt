@@ -1,7 +1,6 @@
 package io.ashdavies.cloud
 
 import io.ashdavies.check.AppCheckToken
-import io.ashdavies.cloud.google.GoogleApiError
 import io.ashdavies.http.common.models.AppCheckToken
 import io.ashdavies.http.common.models.DecodedToken
 import io.ashdavies.http.common.models.Event
@@ -21,19 +20,16 @@ import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
-import io.ktor.http.isSuccess
 import io.ktor.serialization.kotlinx.json.json
 import io.ktor.server.application.Application
 import io.ktor.server.testing.ApplicationTestBuilder
 import io.ktor.server.testing.testApplication
 import io.ktor.utils.io.KtorDsl
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlin.test.Ignore
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
-import kotlin.test.fail
 import kotlin.time.Duration.Companion.minutes
 
 private val DefaultHttpConfig: HttpClientConfig<out HttpClientEngineConfig>.() -> Unit = {
@@ -44,7 +40,6 @@ private val DefaultHttpConfig: HttpClientConfig<out HttpClientEngineConfig>.() -
 internal class ApplicationTest {
 
     @Test
-    @Ignore
     fun `should sign in with custom token`() = testMainApplication { client ->
         val authResult = client.post("/firebase/auth") {
             header("X-API-Key", requireNotNull(BuildConfig.INTEGRATION_API_KEY))
@@ -57,17 +52,10 @@ internal class ApplicationTest {
 
     @Test
     fun `should return app check token for request`() = testMainApplication { client ->
-        val response = client.post("/firebase/token") {
+        val token = client.post("/firebase/token") {
             setBody(FirebaseApp(requireNotNull(BuildConfig.FIREBASE_ANDROID_APP_ID)))
             contentType(ContentType.Application.Json)
-        }
-
-        if (!response.status.isSuccess()) {
-            val error = response.body<GoogleApiError>()
-            fail("${error.code}: ${error.message}")
-        }
-
-        val token = response.body<AppCheckToken>()
+        }.body<AppCheckToken>()
 
         assertEquals(60.minutes.inWholeMilliseconds, token.ttlMillis)
 
@@ -85,7 +73,6 @@ internal class ApplicationTest {
     }
 
     @Test
-    @Ignore
     fun `should aggregate github events`() = testMainApplication { client ->
         val response = client.post("/events:aggregate") {
             contentType(ContentType.Application.Json)
