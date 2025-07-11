@@ -20,6 +20,7 @@ internal class FirebaseTokenOperation(private val appCheck: AppCheck) : UnaryOpe
 
         call.respond(appCheckToken)
     } catch (exception: GoogleApiException) {
-        call.respond(HttpStatusCode.BadRequest, exception.error)
+        val status = HttpStatusCode.fromValue(exception.error.code)
+        call.respond(status, exception.error)
     }
 }
