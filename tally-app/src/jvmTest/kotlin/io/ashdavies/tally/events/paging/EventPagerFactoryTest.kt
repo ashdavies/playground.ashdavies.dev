@@ -72,6 +72,11 @@ internal class EventPagerFactoryTest {
     fun `should fail`() {
         fail("I am a failing test")
     }
+
+    @Test
+    fun `should also fail`() {
+        fail("I am another failing test")
+    }
 }
 
 @OptIn(ExperimentalTime::class)
