@@ -67,6 +67,7 @@ import io.ashdavies.tally.events.EventsTopBar
 import io.ashdavies.tally.material.BottomSheetScaffold
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.io.files.Path
 import org.jetbrains.compose.resources.stringResource
 import playground.tally_app.generated.resources.Res
 import playground.tally_app.generated.resources.past_events
@@ -77,7 +78,7 @@ private const val DEFAULT_COLUMN_COUNT = 4
 internal object GalleryScreen : Parcelable, Screen {
     sealed interface Event : CircuitUiEvent {
         sealed interface Capture : Event {
-            data class Result(val value: File) : Capture
+            data class Result(val value: Path) : Capture
 
             data object Cancel : Capture
             data object Request : Capture
@@ -119,7 +120,6 @@ internal object GalleryScreen : Parcelable, Screen {
 @OptIn(ExperimentalMaterial3Api::class)
 internal fun GalleryScreen(
     state: GalleryScreen.State,
-    manager: StorageManager,
     modifier: Modifier = Modifier,
 ) {
     val scrollBehavior = enterAlwaysScrollBehavior(rememberTopAppBarState())
@@ -170,12 +170,14 @@ internal fun GalleryScreen(
         }
 
         if (state.showCapture) {
-            ImageCapture(manager) {
-                when (it) {
-                    is File -> eventSink(GalleryScreen.Event.Capture.Result(it))
-                    null -> eventSink(GalleryScreen.Event.Capture.Cancel)
-                }
-            }
+            ImageCapture(
+                onCapture = {
+                    when (it) {
+                        is Path -> eventSink(GalleryScreen.Event.Capture.Result(it))
+                        null -> eventSink(GalleryScreen.Event.Capture.Cancel)
+                    }
+                },
+            )
         }
     }
 }

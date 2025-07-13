@@ -8,17 +8,18 @@ import io.ktor.client.request.post
 import io.ktor.client.request.put
 import io.ktor.client.request.setBody
 import io.ktor.http.HttpHeaders
-import io.ktor.utils.io.ByteReadChannel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.io.files.SystemFileSystem
 import kotlin.concurrent.atomics.AtomicBoolean
 import kotlin.concurrent.atomics.ExperimentalAtomicApi
+import kotlin.uuid.Uuid
 
 internal interface SyncManager {
-    val state: Flow<Map<String, SyncState>>
-    suspend fun sync(path: String)
+    val state: Flow<Map<Uuid, SyncState>>
+    suspend fun sync(image: Image)
 }
 
 internal enum class SyncState {
@@ -28,15 +29,12 @@ internal enum class SyncState {
 }
 
 @OptIn(ExperimentalAtomicApi::class)
-internal fun SyncManager(
-    client: HttpClient,
-    reader: File.() -> ByteReadChannel,
-): SyncManager = object : SyncManager {
+internal fun SyncManager(client: HttpClient): SyncManager = object : SyncManager {
 
-    private val _state = MutableStateFlow<Map<String, SyncState>>(emptyMap())
+    private val _state = MutableStateFlow<Map<Uuid, SyncState>>(emptyMap())
     private val initialised = AtomicBoolean(false)
 
-    override val state: Flow<Map<String, SyncState>> = channelFlow {
+    override val state: Flow<Map<Uuid, SyncState>> = channelFlow {
         val isInitialised = initialised.compareAndSet(
             expectedValue = true,
             newValue = true,
@@ -44,28 +42,28 @@ internal fun SyncManager(
 
         if (!isInitialised) {
             val initialValue = client.get("/").body<List<String>>()
-            _state.value = initialValue.associateWith { SyncState.SYNCED }
+            _state.value = initialValue.associate {
+                Uuid.parse(it) to SyncState.SYNCED
+            }
         }
 
         _state.collect(::send)
     }
 
-    override suspend fun sync(path: String) = with(File(path)) {
-        val initialState = _state.value[getName()] ?: SyncState.NOT_SYNCED
+    override suspend fun sync(image: Image) {
+        val initialState = _state.value[image.uuid] ?: SyncState.NOT_SYNCED
 
-        _state.update { it + (getName() to SyncState.SYNCING) }
+        _state.update { it + (image.uuid to SyncState.SYNCING) }
 
         when (initialState) {
-            SyncState.NOT_SYNCED -> client.post(getName()) {
+            SyncState.NOT_SYNCED -> client.post("${image.uuid}") {
                 header(HttpHeaders.ContentLength, length())
-                setBody(reader())
+                setBody(image.path.)
             }
 
-            else -> client.put(getName())
+            else -> client.put("${image.uuid}")
         }
 
         _state.update { it + (getName() to SyncState.SYNCED) }
     }
 }
-
-internal expect fun File.readChannel(): ByteReadChannel

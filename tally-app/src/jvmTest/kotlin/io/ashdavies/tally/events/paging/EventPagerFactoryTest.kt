@@ -19,11 +19,9 @@ import kotlin.test.assertEquals
 import kotlin.time.Clock
 import kotlin.time.Duration.Companion.seconds
 import kotlin.time.ExperimentalTime
-import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 import io.ashdavies.http.common.models.Event as ApiEvent
 
-@OptIn(ExperimentalPagingApi::class)
 internal class EventPagerFactoryTest {
 
     private val playgroundDatabase = PlaygroundDatabase(

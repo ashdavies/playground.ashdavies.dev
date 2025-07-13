@@ -1,7 +1,9 @@
+import kotlin.uuid.Uuid;
+import kotlinx.io.files.Path;
+
 CREATE TABLE image (
-    uuid TEXT NOT NULL PRIMARY KEY,
-    name TEXT NOT NULL,
-    path TEXT NOT NULL
+    uuid TEXT AS Uuid NOT NULL PRIMARY KEY,
+    path TEXT AS Path NOT NULL
 );
 
 selectAll:

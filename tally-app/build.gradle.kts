@@ -125,6 +125,10 @@ kotlin {
         }
     }
 
+    compilerOptions {
+        freeCompilerArgs.add("-opt-in=kotlin.uuid.ExperimentalUuidApi")
+    }
+
     @OptIn(ExperimentalWasmDsl::class)
     wasmJs {
         binaries.executable()
@@ -175,6 +179,7 @@ kotlin {
             implementation(libs.compose.window.size)
             implementation(libs.kotlinx.collections.immutable)
             implementation(libs.kotlinx.datetime)
+            implementation(libs.kotlinx.io.core)
             implementation(libs.kotlinx.serialization.core)
             implementation(libs.kotlinx.serialization.json)
             implementation(libs.ktor.client.core)

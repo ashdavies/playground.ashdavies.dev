@@ -10,6 +10,7 @@ import com.slack.circuit.retained.rememberRetained
 import io.ashdavies.analytics.RemoteAnalytics
 import io.ashdavies.analytics.logEvent
 import kotlinx.coroutines.launch
+import kotlinx.io.files.Path
 
 @Composable
 internal fun GalleryPresenter(
@@ -28,10 +29,10 @@ internal fun GalleryPresenter(
     return GalleryScreen.State(
         itemList = itemList.map {
             GalleryScreen.State.StandardItem(
-                title = it.name,
-                imageModel = File(it.path),
+                title = it.path.name,
+                imageModel = Path(it.path),
                 isSelected = it in selected,
-                state = syncState[it.name] ?: SyncState.NOT_SYNCED,
+                state = syncState[it.uuid] ?: SyncState.NOT_SYNCED,
             )
         },
         expandedItem = expandedItem,
@@ -49,10 +50,10 @@ internal fun GalleryPresenter(
                 takePhoto = true
             }
 
-            is GalleryScreen.Event.Selection.Expand -> {
+            is GalleryScreen.Event.Selection.Expand -> with(itemList[event.index]) {
                 expandedItem = GalleryScreen.State.ExpandedItem(
-                    contentDescription = itemList[event.index].name,
-                    imageModel = File(itemList[event.index].path),
+                    contentDescription = path.name,
+                    imageModel = path,
                     isExpanded = true,
                 )
             }

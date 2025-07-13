@@ -9,15 +9,15 @@ import androidx.compose.runtime.produceState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.FileProvider
+import kotlinx.io.files.Path
 
 @Composable
 internal actual fun ImageCapture(
-    manager: StorageManager,
+    onCapture: (Path?) -> Unit,
     modifier: Modifier,
-    onCapture: (File?) -> Unit,
 ) {
     val context = LocalContext.current
-    val fileState by produceState<File?>(null) {
+    val fileState by produceState<Path?>(null) {
         value = manager.create()
     }
 
