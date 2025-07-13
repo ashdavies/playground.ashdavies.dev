@@ -16,7 +16,6 @@ import kotlinx.datetime.toLocalDateTime
 import org.junit.Test
 import kotlin.random.Random
 import kotlin.test.assertEquals
-import kotlin.test.fail
 import kotlin.time.Clock
 import kotlin.time.Duration.Companion.seconds
 import kotlin.time.ExperimentalTime
@@ -66,16 +65,6 @@ internal class EventPagerFactoryTest {
         }
 
         assertEquals(upcomingApiEventList.size, itemSnapshotList.size)
-    }
-
-    @Test
-    fun `should fail`() {
-        fail("I am a failing test")
-    }
-
-    @Test
-    fun `should also fail`() {
-        fail("I am another failing test")
     }
 }
 
