@@ -8,11 +8,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material.icons.outlined.MyLocation
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -24,8 +22,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
+import io.ashdavies.identity.IdentityState
 import io.ashdavies.tally.material.padding
 import io.ashdavies.tally.material.spacing
+import io.ashdavies.tally.profile.ProfileActionButton
 import kotlinx.datetime.LocalDate
 import okio.ByteString.Companion.encodeUtf8
 import org.jetbrains.compose.resources.stringResource
@@ -45,9 +45,10 @@ internal fun EventsDetailPane(
             EventsTopBar(
                 title = item.name,
                 actions = {
-                    IconButton(onClick = { error("Crashlytics") }) {
-                        Icon(Icons.Default.Warning, contentDescription = null)
-                    }
+                    ProfileActionButton(
+                        identityState = IdentityState.Unsupported,
+                        onClick = { error("Unsupported Platform") },
+                    )
                 },
                 navigationIcon = navigationIcon,
             )
