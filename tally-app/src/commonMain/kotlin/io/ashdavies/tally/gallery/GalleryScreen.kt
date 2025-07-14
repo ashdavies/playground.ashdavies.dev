@@ -71,6 +71,7 @@ import kotlinx.io.files.Path
 import org.jetbrains.compose.resources.stringResource
 import playground.tally_app.generated.resources.Res
 import playground.tally_app.generated.resources.past_events
+import kotlin.uuid.Uuid
 
 private const val DEFAULT_COLUMN_COUNT = 4
 
@@ -170,10 +171,12 @@ internal fun GalleryScreen(
         }
 
         if (state.showCapture) {
+            val target = remember { Path("${Uuid.random()}.jpg") }
+
             ImageCapture(
-                onCapture = {
+                onResult = {
                     when (it) {
-                        is Path -> eventSink(GalleryScreen.Event.Capture.Result(it))
+                        is Path -> eventSink(GalleryScreen.Event.Capture.Result(target))
                         null -> eventSink(GalleryScreen.Event.Capture.Cancel)
                     }
                 },

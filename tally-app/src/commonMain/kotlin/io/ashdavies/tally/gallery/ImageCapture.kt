@@ -6,7 +6,6 @@ import kotlinx.io.files.Path
 
 @Composable
 internal expect fun ImageCapture(
-    target: Path,
-    onResult: (Boolean) -> Unit,
+    onResult: (Path?) -> Unit,
     modifier: Modifier = Modifier,
 )

@@ -7,8 +7,7 @@ import kotlinx.io.files.Path
 
 @Composable
 internal actual fun ImageCapture(
-    target: Path,
-    onResult: (Boolean) -> Unit,
+    onResult: (Path?) -> Unit,
     modifier: Modifier,
 ) {
     OperationNotImplemented()

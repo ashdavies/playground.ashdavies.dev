@@ -8,8 +8,7 @@ import javax.imageio.ImageIO
 
 @Composable
 internal actual fun ImageCapture(
-    target: Path,
-    onResult: (Boolean) -> Unit,
+    onResult: (Path?) -> Unit,
     modifier: Modifier,
 ) {
     val fileSuffixes = ImageIO.getReaderFileSuffixes()
@@ -20,6 +19,6 @@ internal actual fun ImageCapture(
     FileDialog(
         title = "Select an image",
         onCreate = { it.filenameFilter = filenameFilter },
-        onClose = { onResult(it != null) },
+        onClose = { onResult(it?.let(::Path)) },
     )
 }
