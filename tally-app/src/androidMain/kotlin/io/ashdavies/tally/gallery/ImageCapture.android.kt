@@ -4,34 +4,29 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.produceState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.FileProvider
 import kotlinx.io.files.Path
+import java.io.File
 
 @Composable
 internal actual fun ImageCapture(
-    onCapture: (Path?) -> Unit,
+    target: Path, // Only needed for Android
+    onResult: (Boolean) -> Unit,
     modifier: Modifier,
 ) {
+    val singlePhotoPickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.TakePicture(),
+        onResult = onResult,
+    )
+
     val context = LocalContext.current
-    val fileState by produceState<Path?>(null) {
-        value = manager.create()
-    }
 
-    fileState?.let { file ->
-        val singlePhotoPickerLauncher = rememberLauncherForActivityResult(
-            contract = ActivityResultContracts.TakePicture(),
-            onResult = { onCapture(if (it) file else null) },
-        )
+    LaunchedEffect(Unit) {
+        val authority = "${context.packageName}.files"
+        val target = FileProvider.getUriForFile(context, authority, File(target.toString()))
 
-        LaunchedEffect(Unit) {
-            val authority = "${context.packageName}.files"
-            val target = FileProvider.getUriForFile(context, authority, file)
-
-            singlePhotoPickerLauncher.launch(target)
-        }
+        singlePhotoPickerLauncher.launch(target)
     }
 }

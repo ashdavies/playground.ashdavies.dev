@@ -11,7 +11,7 @@ internal fun FileDialog(
     title: String = String(),
     mode: Int = FileDialog.LOAD,
     onCreate: (FileDialog) -> Unit = { },
-    onClose: (String?, String?) -> Unit,
+    onClose: (String?) -> Unit,
 ) {
     AwtWindow(
         create = {
@@ -20,7 +20,7 @@ internal fun FileDialog(
                     super.setVisible(value)
 
                     if (value) {
-                        onClose(directory, file)
+                        onClose("$directory/$file")
                     }
                 }
             }.also(onCreate)

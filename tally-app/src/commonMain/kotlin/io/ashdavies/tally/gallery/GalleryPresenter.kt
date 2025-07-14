@@ -13,6 +13,7 @@ import kotlinx.coroutines.launch
 import kotlinx.io.files.Path
 
 @Composable
+@Suppress("CyclomaticComplexMethod")
 internal fun GalleryPresenter(
     imageManager: ImageManager,
     syncManager: SyncManager,
@@ -79,7 +80,7 @@ internal fun GalleryPresenter(
                 remoteAnalytics.logEvent("gallery_sync")
 
                 coroutineScope.launch {
-                    selected.forEach { syncManager.sync(it.path) }
+                    selected.forEach { syncManager.sync(it) }
                     selected = emptyList()
                 }
             }

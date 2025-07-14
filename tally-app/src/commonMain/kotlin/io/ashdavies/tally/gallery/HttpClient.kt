@@ -22,28 +22,28 @@ internal fun inMemoryHttpClientEngine(initialValue: List<String> = emptyList()):
     val values = initialValue.toMutableList()
 
     return MockEngine { request ->
-        when {
-            request.method == HttpMethod.Get && request.path.isEmpty() -> {
+        when (request.method) {
+            HttpMethod.Get if request.path.isEmpty() -> {
                 val text = "[${values.joinToString(transform = { "\"$it\"" })}]"
 
                 respond(ByteReadChannel(text), headers = DefaultHeaders)
             }
 
-            request.method == HttpMethod.Post && request.path.isNotEmpty() -> {
+            HttpMethod.Post if request.path.isNotEmpty() -> {
                 require(request.body.contentLength == request.headers.contentLength.toLong())
                 values += request.path
 
                 respond(ByteReadChannel.Empty, headers = DefaultHeaders)
             }
 
-            request.method == HttpMethod.Put && request.path.isNotEmpty() -> {
+            HttpMethod.Put if request.path.isNotEmpty() -> {
                 require(request.body.contentLength == 0L)
                 values += request.path
 
                 respond(ByteReadChannel.Empty, headers = DefaultHeaders)
             }
 
-            request.method == HttpMethod.Delete && request.path.isNotEmpty() -> {
+            HttpMethod.Delete if request.path.isNotEmpty() -> {
                 require(request.body.contentLength == 0L)
                 values -= request.path
 
