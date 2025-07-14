@@ -18,10 +18,7 @@ internal fun FileDialog(
             object : FileDialog(parent, title, mode) {
                 override fun setVisible(value: Boolean) {
                     super.setVisible(value)
-
-                    if (value) {
-                        onClose("$directory/$file")
-                    }
+                    if (!value) onClose(file)
                 }
             }.also(onCreate)
         },
