@@ -5,6 +5,7 @@ import io.ashdavies.sql.Suspended
 import io.ashdavies.sql.mapAsFlow
 import kotlinx.coroutines.flow.Flow
 import kotlinx.io.files.Path
+import kotlinx.io.files.SystemFileSystem
 import kotlin.coroutines.CoroutineContext
 import kotlin.uuid.Uuid
 
@@ -28,6 +29,7 @@ internal fun ImageManager(
     }
 
     override suspend fun remove(image: Image) {
-        imageQueries().deleteById(image.uuid)
+        check(imageQueries().deleteById(image.uuid) > 0)
+        SystemFileSystem.delete(image.path)
     }
 }
