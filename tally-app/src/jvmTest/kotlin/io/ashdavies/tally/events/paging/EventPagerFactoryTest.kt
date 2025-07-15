@@ -1,10 +1,10 @@
 package io.ashdavies.tally.events.paging
 
-import androidx.paging.ExperimentalPagingApi
 import androidx.paging.testing.asSnapshot
 import app.cash.sqldelight.async.coroutines.synchronous
 import app.cash.sqldelight.driver.jdbc.sqlite.JdbcSqliteDriver
 import io.ashdavies.tally.PlaygroundDatabase
+import io.ashdavies.tally.gallery.imageAdapter
 import io.ashdavies.tally.tooling.UnitTestResources
 import io.ashdavies.tally.tooling.locations
 import kotlinx.coroutines.test.runTest
@@ -29,6 +29,7 @@ internal class EventPagerFactoryTest {
             url = JdbcSqliteDriver.IN_MEMORY,
             schema = PlaygroundDatabase.Schema.synchronous(),
         ).apply(PlaygroundDatabase.Schema::create),
+        imageAdapter = imageAdapter(),
     )
 
     @Test
@@ -74,7 +75,6 @@ private fun LocalDate.Companion.nearFuture(
     random: Int = Random.nextInt(52),
 ) = startAt.plus(random, DateTimeUnit.WEEK)
 
-@OptIn(ExperimentalUuidApi::class)
 private fun tallyConf(location: String, dateStart: LocalDate) = ApiEvent(
     id = "${Uuid.random()}",
     name = "TallyConf $location '${"${dateStart.year}".substring(2)}",

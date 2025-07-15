@@ -40,7 +40,7 @@ internal fun SyncManager(client: HttpClient): SyncManager = object : SyncManager
     private val initialised = AtomicBoolean(false)
 
     override val state: Flow<Map<Uuid, SyncState>> = channelFlow {
-        val isNotInitialised = initialised.compareAndExchange(
+        val isNotInitialised = initialised.compareAndSet(
             expectedValue = false,
             newValue = true,
         )
