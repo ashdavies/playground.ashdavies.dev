@@ -2,15 +2,14 @@ package io.ashdavies.tally.gallery
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import java.io.File
+import kotlinx.io.files.Path
 import java.io.FilenameFilter
 import javax.imageio.ImageIO
 
 @Composable
 internal actual fun ImageCapture(
-    manager: StorageManager,
+    onResult: (Path?) -> Unit,
     modifier: Modifier,
-    onCapture: (File?) -> Unit,
 ) {
     val fileSuffixes = ImageIO.getReaderFileSuffixes()
     val filenameFilter = FilenameFilter { _, name ->
@@ -20,6 +19,6 @@ internal actual fun ImageCapture(
     FileDialog(
         title = "Select an image",
         onCreate = { it.filenameFilter = filenameFilter },
-        onClose = { directory, file -> onCapture(File(directory, file)) },
+        onClose = { onResult(it?.let(::Path)) },
     )
 }

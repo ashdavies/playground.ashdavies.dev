@@ -11,17 +11,14 @@ internal fun FileDialog(
     title: String = String(),
     mode: Int = FileDialog.LOAD,
     onCreate: (FileDialog) -> Unit = { },
-    onClose: (String?, String?) -> Unit,
+    onClose: (String?) -> Unit,
 ) {
     AwtWindow(
         create = {
             object : FileDialog(parent, title, mode) {
                 override fun setVisible(value: Boolean) {
                     super.setVisible(value)
-
-                    if (value) {
-                        onClose(directory, file)
-                    }
+                    if (!value) onClose(file)
                 }
             }.also(onCreate)
         },

@@ -22,13 +22,11 @@ internal interface GalleryModule {
     @IntoSet
     @Provides
     fun galleryPresenterFactory(
-        storageManager: StorageManager,
         databaseFactory: DatabaseFactory<PlaygroundDatabase>,
         remoteAnalytics: RemoteAnalytics,
     ): Presenter.Factory = presenterFactoryOf<GalleryScreen, GalleryScreen.State> { _, _ ->
         GalleryPresenter(
             imageManager = ImageManager(
-                storageManager = storageManager,
                 imageQueries = databaseFactory.map { it.imageQueries },
                 coroutineContext = Dispatchers.Default,
             ),
@@ -37,7 +35,6 @@ internal interface GalleryModule {
                     engine = inMemoryHttpClientEngine(),
                     block = DefaultHttpConfiguration,
                 ),
-                reader = File::readChannel,
             ),
             remoteAnalytics = remoteAnalytics,
         )
@@ -45,12 +42,9 @@ internal interface GalleryModule {
 
     @IntoSet
     @Provides
-    fun galleryUiFactory(
-        storageManager: StorageManager,
-    ): Ui.Factory = uiFactoryOf<GalleryScreen, GalleryScreen.State> { state, modifier ->
+    fun galleryUiFactory(): Ui.Factory = uiFactoryOf<GalleryScreen, GalleryScreen.State> { state, modifier ->
         GalleryScreen(
             state = state,
-            manager = storageManager,
             modifier = modifier,
         )
     }
