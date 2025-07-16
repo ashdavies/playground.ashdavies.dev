@@ -12,7 +12,7 @@ import io.ashdavies.tally.material.BottomSheetItem
 
 @Composable
 internal fun GallerySheetContent(
-    eventSink: (GalleryScreen.Event) -> Unit,
+    eventSink: (GalleryScreen.Event.Selection) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Row(modifier) {

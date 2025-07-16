@@ -22,6 +22,7 @@ import io.ashdavies.sql.map
 import io.ashdavies.tally.events.Event
 import io.ashdavies.tally.events.paging.UpcomingEventsCallable
 import io.ashdavies.tally.events.paging.eventPager
+import io.ashdavies.tally.gallery.imageAdapter
 import io.ashdavies.tally.security.FirebaseAppCheckHeader
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.DefaultRequest
@@ -76,7 +77,7 @@ internal interface AndroidTallyGraph : TallyGraph {
     fun databaseFactory(context: PlatformContext): DatabaseFactory<PlaygroundDatabase> = DatabaseFactory(
         schema = PlaygroundDatabase.Schema,
         context = context,
-        factory = { PlaygroundDatabase(it) },
+        factory = { PlaygroundDatabase(it, imageAdapter()) },
     )
 
     @DependencyGraph.Factory
