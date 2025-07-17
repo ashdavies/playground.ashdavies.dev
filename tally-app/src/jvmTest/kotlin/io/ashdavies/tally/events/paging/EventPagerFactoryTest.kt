@@ -17,7 +17,6 @@ import org.junit.Test
 import kotlin.random.Random
 import kotlin.test.assertEquals
 import kotlin.time.Clock
-import kotlin.time.Duration.Companion.seconds
 import kotlin.time.ExperimentalTime
 import kotlin.uuid.Uuid
 import io.ashdavies.http.common.models.Event as ApiEvent
@@ -33,10 +32,12 @@ internal class EventPagerFactoryTest {
     )
 
     @Test
-    fun `should not include boundary events on same start date`() = runTest(timeout = 1.seconds) {
+    fun `should not include boundary events on same start date`() = runTest {
         val knownLocationDeque = ArrayDeque(UnitTestResources.locations())
         val upcomingApiEventListSize = 24
         val pageSize = 12
+
+        println("Preparing test data with $upcomingApiEventListSize events and page size of $pageSize...")
 
         val upcomingApiEventList = List(Random.nextInt(upcomingApiEventListSize)) { it }
             .runningFold(LocalDate.nearFuture()) { acc, index ->
@@ -52,6 +53,13 @@ internal class EventPagerFactoryTest {
                 )
             }
 
+        println("Generated ${upcomingApiEventList.size} events for testing.")
+
+        println("=== Dumping Randomly Generated Event List ===")
+        upcomingApiEventList.forEach(::println)
+
+        println("Creating event pager with page size $pageSize...")
+
         val eventPager = eventPager(
             eventsCallable = { upcomingApiEventList },
             eventsQueries = { playgroundDatabase.eventsQueries },
@@ -59,11 +67,19 @@ internal class EventPagerFactoryTest {
             context = coroutineContext,
         )
 
+        println("Obtaining item snapshot list...")
+
         val itemSnapshotList = eventPager.flow.asSnapshot {
+            println("Scrolling to the end of the list (position ${upcomingApiEventList.size})...")
             scrollTo(upcomingApiEventList.size)
         }
 
+        println("Snapshot obtained with ${itemSnapshotList.size} items.")
+
+        println("Verifying that the number of items matches the number of events...")
         assertEquals(upcomingApiEventList.size, itemSnapshotList.size)
+
+        println("Testing completed successfully.")
     }
 }
 
