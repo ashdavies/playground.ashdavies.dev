@@ -41,7 +41,7 @@ compose-adaptive-navigation = { module = "org.jetbrains.compose.material3.adapti
 compose-window-size = { module = "org.jetbrains.compose.material3:material3-window-size-class", version.ref = "compose-plugin" }
 compose-back-handler = "org.jetbrains.compose.ui:ui-backhandler:1.8.2"
 
-detekt-compose = "io.nlopez.compose.rules:detekt:0.4.22"
+detekt-compose = "io.nlopez.compose.rules:detekt:0.4.23"
 
 google-accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "google-accompanist" }
 google-android-identity = "com.google.android.libraries.identity.googleid:googleid:1.1.1"
