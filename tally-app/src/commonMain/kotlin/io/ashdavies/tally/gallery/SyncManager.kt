@@ -54,7 +54,6 @@ internal fun SyncManager(
     }
 
     override suspend fun sync(image: Image) {
-        println("=== Syncing ${image.uuid} ===")
         val initialState = _state.value[image.uuid] ?: SyncState.NOT_SYNCED
 
         _state.update { it + (image.uuid to SyncState.SYNCING) }
