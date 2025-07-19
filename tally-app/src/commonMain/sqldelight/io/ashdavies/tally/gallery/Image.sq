@@ -1,5 +1,5 @@
+import io.ashdavies.tally.files.Path;
 import kotlin.uuid.Uuid;
-import kotlinx.io.files.Path;
 
 CREATE TABLE image (
     uuid TEXT AS Uuid NOT NULL PRIMARY KEY,

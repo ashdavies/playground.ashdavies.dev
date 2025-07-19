@@ -3,9 +3,9 @@ package io.ashdavies.tally.gallery
 import app.cash.sqldelight.coroutines.mapToList
 import io.ashdavies.sql.Suspended
 import io.ashdavies.sql.mapAsFlow
+import io.ashdavies.tally.files.FileManager
+import io.ashdavies.tally.files.Path
 import kotlinx.coroutines.flow.Flow
-import kotlinx.io.files.Path
-import kotlinx.io.files.SystemFileSystem
 import kotlin.coroutines.CoroutineContext
 import kotlin.uuid.Uuid
 
@@ -17,6 +17,7 @@ internal interface ImageManager {
 
 internal fun ImageManager(
     imageQueries: Suspended<ImageQueries>,
+    fileManager: FileManager,
     coroutineContext: CoroutineContext,
 ): ImageManager = object : ImageManager {
 
@@ -30,6 +31,6 @@ internal fun ImageManager(
 
     override suspend fun remove(image: Image) {
         check(imageQueries().deleteById(image.uuid) > 0)
-        SystemFileSystem.delete(image.path)
+        fileManager.delete(image.path)
     }
 }

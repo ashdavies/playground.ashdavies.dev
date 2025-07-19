@@ -1,7 +1,7 @@
 package io.ashdavies.tally.gallery
 
 import app.cash.sqldelight.ColumnAdapter
-import kotlinx.io.files.Path
+import io.ashdavies.tally.files.Path
 import kotlin.uuid.Uuid
 
 internal fun imageAdapter() = Image.Adapter(
