@@ -10,7 +10,6 @@ import com.slack.circuit.retained.rememberRetained
 import io.ashdavies.analytics.RemoteAnalytics
 import io.ashdavies.analytics.logEvent
 import kotlinx.coroutines.launch
-import kotlinx.io.files.Path
 
 @Composable
 @Suppress("CyclomaticComplexMethod")
@@ -31,7 +30,7 @@ internal fun GalleryPresenter(
         itemList = itemList.map {
             GalleryScreen.State.StandardItem(
                 title = it.path.name,
-                imageModel = Path(it.path),
+                imageModel = it.path,
                 isSelected = it in selected,
                 state = syncState[it.uuid] ?: SyncState.NOT_SYNCED,
             )

@@ -8,7 +8,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.FileProvider
-import kotlinx.io.files.Path
+import io.ashdavies.tally.files.Path
 import java.io.File
 
 @Composable
