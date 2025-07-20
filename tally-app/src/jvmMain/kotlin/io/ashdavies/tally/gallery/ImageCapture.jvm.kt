@@ -2,7 +2,7 @@ package io.ashdavies.tally.gallery
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import kotlinx.io.files.Path
+import io.ashdavies.tally.files.Path
 import java.io.FilenameFilter
 import javax.imageio.ImageIO
 

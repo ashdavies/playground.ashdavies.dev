@@ -13,6 +13,7 @@ import io.ashdavies.sql.map
 import io.ashdavies.tally.PlaygroundDatabase
 import io.ashdavies.tally.circuit.presenterFactoryOf
 import io.ashdavies.tally.circuit.uiFactoryOf
+import io.ashdavies.tally.files.FileManager
 import io.ktor.client.HttpClient
 import kotlinx.coroutines.Dispatchers
 
@@ -28,13 +29,15 @@ internal interface GalleryModule {
         GalleryPresenter(
             imageManager = ImageManager(
                 imageQueries = databaseFactory.map { it.imageQueries },
+                fileManager = FileManager(),
                 coroutineContext = Dispatchers.Default,
             ),
             syncManager = SyncManager(
-                client = HttpClient(
+                httpClient = HttpClient(
                     engine = inMemoryHttpClientEngine(),
                     block = DefaultHttpConfiguration,
                 ),
+                fileManager = FileManager(),
             ),
             remoteAnalytics = remoteAnalytics,
         )

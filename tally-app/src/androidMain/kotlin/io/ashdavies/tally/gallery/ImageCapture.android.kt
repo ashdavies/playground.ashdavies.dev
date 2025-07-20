@@ -12,10 +12,7 @@ import kotlinx.io.files.Path
 import java.io.File
 
 @Composable
-internal actual fun ImageCapture(
-    onResult: (Path?) -> Unit,
-    modifier: Modifier,
-) {
+internal actual fun ImageCapture(onResult: (Path?) -> Unit, modifier: Modifier) {
     val target = remember { Path("image_capture.jpg") }
     val singlePhotoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.TakePicture(),
