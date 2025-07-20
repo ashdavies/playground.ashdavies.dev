@@ -8,14 +8,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.FileProvider
-import io.ashdavies.tally.files.Path
+import kotlinx.io.files.Path
 import java.io.File
 
 @Composable
-internal actual fun ImageCapture(
-    onResult: (Path?) -> Unit,
-    modifier: Modifier,
-) {
+internal actual fun ImageCapture(onResult: (Path?) -> Unit, modifier: Modifier) {
     val target = remember { Path("image_capture.jpg") }
     val singlePhotoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.TakePicture(),
