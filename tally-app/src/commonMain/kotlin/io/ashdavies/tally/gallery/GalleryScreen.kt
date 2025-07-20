@@ -64,10 +64,10 @@ import com.slack.circuit.runtime.screen.Screen
 import io.ashdavies.parcelable.Parcelable
 import io.ashdavies.parcelable.Parcelize
 import io.ashdavies.tally.events.EventsTopBar
+import io.ashdavies.tally.files.Path
 import io.ashdavies.tally.material.BottomSheetScaffold
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import kotlinx.io.files.Path
 import org.jetbrains.compose.resources.stringResource
 import playground.tally_app.generated.resources.Res
 import playground.tally_app.generated.resources.past_events

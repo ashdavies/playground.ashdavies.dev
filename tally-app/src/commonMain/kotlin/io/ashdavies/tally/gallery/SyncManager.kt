@@ -1,5 +1,6 @@
 package io.ashdavies.tally.gallery
 
+import io.ashdavies.tally.files.FileManager
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
@@ -12,12 +13,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.update
-import kotlinx.io.Source
-import kotlinx.io.buffered
-import kotlinx.io.files.FileSystem
-import kotlinx.io.files.Path
-import kotlinx.io.files.SystemFileSystem
-import kotlinx.io.readString
 import kotlin.concurrent.atomics.AtomicBoolean
 import kotlin.concurrent.atomics.ExperimentalAtomicApi
 import kotlin.uuid.Uuid
@@ -34,7 +29,10 @@ internal enum class SyncState {
 }
 
 @OptIn(ExperimentalAtomicApi::class)
-internal fun SyncManager(client: HttpClient): SyncManager = object : SyncManager {
+internal fun SyncManager(
+    httpClient: HttpClient,
+    fileManager: FileManager,
+): SyncManager = object : SyncManager {
 
     private val _state = MutableStateFlow<Map<Uuid, SyncState>>(emptyMap())
     private val initialised = AtomicBoolean(false)
@@ -46,7 +44,7 @@ internal fun SyncManager(client: HttpClient): SyncManager = object : SyncManager
         )
 
         if (isNotInitialised) {
-            val initialValue = client.get("/").body<List<String>>()
+            val initialValue = httpClient.get("/").body<List<String>>()
             _state.value = initialValue.associate {
                 Uuid.parse(it) to SyncState.SYNCED
             }
@@ -61,19 +59,15 @@ internal fun SyncManager(client: HttpClient): SyncManager = object : SyncManager
         _state.update { it + (image.uuid to SyncState.SYNCING) }
 
         when (initialState) {
-            SyncState.NOT_SYNCED -> client.post("${image.uuid}") {
-                val body = SystemFileSystem.readString(image.path)
-                header(HttpHeaders.ContentLength, body.length)
+            SyncState.NOT_SYNCED -> httpClient.post("${image.uuid}") {
+                val body = fileManager.readByteArray(image.path)
+                header(HttpHeaders.ContentLength, body.size)
                 setBody(body)
             }
 
-            else -> client.put("${image.uuid}")
+            else -> httpClient.put("${image.uuid}")
         }
 
         _state.update { it + (image.uuid to SyncState.SYNCED) }
     }
 }
-
-private fun FileSystem.readString(path: Path): String = source(path)
-    .buffered()
-    .use(Source::readString)
