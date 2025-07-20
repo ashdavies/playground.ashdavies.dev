@@ -2,7 +2,6 @@ package io.ashdavies.gallery
 
 import app.cash.turbine.test
 import io.ashdavies.http.DefaultHttpConfiguration
-import io.ashdavies.tally.files.FileManager
 import io.ashdavies.tally.files.Path
 import io.ashdavies.tally.gallery.Image
 import io.ashdavies.tally.gallery.SyncManager
@@ -14,53 +13,74 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.uuid.Uuid
 
-private val RandomImage = Uuid.random()
-
 internal class SyncManagerTest {
 
     @Test
     fun `should request initial value`() = runTest {
-        val manager = SyncManager(inMemoryHttpClient(listOf("$RandomImage")), FileManager())
+        val uuid = Uuid.random()
+
+        val manager = SyncManager(
+            httpClient = inMemoryHttpClient(listOf("$uuid")),
+            fileManager = InMemoryFileManager(),
+        )
 
         manager.state.test {
-            assertEquals(mapOf(RandomImage to SyncState.SYNCED), awaitItem())
+            assertEquals(mapOf(uuid to SyncState.SYNCED), awaitItem())
         }
     }
 
     @Test
     fun `should sync image on invocation`() = runTest {
-        val manager = SyncManager(inMemoryHttpClient(), FileManager())
+        val uuid = Uuid.random()
+        val path = Path("$uuid")
+
+        val manager = SyncManager(
+            httpClient = inMemoryHttpClient(),
+            fileManager = InMemoryFileManager(path),
+        )
 
         manager.state.test {
             assertEquals(emptyMap(), awaitItem())
 
-            manager.sync(Image(RandomImage, Path("$RandomImage")))
+            manager.sync(Image(uuid, path))
 
-            assertEquals(mapOf(RandomImage to SyncState.SYNCING), awaitItem())
-            assertEquals(mapOf(RandomImage to SyncState.SYNCED), awaitItem())
+            assertEquals(mapOf(uuid to SyncState.SYNCING), awaitItem())
+            assertEquals(mapOf(uuid to SyncState.SYNCED), awaitItem())
         }
     }
 
     @Test
     fun `should put synced image without content`() = runTest {
-        val manager = SyncManager(inMemoryHttpClient(listOf("$RandomImage")), FileManager())
+        val uuid = Uuid.random()
+        val path = Path("$uuid")
+
+        val manager = SyncManager(
+            httpClient = inMemoryHttpClient(listOf("$uuid")),
+            fileManager = InMemoryFileManager()
+        )
 
         manager.state.test {
-            assertEquals(mapOf(RandomImage to SyncState.SYNCED), awaitItem())
+            assertEquals(mapOf(uuid to SyncState.SYNCED), awaitItem())
 
-            manager.sync(Image(RandomImage, Path("$RandomImage")))
+            manager.sync(Image(uuid, path))
 
-            assertEquals(mapOf(RandomImage to SyncState.SYNCING), awaitItem())
-            assertEquals(mapOf(RandomImage to SyncState.SYNCED), awaitItem())
+            assertEquals(mapOf(uuid to SyncState.SYNCING), awaitItem())
+            assertEquals(mapOf(uuid to SyncState.SYNCED), awaitItem())
         }
     }
 
     @Test
     fun `should include content length header`() = runTest {
-        val manager = SyncManager(inMemoryHttpClient(), FileManager())
+        val uuid = Uuid.random()
+        val path = Path("$uuid")
+
+        val manager = SyncManager(
+            httpClient = inMemoryHttpClient(),
+            fileManager = InMemoryFileManager(path),
+        )
 
         manager.state.test {
-            manager.sync(Image(RandomImage, Path("$RandomImage")))
+            manager.sync(Image(uuid, path))
 
             cancelAndIgnoreRemainingEvents()
         }
