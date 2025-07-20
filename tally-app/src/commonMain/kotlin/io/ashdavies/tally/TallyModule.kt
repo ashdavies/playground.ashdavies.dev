@@ -3,18 +3,25 @@ package io.ashdavies.tally
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesTo
 import dev.zacsweers.metro.Provides
-import dev.zacsweers.metro.SingleIn
 import io.ashdavies.analytics.RemoteAnalytics
 import io.ashdavies.config.RemoteConfig
+import io.ashdavies.content.PlatformContext
+import io.ashdavies.sql.DatabaseFactory
+import io.ashdavies.tally.gallery.imageAdapter
 
 @ContributesTo(AppScope::class)
 internal interface TallyModule {
 
     @Provides
-    @SingleIn(AppScope::class)
+    fun databaseFactory(context: PlatformContext): DatabaseFactory<PlaygroundDatabase> = DatabaseFactory(
+        schema = PlaygroundDatabase.Schema,
+        context = context,
+        factory = { PlaygroundDatabase(it, imageAdapter()) },
+    )
+
+    @Provides
     fun remoteAnalytics(): RemoteAnalytics = RemoteAnalytics()
 
     @Provides
-    @SingleIn(AppScope::class)
     fun remoteConfig(): RemoteConfig = RemoteConfig()
 }

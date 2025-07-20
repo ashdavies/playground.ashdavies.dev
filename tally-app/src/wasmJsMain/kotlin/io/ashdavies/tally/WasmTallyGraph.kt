@@ -7,9 +7,8 @@ import dev.zacsweers.metro.Provides
 import io.ashdavies.content.PlatformContext
 import io.ashdavies.http.defaultHttpClient
 import io.ashdavies.paging.Pager
-import io.ashdavies.sql.DatabaseFactory
+import io.ashdavies.tally.activity.FullyDrawnReporter
 import io.ashdavies.tally.events.Event
-import io.ashdavies.tally.gallery.imageAdapter
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.DefaultRequest
 import io.ktor.client.request.header
@@ -30,11 +29,7 @@ internal interface WasmTallyGraph : TallyGraph {
     fun eventPager(): Pager<*, Event> = Pager<Any, _>()
 
     @Provides
-    fun databaseFactory(context: PlatformContext): DatabaseFactory<PlaygroundDatabase> = DatabaseFactory(
-        schema = PlaygroundDatabase.Schema,
-        context = context,
-        factory = { PlaygroundDatabase(it, imageAdapter()) },
-    )
+    fun fullyDrawnReporter(): FullyDrawnReporter = FullyDrawnReporter
 
     @DependencyGraph.Factory
     fun interface Factory {

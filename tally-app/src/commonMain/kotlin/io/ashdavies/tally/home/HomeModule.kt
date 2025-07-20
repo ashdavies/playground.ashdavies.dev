@@ -8,12 +8,12 @@ import dev.zacsweers.metro.IntoSet
 import dev.zacsweers.metro.Provides
 import io.ashdavies.config.RemoteConfig
 import io.ashdavies.content.PlatformContext
-import io.ashdavies.content.reportFullyDrawn
 import io.ashdavies.identity.GoogleIdIdentityService
 import io.ashdavies.identity.IdentityManager
 import io.ashdavies.sql.DatabaseFactory
 import io.ashdavies.sql.map
 import io.ashdavies.tally.PlaygroundDatabase
+import io.ashdavies.tally.activity.FullyDrawnReporter
 import io.ashdavies.tally.circuit.presenterFactoryOf
 import io.ashdavies.tally.circuit.uiFactoryOf
 import kotlinx.coroutines.Dispatchers
@@ -42,12 +42,12 @@ internal interface HomeModule {
     @IntoSet
     @Provides
     fun homeUiFactory(
-        platformContext: PlatformContext,
+        fullyDrawnReporter: FullyDrawnReporter,
     ): Ui.Factory = uiFactoryOf<HomeScreen, HomeScreen.State> { state, modifier ->
         HomeScreen(
             state = state,
+            reportFullyDrawn = fullyDrawnReporter::reportFullyDrawn,
             modifier = modifier,
-            reportFullyDrawn = platformContext::reportFullyDrawn,
         )
     }
 }
