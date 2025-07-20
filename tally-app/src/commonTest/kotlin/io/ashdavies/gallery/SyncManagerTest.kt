@@ -56,7 +56,7 @@ internal class SyncManagerTest {
 
         val manager = SyncManager(
             httpClient = inMemoryHttpClient(listOf("$uuid")),
-            fileManager = InMemoryFileManager()
+            fileManager = InMemoryFileManager(),
         )
 
         manager.state.test {
