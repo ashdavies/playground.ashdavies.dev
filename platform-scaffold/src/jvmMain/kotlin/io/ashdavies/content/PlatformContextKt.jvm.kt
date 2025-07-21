@@ -11,5 +11,3 @@ public actual fun PlatformContext.isDebuggable(): Boolean {
 
     return args.any { it.contains(JAVA_DEBUG_WIRE_PROTOCOL) }
 }
-
-public actual fun PlatformContext.reportFullyDrawn(): Unit = Unit

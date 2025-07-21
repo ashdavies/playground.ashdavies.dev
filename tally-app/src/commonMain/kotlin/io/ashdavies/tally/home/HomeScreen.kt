@@ -58,8 +58,8 @@ internal object HomeScreen : Parcelable, Screen {
 @OptIn(ExperimentalMaterial3Api::class)
 internal fun HomeScreen(
     state: HomeScreen.State,
-    modifier: Modifier = Modifier,
     reportFullyDrawn: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     val latestReportFullyDrawn by rememberUpdatedState(reportFullyDrawn)
     val eventSink = state.eventSink

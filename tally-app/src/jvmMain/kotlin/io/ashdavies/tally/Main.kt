@@ -25,7 +25,7 @@ public fun main() {
             title = "Tally",
         ) {
             TallyApp(
-                context = PlatformContext.Default,
+                context = PlatformContext,
                 onClose = ::exitApplication,
             )
         }

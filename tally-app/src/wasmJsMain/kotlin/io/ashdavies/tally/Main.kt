@@ -19,7 +19,7 @@ import io.ashdavies.tally.home.HomeScreen
 @OptIn(ExperimentalComposeUiApi::class)
 public fun main() {
     CanvasBasedWindow("Tally") {
-        TallyApp(PlatformContext.Default)
+        TallyApp(PlatformContext)
     }
 }
 

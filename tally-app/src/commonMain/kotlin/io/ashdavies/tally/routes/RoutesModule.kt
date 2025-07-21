@@ -6,7 +6,6 @@ import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesTo
 import dev.zacsweers.metro.IntoSet
 import dev.zacsweers.metro.Provides
-import dev.zacsweers.metro.SingleIn
 import io.ashdavies.content.PlatformContext
 import io.ashdavies.tally.circuit.presenterFactoryOf
 import io.ashdavies.tally.circuit.uiFactoryOf
@@ -16,7 +15,6 @@ import io.ktor.client.HttpClient
 internal interface RoutesModule {
 
     @Provides
-    @SingleIn(AppScope::class)
     fun locationService(context: PlatformContext): LocationService = LocationService(context)
 
     @IntoSet

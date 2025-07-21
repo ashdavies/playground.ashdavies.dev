@@ -7,7 +7,6 @@ import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesTo
 import dev.zacsweers.metro.Multibinds
 import dev.zacsweers.metro.Provides
-import dev.zacsweers.metro.SingleIn
 import kotlin.jvm.JvmSuppressWildcards
 
 @ContributesTo(AppScope::class)
@@ -22,7 +21,6 @@ internal interface CircuitModule {
     companion object {
 
         @Provides
-        @SingleIn(AppScope::class)
         fun circuit(
             presenterFactories: @JvmSuppressWildcards Set<Presenter.Factory>,
             uiFactories: @JvmSuppressWildcards Set<Ui.Factory>,

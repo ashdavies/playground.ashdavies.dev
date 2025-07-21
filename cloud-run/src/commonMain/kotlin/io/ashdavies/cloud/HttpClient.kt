@@ -14,7 +14,7 @@ internal val httpClient = HttpClient {
     DefaultHttpConfiguration()
 
     install(HttpCache) {
-        publicStorage(PlatformContext.Default.resolveCacheDir())
+        publicStorage(PlatformContext.resolveCacheDir())
     }
 
     install(HttpCallValidator) {

@@ -19,10 +19,10 @@ import io.ashdavies.io.resolveCacheDir
 import io.ashdavies.paging.Pager
 import io.ashdavies.sql.DatabaseFactory
 import io.ashdavies.sql.map
+import io.ashdavies.tally.activity.FullyDrawnReporter
 import io.ashdavies.tally.events.Event
 import io.ashdavies.tally.events.paging.UpcomingEventsCallable
 import io.ashdavies.tally.events.paging.eventPager
-import io.ashdavies.tally.gallery.imageAdapter
 import io.ashdavies.tally.security.FirebaseAppCheckHeader
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.DefaultRequest
@@ -74,11 +74,7 @@ internal interface AndroidTallyGraph : TallyGraph {
     }
 
     @Provides
-    fun databaseFactory(context: PlatformContext): DatabaseFactory<PlaygroundDatabase> = DatabaseFactory(
-        schema = PlaygroundDatabase.Schema,
-        context = context,
-        factory = { PlaygroundDatabase(it, imageAdapter()) },
-    )
+    fun fullyDrawnReporter(activity: Activity): FullyDrawnReporter = FullyDrawnReporter(activity::reportFullyDrawn)
 
     @DependencyGraph.Factory
     fun interface Factory {
