@@ -6,8 +6,7 @@ import io.ashdavies.asg.AsgService
 import io.ashdavies.cloud.CollectionWriter
 import io.ashdavies.cloud.await
 import io.ashdavies.cloud.decodeFromSnapshot
-import io.ashdavies.http.common.models.Event
-import io.ashdavies.http.common.models.EventCfp
+import io.ashdavies.http.common.models.ApiConference
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.ApplicationCall
 import io.ktor.server.response.respond
@@ -21,7 +20,7 @@ private object AggregateEventsDefaults {
 
 internal class AggregateEventsOperation(
     private val collectionReference: CollectionReference,
-    private val collectionWriter: CollectionWriter<Event>,
+    private val collectionWriter: CollectionWriter<ApiConference>,
     private val asgService: AsgService,
 ) : UnaryOperation {
 
@@ -32,7 +31,7 @@ internal class AggregateEventsOperation(
 
         collectionWriter(
             oldValue = Json.decodeFromSnapshot(snapshot),
-            newValue = asgService { it.toEvent(null) },
+            newValue = asgService { it.toApiConference(null) },
         )
 
         call.respond(HttpStatusCode.OK)
@@ -40,7 +39,7 @@ internal class AggregateEventsOperation(
 }
 
 @OptIn(ExperimentalUuidApi::class)
-private fun AsgConference.toEvent(imageUrl: String?) = Event(
+private fun AsgConference.toApiConference(imageUrl: String?) = ApiConference(
     id = "${Uuid.random()}",
     name = name,
     website = website,
@@ -51,7 +50,7 @@ private fun AsgConference.toEvent(imageUrl: String?) = Event(
     status = status,
     online = online,
     cfp = cfp?.let {
-        EventCfp(
+        ApiConference.Cfp(
             start = it.start,
             end = it.end,
             site = it.site,

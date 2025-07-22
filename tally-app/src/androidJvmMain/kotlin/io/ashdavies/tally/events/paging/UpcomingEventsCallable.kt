@@ -6,7 +6,7 @@ import io.ashdavies.config.RemoteConfig
 import io.ashdavies.config.getBoolean
 import io.ashdavies.http.UnaryCallable
 import io.ashdavies.http.asSequence
-import io.ashdavies.http.common.models.EventCfp
+import io.ashdavies.http.common.models.ApiConference
 import io.ashdavies.http.throwClientRequestExceptionAs
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -14,12 +14,11 @@ import io.ktor.client.plugins.HttpCallValidator
 import io.ktor.client.request.get
 import kotlinx.serialization.Serializable
 import kotlin.uuid.Uuid
-import io.ashdavies.http.common.models.Event as ApiEvent
 
 private const val PLAYGROUND_BASE_URL = "api.ashdavies.dev"
 private const val NETWORK_PAGE_SIZE = 100
 
-internal fun interface UpcomingEventsCallable : UnaryCallable<GetEventsRequest, List<ApiEvent>>
+internal fun interface UpcomingEventsCallable : UnaryCallable<GetEventsRequest, List<ApiConference>>
 
 private suspend fun RemoteConfig.isPagingEnabled() = getBoolean("paging_enabled")
 
@@ -40,7 +39,7 @@ internal fun UpcomingEventsCallable(httpClient: HttpClient, remoteConfig: Remote
                 response
                     .filter { request.startAt == null || it.dateStart > request.startAt }
                     .take(request.limit)
-                    .map { it.toEvent(null) }
+                    .map { it.toApiConference(null) }
             }
         }
     }
@@ -73,8 +72,23 @@ internal data class GetEventsError(
     val code: Int,
 ) : Throwable()
 
-private fun AsgConference.toEvent(imageUrl: String?): ApiEvent = ApiEvent(
-    id = "${Uuid.random()}", name = name, website = website, location = location, dateStart = dateStart,
-    dateEnd = dateEnd, imageUrl = imageUrl, status = status, online = online,
-    cfp = cfp?.let { EventCfp(start = it.start, end = it.end, site = it.site) },
+private fun AsgConference.toApiConference(
+    imageUrl: String?,
+) = ApiConference(
+    id = "${Uuid.random()}",
+    name = name,
+    website = website,
+    location = location,
+    dateStart = dateStart,
+    dateEnd = dateEnd,
+    imageUrl = imageUrl,
+    status = status,
+    online = online,
+    cfp = cfp?.let {
+        ApiConference.Cfp(
+            start = it.start,
+            end = it.end,
+            site = it.site,
+        )
+    },
 )

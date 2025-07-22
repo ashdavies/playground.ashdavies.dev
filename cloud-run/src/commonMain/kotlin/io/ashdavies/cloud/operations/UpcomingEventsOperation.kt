@@ -3,7 +3,7 @@ package io.ashdavies.cloud.operations
 import com.google.cloud.firestore.CollectionReference
 import io.ashdavies.cloud.await
 import io.ashdavies.cloud.decodeFromSnapshot
-import io.ashdavies.http.common.models.Event
+import io.ashdavies.http.common.models.ApiConference
 import io.ktor.server.application.ApplicationCall
 import io.ktor.server.response.respond
 import kotlinx.datetime.TimeZone
@@ -28,7 +28,7 @@ internal class UpcomingEventsOperation(
             .limit(call.request.queryParameters["limit"]?.toInt() ?: UpcomingEventsDefaults.LIMIT)
             .await()
 
-        call.respond(Json.decodeFromSnapshot<Event>(snapshot))
+        call.respond(Json.decodeFromSnapshot<ApiConference>(snapshot))
     }
 }
 

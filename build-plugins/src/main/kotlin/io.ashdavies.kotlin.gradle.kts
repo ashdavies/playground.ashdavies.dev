@@ -21,16 +21,16 @@ kotlin {
 
     @OptIn(ExperimentalKotlinGradlePluginApi::class)
     applyDefaultHierarchyTemplate {
-        common {
+        common { // TODO Move to custom extensions
             group("androidJvm") {
                 withAndroidTarget()
                 withJvm()
             }
 
-            /*group("nonAndroid") {
+            group("nonAndroid") {
                 withJvm()
                 withWasmJs()
-            }*/
+            }
         }
     }
 }
