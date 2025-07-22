@@ -27,7 +27,6 @@ import io.ashdavies.tally.material.padding
 import io.ashdavies.tally.material.spacing
 import io.ashdavies.tally.profile.ProfileActionButton
 import kotlinx.datetime.LocalDate
-import okio.ByteString.Companion.encodeUtf8
 import org.jetbrains.compose.resources.stringResource
 import playground.tally_app.generated.resources.Res
 import playground.tally_app.generated.resources.call_for_papers_closed
@@ -161,10 +160,8 @@ private fun EventsDetailCfp(
     }
 }
 
-private fun randomColor(seed: String) = with(seed.encodeUtf8().md5()) {
-    Color(
-        red = get(0).toUByte().toInt(),
-        green = get(1).toUByte().toInt(),
-        blue = get(2).toUByte().toInt(),
-    )
-}
+private fun randomColor(seed: String) = Color(
+    red = seed[0].code % 0xFF,
+    green = seed[1].code % 0xFF,
+    blue = seed[2].code % 0xFF,
+)

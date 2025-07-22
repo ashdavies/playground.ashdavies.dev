@@ -13,11 +13,10 @@ import io.ashdavies.tally.events.AttendanceQueries
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
-import kotlinx.serialization.json.Json
-import okio.ByteString.Companion.encodeUtf8
 import kotlin.coroutines.CoroutineContext
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
+import kotlin.uuid.Uuid
 
 @Composable
 internal fun PastPresenter(
@@ -33,17 +32,15 @@ internal fun PastPresenter(
     val itemList by produceState(emptyList(), attendanceList) {
         value = pastConferencesCallable(Unit).map {
             val startDate = LocalDate.parse(it.dateStart)
-            val uuid = Json.encodeToString(it)
-                .encodeUtf8()
-                .md5()
-                .hex()
+            // TODO Generate Uuid from content
+            val uuidAsString = "${Uuid.random()}"
 
             PastScreen.State.Item(
-                uuid = uuid,
+                uuid = uuidAsString,
                 title = "${it.name} ${startDate.year}",
                 subtitle = it.location,
                 group = "${startDate.year}",
-                attended = uuid in attendanceList,
+                attended = uuidAsString in attendanceList,
             )
         }
     }

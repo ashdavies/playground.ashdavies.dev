@@ -4,7 +4,6 @@ import com.google.cloud.firestore.CollectionReference
 import io.ashdavies.asg.AsgConference
 import io.ashdavies.asg.AsgService
 import io.ashdavies.cloud.CollectionWriter
-import io.ashdavies.cloud.Identifier
 import io.ashdavies.cloud.await
 import io.ashdavies.cloud.decodeFromSnapshot
 import io.ashdavies.http.common.models.Event
@@ -13,6 +12,8 @@ import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.ApplicationCall
 import io.ktor.server.response.respond
 import kotlinx.serialization.json.Json
+import kotlin.uuid.ExperimentalUuidApi
+import kotlin.uuid.Uuid
 
 private object AggregateEventsDefaults {
     const val ORDER_BY = "dateStart"
@@ -22,7 +23,6 @@ internal class AggregateEventsOperation(
     private val collectionReference: CollectionReference,
     private val collectionWriter: CollectionWriter<Event>,
     private val asgService: AsgService,
-    private val identifier: Identifier<AsgConference>,
 ) : UnaryOperation {
 
     override suspend fun invoke(call: ApplicationCall) {
@@ -32,18 +32,16 @@ internal class AggregateEventsOperation(
 
         collectionWriter(
             oldValue = Json.decodeFromSnapshot(snapshot),
-            newValue = asgService { it.toEvent(identifier(it), null) },
+            newValue = asgService { it.toEvent(null) },
         )
 
         call.respond(HttpStatusCode.OK)
     }
 }
 
-private fun AsgConference.toEvent(
-    id: String,
-    imageUrl: String?,
-) = Event(
-    id = id,
+@OptIn(ExperimentalUuidApi::class)
+private fun AsgConference.toEvent(imageUrl: String?) = Event(
+    id = "${Uuid.random()}",
     name = name,
     website = website,
     location = location,
@@ -52,11 +50,11 @@ private fun AsgConference.toEvent(
     dateEnd = dateEnd,
     status = status,
     online = online,
-    cfp = cfp?.toEventCfp(),
-)
-
-private fun AsgConference.Cfp.toEventCfp() = EventCfp(
-    start = start,
-    end = end,
-    site = site,
+    cfp = cfp?.let {
+        EventCfp(
+            start = it.start,
+            end = it.end,
+            site = it.site,
+        )
+    },
 )

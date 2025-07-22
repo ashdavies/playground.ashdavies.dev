@@ -1,4 +1,3 @@
-import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode
 
@@ -13,16 +12,6 @@ android {
 
 kotlin {
     explicitApi = ExplicitApiMode.Disabled
-
-    @OptIn(ExperimentalKotlinGradlePluginApi::class)
-    applyDefaultHierarchyTemplate {
-        common {
-            group("androidJvm") {
-                withAndroidTarget()
-                withJvm()
-            }
-        }
-    }
 
     @OptIn(ExperimentalWasmDsl::class)
     wasmJs {
