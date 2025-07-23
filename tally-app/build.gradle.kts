@@ -139,6 +139,7 @@ kotlin {
         commonMain.dependencies {
             implementation(projects.analytics)
             implementation(projects.asgService)
+            implementation(projects.cloudCommon)
             implementation(projects.composeMaterial)
             implementation(projects.httpClient)
             implementation(projects.httpCommon)

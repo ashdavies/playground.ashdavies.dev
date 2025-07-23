@@ -57,6 +57,7 @@ internal fun Application.main() {
             collectionReference = eventsCollection,
             collectionWriter = CollectionWriter(eventsCollection, ApiConference::id),
             asgService = AsgService(httpClient),
+            apiConferenceFactory = ApiConferenceFactory(Identifier()),
         )
 
         val firebaseAuth = FirebaseAuthOperation(

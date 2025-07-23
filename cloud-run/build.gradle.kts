@@ -58,6 +58,7 @@ kotlin {
         commonMain.dependencies {
             implementation(projects.appCheck)
             implementation(projects.asgService)
+            implementation(projects.cloudCommon)
             implementation(projects.httpClient)
             implementation(projects.httpCommon)
             implementation(projects.platformSupport)

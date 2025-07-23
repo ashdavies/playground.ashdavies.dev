@@ -6,16 +6,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.produceState
 import androidx.compose.runtime.rememberCoroutineScope
 import app.cash.sqldelight.coroutines.mapToList
-import io.ashdavies.asg.AsgConference
 import io.ashdavies.asg.callable.PastConferencesCallable
+import io.ashdavies.cloud.ApiConferenceFactory
 import io.ashdavies.sql.Suspended
 import io.ashdavies.sql.mapAsFlow
 import io.ashdavies.tally.events.AttendanceQueries
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
-import kotlinx.serialization.json.Json
-import okio.ByteString.Companion.encodeUtf8
 import kotlin.coroutines.CoroutineContext
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
@@ -24,6 +22,7 @@ import kotlin.time.ExperimentalTime
 internal fun PastPresenter(
     pastConferencesCallable: PastConferencesCallable,
     attendanceQueries: Suspended<AttendanceQueries>,
+    apiConferenceFactory: ApiConferenceFactory,
     coroutineContext: CoroutineContext,
 ): PastScreen.State {
     val attendanceList by attendanceQueries
@@ -33,15 +32,15 @@ internal fun PastPresenter(
 
     val itemList by produceState(emptyList(), attendanceList) {
         value = pastConferencesCallable(Unit).map {
-            val startDate = LocalDate.parse(it.dateStart)
-            val uuid = it.uuid()
+            val apiConference = apiConferenceFactory(it)
+            val startDate = LocalDate.parse(apiConference.dateStart)
 
             PastScreen.State.Item(
-                uuid = uuid,
-                title = "${it.name} ${startDate.year}",
-                subtitle = it.location,
+                uuid = apiConference.id,
+                title = "${apiConference.name} ${startDate.year}",
+                subtitle = apiConference.location,
                 group = "${startDate.year}",
-                attended = uuid in attendanceList,
+                attended = apiConference.id in attendanceList,
             )
         }
     }
@@ -60,10 +59,3 @@ internal fun PastPresenter(
         }
     }
 }
-
-@Deprecated("Store generated UUIDs in a database")
-private fun AsgConference.uuid(): String = Json
-    .encodeToString(this)
-    .encodeUtf8()
-    .md5()
-    .hex()

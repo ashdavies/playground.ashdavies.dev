@@ -1,9 +1,9 @@
 package io.ashdavies.cloud
 
 import io.ashdavies.check.AppCheckToken
+import io.ashdavies.http.common.models.ApiConference
 import io.ashdavies.http.common.models.AppCheckToken
 import io.ashdavies.http.common.models.DecodedToken
-import io.ashdavies.http.common.models.ApiConference
 import io.ashdavies.http.common.models.FirebaseApp
 import io.ktor.client.HttpClient
 import io.ktor.client.HttpClientConfig

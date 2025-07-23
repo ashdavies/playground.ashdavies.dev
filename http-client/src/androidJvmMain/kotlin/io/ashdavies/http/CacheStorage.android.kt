@@ -7,5 +7,6 @@ import kotlinx.io.files.SystemTemporaryDirectory
 import java.io.File
 
 internal actual fun resolveCacheStorage(): CacheStorage {
-    return FileStorage(File("${Path(SystemTemporaryDirectory, "http-cache")}"))
+    val cachePath = Path(SystemTemporaryDirectory, "http-cache")
+    return FileStorage(File(cachePath.toString()))
 }

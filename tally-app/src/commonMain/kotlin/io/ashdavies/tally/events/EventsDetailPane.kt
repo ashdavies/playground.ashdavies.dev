@@ -160,8 +160,13 @@ private fun EventsDetailCfp(
     }
 }
 
-private fun randomColor(seed: String) = Color(
-    red = seed[0].code % 0xFF,
-    green = seed[1].code % 0xFF,
-    blue = seed[2].code % 0xFF,
-)
+private const val COLOR_COMPONENTS = 3
+
+private fun randomColor(seed: String) = when {
+    seed.length < COLOR_COMPONENTS -> Color.LightGray
+    else -> Color(
+        red = seed[0].code % 0xFF,
+        green = seed[1].code % 0xFF,
+        blue = seed[2].code % 0xFF,
+    )
+}
