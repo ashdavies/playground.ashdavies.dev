@@ -7,7 +7,6 @@ import dev.zacsweers.metro.Provides
 import io.ashdavies.content.PlatformContext
 import io.ashdavies.http.defaultHttpClient
 import io.ashdavies.paging.Pager
-import io.ashdavies.tally.activity.FullyDrawnReporter
 import io.ashdavies.tally.events.Event
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.DefaultRequest
@@ -27,9 +26,6 @@ internal interface WasmTallyGraph : TallyGraph {
 
     @Provides
     fun eventPager(): Pager<*, Event> = Pager<Any, _>()
-
-    @Provides
-    fun fullyDrawnReporter(): FullyDrawnReporter = FullyDrawnReporter
 
     @DependencyGraph.Factory
     fun interface Factory {

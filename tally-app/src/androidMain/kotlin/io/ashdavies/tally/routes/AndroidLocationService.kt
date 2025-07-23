@@ -4,14 +4,15 @@ import android.Manifest.permission.ACCESS_COARSE_LOCATION
 import android.Manifest.permission.ACCESS_FINE_LOCATION
 import androidx.annotation.RequiresPermission
 import com.google.android.gms.location.LocationServices
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 import io.ashdavies.content.PlatformContext
 import kotlinx.coroutines.tasks.await
 
-internal actual fun LocationService(context: PlatformContext): LocationService {
-    return AndroidLocationService(context)
-}
-
-private class AndroidLocationService(context: PlatformContext) : LocationService {
+@ContributesBinding(AppScope::class, binding<LocationService>())
+internal class AndroidLocationService @Inject constructor(context: PlatformContext) : LocationService {
 
     private val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
 

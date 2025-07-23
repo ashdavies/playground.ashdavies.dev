@@ -16,8 +16,6 @@ import androidx.compose.material3.ScaffoldDefaults
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -26,9 +24,12 @@ import com.slack.circuit.foundation.NavEvent
 import com.slack.circuit.runtime.CircuitUiEvent
 import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.screen.Screen
+import com.slack.circuit.runtime.ui.Ui
+import dev.zacsweers.metro.Inject
 import io.ashdavies.identity.IdentityState
 import io.ashdavies.parcelable.Parcelable
 import io.ashdavies.parcelable.Parcelize
+import io.ashdavies.tally.activity.FullyDrawnReporter
 import io.ashdavies.tally.gallery.GalleryScreen
 import io.ashdavies.tally.material.icons.EventList
 import io.ashdavies.tally.material.icons.EventUpcoming
@@ -54,41 +55,41 @@ internal object HomeScreen : Parcelable, Screen {
     ) : CircuitUiState
 }
 
-@Composable
-@OptIn(ExperimentalMaterial3Api::class)
-internal fun HomeScreen(
-    state: HomeScreen.State,
-    reportFullyDrawn: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    val latestReportFullyDrawn by rememberUpdatedState(reportFullyDrawn)
-    val eventSink = state.eventSink
+internal class HomeUi @Inject constructor(
+    private val fullyDrawnReporter: FullyDrawnReporter,
+) : Ui<HomeScreen.State> {
 
-    Scaffold(
-        modifier = modifier,
-        bottomBar = {
-            HomeBottomBar(
-                isGalleryEnabled = state.isGalleryEnabled,
-                isRoutesEnabled = state.isRoutesEnabled,
-            ) { screen ->
-                eventSink(HomeScreen.Event.BottomNav(screen))
-            }
-        },
-        contentWindowInsets = ScaffoldDefaults.contentWindowInsets.exclude(
-            insets = TopAppBarDefaults.windowInsets,
-        ),
-    ) { contentPadding ->
-        CircuitContent(
-            screen = state.screen,
-            modifier = Modifier.padding(contentPadding),
-            onNavEvent = { event ->
-                eventSink(HomeScreen.Event.ChildNav(event))
+    @Composable
+    @OptIn(ExperimentalMaterial3Api::class)
+    override fun Content(state: HomeScreen.State, modifier: Modifier) {
+        val eventSink = state.eventSink
+
+        Scaffold(
+            modifier = modifier,
+            bottomBar = {
+                HomeBottomBar(
+                    isGalleryEnabled = state.isGalleryEnabled,
+                    isRoutesEnabled = state.isRoutesEnabled,
+                ) { screen ->
+                    eventSink(HomeScreen.Event.BottomNav(screen))
+                }
             },
-        )
-    }
+            contentWindowInsets = ScaffoldDefaults.contentWindowInsets.exclude(
+                insets = TopAppBarDefaults.windowInsets,
+            ),
+        ) { contentPadding ->
+            CircuitContent(
+                screen = state.screen,
+                modifier = Modifier.padding(contentPadding),
+                onNavEvent = { event ->
+                    eventSink(HomeScreen.Event.ChildNav(event))
+                },
+            )
+        }
 
-    LaunchedEffect(Unit) {
-        latestReportFullyDrawn()
+        LaunchedEffect(Unit) {
+            fullyDrawnReporter.reportFullyDrawn()
+        }
     }
 }
 

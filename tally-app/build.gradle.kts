@@ -18,6 +18,7 @@ plugins {
     id("io.ashdavies.kotlin")
     id("io.ashdavies.parcelable")
     id("io.ashdavies.properties")
+    id("io.ashdavies.wasm")
 
     alias(libs.plugins.build.config)
     alias(libs.plugins.cash.paparazzi)
