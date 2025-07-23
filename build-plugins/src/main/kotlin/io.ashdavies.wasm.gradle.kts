@@ -19,6 +19,11 @@ kotlin {
                 withJvm()
                 withWasmJs()
             }
+
+            group("wasm") {
+                withWasmJs()
+                withWasmWasi()
+            }
         }
     }
 }
