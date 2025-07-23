@@ -61,6 +61,8 @@ import coil3.compose.rememberAsyncImagePainter
 import com.slack.circuit.runtime.CircuitUiEvent
 import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.screen.Screen
+import com.slack.circuit.runtime.ui.Ui
+import dev.zacsweers.metro.Inject
 import io.ashdavies.parcelable.Parcelable
 import io.ashdavies.parcelable.Parcelize
 import io.ashdavies.tally.events.EventsTopBar
@@ -117,70 +119,70 @@ internal object GalleryScreen : Parcelable, Screen {
     }
 }
 
-@Composable
-@OptIn(ExperimentalMaterial3Api::class)
-internal fun GalleryScreen(
-    state: GalleryScreen.State,
-    modifier: Modifier = Modifier,
-) {
-    val scrollBehavior = enterAlwaysScrollBehavior(rememberTopAppBarState())
-    val isSelecting = state.itemList.any { it.isSelected }
-    val eventSink = state.eventSink
+internal class GalleryUi @Inject constructor() : Ui<GalleryScreen.State> {
 
-    BottomSheetScaffold(
-        sheetContent = { GallerySheetContent(eventSink) },
-        modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
-        topBar = { EventsTopBar(stringResource(Res.string.past_events)) },
-        floatingActionButton = {
-            GalleryActionButton(
-                { eventSink(GalleryScreen.Event.Capture.Request) },
-                isActive = state.showCapture,
-            )
-        },
-        showDragHandle = false,
-    ) { paddingValues ->
-        when {
-            state.itemList.isEmpty() -> {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center,
-                    content = { Text("Empty") },
+    @Composable
+    @OptIn(ExperimentalMaterial3Api::class)
+    override fun Content(state: GalleryScreen.State, modifier: Modifier) {
+        val scrollBehavior = enterAlwaysScrollBehavior(rememberTopAppBarState())
+        val isSelecting = state.itemList.any { it.isSelected }
+        val eventSink = state.eventSink
+
+        BottomSheetScaffold(
+            sheetContent = { GallerySheetContent(eventSink) },
+            modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+            topBar = { EventsTopBar(stringResource(Res.string.past_events)) },
+            floatingActionButton = {
+                GalleryActionButton(
+                    { eventSink(GalleryScreen.Event.Capture.Request) },
+                    isActive = state.showCapture,
                 )
-            }
+            },
+            showDragHandle = false,
+        ) { paddingValues ->
+            when {
+                state.itemList.isEmpty() -> {
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center,
+                        content = { Text("Empty") },
+                    )
+                }
 
-            else -> {
-                GalleryGrid(
-                    itemList = state.itemList.toImmutableList(),
-                    onExpand = { eventSink(GalleryScreen.Event.Selection.Expand(it)) },
-                    onSelect = { eventSink(GalleryScreen.Event.Selection.Toggle(it)) },
-                    modifier = Modifier
-                        .padding(paddingValues)
-                        .fillMaxSize(),
-                    isSelecting = isSelecting,
-                )
+                else -> {
+                    GalleryGrid(
+                        itemList = state.itemList.toImmutableList(),
+                        onExpand = { eventSink(GalleryScreen.Event.Selection.Expand(it)) },
+                        onSelect = { eventSink(GalleryScreen.Event.Selection.Toggle(it)) },
+                        modifier = Modifier
+                            .padding(paddingValues)
+                            .fillMaxSize(),
+                        isSelecting = isSelecting,
+                    )
 
-                if (state.expandedItem != null) {
-                    GalleryExpandedItem(state.expandedItem)
+                    if (state.expandedItem != null) {
+                        GalleryExpandedItem(state.expandedItem)
 
-                    @OptIn(ExperimentalComposeUiApi::class)
-                    BackHandler(enabled = true) {
-                        eventSink(GalleryScreen.Event.Selection.Collapse)
+                        @OptIn(ExperimentalComposeUiApi::class)
+                        BackHandler(enabled = true) {
+                            eventSink(GalleryScreen.Event.Selection.Collapse)
+                        }
                     }
                 }
             }
-        }
 
-        if (state.showCapture) {
-            val target = remember { Path("${Uuid.random()}.jpg") }
+            if (state.showCapture) {
+                val target = remember { Path("${Uuid.random()}.jpg") }
 
-            ImageCapture(
-                onResult = {
-                    when (it) {
-                        is Path -> eventSink(GalleryScreen.Event.Capture.Result(target))
-                        null -> eventSink(GalleryScreen.Event.Capture.Cancel)
-                    }
-                },
-            )
+                ImageCapture(
+                    onResult = {
+                        when (it) {
+                            is Path -> eventSink(GalleryScreen.Event.Capture.Result(target))
+                            null -> eventSink(GalleryScreen.Event.Capture.Cancel)
+                        }
+                    },
+                )
+            }
         }
     }
 }

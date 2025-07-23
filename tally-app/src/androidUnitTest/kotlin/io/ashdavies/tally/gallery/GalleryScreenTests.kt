@@ -1,5 +1,6 @@
 package io.ashdavies.tally.gallery
 
+import androidx.compose.ui.Modifier
 import app.cash.paparazzi.Paparazzi
 import io.ashdavies.tally.tooling.MaterialPreviewTheme
 import kotlinx.collections.immutable.persistentListOf
@@ -8,6 +9,8 @@ import kotlin.test.Test
 
 internal class GalleryScreenTests {
 
+    private val galleryUi = GalleryUi()
+
     @get:Rule
     val paparazzi = Paparazzi()
 
@@ -15,7 +18,7 @@ internal class GalleryScreenTests {
     fun compose() {
         paparazzi.snapshot {
             MaterialPreviewTheme {
-                GalleryScreen(
+                galleryUi.Content(
                     state = GalleryScreen.State(
                         itemList = persistentListOf(
                             galleryScreenStateItem(),
@@ -27,6 +30,7 @@ internal class GalleryScreenTests {
                         showCapture = false,
                         eventSink = { },
                     ),
+                    modifier = Modifier,
                 )
             }
         }

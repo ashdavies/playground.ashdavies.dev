@@ -19,6 +19,8 @@ import androidx.compose.ui.backhandler.BackHandler
 import androidx.compose.ui.unit.dp
 import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.screen.Screen
+import com.slack.circuit.runtime.ui.Ui
+import dev.zacsweers.metro.Inject
 import io.ashdavies.parcelable.Parcelable
 import io.ashdavies.parcelable.Parcelize
 import io.ashdavies.tally.animation.FadeVisibility
@@ -43,60 +45,61 @@ internal object UpcomingScreen : Parcelable, Screen {
     ) : CircuitUiState
 }
 
-@Composable
-@OptIn(ExperimentalMaterial3AdaptiveApi::class)
-internal fun UpcomingEventsScreen(
-    state: UpcomingScreen.State,
-    windowSizeClass: WindowSizeClass,
-    modifier: Modifier = Modifier,
-) {
-    val scaffoldDirective = calculatePaneScaffoldDirective(currentWindowAdaptiveInfo())
-    val scaffoldNavigator = rememberListDetailPaneScaffoldNavigator<Int>(
-        scaffoldDirective = scaffoldDirective.copy(
-            horizontalPartitionSpacerSize = 0.dp,
-        ),
-    )
+internal class UpcomingUi @Inject constructor(
+    private val windowSizeClass: WindowSizeClass,
+) : Ui<UpcomingScreen.State> {
 
-    val coroutineScope = rememberCoroutineScope()
-    val onBack by rememberUpdatedState<() -> Unit> {
-        coroutineScope.launch { scaffoldNavigator.navigateBack() }
-    }
+    @Composable
+    @OptIn(ExperimentalMaterial3AdaptiveApi::class)
+    override fun Content(state: UpcomingScreen.State, modifier: Modifier) {
+        val scaffoldDirective = calculatePaneScaffoldDirective(currentWindowAdaptiveInfo())
+        val scaffoldNavigator = rememberListDetailPaneScaffoldNavigator<Int>(
+            scaffoldDirective = scaffoldDirective.copy(
+                horizontalPartitionSpacerSize = 0.dp,
+            ),
+        )
 
-    @OptIn(ExperimentalComposeUiApi::class)
-    BackHandler(scaffoldNavigator.canNavigateBack(), onBack)
+        val coroutineScope = rememberCoroutineScope()
+        val onBack by rememberUpdatedState<() -> Unit> {
+            coroutineScope.launch { scaffoldNavigator.navigateBack() }
+        }
 
-    ListDetailPaneScaffold(
-        directive = scaffoldNavigator.scaffoldDirective,
-        value = scaffoldNavigator.scaffoldValue,
-        listPane = {
-            AnimatedPane {
-                UpcomingPane(
-                    state = state,
-                    onClick = {
-                        coroutineScope.launch {
-                            scaffoldNavigator.navigateTo(
-                                pane = ListDetailPaneScaffoldRole.Detail,
-                                contentKey = it,
-                            )
-                        }
-                    },
-                )
-            }
-        },
-        detailPane = {
-            AnimatedPane {
-                scaffoldNavigator.currentDestination?.contentKey?.let {
-                    EventsDetailPane(
-                        item = requireNotNull(state.itemList[it]),
-                        navigationIcon = {
-                            FadeVisibility(windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact) {
-                                BackButton(onBack)
+        @OptIn(ExperimentalComposeUiApi::class)
+        BackHandler(scaffoldNavigator.canNavigateBack(), onBack)
+
+        ListDetailPaneScaffold(
+            directive = scaffoldNavigator.scaffoldDirective,
+            value = scaffoldNavigator.scaffoldValue,
+            listPane = {
+                AnimatedPane {
+                    UpcomingPane(
+                        state = state,
+                        onClick = {
+                            coroutineScope.launch {
+                                scaffoldNavigator.navigateTo(
+                                    pane = ListDetailPaneScaffoldRole.Detail,
+                                    contentKey = it,
+                                )
                             }
                         },
                     )
                 }
-            }
-        },
-        modifier = modifier,
-    )
+            },
+            detailPane = {
+                AnimatedPane {
+                    scaffoldNavigator.currentDestination?.contentKey?.let {
+                        EventsDetailPane(
+                            item = requireNotNull(state.itemList[it]),
+                            navigationIcon = {
+                                FadeVisibility(windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact) {
+                                    BackButton(onBack)
+                                }
+                            },
+                        )
+                    }
+                }
+            },
+            modifier = modifier,
+        )
+    }
 }

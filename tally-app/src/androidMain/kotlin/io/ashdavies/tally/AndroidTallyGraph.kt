@@ -11,16 +11,8 @@ import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.Binds
 import dev.zacsweers.metro.DependencyGraph
 import dev.zacsweers.metro.Provides
-import io.ashdavies.config.RemoteConfig
 import io.ashdavies.content.PlatformContext
 import io.ashdavies.http.defaultHttpClient
-import io.ashdavies.paging.Pager
-import io.ashdavies.sql.DatabaseFactory
-import io.ashdavies.sql.map
-import io.ashdavies.tally.activity.FullyDrawnReporter
-import io.ashdavies.tally.events.Event
-import io.ashdavies.tally.events.paging.UpcomingEventsCallable
-import io.ashdavies.tally.events.paging.eventPager
 import io.ashdavies.tally.security.FirebaseAppCheckHeader
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.DefaultRequest
@@ -33,21 +25,6 @@ internal interface AndroidTallyGraph : TallyGraph {
 
     @Binds
     fun Activity.platformContext(): PlatformContext
-
-    @Provides
-    fun eventPager(
-        httpClient: HttpClient,
-        remoteConfig: RemoteConfig,
-        databaseFactory: DatabaseFactory<PlaygroundDatabase>,
-    ): Pager<*, Event> = eventPager(
-        eventsCallable = UpcomingEventsCallable(
-            httpClient = httpClient,
-            remoteConfig = remoteConfig,
-        ),
-        eventsQueries = databaseFactory.map {
-            it.eventsQueries
-        },
-    )
 
     @Provides
     fun httpClient(activity: Activity): HttpClient = defaultHttpClient {
@@ -65,9 +42,6 @@ internal interface AndroidTallyGraph : TallyGraph {
             appCheck.installAppCheckProviderFactory(factory)
         }
     }
-
-    @Provides
-    fun fullyDrawnReporter(activity: Activity): FullyDrawnReporter = FullyDrawnReporter(activity::reportFullyDrawn)
 
     @DependencyGraph.Factory
     fun interface Factory {

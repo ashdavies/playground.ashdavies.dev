@@ -1,30 +1,30 @@
 package io.ashdavies.tally.circuit
 
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import com.slack.circuit.runtime.CircuitContext
 import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.Navigator
 import com.slack.circuit.runtime.presenter.Presenter
-import com.slack.circuit.runtime.presenter.presenterOf
 import com.slack.circuit.runtime.screen.Screen
 import com.slack.circuit.runtime.ui.Ui
-import com.slack.circuit.runtime.ui.ui
+import dev.zacsweers.metro.Provider
 
 internal inline fun <reified S : Screen, UiState : CircuitUiState> presenterFactoryOf(
-    crossinline body: @Composable (Navigator, CircuitContext) -> UiState,
-): Presenter.Factory = Presenter.Factory { screen, navigator, context ->
+    provider: Provider<out Presenter<UiState>>,
+): Presenter.Factory = presenterFactoryOf<S, _> { _ -> provider() }
+
+internal inline fun <reified S : Screen, UiState : CircuitUiState> presenterFactoryOf(
+    crossinline factory: (Navigator) -> Presenter<UiState>,
+): Presenter.Factory = Presenter.Factory { screen, navigator, _ ->
     when (screen) {
-        is S -> presenterOf { body(navigator, context) }
+        is S -> factory(navigator)
         else -> null
     }
 }
 
 internal inline fun <reified S : Screen, UiState : CircuitUiState> uiFactoryOf(
-    crossinline body: @Composable (state: UiState, modifier: Modifier) -> Unit,
-): Ui.Factory = Ui.Factory { screen, context ->
+    provider: Provider<out Ui<UiState>>,
+): Ui.Factory = Ui.Factory { screen, _ ->
     when (screen) {
-        is S -> ui<UiState> { state, modifier -> body(state, modifier) }
+        is S -> provider()
         else -> null
     }
 }

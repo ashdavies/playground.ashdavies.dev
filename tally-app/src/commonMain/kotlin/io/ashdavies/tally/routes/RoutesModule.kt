@@ -5,36 +5,23 @@ import com.slack.circuit.runtime.ui.Ui
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesTo
 import dev.zacsweers.metro.IntoSet
+import dev.zacsweers.metro.Provider
 import dev.zacsweers.metro.Provides
-import io.ashdavies.content.PlatformContext
 import io.ashdavies.tally.circuit.presenterFactoryOf
 import io.ashdavies.tally.circuit.uiFactoryOf
-import io.ktor.client.HttpClient
 
 @ContributesTo(AppScope::class)
 internal interface RoutesModule {
 
-    @Provides
-    fun locationService(context: PlatformContext): LocationService = LocationService(context)
-
     @IntoSet
     @Provides
-    fun routesPresenterFactory(
-        locationService: LocationService,
-        httpClient: HttpClient,
-    ): Presenter.Factory = presenterFactoryOf<RoutesScreen, RoutesScreen.State> { screen, _ ->
-        RoutesPresenter(
-            locationService = locationService,
-            httpClient = httpClient,
-        )
+    fun routesPresenterFactory(provider: Provider<RoutesPresenter>): Presenter.Factory {
+        return presenterFactoryOf<RoutesScreen, _>(provider)
     }
 
     @IntoSet
     @Provides
-    fun routesUiFactory(): Ui.Factory = uiFactoryOf<RoutesScreen, RoutesScreen.State> { state, modifier ->
-        RoutesScreen(
-            state = state,
-            modifier = modifier,
-        )
+    fun routesUiFactory(provider: Provider<RoutesUi>): Ui.Factory {
+        return uiFactoryOf<RoutesScreen, _>(provider)
     }
 }

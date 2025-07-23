@@ -28,6 +28,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.screen.Screen
+import com.slack.circuit.runtime.ui.Ui
+import dev.zacsweers.metro.Inject
 import io.ashdavies.parcelable.Parcelable
 import io.ashdavies.parcelable.Parcelize
 import io.ashdavies.tally.events.EventsTopBar
@@ -68,56 +70,57 @@ internal object PastScreen : Parcelable, Screen {
     }
 }
 
-@Composable
-internal fun PastScreen(
-    state: PastScreen.State,
-    windowSizeClass: WindowSizeClass,
-    modifier: Modifier = Modifier,
-) {
-    val columnCount = when (windowSizeClass.widthSizeClass) {
-        WindowWidthSizeClass.Compact -> PastScreenDefaults.MIN_COLUMN_COUNT
-        else -> PastScreenDefaults.MAX_COLUMN_COUNT
-    }
+internal class PastUi @Inject constructor(
+    private val windowSizeClass: WindowSizeClass,
+) : Ui<PastScreen.State> {
 
-    val eventSink = state.eventSink
+    @Composable
+    override fun Content(state: PastScreen.State, modifier: Modifier) {
+        val columnCount = when (windowSizeClass.widthSizeClass) {
+            WindowWidthSizeClass.Compact -> PastScreenDefaults.MIN_COLUMN_COUNT
+            else -> PastScreenDefaults.MAX_COLUMN_COUNT
+        }
 
-    Scaffold(
-        modifier = modifier,
-        topBar = { EventsTopBar(stringResource(Res.string.past_events)) },
-        contentWindowInsets = ScaffoldDefaults.contentWindowInsets.exclude(
-            insets = BottomAppBarDefaults.windowInsets,
-        ),
-    ) { contentPadding ->
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(columnCount),
-            modifier = Modifier.padding(contentPadding),
-            contentPadding = MaterialTheme.spacing.large.values,
-            verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small.vertical),
-            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small.horizontal),
-        ) {
-            state.itemList.groupBy { it.group }.forEach { (group, items) ->
-                item(span = { GridItemSpan(columnCount) }) {
-                    Text(
-                        text = group,
-                        modifier = Modifier.padding(MaterialTheme.spacing.medium),
-                        style = MaterialTheme.typography.labelLarge,
-                    )
-                }
+        val eventSink = state.eventSink
 
-                items(items) { item ->
-                    PastEventItem(
-                        item = item,
-                        modifier = Modifier
-                            .clickable {
-                                eventSink(
-                                    PastScreen.Event.MarkAttendance(
-                                        id = item.uuid,
-                                        value = !item.attended,
-                                    ),
-                                )
-                            }
-                            .animateItem(),
-                    )
+        Scaffold(
+            modifier = modifier,
+            topBar = { EventsTopBar(stringResource(Res.string.past_events)) },
+            contentWindowInsets = ScaffoldDefaults.contentWindowInsets.exclude(
+                insets = BottomAppBarDefaults.windowInsets,
+            ),
+        ) { contentPadding ->
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(columnCount),
+                modifier = Modifier.padding(contentPadding),
+                contentPadding = MaterialTheme.spacing.large.values,
+                verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small.vertical),
+                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small.horizontal),
+            ) {
+                state.itemList.groupBy { it.group }.forEach { (group, items) ->
+                    item(span = { GridItemSpan(columnCount) }) {
+                        Text(
+                            text = group,
+                            modifier = Modifier.padding(MaterialTheme.spacing.medium),
+                            style = MaterialTheme.typography.labelLarge,
+                        )
+                    }
+
+                    items(items) { item ->
+                        PastEventItem(
+                            item = item,
+                            modifier = Modifier
+                                .clickable {
+                                    eventSink(
+                                        PastScreen.Event.MarkAttendance(
+                                            id = item.uuid,
+                                            value = !item.attended,
+                                        ),
+                                    )
+                                }
+                                .animateItem(),
+                        )
+                    }
                 }
             }
         }
