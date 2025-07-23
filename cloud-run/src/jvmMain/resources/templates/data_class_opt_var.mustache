@@ -1,4 +1,0 @@
-{{#description}}
-    /* {{{.}}} */
-{{/description}}
-    @kotlinx.serialization.SerialName("{{{name}}}") public {{>modelMutable}} {{{name}}}: {{#isEnum}}{{{classname}}}.{{{nameInCamelCase}}}{{/isEnum}}{{^isEnum}}{{{dataType}}}{{/isEnum}}? = {{{defaultValue}}}{{^defaultValue}}null{{/defaultValue}}

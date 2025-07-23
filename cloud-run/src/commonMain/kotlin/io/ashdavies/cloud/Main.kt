@@ -8,7 +8,7 @@ import io.ashdavies.cloud.operations.FirebaseAuthOperation
 import io.ashdavies.cloud.operations.FirebaseTokenOperation
 import io.ashdavies.cloud.operations.UpcomingEventsOperation
 import io.ashdavies.cloud.operations.VerifyTokenOperation
-import io.ashdavies.http.common.models.Event
+import io.ashdavies.http.common.models.ApiConference
 import io.ktor.http.HttpHeaders
 import io.ktor.serialization.Configuration
 import io.ktor.serialization.kotlinx.json.json
@@ -55,9 +55,9 @@ internal fun Application.main() {
 
         val aggregateEvents = AggregateEventsOperation(
             collectionReference = eventsCollection,
-            collectionWriter = CollectionWriter(eventsCollection, Event::id),
+            collectionWriter = CollectionWriter(eventsCollection, ApiConference::id),
             asgService = AsgService(httpClient),
-            identifier = Identifier(),
+            apiConferenceFactory = ApiConferenceFactory(Identifier()),
         )
 
         val firebaseAuth = FirebaseAuthOperation(

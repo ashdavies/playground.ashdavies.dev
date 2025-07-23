@@ -22,9 +22,9 @@ kotlin {
     @OptIn(ExperimentalKotlinGradlePluginApi::class)
     applyDefaultHierarchyTemplate {
         common {
-            group("nonAndroid") {
+            group("androidJvm") {
+                withAndroidTarget()
                 withJvm()
-                withWasmJs()
             }
         }
     }
