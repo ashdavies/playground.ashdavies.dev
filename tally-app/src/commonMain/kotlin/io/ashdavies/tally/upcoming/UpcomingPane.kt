@@ -44,14 +44,15 @@ import coil3.compose.rememberAsyncImagePainter
 import com.google.accompanist.placeholder.PlaceholderHighlight
 import com.google.accompanist.placeholder.material3.fade
 import com.google.accompanist.placeholder.material3.placeholder
+import io.ashdavies.tally.datetime.Today
 import io.ashdavies.tally.events.Event
 import io.ashdavies.tally.events.EventDateLabel
 import io.ashdavies.tally.events.EventsTopBar
-import io.ashdavies.tally.events.daysUntilCfpEnd
 import io.ashdavies.tally.material.padding
 import io.ashdavies.tally.material.spacing
 import io.ashdavies.tally.material.values
 import kotlinx.datetime.LocalDate
+import kotlinx.datetime.daysUntil
 import org.jetbrains.compose.resources.stringResource
 import playground.tally_app.generated.resources.Res
 import playground.tally_app.generated.resources.call_for_papers_open
@@ -147,7 +148,7 @@ private fun EventItemContent(
                 )
             }
 
-            if (event?.cfpEnd != null && daysUntilCfpEnd(LocalDate.parse(event.cfpEnd)) > 0) {
+            if (event?.cfpEnd != null && rememberDaysUntil(event.cfpEnd) > 0) {
                 Column {
                     EventLabel(
                         text = stringResource(Res.string.call_for_papers_open),
@@ -176,6 +177,11 @@ private fun EventItemContent(
             }
         }
     }
+}
+
+@Composable
+private fun rememberDaysUntil(input: String): Int = remember(input) {
+    Today.daysUntil(LocalDate.parse(input))
 }
 
 @Composable

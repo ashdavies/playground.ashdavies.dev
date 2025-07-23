@@ -23,10 +23,12 @@ import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import io.ashdavies.identity.IdentityState
+import io.ashdavies.tally.datetime.Today
 import io.ashdavies.tally.material.padding
 import io.ashdavies.tally.material.spacing
 import io.ashdavies.tally.profile.ProfileActionButton
 import kotlinx.datetime.LocalDate
+import kotlinx.datetime.daysUntil
 import org.jetbrains.compose.resources.stringResource
 import playground.tally_app.generated.resources.Res
 import playground.tally_app.generated.resources.call_for_papers_closed
@@ -134,11 +136,14 @@ private fun EventsDetailCfp(
     cfpEnd: String,
     modifier: Modifier = Modifier,
 ) {
-    val daysUntilCfpEnd = daysUntilCfpEnd(LocalDate.parse(cfpEnd))
     val uriHandler = LocalUriHandler.current
     val newModifier = modifier
         .padding(MaterialTheme.spacing.large)
         .fillMaxWidth()
+
+    val daysUntilCfpEnd = remember(cfpEnd) {
+        Today.daysUntil(LocalDate.parse(cfpEnd))
+    }
 
     when {
         daysUntilCfpEnd > 0 && cfpSite != null -> Card(
