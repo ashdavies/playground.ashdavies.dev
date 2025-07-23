@@ -6,8 +6,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.produceState
 import androidx.compose.runtime.rememberCoroutineScope
 import app.cash.sqldelight.coroutines.mapToList
-import io.ashdavies.asg.callable.PastConferencesCallable
-import io.ashdavies.cloud.ApiConferenceFactory
 import io.ashdavies.sql.Suspended
 import io.ashdavies.sql.mapAsFlow
 import io.ashdavies.tally.events.AttendanceQueries
@@ -22,7 +20,6 @@ import kotlin.time.ExperimentalTime
 internal fun PastPresenter(
     pastConferencesCallable: PastConferencesCallable,
     attendanceQueries: Suspended<AttendanceQueries>,
-    apiConferenceFactory: ApiConferenceFactory,
     coroutineContext: CoroutineContext,
 ): PastScreen.State {
     val attendanceList by attendanceQueries
@@ -32,15 +29,14 @@ internal fun PastPresenter(
 
     val itemList by produceState(emptyList(), attendanceList) {
         value = pastConferencesCallable(Unit).map {
-            val apiConference = apiConferenceFactory(it)
-            val startDate = LocalDate.parse(apiConference.dateStart)
+            val startDate = LocalDate.parse(it.dateStart)
 
             PastScreen.State.Item(
-                uuid = apiConference.id,
-                title = "${apiConference.name} ${startDate.year}",
-                subtitle = apiConference.location,
+                uuid = it.id,
+                title = "${it.name} ${startDate.year}",
+                subtitle = it.location,
                 group = "${startDate.year}",
-                attended = apiConference.id in attendanceList,
+                attended = it.id in attendanceList,
             )
         }
     }

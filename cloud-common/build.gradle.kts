@@ -1,7 +1,6 @@
-import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
-
 plugins {
     id("io.ashdavies.kotlin")
+    id("io.ashdavies.wasm")
 }
 
 kotlin {

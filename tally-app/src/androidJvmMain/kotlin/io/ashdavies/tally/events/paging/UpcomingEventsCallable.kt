@@ -1,7 +1,8 @@
 package io.ashdavies.tally.events.paging
 
-import io.ashdavies.asg.AsgConference
 import io.ashdavies.asg.UpcomingConferencesCallable
+import io.ashdavies.cloud.ApiConferenceFactory
+import io.ashdavies.cloud.Identifier
 import io.ashdavies.config.RemoteConfig
 import io.ashdavies.config.getBoolean
 import io.ashdavies.http.UnaryCallable
@@ -13,7 +14,6 @@ import io.ktor.client.call.body
 import io.ktor.client.plugins.HttpCallValidator
 import io.ktor.client.request.get
 import kotlinx.serialization.Serializable
-import kotlin.uuid.Uuid
 
 private const val PLAYGROUND_BASE_URL = "api.ashdavies.dev"
 private const val NETWORK_PAGE_SIZE = 100
@@ -31,6 +31,7 @@ internal data class GetEventsRequest(
 internal fun UpcomingEventsCallable(httpClient: HttpClient, remoteConfig: RemoteConfig): UpcomingEventsCallable {
     val pagedCallable by lazy { UpcomingEventsCallable(httpClient, PLAYGROUND_BASE_URL) }
     val asgCallable by lazy { UpcomingConferencesCallable(httpClient) }
+    val apiConferenceFactory = ApiConferenceFactory(Identifier())
 
     return UpcomingEventsCallable { request ->
         when {
@@ -39,7 +40,7 @@ internal fun UpcomingEventsCallable(httpClient: HttpClient, remoteConfig: Remote
                 response
                     .filter { request.startAt == null || it.dateStart > request.startAt }
                     .take(request.limit)
-                    .map { it.toApiConference(null) }
+                    .map(apiConferenceFactory::invoke)
             }
         }
     }
@@ -71,24 +72,3 @@ internal data class GetEventsError(
     override val message: String,
     val code: Int,
 ) : Throwable()
-
-private fun AsgConference.toApiConference(
-    imageUrl: String?,
-) = ApiConference(
-    id = "${Uuid.random()}",
-    name = name,
-    website = website,
-    location = location,
-    dateStart = dateStart,
-    dateEnd = dateEnd,
-    imageUrl = imageUrl,
-    status = status,
-    online = online,
-    cfp = cfp?.let {
-        ApiConference.Cfp(
-            start = it.start,
-            end = it.end,
-            site = it.site,
-        )
-    },
-)
