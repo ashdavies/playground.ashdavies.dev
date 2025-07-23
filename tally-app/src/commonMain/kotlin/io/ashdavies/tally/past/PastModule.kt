@@ -7,7 +7,6 @@ import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesTo
 import dev.zacsweers.metro.IntoSet
 import dev.zacsweers.metro.Provides
-import io.ashdavies.asg.PastConferencesCallable
 import io.ashdavies.sql.DatabaseFactory
 import io.ashdavies.sql.map
 import io.ashdavies.tally.PlaygroundDatabase

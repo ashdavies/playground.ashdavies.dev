@@ -1,11 +1,11 @@
 package io.ashdavies.tally.tooling
 
 import io.ashdavies.asg.AsgConference
-import io.ashdavies.tally.events.Event as DatabaseEvent
+import io.ashdavies.tally.events.Event as DbConference
 
-internal fun UnitTestResources.upcomingEventsList(): List<DatabaseEvent> {
+internal fun UnitTestResources.upcomingEventsList(): List<DbConference> {
     return decodeFromResource<List<AsgConference>>("androidUnitTest", "upcoming.json").mapIndexed { index, item ->
-        DatabaseEvent(
+        DbConference(
             id = index.toLong(),
             name = item.name,
             website = item.website,

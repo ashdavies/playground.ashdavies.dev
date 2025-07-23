@@ -70,7 +70,7 @@ jobs:
         with:
           if-no-files-found: error
           name: screenshot-test-report
-          path: "**/build/reports/screenshotTest/preview/debug"
+          path: "**/build/paparazzi/failures"
 
       - uses: thollander/actions-comment-pull-request@v3
         if: ${{ steps.gradle-build.outputs.build-scan-url }}

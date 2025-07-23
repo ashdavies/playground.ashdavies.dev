@@ -3,16 +3,17 @@ package io.ashdavies.cloud.operations
 import com.google.cloud.firestore.CollectionReference
 import io.ashdavies.asg.AsgConference
 import io.ashdavies.asg.AsgService
+import io.ashdavies.cloud.ApiConferenceFactory
 import io.ashdavies.cloud.CollectionWriter
-import io.ashdavies.cloud.Identifier
 import io.ashdavies.cloud.await
 import io.ashdavies.cloud.decodeFromSnapshot
-import io.ashdavies.http.common.models.Event
-import io.ashdavies.http.common.models.EventCfp
+import io.ashdavies.http.common.models.ApiConference
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.ApplicationCall
 import io.ktor.server.response.respond
 import kotlinx.serialization.json.Json
+import kotlin.uuid.ExperimentalUuidApi
+import kotlin.uuid.Uuid
 
 private object AggregateEventsDefaults {
     const val ORDER_BY = "dateStart"
@@ -20,9 +21,9 @@ private object AggregateEventsDefaults {
 
 internal class AggregateEventsOperation(
     private val collectionReference: CollectionReference,
-    private val collectionWriter: CollectionWriter<Event>,
+    private val collectionWriter: CollectionWriter<ApiConference>,
     private val asgService: AsgService,
-    private val identifier: Identifier<AsgConference>,
+    private val apiConferenceFactory: ApiConferenceFactory,
 ) : UnaryOperation {
 
     override suspend fun invoke(call: ApplicationCall) {
@@ -32,31 +33,9 @@ internal class AggregateEventsOperation(
 
         collectionWriter(
             oldValue = Json.decodeFromSnapshot(snapshot),
-            newValue = asgService { it.toEvent(identifier(it), null) },
+            newValue = asgService(apiConferenceFactory::invoke),
         )
 
         call.respond(HttpStatusCode.OK)
     }
 }
-
-private fun AsgConference.toEvent(
-    id: String,
-    imageUrl: String?,
-) = Event(
-    id = id,
-    name = name,
-    website = website,
-    location = location,
-    imageUrl = imageUrl,
-    dateStart = dateStart,
-    dateEnd = dateEnd,
-    status = status,
-    online = online,
-    cfp = cfp?.toEventCfp(),
-)
-
-private fun AsgConference.Cfp.toEventCfp() = EventCfp(
-    start = start,
-    end = end,
-    site = site,
-)
