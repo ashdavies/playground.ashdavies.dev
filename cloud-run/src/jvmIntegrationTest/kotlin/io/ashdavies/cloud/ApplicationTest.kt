@@ -1,9 +1,9 @@
 package io.ashdavies.cloud
 
 import io.ashdavies.check.AppCheckToken
+import io.ashdavies.http.common.models.ApiConference
 import io.ashdavies.http.common.models.AppCheckToken
 import io.ashdavies.http.common.models.DecodedToken
-import io.ashdavies.http.common.models.Event
 import io.ashdavies.http.common.models.FirebaseApp
 import io.ktor.client.HttpClient
 import io.ktor.client.HttpClientConfig
@@ -65,11 +65,11 @@ internal class ApplicationTest {
 
         assertEquals(verify.appId, verify.subject)
 
-        val events = client.get("/events/upcoming") {
+        val apiConferences = client.get("/events/upcoming") {
             contentType(ContentType.Application.Json)
-        }.body<List<Event>>()
+        }.body<List<ApiConference>>()
 
-        assertTrue(events.isNotEmpty())
+        assertTrue(apiConferences.isNotEmpty())
     }
 
     @Test

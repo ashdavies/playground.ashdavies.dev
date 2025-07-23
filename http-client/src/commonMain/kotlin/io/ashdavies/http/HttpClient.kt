@@ -3,6 +3,7 @@ package io.ashdavies.http
 import io.ktor.client.HttpClient
 import io.ktor.client.HttpClientConfig
 import io.ktor.client.plugins.DefaultRequest
+import io.ktor.client.plugins.cache.HttpCache
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
@@ -27,6 +28,10 @@ public val DefaultHttpConfiguration: HttpClientConfig<*>.() -> Unit = {
     install(DefaultRequest) {
         contentType(ContentType.Application.Json)
         accept(ContentType.Application.Json)
+    }
+
+    install(HttpCache) {
+        publicStorage(resolveCacheStorage())
     }
 
     install(Logging) {

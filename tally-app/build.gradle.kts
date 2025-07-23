@@ -1,7 +1,6 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.compose.reload.gradle.ComposeHotRun
 import org.jetbrains.kotlin.compose.compiler.gradle.ComposeFeatureFlag
-import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 
 private object TallyAppConfig {
@@ -115,16 +114,6 @@ compose.desktop {
 }
 
 kotlin {
-    @OptIn(ExperimentalKotlinGradlePluginApi::class)
-    applyDefaultHierarchyTemplate {
-        common {
-            group("androidJvm") {
-                withAndroidTarget()
-                withJvm()
-            }
-        }
-    }
-
     compilerOptions {
         freeCompilerArgs.add("-opt-in=kotlin.uuid.ExperimentalUuidApi")
     }
@@ -150,6 +139,7 @@ kotlin {
         commonMain.dependencies {
             implementation(projects.analytics)
             implementation(projects.asgService)
+            implementation(projects.cloudCommon)
             implementation(projects.composeMaterial)
             implementation(projects.httpClient)
             implementation(projects.httpCommon)
@@ -190,7 +180,6 @@ kotlin {
             implementation(libs.slack.circuit.overlay)
             implementation(libs.sqldelight.coroutines.extensions)
             implementation(libs.sqldelight.runtime)
-            implementation(libs.squareup.okio)
         }
 
         commonTest.dependencies {

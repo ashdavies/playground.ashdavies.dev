@@ -26,7 +26,7 @@ import io.ashdavies.tally.events.EventsDetailPane
 import io.ashdavies.tally.material.BackButton
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.launch
-import io.ashdavies.tally.events.Event as DatabaseEvent
+import io.ashdavies.tally.events.Event as DbConference
 
 @Parcelize
 internal object UpcomingScreen : Parcelable, Screen {
@@ -35,7 +35,7 @@ internal object UpcomingScreen : Parcelable, Screen {
     }
 
     data class State(
-        val itemList: ImmutableList<DatabaseEvent?>,
+        val itemList: ImmutableList<DbConference?>,
         val selectedIndex: Int?,
         val isRefreshing: Boolean,
         val errorMessage: String?,

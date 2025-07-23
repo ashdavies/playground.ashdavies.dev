@@ -58,6 +58,7 @@ include(
     ":analytics",
     ":app-check",
     ":asg-service",
+    ":cloud-common",
     ":cloud-run",
     ":composeApp",
     ":compose-material",

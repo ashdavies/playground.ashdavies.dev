@@ -3,7 +3,7 @@ package io.ashdavies.http.common.models
 import kotlinx.serialization.Serializable
 
 @Serializable
-public data class Event(
+public data class ApiConference(
     public val id: String,
     public val name: String,
     public val website: String,
@@ -13,5 +13,13 @@ public data class Event(
     public val imageUrl: String?,
     public val status: String?,
     public val online: Boolean?,
-    public val cfp: EventCfp?,
-)
+    public val cfp: Cfp?,
+) {
+
+    @Serializable
+    public data class Cfp(
+        public val start: String,
+        public val end: String,
+        public val site: String?,
+    )
+}
