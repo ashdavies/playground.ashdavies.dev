@@ -25,11 +25,15 @@ import com.slack.circuit.runtime.CircuitUiEvent
 import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.screen.Screen
 import com.slack.circuit.runtime.ui.Ui
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesIntoMap
 import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 import io.ashdavies.identity.IdentityState
 import io.ashdavies.parcelable.Parcelable
 import io.ashdavies.parcelable.Parcelize
 import io.ashdavies.tally.activity.FullyDrawnReporter
+import io.ashdavies.tally.circuit.CircuitScreenKey
 import io.ashdavies.tally.gallery.GalleryScreen
 import io.ashdavies.tally.material.icons.EventList
 import io.ashdavies.tally.material.icons.EventUpcoming
@@ -55,6 +59,8 @@ internal object HomeScreen : Parcelable, Screen {
     ) : CircuitUiState
 }
 
+@CircuitScreenKey(HomeScreen::class)
+@ContributesIntoMap(AppScope::class, binding<Ui<*>>())
 internal class HomeUi @Inject constructor(
     private val fullyDrawnReporter: FullyDrawnReporter,
 ) : Ui<HomeScreen.State> {

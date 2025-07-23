@@ -29,9 +29,13 @@ import androidx.compose.ui.unit.dp
 import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.screen.Screen
 import com.slack.circuit.runtime.ui.Ui
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesIntoMap
 import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 import io.ashdavies.parcelable.Parcelable
 import io.ashdavies.parcelable.Parcelize
+import io.ashdavies.tally.circuit.CircuitScreenKey
 import io.ashdavies.tally.events.EventsTopBar
 import io.ashdavies.tally.material.padding
 import io.ashdavies.tally.material.spacing
@@ -70,6 +74,8 @@ internal object PastScreen : Parcelable, Screen {
     }
 }
 
+@CircuitScreenKey(PastScreen::class)
+@ContributesIntoMap(AppScope::class, binding<Ui<*>>())
 internal class PastUi @Inject constructor(
     private val windowSizeClass: WindowSizeClass,
 ) : Ui<PastScreen.State> {

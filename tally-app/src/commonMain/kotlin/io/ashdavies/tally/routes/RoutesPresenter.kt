@@ -7,12 +7,16 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.slack.circuit.retained.rememberRetained
 import com.slack.circuit.runtime.presenter.Presenter
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesIntoMap
 import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 import io.ashdavies.delegates.notNull
 import io.ashdavies.routing.ComputeRoutesCallable
 import io.ashdavies.routing.ComputeRoutesError
 import io.ashdavies.routing.ComputeRoutesRequest
 import io.ashdavies.tally.BuildConfig
+import io.ashdavies.tally.circuit.CircuitScreenKey
 import io.ktor.client.HttpClient
 
 private const val ROUTES_BASE_URL = "https://routes.googleapis.com"
@@ -24,6 +28,8 @@ private val InitialRoutesMapState = RoutesMapState(
     zoomLevel = 12f,
 )
 
+@CircuitScreenKey(RoutesScreen::class)
+@ContributesIntoMap(AppScope::class, binding<Presenter<*>>())
 internal class RoutesPresenter @Inject constructor(
     private val locationService: LocationService,
     private val httpClient: HttpClient,
