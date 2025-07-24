@@ -20,10 +20,14 @@ import androidx.compose.ui.unit.dp
 import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.screen.Screen
 import com.slack.circuit.runtime.ui.Ui
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesIntoMap
 import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 import io.ashdavies.parcelable.Parcelable
 import io.ashdavies.parcelable.Parcelize
 import io.ashdavies.tally.animation.FadeVisibility
+import io.ashdavies.tally.circuit.CircuitScreenKey
 import io.ashdavies.tally.events.EventsDetailPane
 import io.ashdavies.tally.material.BackButton
 import kotlinx.collections.immutable.ImmutableList
@@ -45,6 +49,8 @@ internal object UpcomingScreen : Parcelable, Screen {
     ) : CircuitUiState
 }
 
+@CircuitScreenKey(UpcomingScreen::class)
+@ContributesIntoMap(AppScope::class, binding<Ui<*>>())
 internal class UpcomingUi @Inject constructor(
     private val windowSizeClass: WindowSizeClass,
 ) : Ui<UpcomingScreen.State> {

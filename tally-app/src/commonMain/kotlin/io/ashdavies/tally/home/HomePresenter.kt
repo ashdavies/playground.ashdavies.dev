@@ -11,14 +11,18 @@ import com.slack.circuit.retained.rememberRetained
 import com.slack.circuit.runtime.Navigator
 import com.slack.circuit.runtime.presenter.Presenter
 import com.slack.circuit.runtime.screen.Screen
+import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.Assisted
 import dev.zacsweers.metro.AssistedFactory
+import dev.zacsweers.metro.ContributesIntoMap
 import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 import io.ashdavies.config.RemoteConfig
 import io.ashdavies.content.PlatformContext
 import io.ashdavies.content.isDebuggable
 import io.ashdavies.identity.IdentityManager
 import io.ashdavies.identity.IdentityState
+import io.ashdavies.tally.circuit.CircuitScreenKey
 import io.ashdavies.tally.config.booleanConfigAsState
 import io.ashdavies.tally.config.isGalleryEnabled
 import io.ashdavies.tally.config.isRoutesEnabled
@@ -58,5 +62,7 @@ internal class HomePresenter @Inject constructor(
     }
 
     @AssistedFactory
+    @CircuitScreenKey(HomeScreen::class)
+    @ContributesIntoMap(AppScope::class, binding<(Navigator) -> Presenter<*>>())
     interface Factory : (Navigator) -> HomePresenter
 }

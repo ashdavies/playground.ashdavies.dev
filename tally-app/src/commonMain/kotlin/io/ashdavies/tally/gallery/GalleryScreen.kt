@@ -62,9 +62,13 @@ import com.slack.circuit.runtime.CircuitUiEvent
 import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.screen.Screen
 import com.slack.circuit.runtime.ui.Ui
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesIntoMap
 import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 import io.ashdavies.parcelable.Parcelable
 import io.ashdavies.parcelable.Parcelize
+import io.ashdavies.tally.circuit.CircuitScreenKey
 import io.ashdavies.tally.events.EventsTopBar
 import io.ashdavies.tally.files.Path
 import io.ashdavies.tally.material.BottomSheetScaffold
@@ -119,6 +123,8 @@ internal object GalleryScreen : Parcelable, Screen {
     }
 }
 
+@CircuitScreenKey(GalleryScreen::class)
+@ContributesIntoMap(AppScope::class, binding<Ui<*>>())
 internal class GalleryUi @Inject constructor() : Ui<GalleryScreen.State> {
 
     @Composable

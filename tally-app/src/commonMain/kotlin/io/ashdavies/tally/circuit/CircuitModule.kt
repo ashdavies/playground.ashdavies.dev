@@ -1,32 +1,38 @@
 package io.ashdavies.tally.circuit
 
 import com.slack.circuit.foundation.Circuit
+import com.slack.circuit.runtime.Navigator
 import com.slack.circuit.runtime.presenter.Presenter
+import com.slack.circuit.runtime.screen.Screen
 import com.slack.circuit.runtime.ui.Ui
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesTo
 import dev.zacsweers.metro.Multibinds
+import dev.zacsweers.metro.Provider
 import dev.zacsweers.metro.Provides
 import kotlin.jvm.JvmSuppressWildcards
+import kotlin.reflect.KClass
 
 @ContributesTo(AppScope::class)
 internal interface CircuitModule {
 
     @Multibinds
-    fun presenterFactories(): Set<Presenter.Factory>
+    val navigationPresenterFactories: Map<KClass<out Screen>, (Navigator) -> Presenter<*>>
 
     @Multibinds
-    fun uiFactories(): Set<Ui.Factory>
+    val presenterFactories: Map<KClass<out Screen>, Provider<Presenter<*>>>
 
-    companion object {
+    @Multibinds
+    val uiFactories: Map<KClass<out Screen>, Provider<Ui<*>>>
 
-        @Provides
-        fun circuit(
-            presenterFactories: @JvmSuppressWildcards Set<Presenter.Factory>,
-            uiFactories: @JvmSuppressWildcards Set<Ui.Factory>,
-        ): Circuit = Circuit.Builder()
-            .addPresenterFactories(presenterFactories)
-            .addUiFactories(uiFactories)
-            .build()
-    }
+    @Provides
+    fun circuit(
+        navigationPresenterFactories: @JvmSuppressWildcards Map<KClass<out Screen>, (Navigator) -> Presenter<*>>,
+        presenterFactories: @JvmSuppressWildcards Map<KClass<out Screen>, Provider<Presenter<*>>>,
+        uiFactories: @JvmSuppressWildcards Map<KClass<out Screen>, Provider<Ui<*>>>,
+    ): Circuit = Circuit.Builder()
+        .addPresenterFactory { screen, navigator, _ -> navigationPresenterFactories[screen::class]?.invoke(navigator) }
+        .addPresenterFactory { screen, _, _ -> presenterFactories[screen::class]?.invoke() }
+        .addUiFactory { screen, context -> uiFactories[screen::class]?.invoke() }
+        .build()
 }

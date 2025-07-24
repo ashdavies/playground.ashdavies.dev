@@ -7,11 +7,15 @@ import androidx.compose.runtime.produceState
 import androidx.compose.runtime.rememberCoroutineScope
 import app.cash.sqldelight.coroutines.mapToList
 import com.slack.circuit.runtime.presenter.Presenter
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesIntoMap
 import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 import io.ashdavies.sql.DatabaseFactory
 import io.ashdavies.sql.map
 import io.ashdavies.sql.mapAsFlow
 import io.ashdavies.tally.PlaygroundDatabase
+import io.ashdavies.tally.circuit.CircuitScreenKey
 import io.ktor.client.HttpClient
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Dispatchers
@@ -20,6 +24,8 @@ import kotlinx.datetime.LocalDate
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 
+@CircuitScreenKey(PastScreen::class)
+@ContributesIntoMap(AppScope::class, binding<Presenter<*>>())
 internal class PastPresenter @Inject constructor(
     private val databaseFactory: DatabaseFactory<PlaygroundDatabase>,
     private val httpClient: HttpClient,
