@@ -8,7 +8,6 @@ import androidx.compose.runtime.setValue
 import com.slack.circuit.retained.collectAsRetainedState
 import com.slack.circuit.retained.rememberRetained
 import com.slack.circuit.runtime.presenter.Presenter
-import com.slack.circuit.runtime.ui.Ui
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesIntoMap
 import dev.zacsweers.metro.Inject
@@ -19,7 +18,7 @@ import io.ashdavies.tally.circuit.CircuitScreenKey
 import kotlinx.coroutines.launch
 
 @CircuitScreenKey(GalleryScreen::class)
-@ContributesIntoMap(AppScope::class, binding<Ui<*>>())
+@ContributesIntoMap(AppScope::class, binding<Presenter<*>>())
 internal class GalleryPresenter @Inject constructor(
     private val imageManager: ImageManager,
     private val syncManager: SyncManager,
