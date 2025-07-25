@@ -1,7 +1,7 @@
 resource "github_actions_secret" "workload_identity_provider" {
   repository      = var.gh_repo_name
   secret_name     = "WORKLOAD_IDENTITY_PROVIDER"
-  encrypted_value = module.github-workload-identity.provider_name
+  plaintext_value = module.github-workload-identity.provider_name
 }
 
 resource "onepassword_item" "playground_secrets" {
@@ -27,13 +27,6 @@ resource "onepassword_item" "playground_secrets" {
       label = "Service Account ID"
       type  = "CONCEALED"
       value = module.github-service-account.email
-    }
-
-    # Deprecated: This value is now stored as the WORKLOAD_IDENTITY_PROVIDER GitHub Actions secret.
-    field {
-      label = "Workload Identity"
-      type  = "CONCEALED"
-      value = module.github-workload-identity.provider_name
     }
   }
 }
