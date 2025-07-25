@@ -28,12 +28,5 @@ resource "onepassword_item" "playground_secrets" {
       type  = "CONCEALED"
       value = module.github-service-account.email
     }
-
-    # Deprecated: This value is now stored as the WORKLOAD_IDENTITY_PROVIDER GitHub Actions secret.
-    field {
-      label = "Workload Identity"
-      type  = "CONCEALED"
-      value = module.github-workload-identity.provider_name
-    }
   }
 }
