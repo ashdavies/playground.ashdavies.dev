@@ -4,6 +4,12 @@ resource "github_actions_secret" "workload_identity_provider" {
   plaintext_value = module.github-workload-identity.provider_name
 }
 
+resource "github_actions_secret" "google_service_account_id" {
+  repository      = var.gh_repo_name
+  secret_name     = "GOOGLE_SERVICE_ACCOUNT_ID"
+  plaintext_value = module.github-service-account.email
+}
+
 resource "onepassword_item" "playground_secrets" {
   vault = var.op_vault_uuid
 
@@ -17,16 +23,6 @@ resource "onepassword_item" "playground_secrets" {
       label = "Android App ID"
       type  = "CONCEALED"
       value = google_firebase_android_app.release.app_id
-    }
-  }
-
-  section {
-    label = "Google"
-
-    field {
-      label = "Service Account ID"
-      type  = "CONCEALED"
-      value = module.github-service-account.email
     }
   }
 }
