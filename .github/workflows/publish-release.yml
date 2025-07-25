@@ -40,7 +40,6 @@ jobs:
         with:
           export-env: false
         env:
-          GOOGLE_SERVICE_ACCOUNT_ID: op://Development/Playground Secrets/Google/Service Account ID
           GOOGLE_SERVICES: op://Development/Google Services/Playground/base64
           KEYSTORE_BASE64: op://Development/playground keystore/keystore base64
           KEYSTORE_PASSWORD: op://Development/playground keystore/keystore password
@@ -59,7 +58,7 @@ jobs:
       - uses: ./.github/actions/setup-cloud
         with:
           workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
-          service_account: ${{ steps.op-secrets.outputs.GOOGLE_SERVICE_ACCOUNT_ID }}
+          service_account: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
           setup_gcloud: false
 
       - id: version-code
