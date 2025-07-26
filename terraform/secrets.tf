@@ -1,7 +1,13 @@
-resource "github_actions_secret" "workload_identity_provider" {
+resource "github_actions_secret" "firebase_android_app_id" {
   repository      = var.gh_repo_name
-  secret_name     = "WORKLOAD_IDENTITY_PROVIDER"
-  plaintext_value = module.github-workload-identity.provider_name
+  secret_name     = "FIREBASE_ANDROID_APP_ID"
+  plaintext_value = google_firebase_android_app.release.app_id
+}
+
+resource "github_actions_secret" "firebase_google_services" {
+  repository      = var.gh_repo_name
+  secret_name     = "FIREBASE_GOOGLE_SERVICES"
+  plaintext_value = data.google_firebase_android_app_config.release.config_file_contents
 }
 
 resource "github_actions_secret" "google_service_account_id" {
@@ -10,8 +16,8 @@ resource "github_actions_secret" "google_service_account_id" {
   plaintext_value = module.github-service-account.email
 }
 
-resource "github_actions_secret" "firebase_android_app_id" {
+resource "github_actions_secret" "workload_identity_provider" {
   repository      = var.gh_repo_name
-  secret_name     = "FIREBASE_ANDROID_APP_ID"
-  plaintext_value = google_firebase_android_app.release.app_id
+  secret_name     = "WORKLOAD_IDENTITY_PROVIDER"
+  plaintext_value = module.github-workload-identity.provider_name
 }

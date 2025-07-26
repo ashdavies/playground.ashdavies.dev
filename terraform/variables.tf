@@ -3,11 +3,6 @@ variable "op_service_account_token" {
   type        = string
 }
 
-variable "op_vault_uuid" {
-  description = "The UUID of the vault the item is in."
-  type        = string
-}
-
 variable "gh_owner" {
   default     = "ashdavies"
   description = "Username of the GitHub repository owner"
