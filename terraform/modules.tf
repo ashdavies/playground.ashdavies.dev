@@ -56,6 +56,15 @@ moved {
   to   = github_repository.main
 }
 
+module "fastlane-service-account" {
+  source       = "terraform-google-modules/service-accounts/google"
+  version      = "4.5.4"
+  display_name = "Fastlane Service Account"
+  names        = ["fastlane-supply"]
+  project_id   = var.project_id
+  project_roles = []
+}
+
 module "github-service-account" {
   source       = "terraform-google-modules/service-accounts/google"
   version      = "4.5.4"

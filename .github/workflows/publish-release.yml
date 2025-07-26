@@ -45,7 +45,6 @@ jobs:
           KEY_ALIAS: op://Development/playground keystore/key alias
           KEY_PASSWORD: op://Development/playground keystore/key password
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
-          PLAY_STORE_KEY: op://Development/service account key/base64
 
       - env:
           KEYSTORE_BASE64: ${{ steps.op-secrets.outputs.KEYSTORE_BASE64 }}
@@ -100,9 +99,9 @@ jobs:
         with:
           bundler-cache: true
 
-      - env:
-          PLAY_STORE_KEY: ${{ steps.op-secrets.outputs.PLAY_STORE_KEY }}
-        run: |
-          echo $PLAY_STORE_KEY | base64 --decode > tally-app/src/androidMain/play-store-key.json
+      - run: |
+          play_store_key=${{ secrets.FASTLANE_SERVICE_ACCOUNT_KEY }}
+          path=tally-app/src/androidMain/play-store-key.json
+          echo $play_store_key | base64 --decode > $path
 
 #      - run: bundle install && bundle exec fastlane android publish_to_play_store

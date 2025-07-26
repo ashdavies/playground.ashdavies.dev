@@ -1,3 +1,9 @@
+resource "github_actions_secret" "fastlane_service_account_key" {
+  repository      = var.gh_repo_name
+  secret_name     = "FASTLANE_SERVICE_ACCOUNT_KEY"
+  plaintext_value = google_service_account_key.fastlane_supply_key.private_key
+}
+
 resource "github_actions_secret" "firebase_android_app_id" {
   repository      = var.gh_repo_name
   secret_name     = "FIREBASE_ANDROID_APP_ID"

@@ -42,3 +42,7 @@ resource "google_project_iam_custom_role" "main" {
     "storage.objects.list",
   ]
 }
+
+resource "google_service_account_key" "fastlane_supply_key" {
+  service_account_id = module.fastlane-service-account.service_account.name
+}

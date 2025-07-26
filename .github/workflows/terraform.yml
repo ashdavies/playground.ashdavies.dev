@@ -41,13 +41,6 @@ jobs:
 
       - uses: 1password/install-cli-action@v1
 
-      - id: op-secrets
-        uses: 1password/load-secrets-action@v2
-        with:
-          export-env: false
-        env:
-          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
-
       - id: setup-cloud
         uses: ./.github/actions/setup-cloud
         with:
