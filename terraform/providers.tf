@@ -26,3 +26,8 @@ provider "google" {
   project         = var.project_id
   request_timeout = "60s"
 }
+
+provider "google-beta" {
+  project = var.project_id
+  region  = var.project_region
+}
