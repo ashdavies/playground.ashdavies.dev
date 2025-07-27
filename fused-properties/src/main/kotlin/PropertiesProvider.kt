@@ -12,7 +12,7 @@ internal fun Project.startParameterProvider(): Provider<Map<String, String>> {
     }
 }
 
-private fun Project.localPropertyProvider(path: String): Provider<Properties> {
+public fun Project.localPropertyProvider(path: String): Provider<Properties> {
     return providers.of(LocalProperties::class.java) {
         parameters.value.set(project.layout.projectDirectory.file(path))
         parameters.value.disallowChanges()

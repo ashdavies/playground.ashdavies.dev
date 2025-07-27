@@ -62,7 +62,6 @@ module "fastlane-service-account" {
   display_name = "Fastlane Service Account"
   names        = ["fastlane-supply"]
   project_id   = var.project_id
-  project_roles = []
 }
 
 module "github-service-account" {
