@@ -14,7 +14,7 @@ resource "google_project_service" "main" {
 resource "google_project_iam_custom_role" "main" {
   description = "Can create, update, and delete services necessary for the automatic deployment"
   title       = "GitHub Actions Publisher"
-  provider    = google.impersonated
+  provider    = google.impersonation
   role_id     = "actionsPublisher"
   permissions = [
     "apigateway.apiconfigs.create",

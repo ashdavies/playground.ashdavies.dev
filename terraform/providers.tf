@@ -1,7 +1,7 @@
 data "google_service_account_access_token" "default" {
-  scopes                 = ["userinfo-email", "cloud-platform"]
+  provider               = google.impersonation
   target_service_account = module.github-service-account.email
-  provider               = google.impersonated
+  scopes                 = ["userinfo-email", "cloud-platform"]
   lifetime               = "1200s"
 }
 
@@ -15,19 +15,17 @@ provider "github" {
 }
 
 provider "google" {
-  region  = var.project_region
   project = var.project_id
-  alias   = "impersonated"
+  region  = var.project_region
+  alias   = "impersonation"
 }
 
 provider "google" {
-  access_token    = data.google_service_account_access_token.default.access_token
-  region          = var.project_region
   project         = var.project_id
-  request_timeout = "60s"
+  access_token    = data.google_service_account_access_token.default.access_token
 }
 
 provider "google-beta" {
-  project = var.project_id
-  region  = var.project_region
+  project      = var.project_id
+  access_token = data.google_service_account_access_token.default.access_token
 }
