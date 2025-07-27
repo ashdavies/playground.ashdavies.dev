@@ -18,78 +18,29 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build_release:
-    runs-on: ubuntu-latest
+  android:
+    uses: ./.github/workflows/android-release.yml
+    secrets:
+      WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
+      GOOGLE_SERVICE_ACCOUNT_ID: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
+      FIREBASE_GOOGLE_SERVICES: ${{ secrets.FIREBASE_GOOGLE_SERVICES }}
+      RELEASE_KEYSTORE_FILE: ${{ secrets.RELEASE_KEYSTORE_FILE }}
+      RELEASE_KEYSTORE_PROPERTIES: ${{ secrets.RELEASE_KEYSTORE_PROPERTIES }}
+      ANDROID_API_KEY: ${{ secrets.ANDROID_API_KEY }}
+      BROWSER_API_KEY: ${{ secrets.BROWSER_API_KEY }}
+      FASTLANE_SERVICE_ACCOUNT_KEY: ${{ secrets.FASTLANE_SERVICE_ACCOUNT_KEY }}
 
+  release:
+    needs: [ android ]
+    runs-on: ubuntu-latest
     permissions:
-      pull-requests: 'write'
-      id-token: 'write'
+      contents: write
 
     steps:
-      - uses: GitHubSecurityLab/actions-permissions/monitor@v1
-        if: ${{ github.event.inputs.monitor_permissions == 'true' }}
-
-      - uses: actions/checkout@v4
+      - uses: softprops/action-gh-release@v2
         with:
-          lfs: 'true'
-
-      - uses: ./.github/actions/setup-gradle
-
-      - run: |
-          echo ${{ secrets.FIREBASE_GOOGLE_SERVICES }} | base64 --decode > tally-app/google-services.json
-          echo ${{ secrets.RELEASE_KEYSTORE_FILE }} | base64 --decode > keystore.jks
-          echo ${{ secrets.RELEASE_KEYSTORE_PROPERTIES }} | base64 --decode > keystore.properties
-
-      - uses: ./.github/actions/setup-cloud
-        with:
-          workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
-          service_account: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
-          setup_gcloud: false
-
-      - id: version-code
-        run: echo "VERSION_CODE=$(( (GITHUB_RUN_NUMBER * 2) + 1000 ))" >> $GITHUB_OUTPUT
-
-      - run: |
-          ./gradlew \
-            :tally-app:assemble \
-            :tally-app:bundle \
-            --console=plain
+          files: "*.apk"
+          draft: true
+          tag_name: ${{ github.ref_name }}
         env:
-          ANDROID_API_KEY: ${{ secrets.ANDROID_API_KEY }}
-          BROWSER_API_KEY: ${{ secrets.BROWSER_API_KEY }}
-          KEY_STORE_FILE: keystore.jks
-          KEY_STORE_PASSWORD: ${{ steps.op-secrets.outputs.KEYSTORE_PASSWORD }}
-          RELEASE_KEY_ALIAS: ${{ steps.op-secrets.outputs.KEY_ALIAS }}
-          RELEASE_KEY_PASSWORD: ${{ steps.op-secrets.outputs.KEY_PASSWORD }}
-          VERSION_CODE: ${{ steps.version-code.outputs.VERSION_CODE }}
-
-      - run: ./gradlew verifyPaparazziDebug --console=plain
-
-      - uses: actions/upload-artifact@v4
-        with:
-          if-no-files-found: error
-          name: android-build-outputs
-          path: tally-app/build/outputs
-
-  publish_play_store:
-    needs: [ build_release ]
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/download-artifact@v4
-        with:
-          name: android-build-outputs
-          path: tally-app/build/outputs
-
-      - uses: ruby/setup-ruby@v1
-        with:
-          bundler-cache: true
-
-      - run: |
-          play_store_key=${{ secrets.FASTLANE_SERVICE_ACCOUNT_KEY }}
-          path=tally-app/src/androidMain/play-store-key.json
-          echo $play_store_key | base64 --decode > $path
-
-#      - run: bundle install && bundle exec fastlane android publish_to_play_store
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
