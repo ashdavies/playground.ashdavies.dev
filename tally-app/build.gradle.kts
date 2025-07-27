@@ -44,12 +44,12 @@ android {
             val keystoreProperties = localPropertyProvider("keystore.properties")
 
             signingConfig = keystoreProperties.map { properties ->
-                signingConfigs.create("release") {
-                    storeFile = file(properties.getProperty("storeFile"))
-                    storePassword = properties.getProperty("storePassword")
+                signingConfigs.maybeCreate("release").apply {
+                    storeFile = file(properties.getProperty("store.file"))
+                    storePassword = properties.getProperty("store.password")
 
-                    keyAlias = properties.getProperty("keyAlias")
-                    keyPassword = properties.getProperty("keyPassword")
+                    keyAlias = properties.getProperty("key.alias")
+                    keyPassword = properties.getProperty("key.password")
 
                     enableV3Signing = true
                     enableV4Signing = true

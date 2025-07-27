@@ -1,15 +1,15 @@
 locals {
   keystore_fields = merge([
     for section in data.onepassword_item.playground-keystore.section : merge([
-      for field in section.field : { replace("${field.label}", "/\\s+/", "_") = sensitive(field.value) }
+      for field in section.field : { replace(field.label, "/\\s+/", "_") = sensitive(field.value) }
     ]...)
   ]...)
 
   keystore_properties = <<-EOT
-  keyAlias=${ local.keystore_fields["key_alias"] }
-  keyPassword=${ local.keystore_fields["key_password"] }
-  storeFile=keystore.jks
-  storePassword=${ local.keystore_fields["keystore_password"] }
+  key.alias=${ local.keystore_fields["key_alias"] }
+  key.password=${ local.keystore_fields["key_password"] }
+  store.file=keystore.jks
+  store.password=${ local.keystore_fields["keystore_password"] }
   EOT
 }
 
