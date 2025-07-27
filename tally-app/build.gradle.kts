@@ -32,30 +32,6 @@ android {
         res.srcDirs("src/androidMain/res")
     }
 
-    val release by signingConfigs.creating {
-        val debug by signingConfigs.getting
-        initWith(debug)
-
-        enableV3Signing = true
-        enableV4Signing = true
-
-        val keyStoreFile by stringProperty { _, value ->
-            if (value != null) storeFile = rootProject.file(value)
-        }
-
-        val keyStorePassword by stringProperty { _, value ->
-            if (value != null) storePassword = value
-        }
-
-        val releaseKeyAlias by stringProperty { _, value ->
-            if (value != null) keyAlias = value
-        }
-
-        val releaseKeyPassword by stringProperty { _, value ->
-            if (value != null) keyPassword = value
-        }
-    }
-
     buildTypes {
         debug {
             applicationIdSuffix = ".debug"
@@ -65,7 +41,20 @@ android {
             isMinifyEnabled = true
             isShrinkResources = true
 
-            signingConfig = release
+            val keystoreProperties = localPropertyProvider("keystore.properties")
+
+            signingConfig = keystoreProperties.map { properties ->
+                signingConfigs.create("release") {
+                    storeFile = file(properties.getProperty("storeFile"))
+                    storePassword = properties.getProperty("storePassword")
+
+                    keyAlias = properties.getProperty("keyAlias")
+                    keyPassword = properties.getProperty("keyPassword")
+
+                    enableV3Signing = true
+                    enableV4Signing = true
+                }
+            }.orNull
 
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
