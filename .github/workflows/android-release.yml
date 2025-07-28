@@ -40,11 +40,14 @@ jobs:
           echo ${{ secrets.RELEASE_KEYSTORE_FILE }} | base64 --decode > keystore.jks
           echo ${{ secrets.RELEASE_KEYSTORE_PROPERTIES }} | base64 --decode > keystore.properties
 
+      - id: calculate_version_code
+        run: echo "version_code=$((GITHUB_RUN_NUMBER * 2 + 1000))" >> $GITHUB_ENV
+
       - run: |
           ./gradlew \
             :tally-app:assemble \
             :tally-app:bundle \
-            --Pversion.code=$((GITHUB_RUN_NUMBER * 2 + 1000)) \
+            --Pversion.code=${{ env.version_code }} \
             --console=plain
         env:
           ANDROID_API_KEY: ${{ secrets.ANDROID_API_KEY }}
