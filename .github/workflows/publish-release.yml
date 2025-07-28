@@ -33,8 +33,9 @@ jobs:
   release:
     needs: [ android ]
     runs-on: ubuntu-latest
+
     permissions:
-      contents: write
+      contents: read
       id-token: write
 
     steps:
