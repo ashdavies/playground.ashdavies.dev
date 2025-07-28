@@ -41,6 +41,8 @@ jobs:
 
       - uses: ./.github/actions/setup-gradle
 
+      - run: echo ${{ secrets.FIREBASE_GOOGLE_SERVICES }} | base64 --decode > tally-app/google-services.json
+
       - id: gradle-build
         run: ./gradlew build --console=plain
 
