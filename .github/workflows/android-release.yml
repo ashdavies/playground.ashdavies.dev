@@ -1,0 +1,59 @@
+name: Android Release
+
+on:
+  workflow_call:
+    secrets:
+      WORKLOAD_IDENTITY_PROVIDER:
+        required: true
+      GOOGLE_SERVICE_ACCOUNT_ID:
+        required: true
+      FIREBASE_GOOGLE_SERVICES:
+        required: true
+      RELEASE_KEYSTORE_FILE:
+        required: true
+      RELEASE_KEYSTORE_PROPERTIES:
+        required: true
+      ANDROID_API_KEY:
+        required: true
+      BROWSER_API_KEY:
+        required: true
+      FASTLANE_SERVICE_ACCOUNT_KEY:
+        required: true
+
+jobs:
+  build_release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ./.github/actions/setup-gradle
+
+      - uses: ./.github/actions/setup-cloud
+        with:
+          workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
+          setup_gcloud: false
+
+      - run: |
+          echo ${{ secrets.FIREBASE_GOOGLE_SERVICES }} | base64 --decode > tally-app/google-services.json
+          echo ${{ secrets.RELEASE_KEYSTORE_FILE }} | base64 --decode > keystore.jks
+          echo ${{ secrets.RELEASE_KEYSTORE_PROPERTIES }} | base64 --decode > keystore.properties
+
+      - run: echo "VERSION_CODE=$((GITHUB_RUN_NUMBER * 2 + 1000))" >> $GITHUB_ENV
+
+      - run: |
+          ./gradlew \
+            :tally-app:assemble \
+            :tally-app:bundle \
+            --Pversion.code=${{ env.VERSION_CODE }} \
+            --console=plain
+        env:
+          ANDROID_API_KEY: ${{ secrets.ANDROID_API_KEY }}
+          BROWSER_API_KEY: ${{ secrets.BROWSER_API_KEY }}
+
+      - uses: actions/upload-artifact@v4
+        with:
+          if-no-files-found: error
+          name: android-build-outputs
+          path: tally-app/build/outputs
