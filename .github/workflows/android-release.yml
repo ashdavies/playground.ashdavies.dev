@@ -50,7 +50,6 @@ jobs:
           ./gradlew \
             :tally-app:assemble \
             :tally-app:bundle \
-            --Pversion.code=${{ env.VERSION_CODE }} \
             --console=plain
         env:
           ANDROID_API_KEY: ${{ secrets.ANDROID_API_KEY }}
