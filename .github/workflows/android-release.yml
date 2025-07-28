@@ -44,7 +44,7 @@ jobs:
           ./gradlew \
             :tally-app:assemble \
             :tally-app:bundle \
-            --Pversion.code=(($GITHUB_RUN_NUMBER * 2) + 1000)
+            --Pversion.code=(($GITHUB_RUN_NUMBER * 2) + 1000) \
             --console=plain
         env:
           ANDROID_API_KEY: ${{ secrets.ANDROID_API_KEY }}

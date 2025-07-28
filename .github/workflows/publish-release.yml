@@ -37,6 +37,11 @@ jobs:
       contents: write
 
     steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: android-build-outputs
+          path: tally-app/build/outputs
+
       - uses: softprops/action-gh-release@v2
         with:
           files: "*.apk"
