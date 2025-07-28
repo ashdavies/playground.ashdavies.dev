@@ -46,7 +46,7 @@ jobs:
 
       - uses: softprops/action-gh-release@v2
         with:
-          files: "tally-app/build/outputs/**/*.apk"
+          files: "tally-app/build/outputs/**/*.{apk,aab}"
           draft: true
           tag_name: ${{ github.ref_name }}
         env:
