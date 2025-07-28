@@ -1,4 +1,4 @@
-name: Android Release
+name: Publish Release
 
 on:
   push:
@@ -35,6 +35,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      id-token: write
 
     steps:
       - uses: actions/checkout@v4
@@ -51,3 +52,14 @@ jobs:
           tag_name: ${{ github.ref_name }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+
+      - run: |
+          play_store_key=${{ secrets.FASTLANE_SERVICE_ACCOUNT_KEY }}
+          path=tally-app/src/androidMain/play-store-key.json
+          echo $play_store_key | base64 --decode > $path
+
+#      - run: bundle install && bundle exec fastlane android publish_to_play_store
