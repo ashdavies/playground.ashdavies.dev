@@ -31,6 +31,7 @@ jobs:
       FASTLANE_SERVICE_ACCOUNT_KEY: ${{ secrets.FASTLANE_SERVICE_ACCOUNT_KEY }}
 
   github:
+    if: github.ref_type == 'tag'
     needs: [ android ]
     runs-on: ubuntu-latest
 
