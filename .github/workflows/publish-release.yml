@@ -43,14 +43,15 @@ jobs:
 
       - uses: actions/download-artifact@v4
         with:
-          name: android-build-outputs
           path: tally-app/build/outputs
 
       - run: ls -R
 
       - uses: softprops/action-gh-release@v2
         with:
-          files: "**/release/*.{apk,aab}"
+          files: |
+            **/release/*.aar
+            **/release/*.apk
           generate_release_notes: true
           draft: true
 
