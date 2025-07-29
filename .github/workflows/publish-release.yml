@@ -50,7 +50,9 @@ jobs:
 
       - uses: softprops/action-gh-release@v2
         with:
-          files: "**/release/*.{apk,aab}"
+          files: |
+            **/release/*.aab
+            **/release/*.apk
           generate_release_notes: true
           draft: true
 
