@@ -43,6 +43,7 @@ jobs:
 
       - uses: actions/download-artifact@v4
         with:
+          name: android-build-outputs
           path: tally-app/build/outputs
 
       - run: ls -R
