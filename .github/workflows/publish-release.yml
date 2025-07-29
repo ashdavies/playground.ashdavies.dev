@@ -30,7 +30,7 @@ jobs:
       BROWSER_API_KEY: ${{ secrets.BROWSER_API_KEY }}
       FASTLANE_SERVICE_ACCOUNT_KEY: ${{ secrets.FASTLANE_SERVICE_ACCOUNT_KEY }}
 
-  release:
+  github:
     needs: [ android ]
     runs-on: ubuntu-latest
 
@@ -46,14 +46,20 @@ jobs:
           name: android-build-outputs
           path: tally-app/build/outputs
 
+      - run: ls -R
+
       - uses: softprops/action-gh-release@v2
         with:
-          files: "tally-app/build/outputs/**/*.{apk,aab}"
+          files: "**/release/*.{apk,aab}"
+          generate_release_notes: true
           draft: true
-          tag_name: ${{ github.ref_name }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+  play:
+    needs: [android]
+    runs-on: ubuntu-latest
+    if: false
+
+    steps:
       - uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
@@ -63,4 +69,4 @@ jobs:
           path=tally-app/src/androidMain/play-store-key.json
           echo $play_store_key | base64 --decode > $path
 
-#      - run: bundle install && bundle exec fastlane android publish_to_play_store
+      - run: bundle install && bundle exec fastlane android publish_to_play_store
