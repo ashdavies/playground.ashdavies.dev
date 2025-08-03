@@ -39,6 +39,11 @@ pageBoundariesAscending:
     )
     WHERE page_boundary = 1;
 
+getById:
+    SELECT *
+    FROM event
+    WHERE id = :id;
+
 insertOrIgnore:
     INSERT OR IGNORE
     INTO event(name, website, location, imageUrl, status, online, dateStart, dateEnd, cfpStart, cfpEnd, cfpSite)

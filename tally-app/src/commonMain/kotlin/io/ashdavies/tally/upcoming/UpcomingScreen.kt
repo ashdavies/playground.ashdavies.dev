@@ -8,7 +8,6 @@ import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffoldRole
 import androidx.compose.material3.adaptive.layout.calculatePaneScaffoldDirective
 import androidx.compose.material3.adaptive.navigation.rememberListDetailPaneScaffoldNavigator
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
-import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
@@ -26,10 +25,9 @@ import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.binding
 import io.ashdavies.parcelable.Parcelable
 import io.ashdavies.parcelable.Parcelize
-import io.ashdavies.tally.animation.FadeVisibility
 import io.ashdavies.tally.circuit.CircuitScreenKey
-import io.ashdavies.tally.events.EventsDetailPane
-import io.ashdavies.tally.material.BackButton
+import io.ashdavies.tally.events.EventsDetailScreen
+import io.ashdavies.tally.events.EventsDetailUi
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.launch
 import io.ashdavies.tally.events.Event as DbConference
@@ -52,7 +50,7 @@ internal object UpcomingScreen : Parcelable, Screen {
 @CircuitScreenKey(UpcomingScreen::class)
 @ContributesIntoMap(AppScope::class, binding<Ui<*>>())
 internal class UpcomingUi @Inject constructor(
-    private val windowSizeClass: WindowSizeClass,
+    private val eventsDetailUi: EventsDetailUi,
 ) : Ui<UpcomingScreen.State> {
 
     @Composable
@@ -94,13 +92,12 @@ internal class UpcomingUi @Inject constructor(
             detailPane = {
                 AnimatedPane {
                     scaffoldNavigator.currentDestination?.contentKey?.let {
-                        EventsDetailPane(
-                            item = requireNotNull(state.itemList[it]),
-                            navigationIcon = {
-                                FadeVisibility(windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact) {
-                                    BackButton(onBack)
-                                }
-                            },
+                        eventsDetailUi.Content(
+                            EventsDetailScreen.State(
+                                itemState = EventsDetailScreen.State.ItemState.Done(requireNotNull(state.itemList[it])),
+                                onBackPressed = onBack,
+                            ),
+                            modifier = Modifier,
                         )
                     }
                 }
