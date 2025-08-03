@@ -30,6 +30,7 @@ import io.ashdavies.tally.upcoming.UpcomingScreen
 import kotlinx.coroutines.launch
 
 internal class HomePresenter @Inject constructor(
+    @Assisted private val screen: HomeScreen,
     @Assisted private val navigator: Navigator,
     private val platformContext: PlatformContext,
     private val remoteConfig: RemoteConfig,
@@ -63,6 +64,6 @@ internal class HomePresenter @Inject constructor(
 
     @AssistedFactory
     @CircuitScreenKey(HomeScreen::class)
-    @ContributesIntoMap(AppScope::class, binding<(Navigator) -> Presenter<*>>())
-    interface Factory : (Navigator) -> HomePresenter
+    @ContributesIntoMap(AppScope::class, binding<(Screen, Navigator) -> Presenter<*>>())
+    interface Factory : (HomeScreen, Navigator) -> HomePresenter
 }

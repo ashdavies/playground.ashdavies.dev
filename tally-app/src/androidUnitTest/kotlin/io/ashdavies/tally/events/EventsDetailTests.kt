@@ -16,7 +16,7 @@ internal class EventsDetailTests {
     fun compose() {
         paparazzi.snapshot {
             MaterialPreviewTheme {
-                EventsDetailPane(
+                EventsDetailUi(
                     item = UnitTestResources
                         .upcomingEventsList()
                         .first(),

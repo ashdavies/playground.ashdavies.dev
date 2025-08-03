@@ -22,7 +22,19 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
+import com.google.accompanist.placeholder.material3.placeholder
+import com.slack.circuit.runtime.CircuitUiState
+import com.slack.circuit.runtime.screen.Screen
+import com.slack.circuit.runtime.ui.Ui
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesIntoMap
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 import io.ashdavies.identity.IdentityState
+import io.ashdavies.parcelable.Parcelable
+import io.ashdavies.parcelable.Parcelize
+import io.ashdavies.tally.circuit.CircuitScreenKey
+import io.ashdavies.tally.material.BackButton
 import io.ashdavies.tally.material.padding
 import io.ashdavies.tally.material.spacing
 import io.ashdavies.tally.profile.ProfileActionButton
@@ -32,54 +44,76 @@ import playground.tally_app.generated.resources.Res
 import playground.tally_app.generated.resources.call_for_papers_closed
 import playground.tally_app.generated.resources.call_for_papers_days_remaining
 
-@Composable
-internal fun EventsDetailPane(
-    item: Event,
-    navigationIcon: @Composable () -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    Scaffold(
-        modifier = modifier,
-        topBar = {
-            EventsTopBar(
-                title = item.name,
-                actions = {
-                    ProfileActionButton(
-                        identityState = IdentityState.Unsupported,
-                        onClick = { error("Unsupported Platform") },
-                    )
-                },
-                navigationIcon = navigationIcon,
-            )
-        },
-    ) { contentPadding ->
-        Column(Modifier.padding(contentPadding)) {
-            Card(Modifier.padding(MaterialTheme.spacing.large)) {
-                Box {
-                    EventsDetailImage(
-                        imageUrl = item.imageUrl,
-                        name = item.name,
-                    )
+private const val PLACEHOLDER = ""
 
-                    EventDateLabel(
-                        dateStart = remember { LocalDate.parse(item.dateStart) },
-                        dateEnd = remember { LocalDate.parse(item.dateEnd) },
-                        modifier = Modifier
-                            .padding(MaterialTheme.spacing.large)
-                            .align(Alignment.TopEnd),
+@Parcelize
+internal data class EventsDetailScreen(val id: Long) : Parcelable, Screen {
+    data class State(val itemState: ItemState, val onBackPressed: () -> Unit) : CircuitUiState {
+        sealed class ItemState {
+            data object Loading : ItemState()
+            data class Done(val item: Event) : ItemState()
+        }
+    }
+}
+
+@CircuitScreenKey(EventsDetailScreen::class)
+@ContributesIntoMap(AppScope::class, binding<Ui<*>>())
+internal class EventsDetailUi @Inject constructor() : Ui<EventsDetailScreen.State> {
+
+    @Composable
+    override fun Content(state: EventsDetailScreen.State, modifier: Modifier) {
+        val itemOrNull = (state.itemState as? EventsDetailScreen.State.ItemState.Done)?.item
+        val isLoading = state.itemState is EventsDetailScreen.State.ItemState.Loading
+
+        Scaffold(
+            modifier = modifier,
+            topBar = {
+                EventsTopBar(
+                    title = itemOrNull?.name ?: PLACEHOLDER,
+                    actions = {
+                        ProfileActionButton(
+                            identityState = IdentityState.Unsupported,
+                            onClick = { error("Unsupported Platform") },
+                        )
+                    },
+                    navigationIcon = {
+                        BackButton(state.onBackPressed)
+                    },
+                )
+            },
+        ) { contentPadding ->
+            Column(Modifier.padding(contentPadding)) {
+                Card(Modifier.padding(MaterialTheme.spacing.large)) {
+                    Box {
+                        EventsDetailImage(
+                            imageUrl = itemOrNull?.imageUrl,
+                            name = itemOrNull?.name ?: PLACEHOLDER,
+                            modifier = Modifier.placeholder(isLoading),
+                        )
+
+                        if (itemOrNull != null) {
+                            EventDateLabel(
+                                dateStart = remember { LocalDate.parse(itemOrNull.dateStart) },
+                                dateEnd = remember { LocalDate.parse(itemOrNull.dateEnd) },
+                                modifier = Modifier
+                                    .padding(MaterialTheme.spacing.large)
+                                    .align(Alignment.TopEnd),
+                            )
+                        }
+                    }
+                }
+
+                EventsDetailLocation(
+                    location = itemOrNull?.location ?: PLACEHOLDER,
+                    modifier = Modifier.placeholder(isLoading),
+                )
+
+                if (itemOrNull?.cfpEnd != null) {
+                    EventsDetailCfp(
+                        cfpEnd = itemOrNull.cfpEnd,
+                        cfpSite = itemOrNull.cfpSite,
                     )
                 }
-            }
-
-            EventsDetailLocation(
-                location = item.location,
-            )
-
-            if (item.cfpEnd != null) {
-                EventsDetailCfp(
-                    cfpEnd = item.cfpEnd,
-                    cfpSite = item.cfpSite,
-                )
             }
         }
     }

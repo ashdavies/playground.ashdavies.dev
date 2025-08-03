@@ -13,11 +13,13 @@ import dev.zacsweers.metro.Provides
 import kotlin.jvm.JvmSuppressWildcards
 import kotlin.reflect.KClass
 
+internal typealias NavigatingProvider<T> = (Screen, Navigator) -> T
+
 @ContributesTo(AppScope::class)
 internal interface CircuitModule {
 
     @Multibinds
-    val navigationPresenterFactories: Map<KClass<out Screen>, (Navigator) -> Presenter<*>>
+    val navigationPresenterFactories: Map<KClass<out Screen>, (Screen, Navigator) -> Presenter<*>>
 
     @Multibinds
     val presenterFactories: Map<KClass<out Screen>, Provider<Presenter<*>>>
@@ -27,12 +29,18 @@ internal interface CircuitModule {
 
     @Provides
     fun circuit(
-        navigationPresenterFactories: @JvmSuppressWildcards Map<KClass<out Screen>, (Navigator) -> Presenter<*>>,
+        navigationPresenterFactories: @JvmSuppressWildcards Map<KClass<out Screen>, NavigatingProvider<Presenter<*>>>,
         presenterFactories: @JvmSuppressWildcards Map<KClass<out Screen>, Provider<Presenter<*>>>,
         uiFactories: @JvmSuppressWildcards Map<KClass<out Screen>, Provider<Ui<*>>>,
     ): Circuit = Circuit.Builder()
-        .addPresenterFactory { screen, navigator, _ -> navigationPresenterFactories[screen::class]?.invoke(navigator) }
-        .addPresenterFactory { screen, _, _ -> presenterFactories[screen::class]?.invoke() }
-        .addUiFactory { screen, context -> uiFactories[screen::class]?.invoke() }
+        .addPresenterFactory { screen, navigator, _ ->
+            navigationPresenterFactories[screen::class]?.invoke(screen, navigator)
+        }
+        .addPresenterFactory { screen, _, _ ->
+            presenterFactories[screen::class]?.invoke()
+        }
+        .addUiFactory { screen, context ->
+            uiFactories[screen::class]?.invoke()
+        }
         .build()
 }

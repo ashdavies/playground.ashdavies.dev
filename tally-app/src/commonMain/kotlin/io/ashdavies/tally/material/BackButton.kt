@@ -8,18 +8,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
 @Composable
-internal fun BackButton(
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier,
-    contentDescription: String? = null,
-) {
-    IconButton(
-        onClick = onClick,
-        modifier = modifier,
-    ) {
+internal fun BackButton(onClick: () -> Unit, modifier: Modifier = Modifier) {
+    IconButton(onClick = onClick, modifier = modifier) {
         Icon(
             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-            contentDescription = contentDescription,
+            contentDescription = "Back", // TODO String resource
         )
     }
 }
