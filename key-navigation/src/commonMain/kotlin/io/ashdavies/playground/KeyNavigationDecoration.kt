@@ -26,13 +26,11 @@ public class KeyNavigationDecoration(
     @Composable
     override fun <T : NavArgument> DecoratedContent(
         args: ImmutableList<T>,
-        backStackDepth: Int,
         modifier: Modifier,
-        content: @Composable (T) -> Unit,
+        content: @Composable ((T) -> Unit),
     ) {
         decoration.DecoratedContent(
             args = args,
-            backStackDepth = backStackDepth,
             modifier = modifier
                 .focusOnPlacement(remember { FocusRequester() })
                 .onPreviewKeyUp(
