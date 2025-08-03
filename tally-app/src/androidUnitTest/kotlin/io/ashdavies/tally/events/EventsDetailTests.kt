@@ -1,5 +1,6 @@
 package io.ashdavies.tally.events
 
+import androidx.compose.ui.Modifier
 import app.cash.paparazzi.Paparazzi
 import io.ashdavies.tally.tooling.MaterialPreviewTheme
 import io.ashdavies.tally.tooling.UnitTestResources
@@ -9,6 +10,8 @@ import kotlin.test.Test
 
 internal class EventsDetailTests {
 
+    private val eventsDetailUi = EventsDetailUi()
+
     @get:Rule
     val paparazzi = Paparazzi()
 
@@ -16,11 +19,16 @@ internal class EventsDetailTests {
     fun compose() {
         paparazzi.snapshot {
             MaterialPreviewTheme {
-                EventsDetailUi(
-                    item = UnitTestResources
-                        .upcomingEventsList()
-                        .first(),
-                    navigationIcon = { },
+                eventsDetailUi.Content(
+                    state = EventsDetailScreen.State(
+                        itemState = EventsDetailScreen.State.ItemState.Done(
+                            item = UnitTestResources
+                                .upcomingEventsList()
+                                .first(),
+                        ),
+                        onBackPressed = { },
+                    ),
+                    modifier = Modifier,
                 )
             }
         }
