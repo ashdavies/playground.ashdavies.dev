@@ -39,7 +39,6 @@ import io.ashdavies.tally.material.icons.EventList
 import io.ashdavies.tally.material.icons.EventUpcoming
 import io.ashdavies.tally.past.PastScreen
 import io.ashdavies.tally.routes.RoutesScreen
-import io.ashdavies.tally.upcoming.UpcomingScreen
 
 @Parcelize
 internal object HomeScreen : Parcelable, Screen {
@@ -110,8 +109,8 @@ private fun HomeBottomBar(
     BottomAppBar(modifier) {
         NavigationBar {
             NavigationBarItem(
-                selected = selected is UpcomingScreen,
-                onClick = { onClick(UpcomingScreen) },
+                selected = selected is ListDetailScaffoldScreen,
+                onClick = { onClick(ListDetailScaffoldScreen) },
                 icon = { NavigationBarImage(Icons.Outlined.EventUpcoming) },
             )
 
