@@ -60,7 +60,6 @@ include(
     ":asg-service",
     ":cloud-common",
     ":cloud-run",
-    ":composeApp",
     ":compose-material",
     ":http-client",
     ":http-common",
