@@ -233,7 +233,7 @@ sqldelight {
             generateAsync = true
 
             dialect(libs.sqldelight.sqlite.dialect)
-            dependency(projects.identityManager)
+            dependency(project(":identity-manager"))
         }
     }
 }

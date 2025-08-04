@@ -50,6 +50,6 @@ private fun <T> Project.readOnlyDelegateProvider(
     ReadOnlyProperty { _, _ -> value }
 }
 
-private fun <S : Any, T> Provider<S>.mapOrNull(block: (S) -> T?): Provider<T> {
+private fun <S : Any, T : Any> Provider<S>.mapOrNull(block: (S) -> T?): Provider<T> {
     return flatMap { Providers.ofNullable(block(it)) }
 }
