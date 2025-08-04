@@ -26,7 +26,6 @@ import io.ashdavies.tally.circuit.CircuitScreenKey
 import io.ashdavies.tally.config.booleanConfigAsState
 import io.ashdavies.tally.config.isGalleryEnabled
 import io.ashdavies.tally.config.isRoutesEnabled
-import io.ashdavies.tally.upcoming.UpcomingScreen
 import kotlinx.coroutines.launch
 
 internal class HomePresenter @Inject constructor(
@@ -39,7 +38,7 @@ internal class HomePresenter @Inject constructor(
 
     @Composable
     override fun present(): HomeScreen.State {
-        var screen by rememberRetained { mutableStateOf<Screen>(UpcomingScreen) }
+        var screen by rememberRetained { mutableStateOf<Screen>(ListDetailScaffoldScreen) }
         val isDebuggable = platformContext.isDebuggable()
 
         val isGalleryEnabled by remoteConfig.booleanConfigAsState { isGalleryEnabled() }
