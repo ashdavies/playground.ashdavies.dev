@@ -26,7 +26,10 @@ internal class EventsDetailPresenter @Inject constructor(
 
     @Composable
     override fun present(): EventsDetailScreen.State {
-        val itemState by produceState<EventsDetailScreen.State.ItemState>(EventsDetailScreen.State.ItemState.Loading) {
+        val itemState by produceState<EventsDetailScreen.State.ItemState>(
+            initialValue = EventsDetailScreen.State.ItemState.Loading,
+            key1 = screen.id,
+        ) {
             val item = databaseFactory.map { it.eventsQueries }
                 .invoke { it.getById(screen.id) }
                 .executeAsOne()

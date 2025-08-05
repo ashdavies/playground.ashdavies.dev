@@ -1,16 +1,17 @@
-package io.ashdavies.tally.events
+package io.ashdavies.tally.upcoming
 
+import androidx.compose.ui.Modifier
 import app.cash.paparazzi.Paparazzi
 import io.ashdavies.tally.tooling.MaterialPreviewTheme
 import io.ashdavies.tally.tooling.UnitTestResources
 import io.ashdavies.tally.tooling.upcomingEventsList
-import io.ashdavies.tally.upcoming.UpcomingPane
-import io.ashdavies.tally.upcoming.UpcomingScreen
 import kotlinx.collections.immutable.toImmutableList
 import org.junit.Rule
 import kotlin.test.Test
 
-internal class EventsListTests {
+internal class UpcomingScreenTests {
+
+    private val upcomingUi = UpcomingUi()
 
     @get:Rule
     val paparazzi = Paparazzi()
@@ -19,7 +20,7 @@ internal class EventsListTests {
     fun compose() {
         paparazzi.snapshot {
             MaterialPreviewTheme {
-                UpcomingPane(
+                upcomingUi.Content(
                     state = UpcomingScreen.State(
                         itemList = UnitTestResources
                             .upcomingEventsList()
@@ -29,7 +30,7 @@ internal class EventsListTests {
                         errorMessage = null,
                         eventSink = { },
                     ),
-                    onClick = { },
+                    modifier = Modifier,
                 )
             }
         }
