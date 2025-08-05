@@ -100,7 +100,7 @@ internal class BottomBarScaffoldUi @Inject constructor(
 
 @Composable
 private fun BottomBar(
-    onClick: (Screen) -> Unit = { },
+    onClick: (Screen) -> Unit,
     selected: Screen,
     isGalleryEnabled: Boolean,
     isRoutesEnabled: Boolean,
