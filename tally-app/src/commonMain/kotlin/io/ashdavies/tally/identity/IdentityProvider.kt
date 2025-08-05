@@ -1,4 +1,4 @@
-package io.ashdavies.tally.home
+package io.ashdavies.tally.identity
 
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesTo
@@ -12,7 +12,7 @@ import io.ashdavies.tally.PlaygroundDatabase
 import kotlinx.coroutines.Dispatchers
 
 @ContributesTo(AppScope::class)
-internal interface HomeModule {
+internal interface IdentityProvider {
 
     @Provides
     fun identityManager(

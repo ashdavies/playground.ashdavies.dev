@@ -28,16 +28,15 @@ import io.ashdavies.tally.config.isGalleryEnabled
 import io.ashdavies.tally.config.isRoutesEnabled
 import kotlinx.coroutines.launch
 
-internal class HomePresenter @Inject constructor(
-    @Assisted private val screen: HomeScreen,
+internal class BottomBarScaffoldPresenter @Inject constructor(
     @Assisted private val navigator: Navigator,
     private val platformContext: PlatformContext,
     private val remoteConfig: RemoteConfig,
     private val identityManager: IdentityManager,
-) : Presenter<HomeScreen.State> {
+) : Presenter<BottomBarScaffoldScreen.State> {
 
     @Composable
-    override fun present(): HomeScreen.State {
+    override fun present(): BottomBarScaffoldScreen.State {
         var screen by rememberRetained { mutableStateOf<Screen>(ListDetailScaffoldScreen) }
         val isDebuggable = platformContext.isDebuggable()
 
@@ -47,22 +46,22 @@ internal class HomePresenter @Inject constructor(
         val identityState by identityManager.state.collectAsState(IdentityState.Unauthenticated)
         val coroutineScope = rememberCoroutineScope()
 
-        return HomeScreen.State(
+        return BottomBarScaffoldScreen.State(
             screen = screen,
             isGalleryEnabled = isDebuggable || isGalleryEnabled,
             isRoutesEnabled = isDebuggable || isRoutesEnabled,
             identityState = identityState,
         ) { event ->
             when (event) {
-                is HomeScreen.Event.Login -> coroutineScope.launch { identityManager.signIn() }
-                is HomeScreen.Event.ChildNav -> navigator.onNavEvent(event.navEvent)
-                is HomeScreen.Event.BottomNav -> screen = event.screen
+                is BottomBarScaffoldScreen.Event.Login -> coroutineScope.launch { identityManager.signIn() }
+                is BottomBarScaffoldScreen.Event.ChildNav -> navigator.onNavEvent(event.navEvent)
+                is BottomBarScaffoldScreen.Event.BottomNav -> screen = event.screen
             }
         }
     }
 
     @AssistedFactory
-    @CircuitScreenKey(HomeScreen::class)
-    @ContributesIntoMap(AppScope::class, binding<(Screen, Navigator) -> Presenter<*>>())
-    interface Factory : (HomeScreen, Navigator) -> HomePresenter
+    @CircuitScreenKey(BottomBarScaffoldScreen::class)
+    @ContributesIntoMap(AppScope::class, binding<(Navigator) -> Presenter<*>>())
+    interface Factory : (Navigator) -> BottomBarScaffoldPresenter
 }
