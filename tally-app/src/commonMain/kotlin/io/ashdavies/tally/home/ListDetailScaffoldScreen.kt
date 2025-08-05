@@ -17,6 +17,7 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.backhandler.BackHandler
 import androidx.compose.ui.unit.dp
+import com.slack.circuit.foundation.Circuit
 import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.Navigator
 import com.slack.circuit.runtime.screen.PopResult
@@ -29,11 +30,8 @@ import dev.zacsweers.metro.binding
 import io.ashdavies.parcelable.Parcelable
 import io.ashdavies.parcelable.Parcelize
 import io.ashdavies.tally.circuit.CircuitScreenKey
-import io.ashdavies.tally.events.EventsDetailPresenter
 import io.ashdavies.tally.events.EventsDetailScreen
-import io.ashdavies.tally.events.EventsDetailUi
-import io.ashdavies.tally.upcoming.UpcomingPresenter
-import io.ashdavies.tally.upcoming.UpcomingUi
+import io.ashdavies.tally.upcoming.UpcomingScreen
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -45,10 +43,7 @@ internal object ListDetailScaffoldScreen : Parcelable, Screen {
 @CircuitScreenKey(ListDetailScaffoldScreen::class)
 @ContributesIntoMap(AppScope::class, binding<Ui<*>>())
 internal class ListDetailScaffoldUi @Inject constructor(
-    private val upcomingPresenterFactory: UpcomingPresenter.Factory,
-    private val upcomingUi: UpcomingUi,
-    private val eventsDetailPresenterFactory: EventsDetailPresenter.Factory,
-    private val eventsDetailUi: EventsDetailUi,
+    private val circuit: Circuit
 ) : Ui<ListDetailScaffoldScreen.State> {
 
     @Composable
@@ -77,28 +72,31 @@ internal class ListDetailScaffoldUi @Inject constructor(
             directive = scaffoldNavigator.scaffoldDirective,
             value = scaffoldNavigator.scaffoldValue,
             listPane = {
-                val upcomingPresenter = remember { upcomingPresenterFactory(circuitNavigator) }
-
                 AnimatedPane {
-                    upcomingUi.Content(
-                        state = upcomingPresenter.present(),
+                    val presenter = remember { circuit.presenter(UpcomingScreen, circuitNavigator) }
+                    val ui = remember { circuit.ui(UpcomingScreen) } as? Ui<CircuitUiState>
+
+                    ui?.Content(
+                        state = presenter.present(),
                         modifier = Modifier,
+                    ) ?: circuit.onUnavailableContent(
+                        /* screen = */ UpcomingScreen,
+                        /* modifier = */ modifier,
                     )
                 }
             },
             detailPane = {
                 AnimatedPane {
                     scaffoldNavigator.currentDestination?.contentKey?.let { contentKey ->
-                        val eventsDetailPresenter = remember(contentKey) {
-                            eventsDetailPresenterFactory(
-                                EventsDetailScreen(contentKey),
-                                circuitNavigator,
-                            )
-                        }
+                        val presenter = remember { circuit.presenter(EventsDetailScreen(contentKey), circuitNavigator) }
+                        val ui = remember { circuit.ui(EventsDetailScreen(contentKey)) }
 
-                        eventsDetailUi.Content(
-                            state = eventsDetailPresenter.present(),
+                        ui?.Content(
+                            state = presenter.present(),
                             modifier = Modifier,
+                        ) ?: circuit.onUnavailableContent(
+                            /* screen = */ UpcomingScreen,
+                            /* modifier = */ modifier,
                         )
                     }
                 }

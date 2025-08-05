@@ -73,11 +73,11 @@ internal class BottomBarScaffoldUi @Inject constructor(
             modifier = modifier,
             bottomBar = {
                 BottomBar(
+                    onClick = { eventSink(BottomBarScaffoldScreen.Event.BottomNav(it)) },
+                    selected = state.screen,
                     isGalleryEnabled = state.isGalleryEnabled,
                     isRoutesEnabled = state.isRoutesEnabled,
-                ) { screen ->
-                    eventSink(BottomBarScaffoldScreen.Event.BottomNav(screen))
-                }
+                )
             },
             contentWindowInsets = ScaffoldDefaults.contentWindowInsets.exclude(
                 insets = TopAppBarDefaults.windowInsets,
@@ -100,11 +100,11 @@ internal class BottomBarScaffoldUi @Inject constructor(
 
 @Composable
 private fun BottomBar(
-    modifier: Modifier = Modifier,
-    selected: Screen = BottomBarScaffoldScreen,
-    isGalleryEnabled: Boolean = false,
-    isRoutesEnabled: Boolean = false,
     onClick: (Screen) -> Unit = { },
+    selected: Screen,
+    isGalleryEnabled: Boolean,
+    isRoutesEnabled: Boolean,
+    modifier: Modifier = Modifier,
 ) {
     BottomAppBar(modifier) {
         NavigationBar {
