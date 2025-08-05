@@ -41,7 +41,7 @@ import io.ashdavies.tally.past.PastScreen
 import io.ashdavies.tally.routes.RoutesScreen
 
 @Parcelize
-internal object HomeScreen : Parcelable, Screen {
+internal object BottomBarScaffoldScreen : Parcelable, Screen {
     sealed interface Event : CircuitUiEvent {
         data class ChildNav(val navEvent: NavEvent) : Event
         data class BottomNav(val screen: Screen) : Event
@@ -58,26 +58,26 @@ internal object HomeScreen : Parcelable, Screen {
     ) : CircuitUiState
 }
 
-@CircuitScreenKey(HomeScreen::class)
+@CircuitScreenKey(BottomBarScaffoldScreen::class)
 @ContributesIntoMap(AppScope::class, binding<Ui<*>>())
-internal class HomeUi @Inject constructor(
+internal class BottomBarScaffoldUi @Inject constructor(
     private val fullyDrawnReporter: FullyDrawnReporter,
-) : Ui<HomeScreen.State> {
+) : Ui<BottomBarScaffoldScreen.State> {
 
     @Composable
     @OptIn(ExperimentalMaterial3Api::class)
-    override fun Content(state: HomeScreen.State, modifier: Modifier) {
+    override fun Content(state: BottomBarScaffoldScreen.State, modifier: Modifier) {
         val eventSink = state.eventSink
 
         Scaffold(
             modifier = modifier,
             bottomBar = {
-                HomeBottomBar(
+                BottomBar(
+                    onClick = { eventSink(BottomBarScaffoldScreen.Event.BottomNav(it)) },
+                    selected = state.screen,
                     isGalleryEnabled = state.isGalleryEnabled,
                     isRoutesEnabled = state.isRoutesEnabled,
-                ) { screen ->
-                    eventSink(HomeScreen.Event.BottomNav(screen))
-                }
+                )
             },
             contentWindowInsets = ScaffoldDefaults.contentWindowInsets.exclude(
                 insets = TopAppBarDefaults.windowInsets,
@@ -87,7 +87,7 @@ internal class HomeUi @Inject constructor(
                 screen = state.screen,
                 modifier = Modifier.padding(contentPadding),
                 onNavEvent = { event ->
-                    eventSink(HomeScreen.Event.ChildNav(event))
+                    eventSink(BottomBarScaffoldScreen.Event.ChildNav(event))
                 },
             )
         }
@@ -99,12 +99,12 @@ internal class HomeUi @Inject constructor(
 }
 
 @Composable
-private fun HomeBottomBar(
+private fun BottomBar(
+    onClick: (Screen) -> Unit,
+    selected: Screen,
+    isGalleryEnabled: Boolean,
+    isRoutesEnabled: Boolean,
     modifier: Modifier = Modifier,
-    selected: Screen = HomeScreen,
-    isGalleryEnabled: Boolean = false,
-    isRoutesEnabled: Boolean = false,
-    onClick: (Screen) -> Unit = { },
 ) {
     BottomAppBar(modifier) {
         NavigationBar {

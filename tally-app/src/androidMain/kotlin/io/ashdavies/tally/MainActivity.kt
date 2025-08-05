@@ -18,7 +18,7 @@ import com.slack.circuit.overlay.ContentWithOverlays
 import dev.zacsweers.metro.createGraphFactory
 import io.ashdavies.content.enableStrictMode
 import io.ashdavies.material.dynamicColorScheme
-import io.ashdavies.tally.home.HomeScreen
+import io.ashdavies.tally.home.BottomBarScaffoldScreen
 
 internal class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,7 +46,7 @@ private fun TallyApp(activity: Activity) {
 
         CircuitCompositionLocals(tallyGraph.circuit) {
             ContentWithOverlays {
-                val backStack = rememberSaveableBackStack(HomeScreen)
+                val backStack = rememberSaveableBackStack(BottomBarScaffoldScreen)
 
                 NavigableCircuitContent(
                     navigator = rememberCircuitNavigator(backStack),

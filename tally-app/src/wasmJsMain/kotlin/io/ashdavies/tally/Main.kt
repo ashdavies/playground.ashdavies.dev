@@ -14,7 +14,7 @@ import com.slack.circuit.foundation.rememberCircuitNavigator
 import com.slack.circuit.overlay.ContentWithOverlays
 import dev.zacsweers.metro.createGraphFactory
 import io.ashdavies.content.PlatformContext
-import io.ashdavies.tally.home.HomeScreen
+import io.ashdavies.tally.home.BottomBarScaffoldScreen
 
 @OptIn(ExperimentalComposeUiApi::class)
 public fun main() {
@@ -36,7 +36,7 @@ private fun TallyApp(context: PlatformContext) {
 
         CircuitCompositionLocals(tallyGraph.circuit) {
             ContentWithOverlays {
-                val backStack = rememberSaveableBackStack(HomeScreen)
+                val backStack = rememberSaveableBackStack(BottomBarScaffoldScreen)
 
                 NavigableCircuitContent(
                     navigator = rememberCircuitNavigator(backStack) { },

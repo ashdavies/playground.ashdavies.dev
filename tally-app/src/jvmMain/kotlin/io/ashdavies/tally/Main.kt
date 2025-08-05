@@ -16,7 +16,7 @@ import dev.zacsweers.metro.createGraphFactory
 import io.ashdavies.content.PlatformContext
 import io.ashdavies.material.dynamicColorScheme
 import io.ashdavies.playground.KeyNavigationDecoration
-import io.ashdavies.tally.home.HomeScreen
+import io.ashdavies.tally.home.BottomBarScaffoldScreen
 
 public fun main() {
     application {
@@ -48,7 +48,7 @@ private fun TallyApp(
 
         CircuitCompositionLocals(tallyGraph.circuit) {
             ContentWithOverlays {
-                val backStack = rememberSaveableBackStack(HomeScreen)
+                val backStack = rememberSaveableBackStack(BottomBarScaffoldScreen)
 
                 NavigableCircuitContent(
                     navigator = rememberCircuitNavigator(backStack) { onClose() },
