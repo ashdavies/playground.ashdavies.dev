@@ -87,7 +87,7 @@ internal class EventsDetailUi @Inject constructor() : Ui<EventsDetailScreen.Stat
                     Box {
                         EventsDetailImage(
                             imageUrl = itemOrNull?.imageUrl,
-                            name = itemOrNull?.name ?: PLACEHOLDER,
+                            backgroundSeed = itemOrNull?.location ?: PLACEHOLDER,
                             modifier = Modifier.placeholder(isLoading),
                         )
 
@@ -122,14 +122,14 @@ internal class EventsDetailUi @Inject constructor() : Ui<EventsDetailScreen.Stat
 @Composable
 private fun EventsDetailImage(
     imageUrl: String?,
-    name: String,
+    backgroundSeed: String,
     modifier: Modifier = Modifier,
 ) {
     AsyncImage(
         model = imageUrl,
         contentDescription = null,
         modifier = modifier
-            .background(randomColor(name))
+            .background(randomColor(backgroundSeed))
             .fillMaxWidth()
             .height(200.dp),
         placeholder = null,
