@@ -1,4 +1,4 @@
-package io.ashdavies.asg
+package dev.ashdavies.asg
 
 import kotlinx.serialization.Serializable
 

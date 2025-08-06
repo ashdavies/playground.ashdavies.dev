@@ -1,6 +1,6 @@
 package io.ashdavies.tally.tooling
 
-import io.ashdavies.asg.AsgConference
+import dev.ashdavies.asg.AsgConference
 import io.ashdavies.tally.events.Event as DbConference
 
 internal fun UnitTestResources.upcomingEventsList(): List<DbConference> {
