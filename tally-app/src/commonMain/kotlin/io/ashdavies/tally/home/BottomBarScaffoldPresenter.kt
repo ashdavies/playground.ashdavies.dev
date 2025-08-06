@@ -11,6 +11,8 @@ import com.slack.circuit.retained.rememberRetained
 import com.slack.circuit.runtime.Navigator
 import com.slack.circuit.runtime.presenter.Presenter
 import com.slack.circuit.runtime.screen.Screen
+import dev.ashdavies.identity.IdentityManager
+import dev.ashdavies.identity.IdentityState
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.Assisted
 import dev.zacsweers.metro.AssistedFactory
@@ -20,8 +22,6 @@ import dev.zacsweers.metro.binding
 import io.ashdavies.config.RemoteConfig
 import io.ashdavies.content.PlatformContext
 import io.ashdavies.content.isDebuggable
-import dev.ashdavies.identity.IdentityManager
-import dev.ashdavies.identity.IdentityState
 import io.ashdavies.tally.adaptive.ListDetailScaffoldScreen
 import io.ashdavies.tally.circuit.CircuitScreenKey
 import io.ashdavies.tally.config.booleanConfigAsState
