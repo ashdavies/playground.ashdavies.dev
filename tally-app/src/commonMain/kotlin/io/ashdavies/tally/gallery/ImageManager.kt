@@ -1,8 +1,8 @@
 package io.ashdavies.tally.gallery
 
 import app.cash.sqldelight.coroutines.mapToList
-import io.ashdavies.sql.Suspended
-import io.ashdavies.sql.mapAsFlow
+import dev.ashdavies.sql.Suspended
+import dev.ashdavies.sql.mapAsFlow
 import io.ashdavies.tally.files.FileManager
 import io.ashdavies.tally.files.Path
 import kotlinx.coroutines.flow.Flow

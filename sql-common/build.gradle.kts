@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    namespace = "io.ashdavies.sql.common"
+    namespace = "dev.ashdavies.sql.common"
 }
 
 kotlin {

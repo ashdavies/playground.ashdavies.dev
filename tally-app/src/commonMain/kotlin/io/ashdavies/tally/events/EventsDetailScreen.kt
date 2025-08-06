@@ -30,7 +30,7 @@ import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesIntoMap
 import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.binding
-import io.ashdavies.identity.IdentityState
+import dev.ashdavies.identity.IdentityState
 import io.ashdavies.parcelable.Parcelable
 import io.ashdavies.parcelable.Parcelize
 import io.ashdavies.tally.circuit.CircuitScreenKey

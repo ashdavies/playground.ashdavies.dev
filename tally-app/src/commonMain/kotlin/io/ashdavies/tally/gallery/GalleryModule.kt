@@ -1,11 +1,11 @@
 package io.ashdavies.tally.gallery
 
 import dev.ashdavies.http.DefaultHttpConfiguration
+import dev.ashdavies.sql.DatabaseFactory
+import dev.ashdavies.sql.map
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesTo
 import dev.zacsweers.metro.Provides
-import io.ashdavies.sql.DatabaseFactory
-import io.ashdavies.sql.map
 import io.ashdavies.tally.PlaygroundDatabase
 import io.ashdavies.tally.files.FileManager
 import io.ktor.client.HttpClient

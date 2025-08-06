@@ -20,8 +20,8 @@ import dev.zacsweers.metro.binding
 import io.ashdavies.config.RemoteConfig
 import io.ashdavies.content.PlatformContext
 import io.ashdavies.content.isDebuggable
-import io.ashdavies.identity.IdentityManager
-import io.ashdavies.identity.IdentityState
+import dev.ashdavies.identity.IdentityManager
+import dev.ashdavies.identity.IdentityState
 import io.ashdavies.tally.adaptive.ListDetailScaffoldScreen
 import io.ashdavies.tally.circuit.CircuitScreenKey
 import io.ashdavies.tally.config.booleanConfigAsState

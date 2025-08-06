@@ -1,13 +1,13 @@
 package io.ashdavies.tally.identity
 
+import dev.ashdavies.identity.GoogleIdIdentityService
+import dev.ashdavies.identity.IdentityManager
+import dev.ashdavies.sql.DatabaseFactory
+import dev.ashdavies.sql.map
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesTo
 import dev.zacsweers.metro.Provides
 import io.ashdavies.content.PlatformContext
-import io.ashdavies.identity.GoogleIdIdentityService
-import io.ashdavies.identity.IdentityManager
-import io.ashdavies.sql.DatabaseFactory
-import io.ashdavies.sql.map
 import io.ashdavies.tally.PlaygroundDatabase
 import kotlinx.coroutines.Dispatchers
 

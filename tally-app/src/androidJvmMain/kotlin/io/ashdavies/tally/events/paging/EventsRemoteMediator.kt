@@ -4,7 +4,7 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
-import io.ashdavies.sql.Suspended
+import dev.ashdavies.sql.Suspended
 import io.ashdavies.tally.events.Event
 import io.ashdavies.tally.events.EventsQueries
 import io.ktor.client.network.sockets.SocketTimeoutException

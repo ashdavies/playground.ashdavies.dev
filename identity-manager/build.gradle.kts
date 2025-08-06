@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "io.ashdavies.identity"
+    namespace = "dev.ashdavies.identity"
 }
 
 buildConfig {
