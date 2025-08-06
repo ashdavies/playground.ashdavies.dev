@@ -13,12 +13,12 @@ plugins {
     id("com.google.firebase.crashlytics")
     id("com.google.gms.google-services")
 
-    id("io.ashdavies.android")
-    id("io.ashdavies.compose")
-    id("io.ashdavies.kotlin")
-    id("io.ashdavies.parcelable")
-    id("io.ashdavies.properties")
-    id("io.ashdavies.wasm")
+    id("dev.ashdavies.android")
+    id("dev.ashdavies.compose")
+    id("dev.ashdavies.kotlin")
+    id("dev.ashdavies.parcelable")
+    id("dev.ashdavies.properties")
+    id("dev.ashdavies.wasm")
 
     alias(libs.plugins.build.config)
     alias(libs.plugins.cash.paparazzi)

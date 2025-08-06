@@ -1,5 +1,5 @@
 plugins {
-    id("io.ashdavies.default")
+    id("dev.ashdavies.default")
     id("kotlin-parcelize")
 }
 

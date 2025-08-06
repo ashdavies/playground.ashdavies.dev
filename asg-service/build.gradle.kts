@@ -1,6 +1,6 @@
 plugins {
-    id("io.ashdavies.kotlin")
-    id("io.ashdavies.wasm")
+    id("dev.ashdavies.kotlin")
+    id("dev.ashdavies.wasm")
 }
 
 kotlin {
