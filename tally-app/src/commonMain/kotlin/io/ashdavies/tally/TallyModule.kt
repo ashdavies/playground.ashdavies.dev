@@ -1,9 +1,9 @@
 package io.ashdavies.tally
 
+import dev.ashdavies.analytics.RemoteAnalytics
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesTo
 import dev.zacsweers.metro.Provides
-import io.ashdavies.analytics.RemoteAnalytics
 import io.ashdavies.config.RemoteConfig
 import io.ashdavies.content.PlatformContext
 import io.ashdavies.sql.DatabaseFactory
