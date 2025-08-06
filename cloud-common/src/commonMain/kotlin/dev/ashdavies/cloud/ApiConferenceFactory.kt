@@ -1,4 +1,4 @@
-package io.ashdavies.cloud
+package dev.ashdavies.cloud
 
 import dev.ashdavies.asg.AsgConference
 import io.ashdavies.http.common.models.ApiConference

@@ -1,4 +1,4 @@
-package io.ashdavies.cloud.operations
+package dev.ashdavies.cloud.operations
 
 import com.google.firebase.auth.FirebaseAuth
 import io.ashdavies.http.common.models.AuthResult

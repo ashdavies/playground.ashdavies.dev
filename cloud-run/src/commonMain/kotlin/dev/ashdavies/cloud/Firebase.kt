@@ -1,4 +1,4 @@
-package io.ashdavies.cloud
+package dev.ashdavies.cloud
 
 import com.google.auth.oauth2.GoogleCredentials
 import com.google.firebase.FirebaseApp

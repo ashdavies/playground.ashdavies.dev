@@ -1,4 +1,4 @@
-package io.ashdavies.cloud
+package dev.ashdavies.cloud
 
 import com.google.cloud.Service
 import com.google.cloud.ServiceOptions

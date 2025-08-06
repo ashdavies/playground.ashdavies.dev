@@ -1,8 +1,8 @@
 package io.ashdavies.tally.past
 
 import dev.ashdavies.asg.PastConferencesCallable
-import io.ashdavies.cloud.ApiConferenceFactory
-import io.ashdavies.cloud.Identifier
+import dev.ashdavies.cloud.ApiConferenceFactory
+import dev.ashdavies.cloud.Identifier
 import io.ashdavies.http.UnaryCallable
 import io.ashdavies.http.common.models.ApiConference
 import io.ktor.client.HttpClient

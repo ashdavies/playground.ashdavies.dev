@@ -1,8 +1,8 @@
-package io.ashdavies.cloud.operations
+package dev.ashdavies.cloud.operations
 
 import com.google.cloud.firestore.CollectionReference
-import io.ashdavies.cloud.await
-import io.ashdavies.cloud.decodeFromSnapshot
+import dev.ashdavies.cloud.await
+import dev.ashdavies.cloud.decodeFromSnapshot
 import io.ashdavies.http.common.models.ApiConference
 import io.ktor.server.application.ApplicationCall
 import io.ktor.server.response.respond

@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 
 private object CloudRunConfig {
-    const val PACKAGE_NAME = "io.ashdavies.cloud"
+    const val PACKAGE_NAME = "dev.ashdavies.cloud"
     const val MAIN_CLASS = "${PACKAGE_NAME}.Main"
 }
 
