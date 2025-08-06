@@ -6,9 +6,9 @@ private object CloudRunConfig {
 }
 
 plugins {
-    id("io.ashdavies.cloud")
-    id("io.ashdavies.kotlin")
-    id("io.ashdavies.properties")
+    id("dev.ashdavies.cloud")
+    id("dev.ashdavies.kotlin")
+    id("dev.ashdavies.properties")
 
     alias(libs.plugins.build.config)
 }

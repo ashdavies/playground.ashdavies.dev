@@ -1,6 +1,6 @@
 plugins {
-    id("io.ashdavies.default")
-    id("io.ashdavies.properties")
+    id("dev.ashdavies.default")
+    id("dev.ashdavies.properties")
 
     alias(libs.plugins.build.config)
     alias(libs.plugins.cash.sqldelight)
