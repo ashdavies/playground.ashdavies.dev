@@ -4,6 +4,7 @@ import org.jetbrains.kotlin.compose.compiler.gradle.ComposeFeatureFlag
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 
 private object TallyAppConfig {
+    const val APPLICATION_NAME = "dev.ashdavies.playground"
     const val PACKAGE_NAME = "dev.ashdavies.tally"
     const val MAIN_CLASS = "${PACKAGE_NAME}.MainKt"
 }
@@ -75,7 +76,7 @@ android {
         versionName = "1.0.0-$versionCode"
     }
 
-    namespace = TallyAppConfig.PACKAGE_NAME
+    namespace = TallyAppConfig.APPLICATION_NAME
 }
 
 buildConfig {
