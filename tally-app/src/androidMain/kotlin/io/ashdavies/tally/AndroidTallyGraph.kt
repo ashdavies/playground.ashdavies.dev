@@ -7,12 +7,12 @@ import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.core.content.pm.PackageInfoCompat
 import com.google.firebase.appcheck.FirebaseAppCheck
 import com.google.firebase.appcheck.playintegrity.PlayIntegrityAppCheckProviderFactory
+import dev.ashdavies.http.defaultHttpClient
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.Binds
 import dev.zacsweers.metro.DependencyGraph
 import dev.zacsweers.metro.Provides
 import io.ashdavies.content.PlatformContext
-import io.ashdavies.http.defaultHttpClient
 import io.ashdavies.tally.security.FirebaseAppCheckHeader
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.DefaultRequest

@@ -1,4 +1,4 @@
-package io.ashdavies.http
+package dev.ashdavies.http
 
 import io.ktor.client.plugins.cache.storage.CacheStorage
 import io.ktor.client.plugins.cache.storage.FileStorage

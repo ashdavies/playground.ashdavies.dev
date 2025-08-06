@@ -1,4 +1,4 @@
-package io.ashdavies.http
+package dev.ashdavies.http
 
 import io.ktor.client.call.body
 import io.ktor.client.plugins.ClientRequestException

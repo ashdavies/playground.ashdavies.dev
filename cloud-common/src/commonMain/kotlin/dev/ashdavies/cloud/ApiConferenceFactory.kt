@@ -1,7 +1,7 @@
 package dev.ashdavies.cloud
 
 import dev.ashdavies.asg.AsgConference
-import io.ashdavies.http.common.models.ApiConference
+import dev.ashdavies.http.common.models.ApiConference
 
 public fun interface ApiConferenceFactory {
     public operator fun invoke(value: AsgConference): ApiConference

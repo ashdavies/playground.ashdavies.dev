@@ -1,4 +1,4 @@
-package io.ashdavies.http.common.models
+package dev.ashdavies.http.common.models
 
 import kotlinx.serialization.Serializable
 

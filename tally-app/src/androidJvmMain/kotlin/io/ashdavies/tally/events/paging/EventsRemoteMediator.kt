@@ -8,7 +8,7 @@ import io.ashdavies.sql.Suspended
 import io.ashdavies.tally.events.Event
 import io.ashdavies.tally.events.EventsQueries
 import io.ktor.client.network.sockets.SocketTimeoutException
-import io.ashdavies.http.common.models.ApiConference as ApiEvent
+import dev.ashdavies.http.common.models.ApiConference as ApiEvent
 
 @OptIn(ExperimentalPagingApi::class)
 internal class EventsRemoteMediator<T : Any>(

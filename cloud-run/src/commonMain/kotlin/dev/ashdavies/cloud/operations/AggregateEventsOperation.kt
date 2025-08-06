@@ -6,7 +6,7 @@ import dev.ashdavies.cloud.ApiConferenceFactory
 import dev.ashdavies.cloud.CollectionWriter
 import dev.ashdavies.cloud.await
 import dev.ashdavies.cloud.decodeFromSnapshot
-import io.ashdavies.http.common.models.ApiConference
+import dev.ashdavies.http.common.models.ApiConference
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.ApplicationCall
 import io.ktor.server.response.respond

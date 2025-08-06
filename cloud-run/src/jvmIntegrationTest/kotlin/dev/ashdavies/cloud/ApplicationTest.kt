@@ -1,11 +1,10 @@
 package dev.ashdavies.cloud
 
-import dev.ashdavies.cloud.main
+import dev.ashdavies.http.common.models.ApiConference
+import dev.ashdavies.http.common.models.AppCheckToken
+import dev.ashdavies.http.common.models.DecodedToken
+import dev.ashdavies.http.common.models.FirebaseApp
 import io.ashdavies.check.AppCheckToken
-import io.ashdavies.http.common.models.ApiConference
-import io.ashdavies.http.common.models.AppCheckToken
-import io.ashdavies.http.common.models.DecodedToken
-import io.ashdavies.http.common.models.FirebaseApp
 import io.ktor.client.HttpClient
 import io.ktor.client.HttpClientConfig
 import io.ktor.client.call.body

@@ -1,8 +1,8 @@
 package dev.ashdavies.cloud.operations
 
 import com.google.firebase.auth.FirebaseAuth
-import io.ashdavies.http.common.models.AuthResult
-import io.ashdavies.http.common.models.SignInRequest
+import dev.ashdavies.http.common.models.AuthResult
+import dev.ashdavies.http.common.models.SignInRequest
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.parameter

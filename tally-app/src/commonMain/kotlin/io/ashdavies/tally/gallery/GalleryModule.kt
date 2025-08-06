@@ -1,9 +1,9 @@
 package io.ashdavies.tally.gallery
 
+import dev.ashdavies.http.DefaultHttpConfiguration
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesTo
 import dev.zacsweers.metro.Provides
-import io.ashdavies.http.DefaultHttpConfiguration
 import io.ashdavies.sql.DatabaseFactory
 import io.ashdavies.sql.map
 import io.ashdavies.tally.PlaygroundDatabase
