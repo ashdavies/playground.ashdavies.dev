@@ -33,12 +33,14 @@ import io.ashdavies.identity.IdentityState
 import io.ashdavies.parcelable.Parcelable
 import io.ashdavies.parcelable.Parcelize
 import io.ashdavies.tally.activity.FullyDrawnReporter
+import io.ashdavies.tally.adaptive.ListDetailScaffoldScreen
 import io.ashdavies.tally.circuit.CircuitScreenKey
 import io.ashdavies.tally.gallery.GalleryScreen
 import io.ashdavies.tally.material.icons.EventList
 import io.ashdavies.tally.material.icons.EventUpcoming
 import io.ashdavies.tally.past.PastScreen
 import io.ashdavies.tally.routes.RoutesScreen
+import io.ashdavies.tally.upcoming.UpcomingScreen
 
 @Parcelize
 internal object BottomBarScaffoldScreen : Parcelable, Screen {
@@ -110,7 +112,7 @@ private fun BottomBar(
         NavigationBar {
             NavigationBarItem(
                 selected = selected is ListDetailScaffoldScreen,
-                onClick = { onClick(ListDetailScaffoldScreen) },
+                onClick = { onClick(ListDetailScaffoldScreen(UpcomingScreen)) },
                 icon = { NavigationBarImage(Icons.Outlined.EventUpcoming) },
             )
 
