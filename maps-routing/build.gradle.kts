@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    namespace = "io.ashdavies.routing"
+    namespace = "dev.ashdavies.routing"
 }
 
 kotlin {

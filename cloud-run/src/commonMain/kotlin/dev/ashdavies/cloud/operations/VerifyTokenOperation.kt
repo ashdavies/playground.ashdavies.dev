@@ -1,8 +1,8 @@
 package dev.ashdavies.cloud.operations
 
 import dev.ashdavies.http.common.models.DecodedToken
-import io.ashdavies.check.AppCheck
-import io.ashdavies.check.AppCheckToken
+import dev.ashdavies.check.AppCheck
+import dev.ashdavies.check.AppCheckToken
 import io.ktor.http.HttpHeaders
 import io.ktor.server.application.ApplicationCall
 import io.ktor.server.request.header

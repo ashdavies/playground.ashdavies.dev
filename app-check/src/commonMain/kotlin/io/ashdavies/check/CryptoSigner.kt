@@ -1,4 +1,4 @@
-package io.ashdavies.check
+package dev.ashdavies.check
 
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.internal.CryptoSigners

@@ -1,4 +1,4 @@
-package io.ashdavies.check
+package dev.ashdavies.check
 
 import com.google.auth.oauth2.GoogleCredentials
 import com.google.auth.oauth2.ServiceAccountCredentials

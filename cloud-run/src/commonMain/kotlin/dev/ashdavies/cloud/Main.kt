@@ -8,7 +8,7 @@ import dev.ashdavies.cloud.operations.FirebaseTokenOperation
 import dev.ashdavies.cloud.operations.UpcomingEventsOperation
 import dev.ashdavies.cloud.operations.VerifyTokenOperation
 import dev.ashdavies.http.common.models.ApiConference
-import io.ashdavies.check.appCheck
+import dev.ashdavies.check.appCheck
 import io.ktor.http.HttpHeaders
 import io.ktor.serialization.Configuration
 import io.ktor.serialization.kotlinx.json.json

@@ -1,4 +1,4 @@
-package io.ashdavies.check
+package dev.ashdavies.check
 
 import com.auth0.jwk.UrlJwkProvider
 import com.auth0.jwt.algorithms.Algorithm.RSA256

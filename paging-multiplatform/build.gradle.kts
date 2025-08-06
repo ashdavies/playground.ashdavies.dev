@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "androidx.paging"
+    namespace = "dev.ashdavies.paging"
 }
 
 kotlin {

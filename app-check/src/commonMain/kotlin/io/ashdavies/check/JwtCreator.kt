@@ -1,4 +1,4 @@
-package io.ashdavies.check
+package dev.ashdavies.check
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.JWTCreator

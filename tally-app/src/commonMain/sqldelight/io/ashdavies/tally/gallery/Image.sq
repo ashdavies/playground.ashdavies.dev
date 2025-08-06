@@ -1,4 +1,4 @@
-import io.ashdavies.tally.files.Path;
+import dev.ashdavies.tally.files.Path;
 import kotlin.uuid.Uuid;
 
 CREATE TABLE image (

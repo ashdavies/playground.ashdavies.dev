@@ -4,7 +4,7 @@ import org.jetbrains.kotlin.compose.compiler.gradle.ComposeFeatureFlag
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 
 private object TallyAppConfig {
-    const val PACKAGE_NAME = "io.ashdavies.tally"
+    const val PACKAGE_NAME = "dev.ashdavies.tally"
     const val MAIN_CLASS = "${PACKAGE_NAME}.MainKt"
 }
 

@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    namespace = "io.ashdavies.config"
+    namespace = "dev.ashdavies.config"
 }
 
 kotlin {

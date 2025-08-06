@@ -4,5 +4,5 @@ plugins {
 }
 
 android {
-    namespace = "io.ashdavies.parcelable"
+    namespace = "dev.ashdavies.parcelable"
 }

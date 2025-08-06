@@ -4,7 +4,7 @@ import dev.ashdavies.http.common.models.ApiConference
 import dev.ashdavies.http.common.models.AppCheckToken
 import dev.ashdavies.http.common.models.DecodedToken
 import dev.ashdavies.http.common.models.FirebaseApp
-import io.ashdavies.check.AppCheckToken
+import dev.ashdavies.check.AppCheckToken
 import io.ktor.client.HttpClient
 import io.ktor.client.HttpClientConfig
 import io.ktor.client.call.body

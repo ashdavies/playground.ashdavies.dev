@@ -1,4 +1,4 @@
-package io.ashdavies.tally.routes
+package dev.ashdavies.tally.routes
 
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesBinding

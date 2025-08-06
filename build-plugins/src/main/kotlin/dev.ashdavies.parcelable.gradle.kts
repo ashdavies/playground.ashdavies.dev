@@ -10,7 +10,7 @@ kotlin {
     androidTarget {
         compilerOptions {
             val additionalAnnotation = "org.jetbrains.kotlin.parcelize:additionalAnnotation"
-            val parcelizeAnnotation = "io.ashdavies.parcelable.Parcelize"
+            val parcelizeAnnotation = "dev.ashdavies.parcelable.Parcelize"
 
             freeCompilerArgs.addParameter("plugin:$additionalAnnotation=$parcelizeAnnotation")
         }

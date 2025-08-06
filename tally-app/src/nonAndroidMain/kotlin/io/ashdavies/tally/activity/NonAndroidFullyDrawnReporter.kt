@@ -1,4 +1,4 @@
-package io.ashdavies.tally.activity
+package dev.ashdavies.tally.activity
 
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesBinding

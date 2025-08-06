@@ -9,7 +9,7 @@ import androidx.credentials.exceptions.GetCredentialException
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GetSignInWithGoogleOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
-import io.ashdavies.content.PlatformContext
+import dev.ashdavies.content.PlatformContext
 
 public actual fun GoogleIdIdentityService(context: PlatformContext): GoogleIdIdentityService {
     val credentialManager by lazy(LazyThreadSafetyMode.NONE) {

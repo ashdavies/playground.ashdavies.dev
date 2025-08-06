@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "io.ashdavies.placeholder"
+    namespace = "dev.ashdavies.placeholder"
 }
 
 kotlin {
