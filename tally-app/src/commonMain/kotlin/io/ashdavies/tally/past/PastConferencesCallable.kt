@@ -1,6 +1,6 @@
 package io.ashdavies.tally.past
 
-import io.ashdavies.asg.PastConferencesCallable
+import dev.ashdavies.asg.PastConferencesCallable
 import io.ashdavies.cloud.ApiConferenceFactory
 import io.ashdavies.cloud.Identifier
 import io.ashdavies.http.UnaryCallable

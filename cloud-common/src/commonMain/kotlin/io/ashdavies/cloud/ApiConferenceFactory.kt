@@ -1,6 +1,6 @@
 package io.ashdavies.cloud
 
-import io.ashdavies.asg.AsgConference
+import dev.ashdavies.asg.AsgConference
 import io.ashdavies.http.common.models.ApiConference
 
 public fun interface ApiConferenceFactory {
