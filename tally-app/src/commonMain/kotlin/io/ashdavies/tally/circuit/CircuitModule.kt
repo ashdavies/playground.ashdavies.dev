@@ -20,6 +20,9 @@ internal interface CircuitModule {
     val screenNavigatorPresenterFactories: Map<KClass<out Screen>, (Screen, Navigator) -> Presenter<*>>
 
     @Multibinds
+    val screenPresenterFactories: Map<KClass<out Screen>, (Screen) -> Presenter<*>>
+
+    @Multibinds
     val navigatorPresenterFactories: Map<KClass<out Screen>, (Navigator) -> Presenter<*>>
 
     @Multibinds
@@ -31,12 +34,16 @@ internal interface CircuitModule {
     @Provides
     fun circuit(
         screenNavigatorPresenters: @JvmSuppressWildcards Map<KClass<out Screen>, (Screen, Navigator) -> Presenter<*>>,
+        screenPresenters: @JvmSuppressWildcards Map<KClass<out Screen>, (Screen) -> Presenter<*>>,
         navigatorPresenters: @JvmSuppressWildcards Map<KClass<out Screen>, (Navigator) -> Presenter<*>>,
         presenterFactories: @JvmSuppressWildcards Map<KClass<out Screen>, Provider<Presenter<*>>>,
         uiFactories: @JvmSuppressWildcards Map<KClass<out Screen>, Provider<Ui<*>>>,
     ): Circuit = Circuit.Builder()
         .addPresenterFactory { screen, navigator, _ ->
             screenNavigatorPresenters[screen::class]?.invoke(screen, navigator)
+        }
+        .addPresenterFactory { screen, _, _ ->
+            screenPresenters[screen::class]?.invoke(screen)
         }
         .addPresenterFactory { screen, navigator, _ ->
             navigatorPresenters[screen::class]?.invoke(navigator)

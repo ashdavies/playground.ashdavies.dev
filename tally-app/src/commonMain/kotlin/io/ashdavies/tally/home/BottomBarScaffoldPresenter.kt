@@ -22,10 +22,12 @@ import io.ashdavies.content.PlatformContext
 import io.ashdavies.content.isDebuggable
 import io.ashdavies.identity.IdentityManager
 import io.ashdavies.identity.IdentityState
+import io.ashdavies.tally.adaptive.ListDetailScaffoldScreen
 import io.ashdavies.tally.circuit.CircuitScreenKey
 import io.ashdavies.tally.config.booleanConfigAsState
 import io.ashdavies.tally.config.isGalleryEnabled
 import io.ashdavies.tally.config.isRoutesEnabled
+import io.ashdavies.tally.upcoming.UpcomingScreen
 import kotlinx.coroutines.launch
 
 internal class BottomBarScaffoldPresenter @Inject constructor(
@@ -37,7 +39,7 @@ internal class BottomBarScaffoldPresenter @Inject constructor(
 
     @Composable
     override fun present(): BottomBarScaffoldScreen.State {
-        var screen by rememberRetained { mutableStateOf<Screen>(ListDetailScaffoldScreen) }
+        var screen by rememberRetained { mutableStateOf<Screen>(ListDetailScaffoldScreen(UpcomingScreen)) }
         val isDebuggable = platformContext.isDebuggable()
 
         val isGalleryEnabled by remoteConfig.booleanConfigAsState { isGalleryEnabled() }
