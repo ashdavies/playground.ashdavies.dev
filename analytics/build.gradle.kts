@@ -1,9 +1,9 @@
 plugins {
-    id("io.ashdavies.default")
+    id("dev.ashdavies.default")
 }
 
 android {
-    namespace = "io.ashdavies.analytics"
+    namespace = "dev.ashdavies.analytics"
 }
 
 kotlin {

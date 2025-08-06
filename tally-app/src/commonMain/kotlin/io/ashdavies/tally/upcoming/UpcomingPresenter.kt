@@ -3,14 +3,14 @@ package io.ashdavies.tally.upcoming
 import androidx.compose.runtime.Composable
 import com.slack.circuit.runtime.Navigator
 import com.slack.circuit.runtime.presenter.Presenter
+import dev.ashdavies.analytics.RemoteAnalytics
+import dev.ashdavies.analytics.logEvent
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.Assisted
 import dev.zacsweers.metro.AssistedFactory
 import dev.zacsweers.metro.ContributesIntoMap
 import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.binding
-import io.ashdavies.analytics.RemoteAnalytics
-import io.ashdavies.analytics.logEvent
 import io.ashdavies.paging.Pager
 import io.ashdavies.paging.rememberPagingState
 import io.ashdavies.tally.circuit.CircuitScreenKey

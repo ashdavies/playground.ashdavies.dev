@@ -1,6 +1,6 @@
 plugins {
-    id("io.ashdavies.compose")
-    id("io.ashdavies.default")
+    id("dev.ashdavies.compose")
+    id("dev.ashdavies.default")
 }
 
 android {

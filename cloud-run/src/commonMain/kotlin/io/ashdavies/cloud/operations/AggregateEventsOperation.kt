@@ -1,8 +1,7 @@
 package io.ashdavies.cloud.operations
 
 import com.google.cloud.firestore.CollectionReference
-import io.ashdavies.asg.AsgConference
-import io.ashdavies.asg.AsgService
+import dev.ashdavies.asg.AsgService
 import io.ashdavies.cloud.ApiConferenceFactory
 import io.ashdavies.cloud.CollectionWriter
 import io.ashdavies.cloud.await
@@ -12,8 +11,6 @@ import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.ApplicationCall
 import io.ktor.server.response.respond
 import kotlinx.serialization.json.Json
-import kotlin.uuid.ExperimentalUuidApi
-import kotlin.uuid.Uuid
 
 private object AggregateEventsDefaults {
     const val ORDER_BY = "dateStart"

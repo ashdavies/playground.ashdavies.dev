@@ -1,4 +1,4 @@
-package io.ashdavies.analytics
+package dev.ashdavies.analytics
 
 public fun interface RemoteAnalytics {
     public fun logEvent(name: String, block: ParametersBuilder.() -> Unit)

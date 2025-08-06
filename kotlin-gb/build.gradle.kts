@@ -1,5 +1,5 @@
 plugins {
-    id("io.ashdavies.kotlin")
+    id("dev.ashdavies.kotlin")
 }
 
 kotlin {

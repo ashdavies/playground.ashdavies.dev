@@ -1,4 +1,4 @@
-package io.ashdavies.analytics
+package dev.ashdavies.analytics
 
 import com.google.firebase.Firebase
 import com.google.firebase.analytics.analytics
