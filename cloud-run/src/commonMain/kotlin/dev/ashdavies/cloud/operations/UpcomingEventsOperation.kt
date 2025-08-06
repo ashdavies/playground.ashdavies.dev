@@ -3,7 +3,7 @@ package dev.ashdavies.cloud.operations
 import com.google.cloud.firestore.CollectionReference
 import dev.ashdavies.cloud.await
 import dev.ashdavies.cloud.decodeFromSnapshot
-import io.ashdavies.http.common.models.ApiConference
+import dev.ashdavies.http.common.models.ApiConference
 import io.ktor.server.application.ApplicationCall
 import io.ktor.server.response.respond
 import kotlinx.datetime.TimeZone

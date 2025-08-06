@@ -2,7 +2,7 @@ package dev.ashdavies.asg
 
 import dev.ashdavies.asg.callable.PastConferencesCallable
 import dev.ashdavies.asg.callable.UpcomingConferencesCallable
-import io.ashdavies.http.invoke
+import dev.ashdavies.http.invoke
 import io.ktor.client.HttpClient
 
 private const val ASG_BASE_URL = "androidstudygroup.github.io"

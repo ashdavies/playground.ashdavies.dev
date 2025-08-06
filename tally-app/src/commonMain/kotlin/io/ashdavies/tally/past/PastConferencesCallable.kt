@@ -3,8 +3,8 @@ package io.ashdavies.tally.past
 import dev.ashdavies.asg.PastConferencesCallable
 import dev.ashdavies.cloud.ApiConferenceFactory
 import dev.ashdavies.cloud.Identifier
-import io.ashdavies.http.UnaryCallable
-import io.ashdavies.http.common.models.ApiConference
+import dev.ashdavies.http.UnaryCallable
+import dev.ashdavies.http.common.models.ApiConference
 import io.ktor.client.HttpClient
 
 internal fun interface PastConferencesCallable : UnaryCallable<Unit, List<ApiConference>>

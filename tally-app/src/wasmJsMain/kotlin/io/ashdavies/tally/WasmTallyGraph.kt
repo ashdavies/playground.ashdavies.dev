@@ -1,11 +1,11 @@
 package io.ashdavies.tally
 
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
+import dev.ashdavies.http.defaultHttpClient
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.DependencyGraph
 import dev.zacsweers.metro.Provides
 import io.ashdavies.content.PlatformContext
-import io.ashdavies.http.defaultHttpClient
 import io.ashdavies.paging.Pager
 import io.ashdavies.tally.events.Event
 import io.ktor.client.HttpClient

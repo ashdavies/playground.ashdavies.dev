@@ -1,7 +1,7 @@
 package io.ashdavies.gallery
 
 import app.cash.turbine.test
-import io.ashdavies.http.DefaultHttpConfiguration
+import dev.ashdavies.http.DefaultHttpConfiguration
 import io.ashdavies.tally.files.Path
 import io.ashdavies.tally.gallery.Image
 import io.ashdavies.tally.gallery.SyncManager

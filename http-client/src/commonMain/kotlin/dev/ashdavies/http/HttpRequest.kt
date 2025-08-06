@@ -1,4 +1,4 @@
-package io.ashdavies.http
+package dev.ashdavies.http
 
 import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.request.parameter

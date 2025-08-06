@@ -1,4 +1,4 @@
-package io.ashdavies.http
+package dev.ashdavies.http
 
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind

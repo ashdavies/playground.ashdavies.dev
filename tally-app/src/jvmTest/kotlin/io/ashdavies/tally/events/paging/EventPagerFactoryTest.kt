@@ -19,7 +19,7 @@ import kotlin.test.assertEquals
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 import kotlin.uuid.Uuid
-import io.ashdavies.http.common.models.ApiConference as ApiEvent
+import dev.ashdavies.http.common.models.ApiConference as ApiEvent
 
 internal class EventPagerFactoryTest {
 

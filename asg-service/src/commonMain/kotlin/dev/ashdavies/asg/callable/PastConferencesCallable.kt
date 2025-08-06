@@ -1,7 +1,7 @@
 package dev.ashdavies.asg.callable
 
 import dev.ashdavies.asg.AsgConference
-import io.ashdavies.http.UnaryCallable
+import dev.ashdavies.http.UnaryCallable
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
