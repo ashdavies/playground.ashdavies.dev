@@ -1,5 +1,6 @@
-package io.ashdavies.cloud
+package dev.ashdavies.cloud
 
+import dev.ashdavies.cloud.main
 import io.ashdavies.check.AppCheckToken
 import io.ashdavies.http.common.models.ApiConference
 import io.ashdavies.http.common.models.AppCheckToken

@@ -1,6 +1,6 @@
-package io.ashdavies.cloud
+package dev.ashdavies.cloud
 
-import io.ashdavies.cloud.google.GoogleApiException
+import dev.ashdavies.cloud.google.GoogleApiException
 import io.ashdavies.http.defaultHttpClient
 import io.ashdavies.http.throwClientRequestExceptionAs
 import io.ktor.client.plugins.HttpCallValidator

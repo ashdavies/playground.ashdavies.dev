@@ -1,9 +1,10 @@
-package io.ashdavies.cloud
+package dev.ashdavies.cloud
 
 import com.google.cloud.firestore.CollectionReference
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
+import kotlin.collections.iterator
 import kotlin.coroutines.CoroutineContext
 
 public fun interface CollectionWriter<T : Any> {

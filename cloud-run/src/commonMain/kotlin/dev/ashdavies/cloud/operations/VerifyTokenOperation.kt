@@ -1,4 +1,4 @@
-package io.ashdavies.cloud.operations
+package dev.ashdavies.cloud.operations
 
 import io.ashdavies.check.AppCheck
 import io.ashdavies.check.AppCheckToken

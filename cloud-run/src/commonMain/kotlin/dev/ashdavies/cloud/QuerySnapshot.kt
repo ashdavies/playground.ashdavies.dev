@@ -1,4 +1,4 @@
-package io.ashdavies.cloud
+package dev.ashdavies.cloud
 
 import com.google.cloud.firestore.QuerySnapshot
 import kotlinx.serialization.json.Json

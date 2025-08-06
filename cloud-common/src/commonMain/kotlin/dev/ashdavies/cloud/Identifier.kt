@@ -1,4 +1,4 @@
-package io.ashdavies.cloud
+package dev.ashdavies.cloud
 
 import kotlinx.serialization.json.Json
 import okio.ByteString.Companion.encodeUtf8

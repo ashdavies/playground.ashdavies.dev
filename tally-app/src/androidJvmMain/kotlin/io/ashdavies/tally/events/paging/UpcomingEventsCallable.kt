@@ -1,8 +1,8 @@
 package io.ashdavies.tally.events.paging
 
 import dev.ashdavies.asg.UpcomingConferencesCallable
-import io.ashdavies.cloud.ApiConferenceFactory
-import io.ashdavies.cloud.Identifier
+import dev.ashdavies.cloud.ApiConferenceFactory
+import dev.ashdavies.cloud.Identifier
 import io.ashdavies.config.RemoteConfig
 import io.ashdavies.config.getBoolean
 import io.ashdavies.http.UnaryCallable
