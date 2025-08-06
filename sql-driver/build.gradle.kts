@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    namespace = "io.ashdavies.sql.driver"
+    namespace = "dev.ashdavies.sql.driver"
 }
 
 kotlin {

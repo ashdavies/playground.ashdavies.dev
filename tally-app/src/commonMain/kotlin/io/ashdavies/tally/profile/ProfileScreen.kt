@@ -15,7 +15,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import coil3.compose.rememberAsyncImagePainter
-import io.ashdavies.identity.IdentityState
+import dev.ashdavies.identity.IdentityState
 
 @Composable
 internal fun ProfileActionButton(

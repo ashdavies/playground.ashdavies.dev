@@ -5,13 +5,13 @@ import androidx.paging.InvalidatingPagingSourceFactory
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import app.cash.sqldelight.paging3.QueryPagingSource
+import dev.ashdavies.sql.DatabaseFactory
+import dev.ashdavies.sql.Suspended
+import dev.ashdavies.sql.map
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesTo
 import dev.zacsweers.metro.Provides
 import io.ashdavies.config.RemoteConfig
-import io.ashdavies.sql.DatabaseFactory
-import io.ashdavies.sql.Suspended
-import io.ashdavies.sql.map
 import io.ashdavies.tally.PlaygroundDatabase
 import io.ashdavies.tally.events.Event
 import io.ashdavies.tally.events.EventsQueries
