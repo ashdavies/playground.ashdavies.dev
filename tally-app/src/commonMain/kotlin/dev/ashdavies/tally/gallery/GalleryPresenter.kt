@@ -10,11 +10,11 @@ import com.slack.circuit.retained.rememberRetained
 import com.slack.circuit.runtime.presenter.Presenter
 import dev.ashdavies.analytics.RemoteAnalytics
 import dev.ashdavies.analytics.logEvent
+import dev.ashdavies.tally.circuit.CircuitScreenKey
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesIntoMap
 import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.binding
-import dev.ashdavies.tally.circuit.CircuitScreenKey
 import kotlinx.coroutines.launch
 
 @CircuitScreenKey(GalleryScreen::class)

@@ -17,13 +17,13 @@ import com.slack.circuit.foundation.CircuitContent
 import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.screen.Screen
 import com.slack.circuit.runtime.ui.Ui
+import dev.ashdavies.parcelable.Parcelable
+import dev.ashdavies.parcelable.Parcelize
+import dev.ashdavies.tally.circuit.CircuitScreenKey
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesIntoMap
 import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.binding
-import dev.ashdavies.parcelable.Parcelable
-import dev.ashdavies.parcelable.Parcelize
-import dev.ashdavies.tally.circuit.CircuitScreenKey
 import kotlinx.coroutines.launch
 
 @Parcelize

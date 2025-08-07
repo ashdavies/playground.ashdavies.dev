@@ -5,18 +5,18 @@ import com.slack.circuit.runtime.Navigator
 import com.slack.circuit.runtime.presenter.Presenter
 import dev.ashdavies.analytics.RemoteAnalytics
 import dev.ashdavies.analytics.logEvent
-import dev.zacsweers.metro.AppScope
-import dev.zacsweers.metro.Assisted
-import dev.zacsweers.metro.AssistedFactory
-import dev.zacsweers.metro.ContributesIntoMap
-import dev.zacsweers.metro.Inject
-import dev.zacsweers.metro.binding
 import dev.ashdavies.paging.Pager
 import dev.ashdavies.paging.rememberPagingState
 import dev.ashdavies.tally.circuit.CircuitScreenKey
 import dev.ashdavies.tally.coroutines.rememberRetainedCoroutineScope
 import dev.ashdavies.tally.events.Event
 import dev.ashdavies.tally.events.EventsDetailScreen
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedFactory
+import dev.zacsweers.metro.ContributesIntoMap
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 
 internal class UpcomingPresenter @Inject constructor(
     @Assisted private val navigator: Navigator,

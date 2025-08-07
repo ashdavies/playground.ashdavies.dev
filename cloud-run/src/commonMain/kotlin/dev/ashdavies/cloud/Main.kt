@@ -2,13 +2,13 @@ package dev.ashdavies.cloud
 
 import com.google.firebase.auth.FirebaseAuth
 import dev.ashdavies.asg.AsgService
+import dev.ashdavies.check.appCheck
 import dev.ashdavies.cloud.operations.AggregateEventsOperation
 import dev.ashdavies.cloud.operations.FirebaseAuthOperation
 import dev.ashdavies.cloud.operations.FirebaseTokenOperation
 import dev.ashdavies.cloud.operations.UpcomingEventsOperation
 import dev.ashdavies.cloud.operations.VerifyTokenOperation
 import dev.ashdavies.http.common.models.ApiConference
-import dev.ashdavies.check.appCheck
 import io.ktor.http.HttpHeaders
 import io.ktor.serialization.Configuration
 import io.ktor.serialization.kotlinx.json.json

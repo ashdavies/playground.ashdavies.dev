@@ -3,7 +3,7 @@ package dev.ashdavies.tally.events.paging
 import androidx.paging.testing.asSnapshot
 import app.cash.sqldelight.async.coroutines.synchronous
 import app.cash.sqldelight.driver.jdbc.sqlite.JdbcSqliteDriver
-import dev.ashdavies.tally.PlaygroundDatabase
+import dev.ashdavies.playground.PlaygroundDatabase
 import dev.ashdavies.tally.gallery.imageAdapter
 import dev.ashdavies.tally.tooling.UnitTestResources
 import dev.ashdavies.tally.tooling.locations

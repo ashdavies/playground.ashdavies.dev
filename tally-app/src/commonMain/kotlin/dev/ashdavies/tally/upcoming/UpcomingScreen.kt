@@ -47,10 +47,6 @@ import com.google.accompanist.placeholder.material3.placeholder
 import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.screen.Screen
 import com.slack.circuit.runtime.ui.Ui
-import dev.zacsweers.metro.AppScope
-import dev.zacsweers.metro.ContributesIntoMap
-import dev.zacsweers.metro.Inject
-import dev.zacsweers.metro.binding
 import dev.ashdavies.parcelable.Parcelable
 import dev.ashdavies.parcelable.Parcelize
 import dev.ashdavies.tally.circuit.CircuitScreenKey
@@ -61,6 +57,10 @@ import dev.ashdavies.tally.events.daysUntilCfpEnd
 import dev.ashdavies.tally.material.padding
 import dev.ashdavies.tally.material.spacing
 import dev.ashdavies.tally.material.values
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesIntoMap
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.datetime.LocalDate
 import org.jetbrains.compose.resources.stringResource

@@ -6,17 +6,17 @@ import androidx.compose.runtime.produceState
 import com.slack.circuit.runtime.Navigator
 import com.slack.circuit.runtime.presenter.Presenter
 import com.slack.circuit.runtime.screen.Screen
+import dev.ashdavies.playground.PlaygroundDatabase
 import dev.ashdavies.sql.DatabaseFactory
 import dev.ashdavies.sql.invoke
 import dev.ashdavies.sql.map
+import dev.ashdavies.tally.circuit.CircuitScreenKey
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.Assisted
 import dev.zacsweers.metro.AssistedFactory
 import dev.zacsweers.metro.ContributesIntoMap
 import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.binding
-import dev.ashdavies.tally.PlaygroundDatabase
-import dev.ashdavies.tally.circuit.CircuitScreenKey
 
 internal class EventsDetailPresenter @Inject constructor(
     @Assisted private val screen: EventsDetailScreen,

@@ -15,10 +15,10 @@ import com.slack.circuit.foundation.CircuitCompositionLocals
 import com.slack.circuit.foundation.NavigableCircuitContent
 import com.slack.circuit.foundation.rememberCircuitNavigator
 import com.slack.circuit.overlay.ContentWithOverlays
-import dev.zacsweers.metro.createGraphFactory
 import dev.ashdavies.content.enableStrictMode
 import dev.ashdavies.material.dynamicColorScheme
 import dev.ashdavies.tally.home.BottomBarScaffoldScreen
+import dev.zacsweers.metro.createGraphFactory
 
 internal class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

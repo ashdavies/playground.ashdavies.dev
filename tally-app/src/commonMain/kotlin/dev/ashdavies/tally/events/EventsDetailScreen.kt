@@ -27,10 +27,6 @@ import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.screen.Screen
 import com.slack.circuit.runtime.ui.Ui
 import dev.ashdavies.identity.IdentityState
-import dev.zacsweers.metro.AppScope
-import dev.zacsweers.metro.ContributesIntoMap
-import dev.zacsweers.metro.Inject
-import dev.zacsweers.metro.binding
 import dev.ashdavies.parcelable.Parcelable
 import dev.ashdavies.parcelable.Parcelize
 import dev.ashdavies.tally.circuit.CircuitScreenKey
@@ -38,6 +34,10 @@ import dev.ashdavies.tally.material.BackButton
 import dev.ashdavies.tally.material.padding
 import dev.ashdavies.tally.material.spacing
 import dev.ashdavies.tally.profile.ProfileActionButton
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesIntoMap
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 import kotlinx.datetime.LocalDate
 import org.jetbrains.compose.resources.stringResource
 import playground.tally_app.generated.resources.Res

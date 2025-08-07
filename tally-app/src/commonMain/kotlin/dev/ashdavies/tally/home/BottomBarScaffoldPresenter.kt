@@ -11,23 +11,23 @@ import com.slack.circuit.retained.rememberRetained
 import com.slack.circuit.runtime.Navigator
 import com.slack.circuit.runtime.presenter.Presenter
 import com.slack.circuit.runtime.screen.Screen
-import dev.ashdavies.identity.IdentityManager
-import dev.ashdavies.identity.IdentityState
-import dev.zacsweers.metro.AppScope
-import dev.zacsweers.metro.Assisted
-import dev.zacsweers.metro.AssistedFactory
-import dev.zacsweers.metro.ContributesIntoMap
-import dev.zacsweers.metro.Inject
-import dev.zacsweers.metro.binding
 import dev.ashdavies.config.RemoteConfig
 import dev.ashdavies.content.PlatformContext
 import dev.ashdavies.content.isDebuggable
+import dev.ashdavies.identity.IdentityManager
+import dev.ashdavies.identity.IdentityState
 import dev.ashdavies.tally.adaptive.ListDetailScaffoldScreen
 import dev.ashdavies.tally.circuit.CircuitScreenKey
 import dev.ashdavies.tally.config.booleanConfigAsState
 import dev.ashdavies.tally.config.isGalleryEnabled
 import dev.ashdavies.tally.config.isRoutesEnabled
 import dev.ashdavies.tally.upcoming.UpcomingScreen
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedFactory
+import dev.zacsweers.metro.ContributesIntoMap
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 import kotlinx.coroutines.launch
 
 internal class BottomBarScaffoldPresenter @Inject constructor(

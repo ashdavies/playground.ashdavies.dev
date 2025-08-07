@@ -4,11 +4,11 @@ import android.Manifest.permission.ACCESS_COARSE_LOCATION
 import android.Manifest.permission.ACCESS_FINE_LOCATION
 import androidx.annotation.RequiresPermission
 import com.google.android.gms.location.LocationServices
+import dev.ashdavies.content.PlatformContext
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesBinding
 import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.binding
-import dev.ashdavies.content.PlatformContext
 import kotlinx.coroutines.tasks.await
 
 @ContributesBinding(AppScope::class, binding<LocationService>())
