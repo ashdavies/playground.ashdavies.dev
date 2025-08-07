@@ -8,7 +8,7 @@
         android:icon="@mipmap/ic_launcher">
 
         <activity
-            android:name="io.ashdavies.tally.MainActivity"
+            android:name="dev.ashdavies.tally.MainActivity"
             android:configChanges="keyboardHidden|orientation"
             android:exported="true"
             android:label="Tally"
@@ -26,7 +26,7 @@
         </activity>
 
         <provider
-            android:name="io.ashdavies.tally.gallery.ComposeFileProvider"
+            android:name="dev.ashdavies.tally.gallery.ComposeFileProvider"
             android:authorities="${applicationId}.files"
             android:exported="false"
             android:grantUriPermissions="true">

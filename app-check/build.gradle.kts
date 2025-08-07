@@ -11,7 +11,7 @@ buildConfig {
     val gcpProject by stringProperty(::buildConfigField)
     val googleCloudProject by stringProperty(::buildConfigField)
 
-    packageName.set("io.ashdavies.check")
+    packageName.set("dev.ashdavies.check")
 }
 
 kotlin {

@@ -4,7 +4,7 @@ import app.cash.sqldelight.SuspendingTransacter
 import app.cash.sqldelight.db.QueryResult
 import app.cash.sqldelight.db.SqlDriver
 import app.cash.sqldelight.db.SqlSchema
-import io.ashdavies.content.PlatformContext
+import dev.ashdavies.content.PlatformContext
 
 public interface DatabaseFactory<T : SuspendingTransacter> : Suspended<T>
 

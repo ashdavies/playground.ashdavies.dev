@@ -1,9 +1,9 @@
 package dev.ashdavies.identity
 
 import app.cash.sqldelight.coroutines.mapToOneOrNull
+import dev.ashdavies.delegates.notNull
 import dev.ashdavies.sql.Suspended
 import dev.ashdavies.sql.mapAsFlow
-import io.ashdavies.delegates.notNull
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.map

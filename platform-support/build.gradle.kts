@@ -3,5 +3,5 @@ plugins {
 }
 
 android {
-    namespace = "io.ashdavies.platform.support"
+    namespace = "dev.ashdavies.platform.support"
 }

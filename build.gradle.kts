@@ -25,7 +25,7 @@ doctor {
 }
 
 subprojects {
-    pluginManager.withPlugin("io.ashdavies.kotlin") {
+    pluginManager.withPlugin("dev.ashdavies.kotlin") {
         project.apply(plugin = "org.jetbrains.kotlinx.kover")
         rootProject.dependencies.kover(project)
     }

@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    namespace = "io.ashdavies.platform.scaffold"
+    namespace = "dev.ashdavies.platform.scaffold"
 }
 
 kotlin {
