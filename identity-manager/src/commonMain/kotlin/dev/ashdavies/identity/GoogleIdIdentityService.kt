@@ -1,6 +1,6 @@
 package dev.ashdavies.identity
 
-import io.ashdavies.content.PlatformContext
+import dev.ashdavies.content.PlatformContext
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 

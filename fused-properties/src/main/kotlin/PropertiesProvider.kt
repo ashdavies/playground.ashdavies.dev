@@ -2,7 +2,7 @@ import org.gradle.api.Project
 import org.gradle.api.provider.Provider
 import java.util.Properties
 
-private const val LOCAL_PROPERTIES_KEY = "io.ashdavies.properties.local"
+private const val LOCAL_PROPERTIES_KEY = "dev.ashdavies.properties.local"
 private const val LOCAL_PROPERTIES_PATH = "local.properties"
 
 internal fun Project.startParameterProvider(): Provider<Map<String, String>> {
