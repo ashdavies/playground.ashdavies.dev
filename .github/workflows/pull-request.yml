@@ -33,12 +33,6 @@ jobs:
         with:
           lfs: 'true'
 
-      - uses: ./.github/actions/setup-cloud
-        with:
-          workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
-          service_account: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
-          setup_gcloud: false
-
       - uses: ./.github/actions/setup-gradle
 
       - run: echo ${{ secrets.FIREBASE_GOOGLE_SERVICES }} | base64 --decode > tally-app/google-services.json
