@@ -31,7 +31,7 @@ androidx-paging-testing = { module = "androidx.paging:paging-testing", version.r
 app-cash-turbine = "app.cash.turbine:turbine:1.2.1"
 
 auth-java-jwt = "com.auth0:java-jwt:4.5.0"
-auth-jwks-rsa = "com.auth0:jwks-rsa:0.22.2"
+auth-jwks-rsa = "com.auth0:jwks-rsa:0.23.0"
 
 coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil-kt" }
 coil-network = { module = "io.coil-kt.coil3:coil-network-ktor3", version.ref = "coil-kt" }
@@ -51,7 +51,7 @@ google-auth-http = "com.google.auth:google-auth-library-oauth2-http:1.37.1"
 google-firebase-admin = "com.google.firebase:firebase-admin:9.5.0"
 google-firebase-appcheck-playintegrity = { module = "com.google.firebase:firebase-appcheck-playintegrity" }
 google-firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
-google-firebase-bom = "com.google.firebase:firebase-bom:34.0.0"
+google-firebase-bom = "com.google.firebase:firebase-bom:34.1.0"
 google-firebase-config = { module = "com.google.firebase:firebase-config" }
 google-firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
 google-guava-jre = "com.google.guava:guava:33.4.8-jre"
