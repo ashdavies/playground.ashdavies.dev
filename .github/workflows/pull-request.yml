@@ -43,6 +43,10 @@ jobs:
 
       - run: echo ${{ secrets.FIREBASE_GOOGLE_SERVICES }} | base64 --decode > tally-app/google-services.json
 
+      - uses: actions/upload-artifact@v4
+        with:
+          path: tally-app/google-services.json
+
       - id: gradle-build
         run: ./gradlew build --console=plain
 
