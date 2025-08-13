@@ -68,7 +68,7 @@ jobs:
         with:
           terraform_version: 1.12.2
 
-      - uses: terraform-linters/setup-tflint@v4
+      - uses: terraform-linters/setup-tflint@v5
         if: github.event_name == 'pull_request'
         with:
           tflint_version: v0.52.0
