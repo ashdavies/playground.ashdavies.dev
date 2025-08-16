@@ -39,7 +39,7 @@ jobs:
           service_account: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
           setup_gcloud: false
 
-      - uses: ./.github/actions/setup-gradle
+      - uses: gradle/actions/setup-gradle@v4
 
       - run: echo ${{ secrets.FIREBASE_GOOGLE_SERVICES }} | base64 --decode > tally-app/google-services.json
 
