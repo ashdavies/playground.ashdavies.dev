@@ -1,0 +1,39 @@
+name: Qodana Scan
+
+on:
+  pull_request:
+    branches:
+      - main
+
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  qodana:
+    runs-on: ubuntu-latest
+
+    permissions:
+      pull-requests: write
+      id-token: write
+      contents: write
+      checks: write
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+
+      - uses: ./.github/actions/setup-cloud
+        with:
+          workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
+          setup_gcloud: false
+
+      - uses: JetBrains/qodana-action@v2025.1
+        env:
+          QODANA_TOKEN: ${{ secrets.QODANA_TOKEN_1814773995 }}
+          QODANA_ENDPOINT: 'https://qodana.cloud'
