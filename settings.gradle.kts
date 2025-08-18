@@ -39,8 +39,8 @@ plugins {
 
 val isBuildCacheEnabled = providers
     .gradleProperty("gcp.build.cache")
-    .also { println("GCP Build Cache Enabled: ${it.orNull}") }
-    .orNull == "true"
+    .map { it == "true" }
+    .getOrElse(false)
 
 if (isBuildCacheEnabled) {
     buildCache {
