@@ -37,15 +37,25 @@ plugins {
     id("com.gradle.develocity") version "4.1"
 }
 
-buildCache {
-    registerBuildCacheService(GcpBuildCache::class, GcpBuildCacheServiceFactory::class)
+val isBuildCacheEnabled = providers
+    .gradleProperty("gcp.build.cache")
+    .map { it == "true" }
+    .getOrElse(false)
 
-    remote(GcpBuildCache::class) {
-        bucketName = "playground-build-cache"
-        projectId = "playground-1a136"
-        isPush = true
+if (isBuildCacheEnabled) {
+    buildCache {
+        registerBuildCacheService(GcpBuildCache::class, GcpBuildCacheServiceFactory::class)
+
+        remote(GcpBuildCache::class) {
+            bucketName = "playground-build-cache"
+            projectId = "playground-1a136"
+            isPush = true
+        }
     }
+} else {
+    logger.warn("WARNING: Remote Build Cache is not enabled, builds may be slower than usual.")
 }
+
 
 develocity.buildScan {
     termsOfUseUrl = "https://gradle.com/terms-of-service"
