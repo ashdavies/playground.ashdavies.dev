@@ -3,7 +3,6 @@ import io.gitlab.arturbosch.detekt.DetektPlugin
 import io.gitlab.arturbosch.detekt.extensions.DetektExtension
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jlleitschuh.gradle.ktlint.KtlintExtension
 import org.jlleitschuh.gradle.ktlint.KtlintPlugin
 
@@ -17,7 +16,14 @@ apply<KtlintPlugin>()
 
 kotlin {
     explicitApi()
-    jvm()
+
+    jvm {
+        compilerOptions {
+            jvmTarget = libs.versions.kotlin.jvmTarget
+                .map(JvmTarget::fromTarget)
+                .get()
+        }
+    }
 
     @OptIn(ExperimentalKotlinGradlePluginApi::class)
     applyDefaultHierarchyTemplate {
@@ -44,16 +50,9 @@ dependencies {
 }
 
 extensions.configure<DetektExtension> {
-    val detektPlugin = libs.plugins.detekt.get()
-    toolVersion = "${detektPlugin.version}"
-}
-
-tasks.withType<KotlinCompile> {
-
-    compilerOptions {
-        freeCompilerArgs.addAll("-Xexpect-actual-classes")
-        jvmTarget.set(JvmTarget.fromTarget(libs.versions.kotlin.jvmTarget.get()))
-    }
+    toolVersion = libs.plugins.detekt
+        .map { "${it.version}" }
+        .get()
 }
 
 extensions.configure<KtlintExtension> {
@@ -61,6 +60,7 @@ extensions.configure<KtlintExtension> {
         exclude { "generated" in it.file.path }
     }
 
-    val ktlintBom = libs.pinterest.ktlint.bom.get()
-    version = ktlintBom.version
+    version = libs.pinterest.ktlint.bom
+        .map(Dependency::getVersion)
+        .get()
 }
