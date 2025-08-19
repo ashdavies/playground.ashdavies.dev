@@ -1,29 +1,36 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
-private val jvmTargetVersion = libs.versions.kotlin.jvmTarget.get()
-
 plugins {
     kotlin("multiplatform")
 }
 
 kotlin {
     androidTarget {
-        compilerOptions.jvmTarget.set(JvmTarget.fromTarget(jvmTargetVersion))
+        compilerOptions.jvmTarget = libs.versions.kotlin.jvmTarget
+            .map(JvmTarget::fromTarget)
+            .get()
     }
 }
 
 project.commonExtension {
     compileOptions {
-        sourceCompatibility(jvmTargetVersion)
-        targetCompatibility(jvmTargetVersion)
+        sourceCompatibility = libs.versions.kotlin.jvmTarget
+            .map(JavaVersion::toVersion)
+            .get()
+
+        targetCompatibility = libs.versions.kotlin.jvmTarget
+            .map(JavaVersion::toVersion)
+            .get()
     }
 
     defaultConfig {
-        val compileSdkVersion = libs.versions.android.compileSdk.get()
-        compileSdk = compileSdkVersion.toInt()
+        compileSdk = libs.versions.android.compileSdk
+            .map(String::toInt)
+            .get()
 
-        val minSdkVersion = libs.versions.android.minSdk.get()
-        minSdk = minSdkVersion.toInt()
+        minSdk = libs.versions.android.minSdk
+            .map(String::toInt)
+            .get()
     }
 
     sourceSets.configureEach {
