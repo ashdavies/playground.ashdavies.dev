@@ -33,11 +33,10 @@ jobs:
         with:
           lfs: 'true'
 
-      - uses: ./.github/actions/setup-cloud
+      - uses: google-github-actions/auth@v2
         with:
           workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
           service_account: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
-          setup_gcloud: false
 
       - uses: gradle/actions/setup-gradle@v4
 

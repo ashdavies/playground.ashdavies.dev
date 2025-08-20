@@ -1,4 +1,4 @@
-name: Junie
+name: Junie Passthrough
 run-name: Junie run ${{ inputs.run_id }}
 
 permissions:
@@ -10,6 +10,7 @@ on:
       run_id:
         description: "id of workflow process"
         required: true
+
       workflow_params:
         description: "stringified params"
         required: true
