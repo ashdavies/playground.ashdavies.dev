@@ -119,7 +119,7 @@ compose-hotReload = "org.jetbrains.compose.hot-reload:1.0.0-beta05"
 detekt = "io.gitlab.arturbosch.detekt:1.23.8"
 crashlytics = "com.google.firebase.crashlytics:3.0.6"
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
-gradle-doctor = "com.osacky.doctor:0.11.0"
+gradle-doctor = "com.osacky.doctor:0.12.0"
 jetbrains-compose = { id = "org.jetbrains.compose", version.ref = "compose-plugin" }
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "jetbrains-kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "jetbrains-kotlin" }
