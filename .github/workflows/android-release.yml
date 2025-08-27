@@ -39,7 +39,7 @@ jobs:
           service_account: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
 
       - run: |
-          echo ${{ secrets.FIREBASE_GOOGLE_SERVICES }} | base64 --decode > tally-app/google-services.json
+          echo ${{ secrets.FIREBASE_GOOGLE_SERVICES }} | base64 --decode > conference-app/google-services.json
           echo ${{ secrets.RELEASE_KEYSTORE_FILE }} | base64 --decode > keystore.jks
           echo ${{ secrets.RELEASE_KEYSTORE_PROPERTIES }} | base64 --decode > keystore.properties
 
@@ -47,8 +47,8 @@ jobs:
 
       - run: |
           ./gradlew \
-            :tally-app:assemble \
-            :tally-app:bundle \
+            :conference-app:assemble \
+            :conference-app:bundle \
             --console=plain
         env:
           ANDROID_API_KEY: ${{ secrets.ANDROID_API_KEY }}
@@ -58,4 +58,4 @@ jobs:
         with:
           if-no-files-found: error
           name: android-build-outputs
-          path: tally-app/build/outputs
+          path: conference-app/build/outputs

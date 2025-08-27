@@ -39,7 +39,6 @@ jobs:
       - uses: gradle/actions/setup-gradle@v4
 
       - name: Run Gradle Tasks
-        id: gradle_build
         env:
           FIREBASE_ANDROID_APP_ID: ${{ secrets.FIREBASE_ANDROID_APP_ID }}
           GOOGLE_SERVICE_ACCOUNT_ID: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
