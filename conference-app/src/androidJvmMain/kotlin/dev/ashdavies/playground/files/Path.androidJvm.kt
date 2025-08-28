@@ -1,7 +1,5 @@
 package dev.ashdavies.playground.files
 
-import kotlinx.io.files.Path
+public actual fun Path(path: String): Path = kotlinx.io.files.Path(path)
 
-public actual fun Path(path: String): Path = Path(path)
-
-public actual typealias Path = Path
+public actual typealias Path = kotlinx.io.files.Path
