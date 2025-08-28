@@ -11,12 +11,6 @@ on:
       - main
 
   workflow_dispatch:
-    inputs:
-      monitor_permissions:
-        type: boolean
-        description: Monitor Permissions
-        required: false
-        default: false
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -34,9 +28,6 @@ jobs:
       id-token: write
 
     steps:
-      - uses: GitHubSecurityLab/actions-permissions/monitor@v1
-        if: github.event.inputs.monitor_permissions == 'true'
-
       - uses: actions/checkout@v5
 
       - uses: 1password/install-cli-action@v2

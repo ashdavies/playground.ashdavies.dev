@@ -6,12 +6,6 @@ on:
       - main
 
   workflow_dispatch:
-    inputs:
-      monitor_permissions:
-        type: boolean
-        description: Monitor Permissions
-        required: false
-        default: false
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
