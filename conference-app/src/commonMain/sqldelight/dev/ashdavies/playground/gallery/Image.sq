@@ -1,0 +1,16 @@
+import dev.ashdavies.playground.files.Path;
+import kotlin.uuid.Uuid;
+
+CREATE TABLE image (
+    uuid TEXT AS Uuid NOT NULL PRIMARY KEY,
+    path TEXT AS Path NOT NULL
+);
+
+selectAll:
+    SELECT * FROM image;
+
+insertOrReplace:
+    INSERT OR REPLACE INTO image VALUES ?;
+
+deleteById:
+    DELETE FROM image WHERE uuid = :uuid;
