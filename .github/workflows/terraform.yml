@@ -52,8 +52,8 @@ jobs:
       - id: token
         uses: tibdex/github-app-token@v2
         with:
-          private_key: ${{ secrets.PRIVATE_KEY }}
-          app_id: ${{ secrets.APP_ID }}
+          private_key: ${{ secrets.GH_APP_PRIVATE_KEY }}
+          app_id: ${{ secrets.GH_APP_ID }}
 
       - uses: hashicorp/setup-terraform@v3
         with:
