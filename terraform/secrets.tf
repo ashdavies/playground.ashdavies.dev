@@ -1,7 +1,5 @@
 locals {
-  github_app_id = lookup({
-    for it in data.onepassword_item.github_developer_application.section[0].field : it.label => sensitive(it.value)
-  }, "app id")
+  github_app_id = { for it in data.onepassword_item.github_developer_application.section[0].field : it.label => sensitive(it.value) }["app id"]
 
   keystore_fields = merge([
     for section in data.onepassword_item.android_release_keystore.section : merge([
