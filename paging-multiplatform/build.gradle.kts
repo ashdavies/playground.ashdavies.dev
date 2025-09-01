@@ -11,8 +11,6 @@ android {
 }
 
 kotlin {
-    explicitApi = ExplicitApiMode.Disabled
-
     @OptIn(ExperimentalWasmDsl::class)
     wasmJs {
         binaries.executable()
@@ -23,14 +21,9 @@ kotlin {
         commonMain.dependencies {
             implementation(compose.foundation)
 
+            implementation(libs.androidx.paging.compose)
             implementation(libs.kotlinx.collections.immutable)
             implementation(libs.kotlinx.coroutines.core)
-        }
-
-        val androidJvmMain by getting {
-            dependencies {
-                implementation(libs.androidx.paging.common)
-            }
         }
     }
 }

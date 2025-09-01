@@ -2,7 +2,7 @@
 android-compileSdk = "35"
 android-minSdk = "34"
 androidx-activity = "1.10.1"
-androidx-paging = "3.3.6"
+androidx-paging = "3.4.0-alpha03"
 cash-sqldelight = "2.1.0"
 coil-kt = "3.3.0"
 compose-adaptive = "1.1.2"
@@ -26,6 +26,7 @@ androidx-core-splashscreen = "androidx.core:core-splashscreen:1.0.1"
 androidx-credentials-auth = "androidx.credentials:credentials-play-services-auth:1.5.0"
 
 androidx-paging-common = { module = "androidx.paging:paging-common", version.ref = "androidx-paging" }
+androidx-paging-compose = { module = "androidx.paging:paging-compose", version.ref = "androidx-paging" }
 androidx-paging-testing = { module = "androidx.paging:paging-testing", version.ref = "androidx-paging" }
 
 app-cash-turbine = "app.cash.turbine:turbine:1.2.1"

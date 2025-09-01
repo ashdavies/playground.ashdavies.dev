@@ -7,10 +7,10 @@ import kotlinx.coroutines.CoroutineScope
 public expect class Pager<Key : Any, Value : Any>
 
 public interface PagingState<T> {
-    val itemList: ImmutableList<T?>
-    val isRefreshing: Boolean
-    val errorMessage: String?
-    fun refresh()
+    public val itemList: ImmutableList<T?>
+    public val isRefreshing: Boolean
+    public val errorMessage: String?
+    public fun refresh()
 }
 
 @Composable
