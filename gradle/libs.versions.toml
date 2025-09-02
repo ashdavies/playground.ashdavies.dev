@@ -8,7 +8,7 @@ coil-kt = "3.3.0"
 compose-adaptive = "1.1.2"
 compose-plugin = "1.8.2"
 google-accompanist = "0.37.3"
-google-android = "8.10.1"
+google-android = "8.11.0"
 google-services = "4.4.3"
 jetbrains-kotlin = "2.2.10"
 kotlin-jvmTarget = "17"
@@ -47,15 +47,15 @@ google-accompanist-permissions = { module = "com.google.accompanist:accompanist-
 google-android-identity = "com.google.android.libraries.identity.googleid:googleid:1.1.1"
 google-android-location = "com.google.android.gms:play-services-location:21.3.0"
 google-android-material = "com.google.android.material:material:1.12.0"
-google-auth-http = "com.google.auth:google-auth-library-oauth2-http:1.37.1"
+google-auth-http = "com.google.auth:google-auth-library-oauth2-http:1.38.0"
 google-firebase-admin = "com.google.firebase:firebase-admin:9.5.0"
 google-firebase-appcheck-playintegrity = { module = "com.google.firebase:firebase-appcheck-playintegrity" }
 google-firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
-google-firebase-bom = "com.google.firebase:firebase-bom:34.1.0"
+google-firebase-bom = "com.google.firebase:firebase-bom:34.2.0"
 google-firebase-config = { module = "com.google.firebase:firebase-config" }
 google-firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
 google-guava-jre = "com.google.guava:guava:33.4.8-jre"
-google-maps-android-compose = "com.google.maps.android:maps-compose:6.7.1"
+google-maps-android-compose = "com.google.maps.android:maps-compose:6.7.2"
 google-maps-android-utils = "com.google.maps.android:android-maps-utils:3.14.0"
 
 jib-core = "com.google.cloud.tools:jib-core:0.27.3"
@@ -115,14 +115,14 @@ build-config = "com.github.gmazzo.buildconfig:5.6.7"
 cash-paparazzi = "app.cash.paparazzi:1.3.5"
 cash-sqldelight = { id = "app.cash.sqldelight", version.ref = "cash-sqldelight" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "jetbrains-kotlin" }
-compose-hotReload = "org.jetbrains.compose.hot-reload:1.0.0-beta05"
+compose-hotReload = "org.jetbrains.compose.hot-reload:1.0.0-beta06"
 detekt = "io.gitlab.arturbosch.detekt:1.23.8"
 crashlytics = "com.google.firebase.crashlytics:3.0.6"
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
-gradle-doctor = "com.osacky.doctor:0.11.0"
+gradle-doctor = "com.osacky.doctor:0.12.1"
 jetbrains-compose = { id = "org.jetbrains.compose", version.ref = "compose-plugin" }
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "jetbrains-kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "jetbrains-kotlin" }
 kotlinx-kover = "org.jetbrains.kotlinx.kover:0.9.1"
-ktlint = "org.jlleitschuh.gradle.ktlint:13.0.0"
-zac-metro = "dev.zacsweers.metro:0.6.0"
+ktlint = "org.jlleitschuh.gradle.ktlint:13.1.0"
+zac-metro = "dev.zacsweers.metro:0.6.3"

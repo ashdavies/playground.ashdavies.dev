@@ -5,12 +5,6 @@ on:
     - cron: "0 8 * * *"
 
   workflow_dispatch:
-    inputs:
-      monitor_permissions:
-        type: boolean
-        description: Monitor Permissions
-        required: false
-        default: false
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -25,23 +19,17 @@ jobs:
       id-token: 'write'
 
     steps:
-      - uses: GitHubSecurityLab/actions-permissions/monitor@v1
-        if: ${{ github.event.inputs.monitor_permissions == 'true' }}
-
       - name: Checkout Repository
         uses: actions/checkout@v5
 
-      - id: setup-cloud
-        uses: ./.github/actions/setup-cloud
+      - uses: google-github-actions/auth@v2
         with:
           workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
           service_account: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
-          setup_gcloud: false
 
       - uses: gradle/actions/setup-gradle@v4
 
       - name: Run Gradle Tasks
-        id: gradle_build
         env:
           FIREBASE_ANDROID_APP_ID: ${{ secrets.FIREBASE_ANDROID_APP_ID }}
           GOOGLE_SERVICE_ACCOUNT_ID: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}

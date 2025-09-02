@@ -6,12 +6,6 @@ on:
       - main
 
   workflow_dispatch:
-    inputs:
-      monitor_permissions:
-        type: boolean
-        description: Monitor Permissions
-        required: false
-        default: false
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
@@ -45,7 +39,7 @@ jobs:
       - uses: actions/download-artifact@v5
         with:
           name: android-build-outputs
-          path: tally-app/build/outputs
+          path: conference-app/build/outputs
 
       - run: ls -R
 
@@ -69,7 +63,7 @@ jobs:
 
       - run: |
           play_store_key=${{ secrets.FASTLANE_SERVICE_ACCOUNT_KEY }}
-          path=tally-app/src/androidMain/play-store-key.json
+          path=conference-app/src/androidMain/play-store-key.json
           echo $play_store_key | base64 --decode > $path
 
       - run: bundle install && bundle exec fastlane android publish_to_play_store

@@ -33,14 +33,13 @@ jobs:
 
       - uses: gradle/actions/setup-gradle@v4
 
-      - uses: ./.github/actions/setup-cloud
+      - uses: google-github-actions/auth@v2
         with:
           workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
           service_account: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
-          setup_gcloud: false
 
       - run: |
-          echo ${{ secrets.FIREBASE_GOOGLE_SERVICES }} | base64 --decode > tally-app/google-services.json
+          echo ${{ secrets.FIREBASE_GOOGLE_SERVICES }} | base64 --decode > conference-app/google-services.json
           echo ${{ secrets.RELEASE_KEYSTORE_FILE }} | base64 --decode > keystore.jks
           echo ${{ secrets.RELEASE_KEYSTORE_PROPERTIES }} | base64 --decode > keystore.properties
 
@@ -48,8 +47,8 @@ jobs:
 
       - run: |
           ./gradlew \
-            :tally-app:assemble \
-            :tally-app:bundle \
+            :conference-app:assemble \
+            :conference-app:bundle \
             --console=plain
         env:
           ANDROID_API_KEY: ${{ secrets.ANDROID_API_KEY }}
@@ -59,4 +58,4 @@ jobs:
         with:
           if-no-files-found: error
           name: android-build-outputs
-          path: tally-app/build/outputs
+          path: conference-app/build/outputs

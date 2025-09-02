@@ -5,12 +5,6 @@ on:
     - cron: "0 */12 * * *"
 
   workflow_dispatch:
-    inputs:
-      monitor_permissions:
-        type: boolean
-        description: Monitor Permissions
-        required: false
-        default: false
 
 jobs:
   renovate:
@@ -18,18 +12,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: GitHubSecurityLab/actions-permissions/monitor@v1
-        if: ${{ github.event.inputs.monitor_permissions == 'true' }}
-
       - uses: actions/checkout@v5.0.0
 
       - id: generate_token
         uses: tibdex/github-app-token@v2
         with:
-          private_key: ${{ secrets.PRIVATE_KEY }}
-          app_id: ${{ secrets.APP_ID }}
+          private_key: ${{ secrets.GH_PRIVATE_KEY }}
+          app_id: ${{ secrets.GH_APP_ID }}
 
-      - uses: renovatebot/github-action@v43.0.8
+      - uses: renovatebot/github-action@v43.0.9
         with:
           configurationFile: .github/renovate.json
           token: ${{ steps.generate_token.outputs.token }}

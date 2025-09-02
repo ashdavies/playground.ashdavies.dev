@@ -6,12 +6,6 @@ on:
       - main
 
   workflow_dispatch:
-    inputs:
-      monitor_permissions:
-        type: boolean
-        description: Monitor Permissions
-        required: false
-        default: false
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
@@ -26,22 +20,18 @@ jobs:
       id-token: write
 
     steps:
-      - uses: GitHubSecurityLab/actions-permissions/monitor@v1
-        if: ${{ github.event.inputs.monitor_permissions == 'true' }}
-
       - uses: actions/checkout@v5
         with:
           lfs: 'true'
 
-      - uses: ./.github/actions/setup-cloud
+      - uses: google-github-actions/auth@v2
         with:
           workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
           service_account: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
-          setup_gcloud: false
 
       - uses: gradle/actions/setup-gradle@v4
 
-      - run: echo ${{ secrets.FIREBASE_GOOGLE_SERVICES }} | base64 --decode > tally-app/google-services.json
+      - run: echo ${{ secrets.FIREBASE_GOOGLE_SERVICES }} | base64 --decode > conference-app/google-services.json
 
       - id: gradle-build
         run: ./gradlew build -Pgcp.buildcache=true --console=plain

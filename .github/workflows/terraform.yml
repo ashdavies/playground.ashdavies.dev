@@ -11,12 +11,6 @@ on:
       - main
 
   workflow_dispatch:
-    inputs:
-      monitor_permissions:
-        type: boolean
-        description: Monitor Permissions
-        required: false
-        default: false
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -34,15 +28,12 @@ jobs:
       id-token: write
 
     steps:
-      - uses: GitHubSecurityLab/actions-permissions/monitor@v1
-        if: github.event.inputs.monitor_permissions == 'true'
-
       - uses: actions/checkout@v5
 
       - uses: 1password/install-cli-action@v2
 
-      - id: setup-cloud
-        uses: ./.github/actions/setup-cloud
+      - id: google-cloud-auth
+        uses: google-github-actions/auth@v2
         with:
           workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
           service_account: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
@@ -54,19 +45,19 @@ jobs:
       - if: github.ref == 'refs/heads/main'
         run: |
           ./gradlew cloud-run:deploy \
-            -Pimage=europe-west1-docker.pkg.dev/${{ steps.setup-cloud.outputs.project_id }}/cloud-run-source-deploy/api.ashdavies.dev \
+            -Pimage=europe-west1-docker.pkg.dev/${{ steps.google-cloud-auth.outputs.project_id }}/cloud-run-source-deploy/api.ashdavies.dev \
             --no-configuration-cache \
             --console=plain
 
       - id: token
         uses: tibdex/github-app-token@v2
         with:
-          private_key: ${{ secrets.PRIVATE_KEY }}
-          app_id: ${{ secrets.APP_ID }}
+          private_key: ${{ secrets.GH_PRIVATE_KEY }}
+          app_id: ${{ secrets.GH_APP_ID }}
 
       - uses: hashicorp/setup-terraform@v3
         with:
-          terraform_version: 1.12.2
+          terraform_version: 1.13.1
 
       - uses: terraform-linters/setup-tflint@v5
         if: github.event_name == 'pull_request'
