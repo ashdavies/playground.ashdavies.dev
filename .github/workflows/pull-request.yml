@@ -3,7 +3,7 @@ name: Pull Request
 on:
   pull_request:
     branches:
-      - "*"
+      - main
 
   workflow_dispatch:
 
@@ -16,8 +16,8 @@ jobs:
     runs-on: ubuntu-latest
 
     permissions:
-      pull-requests: 'write'
-      id-token: 'write'
+      pull-requests: write
+      id-token: write
 
     steps:
       - uses: actions/checkout@v5
