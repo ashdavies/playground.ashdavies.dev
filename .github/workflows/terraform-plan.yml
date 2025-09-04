@@ -63,6 +63,6 @@ jobs:
       - uses: thollander/actions-comment-pull-request@v3
         if: steps.terraform.outputs.stdout != ''
         with:
-          message: "```${{ steps.terraform-plan.outputs.stdout }}```"
+          message: "```${{ steps.terraform.outputs.stdout }}```"
           comment-tag: terraform-plan
           mode: recreate
