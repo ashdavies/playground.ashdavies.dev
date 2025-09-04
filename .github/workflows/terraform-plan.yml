@@ -24,6 +24,12 @@ jobs:
 
       - uses: 1password/install-cli-action@v2
 
+      - uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
+          token_format: access_token
+
       - id: token
         uses: tibdex/github-app-token@v2
         with:
@@ -46,12 +52,12 @@ jobs:
       - env:
           TF_VAR_op_service_account_token: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
           TF_VAR_gh_token: ${{ steps.token.outputs.token }}
+          TF_CLI_ARGS: -chdir=terraform -input=false
           TF_IN_AUTOMATION: true
-          TF_INPUT: false
         run: |
-          terraform -chdir=terraform init
-          terraform -chdir=terraform plan >/dev/null -lock-timeout=5m -out=.terraform/terraform.tfplan
-          terraform -chdir=terraform show .terraform/terraform.tfplan -no-color
+          terraform init
+          terraform plan >/dev/null -lock-timeout=5m -out=.terraform/terraform.tfplan
+          terraform show .terraform/terraform.tfplan -no-color
 
       - uses: thollander/actions-comment-pull-request@v3
         if: github.event_name == 'pull_request' && steps.terraform-plan.outputs.stdout != ''

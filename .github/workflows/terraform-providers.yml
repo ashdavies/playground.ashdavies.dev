@@ -1,10 +1,6 @@
-name: Terraform Apply
+name: Terraform Plan
 
 on:
-  push:
-    branches:
-      - main
-
   workflow_dispatch:
 
 concurrency:
@@ -25,21 +21,6 @@ jobs:
 
       - uses: 1password/install-cli-action@v2
 
-      - id: google-cloud-auth
-        uses: google-github-actions/auth@v2
-        with:
-          workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
-          service_account: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
-          token_format: access_token
-
-      - uses: gradle/actions/setup-gradle@v4
-
-      - run: |
-          ./gradlew cloud-run:deploy \
-            -Pimage=europe-west1-docker.pkg.dev/${{ steps.google-cloud-auth.outputs.project_id }}/cloud-run-source-deploy/api.ashdavies.dev \
-            --no-configuration-cache \
-            --console=plain
-
       - id: token
         uses: tibdex/github-app-token@v2
         with:
@@ -56,5 +37,5 @@ jobs:
           TF_CLI_ARGS: -chdir=terraform -input=false
           TF_IN_AUTOMATION: true
         run: |
-          terraform -chdir=terraform init
-          terraform -chdir=terraform apply -auto-approve -lock-timeout=5m
+          terraform init
+          terraform providers
