@@ -27,7 +27,7 @@ kotlin {
 
         val androidJvmMain by getting {
             dependencies {
-                implementation(libs.androidx.paging.common)
+                implementation(libs.androidx.paging.compose)
             }
         }
     }
