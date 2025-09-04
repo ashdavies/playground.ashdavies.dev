@@ -53,7 +53,7 @@ jobs:
       - env:
           TF_VAR_op_service_account_token: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
           TF_VAR_gh_token: ${{ steps.token.outputs.token }}
-          TF_CLI_ARGS: -chdir=terraform -input=false
+          TF_CLI_ARGS: "-chdir=terraform -input=false"
           TF_IN_AUTOMATION: true
         run: |
           terraform -chdir=terraform init
