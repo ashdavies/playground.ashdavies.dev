@@ -49,10 +49,11 @@ jobs:
         run: |
           tflint --chdir=terraform --format=compact --minimum-failure-severity=warning
 
-      - env:
+      - id: terraform
+        env:
           TF_VAR_op_service_account_token: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
           TF_VAR_gh_token: ${{ steps.token.outputs.token }}
-          TF_CLI_ARGS: "-chdir=terraform -input=false"
+          TF_CLI_ARGS: -chdir=terraform -input=false
           TF_IN_AUTOMATION: true
         run: |
           terraform init
@@ -60,7 +61,7 @@ jobs:
           terraform show .terraform/terraform.tfplan -no-color
 
       - uses: thollander/actions-comment-pull-request@v3
-        if: github.event_name == 'pull_request' && steps.terraform-plan.outputs.stdout != ''
+        if: steps.terraform.outputs.stdout != ''
         with:
           message: "```${{ steps.terraform-plan.outputs.stdout }}```"
           comment-tag: terraform-plan
