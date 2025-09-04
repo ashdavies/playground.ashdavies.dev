@@ -1,0 +1,61 @@
+name: Terraform Apply
+
+on:
+  push:
+    branches:
+      - main
+
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Google Cloud
+    runs-on: ubuntu-latest
+
+    permissions:
+      pull-requests: 'write'
+      id-token: write
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: 1password/install-cli-action@v2
+
+      - id: google-cloud-auth
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
+          token_format: access_token
+
+      - uses: gradle/actions/setup-gradle@v4
+
+      - run: |
+          ./gradlew cloud-run:deploy \
+            -Pimage=europe-west1-docker.pkg.dev/${{ steps.google-cloud-auth.outputs.project_id }}/cloud-run-source-deploy/api.ashdavies.dev \
+            --no-configuration-cache \
+            --console=plain
+
+      - id: token
+        uses: tibdex/github-app-token@v2
+        with:
+          private_key: ${{ secrets.GH_PRIVATE_KEY }}
+          app_id: ${{ secrets.GH_APP_ID }}
+
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.13.1
+
+      - env:
+          TF_VAR_op_service_account_token: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+          TF_VAR_op_vault_uuid: ${{ secrets.OP_VAULT_UUID }}
+          TF_VAR_gh_token: ${{ steps.token.outputs.token }}
+          TF_IN_AUTOMATION: true
+          TF_INPUT: false
+        run: |
+          terraform -chdir=terraform init
+          terraform -chdir=terraform apply -auto-approve -lock-timeout=5m
