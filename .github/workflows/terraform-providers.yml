@@ -21,7 +21,7 @@ jobs:
 
       - uses: 1password/install-cli-action@v2
 
-      - uses: google-github-actions/auth@v2
+      - uses: google-github-actions/auth@v3
         with:
           workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
           service_account: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
@@ -40,8 +40,8 @@ jobs:
       - env:
           TF_VAR_op_service_account_token: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
           TF_VAR_gh_token: ${{ steps.token.outputs.token }}
-          TF_CLI_ARGS: -chdir=terraform -input=false
+          TF_CLI_ARGS: -input=false
           TF_IN_AUTOMATION: true
         run: |
-          terraform init
-          terraform providers
+          terraform -chdir=terraform init
+          terraform -chdir=terraform providers
