@@ -1,13 +1,13 @@
 locals {
   openapi_config = templatefile(var.openapi_config, {
-    backend_service_name = module.cloud-run-build.url
+    backend_service_name = module.cloud_run_build.url
   })
 }
 
 # google_project_service.main is deprecated
 resource "google_project_service" "main" {
-  service    = module.cloud-run-endpoint.service_name
-  depends_on = [module.cloud-run-endpoint]
+  service    = module.cloud_run_endpoint.service_name
+  depends_on = [module.cloud_run_endpoint]
   project    = var.project_id
 }
 
@@ -44,5 +44,5 @@ resource "google_project_iam_custom_role" "main" {
 }
 
 resource "google_service_account_key" "fastlane_supply_key" {
-  service_account_id = module.fastlane-service-account.service_account.name
+  service_account_id = module.fastlane_service_account.service_account.name
 }
