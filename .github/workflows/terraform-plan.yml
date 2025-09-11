@@ -47,6 +47,7 @@ jobs:
       - env:
           GITHUB_TOKEN: ${{ github.token }}
         run: |
+          tflint --chdir=terraform --format=compact --init
           tflint --chdir=terraform --format=compact --minimum-failure-severity=warning
 
       - id: terraform
