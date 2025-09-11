@@ -48,13 +48,13 @@ jobs:
 
       - uses: hashicorp/setup-terraform@v3
         with:
-          terraform_version: 1.13.1
+          terraform_version: 1.13.2
 
       - env:
           TF_VAR_op_service_account_token: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
           TF_VAR_gh_token: ${{ steps.token.outputs.token }}
-          TF_CLI_ARGS: -input=false
           TF_IN_AUTOMATION: true
+          TF_INPUT: false
         run: |
           terraform -chdir=terraform init
           terraform -chdir=terraform apply -auto-approve -lock-timeout=5m

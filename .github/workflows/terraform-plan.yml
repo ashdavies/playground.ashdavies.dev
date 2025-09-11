@@ -38,7 +38,7 @@ jobs:
 
       - uses: hashicorp/setup-terraform@v3
         with:
-          terraform_version: 1.13.1
+          terraform_version: 1.13.2
 
       - uses: terraform-linters/setup-tflint@v5
         with:
@@ -53,8 +53,8 @@ jobs:
         env:
           TF_VAR_op_service_account_token: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
           TF_VAR_gh_token: ${{ steps.token.outputs.token }}
-          TF_CLI_ARGS: -input=false
           TF_IN_AUTOMATION: true
+          TF_INPUT: false
         run: |
           terraform -chdir=terraform init
           terraform -chdir=terraform plan >/dev/null -lock-timeout=5m -out=.terraform/terraform.tfplan

@@ -1,4 +1,4 @@
-module "api-gateway" {
+module "api_gateway" {
   source           = "./modules/google/api-gateway"
   api_id           = "playground-api"
   gateway_id       = "playground-api-gateway"
@@ -7,7 +7,7 @@ module "api-gateway" {
   region           = var.project_region
 }
 
-module "cloud-run-build" {
+module "cloud_run_build" {
   image_name    = "api.ashdavies.dev"
   location      = var.project_region
   project       = var.project_id
@@ -17,9 +17,9 @@ module "cloud-run-build" {
 }
 
 # module.cloud-run-endpoint is deprecated
-module "cloud-run-endpoint" {
+module "cloud_run_endpoint" {
   source           = "./modules/google/cloud-run-endpoint"
-  config_id        = module.cloud-run-endpoint.config_id
+  config_id = module.cloud_run_endpoint.config_id
   image_name       = "endpoints-runtime-serverless"
   repository_id    = "endpoints-release"
   endpoint_name    = "api.ashdavies.dev"
@@ -31,17 +31,17 @@ module "cloud-run-endpoint" {
 }
 
 # module endpoint-iam-binding is deprecated
-module "endpoint-iam-binding" {
+module "endpoint_iam_binding" {
   source             = "terraform-google-modules/iam/google//modules/cloud_run_services_iam"
   version            = "8.1.0"
   bindings           = { "roles/run.invoker" = ["allUsers"] }
-  cloud_run_services = [module.cloud-run-endpoint.name]
+  cloud_run_services = [module.cloud_run_endpoint.name]
   location           = var.project_region
   mode               = "authoritative"
   project            = var.project_id
 }
 
-module "github-api-key" {
+module "github_api_key" {
   display_name = "Integration key (managed by Terraform)"
   name         = "integration"
   project      = var.project_id
@@ -51,12 +51,7 @@ module "github-api-key" {
   secret_name  = "integration_api_key"
 }
 
-moved {
-  from = module.github-repository.github_repository.main
-  to   = github_repository.main
-}
-
-module "fastlane-service-account" {
+module "fastlane_service_account" {
   source       = "terraform-google-modules/service-accounts/google"
   version      = "4.5.4"
   display_name = "Fastlane Service Account"
@@ -64,7 +59,7 @@ module "fastlane-service-account" {
   project_id   = var.project_id
 }
 
-module "github-service-account" {
+module "github_service_account" {
   source       = "terraform-google-modules/service-accounts/google"
   version      = "4.5.4"
   providers    = { google = google.impersonation }
@@ -82,21 +77,21 @@ module "github-service-account" {
   ]
 }
 
-module "github-workload-identity" {
+module "github_workload_identity" {
   source      = "terraform-google-modules/github-actions-runners/google//modules/gh-oidc"
   version     = "5.1.0"
   pool_id     = "gh-oidc-pool"
   project_id  = var.project_id
   provider_id = "gh-oidc-provider"
   sa_mapping = {
-    (module.github-service-account.service_account.account_id) = {
+    (module.github_service_account.service_account.account_id) = {
       attribute = "attribute.repository/${var.gh_owner}/${var.gh_repo_name}"
-      sa_name   = module.github-service-account.service_account.name
+      sa_name = module.github_service_account.service_account.name
     }
   }
 }
 
-module "gradle-build-cache" {
+module "gradle_build_cache" {
   source     = "terraform-google-modules/cloud-storage/google//modules/simple_bucket"
   version    = "11.1"
 
@@ -107,7 +102,7 @@ module "gradle-build-cache" {
   bucket_policy_only = true
   iam_members = [
     {
-      member = module.github-service-account.iam_email
+      member = module.github_service_account.iam_email
       role   = "roles/storage.admin"
     }
   ]
