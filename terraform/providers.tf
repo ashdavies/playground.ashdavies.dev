@@ -1,6 +1,6 @@
 data "google_service_account_access_token" "default" {
   provider               = google.impersonation
-  target_service_account = module.github-service-account.email
+  target_service_account = module.github_service_account.email
   scopes                 = ["userinfo-email", "cloud-platform"]
   lifetime               = "1200s"
 }
