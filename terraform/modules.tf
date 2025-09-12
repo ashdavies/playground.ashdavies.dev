@@ -53,7 +53,7 @@ module "github_api_key" {
 
 module "fastlane_service_account" {
   source       = "terraform-google-modules/service-accounts/google"
-  version      = "4.5.4"
+  version      = "4.6.0"
   display_name = "Fastlane Service Account"
   names        = ["fastlane-supply"]
   project_id   = var.project_id
@@ -61,7 +61,7 @@ module "fastlane_service_account" {
 
 module "github_service_account" {
   source       = "terraform-google-modules/service-accounts/google"
-  version      = "4.5.4"
+  version      = "4.6.0"
   providers    = { google = google.impersonation }
   display_name = "GitHub Service Account"
   names        = ["oidc"]
