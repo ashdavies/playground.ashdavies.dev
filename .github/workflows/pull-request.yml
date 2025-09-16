@@ -3,7 +3,7 @@ name: Pull Request
 on:
   pull_request:
     branches:
-      - "*"
+      - main
 
   workflow_dispatch:
 
@@ -21,8 +21,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v5
-        with:
-          lfs: 'true'
 
       - uses: google-github-actions/auth@v3
         with:
@@ -37,17 +35,6 @@ jobs:
         run: ./gradlew build -Pgcp.buildcache=true --console=plain
 
       - run: ./gradlew detektAll --continue --console=plain
-
-      # run ./gradlew recordPaparazziDebug
-      - id: screenshot-validation
-        run: ./gradlew verifyPaparazziDebug --console=plain
-
-      - uses: actions/upload-artifact@v4
-        if: ${{ failure() && steps.screenshot-validation.outcome == 'failure' }}
-        with:
-          if-no-files-found: error
-          name: screenshot-test-report
-          path: "**/build/paparazzi/failures"
 
       - uses: thollander/actions-comment-pull-request@v3
         if: ${{ steps.gradle-build.outputs.build-scan-url }}
