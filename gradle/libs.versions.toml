@@ -8,7 +8,7 @@ coil-kt = "3.3.0"
 compose-adaptive = "1.1.2"
 compose-plugin = "1.8.2"
 google-accompanist = "0.37.3"
-google-android = "8.13.0"
+google-android = "8.11.0"
 google-services = "4.4.3"
 jetbrains-kotlin = "2.2.10"
 kotlin-jvmTarget = "17"
@@ -113,10 +113,10 @@ squareup-okio = "com.squareup.okio:okio:3.16.0"
 android-application = { id = "com.android.application", version.ref = "google-android" }
 android-library = { id = "com.android.library", version.ref = "google-android" }
 build-config = "com.github.gmazzo.buildconfig:5.6.8"
-cash-paparazzi = "app.cash.paparazzi:1.3.5"
+cash-paparazzi = "app.cash.paparazzi:2.0.0-alpha02"
 cash-sqldelight = { id = "app.cash.sqldelight", version.ref = "cash-sqldelight" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "jetbrains-kotlin" }
-compose-hotReload = "org.jetbrains.compose.hot-reload:1.0.0-beta06"
+compose-hotReload = "org.jetbrains.compose.hot-reload:1.0.0-beta07"
 detekt = "io.gitlab.arturbosch.detekt:1.23.8"
 crashlytics = "com.google.firebase.crashlytics:3.0.6"
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
