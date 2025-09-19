@@ -1,0 +1,46 @@
+name: Verify Screenshots
+
+on:
+  pull_request:
+    branches:
+      - main
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    permissions:
+      pull-requests: 'write'
+      id-token: 'write'
+
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          lfs: 'true'
+
+      - uses: google-github-actions/auth@v3
+        with:
+          workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
+
+      - uses: gradle/actions/setup-gradle@v4
+
+      - run: echo ${{ secrets.FIREBASE_GOOGLE_SERVICES }} | base64 --decode > conference-app/google-services.json
+
+      - run: ./gradlew build -Pgcp.buildcache=true --console=plain
+
+      - id: verify
+        run: ./gradlew verifyPaparazziDebug --console=plain
+
+      # - id: record
+      #   run: ./gradlew recordPaparazziDebug --console=plain
+
+      - uses: actions/upload-artifact@v4
+        if: ${{ failure() && steps.verify.outcome == 'failure' }}
+        with:
+          path: "**/build/paparazzi/failures"
+          if-no-files-found: error
