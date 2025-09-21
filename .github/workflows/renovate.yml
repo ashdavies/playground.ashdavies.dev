@@ -23,3 +23,4 @@ jobs:
       - uses: renovatebot/github-action@v43.0.12
         with:
           token: ${{ steps.generate_token.outputs.token }}
+          configurationFile: renovate.json
