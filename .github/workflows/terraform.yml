@@ -39,7 +39,7 @@ jobs:
           service_account: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
           token_format: access_token
 
-      - uses: gradle/actions/setup-gradle@v4
+      - uses: gradle/actions/setup-gradle@v5
         if: github.ref == 'refs/heads/main'
 
       - if: github.ref == 'refs/heads/main'
