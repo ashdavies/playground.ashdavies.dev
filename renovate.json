@@ -48,6 +48,12 @@
         "com.android.application"
       ],
       "automerge": false
+    },
+    {
+      "matchPackageNames": [
+        "/^org.jetbrains.kotlin[^a-zA-Z]/",
+        "/^dev.zacsweers.metro/"
+      ]
     }
   ],
   "platformCommit": "enabled",
