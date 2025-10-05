@@ -3,14 +3,14 @@ set -euo pipefail
 
 # Default values
 GITHUB_TOKEN="${GITHUB_TOKEN:-}"
-COMMIT_MSG=""
+COMMIT_MSG="${COMMIT_MSG:-}"
 GIT_NAME=""
 GIT_EMAIL=""
 
 show_help() {
   echo "Usage: $0 [-t GITHUB_TOKEN] [-m COMMIT_MSG]"
   echo "  -t  GitHub Auth Token (can be set in GITHUB_TOKEN env)"
-  echo "  -m  Commit message"
+  echo "  -m  Commit message (can be set in COMMIT_MSG env)"
   exit 1
 }
 
@@ -29,7 +29,7 @@ if [[ -z "${GITHUB_TOKEN}" ]]; then
 fi
 
 if [[ -z "${COMMIT_MSG}" ]]; then
-  echo "Error: Commit message must be provided via -m." >&2
+  echo "Error: Commit message must be provided via -m or COMMIT_MSG env var." >&2
   exit 2
 fi
 

@@ -27,4 +27,7 @@ jobs:
 
       - run: ./gradlew kotlinWasmUpgradeYarnLock --console=plain
 
-      - run: ./scripts/github_pull_request.sh -t ${{ github.token }}
+      - run: ./scripts/github_pull_request.sh
+        env:
+          COMMIT_MSG: "chore: upgrade yarn lock"
+          GITHUB_TOKEN: ${{ github.token }}
