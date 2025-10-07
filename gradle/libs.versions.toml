@@ -116,7 +116,7 @@ build-config = "com.github.gmazzo.buildconfig:5.6.8"
 cash-paparazzi = "app.cash.paparazzi:2.0.0-alpha02"
 cash-sqldelight = { id = "app.cash.sqldelight", version.ref = "cash-sqldelight" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "jetbrains-kotlin" }
-compose-hotReload = "org.jetbrains.compose.hot-reload:1.0.0-beta09"
+compose-hotReload = "org.jetbrains.compose.hot-reload:1.0.0-rc01"
 detekt = "io.gitlab.arturbosch.detekt:1.23.8"
 crashlytics = "com.google.firebase.crashlytics:3.0.6"
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
