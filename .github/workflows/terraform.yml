@@ -49,11 +49,17 @@ jobs:
             --no-configuration-cache \
             --console=plain
 
+      - id: private-key
+        run: |
+          private-key=$(echo "${{ secrets.GH_PRIVATE_KEY }}" | base64 -d | awk 'BEGIN {ORS="\\n"} {print}' | head -c -2) &> /dev/null
+          echo "private-key=private-key" >> "$GITHUB_OUTPUT"
+          echo "::add-mask::private-key"
+
       - uses: actions/create-github-app-token@v2
         id: app-token
         with:
           app-id: ${{ secrets.GH_APP_ID }}
-          private-key: ${{ secrets.GH_PRIVATE_KEY }}
+          private-key: ${{ steps.private-key.output.private-key }}
 
       - uses: hashicorp/setup-terraform@v3
         with:
