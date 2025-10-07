@@ -16,15 +16,15 @@ jobs:
 
       - id: private-key
         run: |
-          private-key=$(echo "${{ secrets.GH_PRIVATE_KEY }}" | base64 -d | awk 'BEGIN {ORS="\\n"} {print}' | head -c -2) &> /dev/null
-          echo "private-key=private-key" >> "$GITHUB_OUTPUT"
-          echo "::add-mask::private-key"
+          PRIVATE_KEY=$(echo "${{ secrets.GH_PRIVATE_KEY }}" | base64 -d | awk 'BEGIN {ORS="\\n"} {print}') &> /dev/null
+          echo "PRIVATE_KEY=$PRIVATE_KEY" >> "$GITHUB_OUTPUT"
+          echo "::add-mask::$PRIVATE_KEY"
 
       - uses: actions/create-github-app-token@v2
         id: app-token
         with:
           app-id: ${{ secrets.GH_APP_ID }}
-          private-key: ${{ steps.private-key.outputs.private-key }}
+          private-key: ${{ steps.private-key.outputs.PRIVATE_KEY }}
 
       - uses: renovatebot/github-action@v43.0.14
         with:
