@@ -44,27 +44,33 @@ if ! command -v curl &>/dev/null; then
   exit 3
 fi
 
-# Detect GitHub user details from token
-GITHUB_USER_JSON=$(curl -s -H "Authorization: token ${GITHUB_TOKEN}" https://api.github.com/user)
-GIT_LOGIN=$(echo "$GITHUB_USER_JSON" | jq -r '.login // empty')
-GIT_ID=$(echo "$GITHUB_USER_JSON" | jq -r '.id // empty')
-GIT_NAME=$(echo "$GITHUB_USER_JSON" | jq -r '.name // empty')
-GIT_EMAIL=$(echo "$GITHUB_USER_JSON" | jq -r '.email // empty')
-
-# Fallbacks for name and email
-if [[ -z "$GIT_NAME" && -n "$GIT_LOGIN" ]]; then
-  GIT_NAME="$GIT_LOGIN"
+# When using a GitHub App installation token, fetch details via the installation API
+INSTALLATION_JSON=$(curl -s -H "Authorization: Bearer ${GITHUB_TOKEN}" -H "Accept: application/vnd.github+json" https://api.github.com/app/installations)
+INSTALL_ID=$(echo "$INSTALLATION_JSON" | jq -r '.[0].id // empty')
+if [[ -z "$INSTALL_ID" ]]; then
+  echo "Error: Unable to get installation id for the app token" >&2
+  exit 4
 fi
-if [[ -z "$GIT_EMAIL" && -n "$GIT_LOGIN" ]]; then
-  if [[ -n "$GIT_ID" && "$GIT_ID" != "null" ]]; then
-    GIT_EMAIL="${GIT_ID}+${GIT_LOGIN}@users.noreply.github.com"
-  else
-    GIT_EMAIL="${GIT_LOGIN}@users.noreply.github.com"
-  fi
+
+# Get details for the installation
+INSTALL_DETAILS=$(curl -s -H "Authorization: Bearer ${GITHUB_TOKEN}" -H "Accept: application/vnd.github+json" "https://api.github.com/app/installations/${INSTALL_ID}")
+ACCOUNT_TYPE=$(echo "$INSTALL_DETAILS" | jq -r '.account.type // empty')
+ACCOUNT_LOGIN=$(echo "$INSTALL_DETAILS" | jq -r '.account.login // empty')
+ACCOUNT_ID=$(echo "$INSTALL_DETAILS" | jq -r '.account.id // empty')
+
+if [[ "$ACCOUNT_TYPE" == "User" ]]; then
+  GIT_NAME="$ACCOUNT_LOGIN"
+  GIT_EMAIL="${ACCOUNT_ID}+${ACCOUNT_LOGIN}@users.noreply.github.com"
+elif [[ "$ACCOUNT_TYPE" == "Organization" ]]; then
+  GIT_NAME="$ACCOUNT_LOGIN"
+  GIT_EMAIL="${ACCOUNT_LOGIN}@users.noreply.github.com"
+else
+  echo "Error: Unable to determine account type from installation details." >&2
+  exit 5
 fi
 
 if [[ -z "$GIT_NAME" || -z "$GIT_EMAIL" ]]; then
-  echo "Error: Unable to determine GitHub user name or email from token" >&2
+  echo "Error: Unable to determine name or email from installation details." >&2
   exit 5
 fi
 
@@ -86,8 +92,8 @@ fi
 
 if [[ -n "$DEFAULT_BRANCH" && "$CURRENT_BRANCH" == "$DEFAULT_BRANCH" ]]; then
   SAFE_BRANCH_NAME="auto/pr-$(date +%Y%m%d%H%M%S)"
-  if [[ -n "$GIT_LOGIN" ]]; then
-    SAFE_BRANCH_NAME+="-$GIT_LOGIN"
+  if [[ -n "$ACCOUNT_LOGIN" ]]; then
+    SAFE_BRANCH_NAME+="-$ACCOUNT_LOGIN"
   fi
   echo "On default branch '$DEFAULT_BRANCH'. Creating and switching to new branch '$SAFE_BRANCH_NAME' before commit."
   git checkout -b "$SAFE_BRANCH_NAME"
