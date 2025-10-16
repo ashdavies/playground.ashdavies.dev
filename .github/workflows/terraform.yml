@@ -101,7 +101,6 @@ jobs:
       - if: github.ref == 'refs/heads/main'
         env:
           TF_VAR_op_service_account_token: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
-          TF_VAR_op_vault_uuid: ${{ secrets.OP_VAULT_UUID }}
           TF_VAR_gh_token: ${{ steps.app-token.outputs.token }}
           TF_LOG: ${{ inputs.debug && 'DEBUG' || 'ERROR' }}
           TF_INPUT: false
