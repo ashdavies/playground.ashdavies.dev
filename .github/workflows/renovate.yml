@@ -14,19 +14,13 @@ jobs:
     steps:
       - uses: actions/checkout@v5.0.0
 
-      - id: private-key
-        run: |
-          PRIVATE_KEY=$(echo "${{ secrets.GH_PRIVATE_KEY }}" | base64 -d | awk 'BEGIN {ORS="\\n"} {print}') &> /dev/null
-          echo "::add-mask::$PRIVATE_KEY"
-          echo "PRIVATE_KEY=$PRIVATE_KEY" >> "$GITHUB_OUTPUT"
-
-      - uses: actions/create-github-app-token@v2
-        id: app-token
+      - id: app-token
+        uses: ./.github/actions/github-token
         with:
-          app-id: ${{ secrets.GH_APP_ID }}
-          private-key: ${{ steps.private-key.outputs.PRIVATE_KEY }}
+          app_id: ${{ secrets.GH_APP_ID }}
+          private_key: ${{ secrets.GH_PRIVATE_KEY }}
 
-      - uses: renovatebot/github-action@v43.0.15
+      - uses: renovatebot/github-action@v43.0.17
         with:
           token: ${{ steps.app-token.outputs.token }}
           configurationFile: renovate.json

@@ -49,21 +49,15 @@ jobs:
             --no-configuration-cache \
             --console=plain
 
-      - id: private-key
-        run: |
-          PRIVATE_KEY=$(echo "${{ secrets.GH_PRIVATE_KEY }}" | base64 -d | awk 'BEGIN {ORS="\\n"} {print}') &> /dev/null
-          echo "::add-mask::$PRIVATE_KEY"
-          echo "PRIVATE_KEY=$PRIVATE_KEY" >> "$GITHUB_OUTPUT"
-
-      - uses: actions/create-github-app-token@v2
-        id: app-token
+      - id: app-token
+        uses: ./.github/actions/github-token
         with:
-          app-id: ${{ secrets.GH_APP_ID }}
-          private-key: ${{ steps.private-key.outputs.PRIVATE_KEY }}
+          app_id: ${{ secrets.GH_APP_ID }}
+          private_key: ${{ secrets.GH_PRIVATE_KEY }}
 
       - uses: hashicorp/setup-terraform@v3
         with:
-          terraform_version: 1.13.3
+          terraform_version: 1.13.4
 
       - uses: terraform-linters/setup-tflint@v6
         if: github.event_name == 'pull_request'
@@ -101,7 +95,6 @@ jobs:
       - if: github.ref == 'refs/heads/main'
         env:
           TF_VAR_op_service_account_token: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
-          TF_VAR_op_vault_uuid: ${{ secrets.OP_VAULT_UUID }}
           TF_VAR_gh_token: ${{ steps.app-token.outputs.token }}
           TF_LOG: ${{ inputs.debug && 'DEBUG' || 'ERROR' }}
           TF_INPUT: false

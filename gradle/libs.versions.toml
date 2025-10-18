@@ -9,7 +9,7 @@ compose-adaptive = "1.1.2"
 compose-plugin = "1.8.2"
 google-accompanist = "0.37.3"
 google-android = "8.11.0"
-google-services = "4.4.3"
+google-services = "4.4.4"
 jetbrains-kotlin = "2.2.20"
 kotlin-jvmTarget = "17"
 kotlinx-coroutines = "1.10.2"
@@ -48,15 +48,15 @@ google-accompanist-permissions = { module = "com.google.accompanist:accompanist-
 google-android-identity = "com.google.android.libraries.identity.googleid:googleid:1.1.1"
 google-android-location = "com.google.android.gms:play-services-location:21.3.0"
 google-android-material = "com.google.android.material:material:1.13.0"
-google-auth-http = "com.google.auth:google-auth-library-oauth2-http:1.39.1"
+google-auth-http = "com.google.auth:google-auth-library-oauth2-http:1.40.0"
 google-firebase-admin = "com.google.firebase:firebase-admin:9.7.0"
 google-firebase-appcheck-playintegrity = { module = "com.google.firebase:firebase-appcheck-playintegrity" }
 google-firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
-google-firebase-bom = "com.google.firebase:firebase-bom:34.3.0"
+google-firebase-bom = "com.google.firebase:firebase-bom:34.4.0"
 google-firebase-config = { module = "com.google.firebase:firebase-config" }
 google-firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
 google-guava-jre = "com.google.guava:guava:33.5.0-jre"
-google-maps-android-compose = "com.google.maps.android:maps-compose:6.12.0"
+google-maps-android-compose = "com.google.maps.android:maps-compose:6.12.1"
 google-maps-android-utils = "com.google.maps.android:android-maps-utils:3.19.0"
 
 jib-core = "com.google.cloud.tools:jib-core:0.27.3"
@@ -107,16 +107,16 @@ sqldelight-sqlite-dialect = { group = "app.cash.sqldelight", name = "sqlite-3-38
 sqldelight-sqlite-driver = { module = "app.cash.sqldelight:sqlite-driver", version.ref = "cash-sqldelight" }
 sqldelight-web-driver = { module = "app.cash.sqldelight:web-worker-driver", version.ref = "cash-sqldelight" }
 
-squareup-okio = "com.squareup.okio:okio:3.16.0"
+squareup-okio = "com.squareup.okio:okio:3.16.2"
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "google-android" }
 android-library = { id = "com.android.library", version.ref = "google-android" }
-build-config = "com.github.gmazzo.buildconfig:5.6.8"
+build-config = "com.github.gmazzo.buildconfig:5.7.0"
 cash-paparazzi = "app.cash.paparazzi:2.0.0-alpha02"
 cash-sqldelight = { id = "app.cash.sqldelight", version.ref = "cash-sqldelight" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "jetbrains-kotlin" }
-compose-hotReload = "org.jetbrains.compose.hot-reload:1.0.0-rc01"
+compose-hotReload = "org.jetbrains.compose.hot-reload:1.0.0-rc02"
 detekt = "io.gitlab.arturbosch.detekt:1.23.8"
 crashlytics = "com.google.firebase.crashlytics:3.0.6"
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
