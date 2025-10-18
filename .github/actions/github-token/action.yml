@@ -1,0 +1,36 @@
+name: GitHub Token
+
+inputs:
+  app_id:
+    description: The application identifier of the GitHub app
+    required: true
+
+  private_key:
+    description: The base64-encoded private key of the GitHub app
+    required: true
+
+outputs:
+  token:
+    description: GitHub App installation access token
+    value: ${{ steps.token.outputs.TOKEN }}
+
+runs:
+  using: "composite"
+
+  steps:
+    - id: token
+      shell: bash
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
+      run: |
+        TOKEN=$(
+          ./scripts/github_app_token.sh \
+            --app-id "${{ inputs.app_id }}" \
+            --jwt $(
+              ./scripts/generate_signed_jwt.sh \
+                --issuer "${{ inputs.app_id }}" \
+                --private-key "${{ inputs.private_key }}" \
+            ) \
+        )
+        
+        echo "TOKEN=$TOKEN" >> "$GITHUB_OUTPUT"
