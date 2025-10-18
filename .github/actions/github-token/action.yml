@@ -24,13 +24,11 @@ runs:
         GITHUB_TOKEN: ${{ github.token }}
       run: |
         TOKEN=$(
-          ./scripts/github_app_token.sh \
-            --app-id "${{ inputs.app_id }}" \
-            --jwt $(
-              ./scripts/generate_signed_jwt.sh \
-                --issuer "${{ inputs.app_id }}" \
-                --private-key "${{ inputs.private_key }}" \
-            ) \
+          ./scripts/github_install_token.sh --app-token $(
+            ./scripts/generate_signed_jwt.sh \
+              --issuer "${{ inputs.app_id }}" \
+              --private-key "${{ inputs.private_key }}" \
+          ) \
         )
         
         echo "TOKEN=$TOKEN" >> "$GITHUB_OUTPUT"

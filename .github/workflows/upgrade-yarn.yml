@@ -27,13 +27,19 @@ jobs:
 
       - run: ./gradlew kotlinWasmUpgradeYarnLock --console=plain
 
-      - id: app-token
-        uses: ./.github/actions/github-token
-        with:
-          app_id: ${{ secrets.GH_APP_ID }}
-          private_key: ${{ secrets.GH_PRIVATE_KEY }}
+      - run: |
+          APP_TOKEN=$(
+            ./scripts/generate_signed_jwt.sh \
+              --issuer "${{ secrets.GH_APP_ID }}" \
+              --private-key "${{ secrets.GH_PRIVATE_KEY }}" \
+          )
+          
+          GITHUB_TOKEN=$(
+            ./scripts/github_install_token.sh \
+              --app-token $APP_TOKEN \
+          )
 
-      - run: ./scripts/github_pull_request.sh
-        env:
-          COMMIT_MSG: "chore: upgrade yarn lock"
-          GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
+          ./scripts/github_pull_request.sh \
+            --app-token "$APP_TOKEN" \
+            --github-token "$GITHUB_TOKEN" \
+            --commit-msg "chore: upgrade yarn lock"
