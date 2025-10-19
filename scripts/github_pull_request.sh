@@ -65,16 +65,19 @@ GIT_NAME="${GITHUB_APP_SLUG}[bot]"
 
 GITHUB_APP_USER_ID=$(gh api "users/${GIT_NAME}" --jq ".id")
 GIT_EMAIL="${GITHUB_APP_USER_ID}+${GIT_NAME}@users.noreply.github.com"
+GIT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 
 if [[ -z "$GIT_NAME" || -z "$GIT_EMAIL" ]]; then
   echo "Error: Unable to determine GitHub user name or email from token" >&2
   exit 3
 fi
 
-GIT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+git config user.name "$GIT_NAME"
+git config user.email "$GIT_EMAIL"
 
 git checkout -b "auto/$(uuidgen)"
-git commit --author="${GIT_NAME} <${GIT_EMAIL}>" -am "$COMMIT_MSG"
+git commit -am "$COMMIT_MSG"
+
 git push --set-upstream origin "$GIT_BRANCH"
 
 GITHUB_PR_URL=$(gh pr view "$GIT_BRANCH" --json url -q .url 2>/dev/null)
