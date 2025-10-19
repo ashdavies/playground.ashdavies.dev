@@ -4,7 +4,7 @@ set -eo pipefail
 
 show_help() {
   cat << EOF
-Usage: $(basename "$0") --app-token <APP_TOKEN> --commit-msg <COMMIT_MSG>
+Usage: $(basename "$0") --app-token <APP_TOKEN> --github-token <GITHUB_TOKEN> --commit-msg <COMMIT_MSG>
 
 Automates the workflow of creating a branch, committing staged and unstaged changes, pushing to GitHub, and creating a PR.
 
