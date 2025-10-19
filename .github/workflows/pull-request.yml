@@ -32,7 +32,11 @@ jobs:
       - run: echo ${{ secrets.FIREBASE_GOOGLE_SERVICES }} | base64 --decode > conference-app/google-services.json
 
       - id: gradle-build
-        run: ./gradlew build -Pgcp.buildcache=true --console=plain
+        run: |
+          ./gradlew build \
+            ${{ contains(github.event.pull_request.labels.*.name, 'Dry Run') && '--dry-run' || '' }} \
+            -Pgcp.buildcache=true \
+            --console=plain
 
       - run: ./gradlew detektAll --continue --console=plain
 
