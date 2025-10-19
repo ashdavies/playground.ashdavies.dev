@@ -34,9 +34,6 @@ jobs:
       - id: verify
         run: ./gradlew verifyPaparazziDebug --console=plain
 
-      # - id: record
-      #   run: ./gradlew recordPaparazziDebug --console=plain
-
       - uses: actions/upload-artifact@v4
         if: ${{ failure() && steps.verify.outcome == 'failure' }}
         with:
