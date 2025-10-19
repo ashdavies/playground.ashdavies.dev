@@ -27,7 +27,9 @@ jobs:
 
       - run: ./gradlew kotlinWasmUpgradeYarnLock --console=plain
 
-      - run: |
+      - env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
           APP_TOKEN=$(
             ./scripts/generate_signed_jwt.sh \
               --issuer "${{ secrets.GH_APP_ID }}" \
