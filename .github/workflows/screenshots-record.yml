@@ -26,7 +26,9 @@ jobs:
 
       - run: ./gradlew recordPaparazziDebug --console=plain
 
-      - run: |
+      - env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
           git config user.name "${{ github.actor }}"
           git config user.email "${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com"
           
