@@ -47,6 +47,7 @@ jobs:
           fi
           
           # --- Prepare ---
+          git add --all
           COMMIT_CONTENT=$(git diff --cached --name-only)
           echo "Files to commit:"
           echo "$COMMIT_CONTENT"
