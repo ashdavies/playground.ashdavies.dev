@@ -98,4 +98,4 @@ jobs:
           echo "✅ Commit pushed to new branch: $BRANCH_NAME"  
     
           # Create Pull Request
-            gh pr create --head "$BRANCH_NAME" --base "${GITHUB_REF_NAME}" --fill --label "Automated"
+            gh pr create --head "$BRANCH_NAME" --base "${{ github.ref_name }}" --fill --label "Automated"
