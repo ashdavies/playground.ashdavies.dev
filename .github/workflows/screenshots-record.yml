@@ -33,10 +33,9 @@ jobs:
 
       - env:
           GITHUB_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
         run: |
           # --- Configuration ---
-          GITHUB_TOKEN="YOUR_GITHUB_TOKEN"
-          REPO="username/repository"    # e.g. octocat/Hello-World
           BRANCH_NAME="auto-commit-$(date +%Y%m%d-%H%M%S)"
           COMMIT_MESSAGE="Auto commit via GitHub API"
           BASE_BRANCH="main"
@@ -63,21 +62,21 @@ jobs:
           echo "Created new branch: $BRANCH_NAME"
           
           # --- Create blobs for each changed file ---
-            declare -A BLOBS
-            for FILE in $COMMIT_CONTENT; do
+          declare -A BLOBS
+          for FILE in $COMMIT_CONTENT; do
             CONTENT=$(base64 -w0 "$FILE")
-          BLOB_SHA=$(curl -s -X POST -H "Authorization: token $GITHUB_TOKEN" \
-            -d "{\"content\":\"$CONTENT\", \"encoding\":\"base64\"}" \
-            "https://api.github.com/repos/$REPO/git/blobs" | jq -r .sha)
+            BLOB_SHA=$(curl -s -X POST -H "Authorization: token $GITHUB_TOKEN" \
+              -d "{\"content\":\"$CONTENT\", \"encoding\":\"base64\"}" \
+              "https://api.github.com/repos/$REPO/git/blobs" | jq -r .sha)
             BLOBS["$FILE"]=$BLOB_SHA
-            done
+          done
           
           # --- Get base tree ---
           BASE_TREE=$(curl -s -H "Authorization: token $GITHUB_TOKEN" \
             "https://api.github.com/repos/$REPO/git/commits/$BASE_SHA" | jq -r .tree.sha)
           
           # --- Create new tree with updated files ---
-            TREE_ENTRIES=$(printf '%s\n' "${!BLOBS[@]}" | jq -R -s -c \
+          TREE_ENTRIES=$(printf '%s\n' "${!BLOBS[@]}" | jq -R -s -c \
             --argjson blobs "$(printf '%s\n' "${!BLOBS[@]}" | jq -R -s -c 'split("\n")[:-1]')" \
             'split("\n")[:-1] | map({path: ., mode: "100644", type: "blob", sha: env.BLOBS[.]} )')
           
