@@ -98,4 +98,4 @@ jobs:
           echo "✅ Commit pushed to new branch: $BRANCH_NAME"  
     
           # Create Pull Request
-          gh pr create --fill --label "Automated"
+          gh pr create --title "$COMMIT_MESSAGE" --body "" --label "Automated"
