@@ -25,12 +25,12 @@ import dev.ashdavies.playground.upcoming.UpcomingScreen
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.Assisted
 import dev.zacsweers.metro.AssistedFactory
+import dev.zacsweers.metro.AssistedInject
 import dev.zacsweers.metro.ContributesIntoMap
-import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.binding
 import kotlinx.coroutines.launch
 
-internal class BottomBarScaffoldPresenter @Inject constructor(
+internal class BottomBarScaffoldPresenter @AssistedInject constructor(
     @Assisted private val navigator: Navigator,
     private val platformContext: PlatformContext,
     private val remoteConfig: RemoteConfig,
