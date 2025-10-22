@@ -14,11 +14,11 @@ import dev.ashdavies.playground.events.EventsDetailScreen
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.Assisted
 import dev.zacsweers.metro.AssistedFactory
+import dev.zacsweers.metro.AssistedInject
 import dev.zacsweers.metro.ContributesIntoMap
-import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.binding
 
-internal class UpcomingPresenter @Inject constructor(
+internal class UpcomingPresenter @AssistedInject constructor(
     @Assisted private val navigator: Navigator,
     private val eventPager: Pager<*, Event>,
     private val remoteAnalytics: RemoteAnalytics,

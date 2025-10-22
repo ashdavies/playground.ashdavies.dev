@@ -14,11 +14,11 @@ import dev.ashdavies.sql.map
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.Assisted
 import dev.zacsweers.metro.AssistedFactory
+import dev.zacsweers.metro.AssistedInject
 import dev.zacsweers.metro.ContributesIntoMap
-import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.binding
 
-internal class EventsDetailPresenter @Inject constructor(
+internal class EventsDetailPresenter @AssistedInject constructor(
     @Assisted private val screen: EventsDetailScreen,
     @Assisted private val navigator: Navigator,
     private val databaseFactory: DatabaseFactory<PlaygroundDatabase>,
