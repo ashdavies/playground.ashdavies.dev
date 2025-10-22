@@ -12,29 +12,12 @@ jobs:
     runs-on: ubuntu-latest
 
     permissions:
-      pull-requests: 'write'
-      id-token: 'write'
+      contents: write
+      id-token: write
+      pull-requests: write
 
     steps:
-      - id: token
-        run: |
-          APP_TOKEN=$(
-            ./scripts/generate_signed_jwt.sh \
-              --issuer "${{ secrets.GH_APP_ID }}" \
-              --private-key "${{ secrets.GH_PRIVATE_KEY }}" \
-          )
-          
-          GITHUB_TOKEN=$(
-            ./scripts/github_install_token.sh \
-            --app-token $APP_TOKEN \
-          )
-          
-          echo "::set-output name=APP_TOKEN::$GITHUB_TOKEN"
-          echo "::set-output name=GITHUB_TOKEN::$GITHUB_TOKEN"
-
       - uses: actions/checkout@v5
-        with:
-          token: ${{ steps.token.outputs.APP_TOKEN }}
 
       - uses: google-github-actions/auth@v3
         with:
@@ -43,12 +26,8 @@ jobs:
 
       - uses: gradle/actions/setup-gradle@v5
 
-      - run: ./gradlew kotlinWasmUpgradeYarnLock --console=plain
+      - run: ./gradlew kotlinWasmUpgradeYarnLock --console=plain && git add --all
 
-      - env:
+      - run: ./scripts/github_pull_request.sh --commit-msg "chore&#58; upgrade yarn lock"
+        env:
           GITHUB_TOKEN: ${{ github.token }}
-        run: |
-          ./scripts/github_pull_request.sh \
-            --app-token "${{ steps.token.outputs.APP_TOKEN }}" \
-            --github-token "${{ steps.token.outputs.GITHUB_TOKEN }}" \
-            --commit-msg "chore: upgrade yarn lock"
