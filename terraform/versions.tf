@@ -7,12 +7,12 @@ terraform {
 
     google = {
       source  = "hashicorp/google"
-      version = "6.50.0"
+      version = "7.7.0"
     }
 
     google-beta = {
       source  = "hashicorp/google-beta"
-      version = "7.7.0"
+      version = "7.8.0"
     }
 
     onepassword = {

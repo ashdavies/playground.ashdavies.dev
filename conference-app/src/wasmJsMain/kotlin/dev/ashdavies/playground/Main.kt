@@ -6,7 +6,7 @@ import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.ExperimentalComposeUiApi
-import androidx.compose.ui.window.CanvasBasedWindow
+import androidx.compose.ui.window.ComposeViewport
 import com.slack.circuit.backstack.rememberSaveableBackStack
 import com.slack.circuit.foundation.CircuitCompositionLocals
 import com.slack.circuit.foundation.NavigableCircuitContent
@@ -18,7 +18,7 @@ import dev.zacsweers.metro.createGraphFactory
 
 @OptIn(ExperimentalComposeUiApi::class)
 public fun main() {
-    CanvasBasedWindow("ConferenceApp") {
+    ComposeViewport("ConferenceApp") {
         ConferenceApp(PlatformContext)
     }
 }
