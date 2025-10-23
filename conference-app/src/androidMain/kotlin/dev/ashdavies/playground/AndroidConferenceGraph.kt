@@ -3,7 +3,6 @@ package dev.ashdavies.playground
 import android.app.Activity
 import android.content.Context
 import android.os.Build
-import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.core.content.pm.PackageInfoCompat
 import com.google.firebase.appcheck.FirebaseAppCheck
 import com.google.firebase.appcheck.playintegrity.PlayIntegrityAppCheckProviderFactory
@@ -46,10 +45,7 @@ internal interface AndroidConferenceGraph : ConferenceGraph {
     @DependencyGraph.Factory
     fun interface Factory {
 
-        fun create(
-            @Provides activity: Activity,
-            @Provides windowSizeClass: WindowSizeClass,
-        ): AndroidConferenceGraph
+        fun create(@Provides activity: Activity): AndroidConferenceGraph
     }
 }
 

@@ -10,11 +10,11 @@ compose-plugin = "1.9.1"
 google-accompanist = "0.37.3"
 google-android = "8.11.0"
 google-services = "4.4.4"
-jetbrains-kotlin = "2.2.20"
+jetbrains-kotlin = "2.2.21"
 kotlin-jvmTarget = "17"
 kotlinx-coroutines = "1.10.2"
 kotlinx-serialization = "1.9.0"
-ktor = "3.2.3"
+ktor = "3.3.0"
 slack-circuit = "0.30.0"
 sqlJs = "1.8.0"
 webPack = "9.1.0"
@@ -28,6 +28,7 @@ androidx-credentials-auth = "androidx.credentials:credentials-play-services-auth
 androidx-paging-common = { module = "androidx.paging:paging-common", version.ref = "androidx-paging" }
 androidx-paging-compose = { module = "androidx.paging:paging-compose", version.ref = "androidx-paging" }
 androidx-paging-testing = { module = "androidx.paging:paging-testing", version.ref = "androidx-paging" }
+androidx-window-core = "org.jetbrains.androidx.window:window-core:1.4.0"
 
 app-cash-turbine = "app.cash.turbine:turbine:1.2.1"
 
@@ -39,7 +40,6 @@ coil-network = { module = "io.coil-kt.coil3:coil-network-ktor3", version.ref = "
 
 compose-adaptive-layout = { module = "org.jetbrains.compose.material3.adaptive:adaptive-layout", version.ref = "compose-adaptive" }
 compose-adaptive-navigation = { module = "org.jetbrains.compose.material3.adaptive:adaptive-navigation", version.ref = "compose-adaptive" }
-compose-window-size = { module = "org.jetbrains.compose.material3:material3-window-size-class", version.ref = "compose-plugin" }
 compose-back-handler = "org.jetbrains.compose.ui:ui-backhandler:1.9.1"
 
 detekt-compose = "io.nlopez.compose.rules:detekt:0.4.27"
@@ -126,4 +126,4 @@ kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref 
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "jetbrains-kotlin" }
 kotlinx-kover = "org.jetbrains.kotlinx.kover:0.9.3"
 ktlint = "org.jlleitschuh.gradle.ktlint:13.1.0"
-zac-metro = "dev.zacsweers.metro:0.7.1"
+zac-metro = "dev.zacsweers.metro:0.7.2"

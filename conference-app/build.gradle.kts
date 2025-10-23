@@ -152,12 +152,12 @@ kotlin {
             implementation(compose.ui)
 
             implementation(libs.androidx.annotation)
+            implementation(libs.androidx.window.core)
             implementation(libs.coil.compose)
             implementation(libs.coil.network)
             implementation(libs.compose.adaptive.layout)
             implementation(libs.compose.adaptive.navigation)
             implementation(libs.compose.back.handler)
-            implementation(libs.compose.window.size)
             implementation(libs.kotlinx.collections.immutable)
             implementation(libs.kotlinx.datetime)
             implementation(libs.kotlinx.io.core)
@@ -220,7 +220,6 @@ kotlin {
             implementation(compose.runtime)
             implementation(compose.ui)
 
-            implementation(libs.compose.window.size)
             implementation(libs.slack.circuit.foundation)
             implementation(libs.slack.circuit.overlay)
         }
