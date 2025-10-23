@@ -76,7 +76,7 @@ internal object PastScreen : Parcelable, Screen {
 
 @CircuitScreenKey(PastScreen::class)
 @ContributesIntoMap(AppScope::class, binding<Ui<*>>())
-internal class PastUi @Inject constructor(private val windowSizeClass: WindowSizeClass) : Ui<PastScreen.State> {
+internal class PastUi @Inject constructor() : Ui<PastScreen.State> {
 
     @Composable
     override fun Content(state: PastScreen.State, modifier: Modifier) {
