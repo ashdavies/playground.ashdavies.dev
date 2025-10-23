@@ -26,8 +26,8 @@ jobs:
 
       - uses: gradle/actions/setup-gradle@v5
 
-      - run: ./gradlew kotlinWasmUpgradeYarnLock --console=plain && git add --all
+      - run: ./gradlew kotlinWasmUpgradeYarnLock --console=plain
 
-      - run: ./scripts/github_pull_request.sh --commit-msg "chore&#58; upgrade yarn lock"
+      - run: ./scripts/github_pull_request.sh --add-all --commit-msg "chore&#58; upgrade yarn lock"
         env:
           GITHUB_TOKEN: ${{ github.token }}
