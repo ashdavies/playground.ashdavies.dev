@@ -27,6 +27,6 @@ jobs:
 
       - run: ./gradlew recordPaparazziDebug --console=plain
 
-      - run: ./scripts/github_pull_request.sh --commit-msg "chore&#58; record screenshots"
+      - run: ./scripts/github_pull_request.sh --add-all --commit-msg "chore&#58; record screenshots"
         env:
           GITHUB_TOKEN: ${{ github.token }}
