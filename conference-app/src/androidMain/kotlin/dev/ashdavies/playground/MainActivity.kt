@@ -6,8 +6,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
-import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import com.slack.circuit.backstack.rememberSaveableBackStack
@@ -36,12 +34,9 @@ internal class MainActivity : ComponentActivity() {
 @Composable
 private fun ConferenceApp(activity: Activity) {
     MaterialTheme(dynamicColorScheme()) {
-        @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
-        val windowSizeClass = calculateWindowSizeClass(activity)
-
-        val conferenceGraph = remember(activity, windowSizeClass) {
+        val conferenceGraph = remember(activity) {
             val factory = createGraphFactory<AndroidConferenceGraph.Factory>()
-            factory.create(activity, windowSizeClass)
+            factory.create(activity)
         }
 
         CircuitCompositionLocals(conferenceGraph.circuit) {

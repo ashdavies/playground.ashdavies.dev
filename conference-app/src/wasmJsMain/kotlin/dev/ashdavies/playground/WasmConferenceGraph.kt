@@ -1,10 +1,8 @@
 package dev.ashdavies.playground
 
-import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import dev.ashdavies.content.PlatformContext
 import dev.ashdavies.http.defaultHttpClient
 import dev.ashdavies.paging.Pager
-import dev.ashdavies.playground.BuildConfig
 import dev.ashdavies.playground.events.Event
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.DependencyGraph
@@ -31,9 +29,6 @@ internal interface WasmConferenceGraph : ConferenceGraph {
     @DependencyGraph.Factory
     fun interface Factory {
 
-        fun create(
-            @Provides context: PlatformContext,
-            @Provides windowSizeClass: WindowSizeClass,
-        ): WasmConferenceGraph
+        fun create(@Provides context: PlatformContext): WasmConferenceGraph
     }
 }

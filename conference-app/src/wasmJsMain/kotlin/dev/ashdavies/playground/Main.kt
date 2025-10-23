@@ -1,8 +1,6 @@
 package dev.ashdavies.playground
 
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
-import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -26,12 +24,9 @@ public fun main() {
 @Composable
 private fun ConferenceApp(context: PlatformContext) {
     MaterialTheme {
-        @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
-        val windowSizeClass = calculateWindowSizeClass()
-
-        val conferenceGraph = remember(context, windowSizeClass) {
+        val conferenceGraph = remember(context) {
             val factory = createGraphFactory<WasmConferenceGraph.Factory>()
-            factory.create(context, windowSizeClass)
+            factory.create(context)
         }
 
         CircuitCompositionLocals(conferenceGraph.circuit) {

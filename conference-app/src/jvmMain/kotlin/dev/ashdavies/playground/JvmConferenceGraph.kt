@@ -1,9 +1,7 @@
 package dev.ashdavies.playground
 
-import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import dev.ashdavies.content.PlatformContext
 import dev.ashdavies.http.defaultHttpClient
-import dev.ashdavies.playground.BuildConfig
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.DependencyGraph
 import dev.zacsweers.metro.Provides
@@ -25,9 +23,6 @@ internal interface JvmConferenceGraph : ConferenceGraph {
     @DependencyGraph.Factory
     fun interface Factory {
 
-        fun create(
-            @Provides context: PlatformContext,
-            @Provides windowSizeClass: WindowSizeClass,
-        ): JvmConferenceGraph
+        fun create(@Provides context: PlatformContext): JvmConferenceGraph
     }
 }
