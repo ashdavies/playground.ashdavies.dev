@@ -78,7 +78,7 @@ GIT_REPO="$(gh repo view --json nameWithOwner -q .nameWithOwner)"
 BRANCH_NAME="auto/$(uuidgen)"
 
 # Determine base branch (e.g. main/master)
-BASE_BRANCH=$(gh repo view --json defaultBranchRef --jq .defaultBranchRef.name)
+BASE_BRANCH="$(gh repo view --json defaultBranchRef --jq .defaultBranchRef.name)"
 BASE_SHA="$(gh api "repos/$GIT_REPO/git/ref/heads/$BASE_BRANCH" --jq .object.sha)"
 
 log "Repository: $GIT_REPO"
