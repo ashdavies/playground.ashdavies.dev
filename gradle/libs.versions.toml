@@ -28,6 +28,7 @@ androidx-credentials-auth = "androidx.credentials:credentials-play-services-auth
 androidx-paging-common = { module = "androidx.paging:paging-common", version.ref = "androidx-paging" }
 androidx-paging-compose = { module = "androidx.paging:paging-compose", version.ref = "androidx-paging" }
 androidx-paging-testing = { module = "androidx.paging:paging-testing", version.ref = "androidx-paging" }
+androidx-window-core = "org.jetbrains.androidx.window:window-core:1.4.0"
 
 app-cash-turbine = "app.cash.turbine:turbine:1.2.1"
 
@@ -39,7 +40,6 @@ coil-network = { module = "io.coil-kt.coil3:coil-network-ktor3", version.ref = "
 
 compose-adaptive-layout = { module = "org.jetbrains.compose.material3.adaptive:adaptive-layout", version.ref = "compose-adaptive" }
 compose-adaptive-navigation = { module = "org.jetbrains.compose.material3.adaptive:adaptive-navigation", version.ref = "compose-adaptive" }
-compose-window-size = { module = "org.jetbrains.compose.material3:material3-window-size-class", version.ref = "compose-plugin" }
 compose-back-handler = "org.jetbrains.compose.ui:ui-backhandler:1.9.1"
 
 detekt-compose = "io.nlopez.compose.rules:detekt:0.4.27"

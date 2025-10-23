@@ -19,13 +19,13 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.ScaffoldDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.windowsizeclass.WindowSizeClass
-import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.window.core.layout.WindowSizeClass
 import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.screen.Screen
 import com.slack.circuit.runtime.ui.Ui
@@ -76,15 +76,17 @@ internal object PastScreen : Parcelable, Screen {
 
 @CircuitScreenKey(PastScreen::class)
 @ContributesIntoMap(AppScope::class, binding<Ui<*>>())
-internal class PastUi @Inject constructor(
-    private val windowSizeClass: WindowSizeClass,
-) : Ui<PastScreen.State> {
+internal class PastUi @Inject constructor(private val windowSizeClass: WindowSizeClass) : Ui<PastScreen.State> {
 
     @Composable
     override fun Content(state: PastScreen.State, modifier: Modifier) {
-        val columnCount = when (windowSizeClass.widthSizeClass) {
-            WindowWidthSizeClass.Compact -> PastScreenDefaults.MIN_COLUMN_COUNT
-            else -> PastScreenDefaults.MAX_COLUMN_COUNT
+        val isWidthAtLeastMedium = currentWindowAdaptiveInfo()
+            .windowSizeClass
+            .isWidthAtLeastBreakpoint(WindowSizeClass.WIDTH_DP_MEDIUM_LOWER_BOUND)
+
+        val columnCount = when {
+            isWidthAtLeastMedium -> PastScreenDefaults.MAX_COLUMN_COUNT
+            else -> PastScreenDefaults.MIN_COLUMN_COUNT
         }
 
         val eventSink = state.eventSink
