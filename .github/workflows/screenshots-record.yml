@@ -1,0 +1,32 @@
+name: Record Screenshots
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  recordScreenshots:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+      id-token: write
+      pull-requests: write
+
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          lfs: 'true'
+
+      - uses: gradle/actions/setup-gradle@v5
+
+      - run: echo ${{ secrets.FIREBASE_GOOGLE_SERVICES }} | base64 --decode > conference-app/google-services.json
+
+      - run: ./gradlew recordPaparazziDebug --console=plain
+
+      - run: ./scripts/github_pull_request.sh --add-all --commit-msg "chore&#58; record screenshots"
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
