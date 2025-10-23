@@ -36,6 +36,10 @@ error_exit() {
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
+    --add-all)
+      git add --all
+      shift 1
+      ;;
     --commit-msg)
       COMMIT_MSG="$2"
       shift 2
@@ -101,11 +105,11 @@ jq -n --arg ref "refs/heads/$BRANCH_NAME" --arg sha "$BASE_SHA" '{ref: $ref, sha
 declare -A BLOBS
 
 while IFS= read -r FILE; do
-  log "Creating blob for: $FILE"
-  SHA=$(jq -n --arg content "$(base64 "$FILE" | tr -d '\n')" --arg encoding "base64" \
+  SHA=$(jq -n --arg content "$(base64 < "$FILE" | tr -d '\n')" --arg encoding "base64" \
     '{content: $content, encoding: $encoding}' |
     gh api "repos/$GIT_REPO/git/blobs" --input - --jq .sha) ||
     error_exit "Failed to create blob for $FILE."
+  log "Created blob for: $FILE"
   BLOBS["$FILE"]="$SHA"
 done < <(git diff --cached --name-only)
 
