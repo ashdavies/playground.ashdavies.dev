@@ -14,7 +14,7 @@ Automates the workflow of creating a branch, committing staged and unstaged chan
 
 Arguments:
   --add-all        Add all files to the index prior to committing
-  --bash-branch    The branch into which you want your code merged (required)
+  --base-branch    The branch into which you want your code merged (required)
   --commit-msg     Git commit message for the automatic commit (required)
   --help           Show this help message
 
