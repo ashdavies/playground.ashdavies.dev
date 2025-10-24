@@ -8,12 +8,14 @@ set -eo pipefail
 
 show_help() {
   cat << EOF
-Usage: $(basename "$0") --commit-msg <COMMIT_MSG>
+Usage: $(basename "$0") --add-all --base-branch <BASE_BRANCH> --commit-msg <COMMIT_MSG>
 
 Automates the workflow of creating a branch, committing staged and unstaged changes, pushing to GitHub, and creating a PR.
 
 Arguments:
-  --commit-msg     Git commit message for the automatic commit
+  --add-all        Add all files to the index prior to committing
+  --base-branch    The branch into which you want your code merged (required)
+  --commit-msg     Git commit message for the automatic commit (required)
   --help           Show this help message
 
 Environment:
@@ -40,6 +42,10 @@ while [[ $# -gt 0 ]]; do
       git add --all
       shift 1
       ;;
+    --base-branch)
+      BASE_BRANCH="$2"
+      shift 2
+      ;;
     --commit-msg)
       COMMIT_MSG="$2"
       shift 2
@@ -59,6 +65,7 @@ done
 #---------------------------------------
 
 [[ -z "${GITHUB_TOKEN:-}" ]] && error_exit "GITHUB_TOKEN environment variable is required."
+[[ -z "$BASE_BRANCH" ]] && error_exit "--base-branch is required."
 [[ -z "$COMMIT_MSG" ]] && error_exit "--commit-msg is required."
 
 for cmd in gh jq uuidgen git; do
@@ -82,7 +89,6 @@ GIT_REPO="$(gh repo view --json nameWithOwner -q .nameWithOwner)"
 BRANCH_NAME="auto/$(uuidgen)"
 
 # Determine base branch (e.g. main/master)
-BASE_BRANCH="$(gh repo view --json defaultBranchRef --jq .defaultBranchRef.name)"
 BASE_SHA="$(gh api "repos/$GIT_REPO/git/ref/heads/$BASE_BRANCH" --jq .object.sha)"
 
 log "Repository: $GIT_REPO"
