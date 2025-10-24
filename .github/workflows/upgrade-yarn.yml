@@ -28,6 +28,9 @@ jobs:
 
       - run: ./gradlew kotlinWasmUpgradeYarnLock --console=plain
 
-      - run: ./scripts/github_pull_request.sh --add-all --commit-msg "chore&#58; upgrade yarn lock"
-        env:
+      - env:
           GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          ./scripts/github_pull_request.sh --add-all \
+            --branch-name "${{ github.head_ref || github.ref_name }}" 
+            --commit-msg "chore: upgrade yarn lock"
