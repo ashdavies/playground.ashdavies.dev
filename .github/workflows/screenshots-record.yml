@@ -31,5 +31,5 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
         run: |
           ./scripts/github_pull_request.sh --add-all \
-            --base-branch "${{ github.head_ref || github.ref_name }}"
-            --commit-msg "chore&#58; record screenshots"
+            --base-branch "${{ github.head_ref || github.ref_name }}" \
+            --commit-msg "chore: record screenshots"
