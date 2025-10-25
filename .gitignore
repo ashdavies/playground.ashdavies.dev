@@ -28,6 +28,9 @@ crash.*.log
 **/.runtimeconfig.json
 **/*.log
 
+# Google Cloud
+gha-creds-*.json
+
 # Gradle
 /gradle.properties
 **/local.properties
