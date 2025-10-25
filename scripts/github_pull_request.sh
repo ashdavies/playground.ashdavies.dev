@@ -104,11 +104,10 @@ else
   echo "Creating new pull request..." >&2
 
   gh pr create \
-    --body "Automated PR for commit: $COMMIT_MSG" \
     --label "Automated" \
-    --title "$COMMIT_MSG" \
     --base "$BASE_BRANCH" \
     --head "$BRANCH_NAME" \
+    --fill \
     | tee /dev/stderr ||
     (echo "Failed to create pull request." >&2 && exit 6)
 
