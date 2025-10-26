@@ -45,10 +45,8 @@ module "github_api_key" {
   display_name = "Integration key (managed by Terraform)"
   name         = "integration"
   project      = var.project_id
-  repository   = var.gh_repo_name
   service      = "identitytoolkit.googleapis.com"
   source       = "./modules/google/github-api-key"
-  secret_name  = "integration_api_key"
 }
 
 module "fastlane_service_account" {
