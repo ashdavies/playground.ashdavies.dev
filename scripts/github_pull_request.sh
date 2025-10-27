@@ -47,7 +47,7 @@ done
 
 # Verify installed commands
 for cmd in gh uuidgen git; do
-  command -v "$cmd" >/dev/null 2>&1 || (echo "Required command '$cmd' not found." >&2 && exit 3)
+  command -v "$cmd" >/dev/null 2>&1 || { echo "Required command '$cmd' not found." >&2; exit 3; }
 done
 
 # Add all untracked files
