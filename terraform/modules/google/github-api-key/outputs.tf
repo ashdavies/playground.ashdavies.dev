@@ -6,4 +6,5 @@ output "uid" {
 output "key_string" {
   description = "An encrypted and signed value held by this key."
   value       = google_apikeys_key.main.key_string
+  sensitive   = true
 }
