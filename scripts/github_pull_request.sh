@@ -85,7 +85,7 @@ NEW_COMMIT_SHA=$(
     -f "tree=$TREE_SHA" \
     -f "parents[]=$BASE_SHA" \
     --jq .sha \
-    || (echo "Failed to create commit" >&2 && exit 4)
+    || { echo "Failed to create commit" >&2; exit 4; }
 )
 
 # Update branch reference
