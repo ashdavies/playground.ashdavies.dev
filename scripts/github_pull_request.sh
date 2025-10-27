@@ -109,7 +109,7 @@ else
     --head "$BRANCH_NAME" \
     --fill \
     | tee /dev/stderr ||
-    (echo "Failed to create pull request." >&2 && exit 6)
+    { echo "Failed to create pull request." >&2; exit 6; }
 
   echo "Pull request created successfully." >&2
 fi
