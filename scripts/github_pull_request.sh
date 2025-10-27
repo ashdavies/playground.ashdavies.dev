@@ -92,7 +92,7 @@ NEW_COMMIT_SHA=$(
 gh api "repos/$GIT_REPO/git/refs/heads/$BRANCH_NAME" \
   -f "sha=$NEW_COMMIT_SHA" \
   -f "force=true" \
-  || (echo "Failed to update branch reference" >&2 && exit 5)
+  || { echo "Failed to update branch reference" >&2; exit 5; }
 
 # Determine PR url
 PR_URL="$(gh pr view "$BRANCH_NAME" --json url -q .url 2>/dev/null || true)"
