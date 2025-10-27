@@ -23,6 +23,7 @@ resource "github_actions_secret" "main" {
     GH_APP_ID                    = local.github_app_id
     GH_PRIVATE_KEY               = base64encode(data.onepassword_item.github_developer_application.private_key)
     GOOGLE_SERVICE_ACCOUNT_ID    = module.github_service_account.email
+    INTEGRATION_API_KEY          = module.github_api_key.key_string
     OP_SERVICE_ACCOUNT_TOKEN     = var.op_service_account_token
     RELEASE_KEYSTORE_FILE        = data.onepassword_item.android_release_keystore.file[0].content_base64
     RELEASE_KEYSTORE_PROPERTIES  = base64encode(local.keystore_properties)

@@ -1,9 +1,3 @@
-resource "github_actions_secret" "main" {
-  plaintext_value = google_apikeys_key.main.key_string
-  secret_name     = var.secret_name
-  repository      = var.repository
-}
-
 resource "google_apikeys_key" "main" {
   display_name = var.display_name
   project      = var.project
