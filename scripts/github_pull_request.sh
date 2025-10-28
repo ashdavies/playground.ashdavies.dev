@@ -61,16 +61,18 @@ fi
 
 # Define repository and branch info
 GIT_REPO="$(gh repo view --json nameWithOwner -q .nameWithOwner | tee /dev/stderr)"
-BRANCH_NAME="auto/$(uuidgen)"; echo "Branch Name: $BRANCH_NAME" >&2 # TODO Deterministic branch name
 
-# Determine base branch (e.g. main/master)
+# TODO Generate a deterministic branch name
+BRANCH_NAME="auto/$(uuidgen)"; echo "Branch Name: $BRANCH_NAME" >&2
+
+# Determine base branch hash from provided input
 BASE_SHA="$(gh api "repos/$GIT_REPO/git/ref/heads/$BASE_BRANCH" --jq .object.sha)"; echo "Base branch $BASE_BRANCH ($BASE_SHA)" >&2
 
 # Commit with anonymous credentials
 git commit -m "$COMMIT_MSG" --author="Anonymous <>"
 
 # Push to temporary remote staging branch
-git push origin "HEAD:${BRANCH_NAME}/staging" && git push origin ":${BRANCH_NAME}/staging"
+git push origin "HEAD:staging/${BRANCH_NAME}" && git push origin ":staging/${BRANCH_NAME}"
 
 # Get local tree hash
 TREE_SHA="$(git log -n1 --format=%T)"; echo "Local tree hash $TREE_SHA" >&2
@@ -83,11 +85,13 @@ NEW_COMMIT_SHA=$(gh api "repos/$GIT_REPO/git/commits" \
   --jq .sha \
   || { echo "Failed to create commit" >&2; exit 4; })
 
-# Update branch reference
-gh api "repos/$GIT_REPO/git/refs/heads/$BRANCH_NAME" \
+# TODO Check if branch already exists
+
+# Create new branch reference
+gh api "repos/$GIT_REPO/git/refs" \
+  --raw-field "ref=refs/heads/$BRANCH_NAME" \
   --raw-field "sha=$NEW_COMMIT_SHA" \
-  --field "force=true" \
-  || { echo "Failed to update branch reference" >&2; exit 5; }
+  || { echo "Failed to create branch reference" >&2; exit 5; }
 
 # Determine PR url
 PR_URL="$(gh pr view "$BRANCH_NAME" --json url -q .url 2>/dev/null || true)"
@@ -97,9 +101,10 @@ if [[ -n "$PR_URL" ]]; then
   echo "Pull request already exists: $PR_URL" >&2
 else
   gh pr create \
-    --label "Automated" \
+    --title "$COMMIT_MSG" \
     --base "$BASE_BRANCH" \
     --head "$BRANCH_NAME" \
-    --fill \
+    --label "Automated" \
+    --body "" \
     || { echo "Failed to create pull request." >&2 && exit 6; }
 fi
