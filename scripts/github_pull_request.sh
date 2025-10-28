@@ -72,7 +72,8 @@ BASE_SHA="$(gh api "repos/$GIT_REPO/git/ref/heads/$BASE_BRANCH" --jq .object.sha
 git commit -m "$COMMIT_MSG" --author="Anonymous <>"
 
 # Push to temporary remote staging branch
-git push origin "HEAD:${BRANCH_NAME}/staging" && git push origin ":${BRANCH_NAME}/staging"
+# git push origin "HEAD:${BRANCH_NAME}/staging" && git push origin ":${BRANCH_NAME}/staging"
+git push origin "HEAD:${BRANCH_NAME}"
 
 # Get local tree hash
 TREE_SHA="$(git log -n1 --format=%T)"; echo "Local tree hash $TREE_SHA" >&2
@@ -88,10 +89,16 @@ NEW_COMMIT_SHA=$(gh api "repos/$GIT_REPO/git/commits" \
 # TODO Check if branch already exists
 
 # Create new branch reference
-gh api "repos/$GIT_REPO/git/refs" \
-  --raw-field "ref=refs/heads/$BRANCH_NAME" \
+# gh api "repos/$GIT_REPO/git/refs" \
+#   --raw-field "ref=refs/heads/$BRANCH_NAME" \
+#   --raw-field "sha=$NEW_COMMIT_SHA" \
+#   || { echo "Failed to create branch reference" >&2; exit 5; }
+
+# Overwrite existing branch reference
+gh api "repos/$GIT_REPO/git/refs/heads/$BRANCH_NAME" \
   --raw-field "sha=$NEW_COMMIT_SHA" \
-  || { echo "Failed to create branch reference" >&2; exit 5; }
+  --field "force=true" \
+  || { echo "Failed to overwrite branch reference" >&2; exit 5; }
 
 # Determine PR url
 PR_URL="$(gh pr view "$BRANCH_NAME" --json url -q .url 2>/dev/null || true)"
