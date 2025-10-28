@@ -47,7 +47,7 @@ done
 
 # Verify installed commands
 for cmd in gh uuidgen git; do
-  command -v "$cmd" >/dev/null 2>&1 || { echo "Required command '$cmd' not found." >&2; exit 3; }
+  command -v "$cmd" >/dev/null 2>&1 || (echo "Required command '$cmd' not found." >&2 && exit 3)
 done
 
 # Add all untracked files
@@ -60,11 +60,11 @@ if git diff --cached --quiet && git diff --quiet; then
 fi
 
 # Define repository and branch info
-GIT_REPO="$(gh repo view --json nameWithOwner -q .nameWithOwner | tee /dev/stderr)"
+GIT_REPO="$(gh repo view --json nameWithOwner -q .nameWithOwner)"; echo "Git Repo: $GIT_REPO" >&2
 BRANCH_NAME="auto/$(uuidgen)"; echo "Branch Name: $BRANCH_NAME" >&2 # TODO Deterministic branch name
 
 # Determine base branch (e.g. main/master)
-BASE_SHA="$(gh api "repos/$GIT_REPO/git/ref/heads/$BASE_BRANCH" --jq .object.sha | tee /dev/stderr)"
+BASE_SHA="$(gh api "repos/$GIT_REPO/git/ref/heads/$BASE_BRANCH" --jq .object.sha)"; echo "Base hash: $BASE_SHA" >&2
 
 # Create anonymous git credentials
 git config user.name 'Anonymous'
@@ -73,26 +73,24 @@ git config user.email '<>'
 # Commit to target branch
 git checkout -b "$BRANCH_NAME"
 git commit -m "$COMMIT_MSG"
-git push origin "$BRANCH_NAME"
+git push -u origin "$BRANCH_NAME"
 
 # Get local tree hash
-TREE_SHA="$(git log --format=%T | head -n1)"
+TREE_SHA="$(git log -n1 --format=%T)"; echo "Tree hash: $TREE_SHA"
 
 # Create verified commit as your app with large files!
-NEW_COMMIT_SHA=$(
-  gh api "repos/$GIT_REPO/git/commits" \
-    -f "message=$COMMIT_MSG" \
-    -f "tree=$TREE_SHA" \
-    -f "parents[]=$BASE_SHA" \
-    --jq .sha \
-    || { echo "Failed to create commit" >&2; exit 4; }
-)
+NEW_COMMIT_SHA=$(gh api "repos/$GIT_REPO/git/commits" \
+  --raw-field "message=$COMMIT_MSG" \
+  --raw-field "tree=$TREE_SHA" \
+  --raw-field "parents[]=$BASE_SHA" \
+  --jq .sha \
+  || (echo "Failed to create commit" >&2 && exit 4))
 
 # Update branch reference
 gh api "repos/$GIT_REPO/git/refs/heads/$BRANCH_NAME" \
-  -f "sha=$NEW_COMMIT_SHA" \
-  -f "force=true" \
-  || { echo "Failed to update branch reference" >&2; exit 5; }
+  --raw-field "sha=$NEW_COMMIT_SHA" \
+  --field "force=true" \
+  || (echo "Failed to update branch reference" >&2 && exit 5)
 
 # Determine PR url
 PR_URL="$(gh pr view "$BRANCH_NAME" --json url -q .url 2>/dev/null || true)"
@@ -109,7 +107,7 @@ else
     --head "$BRANCH_NAME" \
     --fill \
     | tee /dev/stderr ||
-    { echo "Failed to create pull request." >&2; exit 6; }
+    (echo "Failed to create pull request." >&2 && exit 6)
 
   echo "Pull request created successfully." >&2
 fi

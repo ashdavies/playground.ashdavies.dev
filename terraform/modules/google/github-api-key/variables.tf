@@ -23,3 +23,11 @@ variable "name" {
 variable "project" {
   description = "The project for the resource."
 }
+
+variable "repository" {
+  description = "Name of the repository."
+}
+
+variable "secret_name" {
+  description = "Name of the secret."
+}
