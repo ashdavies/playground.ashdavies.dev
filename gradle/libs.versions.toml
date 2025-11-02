@@ -40,7 +40,7 @@ coil-network = { module = "io.coil-kt.coil3:coil-network-ktor3", version.ref = "
 
 compose-adaptive-layout = { module = "org.jetbrains.compose.material3.adaptive:adaptive-layout", version.ref = "compose-adaptive" }
 compose-adaptive-navigation = { module = "org.jetbrains.compose.material3.adaptive:adaptive-navigation", version.ref = "compose-adaptive" }
-compose-back-handler = "org.jetbrains.compose.ui:ui-backhandler:1.9.1"
+compose-back-handler = "org.jetbrains.compose.ui:ui-backhandler:1.9.2"
 
 detekt-compose = "io.nlopez.compose.rules:detekt:0.4.27"
 
@@ -112,7 +112,7 @@ squareup-okio = "com.squareup.okio:okio:3.16.2"
 [plugins]
 android-application = { id = "com.android.application", version.ref = "google-android" }
 android-library = { id = "com.android.library", version.ref = "google-android" }
-build-config = "com.github.gmazzo.buildconfig:5.7.0"
+build-config = "com.github.gmazzo.buildconfig:5.7.1"
 cash-paparazzi = "app.cash.paparazzi:2.0.0-alpha02"
 cash-sqldelight = { id = "app.cash.sqldelight", version.ref = "cash-sqldelight" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "jetbrains-kotlin" }
