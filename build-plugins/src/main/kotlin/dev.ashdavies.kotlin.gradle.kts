@@ -49,10 +49,9 @@ extensions.configure<DetektExtension> {
 }
 
 tasks.withType<KotlinCompile> {
-
     compilerOptions {
-        freeCompilerArgs.addAll("-Xexpect-actual-classes")
-        jvmTarget.set(JvmTarget.fromTarget(libs.versions.kotlin.jvmTarget.get()))
+        val jvmTargetVersion = libs.versions.kotlin.jvmTarget.get()
+        jvmTarget.set(JvmTarget.fromTarget(jvmTargetVersion))
     }
 }
 
