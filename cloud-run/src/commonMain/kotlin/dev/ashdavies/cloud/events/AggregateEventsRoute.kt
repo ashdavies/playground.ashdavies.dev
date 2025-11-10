@@ -19,7 +19,6 @@ import dev.zacsweers.metro.binding
 import io.ktor.client.HttpClient
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.response.respond
-import io.ktor.server.routing.Route
 import io.ktor.server.routing.Routing
 import io.ktor.server.routing.post
 import kotlinx.coroutines.Dispatchers
@@ -34,11 +33,10 @@ internal class AggregateEventsRoute @Inject constructor(
     private val identifier: Identifier<AsgConference>,
 ) : CloudRunRoute {
 
-    override fun Routing.invoke(): Route = post("/events:aggregate") {
+    override fun Routing.invoke() = post("/events:aggregate") {
         val collectionWriter = CollectionWriter(
             reference = collectionReference,
             identifier = Identifier(),
-            context = Dispatchers.IO,
         )
 
         val snapshot = collectionReference
@@ -48,6 +46,7 @@ internal class AggregateEventsRoute @Inject constructor(
         collectionWriter.invoke(
             oldValue = Json.decodeFromSnapshot(snapshot),
             newValue = asgService { it.toApiConference(identifier(it)) },
+            context = Dispatchers.IO,
         )
 
         call.respond(HttpStatusCode.OK)

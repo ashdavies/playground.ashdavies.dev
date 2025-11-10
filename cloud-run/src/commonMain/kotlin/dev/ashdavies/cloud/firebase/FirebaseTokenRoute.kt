@@ -12,7 +12,6 @@ import dev.zacsweers.metro.binding
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.request.receive
 import io.ktor.server.response.respond
-import io.ktor.server.routing.Route
 import io.ktor.server.routing.Routing
 import io.ktor.server.routing.post
 
@@ -21,7 +20,7 @@ internal class FirebaseTokenRoute @Inject constructor(
     private val appCheck: AppCheck,
 ) : CloudRunRoute {
 
-    override fun Routing.invoke(): Route = post("/firebase/token") {
+    override fun Routing.invoke() = post("/firebase/token") {
         try {
             val appCheckRequest = call.receive<FirebaseApp>()
             val appCheckToken = appCheck.createToken(

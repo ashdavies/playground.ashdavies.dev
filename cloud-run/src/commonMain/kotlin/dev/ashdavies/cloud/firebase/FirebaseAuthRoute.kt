@@ -16,7 +16,6 @@ import io.ktor.client.request.setBody
 import io.ktor.server.request.header
 import io.ktor.server.request.receive
 import io.ktor.server.response.respond
-import io.ktor.server.routing.Route
 import io.ktor.server.routing.Routing
 import io.ktor.server.routing.post
 
@@ -29,7 +28,7 @@ internal class FirebaseAuthRoute @Inject constructor(
     private val httpClient: HttpClient,
 ) : CloudRunRoute {
 
-    override fun Routing.invoke(): Route = post("/firebase/auth") {
+    override fun Routing.invoke() = post("/firebase/auth") {
         val accountRequest = call.receive<SignInRequest>()
         val customToken = firebaseAuth.createCustomToken(
             accountRequest.uid,

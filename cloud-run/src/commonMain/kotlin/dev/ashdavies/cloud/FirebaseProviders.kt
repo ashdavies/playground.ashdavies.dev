@@ -1,6 +1,7 @@
 package dev.ashdavies.cloud
 
 import com.google.auth.oauth2.GoogleCredentials
+import com.google.cloud.firestore.CollectionReference
 import com.google.cloud.firestore.Firestore
 import com.google.firebase.FirebaseApp
 import com.google.firebase.FirebaseOptions
@@ -10,6 +11,7 @@ import dev.ashdavies.check.AppCheck
 import dev.ashdavies.check.appCheck
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesTo
+import dev.zacsweers.metro.Named
 import dev.zacsweers.metro.Provides
 import dev.zacsweers.metro.SingleIn
 import io.ktor.client.HttpClient
@@ -47,5 +49,11 @@ internal interface FirebaseProviders {
     @Provides
     fun firestore(firebaseApp: FirebaseApp): Firestore {
         return FirestoreClient.getFirestore(firebaseApp)
+    }
+
+    @Provides
+    @Named("events")
+    fun eventsCollection(firestore: Firestore): CollectionReference {
+        return firestore.collection("events")
     }
 }

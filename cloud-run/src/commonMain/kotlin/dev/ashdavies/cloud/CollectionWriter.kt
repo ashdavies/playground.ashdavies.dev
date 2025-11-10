@@ -9,12 +9,12 @@ import kotlin.coroutines.CoroutineContext
 internal class CollectionWriter<T : Any>(
     private val reference: CollectionReference,
     private val identifier: (T) -> String,
-    private val context: CoroutineContext,
 ) {
 
     suspend fun invoke(
         oldValue: Collection<T>,
         newValue: Collection<T>,
+        context: CoroutineContext,
     ) {
         val queue = operationQueue(
             oldValue = oldValue.associateBy(identifier),
