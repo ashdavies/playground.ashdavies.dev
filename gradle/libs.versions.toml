@@ -22,7 +22,7 @@ webPack = "9.1.0"
 [libraries]
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity" }
 androidx-annotation = "androidx.annotation:annotation:1.9.1"
-androidx-core-splashscreen = "androidx.core:core-splashscreen:1.0.1"
+androidx-core-splashscreen = "androidx.core:core-splashscreen:1.2.0"
 androidx-credentials-auth = "androidx.credentials:credentials-play-services-auth:1.5.0"
 
 androidx-paging-common = { module = "androidx.paging:paging-common", version.ref = "androidx-paging" }
