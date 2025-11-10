@@ -2,7 +2,7 @@ import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 
 private object CloudRunConfig {
     const val PACKAGE_NAME = "dev.ashdavies.cloud"
-    const val MAIN_CLASS = "${PACKAGE_NAME}.Main"
+    const val MAIN_CLASS = "${PACKAGE_NAME}.MainClassKt"
 }
 
 plugins {
@@ -11,6 +11,7 @@ plugins {
     id("dev.ashdavies.properties")
 
     alias(libs.plugins.build.config)
+    alias(libs.plugins.zac.metro)
 }
 
 buildConfig {

@@ -1,34 +1,32 @@
 package dev.ashdavies.cloud
 
 import com.google.cloud.firestore.CollectionReference
-import kotlinx.coroutines.Dispatchers
+import dev.ashdavies.cloud.google.await
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
-import kotlin.collections.iterator
 import kotlin.coroutines.CoroutineContext
 
-public fun interface CollectionWriter<T : Any> {
-    public suspend operator fun invoke(
+internal class CollectionWriter<T : Any>(
+    private val reference: CollectionReference,
+    private val identifier: (T) -> String,
+    private val context: CoroutineContext,
+) {
+
+    suspend fun invoke(
         oldValue: Collection<T>,
         newValue: Collection<T>,
-    )
-}
+    ) {
+        val queue = operationQueue(
+            oldValue = oldValue.associateBy(identifier),
+            newValue = newValue.associateBy(identifier),
+        )
 
-public fun <T : Any> CollectionWriter(
-    reference: CollectionReference,
-    identifier: (T) -> String,
-    context: CoroutineContext = Dispatchers.IO,
-): CollectionWriter<T> = CollectionWriter { oldValue, newValue ->
-    val queue = operationQueue(
-        oldValue = oldValue.associateBy(identifier),
-        newValue = newValue.associateBy(identifier),
-    )
-
-    coroutineScope {
-        for (operation in queue) {
-            launch(context) {
-                operation(reference)
-            }.join()
+        coroutineScope {
+            for (operation in queue) {
+                launch(context) {
+                    operation(reference)
+                }.join()
+            }
         }
     }
 }

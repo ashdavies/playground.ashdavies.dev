@@ -1,4 +1,4 @@
-package dev.ashdavies.cloud
+package dev.ashdavies.cloud.google
 
 import com.google.api.core.ApiFuture
 import com.google.api.core.ApiFutureCallback
