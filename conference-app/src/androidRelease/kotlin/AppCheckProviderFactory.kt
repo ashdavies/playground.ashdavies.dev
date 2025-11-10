@@ -1,7 +1,8 @@
 package dev.ashdavies.playground
 
 import com.google.firebase.appcheck.AppCheckProviderFactory
+import com.google.firebase.appcheck.playintegrity.PlayIntegrityAppCheckProviderFactory
 
 internal fun AppCheckProviderFactory(): AppCheckProviderFactory {
-    return AppCheckProviderFactory.getInstance()
+    return PlayIntegrityAppCheckProviderFactory.getInstance()
 }
