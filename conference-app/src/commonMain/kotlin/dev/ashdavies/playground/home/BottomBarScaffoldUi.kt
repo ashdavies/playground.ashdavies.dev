@@ -1,8 +1,12 @@
 package dev.ashdavies.playground.home
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.exclude
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBars
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.PhotoLibrary
 import androidx.compose.material.icons.outlined.Route
@@ -13,7 +17,7 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.ScaffoldDefaults
-import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
@@ -56,6 +60,7 @@ internal object BottomBarScaffoldScreen : Parcelable, Screen {
         val identityState: IdentityState,
         val isGalleryEnabled: Boolean,
         val isRoutesEnabled: Boolean,
+        val isPastEventsEnabled: Boolean,
         val eventSink: (Event) -> Unit,
     ) : CircuitUiState
 }
@@ -74,15 +79,18 @@ internal class BottomBarScaffoldUi @Inject constructor(
         Scaffold(
             modifier = modifier,
             bottomBar = {
-                BottomBar(
-                    onClick = { eventSink(BottomBarScaffoldScreen.Event.BottomNav(it)) },
-                    selected = state.screen,
-                    isGalleryEnabled = state.isGalleryEnabled,
-                    isRoutesEnabled = state.isRoutesEnabled,
-                )
+                if (state.isGalleryEnabled || state.isRoutesEnabled || state.isPastEventsEnabled) {
+                    BottomBar(
+                        onClick = { eventSink(BottomBarScaffoldScreen.Event.BottomNav(it)) },
+                        selected = state.screen,
+                        isGalleryEnabled = state.isGalleryEnabled,
+                        isRoutesEnabled = state.isRoutesEnabled,
+                        isPastEventsEnabled = state.isPastEventsEnabled,
+                    )
+                }
             },
             contentWindowInsets = ScaffoldDefaults.contentWindowInsets.exclude(
-                insets = TopAppBarDefaults.windowInsets,
+                insets = WindowInsets.systemBars.only(WindowInsetsSides.Vertical),
             ),
         ) { contentPadding ->
             CircuitContent(
@@ -106,6 +114,7 @@ private fun BottomBar(
     selected: Screen,
     isGalleryEnabled: Boolean,
     isRoutesEnabled: Boolean,
+    isPastEventsEnabled: Boolean,
     modifier: Modifier = Modifier,
 ) {
     BottomAppBar(modifier) {
@@ -114,6 +123,7 @@ private fun BottomBar(
                 selected = selected is ListDetailScaffoldScreen,
                 onClick = { onClick(ListDetailScaffoldScreen(UpcomingScreen)) },
                 icon = { NavigationBarImage(Icons.Outlined.EventUpcoming) },
+                label = { Text("Upcoming") },
             )
 
             if (isGalleryEnabled) {
@@ -132,11 +142,13 @@ private fun BottomBar(
                 )
             }
 
-            NavigationBarItem(
-                selected = selected is PastScreen,
-                onClick = { onClick(PastScreen) },
-                icon = { NavigationBarImage(Icons.Outlined.EventList) },
-            )
+            if (isPastEventsEnabled) {
+                NavigationBarItem(
+                    selected = selected is PastScreen,
+                    onClick = { onClick(PastScreen) },
+                    icon = { NavigationBarImage(Icons.Outlined.EventList) },
+                )
+            }
         }
     }
 }

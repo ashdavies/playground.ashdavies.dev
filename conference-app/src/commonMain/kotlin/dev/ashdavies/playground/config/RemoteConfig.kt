@@ -8,6 +8,8 @@ import dev.ashdavies.config.getBoolean
 
 internal suspend fun RemoteConfig.isGalleryEnabled() = getBoolean("gallery_enabled")
 
+internal suspend fun RemoteConfig.isPastEventsEnabled() = getBoolean("past_events_enabled")
+
 internal suspend fun RemoteConfig.isRoutesEnabled() = getBoolean("routes_enabled")
 
 @Composable

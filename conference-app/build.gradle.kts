@@ -120,13 +120,6 @@ kotlin {
     }
 
     sourceSets {
-        val androidJvmMain by getting {
-            dependencies {
-                implementation(libs.androidx.paging.common)
-                implementation(libs.sqldelight.paging3.extensions)
-            }
-        }
-
         commonMain.dependencies {
             implementation(projects.analytics)
             implementation(projects.asgService)
@@ -180,9 +173,17 @@ kotlin {
             implementation(libs.kotlinx.coroutines.test)
         }
 
+        val androidJvmMain by getting {
+            dependencies {
+                implementation(libs.androidx.paging.common)
+                implementation(libs.sqldelight.paging3.extensions)
+            }
+        }
+
         androidMain.dependencies {
             implementation(libs.androidx.activity.compose)
             implementation(libs.androidx.core.splashscreen)
+            implementation(libs.androidx.startup.runtime)
             implementation(libs.google.accompanist.permissions)
             implementation(libs.google.android.location)
             implementation(libs.google.android.material)
@@ -198,7 +199,10 @@ kotlin {
         }
 
         val androidDebug by registering {
-            dependencies.implementation(compose.uiTooling)
+            dependencies {
+                implementation(libs.google.firebase.appcheck.debug)
+                implementation(compose.uiTooling)
+            }
         }
 
         jvmMain.dependencies {
