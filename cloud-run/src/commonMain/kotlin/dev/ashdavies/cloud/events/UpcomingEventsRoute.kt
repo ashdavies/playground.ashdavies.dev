@@ -31,7 +31,7 @@ internal class UpcomingEventsRoute @Inject constructor(
         val snapshot = collectionReference
             .orderBy(DEFAULT_ORDER_BY)
             .startAt(call.request.queryParameters["startAt"] ?: todayAsString())
-            .limit(call.request.queryParameters["limit"]?.toInt() ?: DEFAULT_LIMIT)
+            .limit(call.request.queryParameters["limit"]?.toIntOrNull() ?: DEFAULT_LIMIT)
             .await()
 
         call.respond(Json.decodeFromSnapshot<ApiConference>(snapshot))

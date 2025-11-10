@@ -9,6 +9,7 @@ import dev.ashdavies.cloud.Identifier
 import dev.ashdavies.cloud.decodeFromSnapshot
 import dev.ashdavies.cloud.google.await
 import dev.ashdavies.cloud.toApiConference
+import dev.ashdavies.http.common.models.ApiConference
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesIntoSet
 import dev.zacsweers.metro.ContributesTo
@@ -36,7 +37,7 @@ internal class AggregateEventsRoute @Inject constructor(
     override fun Routing.invoke() = post("/events:aggregate") {
         val collectionWriter = CollectionWriter(
             reference = collectionReference,
-            identifier = Identifier(),
+            identifier = ApiConference::id,
         )
 
         val snapshot = collectionReference

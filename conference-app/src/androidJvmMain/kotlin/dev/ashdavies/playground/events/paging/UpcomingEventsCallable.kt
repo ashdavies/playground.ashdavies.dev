@@ -1,8 +1,9 @@
 package dev.ashdavies.playground.events.paging
 
+import dev.ashdavies.asg.AsgConference
 import dev.ashdavies.asg.UpcomingConferencesCallable
-import dev.ashdavies.cloud.ApiConferenceFactory
 import dev.ashdavies.cloud.Identifier
+import dev.ashdavies.cloud.toApiConference
 import dev.ashdavies.config.RemoteConfig
 import dev.ashdavies.config.getBoolean
 import dev.ashdavies.http.UnaryCallable
@@ -31,7 +32,7 @@ internal data class GetEventsRequest(
 internal fun UpcomingEventsCallable(httpClient: HttpClient, remoteConfig: RemoteConfig): UpcomingEventsCallable {
     val pagedCallable by lazy { UpcomingEventsCallable(httpClient, PLAYGROUND_BASE_URL) }
     val asgCallable by lazy { UpcomingConferencesCallable(httpClient) }
-    val apiConferenceFactory = ApiConferenceFactory(Identifier())
+    val identifier = Identifier<AsgConference>()
 
     return UpcomingEventsCallable { request ->
         when {
@@ -40,7 +41,7 @@ internal fun UpcomingEventsCallable(httpClient: HttpClient, remoteConfig: Remote
                 response
                     .filter { request.startAt == null || it.dateStart > request.startAt }
                     .take(request.limit)
-                    .map(apiConferenceFactory::invoke)
+                    .map { it.toApiConference(identifier(it)) }
             }
         }
     }

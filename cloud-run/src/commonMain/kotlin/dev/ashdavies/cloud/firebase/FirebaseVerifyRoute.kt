@@ -9,6 +9,7 @@ import dev.zacsweers.metro.ContributesIntoSet
 import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.binding
 import io.ktor.http.HttpHeaders
+import io.ktor.http.HttpStatusCode
 import io.ktor.server.request.header
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Routing
@@ -20,15 +21,16 @@ internal class FirebaseVerifyRoute @Inject constructor(
 ) : CloudRunRoute {
 
     override fun Routing.invoke() = get("/firebase/token:verify") {
-        val appCheckToken = requireNotNull(call.request.header(HttpHeaders.AppCheckToken)) {
-            "Request is missing app check token header"
+        when (val appCheckToken = call.request.header(HttpHeaders.AppCheckToken)) {
+            null -> call.respond(HttpStatusCode.BadRequest, "Request is missing app check token header")
+            else -> {
+                val decodedToken = appCheck.verifyToken(
+                    token = appCheckToken,
+                    mapper = ::DecodedToken,
+                )
+
+                call.respond(decodedToken)
+            }
         }
-
-        val decodedToken = appCheck.verifyToken(
-            token = appCheckToken,
-            mapper = ::DecodedToken,
-        )
-
-        call.respond(decodedToken)
     }
 }
