@@ -12,14 +12,13 @@ import com.slack.circuit.runtime.Navigator
 import com.slack.circuit.runtime.presenter.Presenter
 import com.slack.circuit.runtime.screen.Screen
 import dev.ashdavies.config.RemoteConfig
-import dev.ashdavies.content.PlatformContext
-import dev.ashdavies.content.isDebuggable
 import dev.ashdavies.identity.IdentityManager
 import dev.ashdavies.identity.IdentityState
 import dev.ashdavies.playground.adaptive.ListDetailScaffoldScreen
 import dev.ashdavies.playground.circuit.CircuitScreenKey
 import dev.ashdavies.playground.config.booleanConfigAsState
 import dev.ashdavies.playground.config.isGalleryEnabled
+import dev.ashdavies.playground.config.isPastEventsEnabled
 import dev.ashdavies.playground.config.isRoutesEnabled
 import dev.ashdavies.playground.upcoming.UpcomingScreen
 import dev.zacsweers.metro.AppScope
@@ -32,26 +31,25 @@ import kotlinx.coroutines.launch
 
 internal class BottomBarScaffoldPresenter @AssistedInject constructor(
     @Assisted private val navigator: Navigator,
-    private val platformContext: PlatformContext,
     private val remoteConfig: RemoteConfig,
     private val identityManager: IdentityManager,
 ) : Presenter<BottomBarScaffoldScreen.State> {
 
     @Composable
     override fun present(): BottomBarScaffoldScreen.State {
-        var screen by rememberRetained { mutableStateOf<Screen>(ListDetailScaffoldScreen(UpcomingScreen)) }
-        val isDebuggable = platformContext.isDebuggable()
-
         val isGalleryEnabled by remoteConfig.booleanConfigAsState { isGalleryEnabled() }
+        val isPastEventsEnabled by remoteConfig.booleanConfigAsState { isPastEventsEnabled() }
         val isRoutesEnabled by remoteConfig.booleanConfigAsState { isRoutesEnabled() }
 
+        var screen by rememberRetained { mutableStateOf<Screen>(ListDetailScaffoldScreen(UpcomingScreen)) }
         val identityState by identityManager.state.collectAsState(IdentityState.Unauthenticated)
         val coroutineScope = rememberCoroutineScope()
 
         return BottomBarScaffoldScreen.State(
             screen = screen,
-            isGalleryEnabled = isDebuggable || isGalleryEnabled,
-            isRoutesEnabled = isDebuggable || isRoutesEnabled,
+            isGalleryEnabled = isGalleryEnabled,
+            isRoutesEnabled = isRoutesEnabled,
+            isPastEventsEnabled = isPastEventsEnabled,
             identityState = identityState,
         ) { event ->
             when (event) {

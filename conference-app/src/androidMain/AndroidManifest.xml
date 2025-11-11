@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -12,6 +12,7 @@
             android:configChanges="keyboardHidden|orientation"
             android:exported="true"
             android:label="Playground"
+            android:windowSoftInputMode="adjustResize"
             android:theme="@style/Theme.Material3.DynamicColors.DayNight">
 
             <intent-filter>
@@ -24,6 +25,18 @@
                 android:value="${ANDROID_API_KEY}" />
 
         </activity>
+
+        <provider
+            android:name="androidx.startup.InitializationProvider"
+            android:authorities="${applicationId}.androidx-startup"
+            android:exported="false"
+            tools:node="merge">
+
+            <meta-data
+                android:name="dev.ashdavies.playground.AppCheckInitializer"
+                android:value="androidx.startup" />
+
+        </provider>
 
         <provider
             android:name="dev.ashdavies.playground.gallery.ComposeFileProvider"

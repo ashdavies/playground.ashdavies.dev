@@ -4,8 +4,6 @@ import android.app.Activity
 import android.content.Context
 import android.os.Build
 import androidx.core.content.pm.PackageInfoCompat
-import com.google.firebase.appcheck.FirebaseAppCheck
-import com.google.firebase.appcheck.playintegrity.PlayIntegrityAppCheckProviderFactory
 import dev.ashdavies.content.PlatformContext
 import dev.ashdavies.http.defaultHttpClient
 import dev.ashdavies.playground.security.FirebaseAppCheckHeader
@@ -34,12 +32,7 @@ internal interface AndroidConferenceGraph : ConferenceGraph {
             header("User-Agent", Build.PRODUCT)
         }
 
-        install(FirebaseAppCheckHeader) {
-            val factory = PlayIntegrityAppCheckProviderFactory.getInstance()
-            val appCheck = FirebaseAppCheck.getInstance()
-
-            appCheck.installAppCheckProviderFactory(factory)
-        }
+        install(FirebaseAppCheckHeader)
     }
 
     @DependencyGraph.Factory
