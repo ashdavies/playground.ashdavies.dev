@@ -15,7 +15,6 @@ import androidx.compose.ui.layout.onPlaced
 import com.slack.circuit.backstack.NavArgument
 import com.slack.circuit.backstack.NavDecoration
 import com.slack.circuit.foundation.NavigatorDefaults
-import kotlinx.collections.immutable.ImmutableList
 
 public class KeyNavigationDecoration(
     private val decoration: NavDecoration = NavigatorDefaults.EmptyDecoration,
@@ -25,7 +24,7 @@ public class KeyNavigationDecoration(
 
     @Composable
     override fun <T : NavArgument> DecoratedContent(
-        args: ImmutableList<T>,
+        args: List<T>,
         modifier: Modifier,
         content: @Composable ((T) -> Unit),
     ) {
