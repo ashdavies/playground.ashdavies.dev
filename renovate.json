@@ -43,16 +43,16 @@
       "automerge": true
     },
     {
-      "matchPackageNames": [
+      "matchDepNames": [
         "com.android.library",
         "com.android.application"
       ],
       "automerge": false
     },
     {
-      "matchPackageNames": [
-        "/^org.jetbrains.kotlin[^a-zA-Z]/",
-        "/^dev.zacsweers.metro/"
+      "matchDepNames": [
+        "org.jetbrains.kotlin@(:|.)*",
+        "dev.zacsweers.metro"
       ]
     }
   ],
