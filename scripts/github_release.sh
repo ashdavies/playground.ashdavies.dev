@@ -37,7 +37,7 @@ while [[ $# -gt 0 ]]; do
 done
 
 # Validate arguments
-[[ -z "${TAG_NAME}" ]] && echo "--target-commit is required." >&2 && exit 2
+[[ -z "${TAG_NAME}" ]] && echo "--tag-name is required." >&2 && exit 2
 [[ -z "${GITHUB_TOKEN:-}" ]] && echo "GITHUB_TOKEN environment variable is required." >&2 && exit 2
 
 # Verify installed commands
@@ -46,13 +46,25 @@ for cmd in gh git; do
 done
 
 # Define repository and branch info
-GIT_REPO="$(gh repo view --json nameWithOwner -jq .nameWithOwner | tee /dev/stderr)"
+GIT_REPO="$(gh repo view --json nameWithOwner --jq .nameWithOwner | tee /dev/stderr)"
 
+# Create (draft) release and capture upload URL template
 UPLOAD_URL="$(gh api "/repos/${GIT_REPO}/releases" \
   --field "target_commitish=${GITHUB_REF##*/}" \
   --field "tag_name=${TAG_NAME}" \
   --raw-field "generate_release_notes=true" \
   --raw-field "draft=true" \
-  -jq .upload_url)"
+  --jq .upload_url)"
 
+echo "Created draft release '${TAG_NAME}' for ${GIT_REPO}" >&2
+
+# Upload assets matching the provided glob pattern
+if [[ -n "${FILES:-}" ]]; then
+  for file in ${FILES}; do
+    if [[ -f "$file" ]]; then
+      gh api "${UPLOAD_URL%\{*}?name=$(basename "$file")" --input "$file"
+      echo "Uploaded $file to release ${TAG_NAME}" >&2
+    fi
+  done
+fi
 
