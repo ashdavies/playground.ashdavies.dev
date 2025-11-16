@@ -25,7 +25,6 @@ jobs:
       FASTLANE_SERVICE_ACCOUNT_KEY: ${{ secrets.FASTLANE_SERVICE_ACCOUNT_KEY }}
 
   github:
-    if: github.ref_type == 'tag'
     needs: [ android ]
     runs-on: ubuntu-latest
 
@@ -41,16 +40,13 @@ jobs:
           name: android-build-outputs
           path: conference-app/build/outputs
 
-      - run: ls -R
-
-      - uses: softprops/action-gh-release@v2
-        with:
-          files: |
-            **/release/*.aab
-            **/release/*.apk
-          generate_release_notes: true
-          draft: true
-
+      - env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          ./scripts/github_release.sh \
+            --tag-name "1.0.0-$(date +%s)}"
+            --files "**/release/*.@(apk|aab)"
+          
   play:
     needs: [android]
     runs-on: ubuntu-latest
