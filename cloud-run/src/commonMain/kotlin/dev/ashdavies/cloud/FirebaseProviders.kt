@@ -23,17 +23,18 @@ internal interface FirebaseProviders {
     @SingleIn(AppScope::class)
     @Suppress("SENSELESS_NULL_IN_WHEN")
     fun firebaseApp(): FirebaseApp {
-        return when (val serviceAccountId = BuildConfig.GOOGLE_SERVICE_ACCOUNT_ID) {
-            null -> FirebaseApp.initializeApp()
-            else -> {
-                val firebaseOptions = FirebaseOptions.builder()
-                    .setCredentials(GoogleCredentials.getApplicationDefault())
-                    .setServiceAccountId(serviceAccountId)
-                    .build()
+        return FirebaseApp.getApps().firstOrNull { it.name == FirebaseApp.DEFAULT_APP_NAME }
+            ?: when (val serviceAccountId = BuildConfig.GOOGLE_SERVICE_ACCOUNT_ID) {
+                null -> FirebaseApp.initializeApp()
+                else -> {
+                    val firebaseOptions = FirebaseOptions.builder()
+                        .setCredentials(GoogleCredentials.getApplicationDefault())
+                        .setServiceAccountId(serviceAccountId)
+                        .build()
 
-                FirebaseApp.initializeApp(firebaseOptions)
+                    FirebaseApp.initializeApp(firebaseOptions)
+                }
             }
-        }
     }
 
     @Provides

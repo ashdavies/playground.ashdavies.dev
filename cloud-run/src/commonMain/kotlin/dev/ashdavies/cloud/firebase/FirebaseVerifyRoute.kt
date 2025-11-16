@@ -13,14 +13,14 @@ import io.ktor.http.HttpStatusCode
 import io.ktor.server.request.header
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Routing
-import io.ktor.server.routing.get
+import io.ktor.server.routing.put
 
 @ContributesIntoSet(AppScope::class, binding<CloudRunRoute>())
 internal class FirebaseVerifyRoute @Inject constructor(
     private val appCheck: AppCheck,
 ) : CloudRunRoute {
 
-    override fun Routing.invoke() = get("/firebase/token:verify") {
+    override fun Routing.invoke() = put("/firebase/token:verify") {
         when (val appCheckToken = call.request.header(HttpHeaders.AppCheckToken)) {
             null -> call.respond(HttpStatusCode.BadRequest, "Request is missing app check token header")
             else -> {
