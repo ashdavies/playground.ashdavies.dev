@@ -69,10 +69,9 @@ BRANCH_NAME="auto/$(uuidgen)"; echo "Branch Name: $BRANCH_NAME" >&2
 BASE_SHA="$(gh api "repos/$GIT_REPO/git/ref/heads/$BASE_BRANCH" --jq .object.sha)"; echo "Base branch $BASE_BRANCH ($BASE_SHA)" >&2
 
 # Commit with anonymous credentials
-git commit -m "$COMMIT_MSG" --author="Anonymous <>"
+git -c user.name="Anonymous" -c user.email="<>" commit -m "$COMMIT_MSG"
 
-# Push to temporary remote staging branch
-# git push origin "HEAD:${BRANCH_NAME}/staging" && git push origin ":${BRANCH_NAME}/staging"
+# Push to remote branch
 git push origin "HEAD:${BRANCH_NAME}"
 
 # Get local tree hash
