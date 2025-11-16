@@ -11,6 +11,7 @@ import io.ktor.client.plugins.HttpCallValidator
 import io.ktor.http.HttpHeaders
 import io.ktor.serialization.Configuration
 import io.ktor.serialization.kotlinx.json.json
+import io.ktor.server.application.Application
 import io.ktor.server.application.install
 import io.ktor.server.cio.CIO
 import io.ktor.server.engine.EmbeddedServer
@@ -29,25 +30,11 @@ import io.ktor.server.routing.routing
 internal interface CloudRunGraph {
 
     val embeddedServer: EmbeddedServer<*, *>
+    val routes: Set<CloudRunRoute>
 
     @Provides
     fun embeddedServer(routes: Set<CloudRunRoute>): EmbeddedServer<*, *> = embeddedServer(
-        module = {
-            install(DefaultHeaders) {
-                header(HttpHeaders.Server, System.getProperty("os.name"))
-            }
-
-            install(Compression, CompressionConfig::default)
-            install(ContentNegotiation, Configuration::json)
-            install(ConditionalHeaders)
-            install(CallLogging)
-
-            routing {
-                routes.forEach {
-                    with(it) { invoke() }
-                }
-            }
-        },
+        module = { main(routes) },
         factory = CIO,
         port = 8080,
     )
@@ -60,6 +47,23 @@ internal interface CloudRunGraph {
 
         expectSuccess = true
     }
+}
+
+internal fun Application.main(routes: Set<CloudRunRoute>) {
+    install(DefaultHeaders) {
+        header(HttpHeaders.Server, System.getProperty("os.name"))
+    }
+
+    install(Compression, CompressionConfig::default)
+    install(ContentNegotiation, Configuration::json)
+    install(ConditionalHeaders)
+    install(CallLogging)
+
+    routing(routes)
+}
+
+private fun Application.routing(routes: Set<CloudRunRoute>) = routing {
+    routes.forEach { with(it) { invoke() } }
 }
 
 public interface CloudRunRoute {

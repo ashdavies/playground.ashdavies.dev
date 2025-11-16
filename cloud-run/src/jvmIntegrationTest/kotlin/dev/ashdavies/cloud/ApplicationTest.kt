@@ -3,8 +3,10 @@ package dev.ashdavies.cloud
 import dev.ashdavies.check.AppCheckToken
 import dev.ashdavies.http.common.models.ApiConference
 import dev.ashdavies.http.common.models.AppCheckToken
+import dev.ashdavies.http.common.models.AuthResult
 import dev.ashdavies.http.common.models.DecodedToken
 import dev.ashdavies.http.common.models.FirebaseApp
+import dev.zacsweers.metro.createGraph
 import io.ktor.client.HttpClient
 import io.ktor.client.HttpClientConfig
 import io.ktor.client.call.body
@@ -21,7 +23,6 @@ import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
 import io.ktor.serialization.kotlinx.json.json
-import io.ktor.server.application.Application
 import io.ktor.server.testing.ApplicationTestBuilder
 import io.ktor.server.testing.testApplication
 import io.ktor.utils.io.KtorDsl
@@ -45,9 +46,9 @@ internal class ApplicationTest {
             header("X-API-Key", requireNotNull(BuildConfig.INTEGRATION_API_KEY))
             setBody(mapOf("uid" to "jane.smith@example.com"))
             contentType(ContentType.Application.Json)
-        }.body<Map<String, String>>()
+        }.body<AuthResult>()
 
-        assertNotNull(authResult["idToken"])
+        assertNotNull(authResult.idToken)
     }
 
     @Test
@@ -83,12 +84,9 @@ internal class ApplicationTest {
 }
 
 @KtorDsl
-private fun testMainApplication(
-    configuration: HttpClientConfig<out HttpClientEngineConfig>.() -> Unit = DefaultHttpConfig,
-    application: Application.() -> Unit = { main() },
-    block: suspend ApplicationTestBuilder.(HttpClient) -> Unit,
-) = testApplication {
-    val client = createClient(configuration)
-    application(application)
+private fun testMainApplication(block: suspend ApplicationTestBuilder.(HttpClient) -> Unit) = testApplication {
+    val client = createClient(DefaultHttpConfig)
+    val graph = createGraph<CloudRunGraph>()
+    application { main(graph.routes) }
     block(client)
 }
