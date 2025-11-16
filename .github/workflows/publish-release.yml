@@ -44,7 +44,7 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
         run: |
           ./scripts/github_release.sh \
-            --tag-name "1.0.0-$(date +%s)}"
+            --tag-name "1.0.0-$(date +%s)" \
             --files "**/release/*.@(apk|aab)"
           
   play:
