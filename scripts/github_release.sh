@@ -64,7 +64,7 @@ RESPONSE="$(gh api "/repos/${GIT_REPO}/releases" \
   --raw-field "target_commitish=${TARGET_BRANCH}" \
   --field "draft=true" \
   --field "generate_release_notes=true" \
-  || { echo "Failed to create release" >&2; exit 4; })"
+  --verbose >&2)"
 
 UPLOAD_URL="$(echo "$RESPONSE" | jq -r .upload_url)"
 RELEASE_ID="$(echo "$RESPONSE" | jq -r .id)"
