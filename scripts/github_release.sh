@@ -60,10 +60,11 @@ GIT_REPO="$(gh repo view --json nameWithOwner --jq .nameWithOwner)"
 
 # Create (draft) release and capture upload URL template and release ID
 RESPONSE="$(gh api "/repos/${GIT_REPO}/releases" \
-  --field "tag_name=${TAG_NAME}" \
-  --field "target_commitish=${TARGET_BRANCH}" \
+  --raw-field "tag_name=${TAG_NAME}" \
+  --raw-field "target_commitish=${TARGET_BRANCH}" \
   --field "draft=true" \
-  --field "generate_release_notes=true")"
+  --field "generate_release_notes=true" \
+  || { echo "Failed to create release" >&2; exit 4; })"
 
 UPLOAD_URL="$(echo "$RESPONSE" | jq -r .upload_url)"
 RELEASE_ID="$(echo "$RESPONSE" | jq -r .id)"
