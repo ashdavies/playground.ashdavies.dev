@@ -45,7 +45,7 @@ jobs:
         run: |
           ./scripts/github_release.sh \
             --tag-name "1.0.0-$(date +%s)" \
-            --files "**/release/*.@(apk|aab)"
+            --files "**/release/*.apk **/release/*.aab"
           
   play:
     needs: [android]
