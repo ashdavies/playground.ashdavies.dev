@@ -59,15 +59,16 @@ else
   TARGET_COMMITISH="$(git rev-parse --abbrev-ref HEAD)"
 fi
 
-# Create (draft) release and capture upload URL template
-UPLOAD_URL="$(gh api "/repos/${GIT_REPO}/releases" \
+# Create (draft) release and capture upload URL template and release ID
+RESPONSE="$(gh api "/repos/${GIT_REPO}/releases" \
   --field "target_commitish=${TARGET_COMMITISH}" \
   --field "tag_name=${TAG_NAME}" \
   --raw-field "generate_release_notes=true" \
-  --raw-field "draft=true" \
-  --jq .upload_url)"
+  --raw-field "draft=true")"
+UPLOAD_URL="$(echo "$RESPONSE" | jq -r .upload_url)"
+RELEASE_ID="$(echo "$RESPONSE" | jq -r .id)"
 
-echo "Created draft release '${TAG_NAME}' for ${GIT_REPO}" >&2
+echo "Created draft release '${TAG_NAME}' (ID: ${RELEASE_ID}) for ${GIT_REPO}" >&2
 
 # Upload assets matching the provided glob pattern
 if [[ -n "${FILES:-}" ]]; then
