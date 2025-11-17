@@ -5,6 +5,11 @@ on:
     branches:
       - main
 
+  # TODO Remove before merge
+  pull_request:
+    branches:
+      - main
+
   workflow_dispatch:
 
 concurrency:

@@ -61,10 +61,10 @@ fi
 
 # Create (draft) release and capture upload URL template and release ID
 RESPONSE="$(gh api "/repos/${GIT_REPO}/releases" \
-  --field "target_commitish=${TARGET_COMMITISH}" \
   --field "tag_name=${TAG_NAME}" \
-  --raw-field "generate_release_notes=$(true)" \
-  --raw-field "draft=$(true)")"
+  --field "target_commitish=${TARGET_COMMITISH}" \
+  --field "draft=true" \
+  --field "generate_release_notes=true")"
 
 UPLOAD_URL="$(echo "$RESPONSE" | jq -r .upload_url)"
 RELEASE_ID="$(echo "$RESPONSE" | jq -r .id)"
