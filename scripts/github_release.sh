@@ -74,7 +74,6 @@ echo "Created draft release '${TAG_NAME}' (ID: ${RELEASE_ID}) for ${GIT_REPO}" >
 if [[ -n "${FILES:-}" ]]; then
   # Enable extended pattern matching
   shopt -s extglob nullglob
-  
   # Expand the glob pattern into an array
   # shellcheck disable=SC2206
   file_list=(${FILES})
