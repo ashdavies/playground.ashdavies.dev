@@ -53,7 +53,7 @@ done
 GIT_REPO="$(gh repo view --json nameWithOwner --jq .nameWithOwner)"
 GIT_REF="$(git rev-parse --abbrev-ref HEAD)"
 
-echo "Creating draft release for git ref ${GIT_REF}"
+echo "Creating draft release for git ref ${GIT_REF}" >&2
 
 # Create (draft) release and capture upload URL template and release ID
 RESPONSE="$(gh api "/repos/${GIT_REPO}/releases" \
@@ -71,7 +71,6 @@ echo "Created draft release '${TAG_NAME}' (ID: ${RELEASE_ID}) for ${GIT_REPO}" >
 if [[ -n "${FILES:-}" ]]; then
   # Enable extended pattern matching
   shopt -s extglob nullglob
-  # Expand the glob pattern into an array
   # shellcheck disable=SC2206
   file_list=(${FILES})
   
