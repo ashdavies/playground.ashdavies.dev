@@ -51,18 +51,14 @@ done
 
 # Define repository and branch info
 GIT_REPO="$(gh repo view --json nameWithOwner --jq .nameWithOwner)"
+GIT_REF="$(git rev-parse --abbrev-ref HEAD)"
 
-# Get target commitish (use GITHUB_REF if available, otherwise use current branch)
-if [[ -n "${GITHUB_REF:-}" ]]; then
-  TARGET_COMMITISH="${GITHUB_REF##*/}"
-else
-  TARGET_COMMITISH="$(git rev-parse --abbrev-ref HEAD)"
-fi
+echo "Creating draft release for git ref ${GIT_REF}"
 
 # Create (draft) release and capture upload URL template and release ID
 RESPONSE="$(gh api "/repos/${GIT_REPO}/releases" \
   --field "tag_name=${TAG_NAME}" \
-  --field "target_commitish=${TARGET_COMMITISH}" \
+  --field "target_commitish=${GIT_REF}" \
   --field "draft=true" \
   --field "generate_release_notes=true")"
 
