@@ -86,7 +86,6 @@ if [[ -n "${FILES:-}" ]]; then
         aab) CONTENT_TYPE="application/octet-stream" ;;
         *)   CONTENT_TYPE=$(file --mime-type -b "$file" 2>/dev/null || echo "application/octet-stream") ;;
       esac
-      
       if ! gh api "${UPLOAD_URL%\{*}?name=$(basename "$file")" \
         --method POST \
         --header "Content-Type: ${CONTENT_TYPE}" \
