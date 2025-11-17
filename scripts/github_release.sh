@@ -4,11 +4,12 @@ set -eo pipefail
 
 show_help() {
   cat << EOF
-Usage: $(basename "$0") --tag-name <TAG_NAME> [--files <FILES>]
+Usage: $(basename "$0") --target-branch <TARGET_BRANCH> --tag-name <TAG_NAME> [--files <FILES>]
 
 Creates a GitHub release with the provided tag name. Optionally uploads files matching the provided glob pattern.
 
 Arguments:
+  --target-branch  The branch from which you want your release created (required)
   --tag-name       The name of the tag (required)
   --files          Files glob pattern (optional)
   --help           Show this help message
@@ -21,6 +22,10 @@ EOF
 # Parse arguments
 while [[ $# -gt 0 ]]; do
   case "$1" in
+    --target-branch)
+      TARGET_BRANCH="$2"
+      shift 2
+      ;;
     --tag-name)
       TAG_NAME="$2"
       shift 2
@@ -41,6 +46,7 @@ while [[ $# -gt 0 ]]; do
 done
 
 # Validate arguments
+[[ -z "${TARGET_BRANCH}" ]] && echo "--target-branch is required." >&2 && exit 2
 [[ -z "${TAG_NAME}" ]] && echo "--tag-name is required." >&2 && exit 2
 [[ -z "${GITHUB_TOKEN:-}" ]] && echo "GITHUB_TOKEN environment variable is required." >&2 && exit 2
 
@@ -51,14 +57,11 @@ done
 
 # Define repository and branch info
 GIT_REPO="$(gh repo view --json nameWithOwner --jq .nameWithOwner)"
-GIT_REF="$(git rev-parse --abbrev-ref HEAD)"
-
-echo "Creating draft release for git ref ${GIT_REF}" >&2
 
 # Create (draft) release and capture upload URL template and release ID
 RESPONSE="$(gh api "/repos/${GIT_REPO}/releases" \
   --field "tag_name=${TAG_NAME}" \
-  --field "target_commitish=${GIT_REF}" \
+  --field "target_commitish=${TARGET_BRANCH}" \
   --field "draft=true" \
   --field "generate_release_notes=true")"
 
