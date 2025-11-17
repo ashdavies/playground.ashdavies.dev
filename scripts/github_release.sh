@@ -87,10 +87,13 @@ if [[ -n "${FILES:-}" ]]; then
         *)   CONTENT_TYPE=$(file --mime-type -b "$file" 2>/dev/null || echo "application/octet-stream") ;;
       esac
       
-      gh api "${UPLOAD_URL%\{*}?name=$(basename "$file")" \
+      if ! gh api "${UPLOAD_URL%\{*}?name=$(basename "$file")" \
         --method POST \
         --header "Content-Type: ${CONTENT_TYPE}" \
-        --input "$file"
+        --input "$file"; then
+        echo "Failed to upload $file" >&2
+        exit 1
+      fi
       echo "Uploaded $file to release ${TAG_NAME}" >&2
     fi
   done
