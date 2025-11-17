@@ -45,7 +45,7 @@ done
 [[ -z "${GITHUB_TOKEN:-}" ]] && echo "GITHUB_TOKEN environment variable is required." >&2 && exit 2
 
 # Verify installed commands
-for cmd in gh git; do
+for cmd in gh git jq; do
   command -v "$cmd" >/dev/null 2>&1 || { echo "Required command '$cmd' not found." >&2; exit 3; }
 done
 
@@ -63,8 +63,9 @@ fi
 RESPONSE="$(gh api "/repos/${GIT_REPO}/releases" \
   --field "target_commitish=${TARGET_COMMITISH}" \
   --field "tag_name=${TAG_NAME}" \
-  --raw-field "generate_release_notes=true" \
-  --raw-field "draft=true")"
+  --raw-field "generate_release_notes=$(true)" \
+  --raw-field "draft=$(true)")"
+
 UPLOAD_URL="$(echo "$RESPONSE" | jq -r .upload_url)"
 RELEASE_ID="$(echo "$RESPONSE" | jq -r .id)"
 
