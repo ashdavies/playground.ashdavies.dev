@@ -53,8 +53,11 @@ done
 GIT_REPO="$(gh repo view --json nameWithOwner --jq .nameWithOwner)"
 
 # Get target commitish (use GITHUB_REF if available, otherwise use current branch)
-TARGET_COMMITISH="${GITHUB_REF##*/}"
-[[ -z "${TARGET_COMMITISH}" ]] && TARGET_COMMITISH="$(git rev-parse --abbrev-ref HEAD)"
+if [[ -n "${GITHUB_REF:-}" ]]; then
+  TARGET_COMMITISH="${GITHUB_REF##*/}"
+else
+  TARGET_COMMITISH="$(git rev-parse --abbrev-ref HEAD)"
+fi
 
 # Create (draft) release and capture upload URL template
 UPLOAD_URL="$(gh api "/repos/${GIT_REPO}/releases" \
