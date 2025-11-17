@@ -50,7 +50,7 @@ for cmd in gh git; do
 done
 
 # Define repository and branch info
-GIT_REPO="$(gh repo view --json nameWithOwner --jq .nameWithOwner | tee /dev/stderr)"
+GIT_REPO="$(gh repo view --json nameWithOwner --jq .nameWithOwner)"
 
 # Get target commitish (use GITHUB_REF if available, otherwise use current branch)
 TARGET_COMMITISH="${GITHUB_REF##*/}"
