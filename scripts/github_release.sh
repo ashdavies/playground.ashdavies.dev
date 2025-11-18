@@ -58,12 +58,19 @@ done
 # Define repository and branch info
 GIT_REPO="$(gh repo view --json nameWithOwner --jq .nameWithOwner)"
 
+RELEASE_NOTES="$(gh api "/repos/${GIT_REPO}releases/generate-notes" \
+  --raw-field "tag_name=${TAG_NAME}" \
+  --raw-field "target_commitish=${TARGET_BRANCH}" \
+  --jq .body \
+  --verbose >&2)"
+
 # Create (draft) release and capture upload URL template and release ID
 RESPONSE="$(gh api "/repos/${GIT_REPO}/releases" \
   --raw-field "tag_name=${TAG_NAME}" \
   --raw-field "target_commitish=${TARGET_BRANCH}" \
-  --field "draft=true" \
+  --raw-field "body=${RELEASE_NOTES:0:125000}" \
   --field "generate_release_notes=true" \
+  --field "draft=true" \
   --verbose >&2)"
 
 UPLOAD_URL="$(echo "$RESPONSE" | jq -r .upload_url)"
