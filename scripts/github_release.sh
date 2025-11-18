@@ -61,8 +61,7 @@ GIT_REPO="$(gh repo view --json nameWithOwner --jq .nameWithOwner)"
 RELEASE_NOTES="$(gh api "/repos/${GIT_REPO}releases/generate-notes" \
   --raw-field "tag_name=${TAG_NAME}" \
   --raw-field "target_commitish=${TARGET_BRANCH}" \
-  --jq .body \
-  --verbose >&2)"
+  --verbose >&2 | jq -r .body)"
 
 # Create (draft) release and capture upload URL template and release ID
 RESPONSE="$(gh api "/repos/${GIT_REPO}/releases" \
