@@ -58,7 +58,7 @@ done
 # Define repository and branch info
 GIT_REPO="$(gh repo view --json nameWithOwner --jq .nameWithOwner)"
 
-RELEASE_NOTES="$(gh api "/repos/${GIT_REPO}releases/generate-notes" \
+RELEASE_NOTES="$(gh api "/repos/${GIT_REPO}/releases/generate-notes" \
   --raw-field "tag_name=${TAG_NAME}" \
   --raw-field "target_commitish=${TARGET_BRANCH}" \
   --verbose >&2 | jq -r .body)"
