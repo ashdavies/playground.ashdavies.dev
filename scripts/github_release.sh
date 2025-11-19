@@ -58,24 +58,22 @@ done
 # Define repository and branch info
 GIT_REPO="$(gh repo view --json nameWithOwner --jq .nameWithOwner)"
 
+LATEST_TAG_NAME="$(gh api "repos/${GIT_REPO}/releases/latest" --jq .tag_name)"
 RELEASE_NOTES="$(gh api "/repos/${GIT_REPO}/releases/generate-notes" \
-  --raw-field "tag_name=${TAG_NAME}" \
+  --raw-field "tag_name=v${TAG_NAME}" \
   --raw-field "target_commitish=${TARGET_BRANCH}" \
-  --verbose >&2 | jq -r .body)"
+  --raw-field "previous_tag_name=${LATEST_TAG_NAME}" \
+  | jq -r .body)"
 
 # Create (draft) release and capture upload URL template and release ID
-RESPONSE="$(gh api "/repos/${GIT_REPO}/releases" \
-  --raw-field "tag_name=${TAG_NAME}" \
-  --raw-field "target_commitish=${TARGET_BRANCH}" \
+UPLOAD_URL="$(gh api "/repos/${GIT_REPO}/releases" \
+  --raw-field "tag_name=v${TAG_NAME}" \
   --raw-field "body=${RELEASE_NOTES:0:125000}" \
-  --field "generate_release_notes=true" \
+  --raw-field "name=v${TAG_NAME}" \
   --field "draft=true" \
-  --verbose >&2)"
+  --jq .upload_url)"
 
-UPLOAD_URL="$(echo "$RESPONSE" | jq -r .upload_url)"
-RELEASE_ID="$(echo "$RESPONSE" | jq -r .id)"
-
-echo "Created draft release '${TAG_NAME}' (ID: ${RELEASE_ID}) for ${GIT_REPO}" >&2
+echo "Created draft release v${TAG_NAME}" >&2
 
 # Upload assets matching the provided glob pattern
 if [[ -n "${FILES:-}" ]]; then
@@ -92,6 +90,7 @@ if [[ -n "${FILES:-}" ]]; then
         aab) CONTENT_TYPE="application/octet-stream" ;;
         *)   CONTENT_TYPE=$(file --mime-type -b "$file" 2>/dev/null || echo "application/octet-stream") ;;
       esac
+
       if ! gh api "${UPLOAD_URL%\{*}?name=$(basename "$file")" \
         --method POST \
         --header "Content-Type: ${CONTENT_TYPE}" \
