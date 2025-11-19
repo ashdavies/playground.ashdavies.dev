@@ -4,11 +4,12 @@ set -eo pipefail
 
 show_help() {
   cat << EOF
-Usage: $(basename "$0") --tag-name <TAG_NAME> [--files <FILES>]
+Usage: $(basename "$0") --target-branch <TARGET_BRANCH> --tag-name <TAG_NAME> [--files <FILES>]
 
 Creates a GitHub release with the provided tag name. Optionally uploads files matching the provided glob pattern.
 
 Arguments:
+  --target-branch  The branch from which you want your release created (required)
   --tag-name       The name of the tag (required)
   --files          Files glob pattern (optional)
   --help           Show this help message
@@ -21,6 +22,10 @@ EOF
 # Parse arguments
 while [[ $# -gt 0 ]]; do
   case "$1" in
+    --target-branch)
+      TARGET_BRANCH="$2"
+      shift 2
+      ;;
     --tag-name)
       TAG_NAME="$2"
       shift 2
@@ -41,40 +46,39 @@ while [[ $# -gt 0 ]]; do
 done
 
 # Validate arguments
+[[ -z "${TARGET_BRANCH}" ]] && echo "--target-branch is required." >&2 && exit 2
 [[ -z "${TAG_NAME}" ]] && echo "--tag-name is required." >&2 && exit 2
 [[ -z "${GITHUB_TOKEN:-}" ]] && echo "GITHUB_TOKEN environment variable is required." >&2 && exit 2
 
 # Verify installed commands
-for cmd in gh git; do
+for cmd in gh git jq; do
   command -v "$cmd" >/dev/null 2>&1 || { echo "Required command '$cmd' not found." >&2; exit 3; }
 done
 
 # Define repository and branch info
 GIT_REPO="$(gh repo view --json nameWithOwner --jq .nameWithOwner)"
 
-# Get target commitish (use GITHUB_REF if available, otherwise use current branch)
-if [[ -n "${GITHUB_REF:-}" ]]; then
-  TARGET_COMMITISH="${GITHUB_REF##*/}"
-else
-  TARGET_COMMITISH="$(git rev-parse --abbrev-ref HEAD)"
-fi
+LATEST_TAG_NAME="$(gh api "repos/${GIT_REPO}/releases/latest" --jq .tag_name)"
+RELEASE_NOTES="$(gh api "/repos/${GIT_REPO}/releases/generate-notes" \
+  --raw-field "tag_name=v${TAG_NAME}" \
+  --raw-field "target_commitish=${TARGET_BRANCH}" \
+  --raw-field "previous_tag_name=${LATEST_TAG_NAME}" \
+  | jq -r .body)"
 
 # Create (draft) release and capture upload URL template and release ID
-RESPONSE="$(gh api "/repos/${GIT_REPO}/releases" \
-  --field "target_commitish=${TARGET_COMMITISH}" \
-  --field "tag_name=${TAG_NAME}" \
-  --raw-field "generate_release_notes=true" \
-  --raw-field "draft=true")"
-UPLOAD_URL="$(echo "$RESPONSE" | jq -r .upload_url)"
-RELEASE_ID="$(echo "$RESPONSE" | jq -r .id)"
+UPLOAD_URL="$(gh api "/repos/${GIT_REPO}/releases" \
+  --raw-field "tag_name=v${TAG_NAME}" \
+  --raw-field "body=${RELEASE_NOTES:0:125000}" \
+  --raw-field "name=v${TAG_NAME}" \
+  --field "draft=true" \
+  --jq .upload_url)"
 
-echo "Created draft release '${TAG_NAME}' (ID: ${RELEASE_ID}) for ${GIT_REPO}" >&2
+echo "Created draft release v${TAG_NAME}" >&2
 
 # Upload assets matching the provided glob pattern
 if [[ -n "${FILES:-}" ]]; then
   # Enable extended pattern matching
   shopt -s extglob nullglob
-  # Expand the glob pattern into an array
   # shellcheck disable=SC2206
   file_list=(${FILES})
   
@@ -86,6 +90,7 @@ if [[ -n "${FILES:-}" ]]; then
         aab) CONTENT_TYPE="application/octet-stream" ;;
         *)   CONTENT_TYPE=$(file --mime-type -b "$file" 2>/dev/null || echo "application/octet-stream") ;;
       esac
+
       if ! gh api "${UPLOAD_URL%\{*}?name=$(basename "$file")" \
         --method POST \
         --header "Content-Type: ${CONTENT_TYPE}" \
