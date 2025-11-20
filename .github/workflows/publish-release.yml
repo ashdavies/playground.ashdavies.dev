@@ -43,7 +43,7 @@ jobs:
       - env:
           GITHUB_TOKEN: ${{ github.token }}
         run: |
-          ./scripts/github_release.sh \
+          shopt -s globstar && ./scripts/github_release.sh \
             --target-branch "${{ github.head_ref || github.ref_name }}" \
             --tag-name "1.0.0-$(date +%s)" \
             --files **/release/*.apk **/release/*.aab
