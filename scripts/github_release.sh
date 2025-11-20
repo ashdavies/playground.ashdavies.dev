@@ -10,8 +10,8 @@ Creates a GitHub release with the provided tag name. Optionally uploads files ma
 
 Arguments:
   --target-branch  The branch from which you want your release created (required)
-  --tag-name       The name of the tag (required)
-  --files          Files glob pattern(s), can be space-separated or repeated (optional)
+  --tag-name       The name of the tag, if it does not exist, one will be created (required)
+  --files          Files to upload, can be space-separated or repeated (optional)
   --help           Show this help message
 
 Environment:
