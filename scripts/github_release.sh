@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -eo pipefail
+set -eou pipefail
 
 show_help() {
   cat << EOF
@@ -11,13 +11,17 @@ Creates a GitHub release with the provided tag name. Optionally uploads files ma
 Arguments:
   --target-branch  The branch from which you want your release created (required)
   --tag-name       The name of the tag (required)
-  --files          Files glob pattern (optional)
+  --files          Files glob pattern(s), can be space-separated or repeated (optional)
   --help           Show this help message
 
 Environment:
   GITHUB_TOKEN     GitHub token with repo permissions (required)
 EOF
-}
+};
+
+TARGET_BRANCH=
+TAG_NAME=
+FILES=()
 
 # Parse arguments
 while [[ $# -gt 0 ]]; do
@@ -31,8 +35,12 @@ while [[ $# -gt 0 ]]; do
       shift 2
       ;;
     --files)
-      FILES="$2"
-      shift 2
+      shift
+
+      while [[ $# -gt 0 && ! "$1" =~ ^-- ]]; do
+        FILES+=("$1")
+        shift
+      done
       ;;
     --help)
       show_help
@@ -75,31 +83,23 @@ UPLOAD_URL="$(gh api "/repos/${GIT_REPO}/releases" \
 
 echo "Created draft release v${TAG_NAME}" >&2
 
-# Upload assets matching the provided glob pattern
-if [[ -n "${FILES:-}" ]]; then
-  # Enable extended pattern matching
-  shopt -s extglob nullglob
-  # shellcheck disable=SC2206
-  file_list=(${FILES})
-  
-  for file in "${file_list[@]}"; do
-    if [[ -f "$file" ]]; then
-      # Determine content type
-      case "${file##*.}" in
-        apk) CONTENT_TYPE="application/vnd.android.package-archive" ;;
-        aab) CONTENT_TYPE="application/octet-stream" ;;
-        *)   CONTENT_TYPE=$(file --mime-type -b "$file" 2>/dev/null || echo "application/octet-stream") ;;
-      esac
+# Upload assets matching the provided glob pattern(s)
+for file in "${FILES[@]}"; do
+  if [[ -f "$file" ]]; then
+    case "${file##*.}" in
+      apk) CONTENT_TYPE="application/vnd.android.package-archive" ;;
+      aab) CONTENT_TYPE="application/octet-stream" ;;
+      *)   CONTENT_TYPE=$(file --mime-type -b "$file" 2>/dev/null || echo "application/octet-stream") ;;
+    esac
 
-      if ! gh api "${UPLOAD_URL%\{*}?name=$(basename "$file")" \
-        --method POST \
-        --header "Content-Type: ${CONTENT_TYPE}" \
-        --input "$file"; then
-        echo "Failed to upload $file" >&2
-        exit 1
-      fi
-      echo "Uploaded $file to release ${TAG_NAME}" >&2
+    BASENAME=$(basename "$file")
+    if ! gh api "${UPLOAD_URL%\{*}?name=${BASENAME}" \
+      --header "Content-Type: ${CONTENT_TYPE}" \
+      --input "$file" >/dev/null; then
+      echo "Failed to upload $file" >&2
+      exit 1
     fi
-  done
-fi
 
+    echo "Uploaded ${BASENAME}" >&2
+  fi
+done
