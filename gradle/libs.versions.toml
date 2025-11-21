@@ -114,7 +114,7 @@ squareup-okio = "com.squareup.okio:okio:3.16.4"
 [plugins]
 android-application = { id = "com.android.application", version.ref = "google-android" }
 android-library = { id = "com.android.library", version.ref = "google-android" }
-build-config = "com.github.gmazzo.buildconfig:5.7.1"
+build-config = "com.github.gmazzo.buildconfig:6.0.0"
 cash-paparazzi = "app.cash.paparazzi:2.0.0-alpha02"
 cash-sqldelight = { id = "app.cash.sqldelight", version.ref = "cash-sqldelight" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "jetbrains-kotlin" }
