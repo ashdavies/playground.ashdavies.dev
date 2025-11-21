@@ -2,6 +2,11 @@ name: Android Release
 
 on:
   workflow_call:
+    inputs:
+      version:
+        required: true
+        type: string
+
     secrets:
       WORKLOAD_IDENTITY_PROVIDER:
         required: true
@@ -46,9 +51,9 @@ jobs:
       - run: echo "VERSION_CODE=$((GITHUB_RUN_NUMBER * 2 + 1000))" >> $GITHUB_ENV
 
       - run: |
-          ./gradlew \
-            :conference-app:assemble \
-            :conference-app:bundle \
+          ./gradlew :conference-app:assemble :conference-app:bundle \
+            -PversionCode=${{ steps.version-code.outputs.VERSION_CODE }} \
+            -PversionName=${{ inputs.version }} \
             --console=plain
         env:
           ANDROID_API_KEY: ${{ secrets.ANDROID_API_KEY }}
