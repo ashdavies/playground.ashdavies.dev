@@ -1,11 +1,11 @@
 name: Publish Release
 
 on:
-  push:
-    branches:
-      - main
-
   workflow_dispatch:
+    inputs:
+      version:
+        required: true
+        type: string
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
@@ -14,6 +14,8 @@ concurrency:
 jobs:
   android:
     uses: ./.github/workflows/android-release.yml
+    with:
+      version: ${{ github.event.inputs.version }}
     secrets:
       WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
       GOOGLE_SERVICE_ACCOUNT_ID: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
@@ -33,7 +35,7 @@ jobs:
       id-token: write
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       - uses: actions/download-artifact@v6
         with:
