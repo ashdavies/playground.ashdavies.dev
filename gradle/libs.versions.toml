@@ -29,7 +29,7 @@ androidx-startup-runtime = "androidx.startup:startup-runtime:1.2.0"
 androidx-paging-common = { module = "androidx.paging:paging-common", version.ref = "androidx-paging" }
 androidx-paging-compose = { module = "androidx.paging:paging-compose", version.ref = "androidx-paging" }
 androidx-paging-testing = { module = "androidx.paging:paging-testing", version.ref = "androidx-paging" }
-androidx-window-core = "org.jetbrains.androidx.window:window-core:1.4.0"
+androidx-window-core = "org.jetbrains.androidx.window:window-core:1.5.0"
 
 app-cash-turbine = "app.cash.turbine:turbine:1.2.1"
 
