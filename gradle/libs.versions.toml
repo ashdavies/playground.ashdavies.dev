@@ -1,7 +1,7 @@
 [versions]
 android-compileSdk = "36"
 android-minSdk = "34"
-androidx-activity = "1.11.0"
+androidx-activity = "1.12.0"
 androidx-paging = "3.4.0-alpha04"
 cash-sqldelight = "2.2.1"
 coil-kt = "3.3.0"
@@ -29,7 +29,7 @@ androidx-startup-runtime = "androidx.startup:startup-runtime:1.2.0"
 androidx-paging-common = { module = "androidx.paging:paging-common", version.ref = "androidx-paging" }
 androidx-paging-compose = { module = "androidx.paging:paging-compose", version.ref = "androidx-paging" }
 androidx-paging-testing = { module = "androidx.paging:paging-testing", version.ref = "androidx-paging" }
-androidx-window-core = "org.jetbrains.androidx.window:window-core:1.4.0"
+androidx-window-core = "org.jetbrains.androidx.window:window-core:1.5.0"
 
 app-cash-turbine = "app.cash.turbine:turbine:1.2.1"
 
@@ -93,7 +93,7 @@ ktor-server-default-headers = { module = "io.ktor:ktor-server-default-headers", 
 ktor-server-host-common = { module = "io.ktor:ktor-server-host-common", version.ref = "ktor" }
 ktor-server-test-host = { module = "io.ktor:ktor-server-test-host", version.ref = "ktor" }
 
-pinterest-ktlint-bom = "com.pinterest.ktlint:ktlint-bom:1.7.1"
+pinterest-ktlint-bom = "com.pinterest.ktlint:ktlint-bom:1.8.0"
 
 slack-circuit-foundation = { module = "com.slack.circuit:circuit-foundation", version.ref = "slack-circuit" }
 slack-circuit-overlay = { module = "com.slack.circuit:circuit-overlay", version.ref = "slack-circuit" }
@@ -114,7 +114,7 @@ squareup-okio = "com.squareup.okio:okio:3.16.4"
 [plugins]
 android-application = { id = "com.android.application", version.ref = "google-android" }
 android-library = { id = "com.android.library", version.ref = "google-android" }
-build-config = "com.github.gmazzo.buildconfig:5.7.1"
+build-config = "com.github.gmazzo.buildconfig:6.0.0"
 cash-paparazzi = "app.cash.paparazzi:2.0.0-alpha02"
 cash-sqldelight = { id = "app.cash.sqldelight", version.ref = "cash-sqldelight" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "jetbrains-kotlin" }

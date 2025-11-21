@@ -73,7 +73,9 @@ android {
             versionCode = value?.toInt() ?: 1
         }
 
-        versionName = "1.0.0-$versionCode"
+        val versionName by stringProperty { _, value ->
+            versionName = value ?: "0.0.0-SNAPSHOT"
+        }
     }
 
     namespace = ConferenceAppConfig.APPLICATION_NAME
