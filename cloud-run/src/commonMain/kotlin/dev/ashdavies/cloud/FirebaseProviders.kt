@@ -26,6 +26,7 @@ internal interface FirebaseProviders {
         return FirebaseApp.getApps().firstOrNull { it.name == FirebaseApp.DEFAULT_APP_NAME }
             ?: when (val serviceAccountId = BuildConfig.GOOGLE_SERVICE_ACCOUNT_ID) {
                 null -> FirebaseApp.initializeApp()
+
                 else -> {
                     val firebaseOptions = FirebaseOptions.builder()
                         .setCredentials(GoogleCredentials.getApplicationDefault())
