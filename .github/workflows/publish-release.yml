@@ -14,7 +14,7 @@ concurrency:
 jobs:
   android:
     uses: ./.github/workflows/android-release.yml
-    inputs:
+    with:
       version: ${{ github.event.inputs.version }}
     secrets:
       WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
