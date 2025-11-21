@@ -29,7 +29,7 @@ androidx-startup-runtime = "androidx.startup:startup-runtime:1.2.0"
 androidx-paging-common = { module = "androidx.paging:paging-common", version.ref = "androidx-paging" }
 androidx-paging-compose = { module = "androidx.paging:paging-compose", version.ref = "androidx-paging" }
 androidx-paging-testing = { module = "androidx.paging:paging-testing", version.ref = "androidx-paging" }
-androidx-window-core = "org.jetbrains.androidx.window:window-core:1.4.0"
+androidx-window-core = "org.jetbrains.androidx.window:window-core:1.5.0"
 
 app-cash-turbine = "app.cash.turbine:turbine:1.2.1"
 
@@ -114,7 +114,7 @@ squareup-okio = "com.squareup.okio:okio:3.16.4"
 [plugins]
 android-application = { id = "com.android.application", version.ref = "google-android" }
 android-library = { id = "com.android.library", version.ref = "google-android" }
-build-config = "com.github.gmazzo.buildconfig:5.7.1"
+build-config = "com.github.gmazzo.buildconfig:6.0.0"
 cash-paparazzi = "app.cash.paparazzi:2.0.0-alpha02"
 cash-sqldelight = { id = "app.cash.sqldelight", version.ref = "cash-sqldelight" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "jetbrains-kotlin" }
