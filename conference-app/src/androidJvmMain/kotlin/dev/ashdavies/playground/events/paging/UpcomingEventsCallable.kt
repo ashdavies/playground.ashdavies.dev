@@ -37,6 +37,7 @@ internal fun UpcomingEventsCallable(httpClient: HttpClient, remoteConfig: Remote
     return UpcomingEventsCallable { request ->
         when {
             remoteConfig.isPagingEnabled() -> pagedCallable(request)
+
             else -> asgCallable.asSequence(Unit) { response ->
                 response
                     .filter { request.startAt == null || it.dateStart > request.startAt }

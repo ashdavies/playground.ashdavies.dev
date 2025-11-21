@@ -55,6 +55,7 @@ internal class GalleryPresenter @Inject constructor(
                 }
 
                 is GalleryScreen.Event.Capture.Cancel -> takePhoto = false
+
                 is GalleryScreen.Event.Capture.Request -> {
                     remoteAnalytics.logEvent("gallery_capture")
                     takePhoto = true

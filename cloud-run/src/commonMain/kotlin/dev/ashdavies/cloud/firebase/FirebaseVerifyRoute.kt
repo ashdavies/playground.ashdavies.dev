@@ -23,6 +23,7 @@ internal class FirebaseVerifyRoute @Inject constructor(
     override fun Routing.invoke() = put("/firebase/token:verify") {
         when (val appCheckToken = call.request.header(HttpHeaders.AppCheckToken)) {
             null -> call.respond(HttpStatusCode.BadRequest, "Request is missing app check token header")
+
             else -> {
                 val decodedToken = appCheck.verifyToken(
                     token = appCheckToken,
