@@ -19,6 +19,10 @@ crash.*.log
 .envrc
 
 # Fastlane
+**/fastlane/report.xml
+**/fastlane/Preview.html
+**/fastlane/screenshots
+**/fastlane/test_output
 **/*-key.json
 
 # Firebase
