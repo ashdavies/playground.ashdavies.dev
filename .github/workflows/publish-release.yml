@@ -39,8 +39,8 @@ jobs:
 
       - uses: actions/download-artifact@v6
         with:
-          name: android-build-outputs
-          path: .
+          name: conference-app-build-outputs
+          path: conference-app/build/outputs
 
       - run: ls -R
 
@@ -50,7 +50,7 @@ jobs:
             api_token:${{ github.token }}
             version:v${{ github.event.inputs.version }}
             commitish:${{ github.sha }}
-            assets:"conference-app/build/**/release/**/*.apk"
+            assets:conference-app/build/**/release/**/*.apk
 
   play:
     needs: [android]
