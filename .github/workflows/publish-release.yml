@@ -42,7 +42,7 @@ jobs:
           name: android-build-outputs
           path: .
 
-      - run: ls -r
+      - run: ls -R
 
       - run: |
           fastlane android github \
@@ -50,7 +50,7 @@ jobs:
             api_token:${{ github.token }}
             version:v${{ github.event.inputs.version }}
             commitish:${{ github.sha }}
-            assets:conference-app/build/**/release/**/*.apk
+            assets:"conference-app/build/**/release/**/*.apk"
 
   play:
     needs: [android]
