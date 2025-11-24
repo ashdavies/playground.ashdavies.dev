@@ -1,3 +1,4 @@
+import com.android.build.gradle.internal.tasks.factory.dependsOn
 import io.gitlab.arturbosch.detekt.Detekt
 import io.gitlab.arturbosch.detekt.DetektPlugin
 import io.gitlab.arturbosch.detekt.extensions.DetektExtension
@@ -31,13 +32,18 @@ kotlin {
 }
 
 private val detektAll by tasks.registering(Detekt::class) {
-    buildUponDefaultConfig = true
     config.setFrom(rootProject.file("detekt-config.yml"))
+    parallel = true
+    buildUponDefaultConfig = true
+
+    setSource(files(projectDir))
     include("**/io/ashdavies/**")
     exclude("**/generated/**")
-    setSource(files(projectDir))
-    parallel = true
+
+    group = LifecycleBasePlugin.VERIFICATION_GROUP
 }
+
+tasks.check.dependsOn(detektAll)
 
 dependencies {
     add("detektPlugins", libs.detekt.compose)

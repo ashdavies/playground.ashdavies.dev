@@ -61,6 +61,6 @@ jobs:
 
       - uses: actions/upload-artifact@v5
         with:
-          if-no-files-found: error
-          name: android-build-outputs
+          name: conference-app-build-outputs
           path: conference-app/build/outputs
+          if-no-files-found: error

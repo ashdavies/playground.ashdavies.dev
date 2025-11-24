@@ -35,10 +35,8 @@ jobs:
         run: |
           ./gradlew build \
             ${{ contains(github.event.pull_request.labels.*.name, 'Dry Run') && '--dry-run' || '' }} \
-            -Pgcp.buildcache=true \
-            --console=plain
-
-      - run: ./gradlew detektAll --continue --console=plain
+            --console=plain \
+            --continue
 
       - uses: thollander/actions-comment-pull-request@v3
         if: ${{ steps.gradle-build.outputs.build-scan-url }}

@@ -1,11 +1,22 @@
 default_platform(:android)
 
 platform :android do
-  lane :publish_to_play_store do
+  lane :github do |options|
+    set_github_release(
+      repository_name: options[:repository_name],
+      api_token: options[:api_token],
+      name: "v#{options[:version]}",
+      tag_name: "v#{options[:version]}",
+      commitish: options[:commitish],
+      upload_assets: Dir.glob(File.join("../", options[:assets]))
+    )
+  end
+
+  lane :play do |options|
     upload_to_play_store(
       track: "internal",
-      aab: "conference-app/build/outputs/bundle/release/conference-app-release.aab",
-      mapping: "conference-app/build/outputs/mapping/release/mapping.txt",
+      aab: options[:aab],
+      mapping: options[:mapping],
       skip_upload_images: true,
     )
   end

@@ -37,23 +37,14 @@ plugins {
     id("com.gradle.develocity") version "4.2.2"
 }
 
-val isBuildCacheEnabled = providers
-    .gradleProperty("gcp.build.cache")
-    .map { it == "true" }
-    .getOrElse(false)
+buildCache {
+    registerBuildCacheService(GcpBuildCache::class, GcpBuildCacheServiceFactory::class)
 
-if (isBuildCacheEnabled) {
-    buildCache {
-        registerBuildCacheService(GcpBuildCache::class, GcpBuildCacheServiceFactory::class)
-
-        remote(GcpBuildCache::class) {
-            bucketName = "playground-build-cache"
-            projectId = "playground-1a136"
-            isPush = true
-        }
+    remote(GcpBuildCache::class) {
+        bucketName = "playground-build-cache"
+        projectId = "playground-1a136"
+        isPush = true
     }
-} else {
-    logger.warn("WARNING: Remote Build Cache is not enabled, builds may be slower than usual.")
 }
 
 
