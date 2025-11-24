@@ -43,7 +43,7 @@ compose-adaptive-layout = { module = "org.jetbrains.compose.material3.adaptive:a
 compose-adaptive-navigation = { module = "org.jetbrains.compose.material3.adaptive:adaptive-navigation", version.ref = "compose-adaptive" }
 compose-back-handler = "org.jetbrains.compose.ui:ui-backhandler:1.9.3"
 
-detekt-compose = "io.nlopez.compose.rules:detekt:0.4.27"
+detekt-compose = "io.nlopez.compose.rules:detekt:0.4.28"
 
 google-accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "google-accompanist" }
 google-android-identity = "com.google.android.libraries.identity.googleid:googleid:1.1.1"
@@ -69,7 +69,7 @@ kotlinx-coroutines-play-services = { module = "org.jetbrains.kotlinx:kotlinx-cor
 kotlinx-coroutines-swing = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-swing", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinx-coroutines" }
 kotlinx-datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.7.1-0.6.x-compat"
-kotlinx-io-core = "org.jetbrains.kotlinx:kotlinx-io-core:0.8.0"
+kotlinx-io-core = "org.jetbrains.kotlinx:kotlinx-io-core:0.8.1"
 kotlinx-serialization-core = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version.ref = "kotlinx-serialization" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
 kotlinx-serialization-properties = { module = "org.jetbrains.kotlinx:kotlinx-serialization-properties", version.ref = "kotlinx-serialization" }
@@ -114,7 +114,7 @@ squareup-okio = "com.squareup.okio:okio:3.16.4"
 [plugins]
 android-application = { id = "com.android.application", version.ref = "google-android" }
 android-library = { id = "com.android.library", version.ref = "google-android" }
-build-config = "com.github.gmazzo.buildconfig:6.0.0"
+build-config = "com.github.gmazzo.buildconfig:6.0.2"
 cash-paparazzi = "app.cash.paparazzi:2.0.0-alpha02"
 cash-sqldelight = { id = "app.cash.sqldelight", version.ref = "cash-sqldelight" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "jetbrains-kotlin" }
