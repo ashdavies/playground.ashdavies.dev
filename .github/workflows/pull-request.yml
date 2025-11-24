@@ -35,7 +35,7 @@ jobs:
         run: |
           ./gradlew build \
             ${{ contains(github.event.pull_request.labels.*.name, 'Dry Run') && '--dry-run' || '' }} \
-            --console=plain
+            --console=plain \
             --continue
 
       - uses: thollander/actions-comment-pull-request@v3
