@@ -19,8 +19,9 @@ crash.*.log
 .envrc
 
 # Fastlane
-**/fastlane/report.xml
 **/fastlane/Preview.html
+**/fastlane/README.md
+**/fastlane/report.xml
 **/fastlane/screenshots
 **/fastlane/test_output
 **/*-key.json
