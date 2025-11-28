@@ -42,12 +42,16 @@ jobs:
           name: conference-app-build-outputs
           path: conference-app/build/outputs
 
-      - run: ls -R
+      - id: app-token
+        uses: ./.github/actions/github-token
+        with:
+          app_id: ${{ secrets.GH_APP_ID }}
+          private_key: ${{ secrets.GH_PRIVATE_KEY }}
 
       - run: |
           fastlane android github \
             repository_name:${{ github.repository }}
-            api_token:${{ github.token }}
+            api_token:${{ steps.app-token.outputs.token }}
             version:v${{ github.event.inputs.version }}
             commitish:${{ github.sha }}
 
