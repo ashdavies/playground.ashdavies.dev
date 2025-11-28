@@ -42,15 +42,18 @@ jobs:
           name: conference-app-build-outputs
           path: conference-app/build/outputs
 
-      - run: ls -R
+      - id: app-token
+        uses: ./.github/actions/github-token
+        with:
+          app_id: ${{ secrets.GH_APP_ID }}
+          private_key: ${{ secrets.GH_PRIVATE_KEY }}
 
       - run: |
           fastlane android github \
             repository_name:${{ github.repository }}
-            api_token:${{ github.token }}
+            api_token:${{ steps.app-token.outputs.token }}
             version:v${{ github.event.inputs.version }}
             commitish:${{ github.sha }}
-            assets:conference-app/build/**/release/**/*.apk
 
   play:
     needs: [android]
@@ -61,6 +64,4 @@ jobs:
       - run: echo ${{ secrets.FASTLANE_SERVICE_ACCOUNT_KEY }} | base64 --decode > conference-app/src/androidMain/play-store-key.json
 
       - run: |
-          fastlane android play \
-            aab:conference-app/build/outputs/bundle/release/conference-app-release.aab
-            mapping:conference-app/build/outputs/mapping/release/mapping.txt
+          fastlane android play
