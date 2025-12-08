@@ -39,7 +39,6 @@ extensions.configure<DetektExtension> {
     config.setFrom(rootProject.file("detekt-config.yml"))
     parallel = true
     buildUponDefaultConfig = true
-    group = LifecycleBasePlugin.VERIFICATION_GROUP
 
     val detektPlugin = libs.plugins.detekt.get()
     toolVersion = "${detektPlugin.version}"
