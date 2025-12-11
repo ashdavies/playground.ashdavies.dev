@@ -1,20 +1,20 @@
 [versions]
 android-compileSdk = "36"
 android-minSdk = "34"
-androidx-activity = "1.12.0"
+androidx-activity = "1.12.1"
 androidx-paging = "3.4.0-alpha04"
 cash-sqldelight = "2.2.1"
 coil-kt = "3.3.0"
 compose-adaptive = "1.2.0"
 compose-plugin = "1.9.3"
 google-accompanist = "0.37.3"
-google-android = "8.11.0"
+google-android = "8.13.2"
 google-services = "4.4.4"
 jetbrains-kotlin = "2.2.21"
 kotlin-jvmTarget = "17"
 kotlinx-coroutines = "1.10.2"
 kotlinx-serialization = "1.9.0"
-ktor = "3.3.2"
+ktor = "3.3.3"
 slack-circuit = "0.31.0"
 sqlJs = "1.8.0"
 webPack = "9.1.0"
@@ -29,7 +29,7 @@ androidx-startup-runtime = "androidx.startup:startup-runtime:1.2.0"
 androidx-paging-common = { module = "androidx.paging:paging-common", version.ref = "androidx-paging" }
 androidx-paging-compose = { module = "androidx.paging:paging-compose", version.ref = "androidx-paging" }
 androidx-paging-testing = { module = "androidx.paging:paging-testing", version.ref = "androidx-paging" }
-androidx-window-core = "org.jetbrains.androidx.window:window-core:1.5.0"
+androidx-window-core = "org.jetbrains.androidx.window:window-core:1.5.1"
 
 app-cash-turbine = "app.cash.turbine:turbine:1.2.1"
 
@@ -49,7 +49,7 @@ google-accompanist-permissions = { module = "com.google.accompanist:accompanist-
 google-android-identity = "com.google.android.libraries.identity.googleid:googleid:1.1.1"
 google-android-location = "com.google.android.gms:play-services-location:21.3.0"
 google-android-material = "com.google.android.material:material:1.13.0"
-google-auth-http = "com.google.auth:google-auth-library-oauth2-http:1.40.0"
+google-auth-http = "com.google.auth:google-auth-library-oauth2-http:1.41.0"
 google-firebase-admin = "com.google.firebase:firebase-admin:9.7.0"
 google-firebase-appcheck-debug = { module = "com.google.firebase:firebase-appcheck-debug" }
 google-firebase-appcheck-playintegrity = { module = "com.google.firebase:firebase-appcheck-playintegrity" }
@@ -69,7 +69,7 @@ kotlinx-coroutines-play-services = { module = "org.jetbrains.kotlinx:kotlinx-cor
 kotlinx-coroutines-swing = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-swing", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinx-coroutines" }
 kotlinx-datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.7.1-0.6.x-compat"
-kotlinx-io-core = "org.jetbrains.kotlinx:kotlinx-io-core:0.8.1"
+kotlinx-io-core = "org.jetbrains.kotlinx:kotlinx-io-core:0.8.2"
 kotlinx-serialization-core = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version.ref = "kotlinx-serialization" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
 kotlinx-serialization-properties = { module = "org.jetbrains.kotlinx:kotlinx-serialization-properties", version.ref = "kotlinx-serialization" }
@@ -114,11 +114,11 @@ squareup-okio = "com.squareup.okio:okio:3.16.4"
 [plugins]
 android-application = { id = "com.android.application", version.ref = "google-android" }
 android-library = { id = "com.android.library", version.ref = "google-android" }
-build-config = "com.github.gmazzo.buildconfig:6.0.2"
+build-config = "com.github.gmazzo.buildconfig:6.0.6"
 cash-paparazzi = "app.cash.paparazzi:2.0.0-alpha02"
 cash-sqldelight = { id = "app.cash.sqldelight", version.ref = "cash-sqldelight" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "jetbrains-kotlin" }
-compose-hotReload = "org.jetbrains.compose.hot-reload:1.0.0-rc04"
+compose-hotReload = "org.jetbrains.compose.hot-reload:1.0.0"
 detekt = "io.gitlab.arturbosch.detekt:1.23.8"
 crashlytics = "com.google.firebase.crashlytics:3.0.6"
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
@@ -126,6 +126,6 @@ gradle-doctor = "com.osacky.doctor:0.12.1"
 jetbrains-compose = { id = "org.jetbrains.compose", version.ref = "compose-plugin" }
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "jetbrains-kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "jetbrains-kotlin" }
-kotlinx-kover = "org.jetbrains.kotlinx.kover:0.9.3"
+kotlinx-kover = "org.jetbrains.kotlinx.kover:0.9.4"
 ktlint = "org.jlleitschuh.gradle.ktlint:14.0.1"
-zac-metro = "dev.zacsweers.metro:0.7.7"
+zac-metro = "dev.zacsweers.metro:0.8.2"

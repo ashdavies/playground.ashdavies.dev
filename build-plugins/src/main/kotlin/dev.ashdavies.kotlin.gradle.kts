@@ -31,25 +31,15 @@ kotlin {
     }
 }
 
-private val detektAll by tasks.registering(Detekt::class) {
-    config.setFrom(rootProject.file("detekt-config.yml"))
-    parallel = true
-    buildUponDefaultConfig = true
-
-    setSource(files(projectDir))
-    include("**/io/ashdavies/**")
-    exclude("**/generated/**")
-
-    group = LifecycleBasePlugin.VERIFICATION_GROUP
-}
-
-tasks.check.dependsOn(detektAll)
-
 dependencies {
     add("detektPlugins", libs.detekt.compose)
 }
 
 extensions.configure<DetektExtension> {
+    config.setFrom(rootProject.file("detekt-config.yml"))
+    parallel = true
+    buildUponDefaultConfig = true
+
     val detektPlugin = libs.plugins.detekt.get()
     toolVersion = "${detektPlugin.version}"
 }
