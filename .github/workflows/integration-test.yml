@@ -41,7 +41,7 @@ jobs:
           paths: "**/build/test-results/integrationTest/TEST-*.xml"
         if: ${{ always() }}
 
-      - uses: actions/upload-artifact@v5
+      - uses: actions/upload-artifact@v6
         if: failure()
         with:
           name: test-results
