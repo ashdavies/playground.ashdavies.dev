@@ -43,7 +43,7 @@ compose-adaptive-layout = { module = "org.jetbrains.compose.material3.adaptive:a
 compose-adaptive-navigation = { module = "org.jetbrains.compose.material3.adaptive:adaptive-navigation", version.ref = "compose-adaptive" }
 compose-back-handler = "org.jetbrains.compose.ui:ui-backhandler:1.9.3"
 
-detekt-compose = "io.nlopez.compose.rules:detekt:0.5.2"
+detekt-compose = "io.nlopez.compose.rules:detekt:0.5.3"
 
 google-accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "google-accompanist" }
 google-android-identity = "com.google.android.libraries.identity.googleid:googleid:1.1.1"
@@ -128,4 +128,4 @@ kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref 
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "jetbrains-kotlin" }
 kotlinx-kover = "org.jetbrains.kotlinx.kover:0.9.4"
 ktlint = "org.jlleitschuh.gradle.ktlint:14.0.1"
-zac-metro = "dev.zacsweers.metro:0.8.2"
+zac-metro = "dev.zacsweers.metro:0.9.2"
