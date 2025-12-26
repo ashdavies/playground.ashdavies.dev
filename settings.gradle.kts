@@ -10,7 +10,7 @@ buildscript {
             """.trimIndent(),
         )
 
-        classpath("com.google.http-client:google-http-client:2.0.2")?.because(
+        classpath("com.google.http-client:google-http-client:2.0.3")?.because(
             "gcpbuildcache depends upon org.apache.httpcomponents:httpclient:4.5.14",
         )
     }
