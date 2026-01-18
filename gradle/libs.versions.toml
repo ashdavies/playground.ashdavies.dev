@@ -2,7 +2,7 @@
 android-compileSdk = "36"
 android-minSdk = "34"
 androidx-activity = "1.12.2"
-androidx-paging = "3.4.0-beta01"
+androidx-paging = "3.4.0-rc01"
 cash-sqldelight = "2.2.1"
 coil-kt = "3.3.0"
 compose-adaptive = "1.2.0"
@@ -54,7 +54,7 @@ google-firebase-admin = "com.google.firebase:firebase-admin:9.7.0"
 google-firebase-appcheck-debug = { module = "com.google.firebase:firebase-appcheck-debug" }
 google-firebase-appcheck-playintegrity = { module = "com.google.firebase:firebase-appcheck-playintegrity" }
 google-firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
-google-firebase-bom = "com.google.firebase:firebase-bom:34.7.0"
+google-firebase-bom = "com.google.firebase:firebase-bom:34.8.0"
 google-firebase-config = { module = "com.google.firebase:firebase-config" }
 google-firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
 google-guava-jre = "com.google.guava:guava:33.5.0-jre"
@@ -114,7 +114,7 @@ squareup-okio = "com.squareup.okio:okio:3.16.4"
 [plugins]
 android-application = { id = "com.android.application", version.ref = "google-android" }
 android-library = { id = "com.android.library", version.ref = "google-android" }
-build-config = "com.github.gmazzo.buildconfig:6.0.6"
+build-config = "com.github.gmazzo.buildconfig:6.0.7"
 cash-paparazzi = "app.cash.paparazzi:2.0.0-alpha02"
 cash-sqldelight = { id = "app.cash.sqldelight", version.ref = "cash-sqldelight" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "jetbrains-kotlin" }
@@ -128,4 +128,4 @@ kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref 
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "jetbrains-kotlin" }
 kotlinx-kover = "org.jetbrains.kotlinx.kover:0.9.4"
 ktlint = "org.jlleitschuh.gradle.ktlint:14.0.1"
-zac-metro = "dev.zacsweers.metro:0.9.2"
+zac-metro = "dev.zacsweers.metro:0.9.4"

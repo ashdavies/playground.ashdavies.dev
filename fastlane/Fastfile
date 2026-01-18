@@ -8,15 +8,16 @@ platform :android do
       name: "v#{options[:version]}",
       tag_name: "v#{options[:version]}",
       commitish: options[:commitish],
-      upload_assets: Dir.glob(File.join("../", options[:assets]))
+      is_draft: true,
+      upload_assets: Dir.glob("../**/build/outputs/apk/release/*.apk")
     )
   end
 
   lane :play do |options|
     upload_to_play_store(
       track: "internal",
-      aab: options[:aab],
-      mapping: options[:mapping],
+      aab: Dir.glob("../**/build/outputs/bundle/release/*.aab"),
+      mapping: Dir.glob("../**/build/outputs/mapping/release/mapping.txt"),
       skip_upload_images: true,
     )
   end
