@@ -9,5 +9,5 @@ data "onepassword_item" "android_release_keystore" {
 
 data "onepassword_item" "github_developer_application" {
   vault = data.onepassword_vault.development.uuid
-  title = "Github Developer Application"
+  title = "GitHub Developer Application"
 }
