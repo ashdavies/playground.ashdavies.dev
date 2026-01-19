@@ -41,7 +41,7 @@ coil-network = { module = "io.coil-kt.coil3:coil-network-ktor3", version.ref = "
 
 compose-adaptive-layout = { module = "org.jetbrains.compose.material3.adaptive:adaptive-layout", version.ref = "compose-adaptive" }
 compose-adaptive-navigation = { module = "org.jetbrains.compose.material3.adaptive:adaptive-navigation", version.ref = "compose-adaptive" }
-compose-back-handler = "org.jetbrains.compose.ui:ui-backhandler:1.9.3"
+compose-back-handler = "org.jetbrains.compose.ui:ui-backhandler:1.10.0"
 
 detekt-compose = "io.nlopez.compose.rules:detekt:0.5.3"
 
