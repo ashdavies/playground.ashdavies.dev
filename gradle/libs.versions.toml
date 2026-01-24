@@ -43,7 +43,7 @@ compose-adaptive-layout = { module = "org.jetbrains.compose.material3.adaptive:a
 compose-adaptive-navigation = { module = "org.jetbrains.compose.material3.adaptive:adaptive-navigation", version.ref = "compose-adaptive" }
 compose-back-handler = "org.jetbrains.compose.ui:ui-backhandler:1.10.0"
 
-detekt-compose = "io.nlopez.compose.rules:detekt:0.5.4"
+detekt-compose = "io.nlopez.compose.rules:detekt:0.5.5"
 
 google-accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "google-accompanist" }
 google-android-identity = "com.google.android.libraries.identity.googleid:googleid:1.1.1"
