@@ -46,7 +46,7 @@ compose-back-handler = "org.jetbrains.compose.ui:ui-backhandler:1.10.0"
 detekt-compose = "io.nlopez.compose.rules:detekt:0.5.5"
 
 google-accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "google-accompanist" }
-google-android-identity = "com.google.android.libraries.identity.googleid:googleid:1.1.1"
+google-android-identity = "com.google.android.libraries.identity.googleid:googleid:1.2.0"
 google-android-location = "com.google.android.gms:play-services-location:21.3.0"
 google-android-material = "com.google.android.material:material:1.13.0"
 google-auth-http = "com.google.auth:google-auth-library-oauth2-http:1.41.0"
