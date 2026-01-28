@@ -9,8 +9,7 @@ android {
 
 kotlin {
     sourceSets.commonMain.dependencies {
-        implementation(compose.material3)
-
         implementation(libs.androidx.annotation)
+        implementation(libs.compose.material3)
     }
 }
