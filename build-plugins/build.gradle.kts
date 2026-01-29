@@ -25,3 +25,22 @@ dependencies {
 kotlin {
     explicitApi()
 }
+
+gradlePlugin {
+    plugins {
+        register("defaultConventionPlugin") {
+            implementationClass = "DefaultConventionPlugin"
+            id = "dev.ashdavies.default"
+        }
+
+        register("jvmConventionPlugin") {
+            implementationClass = "JvmConventionPlugin"
+            id = "dev.ashdavies.jvm"
+        }
+
+        register("wasmConventionPlugin") {
+            implementationClass = "WasmConventionPlugin"
+            id = "dev.ashdavies.wasm"
+        }
+    }
+}
