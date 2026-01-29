@@ -19,8 +19,7 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            implementation(compose.foundation)
-
+            implementation(libs.compose.foundation)
             implementation(libs.kotlinx.collections.immutable)
             implementation(libs.kotlinx.coroutines.core)
         }
