@@ -1,3 +1,4 @@
+import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 private val jvmTargetVersion = libs.versions.kotlin.jvmTarget.get()
@@ -7,6 +8,16 @@ plugins {
 }
 
 kotlin {
+    @OptIn(ExperimentalKotlinGradlePluginApi::class)
+    applyDefaultHierarchyTemplate {
+        common {
+            group("androidJvm") {
+                withAndroidTarget()
+                withJvm()
+            }
+        }
+    }
+
     androidTarget {
         compilerOptions.jvmTarget.set(JvmTarget.fromTarget(jvmTargetVersion))
     }
