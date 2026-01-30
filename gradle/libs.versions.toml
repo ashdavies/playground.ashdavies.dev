@@ -1,8 +1,8 @@
 [versions]
 android-compileSdk = "36"
 android-minSdk = "34"
-androidx-activity = "1.12.2"
-androidx-paging = "3.4.0-rc01"
+androidx-activity = "1.12.3"
+androidx-paging = "3.4.0"
 cash-sqldelight = "2.2.1"
 coil-kt = "3.3.0"
 compose-adaptive = "1.2.0"
