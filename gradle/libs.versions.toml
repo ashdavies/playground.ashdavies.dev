@@ -57,7 +57,7 @@ google-android-identity = "com.google.android.libraries.identity.googleid:google
 google-android-location = "com.google.android.gms:play-services-location:21.3.0"
 google-android-material = "com.google.android.material:material:1.13.0"
 google-auth-http = "com.google.auth:google-auth-library-oauth2-http:1.42.1"
-google-firebase-admin = "com.google.firebase:firebase-admin:9.7.0"
+google-firebase-admin = "com.google.firebase:firebase-admin:9.7.1"
 google-firebase-appcheck-debug = { module = "com.google.firebase:firebase-appcheck-debug" }
 google-firebase-appcheck-playintegrity = { module = "com.google.firebase:firebase-appcheck-playintegrity" }
 google-firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
@@ -132,6 +132,6 @@ gradle-doctor = "com.osacky.doctor:0.12.1"
 jetbrains-compose = { id = "org.jetbrains.compose", version.ref = "compose-plugin" }
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "jetbrains-kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "jetbrains-kotlin" }
-kotlinx-kover = "org.jetbrains.kotlinx.kover:0.9.4"
+kotlinx-kover = "org.jetbrains.kotlinx.kover:0.9.5"
 ktlint = "org.jlleitschuh.gradle.ktlint:14.0.1"
 zac-metro = "dev.zacsweers.metro:0.10.2"
