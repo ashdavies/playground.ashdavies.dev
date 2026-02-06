@@ -6,7 +6,6 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
 internal class ParcelableConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) = with(target) {
-        apply(plugin = libs.plugins.android.application)
         apply(plugin = libs.plugins.kotlin.multiplatform)
         apply(plugin = "kotlin-parcelize")
 
