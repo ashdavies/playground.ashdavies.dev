@@ -8,7 +8,7 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 @OptIn(ExperimentalWasmDsl::class, ExperimentalKotlinGradlePluginApi::class)
 internal class WasmConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) = with(target) {
-        apply(plugin = libs.plugins.kotlin.multiplatform)
+        plugins.apply(libs.plugins.kotlin.multiplatform)
 
         configure<KotlinMultiplatformExtension> {
             wasmJs {
