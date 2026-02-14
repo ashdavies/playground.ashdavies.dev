@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
     `kotlin-dsl`
 }
@@ -7,8 +5,8 @@ plugins {
 dependencies {
     implementation(files(libs.javaClass.superclass.protectionDomain.codeSource.location))
 
-    fun plugin(provider: Provider<PluginDependency>) = with(provider.get()) {
-        "$pluginId:$pluginId.gradle.plugin:$version"
+    fun plugin(provider: Provider<PluginDependency>) = provider.map {
+        "${it.pluginId}:${it.pluginId}.gradle.plugin:${it.version}"
     }
 
     with(libs.plugins) {
