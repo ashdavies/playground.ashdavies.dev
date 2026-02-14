@@ -134,4 +134,4 @@ kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref 
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "jetbrains-kotlin" }
 kotlinx-kover = "org.jetbrains.kotlinx.kover:0.9.7"
 ktlint = "org.jlleitschuh.gradle.ktlint:14.0.1"
-zac-metro = "dev.zacsweers.metro:0.10.3"
+zac-metro = "dev.zacsweers.metro:0.10.4"
