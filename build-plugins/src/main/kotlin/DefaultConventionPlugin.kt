@@ -4,9 +4,9 @@ import org.gradle.kotlin.dsl.apply
 
 internal class DefaultConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) = with(target) {
-        apply(plugin = "com.android.library")
-        apply(plugin = "dev.ashdavies.android")
-        apply(plugin = "dev.ashdavies.kotlin")
+        plugins.apply("com.android.library")
+        plugins.apply("dev.ashdavies.android")
+        plugins.apply("dev.ashdavies.kotlin")
 
         apply<JvmConventionPlugin>()
         apply<WasmConventionPlugin>()
