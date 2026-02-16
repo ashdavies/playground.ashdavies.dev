@@ -1,7 +1,7 @@
 [versions]
 android-compileSdk = "36"
 android-minSdk = "34"
-androidx-activity = "1.12.3"
+androidx-activity = "1.12.4"
 androidx-paging = "3.4.1"
 cash-sqldelight = "2.2.1"
 coil-kt = "3.3.0"
@@ -135,4 +135,4 @@ kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref =
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "jetbrains-kotlin" }
 kotlinx-kover = "org.jetbrains.kotlinx.kover:0.9.7"
 ktlint = "org.jlleitschuh.gradle.ktlint:14.0.1"
-zac-metro = "dev.zacsweers.metro:0.10.3"
+zac-metro = "dev.zacsweers.metro:0.10.4"
