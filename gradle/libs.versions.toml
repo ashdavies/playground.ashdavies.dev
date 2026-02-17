@@ -15,7 +15,7 @@ kotlin-jvmTarget = "17"
 kotlinx-coroutines = "1.10.2"
 kotlinx-serialization = "1.10.0"
 ktor = "3.4.0"
-slack-circuit = "0.32.0"
+slack-circuit = "0.33.0"
 sqlJs = "1.8.0"
 webPack = "9.1.0"
 
