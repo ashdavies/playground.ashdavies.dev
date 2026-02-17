@@ -26,6 +26,11 @@ kotlin {
 
 gradlePlugin {
     plugins {
+        register("androidConventionPlugin") {
+            implementationClass = "AndroidConventionPlugin"
+            id = "dev.ashdavies.android"
+        }
+
         register("composeConventionPlugin") {
             implementationClass = "ComposeConventionPlugin"
             id = "dev.ashdavies.compose"
@@ -39,6 +44,11 @@ gradlePlugin {
         register("jvmConventionPlugin") {
             implementationClass = "JvmConventionPlugin"
             id = "dev.ashdavies.jvm"
+        }
+
+        register("kotlinConventionPlugin") {
+            implementationClass = "KotlinConventionPlugin"
+            id = "dev.ashdavies.kotlin"
         }
 
         register("parcelableConventionPlugin") {
