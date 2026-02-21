@@ -121,16 +121,6 @@ kotlin {
         }
     }
 
-    @OptIn(ExperimentalKotlinGradlePluginApi::class)
-    applyDefaultHierarchyTemplate {
-        common {
-            group("nonAndroid") {
-                withJvm()
-                withWasmJs()
-            }
-        }
-    }
-
     sourceSets {
         commonMain.dependencies {
             implementation(projects.analytics)
