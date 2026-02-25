@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
     `kotlin-dsl`
 }
@@ -7,8 +5,8 @@ plugins {
 dependencies {
     implementation(files(libs.javaClass.superclass.protectionDomain.codeSource.location))
 
-    fun plugin(provider: Provider<PluginDependency>) = with(provider.get()) {
-        "$pluginId:$pluginId.gradle.plugin:$version"
+    fun plugin(provider: Provider<PluginDependency>) = provider.map {
+        "${it.pluginId}:${it.pluginId}.gradle.plugin:${it.version}"
     }
 
     with(libs.plugins) {
@@ -24,4 +22,43 @@ dependencies {
 
 kotlin {
     explicitApi()
+}
+
+gradlePlugin {
+    plugins {
+        register("androidConventionPlugin") {
+            implementationClass = "AndroidConventionPlugin"
+            id = "dev.ashdavies.android"
+        }
+
+        register("composeConventionPlugin") {
+            implementationClass = "ComposeConventionPlugin"
+            id = "dev.ashdavies.compose"
+        }
+
+        register("defaultConventionPlugin") {
+            implementationClass = "DefaultConventionPlugin"
+            id = "dev.ashdavies.default"
+        }
+
+        register("jvmConventionPlugin") {
+            implementationClass = "JvmConventionPlugin"
+            id = "dev.ashdavies.jvm"
+        }
+
+        register("kotlinConventionPlugin") {
+            implementationClass = "KotlinConventionPlugin"
+            id = "dev.ashdavies.kotlin"
+        }
+
+        register("parcelableConventionPlugin") {
+            implementationClass = "ParcelableConventionPlugin"
+            id = "dev.ashdavies.parcelable"
+        }
+
+        register("wasmConventionPlugin") {
+            implementationClass = "WasmConventionPlugin"
+            id = "dev.ashdavies.wasm"
+        }
+    }
 }

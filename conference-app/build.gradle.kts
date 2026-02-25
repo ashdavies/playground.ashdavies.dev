@@ -1,6 +1,7 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.compose.reload.gradle.ComposeHotRun
 import org.jetbrains.kotlin.compose.compiler.gradle.ComposeFeatureFlag
+import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 
 private object ConferenceAppConfig {
@@ -120,6 +121,16 @@ kotlin {
         }
     }
 
+    @OptIn(ExperimentalKotlinGradlePluginApi::class)
+    applyDefaultHierarchyTemplate {
+        common {
+            group("nonAndroid") {
+                withJvm()
+                withWasmJs()
+            }
+        }
+    }
+
     sourceSets {
         commonMain.dependencies {
             implementation(projects.analytics)
@@ -139,12 +150,6 @@ kotlin {
             implementation(projects.sqlCommon)
             implementation(projects.sqlDriver)
 
-            implementation(compose.components.resources)
-            implementation(compose.foundation)
-            implementation(compose.material3)
-            implementation(compose.materialIconsExtended)
-            implementation(compose.ui)
-
             implementation(libs.androidx.annotation)
             implementation(libs.androidx.window.core)
             implementation(libs.coil.compose)
@@ -152,6 +157,11 @@ kotlin {
             implementation(libs.compose.adaptive.layout)
             implementation(libs.compose.adaptive.navigation)
             implementation(libs.compose.back.handler)
+            implementation(libs.compose.components.resources)
+            implementation(libs.compose.foundation)
+            implementation(libs.compose.material3)
+            implementation(libs.compose.materialIconsExtended)
+            implementation(libs.compose.ui)
             implementation(libs.kotlinx.collections.immutable)
             implementation(libs.kotlinx.datetime)
             implementation(libs.kotlinx.io.core)
@@ -202,7 +212,7 @@ kotlin {
         val androidDebug by registering {
             dependencies {
                 implementation(libs.google.firebase.appcheck.debug)
-                implementation(compose.uiTooling)
+                implementation(libs.compose.uiTooling)
             }
         }
 
@@ -220,10 +230,10 @@ kotlin {
         }
 
         wasmJsMain.dependencies {
-            implementation(compose.foundation)
-            implementation(compose.material3)
-            implementation(compose.runtime)
-            implementation(compose.ui)
+            implementation(libs.compose.foundation)
+            implementation(libs.compose.material3)
+            implementation(libs.compose.runtime)
+            implementation(libs.compose.ui)
 
             implementation(libs.slack.circuit.foundation)
             implementation(libs.slack.circuit.overlay)

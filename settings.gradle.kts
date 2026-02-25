@@ -10,7 +10,7 @@ buildscript {
             """.trimIndent(),
         )
 
-        classpath("com.google.http-client:google-http-client:2.0.3")?.because(
+        classpath("com.google.http-client:google-http-client:2.1.0")?.because(
             "gcpbuildcache depends upon org.apache.httpcomponents:httpclient:4.5.14",
         )
     }
@@ -34,7 +34,7 @@ dependencyResolutionManagement.repositories {
 plugins {
     id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
     id("androidx.build.gradle.gcpbuildcache") version "1.0.1"
-    id("com.gradle.develocity") version "4.3.1"
+    id("com.gradle.develocity") version "4.3.2"
 }
 
 buildCache {

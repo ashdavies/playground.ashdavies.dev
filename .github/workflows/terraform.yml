@@ -54,9 +54,9 @@ jobs:
           app_id: ${{ secrets.GH_APP_ID }}
           private_key: ${{ secrets.GH_PRIVATE_KEY }}
 
-      - uses: hashicorp/setup-terraform@v3
+      - uses: hashicorp/setup-terraform@v4
         with:
-          terraform_version: 1.14.3
+          terraform_version: 1.14.5
 
       - uses: terraform-linters/setup-tflint@v6
         if: github.event_name == 'pull_request'
