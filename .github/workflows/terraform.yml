@@ -56,7 +56,7 @@ jobs:
 
       - uses: hashicorp/setup-terraform@v4
         with:
-          terraform_version: 1.14.5
+          terraform_version: 1.14.6
 
       - uses: terraform-linters/setup-tflint@v6
         if: github.event_name == 'pull_request'
