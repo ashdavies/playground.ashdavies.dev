@@ -1,6 +1,7 @@
 plugins {
     id("dev.ashdavies.kotlin")
     id("dev.ashdavies.properties")
+    id("dev.ashdavies.jvm")
 
     alias(libs.plugins.build.config)
 }
