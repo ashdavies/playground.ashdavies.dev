@@ -61,7 +61,7 @@ google-firebase-admin = "com.google.firebase:firebase-admin:9.8.0"
 google-firebase-appcheck-debug = { module = "com.google.firebase:firebase-appcheck-debug" }
 google-firebase-appcheck-playintegrity = { module = "com.google.firebase:firebase-appcheck-playintegrity" }
 google-firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
-google-firebase-bom = "com.google.firebase:firebase-bom:34.9.0"
+google-firebase-bom = "com.google.firebase:firebase-bom:34.10.0"
 google-firebase-config = { module = "com.google.firebase:firebase-config" }
 google-firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
 google-guava-jre = "com.google.guava:guava:33.5.0-jre"
