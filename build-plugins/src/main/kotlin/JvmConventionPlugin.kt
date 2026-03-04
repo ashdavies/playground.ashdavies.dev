@@ -12,6 +12,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 @OptIn(ExperimentalKotlinGradlePluginApi::class)
 internal class JvmConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) = with<_, Unit>(target) {
+        plugins.apply(libs.plugins.kotlin.multiplatform)
         plugins.apply(libs.plugins.kotlin.serialization)
 
         val jvmTargetString = libs.versions.kotlin.jvmTarget.get()

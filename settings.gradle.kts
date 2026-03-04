@@ -74,7 +74,6 @@ include(
     ":paging-multiplatform",
     ":parcelable-support",
     ":placeholder-highlight",
-    ":platform-scaffold",
     ":platform-support",
     ":remote-config",
     ":sql-common",

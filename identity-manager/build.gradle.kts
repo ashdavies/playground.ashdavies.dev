@@ -1,9 +1,15 @@
 plugins {
-    id("dev.ashdavies.default")
-    id("dev.ashdavies.properties")
+    alias(libs.plugins.kotlin.multiplatform)
 
+    alias(libs.plugins.android.library)
     alias(libs.plugins.build.config)
     alias(libs.plugins.cash.sqldelight)
+
+    id("dev.ashdavies.android")
+    id("dev.ashdavies.kotlin")
+    id("dev.ashdavies.jvm")
+    id("dev.ashdavies.properties")
+    id("dev.ashdavies.wasm")
 }
 
 android {
