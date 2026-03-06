@@ -1,10 +1,8 @@
 plugins {
+    id("dev.ashdavies.jvm")
     id("dev.ashdavies.compose")
-    id("dev.ashdavies.default")
-}
-
-android {
-    namespace = "dev.ashdavies.placeholder"
+    id("dev.ashdavies.kotlin")
+    id("dev.ashdavies.wasm")
 }
 
 kotlin {
