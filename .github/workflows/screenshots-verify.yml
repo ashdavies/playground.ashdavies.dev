@@ -34,7 +34,7 @@ jobs:
       - id: verify
         run: ./gradlew verifyPaparazziDebug --console=plain
 
-      - uses: actions/upload-artifact@v6
+      - uses: actions/upload-artifact@v7
         if: ${{ failure() && steps.verify.outcome == 'failure' }}
         with:
           path: "**/build/paparazzi/failures"
