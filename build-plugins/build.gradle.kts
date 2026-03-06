@@ -10,13 +10,13 @@ dependencies {
     }
 
     with(libs.plugins) {
-        implementation(plugin(android.library))
-        implementation(plugin(compose.compiler))
-        implementation(plugin(detekt))
-        implementation(plugin(jetbrains.compose))
-        implementation(plugin(kotlin.multiplatform))
-        implementation(plugin(kotlin.serialization))
-        implementation(plugin(ktlint))
+        compileOnly(plugin(android.library))
+        compileOnly(plugin(compose.compiler))
+        compileOnly(plugin(detekt))
+        compileOnly(plugin(jetbrains.compose))
+        compileOnly(plugin(kotlin.multiplatform))
+        compileOnly(plugin(kotlin.serialization))
+        compileOnly(plugin(ktlint))
     }
 }
 
@@ -34,11 +34,6 @@ gradlePlugin {
         register("composeConventionPlugin") {
             implementationClass = "ComposeConventionPlugin"
             id = "dev.ashdavies.compose"
-        }
-
-        register("defaultConventionPlugin") {
-            implementationClass = "DefaultConventionPlugin"
-            id = "dev.ashdavies.default"
         }
 
         register("jvmConventionPlugin") {
