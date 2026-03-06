@@ -7,10 +7,11 @@ plugins {
         classpath(cash.sqldelight)
         classpath(compose.compiler)
         classpath(detekt)
-        classpath(crashlytics)
+        classpath(firebase.crashlytics)
         classpath(google.services)
         classpath(jetbrains.compose)
         classpath(kotlin.multiplatform)
+        classpath(kotlin.serialization)
         classpath(ktlint)
 
         alias(gradle.doctor)

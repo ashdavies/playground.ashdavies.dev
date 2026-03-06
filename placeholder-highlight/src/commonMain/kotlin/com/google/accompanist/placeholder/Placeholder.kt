@@ -150,31 +150,42 @@ public fun Modifier.placeholder(
             initialValue = 0f,
             targetValue = 1f,
             animationSpec = animationSpec,
+            label = "placeholder_highlight",
         ).value
     }
 
-    val paint = remember { Paint() }
-    remember(color, shape, highlight) {
+    val drawModifier = remember(color, shape, highlight) {
         drawWithContent {
             // Draw the composable content first
-            if (contentAlpha in 0.01f..0.99f) {
+            if (contentAlpha >= 0.99f) {
+                // If the content alpha is > 99%, draw it with no alpha
+                drawContent()
+            } else if (contentAlpha in 0.01f..0.99f) {
                 // If the content alpha is between 1% and 99%, draw it in a layer with
                 // the alpha applied
-                paint.alpha = contentAlpha
+                val paint = Paint().apply { alpha = contentAlpha }
                 withLayer(paint) {
                     with(this@drawWithContent) {
                         drawContent()
                     }
                 }
-            } else if (contentAlpha >= 0.99f) {
-                // If the content alpha is > 99%, draw it with no alpha
-                drawContent()
             }
 
-            if (placeholderAlpha in 0.01f..0.99f) {
+            if (placeholderAlpha >= 0.99f) {
+                // If the placeholder alpha is > 99%, draw it with no alpha
+                lastOutline.value = drawPlaceholder(
+                    shape = shape,
+                    color = color,
+                    highlight = highlight,
+                    progress = highlightProgress,
+                    lastOutline = lastOutline.value,
+                    lastLayoutDirection = lastLayoutDirection.value,
+                    lastSize = lastSize.value,
+                )
+            } else if (placeholderAlpha in 0.01f..0.99f) {
                 // If the placeholder alpha is between 1% and 99%, draw it in a layer with
                 // the alpha applied
-                paint.alpha = placeholderAlpha
+                val paint = Paint().apply { alpha = placeholderAlpha }
                 withLayer(paint) {
                     lastOutline.value = drawPlaceholder(
                         shape = shape,
@@ -186,17 +197,6 @@ public fun Modifier.placeholder(
                         lastSize = lastSize.value,
                     )
                 }
-            } else if (placeholderAlpha >= 0.99f) {
-                // If the placeholder alpha is > 99%, draw it with no alpha
-                lastOutline.value = drawPlaceholder(
-                    shape = shape,
-                    color = color,
-                    highlight = highlight,
-                    progress = highlightProgress,
-                    lastOutline = lastOutline.value,
-                    lastLayoutDirection = lastLayoutDirection.value,
-                    lastSize = lastSize.value,
-                )
             }
 
             // Keep track of the last size & layout direction
@@ -204,6 +204,8 @@ public fun Modifier.placeholder(
             lastLayoutDirection.value = layoutDirection
         }
     }
+
+    Modifier.then(drawModifier)
 }
 
 private fun DrawScope.drawPlaceholder(
