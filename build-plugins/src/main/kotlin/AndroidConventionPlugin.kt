@@ -41,6 +41,11 @@ internal class AndroidConventionPlugin : Plugin<Project> {
                         withAndroidTarget()
                         withJvm()
                     }
+
+                    group("nonAndroid") {
+                        withJvm()
+                        withWasmJs()
+                    }
                 }
             }
 
