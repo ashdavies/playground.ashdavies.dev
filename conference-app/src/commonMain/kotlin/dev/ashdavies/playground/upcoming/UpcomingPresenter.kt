@@ -54,5 +54,7 @@ internal class UpcomingPresenter @AssistedInject constructor(
     @AssistedFactory
     @CircuitScreenKey(UpcomingScreen::class)
     @ContributesIntoMap(AppScope::class, binding<(Navigator) -> Presenter<*>>())
-    interface Factory : (Navigator) -> UpcomingPresenter
+    interface Factory : (Navigator) -> UpcomingPresenter {
+        override fun invoke(navigator: Navigator): UpcomingPresenter
+    }
 }
