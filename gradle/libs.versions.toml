@@ -4,9 +4,9 @@ android-minSdk = "34"
 androidx-activity = "1.12.4"
 androidx-paging = "3.4.1"
 cash-sqldelight = "2.2.1"
-coil-kt = "3.3.0"
+coil-kt = "3.4.0"
 compose-adaptive = "1.2.0"
-compose-plugin = "1.10.1"
+compose-plugin = "1.10.2"
 google-accompanist = "0.37.3"
 google-android = "8.11.0"
 google-services = "4.4.4"
@@ -14,7 +14,7 @@ jetbrains-kotlin = "2.3.10"
 kotlin-jvmTarget = "17"
 kotlinx-coroutines = "1.10.2"
 kotlinx-serialization = "1.10.0"
-ktor = "3.4.0"
+ktor = "3.4.1"
 slack-circuit = "0.33.0"
 sqlJs = "1.8.0"
 webPack = "9.1.0"
@@ -56,17 +56,17 @@ google-accompanist-permissions = { module = "com.google.accompanist:accompanist-
 google-android-identity = "com.google.android.libraries.identity.googleid:googleid:1.2.0"
 google-android-location = "com.google.android.gms:play-services-location:21.3.0"
 google-android-material = "com.google.android.material:material:1.13.0"
-google-auth-http = "com.google.auth:google-auth-library-oauth2-http:1.42.1"
-google-firebase-admin = "com.google.firebase:firebase-admin:9.7.1"
+google-auth-http = "com.google.auth:google-auth-library-oauth2-http:1.43.0"
+google-firebase-admin = "com.google.firebase:firebase-admin:9.8.0"
 google-firebase-appcheck-debug = { module = "com.google.firebase:firebase-appcheck-debug" }
 google-firebase-appcheck-playintegrity = { module = "com.google.firebase:firebase-appcheck-playintegrity" }
 google-firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
-google-firebase-bom = "com.google.firebase:firebase-bom:34.9.0"
+google-firebase-bom = "com.google.firebase:firebase-bom:34.10.0"
 google-firebase-config = { module = "com.google.firebase:firebase-config" }
 google-firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
 google-guava-jre = "com.google.guava:guava:33.5.0-jre"
-google-maps-android-compose = "com.google.maps.android:maps-compose:8.1.0"
-google-maps-android-utils = "com.google.maps.android:android-maps-utils:4.0.0"
+google-maps-android-compose = "com.google.maps.android:maps-compose:8.2.0"
+google-maps-android-utils = "com.google.maps.android:android-maps-utils:4.1.0"
 
 jib-core = "com.google.cloud.tools:jib-core:0.28.1"
 
@@ -76,7 +76,7 @@ kotlinx-coroutines-play-services = { module = "org.jetbrains.kotlinx:kotlinx-cor
 kotlinx-coroutines-swing = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-swing", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinx-coroutines" }
 kotlinx-datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.7.1-0.6.x-compat"
-kotlinx-io-core = "org.jetbrains.kotlinx:kotlinx-io-core:0.8.2"
+kotlinx-io-core = "org.jetbrains.kotlinx:kotlinx-io-core:0.9.0"
 kotlinx-serialization-core = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version.ref = "kotlinx-serialization" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
 kotlinx-serialization-properties = { module = "org.jetbrains.kotlinx:kotlinx-serialization-properties", version.ref = "kotlinx-serialization" }
@@ -121,12 +121,12 @@ squareup-okio = "com.squareup.okio:okio:3.16.4"
 [plugins]
 android-application = { id = "com.android.application", version.ref = "google-android" }
 android-library = { id = "com.android.library", version.ref = "google-android" }
-build-config = "com.github.gmazzo.buildconfig:6.0.7"
+build-config = "com.github.gmazzo.buildconfig:6.0.9"
 cash-paparazzi = "app.cash.paparazzi:2.0.0-alpha02"
 cash-sqldelight = { id = "app.cash.sqldelight", version.ref = "cash-sqldelight" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "jetbrains-kotlin" }
 detekt = "io.gitlab.arturbosch.detekt:1.23.8"
-crashlytics = "com.google.firebase.crashlytics:3.0.6"
+firebase-crashlytics = "com.google.firebase.crashlytics:3.0.6"
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
 gradle-doctor = "com.osacky.doctor:0.12.1"
 jetbrains-compose = { id = "org.jetbrains.compose", version.ref = "compose-plugin" }
@@ -134,5 +134,5 @@ kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref 
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "jetbrains-kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "jetbrains-kotlin" }
 kotlinx-kover = "org.jetbrains.kotlinx.kover:0.9.7"
-ktlint = "org.jlleitschuh.gradle.ktlint:14.0.1"
-zac-metro = "dev.zacsweers.metro:0.10.4"
+ktlint = "org.jlleitschuh.gradle.ktlint:14.1.0"
+zac-metro = "dev.zacsweers.metro:0.11.2"
