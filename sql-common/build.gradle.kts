@@ -1,9 +1,7 @@
 plugins {
-    id("dev.ashdavies.default")
-}
-
-android {
-    namespace = "dev.ashdavies.sql.common"
+    id("dev.ashdavies.jvm")
+    id("dev.ashdavies.kotlin")
+    id("dev.ashdavies.wasm")
 }
 
 kotlin {

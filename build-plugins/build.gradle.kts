@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
     `kotlin-dsl`
 }
@@ -7,18 +5,18 @@ plugins {
 dependencies {
     implementation(files(libs.javaClass.superclass.protectionDomain.codeSource.location))
 
-    fun plugin(provider: Provider<PluginDependency>) = with(provider.get()) {
-        "$pluginId:$pluginId.gradle.plugin:$version"
+    fun plugin(provider: Provider<PluginDependency>) = provider.map {
+        "${it.pluginId}:${it.pluginId}.gradle.plugin:${it.version}"
     }
 
     with(libs.plugins) {
-        implementation(plugin(android.library))
-        implementation(plugin(compose.compiler))
-        implementation(plugin(detekt))
-        implementation(plugin(jetbrains.compose))
-        implementation(plugin(kotlin.multiplatform))
-        implementation(plugin(kotlin.serialization))
-        implementation(plugin(ktlint))
+        compileOnly(plugin(android.library))
+        compileOnly(plugin(compose.compiler))
+        compileOnly(plugin(detekt))
+        compileOnly(plugin(jetbrains.compose))
+        compileOnly(plugin(kotlin.multiplatform))
+        compileOnly(plugin(kotlin.serialization))
+        compileOnly(plugin(ktlint))
     }
 }
 
@@ -28,14 +26,29 @@ kotlin {
 
 gradlePlugin {
     plugins {
-        register("defaultConventionPlugin") {
-            implementationClass = "DefaultConventionPlugin"
-            id = "dev.ashdavies.default"
+        register("androidConventionPlugin") {
+            implementationClass = "AndroidConventionPlugin"
+            id = "dev.ashdavies.android"
+        }
+
+        register("composeConventionPlugin") {
+            implementationClass = "ComposeConventionPlugin"
+            id = "dev.ashdavies.compose"
         }
 
         register("jvmConventionPlugin") {
             implementationClass = "JvmConventionPlugin"
             id = "dev.ashdavies.jvm"
+        }
+
+        register("kotlinConventionPlugin") {
+            implementationClass = "KotlinConventionPlugin"
+            id = "dev.ashdavies.kotlin"
+        }
+
+        register("parcelableConventionPlugin") {
+            implementationClass = "ParcelableConventionPlugin"
+            id = "dev.ashdavies.parcelable"
         }
 
         register("wasmConventionPlugin") {

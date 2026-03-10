@@ -12,9 +12,10 @@ import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.input.key.type
 import androidx.compose.ui.layout.onPlaced
-import com.slack.circuit.backstack.NavArgument
 import com.slack.circuit.backstack.NavDecoration
 import com.slack.circuit.foundation.NavigatorDefaults
+import com.slack.circuit.runtime.navigation.NavArgument
+import com.slack.circuit.runtime.navigation.NavStackList
 
 public class KeyNavigationDecoration(
     private val decoration: NavDecoration = NavigatorDefaults.EmptyDecoration,
@@ -24,7 +25,7 @@ public class KeyNavigationDecoration(
 
     @Composable
     override fun <T : NavArgument> DecoratedContent(
-        args: List<T>,
+        args: NavStackList<T>,
         modifier: Modifier,
         content: @Composable ((T) -> Unit),
     ) {
