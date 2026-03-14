@@ -6,10 +6,7 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
 @OptIn(ExperimentalKotlinGradlePluginApi::class)
 internal class JvmConventionPlugin : Plugin<Project> {
-    override fun apply(target: Project) = with<_, Unit>(target) {
-        plugins.apply(libs.plugins.kotlin.multiplatform)
-        plugins.apply(libs.plugins.kotlin.serialization)
-
+    override fun apply(target: Project) = with(target) {
         extensions.configure<KotlinMultiplatformExtension> {
             jvm()
         }

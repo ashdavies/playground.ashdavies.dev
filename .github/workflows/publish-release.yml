@@ -39,11 +39,6 @@ jobs:
 
       - uses: ./.github/actions/setup-java
 
-      - uses: google-github-actions/auth@v3
-        with:
-          workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
-          service_account: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
-
       - uses: actions/download-artifact@v8
         with:
           name: conference-app-build-outputs
