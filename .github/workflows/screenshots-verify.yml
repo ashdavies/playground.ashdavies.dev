@@ -18,16 +18,11 @@ jobs:
       id-token: 'write'
 
     steps:
-      - uses: actions/checkout@v6
-        with:
-          lfs: 'true'
-
-      - uses: google-github-actions/auth@v3
+      - uses: ./.github/actions/setup-env
         with:
           workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
           service_account: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
-
-      - uses: gradle/actions/setup-gradle@v5
+          lfs: true
 
       - run: echo ${{ secrets.FIREBASE_GOOGLE_SERVICES }} | base64 --decode > conference-app/google-services.json
 
