@@ -11,7 +11,6 @@ google-accompanist = "0.37.3"
 google-android = "8.11.0"
 google-services = "4.4.4"
 jetbrains-kotlin = "2.3.10"
-kotlin-jvmTarget = "17"
 kotlinx-coroutines = "1.10.2"
 kotlinx-serialization = "1.10.0"
 ktor = "3.4.1"
@@ -122,7 +121,7 @@ squareup-okio = "com.squareup.okio:okio:3.16.4"
 android-application = { id = "com.android.application", version.ref = "google-android" }
 android-library = { id = "com.android.library", version.ref = "google-android" }
 build-config = "com.github.gmazzo.buildconfig:6.0.9"
-cash-paparazzi = "app.cash.paparazzi:2.0.0-alpha02"
+cash-paparazzi = "app.cash.paparazzi:2.0.0-alpha04"
 cash-sqldelight = { id = "app.cash.sqldelight", version.ref = "cash-sqldelight" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "jetbrains-kotlin" }
 detekt = "io.gitlab.arturbosch.detekt:1.23.8"
