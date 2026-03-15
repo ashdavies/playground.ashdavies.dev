@@ -42,6 +42,8 @@ internal class AndroidConventionPlugin : Plugin<Project> {
                     }
                 }
             }
+
+            androidTarget()
         }
 
         val androidApplicationPlugin = libs.plugins.android.application.get()
