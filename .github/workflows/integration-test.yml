@@ -19,22 +19,22 @@ jobs:
       id-token: 'write'
 
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v6
+      - uses: actions/checkout@v6
+
+      - uses: ./.github/actions/setup-java
+
+      - uses: gradle/actions/setup-gradle@v5
 
       - uses: google-github-actions/auth@v3
         with:
           workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
           service_account: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
 
-      - uses: gradle/actions/setup-gradle@v5
-
-      - name: Run Gradle Tasks
+      - run: ./gradlew cloud-run:integrationTest --console=plain
         env:
           FIREBASE_ANDROID_APP_ID: ${{ secrets.FIREBASE_ANDROID_APP_ID }}
           GOOGLE_SERVICE_ACCOUNT_ID: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
           INTEGRATION_API_KEY: ${{ secrets.integration_api_key }}
-        run: ./gradlew cloud-run:integrationTest --console=plain
 
       - uses: test-summary/action@v2
         with:
