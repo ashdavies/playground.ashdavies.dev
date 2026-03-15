@@ -1,19 +1,17 @@
-import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.kotlin.dsl.configure
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
+import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
+@Suppress("unused")
 @OptIn(ExperimentalKotlinGradlePluginApi::class)
 internal class JvmConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) = with(target) {
-        val jvmTargetString = libs.versions.kotlin.jvmTarget.get()
-        val jvmTarget = JavaVersion.toVersion(jvmTargetString)
+        plugins.apply(libs.plugins.kotlin.multiplatform)
 
-        extensions.configure<JavaPluginExtension> {
-            sourceCompatibility = jvmTarget
-            targetCompatibility = jvmTarget
+        extensions.configure<KotlinMultiplatformExtension> {
+            jvm()
         }
     }
 }

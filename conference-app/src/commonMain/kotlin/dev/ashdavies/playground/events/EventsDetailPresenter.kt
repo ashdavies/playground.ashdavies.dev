@@ -48,5 +48,7 @@ internal class EventsDetailPresenter @AssistedInject constructor(
     @AssistedFactory
     @CircuitScreenKey(EventsDetailScreen::class)
     @ContributesIntoMap(AppScope::class, binding<(Screen, Navigator) -> Presenter<*>>())
-    interface Factory : (EventsDetailScreen, Navigator) -> EventsDetailPresenter
+    interface Factory : (EventsDetailScreen, Navigator) -> EventsDetailPresenter {
+        override operator fun invoke(screen: EventsDetailScreen, navigator: Navigator): EventsDetailPresenter
+    }
 }

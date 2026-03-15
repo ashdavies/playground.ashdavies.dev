@@ -63,5 +63,7 @@ internal class BottomBarScaffoldPresenter @AssistedInject constructor(
     @AssistedFactory
     @CircuitScreenKey(BottomBarScaffoldScreen::class)
     @ContributesIntoMap(AppScope::class, binding<(Navigator) -> Presenter<*>>())
-    interface Factory : (Navigator) -> BottomBarScaffoldPresenter
+    interface Factory : (Navigator) -> BottomBarScaffoldPresenter {
+        override operator fun invoke(navigator: Navigator): BottomBarScaffoldPresenter
+    }
 }

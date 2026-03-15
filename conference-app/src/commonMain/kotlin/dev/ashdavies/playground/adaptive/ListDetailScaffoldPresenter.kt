@@ -23,5 +23,7 @@ internal class ListDetailScaffoldPresenter @AssistedInject constructor(
     @AssistedFactory
     @CircuitScreenKey(ListDetailScaffoldScreen::class)
     @ContributesIntoMap(AppScope::class, binding<(Screen) -> Presenter<*>>())
-    interface Factory : (ListDetailScaffoldScreen) -> ListDetailScaffoldPresenter
+    interface Factory : (ListDetailScaffoldScreen) -> ListDetailScaffoldPresenter {
+        override operator fun invoke(screen: ListDetailScaffoldScreen): ListDetailScaffoldPresenter
+    }
 }

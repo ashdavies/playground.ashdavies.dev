@@ -1,5 +1,6 @@
 plugins {
     id("dev.ashdavies.compose")
+    id("dev.ashdavies.jvm")
     id("dev.ashdavies.kotlin")
 }
 

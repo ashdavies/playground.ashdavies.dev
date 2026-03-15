@@ -11,12 +11,15 @@ private object ConferenceAppConfig {
 }
 
 plugins {
-    id("com.android.application")
-    id("com.google.firebase.crashlytics")
-    id("com.google.gms.google-services")
+    alias(libs.plugins.kotlin.multiplatform)
+
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.firebase.crashlytics)
+    alias(libs.plugins.google.services)
 
     id("dev.ashdavies.android")
     id("dev.ashdavies.compose")
+    id("dev.ashdavies.jvm")
     id("dev.ashdavies.kotlin")
     id("dev.ashdavies.parcelable")
     id("dev.ashdavies.properties")
@@ -26,6 +29,10 @@ plugins {
     alias(libs.plugins.cash.paparazzi)
     alias(libs.plugins.cash.sqldelight)
     alias(libs.plugins.zac.metro)
+}
+
+metro {
+    warnOnInjectAnnotationPlacement = false
 }
 
 android {
@@ -111,22 +118,14 @@ kotlin {
         freeCompilerArgs.add("-opt-in=kotlin.uuid.ExperimentalUuidApi")
     }
 
+    jvm()
+
     @OptIn(ExperimentalWasmDsl::class)
     wasmJs {
         binaries.executable()
         browser {
             commonWebpackConfig {
                 outputFileName = "conference-app.js"
-            }
-        }
-    }
-
-    @OptIn(ExperimentalKotlinGradlePluginApi::class)
-    applyDefaultHierarchyTemplate {
-        common {
-            group("nonAndroid") {
-                withJvm()
-                withWasmJs()
             }
         }
     }
@@ -144,7 +143,6 @@ kotlin {
             implementation(projects.mapsRouting)
             implementation(projects.pagingMultiplatform)
             implementation(projects.placeholderHighlight)
-            implementation(projects.platformScaffold)
             implementation(projects.platformSupport)
             implementation(projects.remoteConfig)
             implementation(projects.sqlCommon)

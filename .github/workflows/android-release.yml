@@ -36,6 +36,8 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
+      - uses: ./.github/actions/setup-java
+
       - uses: gradle/actions/setup-gradle@v5
 
       - uses: google-github-actions/auth@v3
@@ -59,7 +61,7 @@ jobs:
           ANDROID_API_KEY: ${{ secrets.ANDROID_API_KEY }}
           BROWSER_API_KEY: ${{ secrets.BROWSER_API_KEY }}
 
-      - uses: actions/upload-artifact@v6
+      - uses: actions/upload-artifact@v7
         with:
           name: conference-app-build-outputs
           path: conference-app/build/outputs

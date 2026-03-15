@@ -7,19 +7,19 @@ terraform {
 
     google = {
       source  = "hashicorp/google"
-      version = "7.21.0"
+      version = "7.23.0"
     }
 
     google-beta = {
       source  = "hashicorp/google-beta"
-      version = "7.20.0"
+      version = "7.23.0"
     }
 
     onepassword = {
       source  = "1Password/onepassword"
-      version = "3.2.1"
+      version = "3.3.0"
     }
   }
 
-  required_version = "1.14.5"
+  required_version = "1.14.7"
 }

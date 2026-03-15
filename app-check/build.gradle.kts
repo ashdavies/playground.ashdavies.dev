@@ -1,8 +1,9 @@
 plugins {
+    alias(libs.plugins.build.config)
+
+    id("dev.ashdavies.jvm")
     id("dev.ashdavies.kotlin")
     id("dev.ashdavies.properties")
-
-    alias(libs.plugins.build.config)
 }
 
 buildConfig {
