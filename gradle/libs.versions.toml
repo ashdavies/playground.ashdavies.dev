@@ -2,7 +2,7 @@
 android-compileSdk = "36"
 android-minSdk = "34"
 androidx-activity = "1.12.4"
-androidx-paging = "3.4.1"
+androidx-paging = "3.4.2"
 cash-sqldelight = "2.2.1"
 coil-kt = "3.4.0"
 compose-adaptive = "1.2.0"
@@ -11,11 +11,10 @@ google-accompanist = "0.37.3"
 google-android = "8.11.0"
 google-services = "4.4.4"
 jetbrains-kotlin = "2.3.10"
-kotlin-jvmTarget = "17"
 kotlinx-coroutines = "1.10.2"
 kotlinx-serialization = "1.10.0"
 ktor = "3.4.1"
-slack-circuit = "0.33.0"
+slack-circuit = "0.33.1"
 sqlJs = "1.8.0"
 webPack = "9.1.0"
 
@@ -65,8 +64,8 @@ google-firebase-bom = "com.google.firebase:firebase-bom:34.10.0"
 google-firebase-config = { module = "com.google.firebase:firebase-config" }
 google-firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
 google-guava-jre = "com.google.guava:guava:33.5.0-jre"
-google-maps-android-compose = "com.google.maps.android:maps-compose:8.2.0"
-google-maps-android-utils = "com.google.maps.android:android-maps-utils:4.1.0"
+google-maps-android-compose = "com.google.maps.android:maps-compose:8.2.1"
+google-maps-android-utils = "com.google.maps.android:android-maps-utils:4.1.1"
 
 jib-core = "com.google.cloud.tools:jib-core:0.28.1"
 
@@ -134,5 +133,5 @@ kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref 
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "jetbrains-kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "jetbrains-kotlin" }
 kotlinx-kover = "org.jetbrains.kotlinx.kover:0.9.7"
-ktlint = "org.jlleitschuh.gradle.ktlint:14.1.0"
+ktlint = "org.jlleitschuh.gradle.ktlint:14.2.0"
 zac-metro = "dev.zacsweers.metro:0.11.2"

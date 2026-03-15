@@ -6,7 +6,6 @@ import org.gradle.api.Project
 import org.gradle.api.provider.Provider
 import org.gradle.kotlin.dsl.configure
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
 private val Project.androidConventionProvider: Provider<AndroidConvention>
@@ -16,16 +15,11 @@ private val Project.androidConvention: AndroidConvention
     get() = AndroidConvention(
         compileSdkVersion = libs.versions.android.compileSdk.get(),
         minSdkVersion = libs.versions.android.minSdk.get(),
-        jvmTargetVersion = libs.versions.kotlin.jvmTarget.get(),
     )
-
-private val AndroidConvention.jvmTarget: JvmTarget
-    get() = JvmTarget.fromTarget(jvmTargetVersion)
 
 private data class AndroidConvention(
     val compileSdkVersion: String,
     val minSdkVersion: String,
-    val jvmTargetVersion: String,
 )
 
 internal class AndroidConventionPlugin : Plugin<Project> {
@@ -49,15 +43,12 @@ internal class AndroidConventionPlugin : Plugin<Project> {
                 }
             }
 
-            androidTarget {
-                compilerOptions.jvmTarget.set(androidConvention.jvmTarget)
-            }
+            androidTarget()
         }
 
         val androidApplicationPlugin = libs.plugins.android.application.get()
         pluginManager.withPlugin(androidApplicationPlugin.pluginId) {
             extensions.configure<BaseAppModuleExtension> {
-                compileOptions(androidConvention)
                 defaultConfig(androidConvention)
             }
         }
@@ -65,17 +56,9 @@ internal class AndroidConventionPlugin : Plugin<Project> {
         val androidLibraryPlugin = libs.plugins.android.library.get()
         pluginManager.withPlugin(androidLibraryPlugin.pluginId) {
             extensions.configure<LibraryExtension> {
-                compileOptions(androidConvention)
                 defaultConfig(androidConvention)
             }
         }
-    }
-}
-
-private fun CommonExtension<*, *, *, *, *, *>.compileOptions(convention: AndroidConvention) {
-    compileOptions {
-        sourceCompatibility(convention.jvmTargetVersion)
-        targetCompatibility(convention.jvmTargetVersion)
     }
 }
 
