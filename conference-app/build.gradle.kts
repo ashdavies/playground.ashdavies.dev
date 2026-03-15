@@ -19,6 +19,7 @@ plugins {
 
     id("dev.ashdavies.android")
     id("dev.ashdavies.compose")
+    id("dev.ashdavies.jvm")
     id("dev.ashdavies.kotlin")
     id("dev.ashdavies.parcelable")
     id("dev.ashdavies.properties")
@@ -28,6 +29,10 @@ plugins {
     alias(libs.plugins.cash.paparazzi)
     alias(libs.plugins.cash.sqldelight)
     alias(libs.plugins.zac.metro)
+}
+
+metro {
+    warnOnInjectAnnotationPlacement = false
 }
 
 android {
