@@ -30,7 +30,7 @@ pageBoundariesAscending:
         SELECT
             id,
             CASE
-                WHEN ((row_number() OVER(ORDER BY id ASC) - 1) % :limit) = 0 THEN 1
+                WHEN ((row_number() OVER(ORDER BY id ASC) - 1) % CAST(:limit AS INTEGER)) = 0 THEN 1
                 WHEN :anchor IS NOT NULL AND id = :anchor THEN 1
                 ELSE 0
             END page_boundary
