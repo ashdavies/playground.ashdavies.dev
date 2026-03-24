@@ -254,3 +254,9 @@ sqldelight {
 tasks.withType<ComposeHotRun>().configureEach {
     mainClass.set(ConferenceAppConfig.MAIN_CLASS)
 }
+
+tasks.withType<Test>().configureEach {
+    if (name.endsWith("UnitTest")) {
+        reports.html.required.set(false)
+    }
+}
