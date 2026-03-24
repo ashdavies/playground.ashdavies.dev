@@ -32,7 +32,7 @@ jobs:
       - uses: ./.github/actions/setup-java
         if: github.ref == 'refs/heads/main'
 
-      - uses: gradle/actions/setup-gradle@v5
+      - uses: gradle/actions/setup-gradle@v6
         if: github.ref == 'refs/heads/main'
 
       - uses: 1password/install-cli-action@v2
