@@ -3,14 +3,14 @@ android-compileSdk = "36"
 android-minSdk = "34"
 androidx-activity = "1.13.0"
 androidx-paging = "3.4.2"
-cash-sqldelight = "2.2.1"
+cash-sqldelight = "2.3.2"
 coil-kt = "3.4.0"
 compose-adaptive = "1.2.0"
 compose-plugin = "1.10.3"
 google-accompanist = "0.37.3"
 google-android = "8.11.0"
 google-services = "4.4.4"
-jetbrains-kotlin = "2.3.10"
+jetbrains-kotlin = "2.3.20"
 kotlinx-coroutines = "1.10.2"
 kotlinx-serialization = "1.10.0"
 ktor = "3.4.1"
@@ -111,7 +111,7 @@ sqldelight-async-extensions = { module = "app.cash.sqldelight:async-extensions",
 sqldelight-coroutines-extensions = { module = "app.cash.sqldelight:coroutines-extensions", version.ref = "cash-sqldelight" }
 sqldelight-runtime = { module = "app.cash.sqldelight:runtime", version.ref = "cash-sqldelight" }
 sqldelight-paging3-extensions = { module = "app.cash.sqldelight:androidx-paging3-extensions", version.ref = "cash-sqldelight" }
-sqldelight-sqlite-dialect = { group = "app.cash.sqldelight", name = "sqlite-3-38-dialect", version.ref = "cash-sqldelight"}
+sqldelight-sqlite-dialect = { module = "app.cash.sqldelight:sqlite-3-38-dialect", version.ref = "cash-sqldelight"}
 sqldelight-sqlite-driver = { module = "app.cash.sqldelight:sqlite-driver", version.ref = "cash-sqldelight" }
 sqldelight-web-driver = { module = "app.cash.sqldelight:web-worker-driver", version.ref = "cash-sqldelight" }
 
