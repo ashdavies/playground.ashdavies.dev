@@ -35,7 +35,7 @@ jobs:
       - uses: gradle/actions/setup-gradle@v6
         if: github.ref == 'refs/heads/main'
 
-      - uses: 1password/install-cli-action@v2
+      - uses: 1password/install-cli-action@v3
         if: github.ref == 'refs/heads/main'
 
       - id: google-cloud-auth
