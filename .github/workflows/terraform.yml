@@ -35,7 +35,7 @@ jobs:
       - uses: gradle/actions/setup-gradle@v6
         if: github.ref == 'refs/heads/main'
 
-      - uses: 1password/install-cli-action@v2
+      - uses: 1password/install-cli-action@v3
         if: github.ref == 'refs/heads/main'
 
       - id: google-cloud-auth
@@ -60,7 +60,7 @@ jobs:
 
       - uses: hashicorp/setup-terraform@v4
         with:
-          terraform_version: 1.14.7
+          terraform_version: 1.14.8
 
       - uses: terraform-linters/setup-tflint@v6
         if: github.event_name == 'pull_request'
