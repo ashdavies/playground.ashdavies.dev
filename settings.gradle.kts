@@ -57,6 +57,7 @@ enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 include(
     ":analytics",
+    ":android-app",
     ":app-check",
     ":asg-service",
     ":cloud-common",

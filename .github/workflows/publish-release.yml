@@ -39,8 +39,8 @@ jobs:
 
       - uses: actions/download-artifact@v8
         with:
-          name: conference-app-build-outputs
-          path: conference-app/build/outputs
+          name: android-app-build-outputs
+          path: android-app/build/outputs
 
       - id: app-token
         uses: ./.github/actions/github-token
@@ -61,7 +61,7 @@ jobs:
     if: false
 
     steps:
-      - run: echo ${{ secrets.FASTLANE_SERVICE_ACCOUNT_KEY }} | base64 --decode > conference-app/src/androidMain/play-store-key.json
+      - run: echo ${{ secrets.FASTLANE_SERVICE_ACCOUNT_KEY }} | base64 --decode > android-app/src/androidMain/play-store-key.json
 
       - run: |
           fastlane android play
