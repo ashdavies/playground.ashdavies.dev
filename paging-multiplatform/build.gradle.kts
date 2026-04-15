@@ -2,17 +2,17 @@ import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode
 
 plugins {
-    alias(libs.plugins.android.library)
-
-    id("dev.ashdavies.android")
+    id("dev.ashdavies.android.library")
     id("dev.ashdavies.compose")
     id("dev.ashdavies.jvm")
     id("dev.ashdavies.kotlin")
     id("dev.ashdavies.wasm")
 }
 
-android {
-    namespace = "dev.ashdavies.paging"
+kotlin {
+    android {
+        namespace = "dev.ashdavies.paging"
+    }
 }
 
 kotlin {

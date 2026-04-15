@@ -11,10 +11,7 @@ private object ConferenceAppConfig {
 }
 
 plugins {
-    alias(libs.plugins.android.library)
-    alias(libs.plugins.kotlin.multiplatform)
-
-    id("dev.ashdavies.android")
+    id("dev.ashdavies.android.library")
     id("dev.ashdavies.compose")
     id("dev.ashdavies.jvm")
     id("dev.ashdavies.kotlin")
@@ -23,7 +20,6 @@ plugins {
     id("dev.ashdavies.wasm")
 
     alias(libs.plugins.build.config)
-    alias(libs.plugins.cash.paparazzi)
     alias(libs.plugins.cash.sqldelight)
     alias(libs.plugins.zac.metro)
 }
@@ -32,8 +28,10 @@ metro {
     warnOnInjectAnnotationPlacement = false
 }
 
-android {
-    namespace = ConferenceAppConfig.APPLICATION_NAME
+kotlin {
+    android {
+        namespace = ConferenceAppConfig.APPLICATION_NAME
+    }
 }
 
 buildConfig {
@@ -41,7 +39,7 @@ buildConfig {
     val browserApiKey by stringProperty(::buildConfigField)
 
     className.set("BuildConfig")
-    packageName.set(android.namespace)
+    packageName.set(kotlin.android.namespace)
 }
 
 composeCompiler {
@@ -155,13 +153,6 @@ kotlin {
             implementation(libs.slack.circuit.overlay)
         }
 
-        val androidDebug by registering {
-            dependencies {
-                implementation(libs.google.firebase.appcheck.debug)
-                implementation(libs.compose.uiTooling)
-            }
-        }
-
         jvmMain.dependencies {
             implementation(compose.desktop.currentOs)
             implementation(projects.keyNavigation)
@@ -190,7 +181,7 @@ kotlin {
 sqldelight {
     databases {
         create("PlaygroundDatabase") {
-            packageName = android.namespace
+            packageName = kotlin.android.namespace
             generateAsync = true
 
             dialect(libs.sqldelight.sqlite.dialect)
