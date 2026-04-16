@@ -1,17 +1,13 @@
 import org.jetbrains.kotlin.compose.compiler.gradle.ComposeFeatureFlag
 
 plugins {
-    alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.multiplatform)
-    alias(libs.plugins.firebase.crashlytics)
-    alias(libs.plugins.google.services)
-
-    id("dev.ashdavies.android")
+    id("dev.ashdavies.android.application")
     id("dev.ashdavies.compose")
-    id("dev.ashdavies.jvm")
     id("dev.ashdavies.kotlin")
     id("dev.ashdavies.parcelable")
     id("dev.ashdavies.properties")
+
+    alias(libs.plugins.cash.paparazzi)
 }
 
 android {
@@ -58,9 +54,11 @@ android {
         val versionName by stringProperty { _, value ->
             versionName = value ?: "0.0.0-SNAPSHOT"
         }
+
+        applicationId = "dev.ashdavies.playground"
     }
 
-    namespace = "dev.ashdavies.playground"
+    namespace = "dev.ashdavies.android.playground"
 }
 
 composeCompiler {
