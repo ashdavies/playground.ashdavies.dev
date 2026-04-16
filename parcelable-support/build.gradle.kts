@@ -11,4 +11,8 @@ kotlin {
     android {
         namespace = "dev.ashdavies.parcelable"
     }
+
+    compilerOptions {
+        freeCompilerArgs.add("-Xexpect-actual-classes")
+    }
 }

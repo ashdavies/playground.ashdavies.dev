@@ -1,6 +1,3 @@
-import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
-import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode
-
 plugins {
     id("dev.ashdavies.android.library")
     id("dev.ashdavies.compose")
@@ -16,12 +13,6 @@ kotlin {
 }
 
 kotlin {
-    @OptIn(ExperimentalWasmDsl::class)
-    wasmJs {
-        binaries.executable()
-        browser()
-    }
-
     sourceSets {
         commonMain.dependencies {
             implementation(libs.compose.foundation)

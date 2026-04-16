@@ -24,6 +24,12 @@ internal fun PluginContainer.apply(
     withId(pluginId, action)
 }
 
+internal fun PluginManager.hasPlugin(
+    provider: Provider<PluginDependency>,
+) = with(provider.get()) {
+    hasPlugin(pluginId)
+}
+
 internal fun PluginManager.withPlugin(
     provider: Provider<PluginDependency>,
     action: AppliedPlugin.() -> Unit,

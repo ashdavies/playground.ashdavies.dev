@@ -54,9 +54,11 @@ android {
         val versionName by stringProperty { _, value ->
             versionName = value ?: "0.0.0-SNAPSHOT"
         }
+
+        applicationId = "dev.ashdavies.playground"
     }
 
-    namespace = "dev.ashdavies.playground"
+    namespace = "dev.ashdavies.android.playground"
 }
 
 composeCompiler {

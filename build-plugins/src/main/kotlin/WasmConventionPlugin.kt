@@ -17,8 +17,7 @@ internal class WasmConventionPlugin : Plugin<Project> {
 
                 applyDefaultHierarchyTemplate {
                     common {
-                        val androidLibraryPlugin = libs.plugins.android.library.get()
-                        if (pluginManager.hasPlugin(androidLibraryPlugin.pluginId)) {
+                        if (pluginManager.hasPlugin(libs.plugins.android.library)) {
                             group("nonAndroid") {
                                 withJvm()
                                 withWasmJs()
