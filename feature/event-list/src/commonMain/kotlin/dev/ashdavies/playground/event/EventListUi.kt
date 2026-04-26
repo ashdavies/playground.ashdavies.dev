@@ -1,4 +1,4 @@
-package dev.ashdavies.playground.upcoming
+package dev.ashdavies.playground.event
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
@@ -44,62 +44,39 @@ import coil3.compose.rememberAsyncImagePainter
 import com.google.accompanist.placeholder.PlaceholderHighlight
 import com.google.accompanist.placeholder.material3.fade
 import com.google.accompanist.placeholder.material3.placeholder
-import com.slack.circuit.runtime.CircuitUiState
-import com.slack.circuit.runtime.screen.Screen
+import com.slack.circuit.codegen.annotations.CircuitInject
 import com.slack.circuit.runtime.ui.Ui
-import dev.ashdavies.parcelable.Parcelable
-import dev.ashdavies.parcelable.Parcelize
-import dev.ashdavies.playground.circuit.CircuitScreenKey
-import dev.ashdavies.playground.events.Event
-import dev.ashdavies.playground.events.EventDateLabel
-import dev.ashdavies.playground.events.EventsTopBar
-import dev.ashdavies.playground.events.daysUntilCfpEnd
 import dev.ashdavies.playground.material.padding
 import dev.ashdavies.playground.material.spacing
 import dev.ashdavies.playground.material.values
+import dev.ashdavies.playground.ui.CenterAlignedTopAppBar
+import dev.ashdavies.playground.ui.DateRangeBadge
+import dev.ashdavies.playground.ui.DateRangeBadgeState
 import dev.zacsweers.metro.AppScope
-import dev.zacsweers.metro.ContributesIntoMap
 import dev.zacsweers.metro.Inject
-import dev.zacsweers.metro.binding
-import kotlinx.collections.immutable.ImmutableList
 import kotlinx.datetime.LocalDate
+import kotlinx.datetime.daysUntil
 import org.jetbrains.compose.resources.stringResource
-import playground.conference_app.generated.resources.Res
-import playground.conference_app.generated.resources.call_for_papers_open
-import playground.conference_app.generated.resources.online_only
-import playground.conference_app.generated.resources.upcoming_events
-import dev.ashdavies.playground.events.Event as DbConference
+import playground.feature.event_list.generated.resources.Res
+import playground.feature.event_list.generated.resources.call_for_papers_open
+import playground.feature.event_list.generated.resources.online_only
+import playground.feature.event_list.generated.resources.upcoming_events
 
-@Parcelize
-internal object UpcomingScreen : Parcelable, Screen {
-    sealed interface Event {
-        data class ItemClick(val id: Long) : Event
-        data object Refresh : Event
-    }
-
-    data class State(
-        val itemList: ImmutableList<DbConference?>,
-        val selectedIndex: Int?,
-        val isRefreshing: Boolean,
-        val errorMessage: String?,
-        val eventSink: (Event) -> Unit,
-    ) : CircuitUiState
-}
-
-@CircuitScreenKey(UpcomingScreen::class)
-@ContributesIntoMap(AppScope::class, binding<Ui<*>>())
-internal class UpcomingUi @Inject constructor() : Ui<UpcomingScreen.State> {
+@CircuitInject(EventScreen.List::class, AppScope::class)
+public class EventListUi @Inject constructor() : Ui<EventListState> {
 
     @Composable
-    @OptIn(ExperimentalMaterial3Api::class)
-    override fun Content(state: UpcomingScreen.State, modifier: Modifier) {
+    override fun Content(state: EventListState, modifier: Modifier) {
         Scaffold(
             modifier = modifier,
-            topBar = { EventsTopBar(stringResource(Res.string.upcoming_events)) },
+            topBar = {
+                @OptIn(ExperimentalMaterial3Api::class)
+                CenterAlignedTopAppBar(stringResource(Res.string.upcoming_events))
+            },
         ) { contentPadding ->
             PullToRefreshBox(
                 isRefreshing = state.isRefreshing,
-                onRefresh = { state.eventSink(UpcomingScreen.Event.Refresh) },
+                onRefresh = { state.eventSink(EventListState.Event.Refresh) },
                 modifier = Modifier.padding(contentPadding),
             ) {
                 if (state.errorMessage != null) {
@@ -117,16 +94,18 @@ internal class UpcomingUi @Inject constructor() : Ui<UpcomingScreen.State> {
                             .fillMaxWidth()
                             .clip(MaterialTheme.shapes.medium)
 
-                        when (item) {
-                            is Event -> EventItemContent(
+                        when {
+                            item != null -> EventItemContent(
                                 event = item,
                                 isSelected = index == state.selectedIndex,
                                 modifier = itemModifier
-                                    .clickable { state.eventSink(UpcomingScreen.Event.ItemClick(item.id)) }
+                                    .clickable {
+                                        state.eventSink(EventListState.Event.ItemClick(item.id))
+                                    }
                                     .paint(rememberBackgroundPainter(item.imageUrl)),
                             )
 
-                            null -> EventItemContent(
+                            else -> EventItemContent(
                                 event = null,
                                 isSelected = false,
                                 modifier = itemModifier,
@@ -173,12 +152,14 @@ private fun EventItemContent(
                 )
             }
 
-            if (event?.cfpEnd != null && daysUntilCfpEnd(LocalDate.parse(event.cfpEnd)) > 0) {
-                Column {
-                    EventLabel(
-                        text = stringResource(Res.string.call_for_papers_open),
-                        modifier = Modifier.fillMaxHeight(),
-                    )
+            event?.cfpEnd?.let { cfpEnd ->
+                if (Today.daysUntil(LocalDate.parse(cfpEnd)) > 0) {
+                    Column {
+                        EventLabel(
+                            text = stringResource(Res.string.call_for_papers_open),
+                            modifier = Modifier.fillMaxHeight(),
+                        )
+                    }
                 }
             }
 
@@ -193,9 +174,13 @@ private fun EventItemContent(
 
             if (event?.dateStart != null) {
                 Column {
-                    EventDateLabel(
-                        dateStart = remember { LocalDate.parse(event.dateStart) },
-                        dateEnd = remember { LocalDate.parse(event.dateEnd) },
+                    DateRangeBadge(
+                        state = remember {
+                            DateRangeBadgeState(
+                                dateStart = LocalDate.parse(event.dateStart),
+                                dateEnd = LocalDate.parse(event.dateEnd),
+                            )
+                        },
                         modifier = Modifier.fillMaxHeight(),
                     )
                 }
@@ -241,7 +226,7 @@ private fun rememberBackgroundPainter(
     colorStopStart: Float = 0.25f,
     colorStopEnd: Float = 0.5f,
 ): Painter {
-    @Suppress("UNUSED_VARIABLE")
+    @Suppress("unused")
     val brush = Brush.horizontalGradient(
         colorStopStart to Color.Transparent,
         colorStopEnd to Color.Black,

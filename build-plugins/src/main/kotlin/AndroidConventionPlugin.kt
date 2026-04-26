@@ -5,7 +5,6 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.provider.Provider
 import org.gradle.kotlin.dsl.configure
-import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
 private val Project.androidConventionProvider: Provider<AndroidConvention>
@@ -28,21 +27,6 @@ internal class AndroidConventionPlugin : Plugin<Project> {
 
         val androidConvention = androidConventionProvider.get()
         extensions.configure<KotlinMultiplatformExtension> {
-            @OptIn(ExperimentalKotlinGradlePluginApi::class)
-            applyDefaultHierarchyTemplate {
-                common {
-                    group("androidJvm") {
-                        withAndroidTarget()
-                        withJvm()
-                    }
-
-                    group("nonAndroid") {
-                        withJvm()
-                        withWasmJs()
-                    }
-                }
-            }
-
             androidTarget()
         }
 

@@ -6,33 +6,33 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 @Suppress("UnusedReceiverParameter")
-internal val MaterialTheme.spacing: MaterialSpacing
+public val MaterialTheme.spacing: MaterialSpacing
     get() = MaterialSpacing
 
-internal val Spacing.values: PaddingValues
+public val Spacing.values: PaddingValues
     get() = PaddingValues(
         horizontal = horizontal,
         vertical = vertical,
     )
 
-internal object MaterialSpacing {
-    val small = Spacing(
+public object MaterialSpacing {
+    public val small: Spacing = Spacing(
         horizontal = 8.dp,
         vertical = 4.dp,
     )
 
-    val medium = Spacing(
+    public val medium: Spacing = Spacing(
         horizontal = 12.dp,
         vertical = 8.dp,
     )
 
-    val large = Spacing(
+    public val large: Spacing = Spacing(
         horizontal = 16.dp,
         vertical = 12.dp,
     )
 }
 
-internal data class Spacing(
-    val horizontal: Dp,
-    val vertical: Dp,
+public data class Spacing(
+    public val horizontal: Dp,
+    public val vertical: Dp,
 )

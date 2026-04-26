@@ -1,4 +1,4 @@
-package dev.ashdavies.material
+package dev.ashdavies.playground.material
 
 import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.dynamicDarkColorScheme

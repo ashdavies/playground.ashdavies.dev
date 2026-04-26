@@ -2,8 +2,19 @@ import io.gitlab.arturbosch.detekt.extensions.DetektExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
+import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
+import org.jetbrains.kotlin.gradle.plugin.KotlinPlatformType
 import org.jlleitschuh.gradle.ktlint.KtlintExtension
+
+private val KotlinMultiplatformExtension.hasAndroidTarget: Boolean
+    get() = targets.any { it.platformType == KotlinPlatformType.androidJvm }
+
+private val KotlinMultiplatformExtension.hasJvmTarget: Boolean
+    get() = targets.any { it.platformType == KotlinPlatformType.jvm }
+
+private val KotlinMultiplatformExtension.hasWasmTarget: Boolean
+    get() = targets.any { it.platformType == KotlinPlatformType.wasm }
 
 public class KotlinConventionPlugin : Plugin<Project> {
     override fun apply(target: Project): Unit = with(target) {
@@ -15,6 +26,32 @@ public class KotlinConventionPlugin : Plugin<Project> {
 
         extensions.configure<KotlinMultiplatformExtension> {
             explicitApi()
+
+            @OptIn(ExperimentalKotlinGradlePluginApi::class)
+            applyDefaultHierarchyTemplate {
+                common {
+                    if (this@configure.hasAndroidTarget && this@configure.hasJvmTarget) {
+                        group("androidJvm") {
+                            withAndroidTarget()
+                            withJvm()
+                        }
+                    }
+
+                    if (this@configure.hasJvmTarget && this@configure.hasWasmTarget) {
+                        group("jvmWasmJs") {
+                            withJvm()
+                            withWasmJs()
+                        }
+                    }
+
+                    if (this@configure.hasWasmTarget) {
+                        group("wasm") {
+                            withWasmJs()
+                            withWasmWasi()
+                        }
+                    }
+                }
+            }
         }
 
         dependencies.add("detektPlugins", libs.detekt.compose)

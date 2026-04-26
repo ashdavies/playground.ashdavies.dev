@@ -1,4 +1,4 @@
-package dev.ashdavies.playground.events
+package dev.ashdavies.playground.ui
 
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -10,8 +10,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
 @Composable
-@OptIn(ExperimentalMaterial3Api::class)
-internal fun EventsTopBar(
+@ExperimentalMaterial3Api
+public fun CenterAlignedTopAppBar(
     title: String,
     modifier: Modifier = Modifier,
     navigationIcon: @Composable () -> Unit = { },
@@ -27,7 +27,7 @@ internal fun EventsTopBar(
         },
         modifier = modifier,
         navigationIcon = navigationIcon,
-        colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+        colors = TopAppBarDefaults.topAppBarColors(
             containerColor = MaterialTheme.colorScheme.background,
         ),
         actions = actions,

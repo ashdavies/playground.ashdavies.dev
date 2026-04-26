@@ -13,6 +13,7 @@ import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.BottomAppBarDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -32,10 +33,10 @@ import com.slack.circuit.runtime.ui.Ui
 import dev.ashdavies.parcelable.Parcelable
 import dev.ashdavies.parcelable.Parcelize
 import dev.ashdavies.playground.circuit.CircuitScreenKey
-import dev.ashdavies.playground.events.EventsTopBar
 import dev.ashdavies.playground.material.padding
 import dev.ashdavies.playground.material.spacing
 import dev.ashdavies.playground.material.values
+import dev.ashdavies.playground.ui.CenterAlignedTopAppBar
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesIntoMap
 import dev.zacsweers.metro.Inject
@@ -93,7 +94,10 @@ internal class PastUi @Inject constructor() : Ui<PastScreen.State> {
 
         Scaffold(
             modifier = modifier,
-            topBar = { EventsTopBar(stringResource(Res.string.past_events)) },
+            topBar = {
+                @OptIn(ExperimentalMaterial3Api::class)
+                CenterAlignedTopAppBar(stringResource(Res.string.past_events))
+            },
             contentWindowInsets = ScaffoldDefaults.contentWindowInsets.exclude(
                 insets = BottomAppBarDefaults.windowInsets,
             ),

@@ -1,8 +1,8 @@
-package dev.ashdavies.playground.events
+package dev.ashdavies.playground.event
 
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializer
 
 @ExperimentalSerializationApi
 @Serializer(forClass = Event::class)
-public object EventsSerializer
+public object EventSerializer

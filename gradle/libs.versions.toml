@@ -9,6 +9,7 @@ compose-adaptive = "1.2.0"
 compose-plugin = "1.10.3"
 google-accompanist = "0.37.3"
 google-android = "8.11.0"
+google-ksp = "2.3.6"
 google-services = "4.4.4"
 jetbrains-kotlin = "2.3.21"
 kotlinx-coroutines = "1.10.2"
@@ -19,6 +20,9 @@ sqlJs = "1.8.0"
 webPack = "9.1.0"
 
 [libraries]
+slack-circuit-codegen = { module = "com.slack.circuit:circuit-codegen", version.ref = "slack-circuit" }
+slack-circuit-annotations = { module = "com.slack.circuit:circuit-codegen-annotations", version.ref = "slack-circuit" }
+slack-circuit-runtime = { module = "com.slack.circuit:circuit-runtime", version.ref = "slack-circuit" }
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity" }
 androidx-annotation = "androidx.annotation:annotation:1.10.0"
 androidx-core-splashscreen = "androidx.core:core-splashscreen:1.2.0"

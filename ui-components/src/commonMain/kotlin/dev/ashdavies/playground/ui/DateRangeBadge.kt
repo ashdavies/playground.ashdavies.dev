@@ -1,4 +1,4 @@
-package dev.ashdavies.playground.events
+package dev.ashdavies.playground.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -15,29 +15,34 @@ import dev.ashdavies.playground.material.spacing
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.format
+import kotlinx.datetime.format.MonthNames
 import kotlinx.datetime.toLocalDateTime
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 
+private val EnglishMonthNamesFormat = LocalDate.Format { monthName(MonthNames.ENGLISH_ABBREVIATED) }
+private val DayFormat = LocalDate.Format { day() }
+
 private const val HYPHEN = "-"
 
+public data class DateRangeBadgeState(
+    val dateStart: LocalDate,
+    val dateEnd: LocalDate,
+)
+
 @Composable
-internal fun EventDateLabel(
-    dateStart: LocalDate,
-    dateEnd: LocalDate,
-    modifier: Modifier = Modifier,
-) {
+public fun DateRangeBadge(state: DateRangeBadgeState, modifier: Modifier = Modifier) {
     Surface(modifier.clip(MaterialTheme.shapes.small)) {
         Column(
             modifier = Modifier.padding(MaterialTheme.spacing.small),
             verticalArrangement = Arrangement.aligned(Alignment.CenterVertically),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            val startMonth = dateStart.monthAsString()
-            val endMonth = dateEnd.monthAsString()
+            val startMonth = state.dateStart.format(EnglishMonthNamesFormat)
+            val endMonth = state.dateEnd.format(EnglishMonthNamesFormat)
 
-            val startDay = dateStart.dayAsString()
-            val endDay = dateEnd.dayAsString()
+            val startDay = state.dateStart.format(DayFormat)
+            val endDay = state.dateEnd.format(DayFormat)
 
             when {
                 startMonth != endMonth -> Row(verticalAlignment = Alignment.CenterVertically) {
@@ -74,9 +79,9 @@ internal fun EventDateLabel(
                 .toLocalDateTime(TimeZone.currentSystemDefault())
                 .year
 
-            if (dateStart.year != currentYear) {
+            if (state.dateStart.year != currentYear) {
                 Text(
-                    text = dateStart.format(LocalDate.Format { year() }),
+                    text = state.dateStart.format(LocalDate.Format { year() }),
                     style = MaterialTheme.typography.labelSmall,
                 )
             }

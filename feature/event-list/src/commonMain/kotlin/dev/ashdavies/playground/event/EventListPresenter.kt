@@ -1,49 +1,57 @@
-package dev.ashdavies.playground.upcoming
+package dev.ashdavies.playground.event
 
 import androidx.compose.runtime.Composable
+import com.slack.circuit.codegen.annotations.CircuitInject
 import com.slack.circuit.runtime.Navigator
 import com.slack.circuit.runtime.presenter.Presenter
 import dev.ashdavies.analytics.RemoteAnalytics
 import dev.ashdavies.analytics.logEvent
-import dev.ashdavies.paging.Pager
+import dev.ashdavies.paging.PagerConfig
+import dev.ashdavies.paging.PagerFactory
 import dev.ashdavies.paging.rememberPagingState
-import dev.ashdavies.playground.circuit.CircuitScreenKey
 import dev.ashdavies.playground.coroutines.rememberRetainedCoroutineScope
-import dev.ashdavies.playground.events.Event
-import dev.ashdavies.playground.events.EventsDetailScreen
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.Assisted
 import dev.zacsweers.metro.AssistedFactory
 import dev.zacsweers.metro.AssistedInject
-import dev.zacsweers.metro.ContributesIntoMap
-import dev.zacsweers.metro.binding
 
-internal class UpcomingPresenter @AssistedInject constructor(
+private const val DEFAULT_PAGE_SIZE = 10
+
+public class EventListPresenter @AssistedInject constructor(
+    @Assisted private val screen: EventScreen.List,
     @Assisted private val navigator: Navigator,
-    private val eventPager: Pager<*, Event>,
+    eventPagerFactory: PagerFactory<Long, Event>,
     private val remoteAnalytics: RemoteAnalytics,
-) : Presenter<UpcomingScreen.State> {
+) : Presenter<EventListState> {
+
+    private val eventPager = eventPagerFactory.create(
+        config = PagerConfig(
+            initialKey = screen.initialKey,
+            pageSize = DEFAULT_PAGE_SIZE,
+        ),
+    )
 
     @Composable
-    override fun present(): UpcomingScreen.State {
+    override fun present(): EventListState {
         val pagingState = rememberPagingState(
             retainedCoroutineScope = rememberRetainedCoroutineScope(),
             pager = eventPager,
+            // startWith = screen.startWith
         )
 
-        return UpcomingScreen.State(
+        return EventListState(
             itemList = pagingState.itemList,
             selectedIndex = null,
             isRefreshing = pagingState.isRefreshing,
             errorMessage = pagingState.errorMessage,
         ) { event ->
             when (event) {
-                is UpcomingScreen.Event.ItemClick -> {
+                is EventListState.Event.ItemClick -> {
                     remoteAnalytics.logEvent("events_click") { param("id", "${event.id}") }
-                    navigator.goTo(EventsDetailScreen(event.id))
+                    navigator.goTo(EventScreen.Detail(event.id))
                 }
 
-                is UpcomingScreen.Event.Refresh -> {
+                is EventListState.Event.Refresh -> {
                     remoteAnalytics.logEvent("events_refresh")
                     pagingState.refresh()
                 }
@@ -52,9 +60,8 @@ internal class UpcomingPresenter @AssistedInject constructor(
     }
 
     @AssistedFactory
-    @CircuitScreenKey(UpcomingScreen::class)
-    @ContributesIntoMap(AppScope::class, binding<(Navigator) -> Presenter<*>>())
-    interface Factory : (Navigator) -> UpcomingPresenter {
-        override fun invoke(navigator: Navigator): UpcomingPresenter
+    @CircuitInject(EventScreen.List::class, AppScope::class)
+    public interface Factory : (EventScreen.List, Navigator) -> EventListPresenter {
+        override fun invoke(screen: EventScreen.List, navigator: Navigator): EventListPresenter
     }
 }
