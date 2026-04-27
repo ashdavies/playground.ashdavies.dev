@@ -8,27 +8,26 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 @OptIn(ExperimentalWasmDsl::class, ExperimentalKotlinGradlePluginApi::class)
 internal class WasmConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) = with(target) {
-        plugins.apply(libs.plugins.kotlin.multiplatform)
+        plugins.apply(libs.plugins.kotlin.multiplatform) {
+            configure<KotlinMultiplatformExtension> {
+                wasmJs {
+                    binaries.executable()
+                    browser()
+                }
 
-        configure<KotlinMultiplatformExtension> {
-            wasmJs {
-                binaries.executable()
-                browser()
-            }
-
-            applyDefaultHierarchyTemplate {
-                common {
-                    val androidLibraryPlugin = libs.plugins.android.library.get()
-                    if (pluginManager.hasPlugin(androidLibraryPlugin.pluginId)) {
-                        group("nonAndroid") {
-                            withJvm()
-                            withWasmJs()
+                applyDefaultHierarchyTemplate {
+                    common {
+                        if (pluginManager.hasPlugin(libs.plugins.android.library)) {
+                            group("nonAndroid") {
+                                withJvm()
+                                withWasmJs()
+                            }
                         }
-                    }
 
-                    group("wasm") {
-                        withWasmJs()
-                        withWasmWasi()
+                        group("wasm") {
+                            withWasmJs()
+                            withWasmWasi()
+                        }
                     }
                 }
             }

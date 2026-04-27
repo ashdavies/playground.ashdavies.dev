@@ -26,9 +26,14 @@ kotlin {
 
 gradlePlugin {
     plugins {
-        register("androidConventionPlugin") {
-            implementationClass = "AndroidConventionPlugin"
-            id = "dev.ashdavies.android"
+        register("androidApplicationConventionPlugin") {
+            implementationClass = "AndroidApplicationConventionPlugin"
+            id = "dev.ashdavies.android.application"
+        }
+
+        register("androidLibraryConventionPlugin") {
+            implementationClass = "AndroidLibraryConventionPlugin"
+            id = "dev.ashdavies.android.library"
         }
 
         register("composeConventionPlugin") {

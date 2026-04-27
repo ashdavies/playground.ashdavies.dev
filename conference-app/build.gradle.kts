@@ -1,8 +1,6 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.compose.reload.gradle.ComposeHotRun
 import org.jetbrains.kotlin.compose.compiler.gradle.ComposeFeatureFlag
-import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
-import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 
 private object ConferenceAppConfig {
     const val APPLICATION_NAME = "dev.ashdavies.playground"
@@ -11,10 +9,7 @@ private object ConferenceAppConfig {
 }
 
 plugins {
-    alias(libs.plugins.android.library)
-    alias(libs.plugins.kotlin.multiplatform)
-
-    id("dev.ashdavies.android")
+    id("dev.ashdavies.android.library")
     id("dev.ashdavies.compose")
     id("dev.ashdavies.jvm")
     id("dev.ashdavies.kotlin")
@@ -23,7 +18,6 @@ plugins {
     id("dev.ashdavies.wasm")
 
     alias(libs.plugins.build.config)
-    alias(libs.plugins.cash.paparazzi)
     alias(libs.plugins.cash.sqldelight)
     alias(libs.plugins.zac.metro)
 }
@@ -32,8 +26,10 @@ metro {
     warnOnInjectAnnotationPlacement = false
 }
 
-android {
-    namespace = ConferenceAppConfig.APPLICATION_NAME
+kotlin {
+    android {
+        namespace = ConferenceAppConfig.APPLICATION_NAME
+    }
 }
 
 buildConfig {
@@ -41,7 +37,7 @@ buildConfig {
     val browserApiKey by stringProperty(::buildConfigField)
 
     className.set("BuildConfig")
-    packageName.set(android.namespace)
+    packageName.set(kotlin.android.namespace)
 }
 
 composeCompiler {
@@ -64,18 +60,6 @@ compose.desktop {
 kotlin {
     compilerOptions {
         freeCompilerArgs.add("-opt-in=kotlin.uuid.ExperimentalUuidApi")
-    }
-
-    jvm()
-
-    @OptIn(ExperimentalWasmDsl::class)
-    wasmJs {
-        binaries.executable()
-        browser {
-            commonWebpackConfig {
-                outputFileName = "conference-app.js"
-            }
-        }
     }
 
     sourceSets {
@@ -155,13 +139,6 @@ kotlin {
             implementation(libs.slack.circuit.overlay)
         }
 
-        val androidDebug by registering {
-            dependencies {
-                implementation(libs.google.firebase.appcheck.debug)
-                implementation(libs.compose.uiTooling)
-            }
-        }
-
         jvmMain.dependencies {
             implementation(compose.desktop.currentOs)
             implementation(projects.keyNavigation)
@@ -190,7 +167,7 @@ kotlin {
 sqldelight {
     databases {
         create("PlaygroundDatabase") {
-            packageName = android.namespace
+            packageName = kotlin.android.namespace
             generateAsync = true
 
             dialect(libs.sqldelight.sqlite.dialect)
