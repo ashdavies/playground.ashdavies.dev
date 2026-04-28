@@ -98,7 +98,7 @@ internal class EventsDetailUi @Inject constructor() : Ui<EventDetailState> {
 
                         if (itemOrNull != null) {
                             DateRangeBadge(
-                                state = remember {
+                                state = remember(itemOrNull.dateStart, itemOrNull.dateEnd) {
                                     DateRangeBadgeState(
                                         dateStart = LocalDate.parse(itemOrNull.dateStart),
                                         dateEnd = LocalDate.parse(itemOrNull.dateEnd),

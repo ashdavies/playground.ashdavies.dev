@@ -175,7 +175,7 @@ private fun EventItemContent(
             if (event?.dateStart != null) {
                 Column {
                     DateRangeBadge(
-                        state = remember {
+                        state = remember(event.dateStart, event.dateEnd) {
                             DateRangeBadgeState(
                                 dateStart = LocalDate.parse(event.dateStart),
                                 dateEnd = LocalDate.parse(event.dateEnd),

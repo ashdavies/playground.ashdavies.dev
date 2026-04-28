@@ -16,14 +16,5 @@ kotlin {
         commonMain.dependencies {
             implementation(projects.feature.eventCommon)
         }
-
-        androidMain.dependencies {
-        }
-
-        jvmMain.dependencies {
-        }
-
-        wasmMain.dependencies {
-        }
     }
 }

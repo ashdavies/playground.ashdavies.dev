@@ -7,15 +7,6 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.plugin.KotlinPlatformType
 import org.jlleitschuh.gradle.ktlint.KtlintExtension
 
-private val KotlinMultiplatformExtension.hasAndroidTarget: Boolean
-    get() = targets.any { it.platformType == KotlinPlatformType.androidJvm }
-
-private val KotlinMultiplatformExtension.hasJvmTarget: Boolean
-    get() = targets.any { it.platformType == KotlinPlatformType.jvm }
-
-private val KotlinMultiplatformExtension.hasWasmTarget: Boolean
-    get() = targets.any { it.platformType == KotlinPlatformType.wasm }
-
 public class KotlinConventionPlugin : Plugin<Project> {
     override fun apply(target: Project): Unit = with(target) {
         plugins.apply(libs.plugins.kotlin.serialization)
@@ -25,26 +16,30 @@ public class KotlinConventionPlugin : Plugin<Project> {
         plugins.apply(libs.plugins.ktlint)
 
         extensions.configure<KotlinMultiplatformExtension> {
+            val hasAndroidTarget = targets.any { it.platformType == KotlinPlatformType.androidJvm }
+            val hasJvmTarget = targets.any { it.platformType == KotlinPlatformType.jvm }
+            val hasWasmTarget = targets.any { it.platformType == KotlinPlatformType.wasm }
+
             explicitApi()
 
             @OptIn(ExperimentalKotlinGradlePluginApi::class)
             applyDefaultHierarchyTemplate {
                 common {
-                    if (this@configure.hasAndroidTarget && this@configure.hasJvmTarget) {
+                    if (hasAndroidTarget && hasJvmTarget) {
                         group("androidJvm") {
                             withAndroidTarget()
                             withJvm()
                         }
                     }
 
-                    if (this@configure.hasJvmTarget && this@configure.hasWasmTarget) {
+                    if (hasJvmTarget && hasWasmTarget) {
                         group("jvmWasmJs") {
                             withJvm()
                             withWasmJs()
                         }
                     }
 
-                    if (this@configure.hasWasmTarget) {
+                    if (hasWasmTarget) {
                         group("wasm") {
                             withWasmJs()
                             withWasmWasi()
