@@ -38,8 +38,6 @@ internal class EventPagerFactoryTest {
         val upcomingApiEventListSize = 24
         val pageSize = 12
 
-        println("Preparing test data with $upcomingApiEventListSize events and page size of $pageSize...")
-
         val upcomingApiEventList = List(Random.nextInt(upcomingApiEventListSize)) { it }
             .runningFold(LocalDate.nearFuture()) { acc, index ->
                 when (index % pageSize) {
@@ -54,32 +52,17 @@ internal class EventPagerFactoryTest {
                 )
             }
 
-        println("Generated ${upcomingApiEventList.size} events for testing.")
-
-        println("=== Dumping Randomly Generated Event List ===")
-        upcomingApiEventList.forEach(::println)
-
-        println("Creating event pager with page size $pageSize...")
-
         val eventPager = EventPagerFactory(
             eventsCallable = { upcomingApiEventList },
             eventsQueries = { playgroundDatabase.eventQueries },
             coroutineContext = coroutineContext,
-        ).create(PagerConfig(0L, pageSize))
-
-        println("Obtaining item snapshot list...")
+        ).create(PagerConfig(null, pageSize))
 
         val itemSnapshotList = eventPager.flow.asSnapshot {
-            println("Scrolling to the end of the list (position ${upcomingApiEventList.size})...")
             scrollTo(upcomingApiEventList.size)
         }
 
-        println("Snapshot obtained with ${itemSnapshotList.size} items.")
-
-        println("Verifying that the number of items matches the number of events...")
         assertEquals(upcomingApiEventList.size, itemSnapshotList.size)
-
-        println("Testing completed successfully.")
     }
 }
 

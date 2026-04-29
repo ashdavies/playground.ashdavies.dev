@@ -121,7 +121,7 @@ private fun BottomBar(
         NavigationBar {
             NavigationBarItem(
                 selected = selected is ListDetailScaffoldScreen,
-                onClick = { onClick(ListDetailScaffoldScreen(EventScreen.List(0L))) },
+                onClick = { onClick(ListDetailScaffoldScreen(EventScreen.List())) },
                 icon = { NavigationBarImage(Icons.Outlined.EventUpcoming) },
                 label = { Text("Upcoming") },
             )

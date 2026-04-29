@@ -55,12 +55,15 @@ import dev.ashdavies.playground.ui.DateRangeBadgeState
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.Inject
 import kotlinx.datetime.LocalDate
+import kotlinx.datetime.TimeZone
 import kotlinx.datetime.daysUntil
+import kotlinx.datetime.toLocalDateTime
 import org.jetbrains.compose.resources.stringResource
 import playground.feature.event_list.generated.resources.Res
 import playground.feature.event_list.generated.resources.call_for_papers_open
 import playground.feature.event_list.generated.resources.online_only
 import playground.feature.event_list.generated.resources.upcoming_events
+import kotlin.time.Clock
 
 @CircuitInject(EventScreen.List::class, AppScope::class)
 public class EventListUi @Inject constructor() : Ui<EventListState> {
@@ -153,7 +156,11 @@ private fun EventItemContent(
             }
 
             event?.cfpEnd?.let { cfpEnd ->
-                if (Today.daysUntil(LocalDate.parse(cfpEnd)) > 0) {
+                val today = Clock.System.now()
+                    .toLocalDateTime(TimeZone.currentSystemDefault())
+                    .date
+
+                if (today.daysUntil(LocalDate.parse(cfpEnd)) > 0) {
                     Column {
                         EventLabel(
                             text = stringResource(Res.string.call_for_papers_open),

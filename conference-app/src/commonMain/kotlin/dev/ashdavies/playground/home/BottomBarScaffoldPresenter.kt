@@ -41,7 +41,7 @@ internal class BottomBarScaffoldPresenter @AssistedInject constructor(
         val isPastEventsEnabled by remoteConfig.booleanConfigAsState { isPastEventsEnabled() }
         val isRoutesEnabled by remoteConfig.booleanConfigAsState { isRoutesEnabled() }
 
-        var screen by rememberRetained { mutableStateOf<Screen>(ListDetailScaffoldScreen(EventScreen.List(0L))) }
+        var screen by rememberRetained { mutableStateOf<Screen>(ListDetailScaffoldScreen(EventScreen.List())) }
         val identityState by identityManager.state.collectAsState(IdentityState.Unauthenticated)
         val coroutineScope = rememberCoroutineScope()
 

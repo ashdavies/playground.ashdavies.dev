@@ -5,7 +5,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.CoroutineScope
 
 public data class PagerConfig<Key : Any>(
-    val initialKey: Key,
+    val initialKey: Key?,
     val pageSize: Int,
 )
 
