@@ -7,6 +7,6 @@ import dev.zacsweers.metro.binding
 
 @Inject
 @ContributesBinding(AppScope::class, binding<FullyDrawnReporter>())
-internal class NonAndroidFullyDrawnReporter : FullyDrawnReporter {
+internal class StubFullyDrawnReporter : FullyDrawnReporter {
     override fun reportFullyDrawn() = Unit
 }

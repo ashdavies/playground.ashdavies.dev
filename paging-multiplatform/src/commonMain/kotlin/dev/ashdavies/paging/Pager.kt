@@ -18,7 +18,7 @@ public interface PagingState<Value> {
     public fun refresh()
 }
 
-public interface PagerFactory<Key : Any, Value : Any> {
+public fun interface PagerFactory<Key : Any, Value : Any> {
     public fun create(config: PagerConfig<Key>): Pager<Key, Value>
 }
 

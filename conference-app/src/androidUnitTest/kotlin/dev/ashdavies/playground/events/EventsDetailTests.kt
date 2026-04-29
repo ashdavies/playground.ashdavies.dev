@@ -20,8 +20,8 @@ internal class EventsDetailTests {
         paparazzi.snapshot {
             MaterialPreviewTheme {
                 eventsDetailUi.Content(
-                    state = EventsDetailScreen.State(
-                        itemState = EventsDetailScreen.State.ItemState.Done(
+                    state = EventDetailState(
+                        itemState = EventDetailState.ItemState.Done(
                             item = UnitTestResources
                                 .upcomingEventsList()
                                 .first(),

@@ -20,11 +20,13 @@ import dev.zacsweers.metro.Inject
 import io.ktor.client.HttpClient
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
+import kotlin.coroutines.CoroutineContext
 
 @ContributesBinding(AppScope::class)
 internal class EventPagerFactory(
     private val eventsCallable: UpcomingEventsCallable,
     private val eventsQueries: Suspended<EventQueries>,
+    private val coroutineContext: CoroutineContext,
 ) : PagerFactory<Long, Event> {
 
     @Inject constructor(
@@ -34,6 +36,7 @@ internal class EventPagerFactory(
     ) : this(
         eventsCallable = UpcomingEventsCallable(httpClient, remoteConfig),
         eventsQueries = databaseFactory.map { it.eventQueries },
+        coroutineContext = Dispatchers.IO,
     )
 
     override fun create(config: PagerConfig<Long>): Pager<Long, Event> {
@@ -41,7 +44,7 @@ internal class EventPagerFactory(
         val pagingSourceFactory = InvalidatingPagingSourceFactory {
             QueryPagingSource<Long, Event>(
                 transacter = eventsQueriesBlocking,
-                context = Dispatchers.IO,
+                context = coroutineContext,
                 pageBoundariesProvider = { anchor, limit ->
                     eventsQueriesBlocking.pageBoundariesAscending(
                         limit = limit,

@@ -3,6 +3,7 @@ package dev.ashdavies.playground.events.paging
 import androidx.paging.testing.asSnapshot
 import app.cash.sqldelight.async.coroutines.synchronous
 import app.cash.sqldelight.driver.jdbc.sqlite.JdbcSqliteDriver
+import dev.ashdavies.paging.PagerConfig
 import dev.ashdavies.playground.PlaygroundDatabase
 import dev.ashdavies.playground.gallery.imageAdapter
 import dev.ashdavies.playground.tooling.UnitTestResources
@@ -60,12 +61,11 @@ internal class EventPagerFactoryTest {
 
         println("Creating event pager with page size $pageSize...")
 
-        val eventPager = eventPager(
+        val eventPager = EventPagerFactory(
             eventsCallable = { upcomingApiEventList },
-            eventsQueries = { playgroundDatabase.eventsQueries },
-            pageSize = pageSize,
-            context = coroutineContext,
-        )
+            eventsQueries = { playgroundDatabase.eventQueries },
+            coroutineContext = coroutineContext,
+        ).create(PagerConfig(0L, pageSize))
 
         println("Obtaining item snapshot list...")
 

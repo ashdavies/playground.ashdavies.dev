@@ -6,6 +6,6 @@ import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.binding
 
 @ContributesBinding(AppScope::class, binding<LocationService>())
-internal class NonAndroidLocationService @Inject constructor() : LocationService {
+internal class StubLocationService @Inject constructor() : LocationService {
     override suspend fun getLastLocation(): LatLng = KnownLocations.Berlin
 }

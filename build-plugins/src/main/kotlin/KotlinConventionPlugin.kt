@@ -4,7 +4,6 @@ import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
-import org.jetbrains.kotlin.gradle.plugin.KotlinPlatformType
 import org.jlleitschuh.gradle.ktlint.KtlintExtension
 
 public class KotlinConventionPlugin : Plugin<Project> {
@@ -16,34 +15,19 @@ public class KotlinConventionPlugin : Plugin<Project> {
         plugins.apply(libs.plugins.ktlint)
 
         extensions.configure<KotlinMultiplatformExtension> {
-            val hasAndroidTarget = targets.any { it.platformType == KotlinPlatformType.androidJvm }
-            val hasJvmTarget = targets.any { it.platformType == KotlinPlatformType.jvm }
-            val hasWasmTarget = targets.any { it.platformType == KotlinPlatformType.wasm }
-
             explicitApi()
 
             @OptIn(ExperimentalKotlinGradlePluginApi::class)
             applyDefaultHierarchyTemplate {
                 common {
-                    if (hasAndroidTarget && hasJvmTarget) {
-                        group("androidJvm") {
-                            withAndroidTarget()
-                            withJvm()
-                        }
+                    group("androidJvm") {
+                        withAndroidTarget()
+                        withJvm()
                     }
 
-                    if (hasJvmTarget && hasWasmTarget) {
-                        group("jvmWasmJs") {
-                            withJvm()
-                            withWasmJs()
-                        }
-                    }
-
-                    if (hasWasmTarget) {
-                        group("wasm") {
-                            withWasmJs()
-                            withWasmWasi()
-                        }
+                    group("jvmWasmJs") {
+                        withJvm()
+                        withWasmJs()
                     }
                 }
             }

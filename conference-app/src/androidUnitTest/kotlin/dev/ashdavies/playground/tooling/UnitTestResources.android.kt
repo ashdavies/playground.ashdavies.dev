@@ -1,12 +1,11 @@
 package dev.ashdavies.playground.tooling
 
 import dev.ashdavies.asg.AsgConference
-import kotlin.text.toLong
-import dev.ashdavies.playground.events.Event as DbConference
+import dev.ashdavies.playground.event.Event
 
-internal fun UnitTestResources.upcomingEventsList(): List<DbConference> {
+internal fun UnitTestResources.upcomingEventsList(): List<Event> {
     return decodeFromResource<List<AsgConference>>("androidUnitTest", "upcoming.json").mapIndexed { index, item ->
-        DbConference(
+        Event(
             id = index.toLong(),
             name = item.name,
             website = item.website,

@@ -70,7 +70,6 @@ kotlin {
 
     @OptIn(ExperimentalWasmDsl::class)
     wasmJs {
-        binaries.executable()
         browser {
             commonWebpackConfig {
                 outputFileName = "conference-app.js"

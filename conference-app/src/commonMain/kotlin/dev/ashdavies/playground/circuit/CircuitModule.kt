@@ -26,10 +26,10 @@ internal interface CircuitModule {
     val navigatorPresenterFactories: Map<KClass<out Screen>, (Navigator) -> Presenter<*>>
 
     @Multibinds
-    val presenterFactories: Map<KClass<out Screen>, Provider<Presenter<*>>>
+    val presenterProviders: Map<KClass<out Screen>, Provider<Presenter<*>>>
 
     @Multibinds
-    val uiFactories: Map<KClass<out Screen>, Provider<Ui<*>>>
+    val uiProviders: Map<KClass<out Screen>, Provider<Ui<*>>>
 
     @Multibinds
     fun presenterFactories(): Set<Presenter.Factory>
