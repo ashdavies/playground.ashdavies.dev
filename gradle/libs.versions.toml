@@ -36,7 +36,7 @@ androidx-window-core = "org.jetbrains.androidx.window:window-core:1.5.1"
 
 app-cash-turbine = "app.cash.turbine:turbine:1.2.1"
 
-auth-java-jwt = "com.auth0:java-jwt:4.5.1"
+auth-java-jwt = "com.auth0:java-jwt:4.5.2"
 auth-jwks-rsa = "com.auth0:jwks-rsa:0.23.1"
 
 coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil-kt" }
@@ -53,7 +53,7 @@ compose-runtime = { module = "org.jetbrains.compose.runtime:runtime", version.re
 compose-ui = { module = "org.jetbrains.compose.ui:ui", version.ref = "compose-plugin" }
 compose-uiTooling = { module = "org.jetbrains.compose.ui:ui-tooling", version.ref = "compose-plugin" }
 
-detekt-compose = "io.nlopez.compose.rules:detekt:0.5.7"
+detekt-compose = "io.nlopez.compose.rules:detekt:0.5.8"
 
 google-accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "google-accompanist" }
 google-android-identity = "com.google.android.libraries.identity.googleid:googleid:1.2.0"
@@ -69,7 +69,7 @@ google-firebase-config = { module = "com.google.firebase:firebase-config" }
 google-firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
 google-guava-jre = "com.google.guava:guava:33.6.0-jre"
 google-maps-android-compose = "com.google.maps.android:maps-compose:8.3.0"
-google-maps-android-utils = "com.google.maps.android:android-maps-utils:4.1.1"
+google-maps-android-utils = "com.google.maps.android:android-maps-utils:4.3.0"
 
 jib-core = "com.google.cloud.tools:jib-core:0.28.1"
 
