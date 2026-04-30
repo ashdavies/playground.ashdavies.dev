@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import com.slack.circuit.codegen.annotations.CircuitInject
 import com.slack.circuit.runtime.Navigator
 import com.slack.circuit.runtime.presenter.Presenter
+import com.slack.circuit.runtime.screen.Screen
 import dev.ashdavies.analytics.RemoteAnalytics
 import dev.ashdavies.analytics.logEvent
 import dev.ashdavies.paging.PagerConfig
@@ -18,25 +19,25 @@ import dev.zacsweers.metro.AssistedInject
 private const val DEFAULT_PAGE_SIZE = 10
 
 public class EventListPresenter @AssistedInject constructor(
-    @Assisted private val screen: EventScreen.List,
+    @Assisted private val screen: Screen,
     @Assisted private val navigator: Navigator,
-    eventPagerFactory: PagerFactory<Long, Event>,
+    private val eventPagerFactory: PagerFactory<Long, Event>,
     private val remoteAnalytics: RemoteAnalytics,
 ) : Presenter<EventListState> {
 
-    private val eventPager = eventPagerFactory.create(
-        config = PagerConfig(
-            initialKey = screen.initialKey,
-            pageSize = DEFAULT_PAGE_SIZE,
-        ),
-    )
-
     @Composable
     override fun present(): EventListState {
+        // https://github.com/ZacSweers/metro/issues/2227
+        require(screen is EventScreen.List)
+
         val pagingState = rememberPagingState(
             retainedCoroutineScope = rememberRetainedCoroutineScope(),
-            pager = eventPager,
-            // startWith = screen.startWith
+            pager = eventPagerFactory.create(
+                config = PagerConfig(
+                    initialKey = screen.initialKey,
+                    pageSize = DEFAULT_PAGE_SIZE,
+                ),
+            ),
         )
 
         return EventListState(
@@ -61,7 +62,7 @@ public class EventListPresenter @AssistedInject constructor(
 
     @AssistedFactory
     @CircuitInject(EventScreen.List::class, AppScope::class)
-    public interface Factory : (EventScreen.List, Navigator) -> EventListPresenter {
-        override fun invoke(screen: EventScreen.List, navigator: Navigator): EventListPresenter
+    public fun interface Factory {
+        public fun invoke(screen: Screen, navigator: Navigator): EventListPresenter
     }
 }
