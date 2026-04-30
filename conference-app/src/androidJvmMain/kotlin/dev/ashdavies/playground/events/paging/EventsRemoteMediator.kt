@@ -4,15 +4,15 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
-import dev.ashdavies.playground.events.Event
-import dev.ashdavies.playground.events.EventsQueries
+import dev.ashdavies.playground.event.Event
+import dev.ashdavies.playground.event.EventQueries
 import dev.ashdavies.sql.Suspended
 import io.ktor.client.network.sockets.SocketTimeoutException
 import dev.ashdavies.http.common.models.ApiConference as ApiEvent
 
 @OptIn(ExperimentalPagingApi::class)
 internal class EventsRemoteMediator<T : Any>(
-    private val eventsQueries: Suspended<EventsQueries>,
+    private val eventsQueries: Suspended<EventQueries>,
     private val eventsCallable: UpcomingEventsCallable,
     private val onInvalidate: () -> Unit,
 ) : RemoteMediator<T, Event>() {

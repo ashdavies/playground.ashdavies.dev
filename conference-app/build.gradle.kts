@@ -1,7 +1,7 @@
+import dev.zacsweers.metro.gradle.ExperimentalMetroGradleApi
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.compose.reload.gradle.ComposeHotRun
 import org.jetbrains.kotlin.compose.compiler.gradle.ComposeFeatureFlag
-import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 
 private object ConferenceAppConfig {
@@ -70,7 +70,6 @@ kotlin {
 
     @OptIn(ExperimentalWasmDsl::class)
     wasmJs {
-        binaries.executable()
         browser {
             commonWebpackConfig {
                 outputFileName = "conference-app.js"
@@ -84,6 +83,9 @@ kotlin {
             implementation(projects.asgService)
             implementation(projects.cloudCommon)
             implementation(projects.composeMaterial)
+            implementation(projects.feature.eventCommon)
+            implementation(projects.feature.eventGrid)
+            implementation(projects.feature.eventList)
             implementation(projects.httpClient)
             implementation(projects.httpCommon)
             implementation(projects.identityManager)
@@ -95,6 +97,7 @@ kotlin {
             implementation(projects.remoteConfig)
             implementation(projects.sqlCommon)
             implementation(projects.sqlDriver)
+            implementation(projects.uiComponents)
 
             implementation(libs.androidx.annotation)
             implementation(libs.androidx.window.core)
@@ -194,6 +197,7 @@ sqldelight {
             generateAsync = true
 
             dialect(libs.sqldelight.sqlite.dialect)
+            dependency(project(":feature:event-common"))
             dependency(project(":identity-manager"))
         }
     }

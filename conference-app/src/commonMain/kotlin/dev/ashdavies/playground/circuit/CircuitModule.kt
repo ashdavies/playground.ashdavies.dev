@@ -26,18 +26,26 @@ internal interface CircuitModule {
     val navigatorPresenterFactories: Map<KClass<out Screen>, (Navigator) -> Presenter<*>>
 
     @Multibinds
-    val presenterFactories: Map<KClass<out Screen>, Provider<Presenter<*>>>
+    val presenterProviders: Map<KClass<out Screen>, Provider<Presenter<*>>>
 
     @Multibinds
-    val uiFactories: Map<KClass<out Screen>, Provider<Ui<*>>>
+    val uiProviders: Map<KClass<out Screen>, Provider<Ui<*>>>
+
+    @Multibinds
+    fun presenterFactories(): Set<Presenter.Factory>
+
+    @Multibinds
+    fun uiFactories(): Set<Ui.Factory>
 
     @Provides
     fun circuit(
         screenNavigatorPresenters: @JvmSuppressWildcards Map<KClass<out Screen>, (Screen, Navigator) -> Presenter<*>>,
         screenPresenters: @JvmSuppressWildcards Map<KClass<out Screen>, (Screen) -> Presenter<*>>,
         navigatorPresenters: @JvmSuppressWildcards Map<KClass<out Screen>, (Navigator) -> Presenter<*>>,
-        presenterFactories: @JvmSuppressWildcards Map<KClass<out Screen>, Provider<Presenter<*>>>,
-        uiFactories: @JvmSuppressWildcards Map<KClass<out Screen>, Provider<Ui<*>>>,
+        presenterProviders: @JvmSuppressWildcards Map<KClass<out Screen>, Provider<Presenter<*>>>,
+        uiProviders: @JvmSuppressWildcards Map<KClass<out Screen>, Provider<Ui<*>>>,
+        presenterFactories: Set<Presenter.Factory>,
+        uiFactories: Set<Ui.Factory>,
     ): Circuit = Circuit.Builder()
         .addPresenterFactory { screen, navigator, _ ->
             screenNavigatorPresenters[screen::class]?.invoke(screen, navigator)
@@ -49,10 +57,12 @@ internal interface CircuitModule {
             navigatorPresenters[screen::class]?.invoke(navigator)
         }
         .addPresenterFactory { screen, _, _ ->
-            presenterFactories[screen::class]?.invoke()
+            presenterProviders[screen::class]?.invoke()
         }
         .addUiFactory { screen, context ->
-            uiFactories[screen::class]?.invoke()
+            uiProviders[screen::class]?.invoke()
         }
+        .addPresenterFactories(presenterFactories)
+        .addUiFactories(uiFactories)
         .build()
 }

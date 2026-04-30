@@ -20,7 +20,7 @@ import dev.ashdavies.playground.config.booleanConfigAsState
 import dev.ashdavies.playground.config.isGalleryEnabled
 import dev.ashdavies.playground.config.isPastEventsEnabled
 import dev.ashdavies.playground.config.isRoutesEnabled
-import dev.ashdavies.playground.upcoming.UpcomingScreen
+import dev.ashdavies.playground.event.EventScreen
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.Assisted
 import dev.zacsweers.metro.AssistedFactory
@@ -41,7 +41,7 @@ internal class BottomBarScaffoldPresenter @AssistedInject constructor(
         val isPastEventsEnabled by remoteConfig.booleanConfigAsState { isPastEventsEnabled() }
         val isRoutesEnabled by remoteConfig.booleanConfigAsState { isRoutesEnabled() }
 
-        var screen by rememberRetained { mutableStateOf<Screen>(ListDetailScaffoldScreen(UpcomingScreen)) }
+        var screen by rememberRetained { mutableStateOf<Screen>(ListDetailScaffoldScreen(EventScreen.List())) }
         val identityState by identityManager.state.collectAsState(IdentityState.Unauthenticated)
         val coroutineScope = rememberCoroutineScope()
 

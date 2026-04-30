@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.MyLocation
 import androidx.compose.material3.Card
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -24,16 +25,18 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.google.accompanist.placeholder.material3.placeholder
 import com.slack.circuit.runtime.CircuitUiState
-import com.slack.circuit.runtime.screen.Screen
 import com.slack.circuit.runtime.ui.Ui
 import dev.ashdavies.identity.IdentityState
-import dev.ashdavies.parcelable.Parcelable
-import dev.ashdavies.parcelable.Parcelize
 import dev.ashdavies.playground.circuit.CircuitScreenKey
+import dev.ashdavies.playground.event.Event
+import dev.ashdavies.playground.event.EventScreen
 import dev.ashdavies.playground.material.BackButton
 import dev.ashdavies.playground.material.padding
 import dev.ashdavies.playground.material.spacing
 import dev.ashdavies.playground.profile.ProfileActionButton
+import dev.ashdavies.playground.ui.CenterAlignedTopAppBar
+import dev.ashdavies.playground.ui.DateRangeBadge
+import dev.ashdavies.playground.ui.DateRangeBadgeState
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesIntoMap
 import dev.zacsweers.metro.Inject
@@ -46,29 +49,31 @@ import playground.conference_app.generated.resources.call_for_papers_days_remain
 
 private const val PLACEHOLDER = ""
 
-@Parcelize
-internal data class EventsDetailScreen(val id: Long) : Parcelable, Screen {
-    data class State(val itemState: ItemState, val onBackPressed: () -> Unit) : CircuitUiState {
-        sealed class ItemState {
-            data object Loading : ItemState()
-            data class Done(val item: Event) : ItemState()
-        }
+internal data class EventDetailState(
+    val itemState: ItemState,
+    val onBackPressed: () -> Unit,
+) : CircuitUiState {
+
+    sealed class ItemState {
+        data object Loading : ItemState()
+        data class Done(val item: Event) : ItemState()
     }
 }
 
-@CircuitScreenKey(EventsDetailScreen::class)
+@CircuitScreenKey(EventScreen.Detail::class)
 @ContributesIntoMap(AppScope::class, binding<Ui<*>>())
-internal class EventsDetailUi @Inject constructor() : Ui<EventsDetailScreen.State> {
+internal class EventsDetailUi @Inject constructor() : Ui<EventDetailState> {
 
     @Composable
-    override fun Content(state: EventsDetailScreen.State, modifier: Modifier) {
-        val itemOrNull = (state.itemState as? EventsDetailScreen.State.ItemState.Done)?.item
-        val isLoading = state.itemState is EventsDetailScreen.State.ItemState.Loading
+    override fun Content(state: EventDetailState, modifier: Modifier) {
+        val itemOrNull = (state.itemState as? EventDetailState.ItemState.Done)?.item
+        val isLoading = state.itemState is EventDetailState.ItemState.Loading
 
         Scaffold(
             modifier = modifier,
             topBar = {
-                EventsTopBar(
+                @OptIn(ExperimentalMaterial3Api::class)
+                CenterAlignedTopAppBar(
                     title = itemOrNull?.name ?: PLACEHOLDER,
                     actions = {
                         ProfileActionButton(
@@ -92,9 +97,13 @@ internal class EventsDetailUi @Inject constructor() : Ui<EventsDetailScreen.Stat
                         )
 
                         if (itemOrNull != null) {
-                            EventDateLabel(
-                                dateStart = remember { LocalDate.parse(itemOrNull.dateStart) },
-                                dateEnd = remember { LocalDate.parse(itemOrNull.dateEnd) },
+                            DateRangeBadge(
+                                state = remember(itemOrNull.dateStart, itemOrNull.dateEnd) {
+                                    DateRangeBadgeState(
+                                        dateStart = LocalDate.parse(itemOrNull.dateStart),
+                                        dateEnd = LocalDate.parse(itemOrNull.dateEnd),
+                                    )
+                                },
                                 modifier = Modifier
                                     .padding(MaterialTheme.spacing.large)
                                     .align(Alignment.TopEnd),
@@ -108,10 +117,10 @@ internal class EventsDetailUi @Inject constructor() : Ui<EventsDetailScreen.Stat
                     modifier = Modifier.placeholder(isLoading),
                 )
 
-                if (itemOrNull?.cfpEnd != null) {
+                itemOrNull?.cfpEnd?.let { cfpEnd ->
                     EventsDetailCfp(
-                        cfpEnd = itemOrNull.cfpEnd,
                         cfpSite = itemOrNull.cfpSite,
+                        cfpEnd = cfpEnd,
                     )
                 }
             }

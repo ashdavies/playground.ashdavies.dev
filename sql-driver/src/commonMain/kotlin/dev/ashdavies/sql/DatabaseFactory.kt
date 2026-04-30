@@ -22,4 +22,4 @@ public fun <T : SuspendingTransacter> DatabaseFactory(
                 name = "database.db",
             ).let { factory(it) }
         },
-    ) { }
+    ) {}

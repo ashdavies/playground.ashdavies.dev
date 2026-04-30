@@ -1,6 +1,3 @@
-import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
-import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode
-
 plugins {
     alias(libs.plugins.android.library)
 
@@ -16,12 +13,6 @@ android {
 }
 
 kotlin {
-    @OptIn(ExperimentalWasmDsl::class)
-    wasmJs {
-        binaries.executable()
-        browser()
-    }
-
     sourceSets {
         commonMain.dependencies {
             implementation(libs.compose.foundation)
@@ -31,7 +22,7 @@ kotlin {
 
         val androidJvmMain by getting {
             dependencies {
-                implementation(libs.androidx.paging.compose)
+                api(libs.androidx.paging.compose)
             }
         }
     }

@@ -9,8 +9,8 @@ import com.slack.circuit.foundation.CircuitCompositionLocals
 import com.slack.circuit.foundation.NavigableCircuitContent
 import com.slack.circuit.foundation.rememberCircuitNavigator
 import com.slack.circuit.overlay.ContentWithOverlays
-import dev.ashdavies.material.dynamicColorScheme
 import dev.ashdavies.playground.home.BottomBarScaffoldScreen
+import dev.ashdavies.playground.material.dynamicColorScheme
 import dev.zacsweers.metro.createGraphFactory
 
 @Composable

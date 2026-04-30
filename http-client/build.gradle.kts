@@ -33,7 +33,7 @@ kotlin {
             implementation(libs.ktor.client.okhttp)
         }
 
-        wasmMain.dependencies {
+        wasmJsMain.dependencies {
             implementation(libs.ktor.client.js)
         }
     }

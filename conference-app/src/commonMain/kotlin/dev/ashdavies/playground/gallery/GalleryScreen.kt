@@ -65,9 +65,9 @@ import com.slack.circuit.runtime.ui.Ui
 import dev.ashdavies.parcelable.Parcelable
 import dev.ashdavies.parcelable.Parcelize
 import dev.ashdavies.playground.circuit.CircuitScreenKey
-import dev.ashdavies.playground.events.EventsTopBar
 import dev.ashdavies.playground.files.Path
 import dev.ashdavies.playground.material.BottomSheetScaffold
+import dev.ashdavies.playground.ui.CenterAlignedTopAppBar
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesIntoMap
 import dev.zacsweers.metro.Inject
@@ -137,10 +137,10 @@ internal class GalleryUi @Inject constructor() : Ui<GalleryScreen.State> {
         BottomSheetScaffold(
             sheetContent = { GallerySheetContent(eventSink) },
             modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
-            topBar = { EventsTopBar(stringResource(Res.string.past_events)) },
+            topBar = { CenterAlignedTopAppBar(stringResource(Res.string.past_events)) },
             floatingActionButton = {
                 GalleryActionButton(
-                    { eventSink(GalleryScreen.Event.Capture.Request) },
+                    onClick = { eventSink(GalleryScreen.Event.Capture.Request) },
                     isActive = state.showCapture,
                 )
             },
