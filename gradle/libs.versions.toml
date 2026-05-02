@@ -138,4 +138,4 @@ kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref =
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "jetbrains-kotlin" }
 kotlinx-kover = "org.jetbrains.kotlinx.kover:0.9.8"
 ktlint = "org.jlleitschuh.gradle.ktlint:14.2.0"
-zac-metro = "dev.zacsweers.metro:0.13.2"
+zac-metro = "dev.zacsweers.metro:1.0.0"
