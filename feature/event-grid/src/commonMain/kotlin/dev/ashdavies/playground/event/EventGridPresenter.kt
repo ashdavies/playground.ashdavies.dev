@@ -26,11 +26,20 @@ import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 
 @CircuitInject(EventScreen.Grid::class, AppScope::class)
-internal class EventGridPresenter @Inject constructor(
+internal class EventGridPresenter(
     private val databaseFactory: DatabaseFactory<PlaygroundDatabase>,
     private val httpClient: HttpClient,
-    private val coroutineContext: CoroutineContext = Dispatchers.Default,
+    private val coroutineContext: CoroutineContext,
 ) : Presenter<EventGridState> {
+
+    @Inject constructor(
+        databaseFactory: DatabaseFactory<PlaygroundDatabase>,
+        httpClient: HttpClient,
+    ) : this(
+        databaseFactory = databaseFactory,
+        httpClient = httpClient,
+        coroutineContext = Dispatchers.Default,
+    )
 
     @Composable
     override fun present(): EventGridState {
