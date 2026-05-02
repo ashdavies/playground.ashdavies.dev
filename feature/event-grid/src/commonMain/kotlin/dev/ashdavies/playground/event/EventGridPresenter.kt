@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.produceState
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import app.cash.sqldelight.coroutines.mapToList
 import com.slack.circuit.codegen.annotations.CircuitInject
@@ -17,8 +18,10 @@ import dev.zacsweers.metro.Inject
 import io.ktor.client.HttpClient
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
+import kotlin.coroutines.CoroutineContext
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 
@@ -26,6 +29,7 @@ import kotlin.time.ExperimentalTime
 internal class EventGridPresenter @Inject constructor(
     private val databaseFactory: DatabaseFactory<PlaygroundDatabase>,
     private val httpClient: HttpClient,
+    private val coroutineContext: CoroutineContext = Dispatchers.Default,
 ) : Presenter<EventGridState> {
 
     @Composable
@@ -33,29 +37,34 @@ internal class EventGridPresenter @Inject constructor(
         val attendanceQueries = databaseFactory.map { it.attendanceQueries }
         val eventGridCallable = EventGridCallable(httpClient)
 
-        val attendanceList by attendanceQueries
-            .mapAsFlow { it.selectAll { id, _ -> id } }
-            .mapToList(Dispatchers.Default)
-            .collectAsState(emptyList())
-
-        val itemList by produceState(emptyList(), attendanceList) {
+        val eventList by produceState(emptyList()) {
             value = eventGridCallable(Unit).map {
-                val startDate = LocalDate.parse(it.dateStart)
-
-                EventGridState.Item(
-                    uuid = it.id,
-                    title = "${it.name} ${startDate.year}",
-                    subtitle = it.location,
-                    group = "${startDate.year}",
-                    attended = it.id in attendanceList,
-                )
+                it to LocalDate.parse(it.dateStart)
             }
         }
 
-        val coroutineScope = rememberCoroutineScope()
+        val attendanceList by attendanceQueries
+            .mapAsFlow { it.selectAll { id, _ -> id } }
+            .mapToList(coroutineContext)
+            .map { it.toSet() }
+            .collectAsState(emptySet())
+
+        val itemList = remember(eventList, attendanceList) {
+            eventList.map {
+                EventGridState.Item(
+                    uuid = it.first.id,
+                    title = "${it.first.name} ${it.second.year}",
+                    subtitle = it.first.location,
+                    group = "${it.second.year}",
+                    attended = it.first.id in attendanceList,
+                )
+            }.toImmutableList()
+        }
+
+        val coroutineScope = rememberCoroutineScope { coroutineContext }
 
         @OptIn(ExperimentalTime::class)
-        return EventGridState(itemList.toImmutableList()) { event ->
+        return EventGridState(itemList) { event ->
             when (event) {
                 is EventGridState.Event.MarkAttendance -> coroutineScope.launch {
                     when (event.value) {
