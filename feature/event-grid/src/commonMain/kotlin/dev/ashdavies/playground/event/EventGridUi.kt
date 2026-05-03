@@ -1,4 +1,4 @@
-package dev.ashdavies.playground.past
+package dev.ashdavies.playground.event
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
@@ -27,67 +27,35 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.window.core.layout.WindowSizeClass
-import com.slack.circuit.runtime.CircuitUiState
-import com.slack.circuit.runtime.screen.Screen
+import com.slack.circuit.codegen.annotations.CircuitInject
 import com.slack.circuit.runtime.ui.Ui
-import dev.ashdavies.parcelable.Parcelable
-import dev.ashdavies.parcelable.Parcelize
-import dev.ashdavies.playground.circuit.CircuitScreenKey
 import dev.ashdavies.playground.material.padding
 import dev.ashdavies.playground.material.spacing
 import dev.ashdavies.playground.material.values
 import dev.ashdavies.playground.ui.CenterAlignedTopAppBar
 import dev.zacsweers.metro.AppScope
-import dev.zacsweers.metro.ContributesIntoMap
 import dev.zacsweers.metro.Inject
-import dev.zacsweers.metro.binding
-import kotlinx.collections.immutable.ImmutableList
 import org.jetbrains.compose.resources.stringResource
-import playground.conference_app.generated.resources.Res
-import playground.conference_app.generated.resources.past_events
+import playground.feature.event_grid.generated.resources.Res
+import playground.feature.event_grid.generated.resources.past_events
 
-internal object PastScreenDefaults {
+internal object EventGridScreenDefaults {
     const val MIN_COLUMN_COUNT = 2
     const val MAX_COLUMN_COUNT = 5
 }
 
-@Parcelize
-internal object PastScreen : Parcelable, Screen {
-    sealed interface Event {
-        data class MarkAttendance(
-            val id: String,
-            val value: Boolean,
-        ) : Event
-    }
-
-    data class State(
-        val itemList: ImmutableList<Item>,
-        val eventSink: (Event) -> Unit,
-    ) : CircuitUiState {
-
-        data class Item(
-            val uuid: String,
-            val title: String,
-            val group: String,
-            val subtitle: String,
-            val attended: Boolean,
-        )
-    }
-}
-
-@CircuitScreenKey(PastScreen::class)
-@ContributesIntoMap(AppScope::class, binding<Ui<*>>())
-internal class PastUi @Inject constructor() : Ui<PastScreen.State> {
+@CircuitInject(EventScreen.Grid::class, AppScope::class)
+internal class EventGridUi @Inject constructor() : Ui<EventGridState> {
 
     @Composable
-    override fun Content(state: PastScreen.State, modifier: Modifier) {
+    override fun Content(state: EventGridState, modifier: Modifier) {
         val isWidthAtLeastMedium = currentWindowAdaptiveInfo()
             .windowSizeClass
             .isWidthAtLeastBreakpoint(WindowSizeClass.WIDTH_DP_MEDIUM_LOWER_BOUND)
 
         val columnCount = when {
-            isWidthAtLeastMedium -> PastScreenDefaults.MAX_COLUMN_COUNT
-            else -> PastScreenDefaults.MIN_COLUMN_COUNT
+            isWidthAtLeastMedium -> EventGridScreenDefaults.MAX_COLUMN_COUNT
+            else -> EventGridScreenDefaults.MIN_COLUMN_COUNT
         }
 
         val eventSink = state.eventSink
@@ -119,12 +87,12 @@ internal class PastUi @Inject constructor() : Ui<PastScreen.State> {
                     }
 
                     items(items) { item ->
-                        PastEventItem(
+                        EventGridItem(
                             item = item,
                             modifier = Modifier
                                 .clickable {
                                     eventSink(
-                                        PastScreen.Event.MarkAttendance(
+                                        EventGridState.Event.MarkAttendance(
                                             id = item.uuid,
                                             value = !item.attended,
                                         ),
@@ -140,8 +108,8 @@ internal class PastUi @Inject constructor() : Ui<PastScreen.State> {
 }
 
 @Composable
-private fun PastEventItem(
-    item: PastScreen.State.Item,
+private fun EventGridItem(
+    item: EventGridState.Item,
     modifier: Modifier = Modifier,
 ) {
     Surface(
