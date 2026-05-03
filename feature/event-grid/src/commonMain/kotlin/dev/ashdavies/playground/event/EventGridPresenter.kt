@@ -21,25 +21,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
-import kotlin.coroutines.CoroutineContext
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 
 @CircuitInject(EventScreen.Grid::class, AppScope::class)
-internal class EventGridPresenter(
+internal class EventGridPresenter @Inject constructor(
     private val databaseFactory: DatabaseFactory<PlaygroundDatabase>,
     private val httpClient: HttpClient,
-    private val coroutineContext: CoroutineContext,
 ) : Presenter<EventGridState> {
-
-    @Inject constructor(
-        databaseFactory: DatabaseFactory<PlaygroundDatabase>,
-        httpClient: HttpClient,
-    ) : this(
-        databaseFactory = databaseFactory,
-        httpClient = httpClient,
-        coroutineContext = Dispatchers.Default,
-    )
 
     @Composable
     override fun present(): EventGridState {
@@ -54,7 +43,7 @@ internal class EventGridPresenter(
 
         val attendanceList by attendanceQueries
             .mapAsFlow { it.selectAll { id, _ -> id } }
-            .mapToList(coroutineContext)
+            .mapToList(Dispatchers.Default)
             .map { it.toSet() }
             .collectAsState(emptySet())
 
@@ -70,7 +59,7 @@ internal class EventGridPresenter(
             }.toImmutableList()
         }
 
-        val coroutineScope = rememberCoroutineScope { coroutineContext }
+        val coroutineScope = rememberCoroutineScope()
 
         @OptIn(ExperimentalTime::class)
         return EventGridState(itemList) { event ->
