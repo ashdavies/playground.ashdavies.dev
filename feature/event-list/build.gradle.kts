@@ -41,7 +41,10 @@ kotlin {
 
 metro {
     @OptIn(ExperimentalMetroGradleApi::class)
-    enableCircuitCodegen = true
+    run {
+        enableCircuitCodegen = true
+        generateContributionProviders = true
+    }
 
     warnOnInjectAnnotationPlacement = false
 }

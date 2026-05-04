@@ -18,7 +18,7 @@ import dev.zacsweers.metro.AssistedInject
 
 private const val DEFAULT_PAGE_SIZE = 10
 
-public class EventListPresenter @AssistedInject constructor(
+internal class EventListPresenter @AssistedInject constructor(
     @Assisted private val screen: Screen,
     @Assisted private val navigator: Navigator,
     private val eventPagerFactory: PagerFactory<Long, Event>,
