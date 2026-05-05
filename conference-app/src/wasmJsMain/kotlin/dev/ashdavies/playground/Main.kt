@@ -16,7 +16,7 @@ import dev.zacsweers.metro.createGraphFactory
 
 @OptIn(ExperimentalComposeUiApi::class)
 public fun main() {
-    ComposeViewport("ConferenceApp") {
+    ComposeViewport {
         ConferenceApp(PlatformContext)
     }
 }

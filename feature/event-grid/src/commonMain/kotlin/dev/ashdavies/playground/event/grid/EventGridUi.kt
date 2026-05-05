@@ -1,4 +1,4 @@
-package dev.ashdavies.playground.event
+package dev.ashdavies.playground.event.grid
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
@@ -28,7 +28,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.window.core.layout.WindowSizeClass
 import com.slack.circuit.codegen.annotations.CircuitInject
-import com.slack.circuit.runtime.ui.Ui
+import dev.ashdavies.playground.event.EventScreen
 import dev.ashdavies.playground.material.padding
 import dev.ashdavies.playground.material.spacing
 import dev.ashdavies.playground.material.values
@@ -44,63 +44,61 @@ internal object EventGridScreenDefaults {
     const val MAX_COLUMN_COUNT = 5
 }
 
+@Inject
+@Composable
 @CircuitInject(EventScreen.Grid::class, AppScope::class)
-internal class EventGridUi @Inject constructor() : Ui<EventGridState> {
+internal fun EventGridUi(state: EventGridState, modifier: Modifier) {
+    val isWidthAtLeastMedium = currentWindowAdaptiveInfo()
+        .windowSizeClass
+        .isWidthAtLeastBreakpoint(WindowSizeClass.WIDTH_DP_MEDIUM_LOWER_BOUND)
 
-    @Composable
-    override fun Content(state: EventGridState, modifier: Modifier) {
-        val isWidthAtLeastMedium = currentWindowAdaptiveInfo()
-            .windowSizeClass
-            .isWidthAtLeastBreakpoint(WindowSizeClass.WIDTH_DP_MEDIUM_LOWER_BOUND)
+    val columnCount = when {
+        isWidthAtLeastMedium -> EventGridScreenDefaults.MAX_COLUMN_COUNT
+        else -> EventGridScreenDefaults.MIN_COLUMN_COUNT
+    }
 
-        val columnCount = when {
-            isWidthAtLeastMedium -> EventGridScreenDefaults.MAX_COLUMN_COUNT
-            else -> EventGridScreenDefaults.MIN_COLUMN_COUNT
-        }
+    val eventSink = state.eventSink
 
-        val eventSink = state.eventSink
+    Scaffold(
+        modifier = modifier,
+        topBar = {
+            @OptIn(ExperimentalMaterial3Api::class)
+            CenterAlignedTopAppBar(stringResource(Res.string.past_events))
+        },
+        contentWindowInsets = ScaffoldDefaults.contentWindowInsets.exclude(
+            insets = BottomAppBarDefaults.windowInsets,
+        ),
+    ) { contentPadding ->
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(columnCount),
+            modifier = Modifier.padding(contentPadding),
+            contentPadding = MaterialTheme.spacing.large.values,
+            verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small.vertical),
+            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small.horizontal),
+        ) {
+            state.itemList.groupBy { it.group }.forEach { (group, items) ->
+                item(span = { GridItemSpan(columnCount) }) {
+                    Text(
+                        text = group,
+                        modifier = Modifier.padding(MaterialTheme.spacing.medium),
+                        style = MaterialTheme.typography.labelLarge,
+                    )
+                }
 
-        Scaffold(
-            modifier = modifier,
-            topBar = {
-                @OptIn(ExperimentalMaterial3Api::class)
-                CenterAlignedTopAppBar(stringResource(Res.string.past_events))
-            },
-            contentWindowInsets = ScaffoldDefaults.contentWindowInsets.exclude(
-                insets = BottomAppBarDefaults.windowInsets,
-            ),
-        ) { contentPadding ->
-            LazyVerticalGrid(
-                columns = GridCells.Fixed(columnCount),
-                modifier = Modifier.padding(contentPadding),
-                contentPadding = MaterialTheme.spacing.large.values,
-                verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small.vertical),
-                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small.horizontal),
-            ) {
-                state.itemList.groupBy { it.group }.forEach { (group, items) ->
-                    item(span = { GridItemSpan(columnCount) }) {
-                        Text(
-                            text = group,
-                            modifier = Modifier.padding(MaterialTheme.spacing.medium),
-                            style = MaterialTheme.typography.labelLarge,
-                        )
-                    }
-
-                    items(items) { item ->
-                        EventGridItem(
-                            item = item,
-                            modifier = Modifier
-                                .clickable {
-                                    eventSink(
-                                        EventGridState.Event.MarkAttendance(
-                                            id = item.uuid,
-                                            value = !item.attended,
-                                        ),
-                                    )
-                                }
-                                .animateItem(),
-                        )
-                    }
+                items(items) { item ->
+                    EventGridItem(
+                        item = item,
+                        modifier = Modifier
+                            .clickable {
+                                eventSink(
+                                    EventGridState.Event.MarkAttendance(
+                                        id = item.uuid,
+                                        value = !item.attended,
+                                    ),
+                                )
+                            }
+                            .animateItem(),
+                    )
                 }
             }
         }

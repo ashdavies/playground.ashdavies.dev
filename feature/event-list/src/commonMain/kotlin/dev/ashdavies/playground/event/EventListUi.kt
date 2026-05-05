@@ -45,7 +45,6 @@ import com.google.accompanist.placeholder.PlaceholderHighlight
 import com.google.accompanist.placeholder.material3.fade
 import com.google.accompanist.placeholder.material3.placeholder
 import com.slack.circuit.codegen.annotations.CircuitInject
-import com.slack.circuit.runtime.ui.Ui
 import dev.ashdavies.playground.material.padding
 import dev.ashdavies.playground.material.spacing
 import dev.ashdavies.playground.material.values
@@ -65,55 +64,53 @@ import playground.feature.event_list.generated.resources.online_only
 import playground.feature.event_list.generated.resources.upcoming_events
 import kotlin.time.Clock
 
+@Inject
+@Composable
 @CircuitInject(EventScreen.List::class, AppScope::class)
-public class EventListUi @Inject constructor() : Ui<EventListState> {
+public fun EventListUi(state: EventListState, modifier: Modifier) {
+    Scaffold(
+        modifier = modifier,
+        topBar = {
+            @OptIn(ExperimentalMaterial3Api::class)
+            CenterAlignedTopAppBar(stringResource(Res.string.upcoming_events))
+        },
+    ) { contentPadding ->
+        PullToRefreshBox(
+            isRefreshing = state.isRefreshing,
+            onRefresh = { state.eventSink(EventListState.Event.Refresh) },
+            modifier = Modifier.padding(contentPadding),
+        ) {
+            if (state.errorMessage != null) {
+                EventFailure(state.errorMessage)
+            }
 
-    @Composable
-    override fun Content(state: EventListState, modifier: Modifier) {
-        Scaffold(
-            modifier = modifier,
-            topBar = {
-                @OptIn(ExperimentalMaterial3Api::class)
-                CenterAlignedTopAppBar(stringResource(Res.string.upcoming_events))
-            },
-        ) { contentPadding ->
-            PullToRefreshBox(
-                isRefreshing = state.isRefreshing,
-                onRefresh = { state.eventSink(EventListState.Event.Refresh) },
-                modifier = Modifier.padding(contentPadding),
+            LazyColumn(
+                modifier = Modifier.fillMaxSize(),
+                contentPadding = MaterialTheme.spacing.large.values,
+                verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.large.vertical),
             ) {
-                if (state.errorMessage != null) {
-                    EventFailure(state.errorMessage)
-                }
+                itemsIndexed(state.itemList) { index, item ->
+                    val itemModifier = Modifier
+                        .animateItem()
+                        .fillMaxWidth()
+                        .clip(MaterialTheme.shapes.medium)
 
-                LazyColumn(
-                    modifier = Modifier.fillMaxSize(),
-                    contentPadding = MaterialTheme.spacing.large.values,
-                    verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.large.vertical),
-                ) {
-                    itemsIndexed(state.itemList) { index, item ->
-                        val itemModifier = Modifier
-                            .animateItem()
-                            .fillMaxWidth()
-                            .clip(MaterialTheme.shapes.medium)
+                    when {
+                        item != null -> EventItemContent(
+                            event = item,
+                            isSelected = index == state.selectedIndex,
+                            modifier = itemModifier
+                                .clickable {
+                                    state.eventSink(EventListState.Event.ItemClick(item.id))
+                                }
+                                .paint(rememberBackgroundPainter(item.imageUrl)),
+                        )
 
-                        when {
-                            item != null -> EventItemContent(
-                                event = item,
-                                isSelected = index == state.selectedIndex,
-                                modifier = itemModifier
-                                    .clickable {
-                                        state.eventSink(EventListState.Event.ItemClick(item.id))
-                                    }
-                                    .paint(rememberBackgroundPainter(item.imageUrl)),
-                            )
-
-                            else -> EventItemContent(
-                                event = null,
-                                isSelected = false,
-                                modifier = itemModifier,
-                            )
-                        }
+                        else -> EventItemContent(
+                            event = null,
+                            isSelected = false,
+                            modifier = itemModifier,
+                        )
                     }
                 }
             }

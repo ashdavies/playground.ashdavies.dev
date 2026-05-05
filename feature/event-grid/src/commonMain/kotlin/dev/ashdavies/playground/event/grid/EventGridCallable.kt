@@ -1,4 +1,4 @@
-package dev.ashdavies.playground.event
+package dev.ashdavies.playground.event.grid
 
 import dev.ashdavies.asg.AsgConference
 import dev.ashdavies.asg.PastConferencesCallable

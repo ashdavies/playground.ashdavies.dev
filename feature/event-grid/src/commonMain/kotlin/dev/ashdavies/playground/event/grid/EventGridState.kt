@@ -1,4 +1,4 @@
-package dev.ashdavies.playground.event
+package dev.ashdavies.playground.event.grid
 
 import com.slack.circuit.runtime.CircuitUiState
 import kotlinx.collections.immutable.ImmutableList
