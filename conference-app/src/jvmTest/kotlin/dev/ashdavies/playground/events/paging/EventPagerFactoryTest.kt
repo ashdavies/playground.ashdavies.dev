@@ -6,14 +6,15 @@ import app.cash.sqldelight.driver.jdbc.sqlite.JdbcSqliteDriver
 import dev.ashdavies.paging.PagerConfig
 import dev.ashdavies.playground.PlaygroundDatabase
 import dev.ashdavies.playground.gallery.imageAdapter
-import dev.ashdavies.playground.tooling.UnitTestResources
-import dev.ashdavies.playground.tooling.locations
+import dev.ashdavies.playground.tooling.decodeFromResource
 import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.plus
 import kotlinx.datetime.toLocalDateTime
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.Json
 import org.junit.Test
 import kotlin.random.Random
 import kotlin.test.assertEquals
@@ -34,7 +35,7 @@ internal class EventPagerFactoryTest {
 
     @Test
     fun `should not include boundary events on same start date`() = runTest {
-        val knownLocationDeque = ArrayDeque(UnitTestResources.locations())
+        val knownLocationDeque = ArrayDeque(Json.locations())
         val upcomingApiEventListSize = 24
         val pageSize = 12
 
@@ -66,6 +67,8 @@ internal class EventPagerFactoryTest {
     }
 }
 
+internal fun Json.locations(): List<Location> = decodeFromResource("jvmTest", "locations.json")
+
 @OptIn(ExperimentalTime::class)
 private fun LocalDate.Companion.nearFuture(
     startAt: LocalDate = Clock.System.now()
@@ -86,3 +89,6 @@ private fun apiEvent(location: String, dateStart: LocalDate) = ApiEvent(
     dateEnd = "${dateStart.plus(Random.nextInt(3), DateTimeUnit.DAY)}",
     cfp = null,
 )
+
+@Serializable
+internal data class Location(val city: String, val country: String)

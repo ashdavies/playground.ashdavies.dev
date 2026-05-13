@@ -10,5 +10,8 @@ public interface EventScreen : Parcelable, Screen {
     public data class List(val initialKey: Long? = null) : EventScreen
 
     @Parcelize
+    public data class Grid(val initialKey: Long? = null) : EventScreen
+
+    @Parcelize
     public data class Detail(val id: Long) : EventScreen
 }
