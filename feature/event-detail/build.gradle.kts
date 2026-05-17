@@ -14,24 +14,23 @@ plugins {
 }
 
 android {
-    namespace = "dev.ashdavies.event.list"
+    namespace = "dev.ashdavies.event.detail"
 }
 
 kotlin {
     sourceSets {
         commonMain.dependencies {
-            implementation(projects.analytics)
             implementation(projects.composeMaterial)
             implementation(projects.feature.eventCommon)
-            implementation(projects.pagingMultiplatform)
+            implementation(projects.identityManager)
             implementation(projects.placeholderHighlight)
+            implementation(projects.sqlCommon)
             implementation(projects.uiComponents)
 
-            implementation(libs.compose.components.resources)
-            implementation(libs.compose.foundation)
-            implementation(libs.compose.material3)
             implementation(libs.coil.compose)
-            implementation(libs.kotlinx.collections.immutable)
+            implementation(libs.compose.components.resources)
+            implementation(libs.compose.materialIconsExtended)
+            implementation(libs.compose.material3)
             implementation(libs.kotlinx.datetime)
             implementation(libs.slack.circuit.annotations)
             implementation(libs.slack.circuit.foundation)
@@ -42,6 +41,4 @@ kotlin {
 metro {
     @OptIn(ExperimentalMetroGradleApi::class)
     enableCircuitCodegen = true
-
-    warnOnInjectAnnotationPlacement = false
 }

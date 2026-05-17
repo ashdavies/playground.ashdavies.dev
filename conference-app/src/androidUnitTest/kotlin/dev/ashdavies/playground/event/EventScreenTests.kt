@@ -3,10 +3,10 @@ package dev.ashdavies.playground.event
 import androidx.compose.ui.Modifier
 import app.cash.paparazzi.Paparazzi
 import dev.ashdavies.asg.AsgConference
+import dev.ashdavies.playground.event.detail.EventDetailState
+import dev.ashdavies.playground.event.detail.EventsDetailUi
 import dev.ashdavies.playground.event.grid.EventGridState
 import dev.ashdavies.playground.event.grid.EventGridUi
-import dev.ashdavies.playground.events.EventDetailState
-import dev.ashdavies.playground.events.EventsDetailUi
 import dev.ashdavies.playground.tooling.MaterialPreviewTheme
 import dev.ashdavies.playground.tooling.decodeFromResource
 import kotlinx.collections.immutable.toImmutableList
@@ -17,8 +17,6 @@ import kotlin.test.Test
 import kotlin.uuid.Uuid
 
 internal class EventScreenTests {
-
-    private val eventsDetailUi = EventsDetailUi()
 
     @get:Rule
     val paparazzi = Paparazzi()
@@ -65,7 +63,7 @@ internal class EventScreenTests {
     fun eventDetail() {
         paparazzi.snapshot {
             MaterialPreviewTheme {
-                eventsDetailUi.Content(
+                EventsDetailUi(
                     state = EventDetailState(
                         itemState = EventDetailState.ItemState.Done(
                             item = Json

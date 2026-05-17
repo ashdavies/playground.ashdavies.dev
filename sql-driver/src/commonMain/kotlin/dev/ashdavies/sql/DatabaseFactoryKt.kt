@@ -6,8 +6,6 @@ import app.cash.sqldelight.db.SqlDriver
 import app.cash.sqldelight.db.SqlSchema
 import dev.ashdavies.content.PlatformContext
 
-public interface DatabaseFactory<T : SuspendingTransacter> : Suspended<T>
-
 public fun <T : SuspendingTransacter> DatabaseFactory(
     schema: SqlSchema<QueryResult.AsyncValue<Unit>>,
     context: PlatformContext,

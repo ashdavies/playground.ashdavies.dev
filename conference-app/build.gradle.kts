@@ -84,6 +84,7 @@ kotlin {
             implementation(projects.cloudCommon)
             implementation(projects.composeMaterial)
             implementation(projects.feature.eventCommon)
+            implementation(projects.feature.eventDetail)
             implementation(projects.feature.eventGrid)
             implementation(projects.feature.eventList)
             implementation(projects.httpClient)

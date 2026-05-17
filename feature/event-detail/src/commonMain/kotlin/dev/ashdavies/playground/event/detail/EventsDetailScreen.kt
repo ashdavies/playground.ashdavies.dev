@@ -1,4 +1,4 @@
-package dev.ashdavies.playground.events
+package dev.ashdavies.playground.event.detail
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -24,105 +24,99 @@ import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.google.accompanist.placeholder.material3.placeholder
+import com.slack.circuit.codegen.annotations.CircuitInject
 import com.slack.circuit.runtime.CircuitUiState
-import com.slack.circuit.runtime.ui.Ui
 import dev.ashdavies.identity.IdentityState
-import dev.ashdavies.playground.circuit.CircuitScreenKey
 import dev.ashdavies.playground.event.Event
 import dev.ashdavies.playground.event.EventScreen
-import dev.ashdavies.playground.material.BackButton
 import dev.ashdavies.playground.material.padding
 import dev.ashdavies.playground.material.spacing
-import dev.ashdavies.playground.profile.ProfileActionButton
+import dev.ashdavies.playground.ui.BackButton
 import dev.ashdavies.playground.ui.CenterAlignedTopAppBar
 import dev.ashdavies.playground.ui.DateRangeBadge
 import dev.ashdavies.playground.ui.DateRangeBadgeState
+import dev.ashdavies.playground.ui.ProfileActionButton
 import dev.zacsweers.metro.AppScope
-import dev.zacsweers.metro.ContributesIntoMap
 import dev.zacsweers.metro.Inject
-import dev.zacsweers.metro.binding
 import kotlinx.datetime.LocalDate
 import org.jetbrains.compose.resources.stringResource
-import playground.conference_app.generated.resources.Res
-import playground.conference_app.generated.resources.call_for_papers_closed
-import playground.conference_app.generated.resources.call_for_papers_days_remaining
+import playground.feature.event_detail.generated.resources.Res
+import playground.feature.event_detail.generated.resources.call_for_papers_closed
+import playground.feature.event_detail.generated.resources.call_for_papers_days_remaining
 
 private const val PLACEHOLDER = ""
 
-internal data class EventDetailState(
-    val itemState: ItemState,
-    val onBackPressed: () -> Unit,
+public data class EventDetailState(
+    public val itemState: ItemState,
+    public val onBackPressed: () -> Unit,
 ) : CircuitUiState {
 
-    sealed class ItemState {
-        data object Loading : ItemState()
-        data class Done(val item: Event) : ItemState()
+    public sealed interface ItemState {
+        public data object Loading : ItemState
+        public data class Done(val item: Event) : ItemState
     }
 }
 
-@CircuitScreenKey(EventScreen.Detail::class)
-@ContributesIntoMap(AppScope::class, binding<Ui<*>>())
-internal class EventsDetailUi @Inject constructor() : Ui<EventDetailState> {
+@Inject
+@Composable
+@CircuitInject(EventScreen.Detail::class, AppScope::class)
+public fun EventsDetailUi(state: EventDetailState, modifier: Modifier) {
+    val itemOrNull = (state.itemState as? EventDetailState.ItemState.Done)?.item
+    val isLoading = state.itemState is EventDetailState.ItemState.Loading
 
-    @Composable
-    override fun Content(state: EventDetailState, modifier: Modifier) {
-        val itemOrNull = (state.itemState as? EventDetailState.ItemState.Done)?.item
-        val isLoading = state.itemState is EventDetailState.ItemState.Loading
+    Scaffold(
+        modifier = modifier,
+        topBar = {
+            @OptIn(ExperimentalMaterial3Api::class)
+            CenterAlignedTopAppBar(
+                title = itemOrNull?.name ?: PLACEHOLDER,
+                actions = {
+                    ProfileActionButton(
+                        identityState = IdentityState.Unsupported,
+                        onClick = { error("Unsupported Platform") },
+                    )
+                },
+                navigationIcon = {
+                    BackButton(state.onBackPressed)
+                },
+            )
+        },
+    ) { contentPadding ->
+        Column(Modifier.padding(contentPadding)) {
+            Card(Modifier.padding(MaterialTheme.spacing.large)) {
+                Box {
+                    EventsDetailImage(
+                        imageUrl = itemOrNull?.imageUrl,
+                        backgroundSeed = itemOrNull?.location ?: PLACEHOLDER,
+                        modifier = Modifier.placeholder(isLoading),
+                    )
 
-        Scaffold(
-            modifier = modifier,
-            topBar = {
-                @OptIn(ExperimentalMaterial3Api::class)
-                CenterAlignedTopAppBar(
-                    title = itemOrNull?.name ?: PLACEHOLDER,
-                    actions = {
-                        ProfileActionButton(
-                            identityState = IdentityState.Unsupported,
-                            onClick = { error("Unsupported Platform") },
+                    if (itemOrNull != null) {
+                        DateRangeBadge(
+                            state = remember(itemOrNull.dateStart, itemOrNull.dateEnd) {
+                                DateRangeBadgeState(
+                                    dateStart = LocalDate.parse(itemOrNull.dateStart),
+                                    dateEnd = LocalDate.parse(itemOrNull.dateEnd),
+                                )
+                            },
+                            modifier = Modifier
+                                .padding(MaterialTheme.spacing.large)
+                                .align(Alignment.TopEnd),
                         )
-                    },
-                    navigationIcon = {
-                        BackButton(state.onBackPressed)
-                    },
-                )
-            },
-        ) { contentPadding ->
-            Column(Modifier.padding(contentPadding)) {
-                Card(Modifier.padding(MaterialTheme.spacing.large)) {
-                    Box {
-                        EventsDetailImage(
-                            imageUrl = itemOrNull?.imageUrl,
-                            backgroundSeed = itemOrNull?.location ?: PLACEHOLDER,
-                            modifier = Modifier.placeholder(isLoading),
-                        )
-
-                        if (itemOrNull != null) {
-                            DateRangeBadge(
-                                state = remember(itemOrNull.dateStart, itemOrNull.dateEnd) {
-                                    DateRangeBadgeState(
-                                        dateStart = LocalDate.parse(itemOrNull.dateStart),
-                                        dateEnd = LocalDate.parse(itemOrNull.dateEnd),
-                                    )
-                                },
-                                modifier = Modifier
-                                    .padding(MaterialTheme.spacing.large)
-                                    .align(Alignment.TopEnd),
-                            )
-                        }
                     }
                 }
+            }
 
-                EventsDetailLocation(
-                    location = itemOrNull?.location ?: PLACEHOLDER,
-                    modifier = Modifier.placeholder(isLoading),
+            EventsDetailLocation(
+                location = itemOrNull?.location ?: PLACEHOLDER,
+                modifier = Modifier.placeholder(isLoading),
+            )
+
+            itemOrNull?.cfpEnd?.let { cfpEnd ->
+                EventsDetailCfp(
+                    cfpSite = itemOrNull.cfpSite,
+                    cfpEnd = cfpEnd,
                 )
-
-                itemOrNull?.cfpEnd?.let { cfpEnd ->
-                    EventsDetailCfp(
-                        cfpSite = itemOrNull.cfpSite,
-                        cfpEnd = cfpEnd,
-                    )
-                }
             }
         }
     }
