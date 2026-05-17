@@ -35,7 +35,6 @@ internal class EventScreenTests {
                         errorMessage = null,
                         eventSink = { },
                     ),
-                    modifier = Modifier,
                 )
             }
         }
@@ -53,7 +52,6 @@ internal class EventScreenTests {
                             .toImmutableList(),
                         eventSink = { },
                     ),
-                    modifier = Modifier,
                 )
             }
         }
@@ -72,7 +70,6 @@ internal class EventScreenTests {
                         ),
                         onBackPressed = { },
                     ),
-                    modifier = Modifier.Companion,
                 )
             }
         }

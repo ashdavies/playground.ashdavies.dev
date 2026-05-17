@@ -14,9 +14,12 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -25,9 +28,7 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.google.accompanist.placeholder.material3.placeholder
 import com.slack.circuit.codegen.annotations.CircuitInject
-import com.slack.circuit.runtime.CircuitUiState
 import dev.ashdavies.identity.IdentityState
-import dev.ashdavies.playground.event.Event
 import dev.ashdavies.playground.event.EventScreen
 import dev.ashdavies.playground.material.padding
 import dev.ashdavies.playground.material.spacing
@@ -37,7 +38,7 @@ import dev.ashdavies.playground.ui.DateRangeBadge
 import dev.ashdavies.playground.ui.DateRangeBadgeState
 import dev.ashdavies.playground.ui.ProfileActionButton
 import dev.zacsweers.metro.AppScope
-import dev.zacsweers.metro.Inject
+import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
 import org.jetbrains.compose.resources.stringResource
 import playground.feature.event_detail.generated.resources.Res
@@ -46,23 +47,13 @@ import playground.feature.event_detail.generated.resources.call_for_papers_days_
 
 private const val PLACEHOLDER = ""
 
-public data class EventDetailState(
-    public val itemState: ItemState,
-    public val onBackPressed: () -> Unit,
-) : CircuitUiState {
-
-    public sealed interface ItemState {
-        public data object Loading : ItemState
-        public data class Done(val item: Event) : ItemState
-    }
-}
-
-@Inject
 @Composable
 @CircuitInject(EventScreen.Detail::class, AppScope::class)
-public fun EventsDetailUi(state: EventDetailState, modifier: Modifier) {
+public fun EventsDetailUi(state: EventDetailState, modifier: Modifier = Modifier) {
     val itemOrNull = (state.itemState as? EventDetailState.ItemState.Done)?.item
     val isLoading = state.itemState is EventDetailState.ItemState.Loading
+    val snackbarHostState = remember { SnackbarHostState() }
+    val coroutineScope = rememberCoroutineScope()
 
     Scaffold(
         modifier = modifier,
@@ -70,17 +61,20 @@ public fun EventsDetailUi(state: EventDetailState, modifier: Modifier) {
             @OptIn(ExperimentalMaterial3Api::class)
             CenterAlignedTopAppBar(
                 title = itemOrNull?.name ?: PLACEHOLDER,
+                navigationIcon = { BackButton(state.onBackPressed) },
                 actions = {
                     ProfileActionButton(
                         identityState = IdentityState.Unsupported,
-                        onClick = { error("Unsupported Platform") },
+                        onClick = {
+                            coroutineScope.launch {
+                                snackbarHostState.showSnackbar("Unsupported Platform")
+                            }
+                        },
                     )
-                },
-                navigationIcon = {
-                    BackButton(state.onBackPressed)
                 },
             )
         },
+        snackbarHost = { SnackbarHost(snackbarHostState) },
     ) { contentPadding ->
         Column(Modifier.padding(contentPadding)) {
             Card(Modifier.padding(MaterialTheme.spacing.large)) {

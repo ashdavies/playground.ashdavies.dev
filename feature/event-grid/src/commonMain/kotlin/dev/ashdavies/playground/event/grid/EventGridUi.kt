@@ -47,7 +47,7 @@ internal object EventGridScreenDefaults {
 @Inject
 @Composable
 @CircuitInject(EventScreen.Grid::class, AppScope::class)
-public fun EventGridUi(state: EventGridState, modifier: Modifier) {
+public fun EventGridUi(state: EventGridState, modifier: Modifier = Modifier) {
     val isWidthAtLeastMedium = currentWindowAdaptiveInfo()
         .windowSizeClass
         .isWidthAtLeastBreakpoint(WindowSizeClass.WIDTH_DP_MEDIUM_LOWER_BOUND)
