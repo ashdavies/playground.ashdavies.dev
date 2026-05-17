@@ -67,7 +67,7 @@ import kotlin.time.Clock
 @Inject
 @Composable
 @CircuitInject(EventScreen.List::class, AppScope::class)
-public fun EventListUi(state: EventListState, modifier: Modifier) {
+public fun EventListUi(state: EventListState, modifier: Modifier = Modifier) {
     Scaffold(
         modifier = modifier,
         topBar = {

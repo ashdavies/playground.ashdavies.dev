@@ -1,13 +1,12 @@
-package dev.ashdavies.playground.events
+package dev.ashdavies.playground.event.detail
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.produceState
+import com.slack.circuit.codegen.annotations.CircuitInject
 import com.slack.circuit.runtime.Navigator
 import com.slack.circuit.runtime.presenter.Presenter
-import com.slack.circuit.runtime.screen.Screen
-import dev.ashdavies.playground.PlaygroundDatabase
-import dev.ashdavies.playground.circuit.CircuitScreenKey
+import dev.ashdavies.event.common.PlaygroundDatabase
 import dev.ashdavies.playground.event.EventScreen
 import dev.ashdavies.sql.DatabaseFactory
 import dev.ashdavies.sql.invoke
@@ -16,8 +15,6 @@ import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.Assisted
 import dev.zacsweers.metro.AssistedFactory
 import dev.zacsweers.metro.AssistedInject
-import dev.zacsweers.metro.ContributesIntoMap
-import dev.zacsweers.metro.binding
 
 internal class EventsDetailPresenter @AssistedInject constructor(
     @Assisted private val screen: EventScreen.Detail,
@@ -47,9 +44,11 @@ internal class EventsDetailPresenter @AssistedInject constructor(
     }
 
     @AssistedFactory
-    @CircuitScreenKey(EventScreen.Detail::class)
-    @ContributesIntoMap(AppScope::class, binding<(Screen, Navigator) -> Presenter<*>>())
-    interface Factory : (EventScreen.Detail, Navigator) -> EventsDetailPresenter {
-        override operator fun invoke(screen: EventScreen.Detail, navigator: Navigator): EventsDetailPresenter
+    @CircuitInject(EventScreen.Detail::class, AppScope::class)
+    fun interface Factory {
+        operator fun invoke(
+            screen: EventScreen.Detail,
+            navigator: Navigator,
+        ): EventsDetailPresenter
     }
 }

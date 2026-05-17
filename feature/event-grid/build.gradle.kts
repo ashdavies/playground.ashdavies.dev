@@ -28,7 +28,6 @@ kotlin {
             implementation(projects.httpCommon)
             implementation(projects.platformSupport)
             implementation(projects.sqlCommon)
-            implementation(projects.sqlDriver)
             implementation(projects.uiComponents)
 
             implementation(libs.androidx.window.core)

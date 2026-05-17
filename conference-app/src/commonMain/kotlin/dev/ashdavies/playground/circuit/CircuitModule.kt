@@ -17,12 +17,6 @@ import kotlin.reflect.KClass
 internal interface CircuitModule {
 
     @Multibinds
-    val screenNavigatorPresenterFactories: Map<KClass<out Screen>, (Screen, Navigator) -> Presenter<*>>
-
-    @Multibinds
-    val screenPresenterFactories: Map<KClass<out Screen>, (Screen) -> Presenter<*>>
-
-    @Multibinds
     val navigatorPresenterFactories: Map<KClass<out Screen>, (Navigator) -> Presenter<*>>
 
     @Multibinds
@@ -39,7 +33,6 @@ internal interface CircuitModule {
 
     @Provides
     fun circuit(
-        screenNavigatorPresenters: @JvmSuppressWildcards Map<KClass<out Screen>, (Screen, Navigator) -> Presenter<*>>,
         screenPresenters: @JvmSuppressWildcards Map<KClass<out Screen>, (Screen) -> Presenter<*>>,
         navigatorPresenters: @JvmSuppressWildcards Map<KClass<out Screen>, (Navigator) -> Presenter<*>>,
         presenterProviders: @JvmSuppressWildcards Map<KClass<out Screen>, Provider<Presenter<*>>>,
@@ -47,9 +40,6 @@ internal interface CircuitModule {
         presenterFactories: Set<Presenter.Factory>,
         uiFactories: Set<Ui.Factory>,
     ): Circuit = Circuit.Builder()
-        .addPresenterFactory { screen, navigator, _ ->
-            screenNavigatorPresenters[screen::class]?.invoke(screen, navigator)
-        }
         .addPresenterFactory { screen, _, _ ->
             screenPresenters[screen::class]?.invoke(screen)
         }

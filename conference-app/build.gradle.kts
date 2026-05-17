@@ -1,4 +1,3 @@
-import dev.zacsweers.metro.gradle.ExperimentalMetroGradleApi
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.compose.reload.gradle.ComposeHotRun
 import org.jetbrains.kotlin.compose.compiler.gradle.ComposeFeatureFlag
@@ -84,6 +83,7 @@ kotlin {
             implementation(projects.cloudCommon)
             implementation(projects.composeMaterial)
             implementation(projects.feature.eventCommon)
+            implementation(projects.feature.eventDetail)
             implementation(projects.feature.eventGrid)
             implementation(projects.feature.eventList)
             implementation(projects.httpClient)

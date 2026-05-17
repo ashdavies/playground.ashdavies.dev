@@ -65,6 +65,7 @@ include(
     ":compose-material",
     ":conference-app",
     ":feature:event-common",
+    ":feature:event-detail",
     ":feature:event-grid",
     ":feature:event-list",
     ":http-client",

@@ -76,7 +76,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import org.jetbrains.compose.resources.stringResource
 import playground.conference_app.generated.resources.Res
-import playground.conference_app.generated.resources.past_events
+import playground.conference_app.generated.resources.gallery
 import kotlin.uuid.Uuid
 
 private const val DEFAULT_COLUMN_COUNT = 4
@@ -137,7 +137,7 @@ internal class GalleryUi @Inject constructor() : Ui<GalleryScreen.State> {
         BottomSheetScaffold(
             sheetContent = { GallerySheetContent(eventSink) },
             modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
-            topBar = { CenterAlignedTopAppBar(stringResource(Res.string.past_events)) },
+            topBar = { CenterAlignedTopAppBar(stringResource(Res.string.gallery)) },
             floatingActionButton = {
                 GalleryActionButton(
                     onClick = { eventSink(GalleryScreen.Event.Capture.Request) },

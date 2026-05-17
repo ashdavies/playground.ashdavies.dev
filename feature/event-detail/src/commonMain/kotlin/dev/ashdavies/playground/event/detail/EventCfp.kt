@@ -1,4 +1,4 @@
-package dev.ashdavies.playground.events
+package dev.ashdavies.playground.event.detail
 
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
