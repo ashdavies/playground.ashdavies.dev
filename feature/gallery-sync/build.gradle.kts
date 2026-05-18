@@ -1,5 +1,3 @@
-import dev.zacsweers.metro.gradle.ExperimentalMetroGradleApi
-
 plugins {
     alias(libs.plugins.android.library)
 
@@ -10,38 +8,44 @@ plugins {
     id("dev.ashdavies.parcelable")
     id("dev.ashdavies.wasm")
 
+    alias(libs.plugins.cash.sqldelight)
     alias(libs.plugins.zac.metro)
 }
 
 android {
-    namespace = "dev.ashdavies.playground.event.list"
+    namespace = "dev.ashdavies.playground.gallery"
 }
 
 kotlin {
     sourceSets {
         commonMain.dependencies {
             implementation(projects.analytics)
-            implementation(projects.composeMaterial)
-            implementation(projects.feature.eventCommon)
-            implementation(projects.pagingMultiplatform)
-            implementation(projects.placeholderHighlight)
+            implementation(projects.httpClient)
+            implementation(projects.sqlCommon)
             implementation(projects.uiComponents)
 
-            implementation(libs.compose.components.resources)
-            implementation(libs.compose.foundation)
-            implementation(libs.compose.material3)
             implementation(libs.coil.compose)
+            implementation(libs.compose.back.handler)
+            implementation(libs.compose.components.resources)
+            implementation(libs.compose.material3)
+            implementation(libs.compose.materialIconsExtended)
+            implementation(libs.ktor.client.core)
+            implementation(libs.ktor.client.mock)
             implementation(libs.kotlinx.collections.immutable)
-            implementation(libs.kotlinx.datetime)
             implementation(libs.slack.circuit.annotations)
             implementation(libs.slack.circuit.foundation)
+            implementation(libs.sqldelight.coroutines.extensions)
         }
     }
 }
 
-metro {
-    @OptIn(ExperimentalMetroGradleApi::class)
-    enableCircuitCodegen = true
+sqldelight {
+    databases {
+        create("PlaygroundDatabase") {
+            dialect(libs.sqldelight.sqlite.dialect)
 
-    warnOnInjectAnnotationPlacement = false
+            packageName = android.namespace
+            generateAsync = true
+        }
+    }
 }

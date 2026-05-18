@@ -68,6 +68,7 @@ include(
     ":feature:event-detail",
     ":feature:event-grid",
     ":feature:event-list",
+    ":feature:gallery-sync",
     ":http-client",
     ":http-common",
     ":identity-manager",

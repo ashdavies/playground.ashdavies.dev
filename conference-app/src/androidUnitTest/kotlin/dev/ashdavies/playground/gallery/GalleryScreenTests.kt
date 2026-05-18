@@ -19,7 +19,7 @@ internal class GalleryScreenTests {
         paparazzi.snapshot {
             MaterialPreviewTheme {
                 galleryUi.Content(
-                    state = GalleryScreen.State(
+                    state = GalleryScreenState(
                         itemList = persistentListOf(
                             galleryScreenStateItem(),
                             galleryScreenStateItem(isSelected = true),
@@ -41,7 +41,7 @@ private fun galleryScreenStateItem(
     name: String = "Sample Image",
     isSelected: Boolean = false,
     state: SyncState = SyncState.NOT_SYNCED,
-) = GalleryScreen.State.StandardItem(
+) = GalleryScreenState.StandardItem(
     title = name,
     imageModel = null,
     isSelected = isSelected,
