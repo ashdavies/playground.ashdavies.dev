@@ -2,7 +2,6 @@ package dev.ashdavies.playground.gallery
 
 import app.cash.turbine.test
 import dev.ashdavies.http.DefaultHttpConfiguration
-import dev.ashdavies.playground.files.Path
 import io.ktor.client.HttpClient
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test

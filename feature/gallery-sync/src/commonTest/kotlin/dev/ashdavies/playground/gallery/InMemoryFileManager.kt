@@ -1,7 +1,5 @@
 package dev.ashdavies.playground.gallery
 
-import dev.ashdavies.playground.files.FileManager
-import dev.ashdavies.playground.files.Path
 import kotlinx.io.files.FileNotFoundException
 
 private val EMPTY_BYTE_ARRAY = ByteArray(0)

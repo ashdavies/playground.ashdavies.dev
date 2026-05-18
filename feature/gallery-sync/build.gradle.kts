@@ -30,11 +30,17 @@ kotlin {
             implementation(libs.compose.material3)
             implementation(libs.compose.materialIconsExtended)
             implementation(libs.ktor.client.core)
-            implementation(libs.ktor.client.mock)
             implementation(libs.kotlinx.collections.immutable)
             implementation(libs.slack.circuit.annotations)
             implementation(libs.slack.circuit.foundation)
             implementation(libs.sqldelight.coroutines.extensions)
+        }
+
+        commonTest.dependencies {
+            implementation(libs.app.cash.turbine)
+            implementation(libs.kotlin.test)
+            implementation(libs.kotlinx.coroutines.test)
+            implementation(libs.ktor.client.mock)
         }
     }
 }
