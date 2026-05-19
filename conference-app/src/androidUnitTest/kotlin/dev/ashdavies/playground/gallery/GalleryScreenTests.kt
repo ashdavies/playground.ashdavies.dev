@@ -9,8 +9,6 @@ import kotlin.test.Test
 
 internal class GalleryScreenTests {
 
-    private val galleryUi = GalleryUi()
-
     @get:Rule
     val paparazzi = Paparazzi()
 
@@ -18,8 +16,8 @@ internal class GalleryScreenTests {
     fun compose() {
         paparazzi.snapshot {
             MaterialPreviewTheme {
-                galleryUi.Content(
-                    state = GalleryScreen.State(
+                GalleryUi(
+                    state = GalleryScreenState(
                         itemList = persistentListOf(
                             galleryScreenStateItem(),
                             galleryScreenStateItem(isSelected = true),
@@ -41,7 +39,7 @@ private fun galleryScreenStateItem(
     name: String = "Sample Image",
     isSelected: Boolean = false,
     state: SyncState = SyncState.NOT_SYNCED,
-) = GalleryScreen.State.StandardItem(
+) = GalleryScreenState.StandardItem(
     title = name,
     imageModel = null,
     isSelected = isSelected,

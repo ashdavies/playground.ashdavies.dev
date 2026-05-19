@@ -61,10 +61,6 @@ compose.desktop {
 }
 
 kotlin {
-    compilerOptions {
-        freeCompilerArgs.add("-opt-in=kotlin.uuid.ExperimentalUuidApi")
-    }
-
     jvm()
 
     @OptIn(ExperimentalWasmDsl::class)
@@ -86,6 +82,7 @@ kotlin {
             implementation(projects.feature.eventDetail)
             implementation(projects.feature.eventGrid)
             implementation(projects.feature.eventList)
+            implementation(projects.feature.gallerySync)
             implementation(projects.httpClient)
             implementation(projects.httpCommon)
             implementation(projects.identityManager)

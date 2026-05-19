@@ -2,7 +2,7 @@ package dev.ashdavies.playground.routes
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import dev.ashdavies.playground.material.OperationNotImplemented
+import dev.ashdavies.playground.ui.OperationNotImplemented
 
 @Composable
 internal actual fun RoutesMap(

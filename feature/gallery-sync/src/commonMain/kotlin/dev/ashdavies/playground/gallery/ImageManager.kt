@@ -1,0 +1,34 @@
+package dev.ashdavies.playground.gallery
+
+import app.cash.sqldelight.coroutines.mapToList
+import dev.ashdavies.sql.Suspended
+import dev.ashdavies.sql.mapAsFlow
+import kotlinx.coroutines.flow.Flow
+import kotlin.coroutines.CoroutineContext
+import kotlin.uuid.Uuid
+
+public interface ImageManager {
+    public val list: Flow<List<Image>>
+    public suspend fun add(path: Path): Image
+    public suspend fun remove(image: Image)
+}
+
+internal fun ImageManager(
+    imageQueries: Suspended<ImageQueries>,
+    fileManager: FileManager,
+    coroutineContext: CoroutineContext,
+): ImageManager = object : ImageManager {
+
+    override val list = imageQueries
+        .mapAsFlow { it.selectAll() }
+        .mapToList(coroutineContext)
+
+    override suspend fun add(path: Path) = Image(Uuid.random(), path).also {
+        imageQueries().insertOrReplace(it)
+    }
+
+    override suspend fun remove(image: Image) {
+        check(imageQueries().deleteById(image.uuid) > 0)
+        fileManager.delete(image.path)
+    }
+}

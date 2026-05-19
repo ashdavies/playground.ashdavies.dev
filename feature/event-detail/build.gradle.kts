@@ -14,7 +14,7 @@ plugins {
 }
 
 android {
-    namespace = "dev.ashdavies.event.detail"
+    namespace = "dev.ashdavies.playground.event.detail"
 }
 
 kotlin {

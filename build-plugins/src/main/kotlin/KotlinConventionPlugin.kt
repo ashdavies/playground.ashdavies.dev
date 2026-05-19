@@ -15,6 +15,7 @@ public class KotlinConventionPlugin : Plugin<Project> {
         plugins.apply(libs.plugins.ktlint)
 
         extensions.configure<KotlinMultiplatformExtension> {
+            compilerOptions.freeCompilerArgs.add("-opt-in=kotlin.uuid.ExperimentalUuidApi")
             explicitApi()
 
             @OptIn(ExperimentalKotlinGradlePluginApi::class)
