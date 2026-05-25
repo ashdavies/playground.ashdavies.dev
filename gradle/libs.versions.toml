@@ -7,6 +7,7 @@ cash-sqldelight = "2.3.2"
 coil-kt = "3.4.0"
 compose-adaptive = "1.2.0"
 compose-plugin = "1.11.0"
+compose-screenshot = "0.0.1-alpha14"
 google-accompanist = "0.37.3"
 google-android = "8.11.0"
 google-ksp = "2.3.6"
@@ -50,6 +51,7 @@ compose-foundation = { module = "org.jetbrains.compose.foundation:foundation", v
 compose-material3 = "org.jetbrains.compose.material3:material3:1.9.0"
 compose-materialIconsExtended = "org.jetbrains.compose.material:material-icons-extended:1.7.3"
 compose-runtime = { module = "org.jetbrains.compose.runtime:runtime", version.ref = "compose-plugin" }
+compose-screenshot-validation = { module = "com.android.tools.screenshot:screenshot-validation-api", version.ref = "compose-screenshot"}
 compose-ui = { module = "org.jetbrains.compose.ui:ui", version.ref = "compose-plugin" }
 compose-uiTooling = { module = "org.jetbrains.compose.ui:ui-tooling", version.ref = "compose-plugin" }
 
@@ -126,9 +128,9 @@ squareup-okio = "com.squareup.okio:okio:3.17.0"
 android-application = { id = "com.android.application", version.ref = "google-android" }
 android-library = { id = "com.android.library", version.ref = "google-android" }
 build-config = "com.github.gmazzo.buildconfig:6.0.9"
-cash-paparazzi = "app.cash.paparazzi:2.0.0-alpha04"
 cash-sqldelight = { id = "app.cash.sqldelight", version.ref = "cash-sqldelight" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "jetbrains-kotlin" }
+compose-screenshot = { id = "com.android.compose.screenshot", version.ref = "compose-screenshot" }
 detekt = "io.gitlab.arturbosch.detekt:1.23.8"
 firebase-crashlytics = "com.google.firebase.crashlytics:3.0.7"
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }

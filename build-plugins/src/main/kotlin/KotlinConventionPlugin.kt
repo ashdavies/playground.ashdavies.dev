@@ -2,9 +2,11 @@ import io.gitlab.arturbosch.detekt.extensions.DetektExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
+import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jlleitschuh.gradle.ktlint.KtlintExtension
+import org.jlleitschuh.gradle.ktlint.tasks.BaseKtLintCheckTask
 
 public class KotlinConventionPlugin : Plugin<Project> {
     override fun apply(target: Project): Unit = with(target) {
@@ -52,6 +54,15 @@ public class KotlinConventionPlugin : Plugin<Project> {
 
             val ktlintBom = libs.pinterest.ktlint.bom.get()
             version.set(ktlintBom.version)
+        }
+
+        tasks.withType<BaseKtLintCheckTask>().configureEach {
+            val composeResourcesTasks = tasks.filter {
+                it.name.startsWith("generateActualResourceCollectors")
+                        || it.name.startsWith("generateResourceAccessors")
+            }
+
+            dependsOn(composeResourcesTasks)
         }
     }
 }

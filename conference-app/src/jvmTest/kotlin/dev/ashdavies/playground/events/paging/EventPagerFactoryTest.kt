@@ -5,7 +5,6 @@ import app.cash.sqldelight.async.coroutines.synchronous
 import app.cash.sqldelight.driver.jdbc.sqlite.JdbcSqliteDriver
 import dev.ashdavies.paging.PagerConfig
 import dev.ashdavies.playground.PlaygroundDatabase
-import dev.ashdavies.playground.tooling.decodeFromResource
 import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.LocalDate
@@ -65,7 +64,13 @@ internal class EventPagerFactoryTest {
     }
 }
 
-internal fun Json.locations(): List<Location> = decodeFromResource("jvmTest", "locations.json")
+internal fun Json.locations(): List<Location> = decodeFromString<List<Location>>(
+    string = Location::class.java.classLoader
+        .getResourceAsStream("locations.json")
+        .let(::requireNotNull)
+        .bufferedReader()
+        .readText(),
+)
 
 @OptIn(ExperimentalTime::class)
 private fun LocalDate.Companion.nearFuture(

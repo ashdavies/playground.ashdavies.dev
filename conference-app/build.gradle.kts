@@ -2,6 +2,7 @@ import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.compose.reload.gradle.ComposeHotRun
 import org.jetbrains.kotlin.compose.compiler.gradle.ComposeFeatureFlag
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
+import org.jlleitschuh.gradle.ktlint.tasks.KtLintCheckTask
 
 private object ConferenceAppConfig {
     const val APPLICATION_NAME = "dev.ashdavies.playground"
@@ -22,7 +23,6 @@ plugins {
     id("dev.ashdavies.wasm")
 
     alias(libs.plugins.build.config)
-    alias(libs.plugins.cash.paparazzi)
     alias(libs.plugins.cash.sqldelight)
     alias(libs.plugins.zac.metro)
 }
@@ -204,8 +204,10 @@ tasks.withType<ComposeHotRun>().configureEach {
     mainClass.set(ConferenceAppConfig.MAIN_CLASS)
 }
 
-tasks.withType<Test>().configureEach {
-    if (name.endsWith("UnitTest")) {
-        reports.html.required.set(false)
+tasks.withType<KtLintCheckTask>().configureEach {
+    val generateResources = project.tasks.matching {
+        it.name.startsWith("generateResourceAccessorsFor")
     }
+
+    mustRunAfter(generateResources)
 }

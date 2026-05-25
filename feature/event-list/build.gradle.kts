@@ -10,11 +10,26 @@ plugins {
     id("dev.ashdavies.parcelable")
     id("dev.ashdavies.wasm")
 
+    alias(libs.plugins.compose.screenshot)
     alias(libs.plugins.zac.metro)
 }
 
 android {
+    experimentalProperties["android.experimental.enableScreenshotTest"] = true
     namespace = "dev.ashdavies.playground.event.list"
+}
+
+dependencies {
+    screenshotTestImplementation(projects.asgService)
+    screenshotTestImplementation(projects.feature.eventCommon)
+    // screenshotTestImplementation(projects.feature.eventList)
+
+    // screenshotTestImplementation(libs.androidx.paging.testing)
+    screenshotTestImplementation(libs.kotlinx.collections.immutable)
+    screenshotTestImplementation(libs.compose.screenshot.validation)
+    screenshotTestImplementation(libs.compose.uiTooling)
+    screenshotTestImplementation(libs.kotlinx.serialization.json)
+    // screenshotTestImplementation(libs.sqldelight.sqlite.driver)
 }
 
 kotlin {
