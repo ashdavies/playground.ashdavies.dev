@@ -3,21 +3,32 @@ package dev.ashdavies.playground
 import dev.ashdavies.analytics.RemoteAnalytics
 import dev.ashdavies.config.RemoteConfig
 import dev.ashdavies.content.PlatformContext
-import dev.ashdavies.playground.PlaygroundDatabase
-import dev.ashdavies.playground.gallery.imageAdapter
 import dev.ashdavies.sql.DatabaseFactory
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesTo
 import dev.zacsweers.metro.Provides
+import dev.ashdavies.playground.PlaygroundDatabase as ConferenceAppDatabase
+import dev.ashdavies.playground.event.common.PlaygroundDatabase as EventCommonDatabase
 
 @ContributesTo(AppScope::class)
 internal interface ConferenceModule {
 
     @Provides
-    fun databaseFactory(context: PlatformContext): DatabaseFactory<PlaygroundDatabase> = DatabaseFactory(
-        schema = PlaygroundDatabase.Schema,
+    fun playgroundDatabaseFactory(
+        context: PlatformContext,
+    ): DatabaseFactory<ConferenceAppDatabase> = DatabaseFactory(
+        schema = ConferenceAppDatabase.Schema,
         context = context,
-        factory = { PlaygroundDatabase(it, imageAdapter()) },
+        factory = ConferenceAppDatabase::invoke,
+    )
+
+    @Provides
+    fun eventDatabaseFactory(
+        context: PlatformContext,
+    ): DatabaseFactory<EventCommonDatabase> = DatabaseFactory(
+        schema = EventCommonDatabase.Schema,
+        context = context,
+        factory = EventCommonDatabase::invoke,
     )
 
     @Provides

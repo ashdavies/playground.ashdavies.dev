@@ -35,12 +35,11 @@ import dev.ashdavies.parcelable.Parcelize
 import dev.ashdavies.playground.activity.FullyDrawnReporter
 import dev.ashdavies.playground.adaptive.ListDetailScaffoldScreen
 import dev.ashdavies.playground.circuit.CircuitScreenKey
+import dev.ashdavies.playground.event.EventScreen
 import dev.ashdavies.playground.gallery.GalleryScreen
 import dev.ashdavies.playground.material.icons.EventList
 import dev.ashdavies.playground.material.icons.EventUpcoming
-import dev.ashdavies.playground.past.PastScreen
 import dev.ashdavies.playground.routes.RoutesScreen
-import dev.ashdavies.playground.upcoming.UpcomingScreen
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesIntoMap
 import dev.zacsweers.metro.Inject
@@ -121,7 +120,7 @@ private fun BottomBar(
         NavigationBar {
             NavigationBarItem(
                 selected = selected is ListDetailScaffoldScreen,
-                onClick = { onClick(ListDetailScaffoldScreen(UpcomingScreen)) },
+                onClick = { onClick(ListDetailScaffoldScreen(EventScreen.List())) },
                 icon = { NavigationBarImage(Icons.Outlined.EventUpcoming) },
                 label = { Text("Upcoming") },
             )
@@ -144,8 +143,8 @@ private fun BottomBar(
 
             if (isPastEventsEnabled) {
                 NavigationBarItem(
-                    selected = selected is PastScreen,
-                    onClick = { onClick(PastScreen) },
+                    selected = selected is EventScreen.Grid,
+                    onClick = { onClick(EventScreen.Grid()) },
                     icon = { NavigationBarImage(Icons.Outlined.EventList) },
                 )
             }

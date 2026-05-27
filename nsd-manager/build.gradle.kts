@@ -5,12 +5,8 @@ plugins {
 }
 
 kotlin {
-    android {
-        namespace = "dev.ashdavies.nsd"
-    }
-}
+    android.namespace = "dev.ashdavies.nsd"
 
-kotlin {
     sourceSets {
         commonMain.dependencies {
             implementation(libs.kotlinx.coroutines.core)

@@ -7,12 +7,8 @@ plugins {
 }
 
 kotlin {
-    android {
-        namespace = "dev.ashdavies.paging"
-    }
-}
+    android.namespace = "dev.ashdavies.paging"
 
-kotlin {
     sourceSets {
         commonMain.dependencies {
             implementation(libs.compose.foundation)
@@ -22,7 +18,7 @@ kotlin {
 
         val androidJvmMain by getting {
             dependencies {
-                implementation(libs.androidx.paging.compose)
+                api(libs.androidx.paging.compose)
             }
         }
     }

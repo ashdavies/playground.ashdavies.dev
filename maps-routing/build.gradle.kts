@@ -6,12 +6,8 @@ plugins {
 }
 
 kotlin {
-    android {
-        namespace = "dev.ashdavies.routing"
-    }
-}
+    android.namespace = "dev.ashdavies.routing"
 
-kotlin {
     sourceSets.commonMain.dependencies {
         implementation(projects.httpClient)
         implementation(projects.httpCommon)

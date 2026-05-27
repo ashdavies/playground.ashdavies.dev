@@ -1,6 +1,7 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.compose.reload.gradle.ComposeHotRun
 import org.jetbrains.kotlin.compose.compiler.gradle.ComposeFeatureFlag
+import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 
 private object ConferenceAppConfig {
     const val APPLICATION_NAME = "dev.ashdavies.playground"
@@ -27,9 +28,7 @@ metro {
 }
 
 kotlin {
-    android {
-        namespace = ConferenceAppConfig.APPLICATION_NAME
-    }
+    android.namespace = ConferenceAppConfig.APPLICATION_NAME
 }
 
 buildConfig {
@@ -68,6 +67,11 @@ kotlin {
             implementation(projects.asgService)
             implementation(projects.cloudCommon)
             implementation(projects.composeMaterial)
+            implementation(projects.feature.eventCommon)
+            implementation(projects.feature.eventDetail)
+            implementation(projects.feature.eventGrid)
+            implementation(projects.feature.eventList)
+            implementation(projects.feature.gallerySync)
             implementation(projects.httpClient)
             implementation(projects.httpCommon)
             implementation(projects.identityManager)
@@ -79,6 +83,7 @@ kotlin {
             implementation(projects.remoteConfig)
             implementation(projects.sqlCommon)
             implementation(projects.sqlDriver)
+            implementation(projects.uiComponents)
 
             implementation(libs.androidx.annotation)
             implementation(libs.androidx.window.core)
@@ -171,6 +176,7 @@ sqldelight {
             generateAsync = true
 
             dialect(libs.sqldelight.sqlite.dialect)
+            dependency(project(":feature:event-common"))
             dependency(project(":identity-manager"))
         }
     }

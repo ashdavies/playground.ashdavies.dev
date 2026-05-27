@@ -6,9 +6,7 @@ plugins {
 }
 
 kotlin {
-    android {
-        namespace = "dev.ashdavies.analytics"
-    }
+    android.namespace = "dev.ashdavies.analytics"
 
     sourceSets.androidMain.dependencies {
         implementation(dependencies.platform(libs.google.firebase.bom))

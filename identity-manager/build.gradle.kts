@@ -9,12 +9,6 @@ plugins {
     id("dev.ashdavies.wasm")
 }
 
-kotlin {
-    android {
-        namespace = "dev.ashdavies.identity"
-    }
-}
-
 buildConfig {
     val serverClientId by stringProperty(::buildConfigField)
 
@@ -23,6 +17,8 @@ buildConfig {
 }
 
 kotlin {
+    android.namespace = "dev.ashdavies.identity"
+
     sourceSets {
         commonMain.dependencies {
             implementation(projects.kotlinDelegates)

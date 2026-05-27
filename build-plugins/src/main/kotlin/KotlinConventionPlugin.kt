@@ -2,6 +2,7 @@ import io.gitlab.arturbosch.detekt.extensions.DetektExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
+import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jlleitschuh.gradle.ktlint.KtlintExtension
 
@@ -15,6 +16,22 @@ public class KotlinConventionPlugin : Plugin<Project> {
             plugins.apply(libs.plugins.ktlint)
 
             extensions.configure<KotlinMultiplatformExtension> {
+                @OptIn(ExperimentalKotlinGradlePluginApi::class)
+                applyDefaultHierarchyTemplate {
+                    common {
+                        group("androidJvm") {
+                            withAndroidTarget()
+                            withJvm()
+                        }
+
+                        group("jvmWasmJs") {
+                            withJvm()
+                            withWasmJs()
+                        }
+                    }
+                }
+
+                compilerOptions.freeCompilerArgs.add("-opt-in=kotlin.uuid.ExperimentalUuidApi")
                 explicitApi()
             }
 

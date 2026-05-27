@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="call_for_papers_days_remaining">Call for Papers (%1$s days remaining)</string>
+    <string name="call_for_papers_closed">Call for Papers (Closed)</string>
+</resources>

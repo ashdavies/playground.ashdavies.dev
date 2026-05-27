@@ -6,9 +6,7 @@ plugins {
 }
 
 kotlin {
-    android {
-        namespace = "dev.ashdavies.platform.support"
-    }
+    android.namespace = "dev.ashdavies.platform.support"
 
     compilerOptions {
         freeCompilerArgs.add("-Xexpect-actual-classes")

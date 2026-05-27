@@ -7,9 +7,7 @@ plugins {
 }
 
 kotlin {
-    android {
-        namespace = "dev.ashdavies.material"
-    }
+    android.namespace = "dev.ashdavies.material"
 }
 
 kotlin {

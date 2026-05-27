@@ -6,12 +6,8 @@ plugins {
 }
 
 kotlin {
-    android {
-        namespace = "dev.ashdavies.sql"
-    }
-}
+    android.namespace = "dev.ashdavies.sql"
 
-kotlin {
     sourceSets {
         commonMain.dependencies {
             implementation(projects.platformSupport)

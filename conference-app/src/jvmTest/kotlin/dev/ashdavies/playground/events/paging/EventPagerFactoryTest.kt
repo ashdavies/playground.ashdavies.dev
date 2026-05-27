@@ -3,16 +3,17 @@ package dev.ashdavies.playground.events.paging
 import androidx.paging.testing.asSnapshot
 import app.cash.sqldelight.async.coroutines.synchronous
 import app.cash.sqldelight.driver.jdbc.sqlite.JdbcSqliteDriver
+import dev.ashdavies.paging.PagerConfig
 import dev.ashdavies.playground.PlaygroundDatabase
-import dev.ashdavies.playground.gallery.imageAdapter
-import dev.ashdavies.playground.tooling.UnitTestResources
-import dev.ashdavies.playground.tooling.locations
+import dev.ashdavies.playground.tooling.decodeFromResource
 import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.plus
 import kotlinx.datetime.toLocalDateTime
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.Json
 import org.junit.Test
 import kotlin.random.Random
 import kotlin.test.assertEquals
@@ -28,16 +29,13 @@ internal class EventPagerFactoryTest {
             url = JdbcSqliteDriver.IN_MEMORY,
             schema = PlaygroundDatabase.Schema.synchronous(),
         ).apply(PlaygroundDatabase.Schema::create),
-        imageAdapter = imageAdapter(),
     )
 
     @Test
     fun `should not include boundary events on same start date`() = runTest {
-        val knownLocationDeque = ArrayDeque(UnitTestResources.locations())
+        val knownLocationDeque = ArrayDeque(Json.locations())
         val upcomingApiEventListSize = 24
         val pageSize = 12
-
-        println("Preparing test data with $upcomingApiEventListSize events and page size of $pageSize...")
 
         val upcomingApiEventList = List(Random.nextInt(upcomingApiEventListSize)) { it }
             .runningFold(LocalDate.nearFuture()) { acc, index ->
@@ -53,35 +51,21 @@ internal class EventPagerFactoryTest {
                 )
             }
 
-        println("Generated ${upcomingApiEventList.size} events for testing.")
-
-        println("=== Dumping Randomly Generated Event List ===")
-        upcomingApiEventList.forEach(::println)
-
-        println("Creating event pager with page size $pageSize...")
-
-        val eventPager = eventPager(
+        val eventPager = EventPagerFactory(
             eventsCallable = { upcomingApiEventList },
-            eventsQueries = { playgroundDatabase.eventsQueries },
-            pageSize = pageSize,
-            context = coroutineContext,
-        )
-
-        println("Obtaining item snapshot list...")
+            eventsQueries = { playgroundDatabase.eventQueries },
+            coroutineContext = coroutineContext,
+        ).create(PagerConfig(null, pageSize))
 
         val itemSnapshotList = eventPager.flow.asSnapshot {
-            println("Scrolling to the end of the list (position ${upcomingApiEventList.size})...")
             scrollTo(upcomingApiEventList.size)
         }
 
-        println("Snapshot obtained with ${itemSnapshotList.size} items.")
-
-        println("Verifying that the number of items matches the number of events...")
         assertEquals(upcomingApiEventList.size, itemSnapshotList.size)
-
-        println("Testing completed successfully.")
     }
 }
+
+internal fun Json.locations(): List<Location> = decodeFromResource("jvmTest", "locations.json")
 
 @OptIn(ExperimentalTime::class)
 private fun LocalDate.Companion.nearFuture(
@@ -103,3 +87,6 @@ private fun apiEvent(location: String, dateStart: LocalDate) = ApiEvent(
     dateEnd = "${dateStart.plus(Random.nextInt(3), DateTimeUnit.DAY)}",
     cfp = null,
 )
+
+@Serializable
+internal data class Location(val city: String, val country: String)

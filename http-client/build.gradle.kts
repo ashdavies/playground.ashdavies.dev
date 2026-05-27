@@ -6,12 +6,8 @@ plugins {
 }
 
 kotlin {
-    android {
-        namespace = "dev.ashdavies.http"
-    }
-}
+    android.namespace = "dev.ashdavies.http"
 
-kotlin {
     sourceSets {
         commonMain.dependencies {
             implementation(projects.httpCommon)
@@ -33,7 +29,7 @@ kotlin {
             implementation(libs.ktor.client.okhttp)
         }
 
-        wasmMain.dependencies {
+        wasmJsMain.dependencies {
             implementation(libs.ktor.client.js)
         }
     }

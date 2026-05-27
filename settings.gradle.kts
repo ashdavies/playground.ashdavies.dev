@@ -34,7 +34,7 @@ dependencyResolutionManagement.repositories {
 plugins {
     id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
     id("androidx.build.gradle.gcpbuildcache") version "1.0.1"
-    id("com.gradle.develocity") version "4.4.0"
+    id("com.gradle.develocity") version "4.4.2"
 }
 
 buildCache {
@@ -64,6 +64,11 @@ include(
     ":cloud-run",
     ":compose-material",
     ":conference-app",
+    ":feature:event-common",
+    ":feature:event-detail",
+    ":feature:event-grid",
+    ":feature:event-list",
+    ":feature:gallery-sync",
     ":http-client",
     ":http-common",
     ":identity-manager",
@@ -79,6 +84,7 @@ include(
     ":remote-config",
     ":sql-common",
     ":sql-driver",
+    ":ui-components",
 )
 
 rootProject.name = "playground"

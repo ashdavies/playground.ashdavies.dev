@@ -2,17 +2,17 @@ terraform {
   required_providers {
     github = {
       source  = "integrations/github"
-      version = "6.11.1"
+      version = "6.12.1"
     }
 
     google = {
       source  = "hashicorp/google"
-      version = "7.26.0"
+      version = "7.33.0"
     }
 
     google-beta = {
       source  = "hashicorp/google-beta"
-      version = "7.26.0"
+      version = "7.33.0"
     }
 
     onepassword = {
@@ -21,5 +21,5 @@ terraform {
     }
   }
 
-  required_version = "1.14.8"
+  required_version = "1.15.4"
 }
