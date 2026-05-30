@@ -12,5 +12,5 @@ internal class AppCheckInitializer : Initializer<Unit> {
         appCheck.installAppCheckProviderFactory(factory)
     }
 
-    override fun dependencies() = emptyList<Class<out Initializer<*>?>?>()
+    override fun dependencies() = emptyList<Class<out Initializer<*>>>()
 }

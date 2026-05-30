@@ -140,7 +140,6 @@ kotlin {
         androidMain.dependencies {
             implementation(libs.androidx.activity.compose)
             implementation(libs.androidx.core.splashscreen)
-            implementation(libs.androidx.startup.runtime)
             implementation(libs.google.accompanist.permissions)
             implementation(libs.google.android.location)
             implementation(libs.google.android.material)
@@ -157,7 +156,6 @@ kotlin {
 
         val androidDebug by registering {
             dependencies {
-                implementation(libs.google.firebase.appcheck.debug)
                 implementation(libs.compose.uiTooling)
             }
         }
