@@ -86,4 +86,15 @@ dependencies {
 
     debugImplementation(libs.google.firebase.appcheck.debug)
     debugImplementation(libs.compose.uiTooling)
+
+    testImplementation(projects.asgService)
+    testImplementation(projects.feature.eventCommon)
+    testImplementation(projects.feature.eventDetail)
+    testImplementation(projects.feature.eventGrid)
+    testImplementation(projects.feature.eventList)
+    testImplementation(projects.feature.gallerySync)
+
+    testImplementation(libs.kotlinx.collections.immutable)
+    testImplementation(libs.kotlinx.datetime)
+    testImplementation(libs.kotlinx.serialization.json)
 }

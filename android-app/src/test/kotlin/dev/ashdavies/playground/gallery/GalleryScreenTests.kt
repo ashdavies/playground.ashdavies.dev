@@ -5,7 +5,7 @@ import app.cash.paparazzi.Paparazzi
 import dev.ashdavies.playground.tooling.MaterialPreviewTheme
 import kotlinx.collections.immutable.persistentListOf
 import org.junit.Rule
-import kotlin.test.Test
+import org.junit.Test
 
 internal class GalleryScreenTests {
 

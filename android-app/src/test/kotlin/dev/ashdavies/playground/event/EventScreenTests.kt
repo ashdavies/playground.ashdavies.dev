@@ -1,6 +1,5 @@
 package dev.ashdavies.playground.event
 
-import androidx.compose.ui.Modifier
 import app.cash.paparazzi.Paparazzi
 import dev.ashdavies.asg.AsgConference
 import dev.ashdavies.playground.event.detail.EventDetailState
@@ -8,12 +7,14 @@ import dev.ashdavies.playground.event.detail.EventsDetailUi
 import dev.ashdavies.playground.event.grid.EventGridState
 import dev.ashdavies.playground.event.grid.EventGridUi
 import dev.ashdavies.playground.tooling.MaterialPreviewTheme
-import dev.ashdavies.playground.tooling.decodeFromResource
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.datetime.LocalDate
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.decodeFromStream
 import org.junit.Rule
-import kotlin.test.Test
+import org.junit.Test
+import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
 internal class EventScreenTests {
@@ -28,7 +29,7 @@ internal class EventScreenTests {
                 EventListUi(
                     state = EventListState(
                         itemList = Json
-                            .upcomingEventsList()
+                            .upcomingEvents()
                             .toImmutableList(),
                         selectedIndex = null,
                         isRefreshing = false,
@@ -47,8 +48,8 @@ internal class EventScreenTests {
                 EventGridUi(
                     state = EventGridState(
                         itemList = Json
-                            .upcomingEventsList()
-                            .map { it.toEventGridStateItem() }
+                            .upcomingEvents()
+                            .map(Event::toEventGridStateItem)
                             .toImmutableList(),
                         eventSink = { },
                     ),
@@ -64,9 +65,7 @@ internal class EventScreenTests {
                 EventsDetailUi(
                     state = EventDetailState(
                         itemState = EventDetailState.ItemState.Done(
-                            item = Json
-                                .upcomingEventsList()
-                                .first(),
+                            item = Json.upcomingEvents().first(),
                         ),
                         onBackPressed = { },
                     ),
@@ -76,6 +75,7 @@ internal class EventScreenTests {
     }
 }
 
+@OptIn(ExperimentalUuidApi::class)
 private fun Event.toEventGridStateItem(): EventGridState.Item {
     val year = LocalDate.parse(dateStart).year
     return EventGridState.Item(
@@ -87,9 +87,14 @@ private fun Event.toEventGridStateItem(): EventGridState.Item {
     )
 }
 
-internal fun Json.upcomingEventsList(): List<Event> {
-    return decodeFromResource<List<AsgConference>>("androidUnitTest", "upcoming.json")
-        .mapIndexed { index, item -> item.toEvent(index.toLong()) }
+@OptIn(ExperimentalSerializationApi::class)
+internal fun Json.upcomingEvents(): List<Event> = decodeFromStream<List<AsgConference>>(
+    stream = Event::class.java
+        .getResource("upcoming.json")
+        .let(::requireNotNull)
+        .openStream(),
+).mapIndexed { index, item ->
+    item.toEvent(index.toLong())
 }
 
 private fun AsgConference.toEvent(id: Long) = Event(
