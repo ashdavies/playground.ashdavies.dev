@@ -69,7 +69,7 @@ internal class EventPagerFactoryTest {
 @OptIn(ExperimentalSerializationApi::class)
 internal fun Json.locations(): List<Location> = decodeFromStream(
     stream = Location::class.java
-        .getResource("locations.json")
+        .getResource("/locations.json")
         .let(::requireNotNull)
         .openStream(),
 )

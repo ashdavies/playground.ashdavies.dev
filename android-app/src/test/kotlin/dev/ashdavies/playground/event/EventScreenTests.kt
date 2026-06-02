@@ -90,7 +90,7 @@ private fun Event.toEventGridStateItem(): EventGridState.Item {
 @OptIn(ExperimentalSerializationApi::class)
 internal fun Json.upcomingEvents(): List<Event> = decodeFromStream<List<AsgConference>>(
     stream = Event::class.java
-        .getResource("upcoming.json")
+        .getResource("/upcoming.json")
         .let(::requireNotNull)
         .openStream(),
 ).mapIndexed { index, item ->
