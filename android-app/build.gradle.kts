@@ -94,6 +94,8 @@ dependencies {
     testImplementation(projects.feature.eventList)
     testImplementation(projects.feature.gallerySync)
 
+    testImplementation(libs.compose.components.resources)
+    testImplementation(libs.compose.material3)
     testImplementation(libs.kotlinx.collections.immutable)
     testImplementation(libs.kotlinx.datetime)
     testImplementation(libs.kotlinx.serialization.json)
