@@ -1,7 +1,5 @@
 plugins {
-    alias(libs.plugins.android.library)
-
-    id("dev.ashdavies.android")
+    id("dev.ashdavies.android.library")
     id("dev.ashdavies.compose")
     id("dev.ashdavies.jvm")
     id("dev.ashdavies.kotlin")
@@ -12,11 +10,12 @@ plugins {
     alias(libs.plugins.zac.metro)
 }
 
-android {
-    namespace = "dev.ashdavies.playground.gallery"
-}
-
 kotlin {
+    android {
+        namespace = "dev.ashdavies.playground.gallery"
+        androidResources.enable = true
+    }
+
     sourceSets {
         commonMain.dependencies {
             implementation(projects.analytics)
@@ -49,8 +48,7 @@ sqldelight {
     databases {
         create("PlaygroundDatabase") {
             dialect(libs.sqldelight.sqlite.dialect)
-
-            packageName = android.namespace
+            packageName = kotlin.android.namespace
             generateAsync = true
         }
     }

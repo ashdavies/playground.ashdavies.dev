@@ -8,50 +8,52 @@ import org.jlleitschuh.gradle.ktlint.KtlintExtension
 
 public class KotlinConventionPlugin : Plugin<Project> {
     override fun apply(target: Project): Unit = with(target) {
-        plugins.apply(libs.plugins.kotlin.serialization)
-        plugins.apply(libs.plugins.kotlin.multiplatform)
+        pluginManager.withPlugin(libs.plugins.kotlin.multiplatform) {
+            plugins.apply(libs.plugins.kotlin.serialization)
+            plugins.apply(libs.plugins.kotlin.multiplatform)
 
-        plugins.apply(libs.plugins.detekt)
-        plugins.apply(libs.plugins.ktlint)
+            plugins.apply(libs.plugins.detekt)
+            plugins.apply(libs.plugins.ktlint)
 
-        extensions.configure<KotlinMultiplatformExtension> {
-            compilerOptions.freeCompilerArgs.add("-opt-in=kotlin.uuid.ExperimentalUuidApi")
-            explicitApi()
+            extensions.configure<KotlinMultiplatformExtension> {
+                @OptIn(ExperimentalKotlinGradlePluginApi::class)
+                applyDefaultHierarchyTemplate {
+                    common {
+                        group("androidJvm") {
+                            withAndroidTarget()
+                            withJvm()
+                        }
 
-            @OptIn(ExperimentalKotlinGradlePluginApi::class)
-            applyDefaultHierarchyTemplate {
-                common {
-                    group("androidJvm") {
-                        withAndroidTarget()
-                        withJvm()
-                    }
-
-                    group("jvmWasmJs") {
-                        withJvm()
-                        withWasmJs()
+                        group("jvmWasmJs") {
+                            withJvm()
+                            withWasmJs()
+                        }
                     }
                 }
-            }
-        }
 
-        dependencies.add("detektPlugins", libs.detekt.compose)
-
-        extensions.configure<DetektExtension> {
-            config.setFrom(rootProject.file("detekt-config.yml"))
-            parallel = true
-            buildUponDefaultConfig = true
-
-            val detektPlugin = libs.plugins.detekt.get()
-            toolVersion = "${detektPlugin.version}"
-        }
-
-        extensions.configure<KtlintExtension> {
-            filter {
-                exclude { "generated" in it.file.path }
+                compilerOptions.freeCompilerArgs.add("-opt-in=kotlin.uuid.ExperimentalUuidApi")
+                explicitApi()
             }
 
-            val ktlintBom = libs.pinterest.ktlint.bom.get()
-            version.set(ktlintBom.version)
+            dependencies.add("detektPlugins", libs.detekt.compose)
+
+            extensions.configure<DetektExtension> {
+                config.setFrom(rootProject.file("detekt-config.yml"))
+                parallel = true
+                buildUponDefaultConfig = true
+
+                val detektPlugin = libs.plugins.detekt.get()
+                toolVersion = "${detektPlugin.version}"
+            }
+
+            extensions.configure<KtlintExtension> {
+                filter {
+                    exclude { "generated" in it.file.path }
+                }
+
+                val ktlintBom = libs.pinterest.ktlint.bom.get()
+                version.set(ktlintBom.version)
+            }
         }
     }
 }

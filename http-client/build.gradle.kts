@@ -1,17 +1,13 @@
 plugins {
-    alias(libs.plugins.android.library)
-
-    id("dev.ashdavies.android")
+    id("dev.ashdavies.android.library")
     id("dev.ashdavies.jvm")
     id("dev.ashdavies.kotlin")
     id("dev.ashdavies.wasm")
 }
 
-android {
-    namespace = "dev.ashdavies.http"
-}
-
 kotlin {
+    android.namespace = "dev.ashdavies.http"
+
     sourceSets {
         commonMain.dependencies {
             implementation(projects.httpCommon)
