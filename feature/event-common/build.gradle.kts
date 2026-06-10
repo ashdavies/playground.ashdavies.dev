@@ -1,7 +1,5 @@
 plugins {
-    alias(libs.plugins.android.library)
-
-    id("dev.ashdavies.android")
+    id("dev.ashdavies.android.library")
     id("dev.ashdavies.jvm")
     id("dev.ashdavies.kotlin")
     id("dev.ashdavies.parcelable")
@@ -10,11 +8,9 @@ plugins {
     alias(libs.plugins.cash.sqldelight)
 }
 
-android {
-    namespace = "dev.ashdavies.playground.event.common"
-}
-
 kotlin {
+    android.namespace = "dev.ashdavies.playground.event.common"
+
     sourceSets {
         commonMain.dependencies {
             implementation(libs.kotlinx.datetime)
@@ -28,7 +24,7 @@ sqldelight {
     databases {
         create("PlaygroundDatabase") {
             dialect(libs.sqldelight.sqlite.dialect)
-            packageName = android.namespace
+            packageName = kotlin.android.namespace
             generateAsync = true
         }
     }

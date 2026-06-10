@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
+import playground.identity_manager.BuildConfig
 import kotlin.coroutines.CoroutineContext
 
 public interface IdentityManager {

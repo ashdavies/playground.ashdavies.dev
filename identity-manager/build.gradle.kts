@@ -1,29 +1,24 @@
 plugins {
-    alias(libs.plugins.kotlin.multiplatform)
-
-    alias(libs.plugins.android.library)
     alias(libs.plugins.build.config)
     alias(libs.plugins.cash.sqldelight)
 
-    id("dev.ashdavies.android")
+    id("dev.ashdavies.android.library")
     id("dev.ashdavies.kotlin")
     id("dev.ashdavies.jvm")
     id("dev.ashdavies.properties")
     id("dev.ashdavies.wasm")
 }
 
-android {
-    namespace = "dev.ashdavies.identity"
-}
-
 buildConfig {
     val serverClientId by stringProperty(::buildConfigField)
 
     className.set("BuildConfig")
-    packageName.set(android.namespace)
+    packageName.set(kotlin.android.namespace)
 }
 
 kotlin {
+    android.namespace = "dev.ashdavies.identity"
+
     sourceSets {
         commonMain.dependencies {
             implementation(projects.kotlinDelegates)
@@ -44,7 +39,7 @@ kotlin {
 sqldelight {
     databases {
         create("PlaygroundDatabase") {
-            packageName = android.namespace
+            packageName = kotlin.android.namespace
             generateAsync = true
         }
     }

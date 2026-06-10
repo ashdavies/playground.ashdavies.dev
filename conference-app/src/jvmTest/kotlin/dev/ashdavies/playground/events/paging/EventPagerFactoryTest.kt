@@ -5,15 +5,16 @@ import app.cash.sqldelight.async.coroutines.synchronous
 import app.cash.sqldelight.driver.jdbc.sqlite.JdbcSqliteDriver
 import dev.ashdavies.paging.PagerConfig
 import dev.ashdavies.playground.PlaygroundDatabase
-import dev.ashdavies.playground.tooling.decodeFromResource
 import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.plus
 import kotlinx.datetime.toLocalDateTime
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.decodeFromStream
 import org.junit.Test
 import kotlin.random.Random
 import kotlin.test.assertEquals
@@ -65,7 +66,13 @@ internal class EventPagerFactoryTest {
     }
 }
 
-internal fun Json.locations(): List<Location> = decodeFromResource("jvmTest", "locations.json")
+@OptIn(ExperimentalSerializationApi::class)
+internal fun Json.locations(): List<Location> = decodeFromStream(
+    stream = Location::class.java
+        .getResource("/locations.json")
+        .let(::requireNotNull)
+        .openStream(),
+)
 
 @OptIn(ExperimentalTime::class)
 private fun LocalDate.Companion.nearFuture(
