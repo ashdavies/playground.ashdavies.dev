@@ -7,7 +7,10 @@ plugins {
 }
 
 kotlin {
-    android.namespace = "dev.ashdavies.playground.ui"
+    android {
+        namespace = "dev.ashdavies.playground.ui"
+        androidResources.enable = true
+    }
 
     sourceSets {
         commonMain.dependencies {
