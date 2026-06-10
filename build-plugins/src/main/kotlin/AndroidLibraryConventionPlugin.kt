@@ -1,7 +1,5 @@
-import com.android.build.api.dsl.KotlinMultiplatformAndroidCompilation
 import com.android.build.api.dsl.KotlinMultiplatformAndroidLibraryTarget
 import com.android.build.api.withAndroid
-import org.gradle.api.Incubating
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
@@ -29,9 +27,7 @@ internal class AndroidLibraryConventionPlugin : Plugin<Project> {
                     }
                 }
             }
-        }
 
-        extensions.configure<KotlinMultiplatformExtension> {
             configure<KotlinMultiplatformAndroidLibraryTarget> {
                 val androidProjectConvention = androidProjectConventionProvider.get()
 

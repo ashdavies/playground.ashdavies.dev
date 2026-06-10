@@ -11,7 +11,10 @@ plugins {
 }
 
 kotlin {
-    android.namespace = "dev.ashdavies.playground.gallery"
+    android {
+        namespace = "dev.ashdavies.playground.gallery"
+        androidResources.enable = true
+    }
 
     sourceSets {
         commonMain.dependencies {

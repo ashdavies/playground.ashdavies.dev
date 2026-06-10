@@ -12,7 +12,10 @@ plugins {
 }
 
 kotlin {
-    android.namespace = "dev.ashdavies.playground.event.detail"
+    android {
+        namespace = "dev.ashdavies.playground.event.detail"
+        androidResources.enable = true
+    }
 
     sourceSets {
         commonMain.dependencies {

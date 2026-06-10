@@ -100,3 +100,9 @@ dependencies {
     testImplementation(libs.kotlinx.datetime)
     testImplementation(libs.kotlinx.serialization.json)
 }
+
+tasks.withType<Test>().configureEach {
+    if (name.endsWith("UnitTest")) {
+        reports.html.required.set(false)
+    }
+}
