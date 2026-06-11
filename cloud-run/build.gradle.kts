@@ -23,6 +23,8 @@ buildConfig {
     packageName.set(CloudRunConfig.PACKAGE_NAME)
 }
 
+// val googleCloudProject by stringProperty { _, _ -> }
+
 kotlin {
     explicitApiWarning()
 
@@ -49,6 +51,11 @@ kotlin {
                     group = LifecycleBasePlugin.VERIFICATION_GROUP
                     testClassesDirs = output.classesDirs
                     testLogging { events("passed") }
+
+                    /*val project = googleCloudProject
+                    if (project != null) {
+                        environment("GOOGLE_CLOUD_PROJECT", project)
+                    }*/
                 }
             }
 
@@ -98,9 +105,12 @@ kotlin {
     }
 }
 
-val jvmJar by tasks.getting(Jar::class)
+configurations.configureEach {
+    exclude("io.ktor", "ktor-client-apache5")
+}
 
 tasks.register<BuildImageTask>("deploy") {
+    val jvmJar by tasks.getting(Jar::class)
     image.set(project.provider { project.property("image") as String })
     jarFile.set(jvmJar.archiveFile.get().asFile)
     mainClass.set(CloudRunConfig.MAIN_CLASS)
