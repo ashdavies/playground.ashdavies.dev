@@ -76,7 +76,6 @@ include(
     ":kotlin-delegates",
     ":kotlin-gb",
     ":maps-routing",
-    ":nsd-manager",
     ":paging-multiplatform",
     ":parcelable-support",
     ":placeholder-highlight",
