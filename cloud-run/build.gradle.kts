@@ -23,8 +23,6 @@ buildConfig {
     packageName.set(CloudRunConfig.PACKAGE_NAME)
 }
 
-// val googleCloudProject by stringProperty { _, _ -> }
-
 kotlin {
     explicitApiWarning()
 
@@ -51,11 +49,6 @@ kotlin {
                     group = LifecycleBasePlugin.VERIFICATION_GROUP
                     testClassesDirs = output.classesDirs
                     testLogging { events("passed") }
-
-                    /*val project = googleCloudProject
-                    if (project != null) {
-                        environment("GOOGLE_CLOUD_PROJECT", project)
-                    }*/
                 }
             }
 
