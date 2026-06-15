@@ -12,8 +12,9 @@ import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.input.key.type
 import androidx.compose.ui.layout.onPlaced
-import com.slack.circuit.backstack.NavDecoration
+import com.slack.circuit.foundation.NavDecoration
 import com.slack.circuit.foundation.NavigatorDefaults
+import com.slack.circuit.runtime.Navigator
 import com.slack.circuit.runtime.navigation.NavArgument
 import com.slack.circuit.runtime.navigation.NavStackList
 
@@ -26,11 +27,13 @@ public class KeyNavigationDecoration(
     @Composable
     override fun <T : NavArgument> DecoratedContent(
         args: NavStackList<T>,
+        navigator: Navigator,
         modifier: Modifier,
         content: @Composable ((T) -> Unit),
     ) {
         decoration.DecoratedContent(
             args = args,
+            navigator = navigator,
             modifier = modifier
                 .focusOnPlacement(remember { FocusRequester() })
                 .onPreviewKeyUp(
