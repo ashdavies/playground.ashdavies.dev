@@ -1,7 +1,5 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.compose.reload.gradle.ComposeHotRun
-import org.jetbrains.kotlin.compose.compiler.gradle.ComposeFeatureFlag
-import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 
 private object ConferenceAppConfig {
     const val APPLICATION_NAME = "dev.ashdavies.playground"
@@ -23,24 +21,21 @@ plugins {
     alias(libs.plugins.zac.metro)
 }
 
-metro {
-    warnOnInjectAnnotationPlacement = false
-}
-
 kotlin {
     android.namespace = ConferenceAppConfig.APPLICATION_NAME
 }
 
 buildConfig {
     val androidApiKey by stringProperty(::buildConfigField)
+    val androidAppId by stringProperty(::buildConfigField)
+
     val browserApiKey by stringProperty(::buildConfigField)
+    val browserAppId by stringProperty(::buildConfigField)
+
+    val googleProjectId by stringProperty(::buildConfigField)
 
     className.set("BuildConfig")
     packageName.set(kotlin.android.namespace)
-}
-
-composeCompiler {
-    featureFlags.add(ComposeFeatureFlag.OptimizeNonSkippingGroups)
 }
 
 compose.desktop {
