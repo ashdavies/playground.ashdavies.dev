@@ -74,7 +74,7 @@ configurations.configureEach {
 }
 
 tasks.register<BuildImageTask>("deploy") {
-    val jvmJar by tasks.getting(Jar::class)
+    val jvmJar = tasks.getByName<Jar>("jvmJar")
     image.set(project.provider { project.property("image") as String })
     jarFile.set(jvmJar.archiveFile.get().asFile)
     mainClass.set(CloudRunConfig.MAIN_CLASS)

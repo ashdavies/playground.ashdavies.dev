@@ -107,11 +107,16 @@ kotlin {
             implementation(libs.sqldelight.runtime)
         }
 
-        val androidJvmMain by getting {
-            dependencies {
-                implementation(libs.androidx.paging.common)
-                implementation(libs.sqldelight.paging3.extensions)
-            }
+        commonTest.dependencies {
+            implementation(kotlin("test"))
+
+            implementation(libs.app.cash.turbine)
+            implementation(libs.kotlinx.coroutines.test)
+        }
+
+        androidJvmMain.dependencies {
+            implementation(libs.androidx.paging.common)
+            implementation(libs.sqldelight.paging3.extensions)
         }
 
         androidMain.dependencies {
