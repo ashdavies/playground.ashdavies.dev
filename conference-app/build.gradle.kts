@@ -75,7 +75,6 @@ kotlin {
             implementation(projects.httpClient)
             implementation(projects.httpCommon)
             implementation(projects.identityManager)
-            implementation(projects.kotlinDelegates)
             implementation(projects.mapsRouting)
             implementation(projects.pagingMultiplatform)
             implementation(projects.placeholderHighlight)
