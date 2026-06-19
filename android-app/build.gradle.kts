@@ -61,10 +61,6 @@ android {
     namespace = "dev.ashdavies.android.playground"
 }
 
-composeCompiler {
-    featureFlags.add(ComposeFeatureFlag.OptimizeNonSkippingGroups)
-}
-
 dependencies {
     implementation(projects.conferenceApp)
 
