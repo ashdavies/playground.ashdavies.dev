@@ -24,7 +24,7 @@ public class KotlinConventionPlugin : Plugin<Project> {
 
             extensions.configure<KotlinMultiplatformExtension> {
                 @OptIn(ExperimentalKotlinGradlePluginApi::class)
-                applyDefaultHierarchyTemplate {
+                applyHierarchyTemplate {
                     common {
                         group("androidJvm") {
                             @Suppress("UnstableApiUsage")
