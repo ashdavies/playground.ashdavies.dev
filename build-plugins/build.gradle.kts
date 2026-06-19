@@ -41,6 +41,11 @@ gradlePlugin {
             id = "dev.ashdavies.compose"
         }
 
+        register("integrationTestPlugin") {
+            implementationClass = "IntegrationTestPlugin"
+            id = "dev.ashdavies.integration"
+        }
+
         register("jvmConventionPlugin") {
             implementationClass = "JvmConventionPlugin"
             id = "dev.ashdavies.jvm"

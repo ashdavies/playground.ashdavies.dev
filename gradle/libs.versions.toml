@@ -10,12 +10,12 @@ compose-plugin = "1.11.1"
 google-accompanist = "0.37.3"
 google-android = "9.2.1"
 google-ksp = "2.3.6"
-google-services = "4.4.4"
+google-services = "4.5.0"
 jetbrains-kotlin = "2.4.0"
 kotlinx-coroutines = "1.11.0"
 kotlinx-serialization = "1.11.0"
 ktor = "3.5.0"
-slack-circuit = "0.33.1"
+slack-circuit = "0.34.0"
 sqlJs = "1.8.0"
 webPack = "9.1.0"
 
@@ -53,7 +53,7 @@ compose-runtime = { module = "org.jetbrains.compose.runtime:runtime", version.re
 compose-ui = { module = "org.jetbrains.compose.ui:ui", version.ref = "compose-plugin" }
 compose-uiTooling = { module = "org.jetbrains.compose.ui:ui-tooling", version.ref = "compose-plugin" }
 
-detekt-compose = "io.nlopez.compose.rules:detekt:0.6.0"
+detekt-compose = "io.nlopez.compose.rules:detekt:0.6.2"
 
 google-accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "google-accompanist" }
 google-android-identity = "com.google.android.libraries.identity.googleid:googleid:1.2.0"
@@ -74,7 +74,7 @@ google-maps-android-utils = "com.google.maps.android:android-maps-utils:4.4.0"
 jib-core = "com.google.cloud.tools:jib-core:0.28.1"
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "jetbrains-kotlin" }
 
-kotlinx-collections-immutable = "org.jetbrains.kotlinx:kotlinx-collections-immutable:0.4.0"
+kotlinx-collections-immutable = "org.jetbrains.kotlinx:kotlinx-collections-immutable:0.5.0"
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutines-play-services = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutines-swing = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-swing", version.ref = "kotlinx-coroutines" }

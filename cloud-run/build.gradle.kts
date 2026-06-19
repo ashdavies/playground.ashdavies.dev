@@ -7,6 +7,7 @@ private object CloudRunConfig {
 
 plugins {
     id("dev.ashdavies.cloud")
+    id("dev.ashdavies.integration")
     id("dev.ashdavies.jvm")
     id("dev.ashdavies.kotlin")
     id("dev.ashdavies.properties")
@@ -32,27 +33,6 @@ kotlin {
             executable {
                 mainClass.set(CloudRunConfig.MAIN_CLASS)
             }
-        }
-
-        compilations {
-            val main by compilations.getting
-            val test by compilations.getting
-
-            val integrationTest by compilations.creating {
-                defaultSourceSet.dependencies {
-                    implementation(main.compileDependencyFiles + main.output.classesDirs)
-                }
-
-                tasks.register<Test>("integrationTest") {
-                    classpath = compileDependencyFiles + runtimeDependencyFiles + output.allOutputs
-                    description = "Run integration tests."
-                    group = LifecycleBasePlugin.VERIFICATION_GROUP
-                    testClassesDirs = output.classesDirs
-                    testLogging { events("passed") }
-                }
-            }
-
-            integrationTest.associateWith(test)
         }
     }
 
@@ -80,20 +60,11 @@ kotlin {
             implementation(libs.ktor.server.host.common)
         }
 
-        commonTest.dependencies {
-            implementation(kotlin("test"))
-
+        jvmIntegrationTest.dependencies {
+            implementation(libs.app.cash.turbine)
+            implementation(libs.kotlinx.coroutines.test)
+            implementation(libs.ktor.client.content.negotiation)
             implementation(libs.ktor.server.test.host)
-        }
-
-        val jvmIntegrationTest by getting {
-            dependencies {
-                implementation(kotlin("test-junit"))
-
-                implementation(libs.app.cash.turbine)
-                implementation(libs.kotlinx.coroutines.test)
-                implementation(libs.ktor.client.content.negotiation)
-            }
         }
     }
 }
