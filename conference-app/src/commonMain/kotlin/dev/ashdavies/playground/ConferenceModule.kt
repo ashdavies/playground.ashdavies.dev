@@ -1,7 +1,6 @@
 package dev.ashdavies.playground
 
 import dev.ashdavies.analytics.RemoteAnalytics
-import dev.ashdavies.config.RemoteConfig
 import dev.ashdavies.content.PlatformContext
 import dev.ashdavies.sql.DatabaseFactory
 import dev.zacsweers.metro.AppScope
@@ -33,7 +32,4 @@ internal interface ConferenceModule {
 
     @Provides
     fun remoteAnalytics(): RemoteAnalytics = RemoteAnalytics()
-
-    @Provides
-    fun remoteConfig(): RemoteConfig = RemoteConfig()
 }

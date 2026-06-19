@@ -48,6 +48,4 @@ kotlin {
 metro {
     @OptIn(ExperimentalMetroGradleApi::class)
     enableCircuitCodegen = true
-
-    warnOnInjectAnnotationPlacement = false
 }
