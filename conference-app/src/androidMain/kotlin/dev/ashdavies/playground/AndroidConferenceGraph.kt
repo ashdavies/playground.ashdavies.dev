@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.os.Build
 import androidx.core.content.pm.PackageInfoCompat
+import com.google.firebase.FirebaseApp
 import dev.ashdavies.config.RemoteConfig
 import dev.ashdavies.config.firebase.FirebaseRemoteConfig
 import dev.ashdavies.content.PlatformContext
@@ -37,8 +38,10 @@ internal interface AndroidConferenceGraph : ConferenceGraph {
         install(FirebaseAppCheckHeader)
     }
 
-    @Binds
-    fun FirebaseRemoteConfig.remoteConfig(): RemoteConfig
+    @Provides
+    fun remoteConfig(context: PlatformContext): RemoteConfig = FirebaseRemoteConfig(
+        firebaseApp = requireNotNull(FirebaseApp.initializeApp(context))
+    )
 
     @DependencyGraph.Factory
     fun interface Factory {

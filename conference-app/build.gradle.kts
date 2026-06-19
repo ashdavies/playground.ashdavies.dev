@@ -141,7 +141,10 @@ kotlin {
         }
 
         jvmTest.dependencies {
+            implementation(kotlin("test"))
+
             implementation(libs.androidx.paging.testing)
+            implementation(libs.kotlinx.coroutines.test)
             implementation(libs.sqldelight.sqlite.driver)
         }
 
