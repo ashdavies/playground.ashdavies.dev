@@ -40,7 +40,7 @@ internal interface AndroidConferenceGraph : ConferenceGraph {
 
     @Provides
     fun remoteConfig(context: PlatformContext): RemoteConfig = FirebaseRemoteConfig(
-        firebaseApp = requireNotNull(FirebaseApp.initializeApp(context))
+        firebaseApp = requireNotNull(FirebaseApp.initializeApp(context)),
     )
 
     @DependencyGraph.Factory
