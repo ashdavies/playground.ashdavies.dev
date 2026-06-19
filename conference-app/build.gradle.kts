@@ -119,11 +119,9 @@ kotlin {
             implementation(libs.kotlinx.coroutines.test)
         }
 
-        val androidJvmMain by getting {
-            dependencies {
-                implementation(libs.androidx.paging.common)
-                implementation(libs.sqldelight.paging3.extensions)
-            }
+        androidJvmMain.dependencies {
+            implementation(libs.androidx.paging.common)
+            implementation(libs.sqldelight.paging3.extensions)
         }
 
         androidMain.dependencies {

@@ -16,10 +16,8 @@ kotlin {
             implementation(libs.kotlinx.coroutines.core)
         }
 
-        val androidJvmMain by getting {
-            dependencies {
-                api(libs.androidx.paging.compose)
-            }
+        androidJvmMain.dependencies {
+            api(libs.androidx.paging.compose)
         }
     }
 }

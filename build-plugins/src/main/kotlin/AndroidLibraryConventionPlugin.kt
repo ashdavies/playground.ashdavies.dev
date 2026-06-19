@@ -12,22 +12,6 @@ internal class AndroidLibraryConventionPlugin : Plugin<Project> {
         plugins.apply(libs.plugins.kotlin.multiplatform)
 
         extensions.configure<KotlinMultiplatformExtension> {
-            @OptIn(ExperimentalKotlinGradlePluginApi::class)
-            applyDefaultHierarchyTemplate {
-                common {
-                    group("androidJvm") {
-                        @Suppress("UnstableApiUsage")
-                        withAndroid()
-                        withJvm()
-                    }
-
-                    group("nonAndroid") {
-                        withJvm()
-                        withWasmJs()
-                    }
-                }
-            }
-
             configure<KotlinMultiplatformAndroidLibraryTarget> {
                 val androidProjectConvention = androidProjectConventionProvider.get()
 

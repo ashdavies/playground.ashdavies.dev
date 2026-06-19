@@ -1,10 +1,16 @@
 import io.gitlab.arturbosch.detekt.extensions.DetektExtension
+import org.gradle.api.NamedDomainObjectContainer
+import org.gradle.api.NamedDomainObjectProvider
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
+import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
 import org.jlleitschuh.gradle.ktlint.KtlintExtension
+
+public val NamedDomainObjectContainer<KotlinSourceSet>.androidJvmMain: NamedDomainObjectProvider<KotlinSourceSet>
+    get() = named("androidJvmMain")
 
 public class KotlinConventionPlugin : Plugin<Project> {
     override fun apply(target: Project): Unit = with(target) {
