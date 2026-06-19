@@ -7,7 +7,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.slack.circuit.retained.rememberRetained
 import com.slack.circuit.runtime.presenter.Presenter
-import dev.ashdavies.delegates.notNull
 import dev.ashdavies.playground.BuildConfig
 import dev.ashdavies.playground.circuit.CircuitScreenKey
 import dev.ashdavies.routing.ComputeRoutesCallable
