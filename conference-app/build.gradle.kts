@@ -10,6 +10,7 @@ private object ConferenceAppConfig {
 plugins {
     id("dev.ashdavies.android.library")
     id("dev.ashdavies.compose")
+    id("dev.ashdavies.integration")
     id("dev.ashdavies.jvm")
     id("dev.ashdavies.kotlin")
     id("dev.ashdavies.parcelable")
@@ -107,13 +108,6 @@ kotlin {
             implementation(libs.sqldelight.runtime)
         }
 
-        commonTest.dependencies {
-            implementation(kotlin("test"))
-
-            implementation(libs.app.cash.turbine)
-            implementation(libs.kotlinx.coroutines.test)
-        }
-
         val androidJvmMain by getting {
             dependencies {
                 implementation(libs.androidx.paging.common)
@@ -149,6 +143,11 @@ kotlin {
         jvmTest.dependencies {
             implementation(libs.androidx.paging.testing)
             implementation(libs.sqldelight.sqlite.driver)
+        }
+
+        jvmIntegrationTest.dependencies {
+            implementation(libs.app.cash.turbine)
+            implementation(libs.kotlinx.coroutines.test)
         }
 
         wasmJsMain.dependencies {
