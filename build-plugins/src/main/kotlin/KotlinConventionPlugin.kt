@@ -1,3 +1,4 @@
+import com.android.build.api.withAndroid
 import io.gitlab.arturbosch.detekt.extensions.DetektExtension
 import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.NamedDomainObjectProvider
@@ -26,7 +27,8 @@ public class KotlinConventionPlugin : Plugin<Project> {
                 applyDefaultHierarchyTemplate {
                     common {
                         group("androidJvm") {
-                            withAndroidTarget()
+                            @Suppress("UnstableApiUsage")
+                            withAndroid()
                             withJvm()
                         }
 
