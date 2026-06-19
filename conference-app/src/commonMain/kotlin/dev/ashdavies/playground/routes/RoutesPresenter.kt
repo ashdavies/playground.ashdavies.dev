@@ -7,7 +7,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.slack.circuit.retained.rememberRetained
 import com.slack.circuit.runtime.presenter.Presenter
-import dev.ashdavies.delegates.notNull
 import dev.ashdavies.playground.BuildConfig
 import dev.ashdavies.playground.circuit.CircuitScreenKey
 import dev.ashdavies.routing.ComputeRoutesCallable
@@ -47,7 +46,9 @@ internal class RoutesPresenter @Inject constructor(
             }
         }
 
-        val androidApiKey by notNull { BuildConfig.ANDROID_API_KEY }
+        val androidApiKey = requireNotNull(BuildConfig.ANDROID_API_KEY) {
+            "Required value 'androidApiKey' was null."
+        }
 
         val computeRoutes = rememberRetained {
             ComputeRoutesCallable(
