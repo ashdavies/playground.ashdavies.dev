@@ -1,11 +1,14 @@
 package dev.ashdavies.playground
 
+import dev.ashdavies.config.RemoteConfig
+import dev.ashdavies.config.firebase.rest.FirebaseRestRemoteConfig
 import dev.ashdavies.content.PlatformContext
 import dev.ashdavies.http.defaultHttpClient
 import dev.ashdavies.paging.Pager
 import dev.ashdavies.paging.PagerFactory
 import dev.ashdavies.playground.event.Event
 import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.Binds
 import dev.zacsweers.metro.DependencyGraph
 import dev.zacsweers.metro.Provides
 import io.ktor.client.HttpClient
@@ -26,6 +29,9 @@ internal interface WasmConferenceGraph : ConferenceGraph {
             header("X-API-Key", BuildConfig.BROWSER_API_KEY)
         }
     }
+
+    @Binds
+    fun FirebaseRestRemoteConfig.remoteConfig(): RemoteConfig
 
     @DependencyGraph.Factory
     fun interface Factory {

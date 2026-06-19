@@ -1,7 +1,5 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.compose.reload.gradle.ComposeHotRun
-import org.jetbrains.kotlin.compose.compiler.gradle.ComposeFeatureFlag
-import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 
 private object ConferenceAppConfig {
     const val APPLICATION_NAME = "dev.ashdavies.playground"
@@ -12,6 +10,7 @@ private object ConferenceAppConfig {
 plugins {
     id("dev.ashdavies.android.library")
     id("dev.ashdavies.compose")
+    id("dev.ashdavies.integration")
     id("dev.ashdavies.jvm")
     id("dev.ashdavies.kotlin")
     id("dev.ashdavies.parcelable")
@@ -23,24 +22,21 @@ plugins {
     alias(libs.plugins.zac.metro)
 }
 
-metro {
-    warnOnInjectAnnotationPlacement = false
-}
-
 kotlin {
     android.namespace = ConferenceAppConfig.APPLICATION_NAME
 }
 
 buildConfig {
     val androidApiKey by stringProperty(::buildConfigField)
+    val androidAppId by stringProperty(::buildConfigField)
+
     val browserApiKey by stringProperty(::buildConfigField)
+    val browserAppId by stringProperty(::buildConfigField)
+
+    val googleProjectId by stringProperty(::buildConfigField)
 
     className.set("BuildConfig")
     packageName.set(kotlin.android.namespace)
-}
-
-composeCompiler {
-    featureFlags.add(ComposeFeatureFlag.OptimizeNonSkippingGroups)
 }
 
 compose.desktop {
@@ -112,13 +108,6 @@ kotlin {
             implementation(libs.sqldelight.runtime)
         }
 
-        commonTest.dependencies {
-            implementation(kotlin("test"))
-
-            implementation(libs.app.cash.turbine)
-            implementation(libs.kotlinx.coroutines.test)
-        }
-
         val androidJvmMain by getting {
             dependencies {
                 implementation(libs.androidx.paging.common)
@@ -152,8 +141,16 @@ kotlin {
         }
 
         jvmTest.dependencies {
+            implementation(kotlin("test"))
+
             implementation(libs.androidx.paging.testing)
+            implementation(libs.kotlinx.coroutines.test)
             implementation(libs.sqldelight.sqlite.driver)
+        }
+
+        jvmIntegrationTest.dependencies {
+            implementation(libs.app.cash.turbine)
+            implementation(libs.kotlinx.coroutines.test)
         }
 
         wasmJsMain.dependencies {
