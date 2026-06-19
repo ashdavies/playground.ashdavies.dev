@@ -1,7 +1,6 @@
 package dev.ashdavies.identity
 
 import app.cash.sqldelight.coroutines.mapToOneOrNull
-import dev.ashdavies.delegates.notNull
 import dev.ashdavies.sql.Suspended
 import dev.ashdavies.sql.mapAsFlow
 import kotlinx.coroutines.flow.Flow
@@ -32,7 +31,10 @@ public fun IdentityManager(
     override val state: Flow<IdentityState> = merge(states, queries)
 
     override suspend fun signIn() {
-        val serverClientId by notNull { BuildConfig.SERVER_CLIENT_ID }
+        val serverClientId = requireNotNull(BuildConfig.SERVER_CLIENT_ID) {
+            "Required value 'serverClientId' was null."
+        }
+
         val identityRequest = GoogleIdIdentityRequest(serverClientId)
         val identityResponse = try {
             identityService.request(identityRequest)

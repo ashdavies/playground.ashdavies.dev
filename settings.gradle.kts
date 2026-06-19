@@ -73,7 +73,6 @@ include(
     ":http-common",
     ":identity-manager",
     ":key-navigation",
-    ":kotlin-delegates",
     ":kotlin-gb",
     ":maps-routing",
     ":paging-multiplatform",
