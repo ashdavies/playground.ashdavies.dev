@@ -25,7 +25,6 @@ import io.ktor.http.contentType
 import io.ktor.serialization.kotlinx.json.json
 import io.ktor.server.testing.ApplicationTestBuilder
 import io.ktor.server.testing.testApplication
-import io.ktor.utils.io.KtorDsl
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -83,7 +82,6 @@ internal class ApplicationTest {
     }
 }
 
-@KtorDsl
 private fun testMainApplication(block: suspend ApplicationTestBuilder.(HttpClient) -> Unit) = testApplication {
     val client = createClient(DefaultHttpConfig)
     val graph = createGraph<CloudRunGraph>()
