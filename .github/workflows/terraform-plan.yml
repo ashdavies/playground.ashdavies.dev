@@ -23,6 +23,12 @@ jobs:
           service_account: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
           token_format: access_token
 
+      - id: app-token
+        uses: ./.github/actions/github-token
+        with:
+          app_id: ${{ secrets.GH_APP_ID }}
+          private_key: ${{ secrets.GH_PRIVATE_KEY }}
+
       - uses: hashicorp/setup-terraform@v4
         with:
           terraform_version: 1.15.6
@@ -42,7 +48,7 @@ jobs:
       - id: terraform-plan
         env:
           TF_VAR_op_service_account_token: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
-          TF_VAR_gh_token: ${{ github.token }}
+          TF_VAR_gh_token: ${{ steps.app-token.outputs.token }}
           TF_INPUT: false
         run: |
           terraform -chdir=terraform plan >/dev/null -lock-timeout=5m -out=.terraform/terraform.tfplan
