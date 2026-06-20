@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  main:
     runs-on: ubuntu-latest
 
     permissions:
@@ -30,8 +30,7 @@ jobs:
           service_account: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
           token_format: access_token
 
-      - if: github.ref == 'refs/heads/main'
-        run: |
+      - run: |
           ./gradlew cloud-run:deploy \
             -Pimage=europe-west1-docker.pkg.dev/${{ steps.google-cloud-auth.outputs.project_id }}/cloud-run-source-deploy/api.ashdavies.dev \
             --no-configuration-cache \
