@@ -1,0 +1,57 @@
+name: Terraform Apply
+
+on:
+  push:
+    branches:
+      - main
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    permissions:
+      id-token: write
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: ./.github/actions/setup-java
+
+      - uses: gradle/actions/setup-gradle@v6
+
+      - uses: 1password/install-cli-action@v4
+
+      - id: google-cloud-auth
+        uses: google-github-actions/auth@v3
+        with:
+          workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
+          token_format: access_token
+
+      - if: github.ref == 'refs/heads/main'
+        run: |
+          ./gradlew cloud-run:deploy \
+            -Pimage=europe-west1-docker.pkg.dev/${{ steps.google-cloud-auth.outputs.project_id }}/cloud-run-source-deploy/api.ashdavies.dev \
+            --no-configuration-cache \
+            --console=plain
+
+      - id: app-token
+        uses: ./.github/actions/github-token
+        with:
+          app_id: ${{ secrets.GH_APP_ID }}
+          private_key: ${{ secrets.GH_PRIVATE_KEY }}
+
+      - uses: hashicorp/setup-terraform@v4
+        with:
+          terraform_version: 1.15.6
+
+      - run: terraform -chdir=terraform init
+
+      - env:
+          TF_VAR_op_service_account_token: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+          TF_VAR_gh_token: ${{ steps.app-token.outputs.token }}
+          TF_LOG: ${{ inputs.debug && 'DEBUG' || 'ERROR' }}
+          TF_INPUT: false
+        run: terraform -chdir=terraform apply -auto-approve -lock-timeout=5m

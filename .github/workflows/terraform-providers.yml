@@ -1,11 +1,7 @@
-name: Terraform Unlock
+name: Terraform Providers
 
 on:
   workflow_dispatch:
-    inputs:
-      lock_id:
-        required: true
-        type: string
 
 jobs:
   build:
@@ -35,5 +31,4 @@ jobs:
           TF_VAR_op_service_account_token: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
           TF_VAR_gh_token: ${{ github.token }}
           TF_INPUT: false
-          LOCK_ID: ${{ github.event.inputs.lock_id }}
-        run: terraform -chdir=terraform force-unlock -force "$LOCK_ID" -no-color
+        run: echo $(terraform -chdir=terraform providers -no-color) >> $GITHUB_STEP_SUMMARY

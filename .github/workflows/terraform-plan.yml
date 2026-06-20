@@ -1,0 +1,57 @@
+name: Terraform Plan
+
+on:
+  pull_request:
+    branches:
+      - "*"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    permissions:
+      pull-requests: write
+      id-token: write
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - id: google-cloud-auth
+        uses: google-github-actions/auth@v3
+        with:
+          workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
+          token_format: access_token
+
+      - uses: hashicorp/setup-terraform@v4
+        with:
+          terraform_version: 1.15.6
+
+      - uses: terraform-linters/setup-tflint@v6
+        with:
+          tflint_version: v0.52.0
+
+      - run: tflint --init --chdir=terraform
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+
+      - run: tflint --chdir=terraform --format=compact --minimum-failure-severity=warning
+
+      - run: terraform -chdir=terraform init
+
+      - id: terraform-plan
+        env:
+          TF_VAR_op_service_account_token: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+          TF_VAR_gh_token: ${{ steps.app-token.outputs.token }}
+          TF_LOG: ${{ inputs.debug && 'DEBUG' || 'ERROR' }}
+          TF_INPUT: false
+        run: |
+          terraform -chdir=terraform plan >/dev/null -lock-timeout=5m -out=.terraform/terraform.tfplan
+          terraform -chdir=terraform show .terraform/terraform.tfplan -no-color
+
+      - uses: thollander/actions-comment-pull-request@v3
+        if: github.event_name == 'pull_request' && steps.terraform-plan.outputs.stdout != ''
+        with:
+          message: "```${{ steps.terraform-plan.outputs.stdout }}```"
+          comment-tag: terraform-plan
+          mode: recreate
