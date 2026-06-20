@@ -8,8 +8,7 @@ on:
         type: string
 
 jobs:
-  build:
-    name: Google Cloud
+  main:
     runs-on: ubuntu-latest
 
     permissions:

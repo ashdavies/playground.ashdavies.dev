@@ -4,8 +4,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
-    name: Google Cloud
+  main:
     runs-on: ubuntu-latest
 
     permissions:
@@ -31,4 +30,4 @@ jobs:
           TF_VAR_op_service_account_token: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
           TF_VAR_gh_token: ${{ github.token }}
           TF_INPUT: false
-        run: echo $(terraform -chdir=terraform providers -no-color) >> $GITHUB_STEP_SUMMARY
+        run: echo "```$(terraform -chdir=terraform providers -no-color)```" >> $GITHUB_STEP_SUMMARY
