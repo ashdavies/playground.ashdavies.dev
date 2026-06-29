@@ -12,11 +12,6 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             api(libs.androidx.paging.common)
-            api(libs.androidx.paging.compose)
-
-            implementation(libs.compose.foundation)
-            implementation(libs.kotlinx.collections.immutable)
-            implementation(libs.kotlinx.coroutines.core)
         }
     }
 }
