@@ -14,7 +14,7 @@ google-services = "4.5.0"
 jetbrains-kotlin = "2.4.0"
 kotlinx-coroutines = "1.11.0"
 kotlinx-serialization = "1.11.0"
-ktor = "3.5.0"
+ktor = "3.5.1"
 slack-circuit = "0.34.0"
 sqlJs = "1.8.0"
 webPack = "9.1.0"
@@ -57,7 +57,7 @@ detekt-compose = "io.nlopez.compose.rules:detekt:0.6.2"
 
 google-accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "google-accompanist" }
 google-android-identity = "com.google.android.libraries.identity.googleid:googleid:1.2.0"
-google-android-location = "com.google.android.gms:play-services-location:21.3.0"
+google-android-location = "com.google.android.gms:play-services-location:21.4.0"
 google-android-material = "com.google.android.material:material:1.14.0"
 google-auth-http = "com.google.auth:google-auth-library-oauth2-http:1.48.0"
 google-firebase-admin = "com.google.firebase:firebase-admin:9.9.0"
@@ -80,7 +80,7 @@ kotlinx-coroutines-play-services = { module = "org.jetbrains.kotlinx:kotlinx-cor
 kotlinx-coroutines-swing = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-swing", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinx-coroutines" }
 kotlinx-datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.8.0-0.6.x-compat"
-kotlinx-io-core = "org.jetbrains.kotlinx:kotlinx-io-core:0.9.0"
+kotlinx-io-core = "org.jetbrains.kotlinx:kotlinx-io-core:0.9.1"
 kotlinx-serialization-core = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version.ref = "kotlinx-serialization" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
 kotlinx-serialization-properties = { module = "org.jetbrains.kotlinx:kotlinx-serialization-properties", version.ref = "kotlinx-serialization" }

@@ -22,7 +22,7 @@ jobs:
 
       - uses: hashicorp/setup-terraform@v4
         with:
-          terraform_version: 1.15.6
+          terraform_version: 1.15.7
 
       - run: terraform -chdir=terraform init
 
