@@ -1,4 +1,4 @@
-package dev.ashdavies.playground.events.paging
+package dev.ashdavies.playground.paging
 
 import dev.ashdavies.asg.AsgConference
 import dev.ashdavies.asg.UpcomingConferencesCallable
@@ -36,7 +36,9 @@ internal fun UpcomingEventsCallable(httpClient: HttpClient, remoteConfig: Remote
 
     return UpcomingEventsCallable { request ->
         when {
-            remoteConfig.isPagingEnabled() -> pagedCallable(request)
+            remoteConfig.isPagingEnabled() -> {
+                pagedCallable(request)
+            }
 
             else -> asgCallable.asSequence(Unit) { response ->
                 response

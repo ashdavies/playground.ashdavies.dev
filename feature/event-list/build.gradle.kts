@@ -22,10 +22,11 @@ kotlin {
             implementation(projects.analytics)
             implementation(projects.composeMaterial)
             implementation(projects.feature.eventCommon)
-            implementation(projects.pagingMultiplatform)
+            implementation(projects.feature.pagerFactory)
             implementation(projects.placeholderHighlight)
             implementation(projects.uiComponents)
 
+            implementation(libs.androidx.paging.compose)
             implementation(libs.compose.components.resources)
             implementation(libs.compose.foundation)
             implementation(libs.compose.material3)

@@ -4,9 +4,6 @@ import dev.ashdavies.config.RemoteConfig
 import dev.ashdavies.config.firebase.rest.FirebaseRestRemoteConfig
 import dev.ashdavies.content.PlatformContext
 import dev.ashdavies.http.defaultHttpClient
-import dev.ashdavies.paging.Pager
-import dev.ashdavies.paging.PagerFactory
-import dev.ashdavies.playground.event.Event
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.Binds
 import dev.zacsweers.metro.DependencyGraph
@@ -18,9 +15,6 @@ import kotlinx.browser.window
 
 @DependencyGraph(AppScope::class)
 internal interface WasmConferenceGraph : ConferenceGraph {
-
-    @Provides
-    fun eventPagerFactory(): PagerFactory<Long, Event> = PagerFactory { Pager() }
 
     @Provides
     fun httpClient(context: PlatformContext): HttpClient = defaultHttpClient {

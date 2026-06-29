@@ -1,4 +1,4 @@
-package dev.ashdavies.playground.events.paging
+package dev.ashdavies.playground.paging
 
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
@@ -6,13 +6,12 @@ import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import dev.ashdavies.playground.event.Event
 import dev.ashdavies.playground.event.EventQueries
-import dev.ashdavies.sql.Suspended
 import io.ktor.client.network.sockets.SocketTimeoutException
 import dev.ashdavies.http.common.models.ApiConference as ApiEvent
 
 @OptIn(ExperimentalPagingApi::class)
 internal class EventsRemoteMediator<T : Any>(
-    private val eventsQueries: Suspended<EventQueries>,
+    private val eventsQueries: EventQueries,
     private val eventsCallable: UpcomingEventsCallable,
     private val onInvalidate: () -> Unit,
 ) : RemoteMediator<T, Event>() {
@@ -29,7 +28,6 @@ internal class EventsRemoteMediator<T : Any>(
             is CallableResult.Error<*> -> MediatorResult.Error(result.throwable)
 
             is CallableResult.Success -> {
-                val eventsQueries = eventsQueries()
                 var rowsInserted = 0L
 
                 eventsQueries.transaction {

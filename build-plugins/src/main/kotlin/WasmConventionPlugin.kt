@@ -12,7 +12,12 @@ internal class WasmConventionPlugin : Plugin<Project> {
         configure<KotlinMultiplatformExtension> {
             wasmJs {
                 binaries.executable()
-                browser()
+
+                browser {
+                    commonWebpackConfig {
+                        sourceMaps = true
+                    }
+                }
             }
         }
     }
