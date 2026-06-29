@@ -26,6 +26,7 @@ kotlin {
             implementation(projects.placeholderHighlight)
             implementation(projects.uiComponents)
 
+            implementation(libs.androidx.paging.common)
             implementation(libs.compose.components.resources)
             implementation(libs.compose.foundation)
             implementation(libs.compose.material3)

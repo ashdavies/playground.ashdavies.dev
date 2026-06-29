@@ -81,6 +81,7 @@ kotlin {
             implementation(projects.uiComponents)
 
             implementation(libs.androidx.annotation)
+            implementation(libs.androidx.paging.common)
             implementation(libs.androidx.window.core)
             implementation(libs.coil.compose)
             implementation(libs.coil.network)
@@ -104,6 +105,7 @@ kotlin {
             implementation(libs.slack.circuit.foundation)
             implementation(libs.slack.circuit.overlay)
             implementation(libs.sqldelight.coroutines.extensions)
+            implementation(libs.sqldelight.paging3.extensions)
             implementation(libs.sqldelight.runtime)
         }
 
@@ -112,11 +114,6 @@ kotlin {
 
             implementation(libs.app.cash.turbine)
             implementation(libs.kotlinx.coroutines.test)
-        }
-
-        androidJvmMain.dependencies {
-            implementation(libs.androidx.paging.common)
-            implementation(libs.sqldelight.paging3.extensions)
         }
 
         androidMain.dependencies {

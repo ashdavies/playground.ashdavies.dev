@@ -1,4 +1,4 @@
-package dev.ashdavies.playground.events.paging
+package dev.ashdavies.playground.paging
 
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.InvalidatingPagingSourceFactory
@@ -19,7 +19,6 @@ import dev.zacsweers.metro.ContributesBinding
 import dev.zacsweers.metro.Inject
 import io.ktor.client.HttpClient
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.runBlocking
 import kotlin.coroutines.CoroutineContext
 
 @ContributesBinding(AppScope::class)
@@ -36,23 +35,24 @@ internal class EventPagerFactory(
     ) : this(
         eventsCallable = UpcomingEventsCallable(httpClient, remoteConfig),
         eventsQueries = databaseFactory.map { it.eventQueries },
-        coroutineContext = Dispatchers.IO,
+        coroutineContext = Dispatchers.Main,
     )
 
-    override fun create(config: PagerConfig<Long>): Pager<Long, Event> {
-        val eventsQueriesBlocking by lazy { runBlocking { eventsQueries() } }
+    override suspend fun create(config: PagerConfig<Long>): Pager<Long, Event> {
+        val eventsQueries = eventsQueries()
+
         val pagingSourceFactory = InvalidatingPagingSourceFactory {
             QueryPagingSource<Long, Event>(
-                transacter = eventsQueriesBlocking,
+                transacter = eventsQueries,
                 context = coroutineContext,
                 pageBoundariesProvider = { anchor, limit ->
-                    eventsQueriesBlocking.pageBoundariesAscending(
+                    eventsQueries.pageBoundariesAscending(
                         limit = limit,
                         anchor = anchor,
                     )
                 },
                 queryProvider = { beginInclusive, endExclusive ->
-                    eventsQueriesBlocking.keyedQueryAscending(
+                    eventsQueries.keyedQueryAscending(
                         beginInclusive = beginInclusive,
                         endExclusive = endExclusive,
                     )
@@ -69,7 +69,7 @@ internal class EventPagerFactory(
                 eventsCallable = eventsCallable,
                 onInvalidate = pagingSourceFactory::invalidate,
             ),
-            pagingSourceFactory = pagingSourceFactory,
+            pagingSourceFactory = pagingSourceFactory::invoke,
         )
     }
 }

@@ -1,12 +1,15 @@
 package dev.ashdavies.playground.event
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.produceState
 import com.slack.circuit.codegen.annotations.CircuitInject
 import com.slack.circuit.runtime.Navigator
 import com.slack.circuit.runtime.presenter.Presenter
 import com.slack.circuit.runtime.screen.Screen
 import dev.ashdavies.analytics.RemoteAnalytics
 import dev.ashdavies.analytics.logEvent
+import dev.ashdavies.paging.Pager
 import dev.ashdavies.paging.PagerConfig
 import dev.ashdavies.paging.PagerFactory
 import dev.ashdavies.paging.rememberPagingState
@@ -15,6 +18,7 @@ import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.Assisted
 import dev.zacsweers.metro.AssistedFactory
 import dev.zacsweers.metro.AssistedInject
+import kotlinx.collections.immutable.persistentListOf
 
 private const val DEFAULT_PAGE_SIZE = 10
 
@@ -30,13 +34,23 @@ public class EventListPresenter @AssistedInject constructor(
         // https://github.com/ZacSweers/metro/issues/2227
         require(screen is EventScreen.List)
 
-        val pagingState = rememberPagingState(
-            retainedCoroutineScope = rememberRetainedCoroutineScope(),
-            pager = eventPagerFactory.create(
+        val eventPager by produceState<Pager<Long, Event>?>(null) {
+            eventPagerFactory.create(
                 config = PagerConfig(
                     initialKey = screen.initialKey,
                     pageSize = DEFAULT_PAGE_SIZE,
                 ),
+            )
+        }
+
+        val pagingState = rememberPagingState(
+            retainedCoroutineScope = rememberRetainedCoroutineScope(),
+            pager = eventPager ?: return EventListState(
+                itemList = persistentListOf(),
+                selectedIndex = null,
+                isRefreshing = true,
+                errorMessage = null,
+                eventSink = { },
             ),
         )
 

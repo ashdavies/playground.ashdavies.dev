@@ -1,4 +1,4 @@
-package dev.ashdavies.playground.events.paging
+package dev.ashdavies.playground.paging
 
 import dev.ashdavies.asg.AsgConference
 import dev.ashdavies.asg.UpcomingConferencesCallable
