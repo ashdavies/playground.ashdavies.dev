@@ -1,3 +1,5 @@
+import org.jetbrains.compose.internal.utils.getLocalProperty
+
 plugins {
     alias(libs.plugins.build.config)
     alias(libs.plugins.cash.sqldelight)
@@ -5,12 +7,11 @@ plugins {
     id("dev.ashdavies.android.library")
     id("dev.ashdavies.kotlin")
     id("dev.ashdavies.jvm")
-    id("dev.ashdavies.properties")
     id("dev.ashdavies.wasm")
 }
 
 buildConfig {
-    val serverClientId by stringProperty(::buildConfigField)
+    buildConfigField("SERVER_CLIENT_ID", getLocalProperty("server.client.id"))
 
     className.set("BuildConfig")
     packageName.set(kotlin.android.namespace)

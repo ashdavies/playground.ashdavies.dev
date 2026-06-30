@@ -31,7 +31,7 @@ internal interface AndroidConferenceGraph : ConferenceGraph {
         install(DefaultRequest) {
             header("X-Android-Cert", activity.getFirstSignatureOrNull())
             header("X-Android-Package", activity.packageName)
-            header("X-API-Key", BuildConfig.ANDROID_API_KEY)
+            header("X-API-Key", BuildConfig.API_KEY)
             header("User-Agent", Build.PRODUCT)
         }
 

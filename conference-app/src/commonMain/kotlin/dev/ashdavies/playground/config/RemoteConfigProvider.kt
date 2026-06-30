@@ -18,10 +18,10 @@ internal interface RemoteConfigProvider {
             httpClient = defaultHttpClient { },
             environment = FirebaseRestRemoteConfig.Environment(
                 projectId = requireNotNull(BuildConfig.GOOGLE_PROJECT_ID),
-                apiKey = requireNotNull(BuildConfig.BROWSER_API_KEY),
+                apiKey = requireNotNull(BuildConfig.API_KEY),
             ),
             request = FirebaseRestRemoteConfig.Request(
-                appId = requireNotNull(BuildConfig.ANDROID_APP_ID),
+                appId = requireNotNull(BuildConfig.APP_ID),
                 appInstanceId = Base64.UrlSafe
                     .encode(Random.nextBytes(17))
                     .take(22),
