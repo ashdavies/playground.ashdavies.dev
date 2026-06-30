@@ -20,7 +20,7 @@ internal interface WasmConferenceGraph : ConferenceGraph {
     fun httpClient(context: PlatformContext): HttpClient = defaultHttpClient {
         install(DefaultRequest) {
             header("User-Agent", window.navigator.userAgent)
-            header("X-API-Key", BuildConfig.BROWSER_API_KEY)
+            header("X-API-Key", BuildConfig.API_KEY)
         }
     }
 
