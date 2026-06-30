@@ -19,7 +19,7 @@ internal interface JvmConferenceGraph : ConferenceGraph {
     fun httpClient(context: PlatformContext): HttpClient = defaultHttpClient {
         install(DefaultRequest) {
             header("User-Agent", System.getProperty("os.name"))
-            header("X-API-Key", BuildConfig.BROWSER_API_KEY)
+            header("X-API-Key", BuildConfig.API_KEY)
         }
     }
 

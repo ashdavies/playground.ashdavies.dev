@@ -1,4 +1,5 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
+import org.jetbrains.compose.internal.utils.getLocalProperty
 import org.jetbrains.compose.reload.gradle.ComposeHotRun
 
 private object ConferenceAppConfig {
@@ -27,13 +28,25 @@ kotlin {
 }
 
 buildConfig {
-    val androidApiKey by stringProperty(::buildConfigField)
-    val androidAppId by stringProperty(::buildConfigField)
+    buildConfigField("API_KEY", expect<String?>(null))
+    buildConfigField("APP_ID", expect<String?>(null))
 
-    val browserApiKey by stringProperty(::buildConfigField)
-    val browserAppId by stringProperty(::buildConfigField)
+    buildConfigField("GOOGLE_PROJECT_ID", stringProperty("google.project.id"))
 
-    val googleProjectId by stringProperty(::buildConfigField)
+    sourceSets.named("androidMain") {
+        buildConfigField("API_KEY", stringProperty("android.api.key"))
+        buildConfigField("APP_ID", stringProperty("android.app.id"))
+    }
+
+    sourceSets.named("jvmMain") {
+        buildConfigField("API_KEY", stringProperty("browser.api.key"))
+        buildConfigField("APP_ID", stringProperty("browser.app.id"))
+    }
+
+    sourceSets.named("wasmJsMain") {
+        buildConfigField("API_KEY", stringProperty("browser.api.key"))
+        buildConfigField("APP_ID", stringProperty("browser.app.id"))
+    }
 
     className.set("BuildConfig")
     packageName.set(kotlin.android.namespace)

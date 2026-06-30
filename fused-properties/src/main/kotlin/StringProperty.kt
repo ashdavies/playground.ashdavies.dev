@@ -6,15 +6,20 @@ import kotlin.properties.ReadOnlyProperty
 
 public fun interface ReadOnlyDelegateProvider<T> : PropertyDelegateProvider<Any?, ReadOnlyProperty<Any?, T>>
 
-private interface PropertyDefinition {
+private sealed interface PropertyDefinition {
     val gradlePropertyName: String
     val envPropertyName: String
 }
 
-private fun PropertyDefinition(propertyName: String) = object : PropertyDefinition {
+private class SeparatedPropertyDefinition(propertyName: String) : PropertyDefinition {
     private val propertyNameParts = propertyName.split(Regex("(?=[A-Z])"))
     override val gradlePropertyName = propertyNameParts.joinToString(".") { it.lowercase() }
     override val envPropertyName = propertyNameParts.joinToString("_") { it.uppercase() }
+}
+
+private class SimplePropertyDefinition(propertyName: String) : PropertyDefinition {
+    override val gradlePropertyName = propertyName
+    override val envPropertyName = propertyName
 }
 
 private fun Project.stringPropertyProvider(definition: PropertyDefinition): Provider<String> {
@@ -37,10 +42,14 @@ public fun Project.stringProperty(block: (String, String?) -> Unit): ReadOnlyDel
     return readOnlyDelegateProvider { provider, tag -> provider.orNull.also { block(tag, it) } }
 }
 
+public fun Project.stringProperty(name: String): String? {
+    return stringPropertyProvider(SimplePropertyDefinition(name)).orNull
+}
+
 private fun <T> Project.readOnlyDelegateProvider(
     transform: (provider: Provider<String>, tag: String) -> T,
 ): ReadOnlyDelegateProvider<T> = ReadOnlyDelegateProvider { _, property ->
-    val definition = PropertyDefinition(property.name)
+    val definition = SeparatedPropertyDefinition(property.name)
 
     val value = transform(
         stringPropertyProvider(definition),

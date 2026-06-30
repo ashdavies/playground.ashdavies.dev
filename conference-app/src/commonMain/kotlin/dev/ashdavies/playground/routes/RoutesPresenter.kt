@@ -46,15 +46,13 @@ internal class RoutesPresenter @Inject constructor(
             }
         }
 
-        val androidApiKey = requireNotNull(BuildConfig.ANDROID_API_KEY) {
-            "Required value 'androidApiKey' was null."
-        }
-
         val computeRoutes = rememberRetained {
             ComputeRoutesCallable(
                 httpClient = httpClient,
                 baseUrl = ROUTES_BASE_URL,
-                apiKey = androidApiKey,
+                apiKey = requireNotNull(BuildConfig.API_KEY) {
+                    "Required value 'androidApiKey' was null."
+                },
             )
         }
 

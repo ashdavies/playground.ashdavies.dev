@@ -1,27 +1,22 @@
 package dev.ashdavies.playground.paging
 
-import dev.ashdavies.asg.AsgConference
-import dev.ashdavies.asg.UpcomingConferencesCallable
-import dev.ashdavies.cloud.Identifier
-import dev.ashdavies.cloud.toApiConference
 import dev.ashdavies.config.RemoteConfig
-import dev.ashdavies.config.getBoolean
+import dev.ashdavies.config.getString
 import dev.ashdavies.http.UnaryCallable
-import dev.ashdavies.http.asSequence
 import dev.ashdavies.http.common.models.ApiConference
 import dev.ashdavies.http.throwClientRequestExceptionAs
+import dev.ashdavies.sql.Suspended
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.HttpCallValidator
 import io.ktor.client.request.get
 import kotlinx.serialization.Serializable
 
-private const val PLAYGROUND_BASE_URL = "api.ashdavies.dev"
 private const val NETWORK_PAGE_SIZE = 100
 
 internal fun interface UpcomingEventsCallable : UnaryCallable<GetEventsRequest, List<ApiConference>>
 
-private suspend fun RemoteConfig.isPagingEnabled() = getBoolean("paging_enabled")
+private suspend fun RemoteConfig.eventsEndpoint() = getString("events_endpoint")
 
 @Serializable
 internal data class GetEventsRequest(
@@ -30,32 +25,13 @@ internal data class GetEventsRequest(
 )
 
 internal fun UpcomingEventsCallable(httpClient: HttpClient, remoteConfig: RemoteConfig): UpcomingEventsCallable {
-    val pagedCallable by lazy { UpcomingEventsCallable(httpClient, PLAYGROUND_BASE_URL) }
-    val asgCallable by lazy { UpcomingConferencesCallable(httpClient) }
-    val identifier = Identifier<AsgConference>()
-
-    return UpcomingEventsCallable { request ->
-        when {
-            remoteConfig.isPagingEnabled() -> {
-                pagedCallable(request)
-            }
-
-            else -> asgCallable.asSequence(Unit) { response ->
-                response
-                    .filter { request.startAt == null || it.dateStart > request.startAt }
-                    .take(request.limit)
-                    .map { it.toApiConference(identifier(it)) }
-            }
-        }
-    }
+    val pagedCallable = Suspended { UpcomingEventsCallable(httpClient, remoteConfig.eventsEndpoint()) }
+    return UpcomingEventsCallable { pagedCallable()(it) }
 }
 
 internal fun UpcomingEventsCallable(httpClient: HttpClient, baseUrl: String): UpcomingEventsCallable {
     val errorHandlingHttpClient = httpClient.config {
-        install(HttpCallValidator) {
-            throwClientRequestExceptionAs<GetEventsError>()
-        }
-
+        install(HttpCallValidator) { throwClientRequestExceptionAs<GetEventsError>() }
         expectSuccess = true
     }
 
