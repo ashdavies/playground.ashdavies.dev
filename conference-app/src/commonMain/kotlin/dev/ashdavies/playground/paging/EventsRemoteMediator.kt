@@ -4,10 +4,9 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
+import dev.ashdavies.http.common.models.ApiConference
 import dev.ashdavies.playground.event.Event
 import dev.ashdavies.playground.event.EventQueries
-import io.ktor.client.network.sockets.SocketTimeoutException
-import dev.ashdavies.http.common.models.ApiConference as ApiEvent
 
 @OptIn(ExperimentalPagingApi::class)
 internal class EventsRemoteMediator<T : Any>(
@@ -24,54 +23,38 @@ internal class EventsRemoteMediator<T : Any>(
             LoadType.REFRESH -> null
         }
 
-        return when (val result = eventsCallable.result(GetEventsRequest(loadKey?.dateStart))) {
-            is CallableResult.Error<*> -> MediatorResult.Error(result.throwable)
+        return eventsCallable(GetEventsRequest(loadKey?.dateStart)).fold(
+            onSuccess = { MediatorResult.Success(eventsQueries.insertOrIgnoreAll(it) == 0L).also { onInvalidate() } },
+            onFailure = { MediatorResult.Error(it) },
+        )
+    }
+}
 
-            is CallableResult.Success -> {
-                var rowsInserted = 0L
+private suspend fun EventQueries.insertOrIgnoreAll(items: List<ApiConference>): Long {
+    var rowsInserted = 0L
 
-                eventsQueries.transaction {
-                    result.value.forEach {
-                        rowsInserted += eventsQueries.insertOrIgnore(
-                            name = it.name,
-                            website = it.website,
-                            location = it.location,
-                            imageUrl = it.imageUrl,
-                            status = it.status,
-                            online = it.online,
-                            dateStart = it.dateStart,
-                            dateEnd = it.dateEnd,
-                            cfpStart = it.cfp?.start,
-                            cfpEnd = it.cfp?.end,
-                            cfpSite = it.cfp?.site,
-                        )
-                    }
-                }
-
-                onInvalidate()
-
-                MediatorResult.Success(rowsInserted == 0L)
-            }
+    transaction {
+        items.forEach {
+            rowsInserted += insertOrIgnore(
+                name = it.name,
+                website = it.website,
+                location = it.location,
+                imageUrl = it.imageUrl,
+                status = it.status,
+                online = it.online,
+                dateStart = it.dateStart,
+                dateEnd = it.dateEnd,
+                cfpStart = it.cfp?.start,
+                cfpEnd = it.cfp?.end,
+                cfpSite = it.cfp?.site,
+            )
         }
     }
+
+    return rowsInserted
 }
 
 @ExperimentalPagingApi
 private fun endOfPaginationReached(): RemoteMediator.MediatorResult {
     return RemoteMediator.MediatorResult.Success(endOfPaginationReached = true)
-}
-
-private suspend fun UpcomingEventsCallable.result(
-    request: GetEventsRequest,
-): CallableResult<List<ApiEvent>> = try {
-    CallableResult.Success(invoke(request))
-} catch (exception: SocketTimeoutException) {
-    CallableResult.Error(exception)
-} catch (exception: GetEventsError) {
-    CallableResult.Error(exception)
-}
-
-private sealed interface CallableResult<out T> {
-    data class Error<out T>(val throwable: Throwable) : CallableResult<T>
-    data class Success<out T>(val value: T) : CallableResult<T>
 }

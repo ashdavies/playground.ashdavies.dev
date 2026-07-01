@@ -264,9 +264,19 @@ private fun PlaceholderText(
 
 @Composable
 private fun EventFailure(message: String, modifier: Modifier = Modifier) {
-    Text(
-        text = message,
-        modifier = modifier.padding(MaterialTheme.spacing.large),
-        color = MaterialTheme.colorScheme.error,
-    )
+    Card(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(MaterialTheme.spacing.large),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.errorContainer,
+            contentColor = MaterialTheme.colorScheme.onErrorContainer,
+        ),
+    ) {
+        Text(
+            text = message,
+            modifier = Modifier.padding(MaterialTheme.spacing.large),
+            style = MaterialTheme.typography.bodyMedium,
+        )
+    }
 }

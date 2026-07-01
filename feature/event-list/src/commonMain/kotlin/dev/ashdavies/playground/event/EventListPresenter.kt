@@ -1,11 +1,9 @@
 package dev.ashdavies.playground.event
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.produceState
 import androidx.compose.runtime.retain.retain
-import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.paging.Pager
 import androidx.paging.cachedIn
@@ -25,7 +23,6 @@ import dev.zacsweers.metro.AssistedFactory
 import dev.zacsweers.metro.AssistedInject
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
-import kotlinx.coroutines.flow.flowOf
 
 private const val DEFAULT_PAGE_SIZE = 10
 
@@ -72,7 +69,9 @@ public class EventListPresenter(
                 .toImmutableList(),
             selectedIndex = null,
             isRefreshing = pagingItems.loadState.refresh is LoadState.Loading,
-            errorMessage = pagingItems.loadState.errorMessage,
+            errorMessage = pagingItems.loadState.refresh
+                .let { it as? LoadState.Error }
+                ?.error?.message,
         ) { event ->
             when (event) {
                 is EventListState.Event.ItemClick -> {
@@ -94,17 +93,3 @@ public class EventListPresenter(
         public fun invoke(screen: Screen, navigator: Navigator): EventListPresenter
     }
 }
-
-private val CombinedLoadStates.errorMessage: String?
-    get() = listOfNotNull(source, mediator)
-        .firstNotNullOfOrNull { loadStates ->
-            listOf(
-                loadStates.refresh,
-                loadStates.prepend,
-                loadStates.append,
-            ).firstNotNullOfOrNull {
-                it as? LoadState.Error
-            }
-        }
-        ?.error
-        ?.message
