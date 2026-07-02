@@ -3,24 +3,21 @@ package dev.ashdavies.playground
 import dev.ashdavies.config.RemoteConfig
 import dev.ashdavies.config.firebase.rest.FirebaseRestRemoteConfig
 import dev.ashdavies.content.PlatformContext
-import dev.ashdavies.http.defaultHttpClient
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.Binds
 import dev.zacsweers.metro.DependencyGraph
+import dev.zacsweers.metro.IntoSet
+import dev.zacsweers.metro.Named
 import dev.zacsweers.metro.Provides
-import io.ktor.client.HttpClient
-import io.ktor.client.plugins.DefaultRequest
-import io.ktor.client.request.header
 
 @DependencyGraph(AppScope::class)
 internal interface JvmConferenceGraph : ConferenceGraph {
 
+    @IntoSet
     @Provides
-    fun httpClient(context: PlatformContext): HttpClient = defaultHttpClient {
-        install(DefaultRequest) {
-            header("User-Agent", System.getProperty("os.name"))
-            header("X-API-Key", BuildConfig.API_KEY)
-        }
+    @Named("httpClientHeaders")
+    fun httpClientHeaders(context: PlatformContext): Pair<String, String> {
+        return "User-Agent" to System.getProperty("os.name")
     }
 
     @Binds

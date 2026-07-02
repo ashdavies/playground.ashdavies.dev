@@ -10,11 +10,14 @@ import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.HttpCallValidator
 import io.ktor.client.request.get
+import io.ktor.client.statement.bodyAsText
+import io.ktor.http.HttpStatusCode
+import kotlinx.io.IOException
 import kotlinx.serialization.Serializable
 
 private const val NETWORK_PAGE_SIZE = 100
 
-internal fun interface UpcomingEventsCallable : UnaryCallable<GetEventsRequest, List<ApiConference>>
+internal fun interface UpcomingEventsCallable : UnaryCallable<GetEventsRequest, Result<List<ApiConference>>>
 
 private suspend fun RemoteConfig.eventsEndpoint() = getString("events_endpoint")
 
@@ -41,9 +44,9 @@ internal fun UpcomingEventsCallable(httpClient: HttpClient, baseUrl: String): Up
             add("limit=${request.limit}")
         }.joinToString("&")
 
-        errorHandlingHttpClient
-            .get("https://$baseUrl/events/upcoming?$queryAsString")
-            .body()
+        runCatching { errorHandlingHttpClient.get("https://$baseUrl/events/upcoming?$queryAsString") }.mapCatching {
+            if (it.status == HttpStatusCode.OK) it.body() else throw IOException(it.bodyAsText())
+        }
     }
 }
 

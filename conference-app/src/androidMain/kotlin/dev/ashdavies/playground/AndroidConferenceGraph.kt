@@ -8,15 +8,11 @@ import com.google.firebase.FirebaseApp
 import dev.ashdavies.config.RemoteConfig
 import dev.ashdavies.config.firebase.FirebaseRemoteConfig
 import dev.ashdavies.content.PlatformContext
-import dev.ashdavies.http.defaultHttpClient
-import dev.ashdavies.playground.security.FirebaseAppCheckHeader
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.Binds
 import dev.zacsweers.metro.DependencyGraph
+import dev.zacsweers.metro.Named
 import dev.zacsweers.metro.Provides
-import io.ktor.client.HttpClient
-import io.ktor.client.plugins.DefaultRequest
-import io.ktor.client.request.header
 import java.security.MessageDigest
 import java.util.Locale
 
@@ -27,16 +23,12 @@ internal interface AndroidConferenceGraph : ConferenceGraph {
     fun Activity.platformContext(): PlatformContext
 
     @Provides
-    fun httpClient(activity: Activity): HttpClient = defaultHttpClient {
-        install(DefaultRequest) {
-            header("X-Android-Cert", activity.getFirstSignatureOrNull())
-            header("X-Android-Package", activity.packageName)
-            header("X-API-Key", BuildConfig.API_KEY)
-            header("User-Agent", Build.PRODUCT)
-        }
-
-        install(FirebaseAppCheckHeader)
-    }
+    @Named("httpClientHeaders")
+    fun httpClientHeaders(activity: Activity): Set<Pair<String, String>> = setOf(
+        "X-Android-Cert" to activity.getFirstSignatureOrThrow(),
+        "X-Android-Package" to activity.packageName,
+        "User-Agent" to Build.PRODUCT,
+    )
 
     @Provides
     fun remoteConfig(context: PlatformContext): RemoteConfig = FirebaseRemoteConfig(
@@ -50,10 +42,10 @@ internal interface AndroidConferenceGraph : ConferenceGraph {
     }
 }
 
-private fun Context.getFirstSignatureOrNull(): String? {
+private fun Context.getFirstSignatureOrThrow(): String {
     val signature = PackageInfoCompat
         .getSignatures(packageManager, packageName)
-        .firstOrNull() ?: return null
+        .first()
 
     val digest = MessageDigest
         .getInstance("SHA1")

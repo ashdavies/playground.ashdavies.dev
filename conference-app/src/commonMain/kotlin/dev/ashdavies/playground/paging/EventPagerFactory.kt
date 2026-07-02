@@ -4,6 +4,8 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.InvalidatingPagingSourceFactory
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
+import androidx.paging.PagingSource
+import androidx.paging.PagingState
 import app.cash.sqldelight.paging3.QueryPagingSource
 import dev.ashdavies.config.RemoteConfig
 import dev.ashdavies.paging.PagerConfig
@@ -42,7 +44,7 @@ internal class EventPagerFactory(
         val eventsQueries = eventsQueries()
 
         val pagingSourceFactory = InvalidatingPagingSourceFactory {
-            QueryPagingSource<Long, Event>(
+            val pagingSource = QueryPagingSource<Long, Event>(
                 transacter = eventsQueries,
                 context = coroutineContext,
                 pageBoundariesProvider = { anchor, limit ->
@@ -58,6 +60,21 @@ internal class EventPagerFactory(
                     )
                 },
             )
+
+            // https://github.com/sqldelight/sqldelight/pull/6284/changes
+            object : PagingSource<Long, Event>() {
+                override suspend fun load(params: LoadParams<Long>): LoadResult<Long, Event> = try {
+                    pagingSource.load(params)
+                } catch (_: NoSuchElementException) {
+                    LoadResult.Page(
+                        data = emptyList(),
+                        prevKey = null,
+                        nextKey = null,
+                    )
+                }
+
+                override fun getRefreshKey(state: PagingState<Long, Event>) = pagingSource.getRefreshKey(state)
+            }
         }
 
         @OptIn(ExperimentalPagingApi::class)
