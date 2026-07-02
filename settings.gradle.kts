@@ -1,17 +1,6 @@
 import androidx.build.gradle.gcpbuildcache.GcpBuildCache
 import androidx.build.gradle.gcpbuildcache.GcpBuildCacheServiceFactory
 
-buildscript {
-    dependencies {
-        classpath("org.apache.commons:commons-compress:1.28.0")?.because(
-            """
-                android.application depends upon org.apache.commons:commons-compress:1.21
-                https://github.com/GoogleContainerTools/jib/issues/4235
-            """.trimIndent(),
-        )
-    }
-}
-
 pluginManagement.repositories {
     includeBuild("build-plugins")
     includeBuild("cloud-build")
