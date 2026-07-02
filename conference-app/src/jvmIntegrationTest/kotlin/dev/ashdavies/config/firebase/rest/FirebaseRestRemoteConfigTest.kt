@@ -15,15 +15,19 @@ class FirebaseRestRemoteConfigTest {
         val remoteConfig = FirebaseRestRemoteConfig(
             httpClient = defaultHttpClient { },
             environment = FirebaseRestRemoteConfig.Environment(
-                projectId = requireNotNull(BuildConfig.GOOGLE_PROJECT_ID),
-                apiKey = requireNotNull(BuildConfig.API_KEY),
+                projectId = requireNotNull(BuildConfig.GOOGLE_PROJECT_ID, "projectId"),
+                apiKey = requireNotNull(BuildConfig.API_KEY, "apiKey"),
             ),
             request = FirebaseRestRemoteConfig.Request(
-                appId = requireNotNull(BuildConfig.APP_ID),
+                appId = requireNotNull(BuildConfig.APP_ID, "appId"),
                 appInstanceId = "${Uuid.random()}",
             ),
         )
 
         assertEquals(137, remoteConfig.getLong("coupling_denominator"))
     }
+}
+
+private fun requireNotNull(value: String?, name: String) = requireNotNull(value) {
+    "Required value '$name' was null"
 }
