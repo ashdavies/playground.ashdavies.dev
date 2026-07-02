@@ -24,12 +24,16 @@ pluginManagement.repositories {
     gradlePluginPortal()
     google()
     mavenCentral()
+    mavenSnapshots()
 }
 
 dependencyResolutionManagement.repositories {
     google()
     mavenCentral()
+    mavenSnapshots()
 }
+
+private fun RepositoryHandler.mavenSnapshots() = maven("https://central.sonatype.com/repository/maven-snapshots/")
 
 plugins {
     id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"

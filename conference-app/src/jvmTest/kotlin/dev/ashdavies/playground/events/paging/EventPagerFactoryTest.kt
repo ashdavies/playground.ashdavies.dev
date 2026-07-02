@@ -54,7 +54,7 @@ internal class EventPagerFactoryTest {
             }
 
         val eventPager = EventPagerFactory(
-            eventsCallable = { upcomingApiEventList },
+            eventsCallable = { Result.success(upcomingApiEventList) },
             eventsQueries = { playgroundDatabase.eventQueries },
             coroutineContext = coroutineContext,
         ).create(PagerConfig(null, pageSize))
