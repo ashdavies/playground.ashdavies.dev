@@ -1,6 +1,14 @@
 import androidx.build.gradle.gcpbuildcache.GcpBuildCache
 import androidx.build.gradle.gcpbuildcache.GcpBuildCacheServiceFactory
 
+buildscript {
+    dependencies {
+        classpath("com.google.http-client:google-http-client:2.1.1")?.because(
+            "gcpbuildcache depends upon org.apache.httpcomponents:httpclient:4.5.14",
+        )
+    }
+}
+
 pluginManagement.repositories {
     includeBuild("build-plugins")
     includeBuild("cloud-build")
