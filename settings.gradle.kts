@@ -12,6 +12,7 @@ buildscript {
 pluginManagement.repositories {
     includeBuild("build-plugins")
     includeBuild("cloud-build")
+    includeBuild("firebase-hosting")
     includeBuild("fused-properties")
 
     gradlePluginPortal()

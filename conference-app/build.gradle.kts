@@ -1,5 +1,4 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
-import org.jetbrains.compose.internal.utils.getLocalProperty
 import org.jetbrains.compose.reload.gradle.ComposeHotRun
 
 private object ConferenceAppConfig {
@@ -11,6 +10,7 @@ private object ConferenceAppConfig {
 plugins {
     id("dev.ashdavies.android.library")
     id("dev.ashdavies.compose")
+    id("dev.ashdavies.firebase.hosting")
     id("dev.ashdavies.integration")
     id("dev.ashdavies.jvm")
     id("dev.ashdavies.kotlin")

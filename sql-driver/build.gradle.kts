@@ -30,11 +30,7 @@ kotlin {
         wasmJsMain.dependencies {
             implementation(libs.sqldelight.web.driver)
 
-            val sqldelightVersion = libs.versions.cash.sqldelight.get()
-            val sqldelightNpmVersion = if (sqldelightVersion.endsWith("-SNAPSHOT")) "2.3.2" else sqldelightVersion
-            println("=== sqlDelightNpmVersion = $sqldelightNpmVersion")
-
-            implementation(npm("@cashapp/sqldelight-sqljs-worker", sqldelightNpmVersion))
+            implementation(npm("@cashapp/sqldelight-sqljs-worker", libs.versions.cash.sqldelight.get()))
             implementation(npm("sql.js", libs.versions.sqlJs.get()))
 
             implementation(devNpm("copy-webpack-plugin", libs.versions.webPack.get()))
