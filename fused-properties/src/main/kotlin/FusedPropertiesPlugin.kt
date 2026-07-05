@@ -3,5 +3,4 @@ import org.gradle.api.Project
 
 internal class FusedPropertiesPlugin : Plugin<Project> {
     override fun apply(target: Project) = Unit
-
 }

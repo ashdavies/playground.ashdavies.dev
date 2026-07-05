@@ -34,7 +34,7 @@ jobs:
         env:
           FIREBASE_ANDROID_APP_ID: ${{ secrets.FIREBASE_ANDROID_APP_ID }}
           GOOGLE_SERVICE_ACCOUNT_ID: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
-          INTEGRATION_API_KEY: ${{ secrets.integration_api_key }}
+          INTEGRATION_API_KEY: ${{ secrets.INTEGRATION_API_KEY }}
 
       - uses: test-summary/action@v2
         with:
