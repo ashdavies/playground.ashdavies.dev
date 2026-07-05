@@ -1,11 +1,11 @@
 variable "service" {
+  type        = set(string)
   description = <<EOT
-  (Optional) A restriction for a specific service. It should be the canonical service name, for
-  example: translate.googleapis.com. You can use gcloud services list to get a list of services
-  that are enabled in the project. Requests are allowed if they match any of these restrictions.
+  (Optional) A restriction for specific services. It should be the canonical service name, for
+  example: translate.googleapis.com. Requests are allowed if they match any of these restrictions.
   If no restrictions are specified, all targets are allowed.
   EOT
-  default     = null
+  default     = []
 }
 
 variable "display_name" {

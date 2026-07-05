@@ -3,29 +3,24 @@ resource "google_apikeys_key" "main" {
   project      = var.project
   name         = var.name
 
-  depends_on   = [
-    google_project_service.apikeys,
-    google_project_service.target,
-  ]
+  depends_on = [google_project_service.target]
 
   dynamic "restrictions" {
-    for_each = var.service[*]
+    for_each = length(var.service) > 0 ? [1] : []
 
     content {
-      api_targets {
-        service = var.service
+      dynamic "api_targets" {
+        for_each = var.service
+        content {
+          service = api_targets.value
+        }
       }
     }
   }
 }
 
-resource "google_project_service" "apikeys" {
-  service = "apikeys.googleapis.com"
-  project = var.project
-}
-
 resource "google_project_service" "target" {
-  for_each = toset(var.service != null ? [var.service] : [])
-  project = var.project
-  service = var.service
+  for_each = var.service
+  project  = var.project
+  service  = each.value
 }
