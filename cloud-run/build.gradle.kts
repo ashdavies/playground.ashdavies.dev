@@ -17,9 +17,14 @@ plugins {
 }
 
 buildConfig {
-    val firebaseAndroidAppId by stringProperty(::buildConfigField)
-    val googleServiceAccountId by stringProperty(::buildConfigField)
-    val integrationApiKey by stringProperty(::buildConfigField)
+    buildConfigField("API_KEY", expect<String?>(null))
+
+    buildConfigField("FIREBASE_ANDROID_APP_ID", stringProperty("firebase.android.app.id"))
+    buildConfigField("GOOGLE_SERVICE_ACCOUNT_ID", stringProperty("google.service.account.id"))
+
+    sourceSets.named("jvmIntegrationTest") {
+        buildConfigField("API_KEY", stringProperty("browser.api.key"))
+    }
 
     packageName.set(CloudRunConfig.PACKAGE_NAME)
 }

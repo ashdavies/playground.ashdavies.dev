@@ -7,6 +7,32 @@ module "api_gateway" {
   region           = var.project_region
 }
 
+module "browser_api_key" {
+  display_name = "Browser key (auto created by Firebase)"
+  name         = "ce7cc75b-bc2e-4c6c-b1f5-d7110248b16d"
+  project      = var.project_id
+  service      = [
+    "firebaseinstallations.googleapis.com",
+    "firebaseremoteconfig.googleapis.com",
+  ]
+  source       = "./modules/google/github-api-key"
+}
+
+import {
+  to = module.browser_api_key.google_apikeys_key.main
+  id = "projects/${var.project_id}/locations/global/keys/ce7cc75b-bc2e-4c6c-b1f5-d7110248b16d"
+}
+
+import {
+  to = module.browser_api_key.google_project_service.target["firebaseinstallations.googleapis.com"]
+  id = "${var.project_id}/firebaseinstallations.googleapis.com"
+}
+
+import {
+  to = module.browser_api_key.google_project_service.target["firebaseremoteconfig.googleapis.com"]
+  id = "${var.project_id}/firebaseremoteconfig.googleapis.com"
+}
+
 module "cloud_run_build" {
   image_name    = "api.ashdavies.dev"
   location      = var.project_region
@@ -39,14 +65,6 @@ module "endpoint_iam_binding" {
   location           = var.project_region
   mode               = "authoritative"
   project            = var.project_id
-}
-
-module "github_api_key" {
-  display_name = "Integration key (managed by Terraform)"
-  name         = "integration"
-  project      = var.project_id
-  service      = "identitytoolkit.googleapis.com"
-  source       = "./modules/google/github-api-key"
 }
 
 module "fastlane_service_account" {

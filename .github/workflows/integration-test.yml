@@ -32,9 +32,9 @@ jobs:
 
       - run: ./gradlew integrationTest --console=plain
         env:
+          BROWSER_API_KEY: ${{ secrets.BROWSER_API_KEY }}
           FIREBASE_ANDROID_APP_ID: ${{ secrets.FIREBASE_ANDROID_APP_ID }}
           GOOGLE_SERVICE_ACCOUNT_ID: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
-          INTEGRATION_API_KEY: ${{ secrets.INTEGRATION_API_KEY }}
 
       - uses: test-summary/action@v2
         with:
