@@ -42,7 +42,7 @@ internal class ApplicationTest {
     @Test
     fun `should sign in with custom token`() = testMainApplication { client ->
         val authResult = client.post("/firebase/auth") {
-            header("X-API-Key", requireNotNull(BuildConfig.BROWSER_API_KEY))
+            header("X-API-Key", requireNotNull(BuildConfig.API_KEY))
             setBody(mapOf("uid" to "jane.smith@example.com"))
             contentType(ContentType.Application.Json)
         }.body<AuthResult>()
