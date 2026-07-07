@@ -17,8 +17,6 @@ plugins {
 }
 
 buildConfig {
-    buildConfigField("API_KEY", expect<String?>(null))
-
     buildConfigField("FIREBASE_ANDROID_APP_ID", stringProperty("firebase.android.app.id"))
     buildConfigField("GOOGLE_SERVICE_ACCOUNT_ID", stringProperty("google.service.account.id"))
 
