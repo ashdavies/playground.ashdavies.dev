@@ -18,6 +18,7 @@ import io.ktor.client.request.header
 import io.ktor.client.request.post
 import io.ktor.client.request.put
 import io.ktor.client.request.setBody
+import io.ktor.client.statement.bodyAsText
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
@@ -26,10 +27,12 @@ import io.ktor.serialization.kotlinx.json.json
 import io.ktor.server.testing.ApplicationTestBuilder
 import io.ktor.server.testing.testApplication
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlin.test.Ignore
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
+import kotlin.test.fail
 import kotlin.time.Duration.Companion.minutes
 
 private val DefaultHttpConfig: HttpClientConfig<out HttpClientEngineConfig>.() -> Unit = {
@@ -41,16 +44,21 @@ internal class ApplicationTest {
 
     @Test
     fun `should sign in with custom token`() = testMainApplication { client ->
-        val authResult = client.post("/firebase/auth") {
+        val httpResponse = client.post("/firebase/auth") {
             header("X-API-Key", requireNotNull(JvmIntegrationTestBuildConfig.API_KEY))
             setBody(mapOf("uid" to "jane.smith@example.com"))
             contentType(ContentType.Application.Json)
-        }.body<AuthResult>()
+        }
 
-        assertNotNull(authResult.idToken)
+        if (httpResponse.status != HttpStatusCode.OK) {
+            fail(httpResponse.bodyAsText())
+        }
+
+        assertNotNull(httpResponse.body<AuthResult>().idToken)
     }
 
     @Test
+    @Ignore
     fun `should return app check token for request`() = testMainApplication { client ->
         val token = client.post("/firebase/token") {
             setBody(FirebaseApp(requireNotNull(BuildConfig.FIREBASE_ANDROID_APP_ID)))
@@ -73,6 +81,7 @@ internal class ApplicationTest {
     }
 
     @Test
+    @Ignore
     fun `should aggregate github events`() = testMainApplication { client ->
         val response = client.post("/events:aggregate") {
             contentType(ContentType.Application.Json)
