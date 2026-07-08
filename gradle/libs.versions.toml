@@ -69,7 +69,7 @@ google-firebase-config = { module = "com.google.firebase:firebase-config" }
 google-firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
 google-guava-jre = "com.google.guava:guava:33.6.0-jre"
 google-maps-android-compose = "com.google.maps.android:maps-compose:8.3.0"
-google-maps-android-utils = "com.google.maps.android:android-maps-utils:4.5.1"
+google-maps-android-utils = "com.google.maps.android:android-maps-utils:4.5.2"
 
 jib-core = "com.google.cloud.tools:jib-core:0.28.1"
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "jetbrains-kotlin" }
