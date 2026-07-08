@@ -15,7 +15,7 @@ class FirebaseRestRemoteConfigTest {
         val remoteConfig = FirebaseRestRemoteConfig(
             httpClient = defaultHttpClient { },
             environment = FirebaseRestRemoteConfig.Environment(
-                projectId = requireNotNull(BuildConfig.GOOGLE_CLOUD_PROJECT, "googleProjectId"),
+                projectId = requireNotNull(BuildConfig.GOOGLE_CLOUD_PROJECT, "googleCloudProject"),
                 apiKey = requireNotNull(BuildConfig.API_KEY, "apiKey"),
             ),
             request = FirebaseRestRemoteConfig.Request(
