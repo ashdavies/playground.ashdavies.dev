@@ -11,7 +11,7 @@ module "browser_api_key" {
   display_name = "Browser key (auto created by Firebase)"
   name         = "ce7cc75b-bc2e-4c6c-b1f5-d7110248b16d"
   project      = var.project_id
-  service      = [s
+  service      = [
     "identitytoolkit.googleapis.com",
     "firebaseinstallations.googleapis.com",
     "firebaseremoteconfig.googleapis.com",
