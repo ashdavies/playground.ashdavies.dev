@@ -1,5 +1,5 @@
 [versions]
-android-compileSdk = "36"
+android-compileSdk = "37"
 android-minSdk = "34"
 androidx-activity = "1.13.0"
 androidx-paging = "3.5.0"
