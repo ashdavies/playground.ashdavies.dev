@@ -45,7 +45,7 @@ internal class ApplicationTest {
     @Test
     fun `should sign in with custom token`() = testMainApplication { client ->
         val httpResponse = client.post("/firebase/auth") {
-            header("X-API-Key", requireNotNull(JvmIntegrationTestBuildConfig.API_KEY))
+            header("X-API-Key", assertNotNull(JvmIntegrationTestBuildConfig.API_KEY, "API_KEY was null"))
             setBody(mapOf("uid" to "jane.smith@example.com"))
             contentType(ContentType.Application.Json)
         }
@@ -61,7 +61,7 @@ internal class ApplicationTest {
     @Ignore
     fun `should return app check token for request`() = testMainApplication { client ->
         val token = client.post("/firebase/token") {
-            setBody(FirebaseApp(requireNotNull(BuildConfig.FIREBASE_ANDROID_APP_ID)))
+            setBody(FirebaseApp(assertNotNull(BuildConfig.FIREBASE_ANDROID_APP_ID, "FIREBASE_ANDROID_APP_ID was null")))
             contentType(ContentType.Application.Json)
         }.body<AppCheckToken>()
 

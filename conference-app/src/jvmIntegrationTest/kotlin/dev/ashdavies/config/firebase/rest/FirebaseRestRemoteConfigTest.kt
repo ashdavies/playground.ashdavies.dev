@@ -6,6 +6,7 @@ import dev.ashdavies.playground.BuildConfig
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertNotNull
 import kotlin.uuid.Uuid
 
 class FirebaseRestRemoteConfigTest {
@@ -15,19 +16,15 @@ class FirebaseRestRemoteConfigTest {
         val remoteConfig = FirebaseRestRemoteConfig(
             httpClient = defaultHttpClient { },
             environment = FirebaseRestRemoteConfig.Environment(
-                projectId = requireNotNull(BuildConfig.GOOGLE_CLOUD_PROJECT, "googleCloudProject"),
-                apiKey = requireNotNull(BuildConfig.API_KEY, "apiKey"),
+                projectId = assertNotNull(BuildConfig.GOOGLE_CLOUD_PROJECT, "GOOGLE_CLOUD_PRJECT was null"),
+                apiKey = assertNotNull(BuildConfig.API_KEY, "API_KEY was null"),
             ),
             request = FirebaseRestRemoteConfig.Request(
-                appId = requireNotNull(BuildConfig.APP_ID, "appId"),
+                appId = assertNotNull(BuildConfig.APP_ID, "APP_ID was null"),
                 appInstanceId = "${Uuid.random()}",
             ),
         )
 
         assertEquals(137, remoteConfig.getLong("coupling_denominator"))
     }
-}
-
-private fun requireNotNull(value: String?, name: String) = requireNotNull(value) {
-    "Required value '$name' was null"
 }
