@@ -6,20 +6,12 @@ import kotlin.properties.ReadOnlyProperty
 
 public fun interface ReadOnlyDelegateProvider<T> : PropertyDelegateProvider<Any?, ReadOnlyProperty<Any?, T>>
 
-private sealed interface PropertyDefinition {
-    val gradlePropertyName: String
-    val envPropertyName: String
-}
+private val PROPERTY_NAME_REGEX = Regex("(?=[A-Z])|[_.]")
 
-private class SeparatedPropertyDefinition(propertyName: String) : PropertyDefinition {
-    private val propertyNameParts = propertyName.split(Regex("(?=[A-Z])"))
-    override val gradlePropertyName = propertyNameParts.joinToString(".") { it.lowercase() }
-    override val envPropertyName = propertyNameParts.joinToString("_") { it.uppercase() }
-}
-
-private class SimplePropertyDefinition(propertyName: String) : PropertyDefinition {
-    override val gradlePropertyName = propertyName
-    override val envPropertyName = propertyName
+private class PropertyDefinition(propertyName: String) {
+    private val propertyNameParts = propertyName.split(PROPERTY_NAME_REGEX)
+    val gradlePropertyName = propertyNameParts.joinToString(".") { it.lowercase() }
+    val envPropertyName = propertyNameParts.joinToString("_") { it.uppercase() }
 }
 
 private fun Project.stringPropertyProvider(definition: PropertyDefinition): Provider<String> {
@@ -34,22 +26,18 @@ private fun Project.stringPropertyProvider(definition: PropertyDefinition): Prov
         .orElse(providers.environmentVariable(definition.envPropertyName))
 }
 
-public fun Project.booleanProperty(block: (String, Boolean?) -> Unit): ReadOnlyDelegateProvider<Boolean?> {
-    return readOnlyDelegateProvider { provider, tag -> provider.get().toBoolean().also { block(tag, it) } }
-}
-
-public fun Project.stringProperty(block: (String, String?) -> Unit): ReadOnlyDelegateProvider<String?> {
+public fun Project.stringPropertyOrNull(block: (String, String?) -> Unit): ReadOnlyDelegateProvider<String?> {
     return readOnlyDelegateProvider { provider, tag -> provider.orNull.also { block(tag, it) } }
 }
 
-public fun Project.stringProperty(name: String): String? {
-    return stringPropertyProvider(SimplePropertyDefinition(name)).orNull
+public fun Project.stringPropertyOrNull(name: String): String? {
+    return stringPropertyProvider(PropertyDefinition(name)).orNull
 }
 
 private fun <T> Project.readOnlyDelegateProvider(
     transform: (provider: Provider<String>, tag: String) -> T,
 ): ReadOnlyDelegateProvider<T> = ReadOnlyDelegateProvider { _, property ->
-    val definition = SeparatedPropertyDefinition(property.name)
+    val definition = PropertyDefinition(property.name)
 
     val value = transform(
         stringPropertyProvider(definition),

@@ -7,10 +7,10 @@ plugins {
 }
 
 buildConfig {
-    val firebaseAndroidAppId by stringProperty(::buildConfigField)
-    val gcloudProject by stringProperty(::buildConfigField)
-    val gcpProject by stringProperty(::buildConfigField)
-    val googleCloudProject by stringProperty(::buildConfigField)
+    val firebaseAndroidAppId by stringPropertyOrNull(::buildConfigField)
+    val gcloudProject by stringPropertyOrNull(::buildConfigField)
+    val gcpProject by stringPropertyOrNull(::buildConfigField)
+    val googleCloudProject by stringPropertyOrNull(::buildConfigField)
 
     packageName.set("dev.ashdavies.check")
 }

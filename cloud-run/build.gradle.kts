@@ -17,11 +17,11 @@ plugins {
 }
 
 buildConfig {
-    buildConfigField("FIREBASE_ANDROID_APP_ID", stringProperty("firebase.android.app.id"))
-    buildConfigField("GOOGLE_SERVICE_ACCOUNT_ID", stringProperty("google.service.account.id"))
+    buildConfigField("FIREBASE_ANDROID_APP_ID", stringPropertyOrNull("firebase.android.app.id"))
+    buildConfigField("GOOGLE_SERVICE_ACCOUNT_ID", stringPropertyOrNull("google.service.account.id"))
 
     sourceSets.named("jvmIntegrationTest") {
-        buildConfigField("API_KEY", stringProperty("browser.api.key"))
+        buildConfigField("API_KEY", stringPropertyOrNull("browser.api.key"))
     }
 
     packageName.set(CloudRunConfig.PACKAGE_NAME)

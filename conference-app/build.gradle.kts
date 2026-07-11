@@ -31,21 +31,21 @@ buildConfig {
     buildConfigField("API_KEY", expect<String?>(null))
     buildConfigField("APP_ID", expect<String?>(null))
 
-    val googleCloudProject by stringProperty(::buildConfigField)
+    val googleCloudProject by stringPropertyOrNull(::buildConfigField)
 
     sourceSets.named("androidMain") {
-        buildConfigField("API_KEY", stringProperty("android.api.key"))
-        buildConfigField("APP_ID", stringProperty("android.app.id"))
+        buildConfigField("API_KEY", stringPropertyOrNull("android.api.key"))
+        buildConfigField("APP_ID", stringPropertyOrNull("android.app.id"))
     }
 
     sourceSets.named("jvmMain") {
-        buildConfigField("API_KEY", stringProperty("browser.api.key"))
-        buildConfigField("APP_ID", stringProperty("browser.app.id"))
+        buildConfigField("API_KEY", stringPropertyOrNull("browser.api.key"))
+        buildConfigField("APP_ID", stringPropertyOrNull("browser.app.id"))
     }
 
     sourceSets.named("wasmJsMain") {
-        buildConfigField("API_KEY", stringProperty("browser.api.key"))
-        buildConfigField("APP_ID", stringProperty("browser.app.id"))
+        buildConfigField("API_KEY", stringPropertyOrNull("browser.api.key"))
+        buildConfigField("APP_ID", stringPropertyOrNull("browser.app.id"))
     }
 
     className.set("BuildConfig")
