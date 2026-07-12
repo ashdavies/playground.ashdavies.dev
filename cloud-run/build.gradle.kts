@@ -17,7 +17,7 @@ plugins {
 }
 
 buildConfig {
-    buildConfigField("FIREBASE_ANDROID_APP_ID", stringPropertyOrNull("firebase.android.app.id"))
+    buildConfigField("APP_ID", stringPropertyOrNull("android.app.id"))
     buildConfigField("GOOGLE_SERVICE_ACCOUNT_ID", stringPropertyOrNull("google.service.account.id"))
 
     sourceSets.named("jvmIntegrationTest") {
@@ -59,6 +59,8 @@ kotlin {
             implementation(libs.ktor.server.conditional.headers)
             implementation(libs.ktor.server.content.negotiation)
             implementation(libs.ktor.server.core)
+            implementation(libs.ktor.server.auth)
+            implementation(libs.ktor.server.auth.jwt)
             implementation(libs.ktor.server.default.headers)
             implementation(libs.ktor.server.host.common)
         }

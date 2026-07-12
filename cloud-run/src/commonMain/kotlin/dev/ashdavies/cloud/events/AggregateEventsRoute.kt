@@ -6,6 +6,7 @@ import dev.ashdavies.asg.AsgService
 import dev.ashdavies.cloud.CloudRunRoute
 import dev.ashdavies.cloud.CollectionWriter
 import dev.ashdavies.cloud.Identifier
+import dev.ashdavies.cloud.appCheckAuthentication
 import dev.ashdavies.cloud.decodeFromSnapshot
 import dev.ashdavies.cloud.google.await
 import dev.ashdavies.cloud.toApiConference
@@ -34,23 +35,25 @@ internal class AggregateEventsRoute @Inject constructor(
     private val identifier: Identifier<AsgConference>,
 ) : CloudRunRoute {
 
-    override fun Routing.invoke() = post("/events:aggregate") {
-        val collectionWriter = CollectionWriter(
-            reference = collectionReference,
-            identifier = ApiConference::id,
-        )
+    override fun Routing.invoke() = appCheckAuthentication {
+        post("/events:aggregate") {
+            val collectionWriter = CollectionWriter(
+                reference = collectionReference,
+                identifier = ApiConference::id,
+            )
 
-        val snapshot = collectionReference
-            .orderBy(DEFAULT_ORDER_BY)
-            .await()
+            val snapshot = collectionReference
+                .orderBy(DEFAULT_ORDER_BY)
+                .await()
 
-        collectionWriter.invoke(
-            oldValue = Json.decodeFromSnapshot(snapshot),
-            newValue = asgService { it.toApiConference(identifier(it)) },
-            context = Dispatchers.IO,
-        )
+            collectionWriter.invoke(
+                oldValue = Json.decodeFromSnapshot(snapshot),
+                newValue = asgService { it.toApiConference(identifier(it)) },
+                context = Dispatchers.IO,
+            )
 
-        call.respond(HttpStatusCode.OK)
+            call.respond(HttpStatusCode.OK)
+        }
     }
 }
 

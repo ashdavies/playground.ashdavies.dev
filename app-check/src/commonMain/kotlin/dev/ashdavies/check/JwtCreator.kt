@@ -2,9 +2,7 @@ package dev.ashdavies.check
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.JWTCreator
-import com.auth0.jwt.JWTVerifier
 import com.auth0.jwt.algorithms.Algorithm
-import com.auth0.jwt.interfaces.DecodedJWT
 import kotlin.time.Clock
 import kotlin.time.Duration.Companion.hours
 import kotlin.time.ExperimentalTime
@@ -37,20 +35,6 @@ internal fun Jwt.create(
         .withSubject(issuer)
         .withIssuer(issuer)
         .sign(algorithm)
-}
-
-@ExperimentalTime
-@Suppress("UnusedReceiverParameter")
-internal fun Jwt.verify(
-    algorithm: Algorithm,
-    token: String,
-    config: JwtOptions.() -> Unit,
-): DecodedJWT = with(JwtOptions().apply(config)) {
-    val verifier: JWTVerifier = JWT.require(algorithm)
-        .withIssuer(issuer)
-        .build()
-
-    verifier.verify(token)
 }
 
 @ExperimentalTime

@@ -20,7 +20,6 @@ resource "github_actions_secret" "main" {
     BROWSER_API_KEY              = module.browser_api_key.key_string
     BROWSER_APP_ID               = google_firebase_web_app.browser.app_id
     FASTLANE_SERVICE_ACCOUNT_KEY = google_service_account_key.fastlane_supply_key.private_key
-    FIREBASE_ANDROID_APP_ID      = google_firebase_android_app.android_release.app_id
     FIREBASE_GOOGLE_SERVICES     = data.google_firebase_android_app_config.android_release.config_file_contents
     GH_APP_ID                    = local.github_app_id
     GH_PRIVATE_KEY               = base64encode(data.onepassword_item.github_developer_application.private_key)

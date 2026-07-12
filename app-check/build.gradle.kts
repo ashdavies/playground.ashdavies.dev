@@ -7,7 +7,8 @@ plugins {
 }
 
 buildConfig {
-    val firebaseAndroidAppId by stringPropertyOrNull(::buildConfigField)
+    buildConfigField("APP_ID", stringPropertyOrNull("browser.app.id"))
+
     val gcloudProject by stringPropertyOrNull(::buildConfigField)
     val gcpProject by stringPropertyOrNull(::buildConfigField)
     val googleCloudProject by stringPropertyOrNull(::buildConfigField)

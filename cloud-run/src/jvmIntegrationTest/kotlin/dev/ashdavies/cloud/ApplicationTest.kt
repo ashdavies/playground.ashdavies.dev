@@ -58,10 +58,9 @@ internal class ApplicationTest {
     }
 
     @Test
-    @Ignore
     fun `should return app check token for request`() = testMainApplication { client ->
         val token = client.post("/firebase/token") {
-            setBody(FirebaseApp(assertNotNull(BuildConfig.FIREBASE_ANDROID_APP_ID, "FIREBASE_ANDROID_APP_ID was null")))
+            setBody(FirebaseApp(assertNotNull(BuildConfig.APP_ID, "APP_ID was null")))
             contentType(ContentType.Application.Json)
         }.body<AppCheckToken>()
 
@@ -74,6 +73,7 @@ internal class ApplicationTest {
         assertEquals(verify.appId, verify.subject)
 
         val apiConferences = client.get("/events/upcoming") {
+            header(HttpHeaders.AppCheckToken, token.token)
             contentType(ContentType.Application.Json)
         }.body<List<ApiConference>>()
 
