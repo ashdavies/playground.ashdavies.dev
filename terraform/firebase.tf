@@ -17,8 +17,3 @@ data "google_firebase_android_app_config" "android_release" {
   provider = google-beta
   app_id   = google_firebase_android_app.android_release.app_id
 }
-
-moved {
-  from = google_firebase_android_app.release
-  to   = google_firebase_android_app.android_release
-}
