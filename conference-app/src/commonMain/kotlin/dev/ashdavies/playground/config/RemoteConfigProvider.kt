@@ -17,12 +17,8 @@ internal interface RemoteConfigProvider {
         return FirebaseRestRemoteConfig(
             httpClient = defaultHttpClient { },
             environment = FirebaseRestRemoteConfig.Environment(
-                projectId = requireNotNull(BuildConfig.GOOGLE_CLOUD_PROJECT).also {
-                    println("=== GOOGLE_CLOUD_PROJECT[${it.length}]")
-                },
-                apiKey = requireNotNull(BuildConfig.API_KEY).also {
-                    println("=== API_KEY[${it.length}]")
-                },
+                projectId = requireNotNull(BuildConfig.GOOGLE_CLOUD_PROJECT),
+                apiKey = requireNotNull(BuildConfig.API_KEY),
             ),
             request = FirebaseRestRemoteConfig.Request(
                 appId = requireNotNull(BuildConfig.APP_ID),
