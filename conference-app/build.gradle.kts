@@ -31,7 +31,7 @@ buildConfig {
     buildConfigField("API_KEY", expect<String?>(null))
     buildConfigField("APP_ID", expect<String?>(null))
 
-    val googleCloudProject by stringPropertyOrNull(::buildConfigField)
+    buildConfigField("GOOGLE_CLOUD_PROJECT", stringPropertyOrNull("GOOGLE_CLOUD_PROJECT"))
 
     sourceSets.named("androidMain") {
         buildConfigField("API_KEY", stringPropertyOrNull("android.api.key"))
