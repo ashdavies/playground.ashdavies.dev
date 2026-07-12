@@ -6,7 +6,7 @@ import kotlin.properties.ReadOnlyProperty
 
 public fun interface ReadOnlyDelegateProvider<T> : PropertyDelegateProvider<Any?, ReadOnlyProperty<Any?, T>>
 
-private val PROPERTY_NAME_REGEX = Regex("(?=[A-Z])|[_.]")
+private val PROPERTY_NAME_REGEX = Regex("(?<=[a-z])(?=[A-Z])|[^a-zA-Z0-9]+")
 
 private class PropertyDefinition(propertyName: String) {
     private val propertyNameParts = propertyName.split(PROPERTY_NAME_REGEX)

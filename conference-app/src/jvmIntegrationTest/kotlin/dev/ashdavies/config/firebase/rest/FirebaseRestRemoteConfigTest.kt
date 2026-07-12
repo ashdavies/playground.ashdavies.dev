@@ -7,6 +7,7 @@ import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
+import kotlin.test.assertTrue
 import kotlin.uuid.Uuid
 
 class FirebaseRestRemoteConfigTest {
@@ -17,10 +18,10 @@ class FirebaseRestRemoteConfigTest {
             httpClient = defaultHttpClient { },
             environment = FirebaseRestRemoteConfig.Environment(
                 projectId = assertNotNull(BuildConfig.GOOGLE_CLOUD_PROJECT, "GOOGLE_CLOUD_PROJECT was null").also {
-                    require(it.isNotEmpty()) { "GOOGLE_CLOUD_PROJECT was empty" }
+                    assertTrue(it.isNotEmpty(), "GOOGLE_CLOUD_PROJECT was empty")
                 },
                 apiKey = assertNotNull(BuildConfig.API_KEY, "API_KEY was null").also {
-                    require(it.isNotEmpty()) { "API_KEY was empty"}
+                    assertTrue(it.isNotEmpty(), "API_KEY was empty")
                 },
             ),
             request = FirebaseRestRemoteConfig.Request(
