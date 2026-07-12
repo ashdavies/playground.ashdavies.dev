@@ -16,11 +16,11 @@ class FirebaseRestRemoteConfigTest {
         val remoteConfig = FirebaseRestRemoteConfig(
             httpClient = defaultHttpClient { },
             environment = FirebaseRestRemoteConfig.Environment(
-                projectId = requireNotNull(BuildConfig.GOOGLE_CLOUD_PROJECT).also {
-                    println("=== GOOGLE_CLOUD_PROJECT[${it.length}]")
+                projectId = assertNotNull(BuildConfig.GOOGLE_CLOUD_PROJECT, "GOOGLE_CLOUD_PROJECT was null").also {
+                    require(it.isNotEmpty()) { "GOOGLE_CLOUD_PROJECT was empty" }
                 },
-                apiKey = requireNotNull(BuildConfig.API_KEY).also {
-                    println("=== API_KEY[${it.length}]")
+                apiKey = assertNotNull(BuildConfig.API_KEY, "API_KEY was null").also {
+                    require(it.isNotEmpty()) { "API_KEY was empty"}
                 },
             ),
             request = FirebaseRestRemoteConfig.Request(
