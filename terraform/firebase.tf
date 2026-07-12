@@ -1,4 +1,4 @@
-resource "google_firebase_android_app" "release" {
+resource "google_firebase_android_app" "android_release" {
   provider      = google-beta
   project       = var.project_id
   display_name  = "Android Release"
@@ -7,7 +7,18 @@ resource "google_firebase_android_app" "release" {
   sha256_hashes = ["0442b951b2d82cb339a7e4ef9469e71e89b182c7be5efb119f587cc2b19995bc"]
 }
 
-data "google_firebase_android_app_config" "release" {
+resource "google_firebase_web_app" "browser" {
+  provider      = google-beta
+  project       = var.project_id
+  display_name  = "Browser"
+}
+
+data "google_firebase_android_app_config" "android_release" {
   provider = google-beta
-  app_id   = google_firebase_android_app.release.app_id
+  app_id   = google_firebase_android_app.android_release.app_id
+}
+
+moved {
+  from = google_firebase_android_app.release
+  to   = google_firebase_android_app.android_release
 }

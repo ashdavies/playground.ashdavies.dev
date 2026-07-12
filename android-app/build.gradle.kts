@@ -43,15 +43,15 @@ android {
     }
 
     defaultConfig {
-        val androidApiKey by stringProperty { _, value ->
+        val androidApiKey by stringPropertyOrNull { _, value ->
             manifestPlaceholders["ANDROID_API_KEY"] = "$value"
         }
 
-        val versionCode by stringProperty { _, value ->
+        val versionCode by stringPropertyOrNull { _, value ->
             versionCode = value?.toInt() ?: 1
         }
 
-        val versionName by stringProperty { _, value ->
+        val versionName by stringPropertyOrNull { _, value ->
             versionName = value ?: "0.0.0-SNAPSHOT"
         }
 
