@@ -25,7 +25,9 @@ class FirebaseRestRemoteConfigTest {
                 },
             ),
             request = FirebaseRestRemoteConfig.Request(
-                appId = assertNotNull(BuildConfig.APP_ID, "APP_ID was null"),
+                appId = assertNotNull(BuildConfig.APP_ID, "APP_ID was null").also {
+                    assertTrue(it.isNotEmpty(), "APP_ID was empty")
+                },
                 appInstanceId = "${Uuid.random()}",
             ),
         )
