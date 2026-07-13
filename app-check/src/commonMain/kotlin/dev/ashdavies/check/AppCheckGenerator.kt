@@ -55,12 +55,11 @@ internal fun AppCheckGenerator(
             appId = appId,
         )
 
-        val result =
-            httpClient.post(String.format(CUSTOM_EXCHANGE_URL_TEMPLATE, projectId, appId)) {
-                header(HttpHeaders.Authorization, "Bearer ${bearerResponse.accessToken}")
-                header("X-Firebase-Client", "fire-admin-node/10.2.0")
-                setBody(mapOf("customToken" to customToken))
-            }.body<CustomTokenResponse>()
+        val result = httpClient.post(String.format(CUSTOM_EXCHANGE_URL_TEMPLATE, projectId, appId)) {
+            header(HttpHeaders.Authorization, "Bearer ${bearerResponse.accessToken}")
+            header("X-Firebase-Client", "fire-admin-node/10.2.0")
+            setBody(mapOf("customToken" to customToken))
+        }.body<CustomTokenResponse>()
 
         val ttlSeconds = result.ttl
             .substring(0, result.ttl.length - 1)

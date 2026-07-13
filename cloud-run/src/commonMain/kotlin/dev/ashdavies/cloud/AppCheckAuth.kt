@@ -1,6 +1,8 @@
 package dev.ashdavies.cloud
 
 import com.auth0.jwk.UrlJwkProvider
+import dev.ashdavies.check.XFirebaseAppCheck
+import io.ktor.http.HttpHeaders
 import io.ktor.http.auth.HttpAuthHeader
 import io.ktor.server.auth.AuthenticationConfig
 import io.ktor.server.auth.authenticate
@@ -20,17 +22,20 @@ internal fun AuthenticationConfig.appCheck() {
         val projectNumber = requireNotNull(BuildConfig.APP_ID?.split(":")?.getOrNull(1)) {
             "APP_ID is missing or invalid in BuildConfig"
         }
+
         verifier(UrlJwkProvider(URI("https://firebaseappcheck.googleapis.com/v1/jwks").toURL())) {
             withIssuer("https://firebaseappcheck.googleapis.com/$projectNumber")
         }
+
         authHeader { call ->
-            val token = call.request.headers["X-Firebase-AppCheck"]
+            val token = call.request.headers[HttpHeaders.XFirebaseAppCheck]
             if (token != null) {
                 HttpAuthHeader.Single("Bearer", token)
             } else {
                 null
             }
         }
+
         validate { credential ->
             if (credential.payload.subject.isNotEmpty()) {
                 JWTPrincipal(credential.payload)
