@@ -17,7 +17,7 @@ plugins {
 }
 
 buildConfig {
-    buildConfigField("APP_ID", stringPropertyOrNull("android.app.id"))
+    buildConfigField("APP_ID", stringPropertyOrNull("browser.app.id"))
     buildConfigField("GOOGLE_SERVICE_ACCOUNT_ID", stringPropertyOrNull("google.service.account.id"))
 
     sourceSets.named("jvmIntegrationTest") {
