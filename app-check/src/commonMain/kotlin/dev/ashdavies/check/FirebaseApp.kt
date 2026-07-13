@@ -13,7 +13,6 @@ import java.net.UnknownHostException
 public fun FirebaseApp.appCheck(httpClient: HttpClient): AppCheck = AppCheck(
     cryptoSigner = CryptoSigner(this),
     projectId = getProjectId(this),
-    projectNumber = getProjectNumber(),
     httpClient = httpClient,
 )
 
@@ -23,12 +22,6 @@ internal fun getProjectId(firebaseApp: FirebaseApp): String = requireNotNull(fin
         "Alternatively, set the GOOGLE_CLOUD_PROJECT environment variable."
 }
 
-internal fun getProjectNumber(): String = requireNotNull(findExplicitProjectNumber()) {
-    "Failed to determine project number. Make sure to initialize " +
-        "the SDK on a Google Cloud Compute Engine with default VM metadata. " +
-        "Alternatively, set the GCP_PROJECT_NUMBER environment variable."
-}
-
 private fun findExplicitProjectId(firebaseApp: FirebaseApp): String? = firebaseApp.options.projectId
     ?: googleCredentials<ServiceAccountCredentials, String?> { it.projectId }
     ?: BuildConfig.GOOGLE_CLOUD_PROJECT
@@ -36,7 +29,7 @@ private fun findExplicitProjectId(firebaseApp: FirebaseApp): String? = firebaseA
     ?: BuildConfig.GCP_PROJECT
     ?: fetchProjectId()
 
-private fun findExplicitProjectNumber(): String? = BuildConfig.FIREBASE_ANDROID_APP_ID
+private fun findExplicitProjectNumber(): String? = BuildConfig.APP_ID
     ?.let { it.split(":")[1] }
     ?: fetchProjectNumber()
 

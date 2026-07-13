@@ -34,7 +34,7 @@ jobs:
         env:
           BROWSER_API_KEY: ${{ secrets.BROWSER_API_KEY }}
           BROWSER_APP_ID: ${{ secrets.BROWSER_APP_ID }}
-          FIREBASE_ANDROID_APP_ID: ${{ secrets.FIREBASE_ANDROID_APP_ID }}
+
           GOOGLE_SERVICE_ACCOUNT_ID: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
 
       - uses: test-summary/action@v2

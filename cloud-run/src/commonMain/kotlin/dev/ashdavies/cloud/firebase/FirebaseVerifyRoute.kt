@@ -1,37 +1,35 @@
 package dev.ashdavies.cloud.firebase
 
-import dev.ashdavies.check.AppCheck
-import dev.ashdavies.check.AppCheckToken
 import dev.ashdavies.cloud.CloudRunRoute
+import dev.ashdavies.cloud.appCheckAuthentication
 import dev.ashdavies.http.common.models.DecodedToken
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesIntoSet
 import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.binding
-import io.ktor.http.HttpHeaders
-import io.ktor.http.HttpStatusCode
-import io.ktor.server.request.header
+import io.ktor.server.auth.jwt.JWTPrincipal
+import io.ktor.server.auth.principal
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Routing
 import io.ktor.server.routing.put
 
 @ContributesIntoSet(AppScope::class, binding<CloudRunRoute>())
-internal class FirebaseVerifyRoute @Inject constructor(
-    private val appCheck: AppCheck,
-) : CloudRunRoute {
+internal class FirebaseVerifyRoute @Inject constructor() : CloudRunRoute {
 
-    override fun Routing.invoke() = put("/firebase/token:verify") {
-        when (val appCheckToken = call.request.header(HttpHeaders.AppCheckToken)) {
-            null -> call.respond(HttpStatusCode.BadRequest, "Request is missing app check token header")
+    override fun Routing.invoke() = appCheckAuthentication {
+        put("/firebase/token:verify") {
+            val principal = requireNotNull(call.principal<JWTPrincipal>())
+            val payload = principal.payload
+            val decodedToken = DecodedToken(
+                audience = payload.audience,
+                expiresAt = payload.expiresAtAsInstant.epochSecond,
+                issuedAt = payload.issuedAtAsInstant.epochSecond,
+                subject = payload.subject,
+                issuer = payload.issuer,
+                appId = payload.subject,
+            )
 
-            else -> {
-                val decodedToken = appCheck.verifyToken(
-                    token = appCheckToken,
-                    mapper = ::DecodedToken,
-                )
-
-                call.respond(decodedToken)
-            }
+            call.respond(decodedToken)
         }
     }
 }

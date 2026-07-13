@@ -13,6 +13,8 @@ import io.ktor.serialization.Configuration
 import io.ktor.serialization.kotlinx.json.json
 import io.ktor.server.application.Application
 import io.ktor.server.application.install
+import io.ktor.server.auth.Authentication
+import io.ktor.server.auth.AuthenticationConfig
 import io.ktor.server.cio.CIO
 import io.ktor.server.engine.EmbeddedServer
 import io.ktor.server.engine.embeddedServer
@@ -54,6 +56,7 @@ internal fun Application.main(routes: Set<CloudRunRoute>) {
         header(HttpHeaders.Server, System.getProperty("os.name"))
     }
 
+    install(Authentication, AuthenticationConfig::appCheck)
     install(Compression, CompressionConfig::default)
     install(ContentNegotiation, Configuration::json)
     install(ConditionalHeaders)

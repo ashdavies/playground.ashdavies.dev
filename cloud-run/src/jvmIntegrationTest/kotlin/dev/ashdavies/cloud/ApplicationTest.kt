@@ -1,6 +1,6 @@
 package dev.ashdavies.cloud
 
-import dev.ashdavies.check.AppCheckToken
+import dev.ashdavies.check.XFirebaseAppCheck
 import dev.ashdavies.http.common.models.ApiConference
 import dev.ashdavies.http.common.models.AppCheckToken
 import dev.ashdavies.http.common.models.AuthResult
@@ -58,22 +58,22 @@ internal class ApplicationTest {
     }
 
     @Test
-    @Ignore
     fun `should return app check token for request`() = testMainApplication { client ->
         val token = client.post("/firebase/token") {
-            setBody(FirebaseApp(assertNotNull(BuildConfig.FIREBASE_ANDROID_APP_ID, "FIREBASE_ANDROID_APP_ID was null")))
+            setBody(FirebaseApp(assertNotNull(BuildConfig.APP_ID, "APP_ID was null")))
             contentType(ContentType.Application.Json)
         }.body<AppCheckToken>()
 
         assertEquals(60.minutes.inWholeMilliseconds, token.ttlMillis)
 
         val verify = client.put("/firebase/token:verify") {
-            header(HttpHeaders.AppCheckToken, token.token)
+            header(HttpHeaders.XFirebaseAppCheck, token.token)
         }.body<DecodedToken>()
 
         assertEquals(verify.appId, verify.subject)
 
         val apiConferences = client.get("/events/upcoming") {
+            header(HttpHeaders.XFirebaseAppCheck, token.token)
             contentType(ContentType.Application.Json)
         }.body<List<ApiConference>>()
 

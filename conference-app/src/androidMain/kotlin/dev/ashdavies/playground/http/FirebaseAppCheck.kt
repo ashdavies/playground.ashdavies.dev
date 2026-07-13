@@ -5,12 +5,12 @@ import io.ktor.http.HttpHeaders
 import kotlinx.coroutines.tasks.await
 
 @Suppress("UnusedReceiverParameter")
-private val HttpHeaders.AppCheckToken: String get() = "X-Firebase-AppCheck"
+private val HttpHeaders.XFirebaseAppCheck: String get() = "X-Firebase-AppCheck"
 
 internal actual val FirebaseAppCheck = createClientPlugin("AppCheck") {
     onRequest { request, _ ->
         request.headers.append(
-            name = HttpHeaders.AppCheckToken,
+            name = HttpHeaders.XFirebaseAppCheck,
             value = com.google.firebase.appcheck.FirebaseAppCheck.getInstance()
                 .getAppCheckToken(false)
                 .await()
