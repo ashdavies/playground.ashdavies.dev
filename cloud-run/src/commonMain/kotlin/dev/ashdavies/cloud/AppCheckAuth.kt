@@ -3,30 +3,25 @@ package dev.ashdavies.cloud
 import com.auth0.jwk.UrlJwkProvider
 import dev.ashdavies.check.XFirebaseAppCheck
 import io.ktor.http.HttpHeaders
+import io.ktor.http.HttpStatusCode
 import io.ktor.http.auth.HttpAuthHeader
 import io.ktor.server.auth.AuthenticationConfig
 import io.ktor.server.auth.authenticate
 import io.ktor.server.auth.jwt.JWTPrincipal
 import io.ktor.server.auth.jwt.jwt
+import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
 import java.net.URI
 
+private const val FIREBASE_APP_CHECK_API = "firebaseappcheck.googleapis.com"
 private const val CONFIGURATION_NAME = "app-check"
 
 internal fun Route.appCheckAuthentication(build: Route.() -> Unit): Route {
     return authenticate(CONFIGURATION_NAME, build = build)
 }
 
-internal fun AuthenticationConfig.appCheck() {
+internal fun AuthenticationConfig.appCheck(projectNumber: String) {
     jwt(CONFIGURATION_NAME) {
-        val projectNumber = requireNotNull(BuildConfig.APP_ID?.split(":")?.getOrNull(1)) {
-            "APP_ID is missing or invalid in BuildConfig"
-        }
-
-        verifier(UrlJwkProvider(URI("https://firebaseappcheck.googleapis.com/v1/jwks").toURL())) {
-            withIssuer("https://firebaseappcheck.googleapis.com/$projectNumber")
-        }
-
         authHeader { call ->
             val token = call.request.headers[HttpHeaders.XFirebaseAppCheck]
             if (token != null) {
@@ -36,12 +31,21 @@ internal fun AuthenticationConfig.appCheck() {
             }
         }
 
+        challenge { _, _ ->
+            call.response.headers.append(HttpHeaders.WWWAuthenticate, "AppCheck realm=\"Firebase App Check\"")
+            call.respond(HttpStatusCode.Unauthorized, "Missing or invalid App Check token")
+        }
+
         validate { credential ->
             if (credential.payload.subject.isNotEmpty()) {
                 JWTPrincipal(credential.payload)
             } else {
                 null
             }
+        }
+
+        verifier(UrlJwkProvider(URI("https://$FIREBASE_APP_CHECK_API/v1/jwks").toURL())) {
+            withIssuer("https://$FIREBASE_APP_CHECK_API/$projectNumber")
         }
     }
 }

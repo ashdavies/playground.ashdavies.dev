@@ -93,6 +93,7 @@ kotlin {
             implementation(projects.sqlDriver)
             implementation(projects.uiComponents)
 
+            implementation(libs.ktor.client.auth)
             implementation(libs.androidx.annotation)
             implementation(libs.androidx.paging.common)
             implementation(libs.androidx.window.core)
@@ -165,6 +166,9 @@ kotlin {
         jvmIntegrationTest.dependencies {
             implementation(libs.app.cash.turbine)
             implementation(libs.kotlinx.coroutines.test)
+            implementation(libs.ktor.client.content.negotiation)
+            implementation(libs.ktor.client.mock)
+            implementation(libs.ktor.serialization.kotlinx.json)
         }
 
         wasmJsMain.dependencies {
