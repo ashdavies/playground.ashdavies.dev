@@ -27,12 +27,16 @@ import io.ktor.serialization.kotlinx.json.json
 import io.ktor.server.testing.ApplicationTestBuilder
 import io.ktor.server.testing.testApplication
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.todayIn
 import kotlin.test.Ignore
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 import kotlin.test.fail
+import kotlin.time.Clock
 import kotlin.time.Duration.Companion.minutes
 
 private val DefaultHttpConfig: HttpClientConfig<out HttpClientEngineConfig>.() -> Unit = {
@@ -58,6 +62,16 @@ internal class ApplicationTest {
     }
 
     @Test
+    fun `should fail authentication when header is missing`() = testMainApplication { client ->
+        val response = client.get("/events/upcoming") {
+            contentType(ContentType.Application.Json)
+        }
+
+        assertEquals(HttpStatusCode.Unauthorized, response.status)
+        assertEquals("AppCheck realm=\"Firebase App Check\"", response.headers[HttpHeaders.WWWAuthenticate])
+    }
+
+    @Test
     fun `should return app check token for request`() = testMainApplication { client ->
         val token = client.post("/firebase/token") {
             setBody(FirebaseApp(assertNotNull(BuildConfig.APP_ID, "APP_ID was null")))
@@ -72,12 +86,17 @@ internal class ApplicationTest {
 
         assertEquals(verify.appId, verify.subject)
 
+        val today = Clock.System.todayIn(TimeZone.currentSystemDefault())
         val apiConferences = client.get("/events/upcoming") {
             header(HttpHeaders.XFirebaseAppCheck, token.token)
             contentType(ContentType.Application.Json)
         }.body<List<ApiConference>>()
 
         assertTrue(apiConferences.isNotEmpty())
+
+        apiConferences.forEach {
+            assertTrue(LocalDate.parse(it.dateStart) >= today)
+        }
     }
 
     @Test

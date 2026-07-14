@@ -14,7 +14,6 @@ import io.ktor.serialization.kotlinx.json.json
 import io.ktor.server.application.Application
 import io.ktor.server.application.install
 import io.ktor.server.auth.Authentication
-import io.ktor.server.auth.AuthenticationConfig
 import io.ktor.server.cio.CIO
 import io.ktor.server.engine.EmbeddedServer
 import io.ktor.server.engine.embeddedServer
@@ -52,11 +51,19 @@ internal interface CloudRunGraph {
 }
 
 internal fun Application.main(routes: Set<CloudRunRoute>) {
+    install(Authentication) {
+        val appId = requireNotNull(BuildConfig.APP_ID) { "APP_ID was null" }
+        val projectNumber = requireNotNull(appId.split(":").getOrNull(1)) {
+            "APP_ID was invalid"
+        }
+
+        appCheck(projectNumber)
+    }
+
     install(DefaultHeaders) {
         header(HttpHeaders.Server, System.getProperty("os.name"))
     }
 
-    install(Authentication, AuthenticationConfig::appCheck)
     install(Compression, CompressionConfig::default)
     install(ContentNegotiation, Configuration::json)
     install(ConditionalHeaders)
