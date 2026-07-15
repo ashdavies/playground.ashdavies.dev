@@ -71,7 +71,7 @@ google-guava-jre = "com.google.guava:guava:33.6.0-jre"
 google-maps-android-compose = "com.google.maps.android:maps-compose:8.3.1"
 google-maps-android-utils = "com.google.maps.android:android-maps-utils:4.5.2"
 
-jib-core = "com.google.cloud.tools:jib-core:0.28.1"
+jib-core = "com.google.cloud.tools:jib-core:0.28.2"
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "jetbrains-kotlin" }
 
 kotlinx-collections-immutable = "org.jetbrains.kotlinx:kotlinx-collections-immutable:0.5.1"
