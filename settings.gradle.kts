@@ -71,7 +71,6 @@ include(
     ":kotlin-gb",
     ":maps-routing",
     ":parcelable-support",
-    ":placeholder-highlight",
     ":platform-support",
     ":remote-config",
     ":sql-common",

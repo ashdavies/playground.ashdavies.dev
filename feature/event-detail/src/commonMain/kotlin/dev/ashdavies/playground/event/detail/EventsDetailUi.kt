@@ -26,8 +26,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
-import com.google.accompanist.placeholder.material3.placeholder
 import com.slack.circuit.codegen.annotations.CircuitInject
+import com.valentinilk.shimmer.shimmer
 import dev.ashdavies.identity.IdentityState
 import dev.ashdavies.playground.event.EventScreen
 import dev.ashdavies.playground.material.padding
@@ -37,6 +37,7 @@ import dev.ashdavies.playground.ui.CenterAlignedTopAppBar
 import dev.ashdavies.playground.ui.DateRangeBadge
 import dev.ashdavies.playground.ui.DateRangeBadgeState
 import dev.ashdavies.playground.ui.ProfileActionButton
+import dev.ashdavies.playground.ui.emptyString
 import dev.zacsweers.metro.AppScope
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
@@ -44,8 +45,6 @@ import org.jetbrains.compose.resources.stringResource
 import playground.feature.event_detail.generated.resources.Res
 import playground.feature.event_detail.generated.resources.call_for_papers_closed
 import playground.feature.event_detail.generated.resources.call_for_papers_days_remaining
-
-private const val PLACEHOLDER = ""
 
 @Composable
 @CircuitInject(EventScreen.Detail::class, AppScope::class)
@@ -60,7 +59,7 @@ public fun EventsDetailUi(state: EventDetailState, modifier: Modifier = Modifier
         topBar = {
             @OptIn(ExperimentalMaterial3Api::class)
             CenterAlignedTopAppBar(
-                title = itemOrNull?.name ?: PLACEHOLDER,
+                title = itemOrNull?.name ?: emptyString(),
                 navigationIcon = { BackButton(state.onBackPressed) },
                 actions = {
                     ProfileActionButton(
@@ -76,13 +75,16 @@ public fun EventsDetailUi(state: EventDetailState, modifier: Modifier = Modifier
         },
         snackbarHost = { SnackbarHost(snackbarHostState) },
     ) { contentPadding ->
-        Column(Modifier.padding(contentPadding)) {
+        Column(
+            modifier = Modifier
+                .then(if (isLoading) Modifier.shimmer() else Modifier)
+                .padding(contentPadding),
+        ) {
             Card(Modifier.padding(MaterialTheme.spacing.large)) {
-                Box {
+                Box(if (itemOrNull != null) Modifier.shimmer() else Modifier) {
                     EventsDetailImage(
                         imageUrl = itemOrNull?.imageUrl,
-                        backgroundSeed = itemOrNull?.location ?: PLACEHOLDER,
-                        modifier = Modifier.placeholder(isLoading),
+                        backgroundSeed = itemOrNull?.location ?: emptyString(),
                     )
 
                     if (itemOrNull != null) {
@@ -101,10 +103,7 @@ public fun EventsDetailUi(state: EventDetailState, modifier: Modifier = Modifier
                 }
             }
 
-            EventsDetailLocation(
-                location = itemOrNull?.location ?: PLACEHOLDER,
-                modifier = Modifier.placeholder(isLoading),
-            )
+            EventsDetailLocation(itemOrNull?.location ?: emptyString())
 
             itemOrNull?.cfpEnd?.let { cfpEnd ->
                 EventsDetailCfp(

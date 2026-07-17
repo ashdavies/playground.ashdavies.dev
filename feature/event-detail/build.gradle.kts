@@ -22,7 +22,6 @@ kotlin {
             implementation(projects.composeMaterial)
             implementation(projects.feature.eventCommon)
             implementation(projects.identityManager)
-            implementation(projects.placeholderHighlight)
             implementation(projects.sqlCommon)
             implementation(projects.uiComponents)
 
@@ -30,6 +29,7 @@ kotlin {
             implementation(libs.compose.components.resources)
             implementation(libs.compose.materialIconsExtended)
             implementation(libs.compose.material3)
+            implementation(libs.compose.shimmer)
             implementation(libs.kotlinx.datetime)
             implementation(libs.slack.circuit.annotations)
             implementation(libs.slack.circuit.foundation)

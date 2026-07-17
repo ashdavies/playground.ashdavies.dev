@@ -19,7 +19,6 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LocalContentColor
-import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -27,7 +26,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.paint
@@ -35,22 +33,19 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil3.compose.rememberAsyncImagePainter
-import com.google.accompanist.placeholder.PlaceholderHighlight
-import com.google.accompanist.placeholder.material3.fade
-import com.google.accompanist.placeholder.material3.placeholder
 import com.slack.circuit.codegen.annotations.CircuitInject
+import com.valentinilk.shimmer.shimmer
 import dev.ashdavies.playground.material.padding
 import dev.ashdavies.playground.material.spacing
 import dev.ashdavies.playground.material.values
 import dev.ashdavies.playground.ui.CenterAlignedTopAppBar
 import dev.ashdavies.playground.ui.DateRangeBadge
 import dev.ashdavies.playground.ui.DateRangeBadgeState
+import dev.ashdavies.playground.ui.emptyString
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.Inject
 import kotlinx.datetime.LocalDate
@@ -80,15 +75,31 @@ public fun EventListUi(state: EventListState, modifier: Modifier = Modifier) {
             onRefresh = { state.eventSink(EventListState.Event.Refresh) },
             modifier = Modifier.padding(contentPadding),
         ) {
-            if (state.errorMessage != null) {
-                EventFailure(state.errorMessage)
-            }
-
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
                 contentPadding = MaterialTheme.spacing.large.values,
                 verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.large.vertical),
             ) {
+                if (state.errorMessage != null) {
+                    item {
+                        Card(
+                            modifier = modifier
+                                .fillMaxWidth()
+                                .padding(MaterialTheme.spacing.large),
+                            colors = CardDefaults.cardColors(
+                                containerColor = MaterialTheme.colorScheme.errorContainer,
+                                contentColor = MaterialTheme.colorScheme.onErrorContainer,
+                            ),
+                        ) {
+                            Text(
+                                text = state.errorMessage,
+                                modifier = Modifier.padding(MaterialTheme.spacing.large),
+                                style = MaterialTheme.typography.bodyMedium,
+                            )
+                        }
+                    }
+                }
+
                 itemsIndexed(state.itemList) { index, item ->
                     val itemModifier = Modifier
                         .animateItem()
@@ -125,7 +136,7 @@ private fun EventItemContent(
     modifier: Modifier = Modifier,
 ) {
     Card(
-        modifier = modifier,
+        modifier = if (event == null) modifier.shimmer() else modifier,
         colors = CardDefaults.cardColors(
             containerColor = when {
                 isSelected -> MaterialTheme.colorScheme.surfaceVariant
@@ -140,14 +151,21 @@ private fun EventItemContent(
             horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small.horizontal),
         ) {
             Column(Modifier.weight(1f)) {
-                PlaceholderText(
-                    text = event?.name,
+                Text(
+                    text = event?.name ?: emptyString(),
+                    modifier = Modifier
+                        .defaultMinSize(minWidth = 64.dp)
+                        .padding(vertical = 2.dp),
+                    overflow = TextOverflow.Ellipsis,
+                    maxLines = 1,
                     style = MaterialTheme.typography.headlineSmall,
                 )
 
-                PlaceholderText(
-                    text = event?.location,
-                    modifier = Modifier.align(Alignment.Start),
+                Text(
+                    text = event?.location ?: emptyString(),
+                    modifier = Modifier
+                        .defaultMinSize(minWidth = 64.dp)
+                        .padding(vertical = 2.dp),
                     style = MaterialTheme.typography.titleSmall,
                 )
             }
@@ -167,7 +185,7 @@ private fun EventItemContent(
                 }
             }
 
-            if (event?.online != false) {
+            if (event?.online == true) {
                 Column {
                     EventLabel(
                         text = stringResource(Res.string.online_only),
@@ -185,7 +203,9 @@ private fun EventItemContent(
                                 dateEnd = LocalDate.parse(event.dateEnd),
                             )
                         },
-                        modifier = Modifier.fillMaxHeight(),
+                        modifier = Modifier
+                            .defaultMinSize(minWidth = 64.dp)
+                            .fillMaxHeight(),
                     )
                 }
             }
@@ -218,6 +238,7 @@ private fun EventLabel(
                     .width(32.dp),
                 color = LocalContentColor.current,
                 textAlign = TextAlign.Center,
+                maxLines = 1,
                 style = MaterialTheme.typography.labelSmall,
             )
         }
@@ -240,43 +261,4 @@ private fun rememberBackgroundPainter(
         model = backgroundImageUrl,
         contentScale = ContentScale.Crop,
     )
-}
-
-@Composable
-private fun PlaceholderText(
-    text: String?,
-    modifier: Modifier = Modifier,
-    verticalPadding: Dp = 2.dp,
-    minWidth: Dp = 64.dp,
-    style: TextStyle = LocalTextStyle.current,
-) {
-    Text(
-        overflow = TextOverflow.Ellipsis,
-        text = text ?: "",
-        style = style,
-        maxLines = 1,
-        modifier = modifier
-            .padding(vertical = verticalPadding)
-            .defaultMinSize(minWidth = minWidth)
-            .placeholder(text == null, highlight = PlaceholderHighlight.fade()),
-    )
-}
-
-@Composable
-private fun EventFailure(message: String, modifier: Modifier = Modifier) {
-    Card(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(MaterialTheme.spacing.large),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.errorContainer,
-            contentColor = MaterialTheme.colorScheme.onErrorContainer,
-        ),
-    ) {
-        Text(
-            text = message,
-            modifier = Modifier.padding(MaterialTheme.spacing.large),
-            style = MaterialTheme.typography.bodyMedium,
-        )
-    }
 }
