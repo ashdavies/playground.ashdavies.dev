@@ -50,8 +50,10 @@ compose-foundation = { module = "org.jetbrains.compose.foundation:foundation", v
 compose-material3 = "org.jetbrains.compose.material3:material3:1.9.0"
 compose-materialIconsExtended = "org.jetbrains.compose.material:material-icons-extended:1.7.3"
 compose-runtime = { module = "org.jetbrains.compose.runtime:runtime", version.ref = "compose-plugin" }
+compose-shimmer = "com.valentinilk.shimmer:compose-shimmer:1.5.0"
 compose-ui = { module = "org.jetbrains.compose.ui:ui", version.ref = "compose-plugin" }
 compose-uiTooling = { module = "org.jetbrains.compose.ui:ui-tooling", version.ref = "compose-plugin" }
+compose-uiToolingPreview = { module = "org.jetbrains.compose.ui:ui-tooling-preview", version.ref = "compose-plugin" }
 
 detekt-compose = "io.nlopez.compose.rules:detekt:0.6.3"
 

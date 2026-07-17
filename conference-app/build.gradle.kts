@@ -86,7 +86,6 @@ kotlin {
             implementation(projects.httpCommon)
             implementation(projects.identityManager)
             implementation(projects.mapsRouting)
-            implementation(projects.placeholderHighlight)
             implementation(projects.platformSupport)
             implementation(projects.remoteConfig)
             implementation(projects.sqlCommon)
