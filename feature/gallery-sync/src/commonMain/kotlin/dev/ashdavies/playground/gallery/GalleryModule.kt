@@ -9,17 +9,17 @@ import dev.zacsweers.metro.Provides
 import kotlinx.coroutines.Dispatchers
 
 @ContributesTo(AppScope::class)
-internal interface GalleryModule {
+public interface GalleryModule {
 
     @Provides
-    fun imageManager(databaseFactory: DatabaseFactory<PlaygroundDatabase>): ImageManager = ImageManager(
+    public fun imageManager(databaseFactory: DatabaseFactory<PlaygroundDatabase>): ImageManager = ImageManager(
         imageQueries = databaseFactory.map { it.imageQueries },
         fileManager = FileManager(),
         coroutineContext = Dispatchers.Default,
     )
 
     @Provides
-    fun syncManager(): SyncManager = SyncManager(
+    public fun syncManager(): SyncManager = SyncManager(
         httpClient = defaultHttpClient { },
         fileManager = FileManager(),
     )

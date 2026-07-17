@@ -1,9 +1,12 @@
 package dev.ashdavies.playground.home
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.exclude
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBars
@@ -21,8 +24,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.unit.dp
+import com.slack.circuit.codegen.annotations.CircuitInject
 import com.slack.circuit.foundation.CircuitContent
 import com.slack.circuit.foundation.NavEvent
 import com.slack.circuit.runtime.CircuitUiEvent
@@ -34,18 +40,17 @@ import dev.ashdavies.parcelable.Parcelable
 import dev.ashdavies.parcelable.Parcelize
 import dev.ashdavies.playground.activity.FullyDrawnReporter
 import dev.ashdavies.playground.adaptive.ListDetailScaffoldScreen
-import dev.ashdavies.playground.circuit.CircuitScreenKey
 import dev.ashdavies.playground.event.EventScreen
 import dev.ashdavies.playground.gallery.GalleryScreen
 import dev.ashdavies.playground.material.icons.EventList
 import dev.ashdavies.playground.material.icons.EventUpcoming
 import dev.ashdavies.playground.routes.RoutesScreen
 import dev.zacsweers.metro.AppScope
-import dev.zacsweers.metro.ContributesIntoMap
 import dev.zacsweers.metro.Inject
-import dev.zacsweers.metro.binding
+import kotlinx.serialization.Serializable
 
 @Parcelize
+@Serializable
 internal object BottomBarScaffoldScreen : Parcelable, Screen {
     sealed interface Event : CircuitUiEvent {
         data class ChildNav(val navEvent: NavEvent) : Event
@@ -64,9 +69,9 @@ internal object BottomBarScaffoldScreen : Parcelable, Screen {
     ) : CircuitUiState
 }
 
-@CircuitScreenKey(BottomBarScaffoldScreen::class)
-@ContributesIntoMap(AppScope::class, binding<Ui<*>>())
-internal class BottomBarScaffoldUi @Inject constructor(
+@Inject
+@CircuitInject(BottomBarScaffoldScreen::class, AppScope::class)
+internal class BottomBarScaffoldUi(
     private val fullyDrawnReporter: FullyDrawnReporter,
 ) : Ui<BottomBarScaffoldScreen.State> {
 
@@ -97,6 +102,15 @@ internal class BottomBarScaffoldUi @Inject constructor(
                 modifier = Modifier.padding(contentPadding),
                 onNavEvent = { event ->
                     eventSink(BottomBarScaffoldScreen.Event.ChildNav(event))
+                },
+                unavailableContent = { screen, modifier ->
+                    Box(
+                        modifier = modifier
+                            .fillMaxWidth()
+                            .background(Color.Blue)
+                            .padding(32.dp)) {
+                        Text("$screen")
+                    }
                 },
             )
         }

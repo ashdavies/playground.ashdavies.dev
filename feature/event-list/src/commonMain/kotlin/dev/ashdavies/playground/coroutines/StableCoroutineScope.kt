@@ -3,7 +3,7 @@ package dev.ashdavies.playground.coroutines
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.RememberObserver
 import androidx.compose.runtime.Stable
-import com.slack.circuit.retained.rememberRetained
+import androidx.compose.runtime.retain.retain
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -16,9 +16,9 @@ private const val COROUTINE_SCOPE = "COROUTINE_SCOPE"
 internal class StableCoroutineScope(scope: CoroutineScope) : CoroutineScope by scope
 
 @Composable
-internal fun rememberRetainedCoroutineScope(
+public fun retainCoroutineScope(
     context: CoroutineContext = Dispatchers.Main.immediate,
-): StableCoroutineScope = rememberRetained(COROUTINE_SCOPE) {
+): CoroutineScope = retain(COROUTINE_SCOPE) {
     val coroutineScope = StableCoroutineScope(CoroutineScope(context + Job()))
     rememberObserver(coroutineScope::cancel)
     coroutineScope

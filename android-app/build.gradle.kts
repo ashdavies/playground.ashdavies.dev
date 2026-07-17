@@ -67,6 +67,7 @@ dependencies {
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.core.splashscreen)
     implementation(libs.androidx.startup.runtime)
+    implementation(libs.circuit.overlay)
     implementation(libs.google.accompanist.permissions)
     implementation(libs.google.android.location)
     implementation(libs.google.android.material)
@@ -78,7 +79,6 @@ dependencies {
     implementation(libs.google.firebase.crashlytics)
 
     implementation(libs.kotlinx.coroutines.play.services)
-    implementation(libs.slack.circuit.overlay)
 
     debugImplementation(libs.google.firebase.appcheck.debug)
     debugImplementation(libs.compose.uiTooling)

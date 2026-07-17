@@ -6,6 +6,6 @@ plugins {
 
 kotlin {
     sourceSets.commonMain.dependencies {
-        implementation(libs.slack.circuit.foundation)
+        implementation(libs.circuit.foundation)
     }
 }

@@ -26,6 +26,8 @@ kotlin {
             implementation(projects.uiComponents)
 
             implementation(libs.androidx.paging.compose)
+            implementation(libs.circuit.annotations)
+            implementation(libs.circuit.foundation)
             implementation(libs.compose.components.resources)
             implementation(libs.compose.foundation)
             implementation(libs.compose.material3)
@@ -33,8 +35,6 @@ kotlin {
             implementation(libs.coil.compose)
             implementation(libs.kotlinx.collections.immutable)
             implementation(libs.kotlinx.datetime)
-            implementation(libs.slack.circuit.annotations)
-            implementation(libs.slack.circuit.foundation)
         }
     }
 }

@@ -4,18 +4,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.retain.retain
 import androidx.compose.runtime.setValue
-import com.slack.circuit.retained.rememberRetained
+import com.slack.circuit.codegen.annotations.CircuitInject
 import com.slack.circuit.runtime.presenter.Presenter
 import dev.ashdavies.playground.BuildConfig
-import dev.ashdavies.playground.circuit.CircuitScreenKey
 import dev.ashdavies.routing.ComputeRoutesCallable
 import dev.ashdavies.routing.ComputeRoutesError
 import dev.ashdavies.routing.ComputeRoutesRequest
 import dev.zacsweers.metro.AppScope
-import dev.zacsweers.metro.ContributesIntoMap
 import dev.zacsweers.metro.Inject
-import dev.zacsweers.metro.binding
 import io.ktor.client.HttpClient
 
 private const val ROUTES_BASE_URL = "https://routes.googleapis.com"
@@ -27,16 +25,16 @@ private val InitialRoutesMapState = RoutesMapState(
     zoomLevel = 12f,
 )
 
-@CircuitScreenKey(RoutesScreen::class)
-@ContributesIntoMap(AppScope::class, binding<Presenter<*>>())
-internal class RoutesPresenter @Inject constructor(
+@Inject
+@CircuitInject(RoutesScreen::class, AppScope::class)
+internal class RoutesPresenter(
     private val locationService: LocationService,
     private val httpClient: HttpClient,
 ) : Presenter<RoutesScreen.State> {
 
     @Composable
     override fun present(): RoutesScreen.State {
-        var startPosition by rememberRetained { mutableStateOf(KnownLocations.Berlin) }
+        var startPosition by retain { mutableStateOf(KnownLocations.Berlin) }
         val locationPermissionState = rememberLocationPermissionState()
 
         LaunchedEffect(locationPermissionState.allPermissionsGranted) {
@@ -46,7 +44,7 @@ internal class RoutesPresenter @Inject constructor(
             }
         }
 
-        val computeRoutes = rememberRetained {
+        val computeRoutes = retain {
             ComputeRoutesCallable(
                 httpClient = httpClient,
                 baseUrl = ROUTES_BASE_URL,
@@ -56,10 +54,7 @@ internal class RoutesPresenter @Inject constructor(
             )
         }
 
-        var mapState by rememberRetained {
-            mutableStateOf(InitialRoutesMapState.copy(startPosition = startPosition))
-        }
-
+        var mapState by retain { mutableStateOf(InitialRoutesMapState.copy(startPosition = startPosition)) }
         var errorMessage = null as String?
 
         LaunchedEffect(mapState.endPosition) {

@@ -73,7 +73,7 @@ private const val DEFAULT_COLUMN_COUNT = 4
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 @CircuitInject(GalleryScreen::class, AppScope::class)
-public fun GalleryUi(state: GalleryScreenState, modifier: Modifier = Modifier) {
+internal fun GalleryUi(state: GalleryScreenState, modifier: Modifier = Modifier) {
     val scrollBehavior = enterAlwaysScrollBehavior(rememberTopAppBarState())
     val isSelecting = state.itemList.any { it.isSelected }
     val eventSink = state.eventSink

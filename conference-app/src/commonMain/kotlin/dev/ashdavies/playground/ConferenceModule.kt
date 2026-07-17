@@ -14,6 +14,8 @@ import io.ktor.client.plugins.DefaultRequest
 import io.ktor.client.request.header
 import dev.ashdavies.playground.PlaygroundDatabase as ConferenceAppDatabase
 import dev.ashdavies.playground.event.common.PlaygroundDatabase as EventCommonDatabase
+import dev.ashdavies.playground.gallery.PlaygroundDatabase as GalleryDatabase
+import dev.ashdavies.playground.gallery.imageAdapter
 
 @ContributesTo(AppScope::class)
 internal interface ConferenceModule {
@@ -26,6 +28,11 @@ internal interface ConferenceModule {
     @Provides
     fun eventCommonDatabaseFactory(context: PlatformContext): DatabaseFactory<EventCommonDatabase> {
         return DatabaseFactory(EventCommonDatabase.Schema, context, EventCommonDatabase::invoke)
+    }
+
+    @Provides
+    fun galleryDatabaseFactory(context: PlatformContext): DatabaseFactory<GalleryDatabase> {
+        return DatabaseFactory(GalleryDatabase.Schema, context) { GalleryDatabase(it, imageAdapter()) }
     }
 
     @Provides

@@ -16,7 +16,6 @@ import dev.ashdavies.sql.map
 import dev.ashdavies.sql.mapAsFlow
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.Inject
-import dev.zacsweers.metro.Provider
 import io.ktor.client.HttpClient
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Dispatchers
@@ -26,20 +25,16 @@ import kotlinx.datetime.LocalDate
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 
-/**
- * Third party concretions cannot be handled by WasmJs so a Provider interface must be used
- * Fixed with Metro 1.1.0 (https://github.com/ZacSweers/metro/pull/2279)
- */
 @CircuitInject(EventScreen.Grid::class, AppScope::class)
 internal class EventGridPresenter @Inject constructor(
     private val databaseFactory: DatabaseFactory<PlaygroundDatabase>,
-    private val httpClientProvider: Provider<HttpClient>,
+    private val httpClient: HttpClient,
 ) : Presenter<EventGridState> {
 
     @Composable
     override fun present(): EventGridState {
         val attendanceQueries = databaseFactory.map { it.attendanceQueries }
-        val eventGridCallable = EventGridCallable(httpClientProvider())
+        val eventGridCallable = EventGridCallable(httpClient)
 
         val eventList by produceState(emptyList()) {
             value = eventGridCallable(Unit).map {

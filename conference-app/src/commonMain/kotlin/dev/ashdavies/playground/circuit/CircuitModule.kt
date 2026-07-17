@@ -1,29 +1,27 @@
 package dev.ashdavies.playground.circuit
 
+import androidx.savedstate.serialization.SavedStateConfiguration
 import com.slack.circuit.foundation.Circuit
-import com.slack.circuit.runtime.Navigator
 import com.slack.circuit.runtime.presenter.Presenter
-import com.slack.circuit.runtime.screen.Screen
+import com.slack.circuit.runtime.screen.CircuitSaveable
 import com.slack.circuit.runtime.ui.Ui
+import com.slack.circuit.serialization.SerializableCircuitSaver
+import dev.ashdavies.playground.adaptive.ListDetailScaffoldScreen
+import dev.ashdavies.playground.event.EventScreen
+import dev.ashdavies.playground.gallery.GalleryScreen
+import dev.ashdavies.playground.home.BottomBarScaffoldScreen
+import dev.ashdavies.playground.routes.RoutesScreen
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesTo
 import dev.zacsweers.metro.Multibinds
-import dev.zacsweers.metro.Provider
 import dev.zacsweers.metro.Provides
-import kotlin.jvm.JvmSuppressWildcards
-import kotlin.reflect.KClass
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.modules.SerializersModule
+import kotlinx.serialization.modules.polymorphic
+import kotlinx.serialization.modules.subclass
 
 @ContributesTo(AppScope::class)
 internal interface CircuitModule {
-
-    @Multibinds
-    val navigatorPresenterFactories: Map<KClass<out Screen>, (Navigator) -> Presenter<*>>
-
-    @Multibinds
-    val presenterProviders: Map<KClass<out Screen>, Provider<Presenter<*>>>
-
-    @Multibinds
-    val uiProviders: Map<KClass<out Screen>, Provider<Ui<*>>>
 
     @Multibinds
     fun presenterFactories(): Set<Presenter.Factory>
@@ -33,26 +31,27 @@ internal interface CircuitModule {
 
     @Provides
     fun circuit(
-        screenPresenters: @JvmSuppressWildcards Map<KClass<out Screen>, (Screen) -> Presenter<*>>,
-        navigatorPresenters: @JvmSuppressWildcards Map<KClass<out Screen>, (Navigator) -> Presenter<*>>,
-        presenterProviders: @JvmSuppressWildcards Map<KClass<out Screen>, Provider<Presenter<*>>>,
-        uiProviders: @JvmSuppressWildcards Map<KClass<out Screen>, Provider<Ui<*>>>,
+        savedStateConfiguration: SavedStateConfiguration,
         presenterFactories: Set<Presenter.Factory>,
         uiFactories: Set<Ui.Factory>,
     ): Circuit = Circuit.Builder()
-        .addPresenterFactory { screen, _, _ ->
-            screenPresenters[screen::class]?.invoke(screen)
-        }
-        .addPresenterFactory { screen, navigator, _ ->
-            navigatorPresenters[screen::class]?.invoke(navigator)
-        }
-        .addPresenterFactory { screen, _, _ ->
-            presenterProviders[screen::class]?.invoke()
-        }
-        .addUiFactory { screen, context ->
-            uiProviders[screen::class]?.invoke()
-        }
+        .setCircuitSaver(SerializableCircuitSaver(savedStateConfiguration))
         .addPresenterFactories(presenterFactories)
         .addUiFactories(uiFactories)
         .build()
+
+    @Provides
+    @OptIn(ExperimentalSerializationApi::class)
+    fun savedStateConfiguration(): SavedStateConfiguration = SavedStateConfiguration {
+        serializersModule = SerializersModule {
+            polymorphic(CircuitSaveable::class) {
+                subclass(BottomBarScaffoldScreen::class)
+                subclass(GalleryScreen::class)
+                subclass(ListDetailScaffoldScreen::class)
+                subclass(RoutesScreen::class)
+
+                subclassesOfSealed<EventScreen>()
+            }
+        }
+    }
 }

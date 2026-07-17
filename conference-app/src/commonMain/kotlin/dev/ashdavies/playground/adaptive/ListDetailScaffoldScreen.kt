@@ -13,26 +13,25 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.backhandler.BackHandler
 import androidx.compose.ui.unit.dp
+import com.slack.circuit.codegen.annotations.CircuitInject
 import com.slack.circuit.foundation.CircuitContent
 import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.screen.Screen
 import com.slack.circuit.runtime.ui.Ui
 import dev.ashdavies.parcelable.Parcelable
 import dev.ashdavies.parcelable.Parcelize
-import dev.ashdavies.playground.circuit.CircuitScreenKey
 import dev.zacsweers.metro.AppScope
-import dev.zacsweers.metro.ContributesIntoMap
 import dev.zacsweers.metro.Inject
-import dev.zacsweers.metro.binding
 import kotlinx.coroutines.launch
+import kotlinx.serialization.Serializable
 
 @Parcelize
+@Serializable
 internal data class ListDetailScaffoldScreen(val initialScreen: Screen) : Parcelable, Screen {
     data class State(val initialScreen: Screen) : CircuitUiState
 }
 
-@CircuitScreenKey(ListDetailScaffoldScreen::class)
-@ContributesIntoMap(AppScope::class, binding<Ui<*>>())
+@CircuitInject(ListDetailScaffoldScreen::class, AppScope::class)
 internal class ListDetailScaffoldUi @Inject constructor() : Ui<ListDetailScaffoldScreen.State> {
 
     @Composable

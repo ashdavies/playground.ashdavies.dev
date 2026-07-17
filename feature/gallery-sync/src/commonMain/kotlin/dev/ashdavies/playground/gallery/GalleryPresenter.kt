@@ -4,11 +4,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.retain.retain
 import androidx.compose.runtime.setValue
 import com.slack.circuit.codegen.annotations.CircuitInject
 import com.slack.circuit.retained.collectAsRetainedState
-import com.slack.circuit.retained.rememberRetained
-import com.slack.circuit.runtime.presenter.Presenter
 import dev.ashdavies.analytics.RemoteAnalytics
 import dev.ashdavies.analytics.logEvent
 import dev.zacsweers.metro.AppScope
@@ -19,7 +18,7 @@ import kotlinx.coroutines.launch
 @Composable
 @Suppress("CyclomaticComplexMethod")
 @CircuitInject(GalleryScreen::class, AppScope::class)
-public fun GalleryPresenter(
+internal fun GalleryPresenter(
     imageManager: ImageManager,
     syncManager: SyncManager,
     remoteAnalytics: RemoteAnalytics,
@@ -28,9 +27,9 @@ public fun GalleryPresenter(
     val syncState by syncManager.state.collectAsRetainedState(emptyMap())
     val coroutineScope = rememberCoroutineScope()
 
-    var expandedItem by rememberRetained { mutableStateOf<GalleryScreenState.ExpandedItem?>(null) }
-    var selected by rememberRetained { mutableStateOf(emptyList<Image>()) }
-    var takePhoto by rememberRetained { mutableStateOf(false) }
+    var expandedItem by retain { mutableStateOf<GalleryScreenState.ExpandedItem?>(null) }
+    var selected by retain { mutableStateOf(emptyList<Image>()) }
+    var takePhoto by retain { mutableStateOf(false) }
 
     return GalleryScreenState(
         itemList = itemList.map {
