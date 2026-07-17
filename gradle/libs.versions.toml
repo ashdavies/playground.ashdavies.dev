@@ -15,7 +15,7 @@ jetbrains-kotlin = "2.4.10"
 kotlinx-coroutines = "1.11.0"
 kotlinx-serialization = "1.11.0"
 ktor = "3.5.1"
-slack-circuit = "0.34.0"
+slack-circuit = "0.35.1"
 sqlJs = "1.8.0"
 webPack = "9.1.0"
 
@@ -53,7 +53,7 @@ compose-runtime = { module = "org.jetbrains.compose.runtime:runtime", version.re
 compose-ui = { module = "org.jetbrains.compose.ui:ui", version.ref = "compose-plugin" }
 compose-uiTooling = { module = "org.jetbrains.compose.ui:ui-tooling", version.ref = "compose-plugin" }
 
-detekt-compose = "io.nlopez.compose.rules:detekt:0.6.2"
+detekt-compose = "io.nlopez.compose.rules:detekt:0.6.3"
 
 google-accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "google-accompanist" }
 google-android-identity = "com.google.android.libraries.identity.googleid:googleid:1.2.0"
@@ -139,6 +139,6 @@ jetbrains-compose = { id = "org.jetbrains.compose", version.ref = "compose-plugi
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "jetbrains-kotlin" }
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "jetbrains-kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "jetbrains-kotlin" }
-kotlinx-kover = "org.jetbrains.kotlinx.kover:0.9.8"
+kotlinx-kover = "org.jetbrains.kotlinx.kover:0.9.9"
 ktlint = "org.jlleitschuh.gradle.ktlint:14.2.0"
 zac-metro = "dev.zacsweers.metro:1.3.2"
