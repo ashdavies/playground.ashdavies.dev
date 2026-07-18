@@ -13,6 +13,8 @@ public data class EventListState(
 
     public sealed interface Event {
         public data class ItemClick(val id: Long) : Event
+        public data class ItemCfpClick(val uri: String) : Event
+
         public data object Refresh : Event
     }
 }

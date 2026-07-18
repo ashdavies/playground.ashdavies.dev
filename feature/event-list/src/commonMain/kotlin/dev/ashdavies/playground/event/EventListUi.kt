@@ -71,7 +71,7 @@ public fun EventListUi(state: EventListState, modifier: Modifier = Modifier) {
         },
     ) { contentPadding ->
         PullToRefreshBox(
-            isRefreshing = state.isRefreshing,
+            isRefreshing = false,
             onRefresh = { state.eventSink(EventListState.Event.Refresh) },
             modifier = Modifier.padding(contentPadding),
         ) {
@@ -101,7 +101,7 @@ public fun EventListUi(state: EventListState, modifier: Modifier = Modifier) {
                 }
 
                 itemsIndexed(state.itemList) { index, item ->
-                    val itemModifier = Modifier
+                    val modifier = Modifier
                         .animateItem()
                         .fillMaxWidth()
                         .clip(MaterialTheme.shapes.medium)
@@ -109,18 +109,20 @@ public fun EventListUi(state: EventListState, modifier: Modifier = Modifier) {
                     when {
                         item != null -> EventItemContent(
                             event = item,
+                            isRefreshing = state.isRefreshing,
                             isSelected = index == state.selectedIndex,
-                            modifier = itemModifier
-                                .clickable {
-                                    state.eventSink(EventListState.Event.ItemClick(item.id))
-                                }
+                            onCfpClick = item.cfpSite?.let { { state.eventSink(EventListState.Event.ItemCfpClick(it)) } },
+                            modifier = modifier
+                                .clickable { state.eventSink(EventListState.Event.ItemClick(item.id)) }
                                 .paint(rememberBackgroundPainter(item.imageUrl)),
                         )
 
                         else -> EventItemContent(
                             event = null,
+                            isRefreshing = state.isRefreshing,
                             isSelected = false,
-                            modifier = itemModifier,
+                            onCfpClick = { },
+                            modifier = modifier,
                         )
                     }
                 }
@@ -132,11 +134,13 @@ public fun EventListUi(state: EventListState, modifier: Modifier = Modifier) {
 @Composable
 private fun EventItemContent(
     event: Event?,
+    isRefreshing: Boolean,
     isSelected: Boolean,
+    onCfpClick: (() -> Unit)?,
     modifier: Modifier = Modifier,
 ) {
     Card(
-        modifier = if (event == null) modifier.shimmer() else modifier,
+        modifier = if (isRefreshing) modifier.shimmer() else modifier,
         colors = CardDefaults.cardColors(
             containerColor = when {
                 isSelected -> MaterialTheme.colorScheme.surfaceVariant
@@ -152,7 +156,15 @@ private fun EventItemContent(
         ) {
             Column(Modifier.weight(1f)) {
                 Text(
-                    text = event?.name ?: emptyString(),
+                    text = if (event != null) {
+                        val year = event?.dateStart
+                            ?.let(LocalDate::parse)
+                            ?.let { it.year % 100 }
+
+                        "${event.name} '$year"
+                    } else {
+                        emptyString()
+                    },
                     modifier = Modifier
                         .defaultMinSize(minWidth = 64.dp)
                         .padding(vertical = 2.dp),
@@ -176,12 +188,16 @@ private fun EventItemContent(
                     .date
 
                 if (today.daysUntil(LocalDate.parse(cfpEnd)) > 0) {
-                    Column {
-                        EventLabel(
-                            text = stringResource(Res.string.call_for_papers_open),
-                            modifier = Modifier.fillMaxHeight(),
-                        )
-                    }
+                    EventLabel(
+                        text = stringResource(Res.string.call_for_papers_open),
+                        modifier = Modifier.fillMaxHeight().then(
+                            other = if (onCfpClick != null) {
+                                Modifier.clickable(onClick = onCfpClick)
+                            } else {
+                                Modifier
+                            },
+                        ),
+                    )
                 }
             }
 
