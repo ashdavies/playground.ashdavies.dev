@@ -48,7 +48,7 @@ import playground.feature.event_detail.generated.resources.call_for_papers_days_
 
 @Composable
 @CircuitInject(EventScreen.Detail::class, AppScope::class)
-internal fun EventsDetailUi(state: EventDetailState, modifier: Modifier = Modifier) {
+public fun EventsDetailUi(state: EventDetailState, modifier: Modifier = Modifier) {
     val itemOrNull = (state.itemState as? EventDetailState.ItemState.Done)?.item
     val isLoading = state.itemState is EventDetailState.ItemState.Loading
     val snackbarHostState = remember { SnackbarHostState() }
