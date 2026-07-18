@@ -108,7 +108,8 @@ internal class BottomBarScaffoldUi(
                         modifier = modifier
                             .fillMaxWidth()
                             .background(Color.Blue)
-                            .padding(32.dp)) {
+                            .padding(32.dp),
+                    ) {
                         Text("$screen")
                     }
                 },
