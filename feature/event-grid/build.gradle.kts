@@ -30,6 +30,8 @@ kotlin {
             implementation(projects.uiComponents)
 
             implementation(libs.androidx.window.core)
+            implementation(libs.circuit.annotations)
+            implementation(libs.circuit.foundation)
             implementation(libs.compose.adaptive.layout)
             implementation(libs.compose.components.resources)
             implementation(libs.compose.foundation)
@@ -38,8 +40,6 @@ kotlin {
             implementation(libs.kotlinx.collections.immutable)
             implementation(libs.kotlinx.datetime)
             implementation(libs.ktor.client.core)
-            implementation(libs.slack.circuit.annotations)
-            implementation(libs.slack.circuit.foundation)
             implementation(libs.sqldelight.coroutines.extensions)
         }
     }

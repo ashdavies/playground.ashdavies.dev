@@ -13,9 +13,9 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
+            implementation(libs.circuit.runtime)
             implementation(libs.kotlinx.datetime)
             implementation(libs.kotlinx.serialization.core)
-            implementation(libs.slack.circuit.runtime)
         }
     }
 }

@@ -3,6 +3,7 @@ package dev.ashdavies.playground
 import dev.ashdavies.analytics.RemoteAnalytics
 import dev.ashdavies.content.PlatformContext
 import dev.ashdavies.http.defaultHttpClient
+import dev.ashdavies.playground.gallery.imageAdapter
 import dev.ashdavies.playground.http.FirebaseAppCheck
 import dev.ashdavies.sql.DatabaseFactory
 import dev.zacsweers.metro.AppScope
@@ -14,6 +15,7 @@ import io.ktor.client.plugins.DefaultRequest
 import io.ktor.client.request.header
 import dev.ashdavies.playground.PlaygroundDatabase as ConferenceAppDatabase
 import dev.ashdavies.playground.event.common.PlaygroundDatabase as EventCommonDatabase
+import dev.ashdavies.playground.gallery.PlaygroundDatabase as GalleryDatabase
 
 @ContributesTo(AppScope::class)
 internal interface ConferenceModule {
@@ -26,6 +28,11 @@ internal interface ConferenceModule {
     @Provides
     fun eventCommonDatabaseFactory(context: PlatformContext): DatabaseFactory<EventCommonDatabase> {
         return DatabaseFactory(EventCommonDatabase.Schema, context, EventCommonDatabase::invoke)
+    }
+
+    @Provides
+    fun galleryDatabaseFactory(context: PlatformContext): DatabaseFactory<GalleryDatabase> {
+        return DatabaseFactory(GalleryDatabase.Schema, context) { GalleryDatabase(it, imageAdapter()) }
     }
 
     @Provides

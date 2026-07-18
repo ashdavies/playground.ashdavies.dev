@@ -25,14 +25,14 @@ kotlin {
             implementation(projects.sqlCommon)
             implementation(projects.uiComponents)
 
+            implementation(libs.circuit.annotations)
+            implementation(libs.circuit.foundation)
             implementation(libs.coil.compose)
             implementation(libs.compose.components.resources)
             implementation(libs.compose.materialIconsExtended)
             implementation(libs.compose.material3)
             implementation(libs.compose.shimmer)
             implementation(libs.kotlinx.datetime)
-            implementation(libs.slack.circuit.annotations)
-            implementation(libs.slack.circuit.foundation)
         }
     }
 }

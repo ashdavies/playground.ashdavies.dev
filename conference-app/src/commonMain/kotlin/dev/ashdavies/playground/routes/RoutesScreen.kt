@@ -4,8 +4,10 @@ import com.slack.circuit.runtime.CircuitUiEvent
 import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.screen.Screen
 import dev.ashdavies.parcelable.Parcelize
+import kotlinx.serialization.Serializable
 
 @Parcelize
+@Serializable
 internal object RoutesScreen : Screen {
     sealed interface Event : CircuitUiEvent {
         data class OnEndPosition(val position: LatLng) : Event

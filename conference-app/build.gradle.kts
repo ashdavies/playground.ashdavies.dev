@@ -1,3 +1,4 @@
+import dev.zacsweers.metro.gradle.ExperimentalMetroGradleApi
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.compose.reload.gradle.ComposeHotRun
 
@@ -95,6 +96,9 @@ kotlin {
             implementation(libs.androidx.annotation)
             implementation(libs.androidx.paging.common)
             implementation(libs.androidx.window.core)
+            implementation(libs.circuit.foundation)
+            implementation(libs.circuit.overlay)
+            implementation(libs.circuit.serialization)
             implementation(libs.coil.compose)
             implementation(libs.coil.network)
             implementation(libs.compose.adaptive.layout)
@@ -114,8 +118,6 @@ kotlin {
             implementation(libs.ktor.client.mock)
             implementation(libs.ktor.http)
             implementation(libs.ktor.io)
-            implementation(libs.slack.circuit.foundation)
-            implementation(libs.slack.circuit.overlay)
             implementation(libs.sqldelight.coroutines.extensions)
             implementation(libs.sqldelight.paging3.extensions)
             implementation(libs.sqldelight.runtime)
@@ -131,6 +133,7 @@ kotlin {
         androidMain.dependencies {
             implementation(libs.androidx.activity.compose)
             implementation(libs.androidx.core.splashscreen)
+            implementation(libs.circuit.overlay)
             implementation(libs.google.accompanist.permissions)
             implementation(libs.google.android.location)
             implementation(libs.google.android.material)
@@ -142,7 +145,6 @@ kotlin {
             implementation(libs.google.firebase.crashlytics)
 
             implementation(libs.kotlinx.coroutines.play.services)
-            implementation(libs.slack.circuit.overlay)
         }
 
         jvmMain.dependencies {
@@ -167,15 +169,19 @@ kotlin {
         }
 
         wasmJsMain.dependencies {
+            implementation(libs.circuit.foundation)
+            implementation(libs.circuit.overlay)
             implementation(libs.compose.foundation)
             implementation(libs.compose.material3)
             implementation(libs.compose.runtime)
             implementation(libs.compose.ui)
-
-            implementation(libs.slack.circuit.foundation)
-            implementation(libs.slack.circuit.overlay)
         }
     }
+}
+
+metro {
+    @OptIn(ExperimentalMetroGradleApi::class)
+    enableCircuitCodegen = true
 }
 
 sqldelight {

@@ -3,7 +3,7 @@ package dev.ashdavies.playground.gallery
 import app.cash.sqldelight.ColumnAdapter
 import kotlin.uuid.Uuid
 
-internal fun imageAdapter() = Image.Adapter(
+public fun imageAdapter(): Image.Adapter = Image.Adapter(
     uuidAdapter = uuidAdapter(),
     pathAdapter = pathAdapter(),
 )

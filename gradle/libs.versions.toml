@@ -4,6 +4,7 @@ android-minSdk = "34"
 androidx-activity = "1.13.0"
 androidx-paging = "3.5.0"
 cash-sqldelight = "2.3.2"
+circuit = "0.35.1"
 coil-kt = "3.5.0"
 compose-adaptive = "1.2.0"
 compose-plugin = "1.11.1"
@@ -15,14 +16,11 @@ jetbrains-kotlin = "2.4.10"
 kotlinx-coroutines = "1.11.0"
 kotlinx-serialization = "1.11.0"
 ktor = "3.5.1"
-slack-circuit = "0.35.1"
+slack-circuit = "0.34.0"
 sqlJs = "1.8.0"
 webPack = "9.1.0"
 
 [libraries]
-slack-circuit-codegen = { module = "com.slack.circuit:circuit-codegen", version.ref = "slack-circuit" }
-slack-circuit-annotations = { module = "com.slack.circuit:circuit-codegen-annotations", version.ref = "slack-circuit" }
-slack-circuit-runtime = { module = "com.slack.circuit:circuit-runtime", version.ref = "slack-circuit" }
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity" }
 androidx-annotation = "androidx.annotation:annotation:1.10.0"
 androidx-core-splashscreen = "androidx.core:core-splashscreen:1.2.0"
@@ -38,6 +36,13 @@ app-cash-turbine = "app.cash.turbine:turbine:1.2.1"
 
 auth-java-jwt = "com.auth0:java-jwt:4.6.0"
 auth-jwks-rsa = "com.auth0:jwks-rsa:0.24.1"
+
+circuit-annotations = { module = "com.slack.circuit:circuit-codegen-annotations", version.ref = "circuit" }
+circuit-codegen = { module = "com.slack.circuit:circuit-codegen", version.ref = "circuit" }
+circuit-foundation = { module = "com.slack.circuit:circuit-foundation", version.ref = "circuit" }
+circuit-overlay = { module = "com.slack.circuit:circuit-overlay", version.ref = "circuit" }
+circuit-runtime = { module = "com.slack.circuit:circuit-runtime", version.ref = "circuit" }
+circuit-serialization = { module = "com.slack.circuit:circuit-serialization", version.ref = "circuit" }
 
 coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil-kt" }
 coil-network = { module = "io.coil-kt.coil3:coil-network-ktor3", version.ref = "coil-kt" }
@@ -109,9 +114,6 @@ ktor-server-auth-jwt = { module = "io.ktor:ktor-server-auth-jwt", version.ref = 
 ktor-server-test-host = { module = "io.ktor:ktor-server-test-host", version.ref = "ktor" }
 
 pinterest-ktlint-bom = "com.pinterest.ktlint:ktlint-bom:1.8.0"
-
-slack-circuit-foundation = { module = "com.slack.circuit:circuit-foundation", version.ref = "slack-circuit" }
-slack-circuit-overlay = { module = "com.slack.circuit:circuit-overlay", version.ref = "slack-circuit" }
 
 slf4j-simple = "org.slf4j:slf4j-simple:2.0.18"
 
