@@ -5,6 +5,7 @@ import app.cash.sqldelight.async.coroutines.synchronous
 import app.cash.sqldelight.driver.jdbc.sqlite.JdbcSqliteDriver
 import dev.ashdavies.paging.PagerConfig
 import dev.ashdavies.playground.PlaygroundDatabase
+import dev.ashdavies.playground.gallery.imageAdapter
 import dev.ashdavies.playground.paging.EventPagerFactory
 import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.DateTimeUnit
@@ -31,6 +32,7 @@ internal class EventPagerFactoryTest {
             url = JdbcSqliteDriver.IN_MEMORY,
             schema = PlaygroundDatabase.Schema.synchronous(),
         ).apply(PlaygroundDatabase.Schema::create),
+        imageAdapter = imageAdapter(),
     )
 
     @Test
