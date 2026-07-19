@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.produceState
 import androidx.compose.runtime.retain.retain
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.paging.LoadState
 import androidx.paging.Pager
 import androidx.paging.cachedIn
@@ -51,6 +52,8 @@ internal class EventListPresenter(
             eventSink = { },
         )
 
+        val uriHandler = LocalUriHandler.current
+
         return EventListState(
             itemList = pagingItems
                 .itemSnapshotList
@@ -65,6 +68,11 @@ internal class EventListPresenter(
                 is EventListState.Event.ItemClick -> {
                     remoteAnalytics.logEvent("events_click") { param("id", "${event.id}") }
                     navigator.goTo(EventScreen.Detail(event.id))
+                }
+
+                is EventListState.Event.ItemCfpClick -> {
+                    remoteAnalytics.logEvent("events_cfp_click") { param("id", event.uri) }
+                    uriHandler.openUri(event.uri)
                 }
 
                 is EventListState.Event.Refresh -> {

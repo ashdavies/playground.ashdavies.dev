@@ -8,13 +8,13 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.uuid.Uuid
 
-internal class SyncManagerTest {
+internal class RemoteSyncManagerTest {
 
     @Test
     fun `should request initial value`() = runTest {
         val uuid = Uuid.random()
 
-        val manager = SyncManager(
+        val manager = RemoteSyncManager(
             httpClient = inMemoryHttpClient(listOf("$uuid")),
             fileManager = InMemoryFileManager(),
         )
@@ -29,7 +29,7 @@ internal class SyncManagerTest {
         val uuid = Uuid.random()
         val path = Path("$uuid")
 
-        val manager = SyncManager(
+        val manager = RemoteSyncManager(
             httpClient = inMemoryHttpClient(),
             fileManager = InMemoryFileManager(path),
         )
@@ -49,7 +49,7 @@ internal class SyncManagerTest {
         val uuid = Uuid.random()
         val path = Path("$uuid")
 
-        val manager = SyncManager(
+        val manager = RemoteSyncManager(
             httpClient = inMemoryHttpClient(listOf("$uuid")),
             fileManager = InMemoryFileManager(),
         )
@@ -69,7 +69,7 @@ internal class SyncManagerTest {
         val uuid = Uuid.random()
         val path = Path("$uuid")
 
-        val manager = SyncManager(
+        val manager = RemoteSyncManager(
             httpClient = inMemoryHttpClient(),
             fileManager = InMemoryFileManager(path),
         )

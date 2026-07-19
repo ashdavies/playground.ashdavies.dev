@@ -19,8 +19,14 @@ public interface GalleryModule {
     )
 
     @Provides
-    public fun syncManager(): SyncManager = SyncManager(
-        httpClient = defaultHttpClient { },
-        fileManager = FileManager(),
-    )
+    public fun syncManager(localGallery: LocalGallery): SyncManager = DeferredSyncManager {
+        if (localGallery.enabled()) {
+            LocalSyncManager()
+        } else {
+            RemoteSyncManager(
+                httpClient = defaultHttpClient { },
+                fileManager = FileManager(),
+            )
+        }
+    }
 }

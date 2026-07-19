@@ -19,8 +19,8 @@ import kotlinx.coroutines.launch
 @Suppress("CyclomaticComplexMethod")
 @CircuitInject(GalleryScreen::class, AppScope::class)
 internal fun GalleryPresenter(
-    imageManager: ImageManager,
     syncManager: SyncManager,
+    imageManager: ImageManager,
     remoteAnalytics: RemoteAnalytics,
 ): GalleryScreenState {
     val itemList by imageManager.list.collectAsRetainedState(emptyList())

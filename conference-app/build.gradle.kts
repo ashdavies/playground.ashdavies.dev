@@ -192,6 +192,7 @@ sqldelight {
 
             dialect(libs.sqldelight.sqlite.dialect)
             dependency(project(":feature:event-common"))
+            dependency(project(":feature:gallery-sync"))
             dependency(project(":identity-manager"))
         }
     }

@@ -81,7 +81,7 @@ public fun EventsDetailUi(state: EventDetailState, modifier: Modifier = Modifier
                 .padding(contentPadding),
         ) {
             Card(Modifier.padding(MaterialTheme.spacing.large)) {
-                Box(if (itemOrNull != null) Modifier.shimmer() else Modifier) {
+                Box {
                     EventsDetailImage(
                         imageUrl = itemOrNull?.imageUrl,
                         backgroundSeed = itemOrNull?.location ?: emptyString(),
