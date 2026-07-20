@@ -50,7 +50,8 @@ jobs:
           echo ${{ secrets.RELEASE_KEYSTORE_FILE }} | base64 --decode > keystore.jks
           echo ${{ secrets.RELEASE_KEYSTORE_PROPERTIES }} | base64 --decode > keystore.properties
 
-      - run: echo "VERSION_CODE=$((GITHUB_RUN_NUMBER * 2 + 1000))" >> $GITHUB_ENV
+      - id: version-code
+        run: echo "VERSION_CODE=$((GITHUB_RUN_NUMBER * 2 + 1000))" >> $GITHUB_ENV
 
       - run: |
           ./gradlew :android-app:assemble :android-app:bundle \

@@ -50,9 +50,9 @@ jobs:
 
       - run: |
           fastlane android github \
-            repository_name:${{ github.repository }}
-            api_token:${{ steps.app-token.outputs.token }}
-            version:v${{ github.event.inputs.version }}
+            repository_name:${{ github.repository }} \
+            api_token:${{ steps.app-token.outputs.token }} \
+            version:${{ github.event.inputs.version }} \
             commitish:${{ github.sha }}
 
   play:
