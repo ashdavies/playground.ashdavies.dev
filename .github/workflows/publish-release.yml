@@ -13,8 +13,10 @@ concurrency:
 
 jobs:
   version:
+    runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-tags: true
 
@@ -54,7 +56,7 @@ jobs:
     steps:
       - run: |
           if gh release view "${{ needs.version.outputs.version }}" >/dev/null 2>&1; then
-            echo "::error::Release or tag '$TAG_NAME' already exists in ${{ github.repository }}"
+            echo "::error::Release or tag already exists in ${{ github.repository }}"
             exit 1
           fi
         env:
