@@ -17,8 +17,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v7
-        with:
-          fetch-tags: true
+
+      - run: git fetch --tags
 
       - id: version
         run: |
