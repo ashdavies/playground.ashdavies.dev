@@ -55,9 +55,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - run: echo ${{ secrets.FASTLANE_SERVICE_ACCOUNT_KEY }} | base64 --decode > android-app/src/main/play-store-key.json
+      - uses: actions/checkout@v7
 
-      - run: ls -lahR
+      - uses: actions/download-artifact@v8
+        with:
+          name: android-app-build-outputs
+          path: android-app/build/outputs
+
+      - run: echo ${{ secrets.FASTLANE_SERVICE_ACCOUNT_KEY }} | base64 --decode > android-app/src/main/play-store-key.json
 
       - run: |
           fastlane android play
