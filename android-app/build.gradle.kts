@@ -33,7 +33,7 @@ android {
                     enableV3Signing = true
                     enableV4Signing = true
                 }
-            }.get()
+            }.orNull
 
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
