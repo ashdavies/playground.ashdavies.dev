@@ -9,15 +9,15 @@ platform :android do
       name: options[:name],
       commitish: options[:commitish],
       is_draft: true,
-      upload_assets: Dir.glob("**/build/outputs/apk/release/*.apk")
+      upload_assets: ["android-app/build/outputs/apk/release/android-app-release.apk"]
     )
   end
 
   lane :play do |options|
     upload_to_play_store(
       track: "internal",
-      aab: Dir.glob("**/build/outputs/bundle/release/*.aab"),
-      mapping: Dir.glob("**/build/outputs/mapping/release/mapping.txt"),
+      aab: "android-app/build/outputs/bundle/release/android-app-release.aab",
+      mapping: "android-app/build/outputs/mapping/release/mapping.txt",
       skip_upload_images: true,
     )
   end

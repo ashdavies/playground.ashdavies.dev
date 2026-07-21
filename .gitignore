@@ -38,6 +38,7 @@ gha-creds-*.json
 
 # Gradle
 /gradle.properties
+**/keystore.properties
 **/local.properties
 .gradle
 build
