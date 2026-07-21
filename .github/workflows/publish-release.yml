@@ -48,7 +48,6 @@ jobs:
             repository_name:${{ github.repository }} \
             api_bearer:${{ secrets.GITHUB_TOKEN }} \
             tag_name:v${{ github.event.inputs.version }} \
-            name:v${{ github.event.inputs.version }} \
             commitish:${{ github.sha }}
 
   play:

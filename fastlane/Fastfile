@@ -4,9 +4,9 @@ platform :android do
   lane :github do |options|
     set_github_release(
       repository_name: options[:repository_name],
-      api_token: options[:api_token],
-      name: "v#{options[:version]}",
-      tag_name: "v#{options[:version]}",
+      api_bearer: options[:api_bearer],
+      tag_name: "v#{options[:tag_name]}",
+      name: "v#{options[:tag_name]}",
       commitish: options[:commitish],
       is_draft: true,
       upload_assets: Dir.glob("../**/build/outputs/apk/release/*.apk")
