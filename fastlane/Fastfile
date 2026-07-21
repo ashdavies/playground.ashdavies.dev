@@ -5,19 +5,19 @@ platform :android do
     set_github_release(
       repository_name: options[:repository_name],
       api_bearer: options[:api_bearer],
-      tag_name: "v#{options[:tag_name]}",
-      name: "v#{options[:tag_name]}",
+      tag_name: options[:tag_name],
+      name: options[:tag_name],
       commitish: options[:commitish],
       is_draft: true,
-      upload_assets: Dir.glob("../**/build/outputs/apk/release/*.apk")
+      upload_assets: Dir.glob("**/build/outputs/apk/release/*.apk")
     )
   end
 
   lane :play do |options|
     upload_to_play_store(
       track: "internal",
-      aab: Dir.glob("../**/build/outputs/bundle/release/*.aab"),
-      mapping: Dir.glob("../**/build/outputs/mapping/release/mapping.txt"),
+      aab: Dir.glob("**/build/outputs/bundle/release/*.aab"),
+      mapping: Dir.glob("**/build/outputs/mapping/release/mapping.txt"),
       skip_upload_images: true,
     )
   end

@@ -43,8 +43,6 @@ jobs:
           name: android-app-build-outputs
           path: android-app/build/outputs
 
-      - run: ls -lahR
-
       - run: |
           fastlane android github \
             repository_name:${{ github.repository }} \
