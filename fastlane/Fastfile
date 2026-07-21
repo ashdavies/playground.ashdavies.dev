@@ -6,7 +6,7 @@ platform :android do
       repository_name: options[:repository_name],
       api_bearer: options[:api_bearer],
       tag_name: options[:tag_name],
-      name: options[:tag_name],
+      name: options[:name],
       commitish: options[:commitish],
       is_draft: true,
       upload_assets: Dir.glob("**/build/outputs/apk/release/*.apk")
