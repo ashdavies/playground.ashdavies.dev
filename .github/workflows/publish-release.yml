@@ -22,23 +22,10 @@ jobs:
 
       - id: version
         run: |
-          echo "$(git tag -l)"
-          echo "$(git tag -l "v*")"
-          echo "$(git tag -l "v*" --sort=-v:refname)"
-          echo "$(git tag -l "v*" --sort=-v:refname | head -n 1)"
-          echo "$(git tag -l "v*" --sort=-v:refname | head -n 1 | sed 's/v//')"
-          
-          LATEST=$(git tag -l "v*" --sort=-v:refname | head -n 1 | sed 's/v//')
-          echo "=== LATEST=$LATEST ==="
-          
+          LATEST=$(git describe --tags --match "v*" --abbrev=0 2>/dev/null | sed 's/v//' | echo "0.0.0")
           MAJOR=$(echo $LATEST | cut -d '.' -f1)
-          echo "=== MAJOR=$MAJOR ==="
-          
           MINOR=$(echo $LATEST | cut -d '.' -f2)
-          echo "=== MINOR=$MINOR ==="
-          
           PATCH=${{ github.run_number }}
-          echo "=== PATCH=$PATCH ==="
 
           echo "name=$MAJOR.$MINOR.$PATCH" >> "$GITHUB_OUTPUT"
 
@@ -88,8 +75,8 @@ jobs:
           fastlane android github \
             repository_name:${{ github.repository }} \
             api_bearer:${{ secrets.GITHUB_TOKEN }} \
-            tag_name:${{ needs.version.outputs.version }} \
-            name:v${{ needs.version.outputs.version }} \
+            tag_name:v${{ needs.version.outputs.version }} \
+            name:Release v${{ needs.version.outputs.version }} \
             commitish:${{ github.sha }}
 
   play:
