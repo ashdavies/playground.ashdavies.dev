@@ -23,9 +23,16 @@ jobs:
       - id: version
         run: |
           LATEST=$(git tag -l "v*" --sort=-v:refname | head -n 1 | sed 's/v//')
+          echo "=== LATEST=$LATEST ==="
+          
           MAJOR=$(echo $LATEST | cut -d '.' -f1)
+          echo "=== MAJOR=$MAJOR ==="
+          
           MINOR=$(echo $LATEST | cut -d '.' -f2)
+          echo "=== MINOR=$MINOR ==="
+          
           PATCH=${{ github.run_number }}
+          echo $=== PATCH=$PATCH ==="
 
           echo "name=$MAJOR.$MINOR.$PATCH" >> "$GITHUB_OUTPUT"
 
