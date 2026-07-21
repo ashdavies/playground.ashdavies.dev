@@ -20,15 +20,17 @@ jobs:
         with:
           fetch-tags: true
 
-    outputs:
       - id: version
         run: |
           LATEST=$(git tag -l "v*" --sort=-v:refname | head -n 1 | sed 's/v//')
           MAJOR=$(echo $LATEST | cut -d '.' -f1)
           MINOR=$(echo $LATEST | cut -d '.' -f2)
           PATCH=${{ github.run_number }}
-    
-          echo "OUTPUT=$MAJOR.$MINOR.$PATCH" >> "$GITHUB_OUTPUT"        
+
+          echo "name=$MAJOR.$MINOR.$PATCH" >> "$GITHUB_OUTPUT"
+
+    outputs:
+      version: ${{ steps.version.outputs.name }}
 
   android:
     needs: [ version ]
