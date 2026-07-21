@@ -40,6 +40,8 @@ jobs:
             echo "::error::Release or tag '$TAG_NAME' already exists in ${{ github.repository }}"
             exit 1
           fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - uses: actions/checkout@v7
 
