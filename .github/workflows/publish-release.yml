@@ -70,5 +70,7 @@ jobs:
 
       - run: echo ${{ secrets.FASTLANE_SERVICE_ACCOUNT_KEY }} | base64 --decode > android-app/src/main/play-store-key.json
 
+      - uses: ruby/setup-ruby@v1
+
       - run: |
           fastlane android play
