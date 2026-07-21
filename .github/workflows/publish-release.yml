@@ -43,12 +43,12 @@ jobs:
           name: android-app-build-outputs
           path: android-app/build/outputs
 
-      - run: >
-          fastlane android github
-          repository_name:${{ github.repository }}
-          api_token:${{ secrets.GITHUB_TOKEN }}
-          version:${{ github.event.inputs.version }}
-          commitish:${{ github.sha }}
+      - run: |
+          fastlane android github \
+            repository_name:${{ github.repository }} \
+            api_token:${{ secrets.GITHUB_TOKEN }} \
+            version:${{ github.event.inputs.version }} \
+            commitish:${{ github.sha }}
 
   play:
     needs: [android]
