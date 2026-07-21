@@ -46,8 +46,9 @@ jobs:
       - run: |
           fastlane android github \
             repository_name:${{ github.repository }} \
-            api_token:${{ secrets.GITHUB_TOKEN }} \
-            tag_name:${{ github.event.inputs.version }} \
+            api_bearer:${{ secrets.GITHUB_TOKEN }} \
+            tag_name:v${{ github.event.inputs.version }} \
+            name:v${{ github.event.inputs.version }} \
             commitish:${{ github.sha }}
 
   play:
