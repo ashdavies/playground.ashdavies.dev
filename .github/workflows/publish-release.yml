@@ -35,6 +35,12 @@ jobs:
       id-token: write
 
     steps:
+      - run: |
+          if gh release view "${{ github.event.inputs.version }}" >/dev/null 2>&1; then
+            echo "::error::Release or tag '$TAG_NAME' already exists in ${{ github.repository }}"
+            exit 1
+          fi
+
       - uses: actions/checkout@v7
 
       - uses: actions/download-artifact@v8
