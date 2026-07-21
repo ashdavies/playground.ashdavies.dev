@@ -1,4 +1,5 @@
-import org.jetbrains.kotlin.compose.compiler.gradle.ComposeFeatureFlag
+import java.io.FileInputStream
+import java.util.Properties
 
 plugins {
     id("dev.ashdavies.android.application")
@@ -20,20 +21,23 @@ android {
             isMinifyEnabled = true
             isShrinkResources = true
 
-            val keystoreProperties = localPropertyProvider("keystore.properties")
+            val keystorePropertiesFile = file("keystore.properties")
+            if (keystorePropertiesFile.exists()) {
+                val keyStoreProperties = Properties().also {
+                    it.load(FileInputStream(keystorePropertiesFile))
+                }
 
-            signingConfig = keystoreProperties.map { properties ->
                 signingConfigs.maybeCreate("release").apply {
-                    storeFile = file(properties.getProperty("store.file"))
-                    storePassword = properties.getProperty("store.password")
+                    storeFile = file(keyStoreProperties.getProperty("store.file"))
+                    storePassword = keyStoreProperties.getProperty("store.password")
 
-                    keyAlias = properties.getProperty("key.alias")
-                    keyPassword = properties.getProperty("key.password")
+                    keyAlias = keyStoreProperties.getProperty("key.alias")
+                    keyPassword = keyStoreProperties.getProperty("key.password")
 
                     enableV3Signing = true
                     enableV4Signing = true
                 }
-            }.orNull
+            }
 
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
