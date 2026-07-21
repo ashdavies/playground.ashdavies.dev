@@ -6,7 +6,6 @@ on:
       version:
         required: true
         type: string
-        default: '0.0.1'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -54,7 +53,6 @@ jobs:
   play:
     needs: [android]
     runs-on: ubuntu-latest
-    if: false
 
     steps:
       - run: echo ${{ secrets.FASTLANE_SERVICE_ACCOUNT_KEY }} | base64 --decode > android-app/src/androidMain/play-store-key.json
