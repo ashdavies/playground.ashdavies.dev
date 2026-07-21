@@ -12,7 +12,7 @@ Options:
   --help              Show this help message.
 
 Description:
-  Generates a JWT signed with RS256 using the provided issuer and private key.
+  Generates a JWT signed with RSA256 using the provided issuer and private key.
 EOF
 }
 
