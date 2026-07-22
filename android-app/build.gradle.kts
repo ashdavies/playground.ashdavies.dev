@@ -27,7 +27,7 @@ android {
                     it.load(FileInputStream(keystorePropertiesFile))
                 }
 
-                signingConfigs.maybeCreate("release").apply {
+                signingConfig = signingConfigs.maybeCreate("release").apply {
                     storeFile = file(keyStoreProperties.getProperty("store.file"))
                     storePassword = keyStoreProperties.getProperty("store.password")
 

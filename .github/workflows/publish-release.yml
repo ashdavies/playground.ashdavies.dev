@@ -71,6 +71,8 @@ jobs:
           name: android-app-build-outputs
           path: android-app/build/outputs
 
+      - uses: ruby/setup-ruby@v1
+
       - run: |
           fastlane android github \
             repository_name:${{ github.repository }} \
