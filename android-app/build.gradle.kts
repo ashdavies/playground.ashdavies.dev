@@ -22,22 +22,9 @@ android {
                 it.contains("bundle", ignoreCase = true)
             }
 
-<<<<<<< Updated upstream
-                signingConfig = signingConfigs.maybeCreate("release").apply {
-                    storeFile = file(keyStoreProperties.getProperty("store.file"))
-                    storePassword = keyStoreProperties.getProperty("store.password")
-
-                    keyAlias = keyStoreProperties.getProperty("key.alias")
-                    keyPassword = keyStoreProperties.getProperty("key.password")
-
-                    enableV3Signing = true
-                    enableV4Signing = true
-                }
-=======
             signingConfig = when (isBundle) {
                 true -> signingConfigs.findByName("upload")
                 false -> signingConfigs.findByName("release")
->>>>>>> Stashed changes
             }
 
             proguardFiles(
