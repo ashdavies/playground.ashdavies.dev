@@ -74,7 +74,7 @@ jobs:
       - uses: ruby/setup-ruby@v1
 
       - run: |
-          fastlane android github \
+          bundle exec fastlane android github \
             repository_name:${{ github.repository }} \
             api_bearer:${{ secrets.GITHUB_TOKEN }} \
             tag_name:v${{ needs.version.outputs.version }} \
@@ -98,4 +98,4 @@ jobs:
       - uses: ruby/setup-ruby@v1
 
       - run: |
-          fastlane android play
+          bundle exec fastlane android play
