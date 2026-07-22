@@ -8,7 +8,7 @@ platform :android do
       tag_name: options[:tag_name],
       name: options[:name],
       commitish: options[:commitish],
-      is_draft: true,
+      is_draft: false,
       upload_assets: ["android-app/build/outputs/apk/release/android-app-release.apk"]
     )
   end
