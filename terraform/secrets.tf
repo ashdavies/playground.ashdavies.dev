@@ -1,18 +1,6 @@
 locals {
   github_app_id = { for it in data.onepassword_item.github_developer_application.section[0].field : it.label => sensitive(it.value) }["app id"]
-
-  keystore_fields = merge([
-    for section in data.onepassword_item.android_release_keystore.section : merge([
-      for field in section.field : { replace(field.label, "/\\s+/", "_") = sensitive(field.value) }
-    ]...)
-  ]...)
-
-  keystore_properties = <<-EOT
-  key.alias=${local.keystore_fields["key_alias"]}
-  key.password=${local.keystore_fields["key_password"]}
-  store.file=keystore.jks
-  store.password=${local.keystore_fields["keystore_password"]}
-  EOT
+  keystore_password = {for it in data.onepassword_item.android_keystore.section[0].field :it.label => sensitive(it.value)}["password"]
 }
 
 resource "github_actions_secret" "main" {
@@ -24,13 +12,13 @@ resource "github_actions_secret" "main" {
     GH_APP_ID                    = local.github_app_id
     GH_PRIVATE_KEY               = base64encode(data.onepassword_item.github_developer_application.private_key)
     GOOGLE_SERVICE_ACCOUNT_ID    = module.github_service_account.email
+    KEYSTORE_FILE                = data.onepassword_item.android_keystore.file[0].content_base64
+    KEYSTORE_PASSWORD            = local.keystore_password
     OP_SERVICE_ACCOUNT_TOKEN     = var.op_service_account_token
-    RELEASE_KEYSTORE_FILE        = data.onepassword_item.android_release_keystore.file[0].content_base64
-    RELEASE_KEYSTORE_PROPERTIES  = base64encode(local.keystore_properties)
     WORKLOAD_IDENTITY_PROVIDER   = module.github_workload_identity.provider_name
   }
 
   repository      = var.gh_repo_name
   secret_name     = each.key
-  plaintext_value = each.value
+  value           = each.value
 }

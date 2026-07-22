@@ -1,6 +1,3 @@
-import java.io.FileInputStream
-import java.util.Properties
-
 plugins {
     id("dev.ashdavies.android.application")
     id("dev.ashdavies.compose")
@@ -21,12 +18,11 @@ android {
             isMinifyEnabled = true
             isShrinkResources = true
 
-            val keystorePropertiesFile = file("keystore.properties")
-            if (keystorePropertiesFile.exists()) {
-                val keyStoreProperties = Properties().also {
-                    it.load(FileInputStream(keystorePropertiesFile))
-                }
+            val isBundle = gradle.startParameter.taskNames.any {
+                it.contains("bundle", ignoreCase = true)
+            }
 
+<<<<<<< Updated upstream
                 signingConfig = signingConfigs.maybeCreate("release").apply {
                     storeFile = file(keyStoreProperties.getProperty("store.file"))
                     storePassword = keyStoreProperties.getProperty("store.password")
@@ -37,6 +33,11 @@ android {
                     enableV3Signing = true
                     enableV4Signing = true
                 }
+=======
+            signingConfig = when (isBundle) {
+                true -> signingConfigs.findByName("upload")
+                false -> signingConfigs.findByName("release")
+>>>>>>> Stashed changes
             }
 
             proguardFiles(
@@ -63,6 +64,23 @@ android {
     }
 
     namespace = "dev.ashdavies.android.playground"
+
+    val keystoreFile = file("android.keystore")
+    if (keystoreFile.exists()) {
+        signingConfigs {
+            val keystorePassword = stringProperty("keystore.password")
+
+            fun create(name: String) = create(name) {
+                storeFile = keystoreFile
+                storePassword = keystorePassword
+                keyAlias = name
+                keyPassword = keystorePassword
+            }
+
+            create("release")
+            create("upload")
+        }
+    }
 }
 
 dependencies {

@@ -34,6 +34,10 @@ public fun Project.stringPropertyOrNull(name: String): String? {
     return stringPropertyProvider(PropertyDefinition(name)).orNull
 }
 
+public fun Project.stringProperty(name: String): String {
+    return stringPropertyProvider(PropertyDefinition(name)).get()
+}
+
 private fun <T> Project.readOnlyDelegateProvider(
     transform: (provider: Provider<String>, tag: String) -> T,
 ): ReadOnlyDelegateProvider<T> = ReadOnlyDelegateProvider { _, property ->

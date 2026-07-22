@@ -47,17 +47,26 @@ jobs:
 
       - run: |
           echo ${{ secrets.FIREBASE_GOOGLE_SERVICES }} | base64 --decode > android-app/google-services.json
+<<<<<<< Updated upstream
           echo ${{ secrets.RELEASE_KEYSTORE_FILE }} | base64 --decode > android-app/keystore.jks
           echo ${{ secrets.RELEASE_KEYSTORE_PROPERTIES }} | base64 --decode > android-app/keystore.properties
 
       - run: |
           ./gradlew :android-app:assemble :android-app:bundle \
             -PversionCode=$(( ${{ github.run_number }} * 2 + 1000 )) \
+=======
+          echo ${{ secrets.KEYSTORE_FILE }} | base64 --decode > android.keystore
+
+      - run: |
+          ./gradlew :android-app:assemble :android-app:bundle \
+            -PversionCode=$((GITHUB_RUN_NUMBER * 2 + 1000)) \
+>>>>>>> Stashed changes
             -PversionName=${{ inputs.version }} \
             --console=plain
         env:
           ANDROID_API_KEY: ${{ secrets.ANDROID_API_KEY }}
           BROWSER_API_KEY: ${{ secrets.BROWSER_API_KEY }}
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
 
       - uses: actions/upload-artifact@v7
         with:
