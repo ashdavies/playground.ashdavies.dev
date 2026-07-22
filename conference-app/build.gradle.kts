@@ -11,7 +11,6 @@ private object ConferenceAppConfig {
 plugins {
     id("dev.ashdavies.android.library")
     id("dev.ashdavies.compose")
-    id("dev.ashdavies.firebase.hosting")
     id("dev.ashdavies.integration")
     id("dev.ashdavies.jvm")
     id("dev.ashdavies.kotlin")
