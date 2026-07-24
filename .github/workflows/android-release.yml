@@ -20,7 +20,7 @@ on:
         required: true
       KEYSTORE_FILE:
         required: true
-      KEYSTORE_PROPERTIES:
+      KEYSTORE_PASSWORD:
         required: true
       WORKLOAD_IDENTITY_PROVIDER:
         required: true
