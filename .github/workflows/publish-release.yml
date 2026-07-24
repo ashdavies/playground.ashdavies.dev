@@ -1,39 +1,91 @@
 name: Publish Release
 
 on:
+  push:
+    branches:
+      - main
+
   workflow_dispatch:
-    inputs:
-      version:
-        required: true
-        type: string
-        default: '0.0.1'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
+  version:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - id: version
+        run: |
+          LATEST=$(git describe --tags --match "v*" --abbrev=0 2>/dev/null | sed 's/v//' | echo "0.0.0")
+          MAJOR=$(echo $LATEST | cut -d '.' -f1)
+          MINOR=$(echo $LATEST | cut -d '.' -f2)
+          PATCH=${{ github.run_number }}
+
+          echo "name=$MAJOR.$MINOR.$PATCH" >> "$GITHUB_OUTPUT"
+
+    outputs:
+      version: ${{ steps.version.outputs.name }}
+
   android:
+    needs: [ version ]
     uses: ./.github/workflows/android-release.yml
     with:
-      version: ${{ github.event.inputs.version }}
+      version: ${{ needs.version.outputs.version }}
     secrets:
-      WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
-      GOOGLE_SERVICE_ACCOUNT_ID: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
-      FIREBASE_GOOGLE_SERVICES: ${{ secrets.FIREBASE_GOOGLE_SERVICES }}
-      RELEASE_KEYSTORE_FILE: ${{ secrets.RELEASE_KEYSTORE_FILE }}
-      RELEASE_KEYSTORE_PROPERTIES: ${{ secrets.RELEASE_KEYSTORE_PROPERTIES }}
       ANDROID_API_KEY: ${{ secrets.ANDROID_API_KEY }}
       BROWSER_API_KEY: ${{ secrets.BROWSER_API_KEY }}
       FASTLANE_SERVICE_ACCOUNT_KEY: ${{ secrets.FASTLANE_SERVICE_ACCOUNT_KEY }}
+      FIREBASE_GOOGLE_SERVICES: ${{ secrets.FIREBASE_GOOGLE_SERVICES }}
+      GOOGLE_SERVICE_ACCOUNT_ID: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
+      RELEASE_KEYSTORE_FILE: ${{ secrets.RELEASE_KEYSTORE_FILE }}
+      RELEASE_KEYSTORE_PROPERTIES: ${{ secrets.RELEASE_KEYSTORE_PROPERTIES }}
+      WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
 
   github:
-    needs: [ android ]
+    needs: [ version, android ]
     runs-on: ubuntu-latest
 
     permissions:
       contents: write
       id-token: write
+
+    steps:
+      - run: |
+          if gh release view "${{ needs.version.outputs.version }}" >/dev/null 2>&1; then
+            echo "::error::Release or tag already exists in ${{ github.repository }}"
+            exit 1
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/checkout@v7
+
+      - uses: actions/download-artifact@v8
+        with:
+          name: android-app-build-outputs
+          path: android-app/build/outputs
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+
+      - run: |
+          bundle exec fastlane android github \
+            repository_name:${{ github.repository }} \
+            api_bearer:${{ secrets.GITHUB_TOKEN }} \
+            tag_name:v${{ needs.version.outputs.version }} \
+            name:Release v${{ needs.version.outputs.version }} \
+            commitish:${{ github.sha }}
+
+  play:
+    needs: [android]
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v7
@@ -43,23 +95,11 @@ jobs:
           name: android-app-build-outputs
           path: android-app/build/outputs
 
-      - run: |
-          fastlane android github \
-            repository_name:${{ github.repository }} \
-            api_bearer:${{ secrets.GITHUB_TOKEN }} \
-            tag_name:${{ github.event.inputs.version }} \
-            name:v${{ github.event.inputs.version }} \
-            commitish:${{ github.sha }}
-
-  play:
-    needs: [android]
-    runs-on: ubuntu-latest
-    if: false
-
-    steps:
-      - run: echo ${{ secrets.FASTLANE_SERVICE_ACCOUNT_KEY }} | base64 --decode > android-app/src/androidMain/play-store-key.json
+      - run: echo ${{ secrets.FASTLANE_SERVICE_ACCOUNT_KEY }} | base64 --decode > android-app/src/main/play-store-key.json
 
       - uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
 
       - run: |
-          fastlane android play
+          bundle exec fastlane android play
