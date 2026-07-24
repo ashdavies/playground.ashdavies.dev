@@ -47,7 +47,7 @@ jobs:
 
       - run: |
           echo ${{ secrets.FIREBASE_GOOGLE_SERVICES }} | base64 --decode > android-app/google-services.json
-          echo ${{ secrets.KEYSTORE_FILE }} | base64 --decode > android.keystore
+          echo ${{ secrets.KEYSTORE_FILE }} | base64 --decode > android-app/android.keystore
 
       - run: |
           ./gradlew :android-app:assemble :android-app:bundle \
