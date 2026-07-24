@@ -57,7 +57,9 @@ android {
         }
 
         val versionCode by stringPropertyOrNull { _, value ->
-            versionCode = value?.toInt() ?: 1
+            versionCode = requireNotNull(value) { "VERSION_CODE was null" }.let {
+                requireNotNull(it.toIntOrNull()) { "VERSION_CODE $it failed to parse" }
+            }
         }
 
         val versionName by stringPropertyOrNull { _, value ->
