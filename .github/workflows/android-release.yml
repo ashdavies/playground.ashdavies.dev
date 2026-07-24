@@ -3,7 +3,10 @@ name: Android Release
 on:
   workflow_call:
     inputs:
-      version:
+      version_code:
+        required: true
+        type: string
+      version_name:
         required: true
         type: string
 
@@ -51,8 +54,8 @@ jobs:
 
       - run: |
           ./gradlew :android-app:assemble :android-app:bundle \
-            -PversionCode=$((GITHUB_RUN_NUMBER * 2 + 1000)) \
-            -PversionName=${{ inputs.version }} \
+            -PversionCode=${{ inputs.version_code }} \
+            -PversionName=${{ inputs.version_name }} \
             --console=plain
         env:
           ANDROID_API_KEY: ${{ secrets.ANDROID_API_KEY }}

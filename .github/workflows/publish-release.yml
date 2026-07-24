@@ -40,7 +40,8 @@ jobs:
     needs: [ version ]
     uses: ./.github/workflows/android-release.yml
     with:
-      version: ${{ needs.version.outputs.version }}
+      version_code: ${{ github.run_number * 2 + 1000 }}
+      version_name: ${{ needs.version.outputs.version }}
     secrets:
       ANDROID_API_KEY: ${{ secrets.ANDROID_API_KEY }}
       BROWSER_API_KEY: ${{ secrets.BROWSER_API_KEY }}
