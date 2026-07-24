@@ -10,7 +10,7 @@ plugins {
 
 android {
     val keystoreFile = file("android.keystore")
-    if (keystoreFile.exists()) {
+    //if (keystoreFile.exists()) {
         signingConfigs {
             val keystorePassword = stringProperty("keystore.password")
 
@@ -24,7 +24,7 @@ android {
             create("release")
             create("upload")
         }
-    }
+    //}
 
     buildTypes {
         debug {
@@ -40,8 +40,8 @@ android {
             }
 
             signingConfig = when (isBundle) {
-                true -> signingConfigs.findByName("upload")
-                false -> signingConfigs.findByName("release")
+                true -> signingConfigs.getByName("upload")
+                false -> signingConfigs.getByName("release")
             }
 
             proguardFiles(
