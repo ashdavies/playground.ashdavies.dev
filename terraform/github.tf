@@ -19,8 +19,26 @@ resource "github_repository" "main" {
   }
 }
 
+resource "github_issue_label" "automated" {
+  repository  = var.gh_repo_name
+  name        = "Automated"
+  color       = "2198D8"
+}
+
+resource "github_issue_label" "dry_run" {
+  repository  = var.gh_repo_name
+  name        = "Dry Run"
+  color       = "55F756"
+}
+
 resource "github_issue_label" "feature" {
   repository  = var.gh_repo_name
   name        = "Feature"
   color       = "14a88d"
+}
+
+resource "github_issue_label" "publish_release" {
+  repository  = var.gh_repo_name
+  name        = "Publish Release"
+  color       = "1ab498"
 }

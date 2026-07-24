@@ -1,6 +1,10 @@
 name: Publish Release
 
 on:
+  pull_request:
+    branches:
+      - main
+
   push:
     branches:
       - main
@@ -13,6 +17,7 @@ concurrency:
 
 jobs:
   version:
+    if: github.event_name != 'pull_request' || contains(github.event.pull_request.labels.*.name, 'Publish Release')
     runs-on: ubuntu-latest
 
     steps:
