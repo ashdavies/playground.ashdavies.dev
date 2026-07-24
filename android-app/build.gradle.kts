@@ -9,6 +9,23 @@ plugins {
 }
 
 android {
+    val keystoreFile = file("android.keystore")
+    if (keystoreFile.exists()) {
+        signingConfigs {
+            val keystorePassword = stringProperty("keystore.password")
+
+            fun create(name: String) = create(name) {
+                storeFile = keystoreFile
+                storePassword = keystorePassword
+                keyAlias = name
+                keyPassword = keystorePassword
+            }
+
+            create("release")
+            create("upload")
+        }
+    }
+
     buildTypes {
         debug {
             applicationIdSuffix = ".debug"
@@ -51,23 +68,6 @@ android {
     }
 
     namespace = "dev.ashdavies.android.playground"
-
-    val keystoreFile = file("android.keystore")
-    if (keystoreFile.exists()) {
-        signingConfigs {
-            val keystorePassword = stringProperty("keystore.password")
-
-            fun create(name: String) = create(name) {
-                storeFile = keystoreFile
-                storePassword = keystorePassword
-                keyAlias = name
-                keyPassword = keystorePassword
-            }
-
-            create("release")
-            create("upload")
-        }
-    }
 }
 
 dependencies {
