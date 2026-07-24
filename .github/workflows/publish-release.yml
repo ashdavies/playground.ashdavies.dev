@@ -2,8 +2,7 @@ name: Publish Release
 
 on:
   pull_request:
-    branches:
-      - main
+    types: [labeled, opened, reopened, synchronize]
 
   push:
     branches:
