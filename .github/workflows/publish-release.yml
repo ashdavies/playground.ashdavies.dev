@@ -31,6 +31,7 @@ jobs:
           MINOR=$(echo $LATEST | cut -d '.' -f2)
           PATCH=${{ github.run_number }}
 
+          echo "code=$((${{ github.run_number }} * 2 + 1000))" >> "$GITHUB_OUTPUT"
           echo "name=$MAJOR.$MINOR.$PATCH" >> "$GITHUB_OUTPUT"
 
     outputs:
@@ -40,8 +41,8 @@ jobs:
     needs: [ version ]
     uses: ./.github/workflows/android-release.yml
     with:
-      version_code: ${{ github.run_number * 2 + 1000 }}
-      version_name: ${{ needs.version.outputs.version }}
+      version_code: ${{ needs.version.outputs.code }}
+      version_name: ${{ needs.version.outputs.name }}
     secrets:
       ANDROID_API_KEY: ${{ secrets.ANDROID_API_KEY }}
       BROWSER_API_KEY: ${{ secrets.BROWSER_API_KEY }}
