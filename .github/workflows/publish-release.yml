@@ -30,7 +30,8 @@ jobs:
           echo "code=${{ github.run_number }}" >> "$GITHUB_OUTPUT"
 
     outputs:
-      version: ${{ steps.version.outputs.name }}
+      code: ${{ steps.version.outputs.code }}
+      name: ${{ steps.version.outputs.name }}
 
   android:
     needs: [ version ]
@@ -72,8 +73,8 @@ jobs:
           bundle exec fastlane android github \
             repository_name:${{ github.repository }} \
             api_bearer:${{ secrets.GITHUB_TOKEN }} \
-            tag_name:v${{ needs.version.outputs.version }} \
-            name:Release v${{ needs.version.outputs.version }} \
+            tag_name:v${{ needs.version.outputs.name }} \
+            name:Release v${{ needs.version.outputs.name }} \
             commitish:${{ github.sha }}
 
   play:

@@ -56,8 +56,8 @@ android {
 
         manifestPlaceholders["ANDROID_API_KEY"] = "${stringPropertyOrNull("androidApiKey")}"
 
-        versionCode = stringPropertyOrNull("versionCode")?.toIntOrNull() ?: 1
-        versionName = stringPropertyOrNull("versionName") ?: "0.0.0-SNAPSHOT"
+        versionCode = stringPropertyOrNull("versionCode")!!.toInt() //?.toIntOrNull() ?: 1
+        versionName = stringPropertyOrNull("versionName")!! //?: "0.0.0-SNAPSHOT"
     }
 
     namespace = "dev.ashdavies.android.playground"
