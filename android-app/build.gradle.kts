@@ -56,10 +56,8 @@ android {
             manifestPlaceholders["ANDROID_API_KEY"] = "$value"
         }
 
-        val versionCode by stringPropertyOrNull { _, value ->
-            versionCode = requireNotNull(value) { "VERSION_CODE was null" }.let {
-                requireNotNull(it.toIntOrNull()) { "VERSION_CODE $it failed to parse" }
-            }
+        versionCode = stringPropertyOrNull("versionCode").also {
+
         }
 
         val versionName by stringPropertyOrNull { _, value ->

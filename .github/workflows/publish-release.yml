@@ -26,13 +26,8 @@ jobs:
 
       - id: version
         run: |
-          LATEST=$(git describe --tags --match "v*" --abbrev=0 2>/dev/null | sed 's/v//' | echo "0.0.0")
-          MAJOR=$(echo $LATEST | cut -d '.' -f1)
-          MINOR=$(echo $LATEST | cut -d '.' -f2)
-          PATCH=${{ github.run_number }}
-
-          echo "code=$((${{ github.run_number }} * 2 + 1000))" >> "$GITHUB_OUTPUT"
-          echo "name=$MAJOR.$MINOR.$PATCH" >> "$GITHUB_OUTPUT"
+          echo "name=$(./scripts/generate_version_name.sh "${{ github.run_number }}")" >> "$GITHUB_OUTPUT"
+          echo "code=${{ github.run_number }}" >> "$GITHUB_OUTPUT"
 
     outputs:
       version: ${{ steps.version.outputs.name }}
@@ -62,14 +57,6 @@ jobs:
       id-token: write
 
     steps:
-      - run: |
-          if gh release view "${{ needs.version.outputs.version }}" >/dev/null 2>&1; then
-            echo "::error::Release or tag already exists in ${{ github.repository }}"
-            exit 1
-          fi
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
       - uses: actions/checkout@v7
 
       - uses: actions/download-artifact@v8
