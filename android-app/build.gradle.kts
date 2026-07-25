@@ -52,19 +52,12 @@ android {
     }
 
     defaultConfig {
-        val androidApiKey by stringPropertyOrNull { _, value ->
-            manifestPlaceholders["ANDROID_API_KEY"] = "$value"
-        }
-
-        versionCode = stringPropertyOrNull("versionCode").also {
-
-        }
-
-        val versionName by stringPropertyOrNull { _, value ->
-            versionName = value ?: "0.0.0-SNAPSHOT"
-        }
-
         applicationId = "dev.ashdavies.playground"
+
+        manifestPlaceholders["ANDROID_API_KEY"] = "${stringPropertyOrNull("androidApiKey")}"
+
+        versionCode = stringPropertyOrNull("versionCode")?.toIntOrNull() ?: 1
+        versionName = stringPropertyOrNull("versionName") ?: "0.0.0-SNAPSHOT"
     }
 
     namespace = "dev.ashdavies.android.playground"
