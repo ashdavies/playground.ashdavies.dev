@@ -54,8 +54,8 @@ jobs:
 
       - run: |
           ./gradlew :android-app:assemble :android-app:bundle \
-            -PversionCode=${{ inputs.version_code }} \
-            -PversionName=${{ inputs.version_name }} \
+            -Pversion.code=${{ inputs.version_code }} \
+            -Pversion.name=${{ inputs.version_name }} \
             --console=plain
         env:
           ANDROID_API_KEY: ${{ secrets.ANDROID_API_KEY }}
