@@ -101,5 +101,6 @@ jobs:
           bundle exec fastlane android play
 
       - uses: actions/upload-artifact@v7
+        if: failure()
         with:
           path: fastlane/metadata/android/en-GB/images
