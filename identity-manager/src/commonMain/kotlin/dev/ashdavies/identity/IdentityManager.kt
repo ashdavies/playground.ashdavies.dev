@@ -32,7 +32,7 @@ public fun IdentityManager(
 
     override suspend fun signIn() {
         val serverClientId = requireNotNull(BuildConfig.SERVER_CLIENT_ID) {
-            "Required value 'serverClientId' was null."
+            "SERVER_CLIENT_ID was null"
         }
 
         val identityRequest = GoogleIdIdentityRequest(serverClientId)

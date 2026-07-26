@@ -1,13 +1,3 @@
-variable "service" {
-  type        = set(string)
-  description = <<EOT
-  (Optional) A restriction for specific services. It should be the canonical service name, for
-  example: translate.googleapis.com. Requests are allowed if they match any of these restrictions.
-  If no restrictions are specified, all targets are allowed.
-  EOT
-  default     = []
-}
-
 variable "display_name" {
   description = "Human-readable display name of this API key. Modifiable by user."
 }
@@ -22,4 +12,23 @@ variable "name" {
 
 variable "project" {
   description = "The project for the resource."
+}
+
+variable "allowed_applications" {
+  type        = list(object({
+    package_name     = string
+    sha1_fingerprint = string
+  }))
+  default     = []
+  description = "A list of Android applications that are allowed to make API calls with this key."
+}
+
+variable "api_targets" {
+  type        = set(string)
+  description = <<EOT
+  (Optional) A restriction for a specific service and optionally one or more specific methods.
+  Requests are allowed if they match any of these restrictions. If no restrictions are specified,
+  all targets are allowed.
+  EOT
+  default     = []
 }

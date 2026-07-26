@@ -7,11 +7,55 @@ module "api_gateway" {
   region           = var.project_region
 }
 
+module "android_api_key_debug" {
+  display_name         = "Android key (auto created by Firebase)"
+  name                 = "ecc12a8f-74fe-4f10-bede-c60d4b5db5e3"
+  project              = var.project_id
+  allowed_applications = [
+    {
+      package_name     = "dev.ashdavies.playground.debug"
+      sha1_fingerprint = "fab7388053ba85ca62c23824ed98b2b73ec259cf"
+    }
+  ]
+  api_targets          = [
+    "api.ashdavies.dev",
+    "firebaseappcheck.googleapis.com",
+    "firebaseinstallations.googleapis.com",
+    "firebaseremoteconfig.googleapis.com",
+    "identitytoolkit.googleapis.com",
+  ]
+  source       = "./modules/google/github-api-key"
+}
+
+module "android_api_key_release" {
+  display_name         = "Android key (auto created by Firebase)"
+  name                 = "75dd5a3f-abd4-4f48-bb63-58ebad5ea3e8"
+  project              = var.project_id
+  allowed_applications = [
+    {
+      package_name     = "dev.ashdavies.playground"
+      sha1_fingerprint = "9ae708c691c74827422b33586cdc4d11535c3595"
+    },
+    {
+      package_name     = "dev.ashdavies.playground"
+      sha1_fingerprint = "e7cd022a23e47b3d09940af0cd1f85d0928d1abd"
+    },
+  ]
+  api_targets          = [
+    "api.ashdavies.dev",
+    "firebaseappcheck.googleapis.com",
+    "firebaseinstallations.googleapis.com",
+    "firebaseremoteconfig.googleapis.com",
+    "identitytoolkit.googleapis.com",
+  ]
+  source       = "./modules/google/github-api-key"
+}
+
 module "browser_api_key" {
   display_name = "Browser key (auto created by Firebase)"
   name         = "ce7cc75b-bc2e-4c6c-b1f5-d7110248b16d"
   project      = var.project_id
-  service      = [
+  api_targets  = [
     "identitytoolkit.googleapis.com",
     "firebaseinstallations.googleapis.com",
     "firebaseremoteconfig.googleapis.com",
