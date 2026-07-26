@@ -1,8 +1,8 @@
 resource "google_firebase_android_app" "android_release" {
-  provider      = google-beta
-  project       = var.project_id
-  display_name  = "Android Release"
-  package_name  = "dev.ashdavies.playground"
+  provider     = google-beta
+  project      = var.project_id
+  display_name = "Android Release"
+  package_name = "dev.ashdavies.playground"
   sha1_hashes = [
     "9ae708c691c74827422b33586cdc4d11535c3595",
     "e7cd022a23e47b3d09940af0cd1f85d0928d1abd"
@@ -14,9 +14,9 @@ resource "google_firebase_android_app" "android_release" {
 }
 
 resource "google_firebase_web_app" "browser" {
-  provider      = google-beta
-  project       = var.project_id
-  display_name  = "Browser"
+  provider     = google-beta
+  project      = var.project_id
+  display_name = "Browser"
 }
 
 data "google_firebase_android_app_config" "android_release" {

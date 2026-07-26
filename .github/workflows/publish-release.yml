@@ -1,11 +1,14 @@
 name: Publish Release
 
 on:
-  push:
+  workflow_dispatch:
+
+  workflow_run:
+    workflows: ["Terraform Apply"]
+    types:
+      - completed
     branches:
       - main
-
-  workflow_dispatch:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
