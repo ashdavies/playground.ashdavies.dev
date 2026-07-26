@@ -71,11 +71,11 @@ jobs:
 
       - run: |
           bundle exec fastlane android github \
-            repository_name:${{ github.repository }} \
-            api_bearer:${{ secrets.GITHUB_TOKEN }} \
-            tag_name:v${{ needs.version.outputs.name }} \
-            name:Release v${{ needs.version.outputs.name }} \
-            commitish:${{ github.sha }}
+            repository_name:"${{ github.repository }}" \
+            api_bearer:"${{ secrets.GITHUB_TOKEN }}" \
+            tag_name:"v${{ needs.version.outputs.name }}" \
+            name:"Release v${{ needs.version.outputs.name }}" \
+            commitish:"${{ github.sha }}"
 
   play:
     needs: [android]
