@@ -1,11 +1,12 @@
 package dev.ashdavies.cloud
 
-import dev.ashdavies.check.XFirebaseAppCheck
 import dev.ashdavies.http.common.models.ApiConference
 import dev.ashdavies.http.common.models.AppCheckToken
 import dev.ashdavies.http.common.models.AuthResult
 import dev.ashdavies.http.common.models.DecodedToken
 import dev.ashdavies.http.common.models.FirebaseApp
+import dev.ashdavies.http.common.models.XApiKey
+import dev.ashdavies.http.common.models.XFirebaseAppCheck
 import dev.zacsweers.metro.createGraph
 import io.ktor.client.HttpClient
 import io.ktor.client.HttpClientConfig
@@ -45,7 +46,7 @@ internal class ApplicationTest {
     @Test
     fun `should sign in with custom token`() = testMainApplication { client ->
         val httpResponse = client.post("/firebase/auth") {
-            header("X-API-Key", assertNotNull(JvmIntegrationTestBuildConfig.API_KEY, "API_KEY was null"))
+            header(HttpHeaders.XApiKey, assertNotNull(JvmIntegrationTestBuildConfig.API_KEY, "API_KEY was null"))
             setBody(mapOf("uid" to "jane.smith@example.com"))
             contentType(ContentType.Application.Json)
         }

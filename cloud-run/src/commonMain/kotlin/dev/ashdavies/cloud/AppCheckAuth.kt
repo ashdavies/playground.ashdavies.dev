@@ -1,7 +1,7 @@
 package dev.ashdavies.cloud
 
 import com.auth0.jwk.UrlJwkProvider
-import dev.ashdavies.check.XFirebaseAppCheck
+import dev.ashdavies.http.common.models.XFirebaseAppCheck
 import io.ktor.http.HttpHeaders
 import io.ktor.http.auth.HttpAuthHeader
 import io.ktor.server.auth.AuthenticationConfig

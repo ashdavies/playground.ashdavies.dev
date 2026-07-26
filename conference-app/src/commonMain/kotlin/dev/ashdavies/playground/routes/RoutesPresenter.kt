@@ -49,7 +49,7 @@ internal class RoutesPresenter(
                 httpClient = httpClient,
                 baseUrl = ROUTES_BASE_URL,
                 apiKey = requireNotNull(BuildConfig.API_KEY) {
-                    "Required value 'androidApiKey' was null."
+                    "API_KEY was null."
                 },
             )
         }
