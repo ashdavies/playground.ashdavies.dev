@@ -61,9 +61,3 @@ jobs:
           ANDROID_API_KEY: ${{ secrets.ANDROID_API_KEY }}
           BROWSER_API_KEY: ${{ secrets.BROWSER_API_KEY }}
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
-
-      - uses: actions/upload-artifact@v7
-        with:
-          name: android-app-build-outputs
-          path: android-app/build/outputs
-          if-no-files-found: error
