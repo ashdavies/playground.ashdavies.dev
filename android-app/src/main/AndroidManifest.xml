@@ -11,7 +11,7 @@
             android:name="dev.ashdavies.playground.MainActivity"
             android:configChanges="keyboardHidden|orientation"
             android:exported="true"
-            android:label="Playground"
+            android:label="@string/application_name"
             android:windowSoftInputMode="adjustResize"
             android:theme="@style/Theme.Material3.DynamicColors.DayNight">
 
