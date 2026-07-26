@@ -21,8 +21,8 @@ provider "google" {
 }
 
 provider "google" {
-  project         = var.project_id
-  access_token    = data.google_service_account_access_token.default.access_token
+  project      = var.project_id
+  access_token = data.google_service_account_access_token.default.access_token
 }
 
 provider "google-beta" {
