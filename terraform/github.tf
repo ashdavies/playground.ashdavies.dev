@@ -36,9 +36,3 @@ resource "github_issue_label" "feature" {
   name        = "Feature"
   color       = "14a88d"
 }
-
-resource "github_issue_label" "publish_release" {
-  repository  = var.gh_repo_name
-  name        = "Publish Release"
-  color       = "1ab498"
-}
