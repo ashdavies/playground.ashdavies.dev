@@ -1,6 +1,8 @@
 package dev.ashdavies.cloud
 
 import dev.ashdavies.cloud.google.GoogleApiException
+import dev.ashdavies.http.common.models.XApiKey
+import dev.ashdavies.http.common.models.XFirebaseAppCheck
 import dev.ashdavies.http.defaultHttpClient
 import dev.ashdavies.http.throwClientRequestExceptionAs
 import dev.zacsweers.metro.AppScope
@@ -9,12 +11,11 @@ import dev.zacsweers.metro.Provides
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.HttpCallValidator
 import io.ktor.http.HttpHeaders
+import io.ktor.http.HttpMethod
 import io.ktor.serialization.Configuration
 import io.ktor.serialization.kotlinx.json.json
 import io.ktor.server.application.Application
 import io.ktor.server.application.install
-import io.ktor.server.auth.Authentication
-import io.ktor.server.auth.AuthenticationConfig
 import io.ktor.server.cio.CIO
 import io.ktor.server.engine.EmbeddedServer
 import io.ktor.server.engine.embeddedServer
@@ -23,6 +24,8 @@ import io.ktor.server.plugins.compression.Compression
 import io.ktor.server.plugins.compression.CompressionConfig
 import io.ktor.server.plugins.conditionalheaders.ConditionalHeaders
 import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.server.plugins.cors.CORSConfig
+import io.ktor.server.plugins.cors.routing.CORS
 import io.ktor.server.plugins.defaultheaders.DefaultHeaders
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.Routing
@@ -52,17 +55,35 @@ internal interface CloudRunGraph {
 }
 
 internal fun Application.main(routes: Set<CloudRunRoute>) {
+    install(CallLogging)
+    install(Compression, CompressionConfig::default)
+    install(ContentNegotiation, Configuration::json)
+    install(ConditionalHeaders)
+    install(CORS, CORSConfig::install)
+
     install(DefaultHeaders) {
         header(HttpHeaders.Server, System.getProperty("os.name"))
     }
 
-    install(Authentication, AuthenticationConfig::appCheck)
-    install(Compression, CompressionConfig::default)
-    install(ContentNegotiation, Configuration::json)
-    install(ConditionalHeaders)
-    install(CallLogging)
-
     routing(routes)
+}
+
+private fun CORSConfig.install() {
+    allowHost("localhost:5000")
+
+    allowHeader(HttpHeaders.Authorization)
+    allowHeader(HttpHeaders.ContentType)
+
+    allowHeader(HttpHeaders.XApiKey)
+    allowHeader(HttpHeaders.XFirebaseAppCheck)
+
+    allowMethod(HttpMethod.Get)
+    allowMethod(HttpMethod.Options)
+    allowMethod(HttpMethod.Post)
+    allowMethod(HttpMethod.Put)
+
+    allowCredentials = true
+    maxAgeInSeconds = 3600
 }
 
 private fun Application.routing(routes: Set<CloudRunRoute>) = routing {
