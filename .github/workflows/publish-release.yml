@@ -1,14 +1,10 @@
 name: Publish Release
 
 on:
-  workflow_dispatch:
+  schedule:
+    - cron: "0 6 * * *"
 
-  workflow_run:
-    workflows: ["Terraform Apply"]
-    types:
-      - completed
-    branches:
-      - main
+  workflow_dispatch:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}

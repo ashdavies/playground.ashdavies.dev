@@ -69,7 +69,7 @@ google-firebase-analytics = { module = "com.google.firebase:firebase-analytics" 
 google-firebase-bom = "com.google.firebase:firebase-bom:34.16.0"
 google-firebase-config = { module = "com.google.firebase:firebase-config" }
 google-firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
-google-maps-android-compose = "com.google.maps.android:maps-compose:8.3.1"
+google-maps-android-compose = "com.google.maps.android:maps-compose:8.4.0"
 google-maps-android-utils = "com.google.maps.android:android-maps-utils:4.5.2"
 
 jib-core = "com.google.cloud.tools:jib-core:0.28.2"
@@ -121,7 +121,7 @@ sqldelight-sqlite-dialect = { module = "app.cash.sqldelight:sqlite-3-38-dialect"
 sqldelight-sqlite-driver = { module = "app.cash.sqldelight:sqlite-driver", version.ref = "cash-sqldelight" }
 sqldelight-web-driver = { module = "app.cash.sqldelight:web-worker-driver", version.ref = "cash-sqldelight" }
 
-squareup-okio = "com.squareup.okio:okio:3.17.0"
+squareup-okio = "com.squareup.okio:okio:3.18.1"
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "google-android" }
