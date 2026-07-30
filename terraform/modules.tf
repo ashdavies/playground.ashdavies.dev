@@ -115,10 +115,7 @@ module "github_service_account" {
   project_id   = var.project_id
   project_roles = [
     "${var.project_id}=>${google_project_iam_custom_role.main.id}",
-    "${var.project_id}=>roles/serviceusage.serviceUsageConsumer",
-    "${var.project_id}=>roles/iam.serviceAccountTokenCreator",
     "${var.project_id}=>roles/iam.workloadIdentityPoolAdmin",
-    "${var.project_id}=>roles/storage.objectAdmin",
     "${var.project_id}=>roles/viewer"
   ]
 }
