@@ -23,7 +23,7 @@
         const config = await res.json();
         const app = initializeApp(config);
 
-        self.FIREBASE_APPCHECK_DEBUG_TOKEN = true;
+        // self.FIREBASE_APPCHECK_DEBUG_TOKEN = true;
         const appCheck = initializeAppCheck(app, {
           provider: new ReCaptchaV3Provider('6LeQL20tAAAAAEKopAOvgb1zmUajeRuVZfdTzvUB'),
           isTokenAutoRefreshEnabled: true
