@@ -1,25 +1,20 @@
 package dev.ashdavies.playground.paging
 
-import dev.ashdavies.config.RemoteConfig
-import dev.ashdavies.config.getString
 import dev.ashdavies.http.UnaryCallable
 import dev.ashdavies.http.common.models.ApiConference
 import dev.ashdavies.http.throwClientRequestExceptionAs
-import dev.ashdavies.sql.Suspended
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.Inject
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.HttpCallValidator
 import io.ktor.client.request.get
-import io.ktor.client.statement.bodyAsText
-import io.ktor.http.HttpStatusCode
-import kotlinx.io.IOException
 import kotlinx.serialization.Serializable
 
 private const val NETWORK_PAGE_SIZE = 100
 
 internal fun interface UpcomingEventsCallable : UnaryCallable<GetEventsRequest, Result<List<ApiConference>>>
-
-private suspend fun RemoteConfig.eventsEndpoint() = getString("events_endpoint")
 
 @Serializable
 internal data class GetEventsRequest(
@@ -27,31 +22,29 @@ internal data class GetEventsRequest(
     val limit: Int = NETWORK_PAGE_SIZE,
 )
 
-internal fun UpcomingEventsCallable(httpClient: HttpClient, remoteConfig: RemoteConfig): UpcomingEventsCallable {
-    val pagedCallable = Suspended { UpcomingEventsCallable(httpClient, remoteConfig.eventsEndpoint()) }
-    return UpcomingEventsCallable { pagedCallable()(it) }
-}
+@Inject
+@ContributesBinding(AppScope::class)
+internal class ErrorHandlingUpcomingEventsCallable(httpClient: HttpClient) : UpcomingEventsCallable {
 
-internal fun UpcomingEventsCallable(httpClient: HttpClient, baseUrl: String): UpcomingEventsCallable {
-    val errorHandlingHttpClient = httpClient.config {
+    private val errorHandlingHttpClient = httpClient.config {
         install(HttpCallValidator) { throwClientRequestExceptionAs<GetEventsError>() }
         expectSuccess = true
     }
 
-    return UpcomingEventsCallable { request ->
+    override suspend fun invoke(request: GetEventsRequest): Result<List<ApiConference>> = runCatching {
         val queryAsString = buildList {
             if (request.startAt != null) add("startAt=${request.startAt}")
             add("limit=${request.limit}")
         }.joinToString("&")
 
-        runCatching { errorHandlingHttpClient.get("https://$baseUrl/events/upcoming?$queryAsString") }.mapCatching {
-            if (it.status == HttpStatusCode.OK) it.body() else throw IOException(it.bodyAsText())
-        }
+        errorHandlingHttpClient
+            .get("events/upcoming?$queryAsString")
+            .body()
     }
 }
 
 @Serializable
 internal data class GetEventsError(
     override val message: String,
-    val code: Int,
+    val code: String,
 ) : Throwable()

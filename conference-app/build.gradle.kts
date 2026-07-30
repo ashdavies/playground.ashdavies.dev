@@ -31,6 +31,7 @@ buildConfig {
     buildConfigField("API_KEY", expect<String?>(null))
     buildConfigField("APP_ID", expect<String?>(null))
 
+    buildConfigField("PLAYGROUND_BASE_URL", stringPropertyOrNull("PLAYGROUND_BASE_URL"))
     buildConfigField("GOOGLE_CLOUD_PROJECT", stringPropertyOrNull("GOOGLE_CLOUD_PROJECT"))
 
     sourceSets.named("androidMain") {

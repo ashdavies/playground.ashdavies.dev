@@ -7,7 +7,6 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import app.cash.sqldelight.paging3.QueryPagingSource
-import dev.ashdavies.config.RemoteConfig
 import dev.ashdavies.paging.PagerConfig
 import dev.ashdavies.paging.PagerFactory
 import dev.ashdavies.playground.PlaygroundDatabase
@@ -19,7 +18,6 @@ import dev.ashdavies.sql.map
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesBinding
 import dev.zacsweers.metro.Inject
-import io.ktor.client.HttpClient
 import kotlinx.coroutines.Dispatchers
 import kotlin.coroutines.CoroutineContext
 
@@ -31,11 +29,10 @@ internal class EventPagerFactory(
 ) : PagerFactory<Long, Event> {
 
     @Inject constructor(
-        httpClient: HttpClient,
-        remoteConfig: RemoteConfig,
+        eventsCallable: UpcomingEventsCallable,
         databaseFactory: DatabaseFactory<PlaygroundDatabase>,
     ) : this(
-        eventsCallable = UpcomingEventsCallable(httpClient, remoteConfig),
+        eventsCallable = eventsCallable,
         eventsQueries = databaseFactory.map { it.eventQueries },
         coroutineContext = Dispatchers.Main,
     )
