@@ -29,7 +29,6 @@ crash.*.log
 # Firebase
 **/__/firebase/init.json
 **/.firebaserc
-**/firebase.json
 **/google-services.json
 **/.runtimeconfig.json
 **/*.log
