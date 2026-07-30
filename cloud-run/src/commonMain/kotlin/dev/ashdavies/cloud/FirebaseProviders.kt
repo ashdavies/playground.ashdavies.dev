@@ -7,14 +7,11 @@ import com.google.firebase.FirebaseApp
 import com.google.firebase.FirebaseOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.cloud.FirestoreClient
-import dev.ashdavies.check.AppCheck
-import dev.ashdavies.check.appCheck
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesTo
 import dev.zacsweers.metro.Named
 import dev.zacsweers.metro.Provides
 import dev.zacsweers.metro.SingleIn
-import io.ktor.client.HttpClient
 
 @ContributesTo(AppScope::class)
 internal interface FirebaseProviders {
@@ -36,11 +33,6 @@ internal interface FirebaseProviders {
                     FirebaseApp.initializeApp(firebaseOptions)
                 }
             }
-    }
-
-    @Provides
-    fun appCheck(firebaseApp: FirebaseApp, httpClient: HttpClient): AppCheck {
-        return firebaseApp.appCheck(httpClient)
     }
 
     @Provides

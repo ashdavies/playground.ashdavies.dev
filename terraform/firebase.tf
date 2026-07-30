@@ -19,6 +19,12 @@ resource "google_firebase_web_app" "browser" {
   display_name = "Browser"
 }
 
+resource "google_firebase_web_app" "desktop" {
+  provider     = google-beta
+  project      = var.project_id
+  display_name = "Desktop"
+}
+
 data "google_firebase_android_app_config" "android_release" {
   provider = google-beta
   app_id   = google_firebase_android_app.android_release.app_id

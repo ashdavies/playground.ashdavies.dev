@@ -32,6 +32,6 @@ class FirebaseRestRemoteConfigTest {
             ),
         )
 
-        assertEquals(137, remoteConfig.getLong("coupling_denominator"))
+        assertEquals(137, remoteConfig.getLong("fine_structure"))
     }
 }

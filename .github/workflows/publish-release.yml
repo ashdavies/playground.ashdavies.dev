@@ -95,3 +95,10 @@ jobs:
 
       - run: |
           bundle exec fastlane android play
+
+  web:
+    needs: [version]
+    runs-on: ubuntu-latest
+
+    steps:
+      - run: firebase deploy --only hosting

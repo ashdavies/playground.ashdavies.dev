@@ -42,6 +42,8 @@ internal interface ConferenceModule {
         install(DefaultRequest) {
             header(HttpHeaders.XApiKey, requireNotNull(BuildConfig.API_KEY) { "API_KEY was null" })
             headers.forEach { (key, value) -> header(key, value) }
+
+            url(BuildConfig.PLAYGROUND_BASE_URL ?: "https://api.ashdavies.dev/")
         }
 
         install(FirebaseAppCheck)

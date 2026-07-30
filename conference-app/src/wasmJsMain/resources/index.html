@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Playground: Conference App</title>
+
     <style>
         html, body {
             margin: 0;
@@ -13,8 +14,28 @@
             overflow: hidden;
         }
     </style>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
+        import { initializeAppCheck, ReCaptchaV3Provider, getToken } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app-check.js";
+
+        const res = await fetch('/__/firebase/init.json');
+        const config = await res.json();
+        const app = initializeApp(config);
+
+        // self.FIREBASE_APPCHECK_DEBUG_TOKEN = true;
+        const appCheck = initializeAppCheck(app, {
+          provider: new ReCaptchaV3Provider('6LeQL20tAAAAAEKopAOvgb1zmUajeRuVZfdTzvUB'),
+          isTokenAutoRefreshEnabled: true
+        });
+
+        window.getAppCheckToken = (forceRefresh) => getToken(appCheck, forceRefresh);
+
+        const script = document.createElement('script');
+        script.src = "conference-app.js";
+        document.body.appendChild(script);
+    </script>
 </head>
 <body>
-    <script src="conference-app.js"></script>
 </body>
 </html>

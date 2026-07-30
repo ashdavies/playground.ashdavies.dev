@@ -27,8 +27,8 @@ crash.*.log
 **/*-key.json
 
 # Firebase
+**/__/firebase/init.json
 **/.firebaserc
-**/firebase.json
 **/google-services.json
 **/.runtimeconfig.json
 **/*.log
