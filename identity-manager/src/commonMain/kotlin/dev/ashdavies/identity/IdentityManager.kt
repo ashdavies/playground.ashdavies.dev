@@ -1,8 +1,9 @@
 package dev.ashdavies.identity
 
 import app.cash.sqldelight.coroutines.mapToOneOrNull
-import dev.ashdavies.sql.Suspended
-import dev.ashdavies.sql.mapAsFlow
+import dev.ashdavies.playground.metro.mapAsFlow
+import dev.zacsweers.metro.ExperimentalMetroCoroutinesApi
+import dev.zacsweers.metro.SuspendLazy
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.map
@@ -15,8 +16,9 @@ public interface IdentityManager {
     public suspend fun signIn()
 }
 
+@ExperimentalMetroCoroutinesApi
 public fun IdentityManager(
-    credentialQueries: Suspended<CredentialQueries>,
+    credentialQueries: SuspendLazy<CredentialQueries>,
     identityService: GoogleIdIdentityService,
     coroutineContext: CoroutineContext,
 ): IdentityManager = object : IdentityManager {
@@ -24,7 +26,7 @@ public fun IdentityManager(
     private val states = MutableStateFlow<IdentityState>(IdentityState.Unauthenticated)
 
     private val queries = credentialQueries
-        .mapAsFlow(coroutineContext) { it.selectAll() }
+        .mapAsFlow { it.selectAll() }
         .mapToOneOrNull(coroutineContext)
         .map(::IdentityState)
 
@@ -43,7 +45,7 @@ public fun IdentityManager(
             return
         }
 
-        credentialQueries().insertOrReplace(
+        credentialQueries.await().insertOrReplace(
             credential = Credential(
                 uuid = identityResponse.uuid,
                 profilePictureUrl = identityResponse.pictureProfileUrl,

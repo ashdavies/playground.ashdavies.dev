@@ -22,10 +22,11 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
+            implementation(projects.metroExtensions)
             implementation(projects.platformSupport)
-            implementation(projects.sqlCommon)
 
             implementation(libs.kotlinx.coroutines.core)
+            implementation(libs.metro.runtime.coroutines)
             implementation(libs.sqldelight.coroutines.extensions)
         }
 

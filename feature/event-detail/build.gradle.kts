@@ -8,7 +8,7 @@ plugins {
     id("dev.ashdavies.parcelable")
     id("dev.ashdavies.wasm")
 
-    alias(libs.plugins.zac.metro)
+    alias(libs.plugins.metro)
 }
 
 kotlin {
@@ -22,7 +22,7 @@ kotlin {
             implementation(projects.composeMaterial)
             implementation(projects.feature.eventCommon)
             implementation(projects.identityManager)
-            implementation(projects.sqlCommon)
+            implementation(projects.metroExtensions)
             implementation(projects.uiComponents)
 
             implementation(libs.circuit.annotations)
@@ -37,7 +37,8 @@ kotlin {
     }
 }
 
+@OptIn(ExperimentalMetroGradleApi::class)
 metro {
-    @OptIn(ExperimentalMetroGradleApi::class)
     enableCircuitCodegen = true
+    enableSuspendProviders = true
 }

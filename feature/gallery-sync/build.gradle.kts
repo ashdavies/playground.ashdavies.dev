@@ -9,7 +9,7 @@ plugins {
     id("dev.ashdavies.wasm")
 
     alias(libs.plugins.cash.sqldelight)
-    alias(libs.plugins.zac.metro)
+    alias(libs.plugins.metro)
 }
 
 kotlin {
@@ -22,7 +22,7 @@ kotlin {
         commonMain.dependencies {
             implementation(projects.analytics)
             implementation(projects.httpClient)
-            implementation(projects.sqlCommon)
+            implementation(projects.metroExtensions)
             implementation(projects.uiComponents)
 
             implementation(libs.circuit.annotations)
@@ -34,6 +34,7 @@ kotlin {
             implementation(libs.compose.materialIconsExtended)
             implementation(libs.ktor.client.core)
             implementation(libs.kotlinx.collections.immutable)
+            implementation(libs.metro.runtime.coroutines)
             implementation(libs.sqldelight.coroutines.extensions)
         }
 
@@ -46,9 +47,10 @@ kotlin {
     }
 }
 
+@OptIn(ExperimentalMetroGradleApi::class)
 metro {
-    @OptIn(ExperimentalMetroGradleApi::class)
     enableCircuitCodegen = true
+    enableSuspendProviders = true
 }
 
 sqldelight {

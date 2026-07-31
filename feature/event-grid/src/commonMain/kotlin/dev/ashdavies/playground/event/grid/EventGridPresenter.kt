@@ -11,11 +11,12 @@ import com.slack.circuit.codegen.annotations.CircuitInject
 import com.slack.circuit.runtime.presenter.Presenter
 import dev.ashdavies.playground.event.EventScreen
 import dev.ashdavies.playground.event.common.PlaygroundDatabase
-import dev.ashdavies.sql.DatabaseFactory
-import dev.ashdavies.sql.map
-import dev.ashdavies.sql.mapAsFlow
+import dev.ashdavies.playground.metro.map
+import dev.ashdavies.playground.metro.mapAsFlow
 import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ExperimentalMetroCoroutinesApi
 import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.SuspendLazy
 import io.ktor.client.HttpClient
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Dispatchers
@@ -25,15 +26,16 @@ import kotlinx.datetime.LocalDate
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 
+@ExperimentalMetroCoroutinesApi
 @CircuitInject(EventScreen.Grid::class, AppScope::class)
 internal class EventGridPresenter @Inject constructor(
-    private val databaseFactory: DatabaseFactory<PlaygroundDatabase>,
+    private val playgroundDatabase: SuspendLazy<PlaygroundDatabase>,
     private val httpClient: HttpClient,
 ) : Presenter<EventGridState> {
 
     @Composable
     override fun present(): EventGridState {
-        val attendanceQueries = databaseFactory.map { it.attendanceQueries }
+        val attendanceQueries = playgroundDatabase.map { it.attendanceQueries }
         val eventGridCallable = EventGridCallable(httpClient)
 
         val eventList by produceState(emptyList()) {
@@ -66,9 +68,11 @@ internal class EventGridPresenter @Inject constructor(
         return EventGridState(itemList) { event ->
             when (event) {
                 is EventGridState.Event.MarkAttendance -> coroutineScope.launch {
-                    when (event.value) {
-                        true -> attendanceQueries().insert(event.id, "${Clock.System.now()}")
-                        false -> attendanceQueries().delete(event.id)
+                    attendanceQueries.await().let {
+                        when (event.value) {
+                            true -> it.insert(event.id, "${Clock.System.now()}")
+                            false -> it.delete(event.id)
+                        }
                     }
                 }
             }

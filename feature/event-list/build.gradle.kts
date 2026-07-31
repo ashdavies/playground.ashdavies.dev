@@ -8,7 +8,7 @@ plugins {
     id("dev.ashdavies.parcelable")
     id("dev.ashdavies.wasm")
 
-    alias(libs.plugins.zac.metro)
+    alias(libs.plugins.metro)
 }
 
 kotlin {

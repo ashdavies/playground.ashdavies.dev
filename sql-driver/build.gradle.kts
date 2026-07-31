@@ -11,7 +11,6 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             implementation(projects.platformSupport)
-            implementation(projects.sqlCommon)
 
             implementation(libs.kotlinx.coroutines.core)
             implementation(libs.sqldelight.async.extensions)

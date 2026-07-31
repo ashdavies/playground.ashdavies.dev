@@ -12,25 +12,26 @@ import dev.ashdavies.paging.PagerFactory
 import dev.ashdavies.playground.PlaygroundDatabase
 import dev.ashdavies.playground.event.Event
 import dev.ashdavies.playground.event.EventQueries
-import dev.ashdavies.sql.DatabaseFactory
-import dev.ashdavies.sql.Suspended
-import dev.ashdavies.sql.map
+import dev.ashdavies.playground.metro.map
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.ExperimentalMetroCoroutinesApi
 import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.SuspendLazy
 import kotlinx.coroutines.Dispatchers
 import kotlin.coroutines.CoroutineContext
 
+@ExperimentalMetroCoroutinesApi
 @ContributesBinding(AppScope::class)
 internal class EventPagerFactory(
     private val eventsCallable: UpcomingEventsCallable,
-    private val eventsQueries: Suspended<EventQueries>,
+    private val eventsQueries: SuspendLazy<EventQueries>,
     private val coroutineContext: CoroutineContext,
 ) : PagerFactory<Long, Event> {
 
     @Inject constructor(
         eventsCallable: UpcomingEventsCallable,
-        databaseFactory: DatabaseFactory<PlaygroundDatabase>,
+        databaseFactory: SuspendLazy<PlaygroundDatabase>,
     ) : this(
         eventsCallable = eventsCallable,
         eventsQueries = databaseFactory.map { it.eventQueries },
@@ -38,7 +39,7 @@ internal class EventPagerFactory(
     )
 
     override suspend fun create(config: PagerConfig<Long>): Pager<Long, Event> {
-        val eventsQueries = eventsQueries()
+        val eventsQueries = eventsQueries.await()
 
         val pagingSourceFactory = InvalidatingPagingSourceFactory {
             val pagingSource = QueryPagingSource<Long, Event>(

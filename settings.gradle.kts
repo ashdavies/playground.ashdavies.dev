@@ -68,10 +68,10 @@ include(
     ":key-navigation",
     ":kotlin-gb",
     ":maps-routing",
+    ":metro-extensions",
     ":parcelable-support",
     ":platform-support",
     ":remote-config",
-    ":sql-common",
     ":sql-driver",
     ":ui-components",
 )
