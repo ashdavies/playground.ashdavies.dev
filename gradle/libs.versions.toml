@@ -9,7 +9,7 @@ coil-kt = "3.5.0"
 compose-adaptive = "1.2.0"
 compose-plugin = "1.11.1"
 google-accompanist = "0.37.3"
-google-android = "9.2.1"
+google-android = "9.3.1"
 google-ksp = "2.3.6"
 google-services = "4.5.0"
 jetbrains-kotlin = "2.4.10"
@@ -70,7 +70,7 @@ google-firebase-bom = "com.google.firebase:firebase-bom:34.17.0"
 google-firebase-config = { module = "com.google.firebase:firebase-config" }
 google-firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
 google-maps-android-compose = "com.google.maps.android:maps-compose:8.4.0"
-google-maps-android-utils = "com.google.maps.android:android-maps-utils:4.5.2"
+google-maps-android-utils = "com.google.maps.android:android-maps-utils:5.0.0"
 
 jib-core = "com.google.cloud.tools:jib-core:0.28.2"
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "jetbrains-kotlin" }
@@ -140,4 +140,4 @@ kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref =
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "jetbrains-kotlin" }
 kotlinx-kover = "org.jetbrains.kotlinx.kover:0.9.9"
 ktlint = "org.jlleitschuh.gradle.ktlint:14.2.0"
-zac-metro = "dev.zacsweers.metro:1.3.2"
+zac-metro = "dev.zacsweers.metro:1.4.0"
