@@ -7,6 +7,8 @@ import dev.ashdavies.paging.PagerConfig
 import dev.ashdavies.playground.PlaygroundDatabase
 import dev.ashdavies.playground.gallery.imageAdapter
 import dev.ashdavies.playground.paging.EventPagerFactory
+import dev.zacsweers.metro.ExperimentalMetroCoroutinesApi
+import dev.zacsweers.metro.suspendLazyOf
 import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.LocalDate
@@ -36,6 +38,7 @@ internal class EventPagerFactoryTest {
     )
 
     @Test
+    @OptIn(ExperimentalMetroCoroutinesApi::class)
     fun `should not include boundary events on same start date`() = runTest {
         val knownLocationDeque = ArrayDeque(Json.locations())
         val upcomingApiEventListSize = 24
@@ -57,7 +60,7 @@ internal class EventPagerFactoryTest {
 
         val eventPager = EventPagerFactory(
             eventsCallable = { Result.success(upcomingApiEventList) },
-            eventsQueries = { playgroundDatabase.eventQueries },
+            eventsQueries = suspendLazyOf(playgroundDatabase.eventQueries),
             coroutineContext = coroutineContext,
         ).create(PagerConfig(null, pageSize))
 
