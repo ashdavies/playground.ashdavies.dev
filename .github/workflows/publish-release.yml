@@ -101,4 +101,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - run: firebase deploy --only hosting
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v4
+
+      - run: npx firebase deploy --only hosting
