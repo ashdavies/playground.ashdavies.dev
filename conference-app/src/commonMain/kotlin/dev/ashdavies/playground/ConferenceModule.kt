@@ -9,11 +9,11 @@ import dev.ashdavies.http.defaultHttpClient
 import dev.ashdavies.playground.gallery.LocalGallery
 import dev.ashdavies.playground.gallery.imageAdapter
 import dev.ashdavies.playground.http.FirebaseAppCheck
-import dev.ashdavies.sql.DatabaseFactory
-import dev.ashdavies.sql.Suspended
+import dev.ashdavies.sql.DriverFactory
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.Binds
 import dev.zacsweers.metro.ContributesTo
+import dev.zacsweers.metro.ExperimentalMetroCoroutinesApi
 import dev.zacsweers.metro.Named
 import dev.zacsweers.metro.Provides
 import io.ktor.client.HttpClient
@@ -27,15 +27,19 @@ import dev.ashdavies.playground.gallery.PlaygroundDatabase as GalleryDatabase
 internal interface ConferenceModule {
 
     @Binds
-    fun commonDatabaseFactory(playgroundDatabaseFactory: DatabaseFactory<PlaygroundDatabase>): DatabaseFactory<CommonDatabase>
+    @ExperimentalMetroCoroutinesApi
+    fun commonDatabase(playgroundDatabase: PlaygroundDatabase): CommonDatabase
 
     @Binds
-    fun galleryDatabaseFactory(playgroundDatabaseFactory: DatabaseFactory<PlaygroundDatabase>): DatabaseFactory<GalleryDatabase>
+    @ExperimentalMetroCoroutinesApi
+    fun galleryDatabase(playgroundDatabase: PlaygroundDatabase): GalleryDatabase
 
     @Provides
-    fun playgroundDatabaseFactory(context: PlatformContext): DatabaseFactory<PlaygroundDatabase> {
-        return DatabaseFactory(PlaygroundDatabase.Schema, context) { PlaygroundDatabase(it, imageAdapter()) }
-    }
+    @ExperimentalMetroCoroutinesApi
+    suspend fun playgroundDatabase(context: PlatformContext): PlaygroundDatabase = PlaygroundDatabase(
+        driver = DriverFactory(PlaygroundDatabase.Schema, context, "database.db"),
+        imageAdapter = imageAdapter(),
+    )
 
     @Provides
     fun httpClient(@Named("httpClientHeaders") headers: Set<Pair<String, String>>): HttpClient = defaultHttpClient {
@@ -50,8 +54,9 @@ internal interface ConferenceModule {
     }
 
     @Provides
-    fun localGallery(remoteConfig: RemoteConfig): LocalGallery = LocalGallery(
-        enabled = Suspended { remoteConfig.getBoolean("local_gallery") },
+    @ExperimentalMetroCoroutinesApi
+    suspend fun localGallery(remoteConfig: RemoteConfig): LocalGallery = LocalGallery(
+        enabled = remoteConfig.getBoolean("local_gallery"),
     )
 
     @Provides

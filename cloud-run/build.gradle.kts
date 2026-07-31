@@ -13,7 +13,7 @@ plugins {
     id("dev.ashdavies.properties")
 
     alias(libs.plugins.build.config)
-    alias(libs.plugins.zac.metro)
+    alias(libs.plugins.metro)
 }
 
 buildConfig {

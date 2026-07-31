@@ -16,7 +16,7 @@ jetbrains-kotlin = "2.4.10"
 kotlinx-coroutines = "1.11.0"
 kotlinx-serialization = "1.11.0"
 ktor = "3.5.2"
-slack-circuit = "0.34.0"
+metro = "1.4.0"
 sqlJs = "1.8.0"
 webPack = "9.1.0"
 
@@ -108,6 +108,7 @@ ktor-server-host-common = { module = "io.ktor:ktor-server-host-common", version.
 ktor-server-netty = { module = "io.ktor:ktor-server-netty", version.ref = "ktor" }
 ktor-server-test-host = { module = "io.ktor:ktor-server-test-host", version.ref = "ktor" }
 
+metro-runtime-coroutines = { module = "dev.zacsweers.metro:runtime-coroutines", version.ref = "metro" }
 pinterest-ktlint-bom = "com.pinterest.ktlint:ktlint-bom:1.8.0"
 
 slf4j-simple = "org.slf4j:slf4j-simple:2.0.18"
@@ -140,4 +141,4 @@ kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref =
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "jetbrains-kotlin" }
 kotlinx-kover = "org.jetbrains.kotlinx.kover:0.9.9"
 ktlint = "org.jlleitschuh.gradle.ktlint:14.2.0"
-zac-metro = "dev.zacsweers.metro:1.4.0"
+metro = { id = "dev.zacsweers.metro", version.ref = "metro" }

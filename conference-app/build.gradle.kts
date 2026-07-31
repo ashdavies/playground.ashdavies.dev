@@ -20,7 +20,7 @@ plugins {
 
     alias(libs.plugins.build.config)
     alias(libs.plugins.cash.sqldelight)
-    alias(libs.plugins.zac.metro)
+    alias(libs.plugins.metro)
 }
 
 kotlin {
@@ -87,9 +87,9 @@ kotlin {
             implementation(projects.httpCommon)
             implementation(projects.identityManager)
             implementation(projects.mapsRouting)
+            implementation(projects.metroExtensions)
             implementation(projects.platformSupport)
             implementation(projects.remoteConfig)
-            implementation(projects.sqlCommon)
             implementation(projects.sqlDriver)
             implementation(projects.uiComponents)
 
@@ -179,9 +179,10 @@ kotlin {
     }
 }
 
+@OptIn(ExperimentalMetroGradleApi::class)
 metro {
-    @OptIn(ExperimentalMetroGradleApi::class)
     enableCircuitCodegen = true
+    enableSuspendProviders = true
 }
 
 sqldelight {

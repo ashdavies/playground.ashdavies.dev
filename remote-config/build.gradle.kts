@@ -3,8 +3,6 @@ plugins {
     id("dev.ashdavies.jvm")
     id("dev.ashdavies.kotlin")
     id("dev.ashdavies.wasm")
-
-    alias(libs.plugins.zac.metro)
 }
 
 kotlin {
@@ -13,11 +11,11 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             implementation(projects.httpClient)
-            implementation(projects.sqlCommon)
 
             implementation(libs.kotlinx.coroutines.core)
             implementation(libs.kotlinx.serialization.json)
             implementation(libs.ktor.client.core)
+            implementation(libs.metro.runtime.coroutines)
         }
 
         commonTest.dependencies {

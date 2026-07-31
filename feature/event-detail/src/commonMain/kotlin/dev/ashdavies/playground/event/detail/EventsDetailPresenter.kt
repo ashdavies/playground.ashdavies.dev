@@ -8,18 +8,19 @@ import com.slack.circuit.runtime.Navigator
 import com.slack.circuit.runtime.presenter.Presenter
 import dev.ashdavies.playground.event.EventScreen
 import dev.ashdavies.playground.event.common.PlaygroundDatabase
-import dev.ashdavies.sql.DatabaseFactory
-import dev.ashdavies.sql.invoke
-import dev.ashdavies.sql.map
+import dev.ashdavies.playground.metro.map
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.Assisted
 import dev.zacsweers.metro.AssistedFactory
 import dev.zacsweers.metro.AssistedInject
+import dev.zacsweers.metro.ExperimentalMetroCoroutinesApi
+import dev.zacsweers.metro.SuspendLazy
 
+@ExperimentalMetroCoroutinesApi
 internal class EventsDetailPresenter @AssistedInject constructor(
     @Assisted private val screen: EventScreen.Detail,
     @Assisted private val navigator: Navigator,
-    private val databaseFactory: DatabaseFactory<PlaygroundDatabase>,
+    private val database: SuspendLazy<PlaygroundDatabase>,
 ) : Presenter<EventDetailState> {
 
     @Composable
@@ -28,8 +29,9 @@ internal class EventsDetailPresenter @AssistedInject constructor(
             initialValue = EventDetailState.ItemState.Loading,
             key1 = screen.id,
         ) {
-            val item = databaseFactory.map { it.eventQueries }
-                .invoke { it.getById(screen.id) }
+            val item = database
+                .map { it.eventQueries.getById(screen.id) }
+                .await()
                 .executeAsOne()
 
             value = EventDetailState.ItemState.Done(item)

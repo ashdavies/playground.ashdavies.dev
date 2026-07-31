@@ -2,8 +2,8 @@ package dev.ashdavies.config.firebase.rest
 
 import dev.ashdavies.config.RemoteConfig
 import dev.ashdavies.config.RemoteConfigValue
-import dev.ashdavies.sql.Suspended
-import dev.ashdavies.sql.invoke
+import dev.zacsweers.metro.ExperimentalMetroCoroutinesApi
+import dev.zacsweers.metro.suspendLazy
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.post
@@ -12,13 +12,14 @@ import io.ktor.client.statement.bodyAsText
 import io.ktor.http.HttpStatusCode
 import kotlinx.serialization.Serializable
 
+@OptIn(ExperimentalMetroCoroutinesApi::class)
 public class FirebaseRestRemoteConfig(
     private val httpClient: HttpClient,
     private val environment: Environment,
     private val request: Request,
 ) : RemoteConfig {
 
-    private val entries = Suspended {
+    private val entries = suspendLazy {
         val response = httpClient.post(
             urlString = "https://firebaseremoteconfig.googleapis.com" +
                 "/v1/projects/${environment.projectId}/namespaces" +
@@ -36,7 +37,7 @@ public class FirebaseRestRemoteConfig(
     }
 
     override suspend fun <T : Any> getValue(key: String, transform: (RemoteConfigValue) -> T): T {
-        return entries { transform(FirebaseRestRemoteConfigValue(it[key])) }
+        return transform(FirebaseRestRemoteConfigValue(entries.await()[key]))
     }
 
     public data class Environment(val projectId: String, val apiKey: String)
