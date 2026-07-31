@@ -105,4 +105,4 @@ jobs:
 
       - uses: actions/setup-node@v4
 
-      - run: npx firebase deploy --only hosting
+      - run: npx firebase-tools deploy --only hosting
