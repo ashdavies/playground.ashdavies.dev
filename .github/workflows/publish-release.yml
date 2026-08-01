@@ -100,10 +100,9 @@ jobs:
     needs: [ version ]
     uses: ./.github/workflows/web-release.yml
     with:
-      inputs:
-        version_name: ${{ needs.version.outputs.name }}
-      secrets:
-        BROWSER_API_KEY: ${{ secrets.BROWSER_API_KEY }}
+      version_name: ${{ needs.version.outputs.name }}
+    secrets:
+      BROWSER_API_KEY: ${{ secrets.BROWSER_API_KEY }}
 
   firebase:
     needs: [version, web]
