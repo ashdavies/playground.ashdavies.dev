@@ -105,4 +105,13 @@ jobs:
 
       - uses: actions/setup-node@v4
 
-      - run: npx firebase-tools deploy --only hosting --project ${{ secrets.FIREBASE_PROJECT_ID }}
+      - id: google-cloud-auth
+        uses: google-github-actions/auth@v3
+        with:
+          workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
+
+      - run: |
+          npx firebase-tools deploy \
+            --project ${{ steps.google-cloud-auth.outputs.project_id }} \
+            --only hosting
