@@ -1,9 +1,6 @@
 name: Publish Release
 
 on:
-  schedule:
-    - cron: "0 6 * * *"
-
   workflow_dispatch:
 
 concurrency:
@@ -32,6 +29,7 @@ jobs:
   android:
     needs: [ version ]
     uses: ./.github/workflows/android-release.yml
+    if: false
     with:
       version_code: ${{ needs.version.outputs.code }}
       version_name: ${{ needs.version.outputs.name }}
@@ -48,6 +46,7 @@ jobs:
   github:
     needs: [ version, android ]
     runs-on: ubuntu-latest
+    if: false
 
     permissions:
       contents: write
@@ -76,6 +75,7 @@ jobs:
   play:
     needs: [android]
     runs-on: ubuntu-latest
+    if: false
 
     steps:
       - uses: actions/checkout@v7
@@ -105,4 +105,4 @@ jobs:
 
       - uses: actions/setup-node@v4
 
-      - run: npx firebase-tools deploy --only hosting
+      - run: npx firebase-tools deploy --only hosting --project ${{ secrets.FIREBASE_PROJECT_ID }}
