@@ -3,9 +3,6 @@ name: Web Release
 on:
   workflow_call:
     inputs:
-      version_code:
-        required: true
-        type: string
       version_name:
         required: true
         type: string
@@ -28,11 +25,12 @@ jobs:
       - uses: gradle/actions/setup-gradle@v6
 
       - run: |
-          ./gradlew :conference-app:wasmJsBrowserDistribution
+          ./gradlew \
+            :conference-app:wasmJsBrowserDistribution \
             --console=plain
-
         env:
           BROWSER_API_KEY: ${{ secrets.BROWSER_API_KEY }}
+          BROWSER_APP_ID: ${{ secrets.BROWSER_APP_ID }}
 
       - uses: actions/upload-artifact@v7
         with:
