@@ -97,7 +97,11 @@ jobs:
           bundle exec fastlane android play
 
   web:
-    needs: [version]
+    needs: [ version ]
+    uses: ./.github/workflows/web-release.yml
+
+  firebase:
+    needs: [version, web]
     runs-on: ubuntu-latest
 
     permissions:
@@ -105,6 +109,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@v7
+
+      - uses: actions/download-artifact@v8
+        with:
+          name: conference-app-build-outputs
+          path: conference-app/build/dist/wasmJs/productionExecutable
 
       - uses: actions/setup-node@v4
 
@@ -116,5 +125,6 @@ jobs:
 
       - run: |
           npx firebase-tools deploy \
+            --public conference-app/build/dist/wasmJs/productionExecutable
             --project ${{ steps.google-cloud-auth.outputs.project_id }} \
             --only hosting

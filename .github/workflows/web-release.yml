@@ -1,0 +1,41 @@
+name: Web Release
+
+on:
+  workflow_call:
+    inputs:
+      version_code:
+        required: true
+        type: string
+      version_name:
+        required: true
+        type: string
+
+    secrets:
+      BROWSER_API_KEY:
+        required: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: gradle/actions/setup-gradle@v6
+
+      - run: |
+          ./gradlew :conference-app:wasmJsBrowserDistribution
+            --console=plain
+
+        env:
+          BROWSER_API_KEY: ${{ secrets.BROWSER_API_KEY }}
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: conference-app-build-outputs
+          path: conference-app/build/dist/wasmJs/productionExecutable
+          if-no-files-found: error
