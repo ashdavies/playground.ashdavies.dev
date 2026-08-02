@@ -13,6 +13,12 @@ resource "google_firebase_android_app" "android_release" {
   ]
 }
 
+resource "google_firebase_hosting_site" "main" {
+  provider = google-beta
+  project  = "playground-1a136"
+  site_id  = "playground-1a136"
+}
+
 resource "google_firebase_web_app" "browser" {
   provider     = google-beta
   project      = var.project_id

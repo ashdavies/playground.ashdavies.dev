@@ -1,7 +1,7 @@
 resource "github_actions_secret" "main" {
   for_each = {
-    ANDROID_API_KEY              = module.android_api_key_release.key_string
-    BROWSER_API_KEY              = module.browser_api_key.key_string
+    ANDROID_API_KEY              = google_apikeys_key.android_release.key_string
+    BROWSER_API_KEY              = google_apikeys_key.browser.key_string
     BROWSER_APP_ID               = google_firebase_web_app.browser.app_id
     FASTLANE_SERVICE_ACCOUNT_KEY = google_service_account_key.fastlane_supply_key.private_key
     FIREBASE_GOOGLE_SERVICES     = data.google_firebase_android_app_config.android_release.config_file_contents

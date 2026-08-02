@@ -5,8 +5,3 @@ output "url" {
   EOT
   value       = google_cloud_run_service.main.status[0].url
 }
-
-output "debug_cloud_run" {
-  description = "data.google_cloud_run_service"
-  value       = google_cloud_run_service.main
-}
