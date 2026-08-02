@@ -28,6 +28,8 @@ jobs:
 
       - uses: gradle/actions/setup-gradle@v6
 
+      - uses: ./.github/actions/setup-java
+
       - uses: google-github-actions/auth@v3
         with:
           workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
