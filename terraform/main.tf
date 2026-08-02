@@ -1,6 +1,6 @@
 locals {
   openapi_config = templatefile(var.openapi_config, {
-    backend_service_name = module.cloud_run_build.url
+    backend_service_name = google_cloud_run_service.build.status[0].url
   })
 }
 
