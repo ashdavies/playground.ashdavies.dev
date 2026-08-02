@@ -49,7 +49,6 @@ jobs:
   github:
     needs: [ version, android ]
     runs-on: ubuntu-latest
-    if: false
 
     permissions:
       contents: write
@@ -78,7 +77,6 @@ jobs:
   play:
     needs: [android]
     runs-on: ubuntu-latest
-    if: false
 
     steps:
       - uses: actions/checkout@v7
@@ -105,6 +103,7 @@ jobs:
     with:
       version_name: ${{ needs.version.outputs.name }}
     secrets:
+      BROWSER_APP_ID: ${{ secrets.BROWSER_APP_ID }}
       BROWSER_API_KEY: ${{ secrets.BROWSER_API_KEY }}
       GOOGLE_SERVICE_ACCOUNT_ID: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
       WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
