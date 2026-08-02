@@ -124,7 +124,7 @@ jobs:
           name: conference-app-build-outputs
           path: conference-app/build/dist/wasmJs/productionExecutable
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
 
       - id: google-cloud-auth
         uses: google-github-actions/auth@v3
