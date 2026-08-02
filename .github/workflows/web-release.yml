@@ -10,6 +10,8 @@ on:
     secrets:
       BROWSER_API_KEY:
         required: true
+      BROWSER_APP_ID:
+        required: true
       GOOGLE_SERVICE_ACCOUNT_ID:
         required: true
       WORKLOAD_IDENTITY_PROVIDER:

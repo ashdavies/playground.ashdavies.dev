@@ -106,6 +106,7 @@ jobs:
       version_name: ${{ needs.version.outputs.name }}
     secrets:
       BROWSER_API_KEY: ${{ secrets.BROWSER_API_KEY }}
+      BROWSER_APP_ID: ${{ secrets.BROWSER_APP_ID }}
       GOOGLE_SERVICE_ACCOUNT_ID: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
       WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
 
