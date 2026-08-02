@@ -1,6 +1,7 @@
 locals {
   api_targets = [
     google_project_service.api_ashdavies_dev.service,
+    google_project_service.firebaseappcheck_googleapis_com.service,
     google_project_service.firebaseinstallations_googleapis_com.service,
     google_project_service.firebaseremoteconfig_googleapis_com.service,
     google_project_service.identitytoolkit_googleapis_com.service
@@ -83,6 +84,11 @@ resource "google_project_service" "api_ashdavies_dev" {
   service = "api.ashdavies.dev"
 }
 
+resource "google_project_service" "firebaseappcheck_googleapis_com" {
+  project = var.project_id
+  service = "firebaseappcheck.googleapis.com"
+}
+
 resource "google_project_service" "firebaseinstallations_googleapis_com" {
   project = var.project_id
   service = "firebaseinstallations.googleapis.com"
@@ -97,24 +103,3 @@ resource "google_project_service" "identitytoolkit_googleapis_com" {
   project = var.project_id
   service = "identitytoolkit.googleapis.com"
 }
-
-/*** Begin Region: Migration ***/
-moved {
-  from = module.android_api_key_debug.google_apikeys_key.main
-  to   = google_apikeys_key.android_debug
-}
-
-moved {
-  from = module.android_api_key_release.google_apikeys_key.main
-  to   = google_apikeys_key.android_release
-}
-
-moved {
-  from = module.browser_api_key.google_apikeys_key.main
-  to   = google_apikeys_key.browser
-}
-
-import {
-  to = google_firebase_hosting_site.main
-}
-/*** End Region: Migration ***/

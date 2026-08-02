@@ -17,6 +17,7 @@ resource "google_firebase_hosting_site" "main" {
   provider = google-beta
   project  = "playground-1a136"
   site_id  = "playground-1a136"
+  app_id   = google_firebase_web_app.browser.app_id
 }
 
 resource "google_firebase_web_app" "browser" {

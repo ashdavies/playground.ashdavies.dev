@@ -61,6 +61,7 @@ module "github_service_account" {
     "${var.project_id}=>${google_project_iam_custom_role.main.id}",
     "${var.project_id}=>roles/iam.workloadIdentityPoolAdmin",
     "${var.project_id}=>roles/firebasehosting.admin",
+    "${var.project_id}=>roles/serviceusage.apiKeysAdmin",
     "${var.project_id}=>roles/viewer"
   ]
 }
