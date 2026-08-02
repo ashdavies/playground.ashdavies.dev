@@ -78,8 +78,8 @@ internal fun Application.main(routes: Set<CloudRunRoute>) {
 }
 
 private fun CORSConfig.install() {
-    allowHost("localhost:5000")
-    allowHost("localhost:8081")
+    allowHost("playground.ashdavies.dev")
+    allowHost("localhost")
 
     allowHeader(HttpHeaders.Authorization)
     allowHeader(HttpHeaders.ContentType)

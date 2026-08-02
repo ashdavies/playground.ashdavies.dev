@@ -116,6 +116,7 @@ module "github_service_account" {
   project_roles = [
     "${var.project_id}=>${google_project_iam_custom_role.main.id}",
     "${var.project_id}=>roles/iam.workloadIdentityPoolAdmin",
+    "${var.project_id}=>roles/firebasehosting.admin",
     "${var.project_id}=>roles/viewer"
   ]
 }

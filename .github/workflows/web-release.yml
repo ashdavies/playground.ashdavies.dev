@@ -1,0 +1,50 @@
+name: Web Release
+
+on:
+  workflow_call:
+    inputs:
+      version_name:
+        required: true
+        type: string
+
+    secrets:
+      BROWSER_API_KEY:
+        required: true
+      GOOGLE_SERVICE_ACCOUNT_ID:
+        required: true
+      WORKLOAD_IDENTITY_PROVIDER:
+        required: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: gradle/actions/setup-gradle@v6
+
+      - uses: ./.github/actions/setup-java
+
+      - uses: google-github-actions/auth@v3
+        with:
+          workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
+
+      - run: |
+          ./gradlew \
+            :conference-app:wasmJsBrowserDistribution \
+            --console=plain
+        env:
+          BROWSER_API_KEY: ${{ secrets.BROWSER_API_KEY }}
+          BROWSER_APP_ID: ${{ secrets.BROWSER_APP_ID }}
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: conference-app-build-outputs
+          path: conference-app/build/dist/wasmJs/productionExecutable
+          if-no-files-found: error

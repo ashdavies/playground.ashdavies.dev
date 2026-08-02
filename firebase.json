@@ -1,6 +1,5 @@
 {
   "hosting": {
-    "public": "conference-app/build/dist/wasmJs/productionExecutable",
     "ignore": [
       "firebase.json",
       "**/.*",

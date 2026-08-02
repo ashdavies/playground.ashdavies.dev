@@ -2,7 +2,7 @@ name: Publish Release
 
 on:
   schedule:
-    - cron: "0 6 * * *"
+    - cron: 0 6 * * 2
 
   workflow_dispatch:
 
@@ -32,6 +32,7 @@ jobs:
   android:
     needs: [ version ]
     uses: ./.github/workflows/android-release.yml
+    if: false
     with:
       version_code: ${{ needs.version.outputs.code }}
       version_name: ${{ needs.version.outputs.name }}
@@ -48,6 +49,7 @@ jobs:
   github:
     needs: [ version, android ]
     runs-on: ubuntu-latest
+    if: false
 
     permissions:
       contents: write
@@ -76,6 +78,7 @@ jobs:
   play:
     needs: [android]
     runs-on: ubuntu-latest
+    if: false
 
     steps:
       - uses: actions/checkout@v7
@@ -97,8 +100,40 @@ jobs:
           bundle exec fastlane android play
 
   web:
-    needs: [version]
+    needs: [ version ]
+    uses: ./.github/workflows/web-release.yml
+    with:
+      version_name: ${{ needs.version.outputs.name }}
+    secrets:
+      BROWSER_API_KEY: ${{ secrets.BROWSER_API_KEY }}
+      GOOGLE_SERVICE_ACCOUNT_ID: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
+      WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
+
+  firebase:
+    needs: [version, web]
     runs-on: ubuntu-latest
 
+    permissions:
+      id-token: write
+
     steps:
-      - run: firebase deploy --only hosting
+      - uses: actions/checkout@v7
+
+      - uses: actions/download-artifact@v8
+        with:
+          name: conference-app-build-outputs
+          path: conference-app/build/dist/wasmJs/productionExecutable
+
+      - uses: actions/setup-node@v4
+
+      - id: google-cloud-auth
+        uses: google-github-actions/auth@v3
+        with:
+          workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
+
+      - run: |
+          npx firebase-tools deploy \
+            --public conference-app/build/dist/wasmJs/productionExecutable \
+            --project ${{ steps.google-cloud-auth.outputs.project_id }} \
+            --only hosting
