@@ -1,6 +1,9 @@
 name: Publish Release
 
 on:
+  schedule:
+    - cron: 0 6 * * 2
+
   workflow_dispatch:
 
 concurrency:
@@ -103,6 +106,8 @@ jobs:
       version_name: ${{ needs.version.outputs.name }}
     secrets:
       BROWSER_API_KEY: ${{ secrets.BROWSER_API_KEY }}
+      GOOGLE_SERVICE_ACCOUNT_ID: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
+      WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
 
   firebase:
     needs: [version, web]
