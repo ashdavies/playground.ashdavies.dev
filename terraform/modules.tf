@@ -7,15 +7,6 @@ module "api_gateway" {
   region           = var.project_region
 }
 
-module "cloud_run_build" {
-  image_name    = "api.ashdavies.dev"
-  location      = var.project_region
-  project       = var.project_id
-  repository_id = "cloud-run-source-deploy"
-  service_name  = "playground-service"
-  source        = "./modules/google/cloud-run-build"
-}
-
 # module.cloud-run-endpoint is deprecated
 module "cloud_run_endpoint" {
   source           = "./modules/google/cloud-run-endpoint"

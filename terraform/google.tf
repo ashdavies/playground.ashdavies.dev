@@ -79,6 +79,30 @@ resource "google_apikeys_key" "browser" {
   }
 }
 
+resource "google_cloud_run_service" "build" {
+  name     = "playground-service"
+  location = var.project_region
+
+  template {
+    spec {
+      containers {
+        image = data.google_artifact_registry_docker_image.main.self_link
+      }
+    }
+  }
+
+  traffic {
+    latest_revision = true
+    percent         = 100
+  }
+}
+
+data "google_artifact_registry_docker_image" "main" {
+  location      = var.project_region
+  repository_id = "cloud-run-source-deploy"
+  image_name    = google_project_service.api_ashdavies_dev.service
+}
+
 resource "google_project_service" "api_ashdavies_dev" {
   project = var.project_id
   service = "api.ashdavies.dev"
