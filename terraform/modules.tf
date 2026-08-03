@@ -1,15 +1,6 @@
-module "api_gateway" {
-  source           = "./modules/google/api-gateway"
-  api_id           = "playground-api"
-  gateway_id       = "playground-api-gateway"
-  openapi_contents = base64encode(local.openapi_config)
-  project          = var.project_id
-  region           = var.project_region
-}
-
 # module.cloud-run-endpoint is deprecated
 module "cloud_run_endpoint" {
-  source           = "./modules/google/cloud-run-endpoint"
+  source           = "./modules/cloud-run-endpoint"
   config_id        = module.cloud_run_endpoint.config_id
   image_name       = "endpoints-runtime-serverless"
   repository_id    = "endpoints-release"
@@ -50,10 +41,6 @@ module "github_service_account" {
   project_id   = var.project_id
   project_roles = [
     "${var.project_id}=>${google_project_iam_custom_role.main.id}",
-    "${var.project_id}=>roles/iam.workloadIdentityPoolAdmin",
-    "${var.project_id}=>roles/firebasehosting.admin",
-    "${var.project_id}=>roles/serviceusage.apiKeysAdmin",
-    "${var.project_id}=>roles/viewer"
   ]
 }
 
