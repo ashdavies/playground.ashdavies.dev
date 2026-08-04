@@ -5,8 +5,8 @@ data "google_service_account_access_token" "default" {
   lifetime               = "1200s"
 }
 
-provider "onepassword" {
-  service_account_token = var.op_service_account_token
+provider "cloudflare" {
+  api_token = data.onepassword_item.cloudflare_terraform_token.credential
 }
 
 provider "github" {
@@ -28,4 +28,8 @@ provider "google" {
 provider "google-beta" {
   project      = var.project_id
   access_token = data.google_service_account_access_token.default.access_token
+}
+
+provider "onepassword" {
+  service_account_token = var.op_service_account_token
 }
