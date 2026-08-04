@@ -32,7 +32,6 @@ jobs:
   android:
     needs: [ version ]
     uses: ./.github/workflows/android-release.yml
-    if: false
     with:
       version_code: ${{ needs.version.outputs.code }}
       version_name: ${{ needs.version.outputs.name }}
@@ -49,7 +48,6 @@ jobs:
   github:
     needs: [ version, android ]
     runs-on: ubuntu-latest
-    if: false
 
     permissions:
       contents: write
@@ -78,7 +76,6 @@ jobs:
   play:
     needs: [android]
     runs-on: ubuntu-latest
-    if: false
 
     steps:
       - uses: actions/checkout@v7
