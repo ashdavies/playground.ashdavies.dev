@@ -108,7 +108,7 @@ jobs:
       WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
 
   publish_release_firebase:
-    needs: [version, web]
+    needs: [ publish_release_version, publish_release_web ]
     runs-on: ubuntu-latest
 
     permissions:
