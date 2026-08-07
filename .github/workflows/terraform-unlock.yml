@@ -8,7 +8,7 @@ on:
         type: string
 
 jobs:
-  main:
+  terraform_unlock_main:
     runs-on: ubuntu-latest
 
     permissions:

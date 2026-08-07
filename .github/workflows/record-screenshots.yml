@@ -8,7 +8,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  recordScreenshots:
+  record_screenshots_main:
     runs-on: ubuntu-latest
 
     permissions:

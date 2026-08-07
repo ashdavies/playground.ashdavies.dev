@@ -1,4 +1,4 @@
-name: Self-Hosted Renovate
+name: Renovate
 
 on:
   schedule:
@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  renovate:
+  renovate_main:
     name: Self-Hosted
     runs-on: ubuntu-latest
 

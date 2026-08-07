@@ -11,7 +11,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  version:
+  publish_release_version:
     if: github.event_name != 'pull_request' || contains(github.event.pull_request.labels.*.name, 'Publish Release')
     runs-on: ubuntu-latest
 
@@ -29,8 +29,8 @@ jobs:
       code: ${{ steps.version.outputs.code }}
       name: ${{ steps.version.outputs.name }}
 
-  android:
-    needs: [ version ]
+  publish_release_android:
+    needs: [ publish_release_version ]
     uses: ./.github/workflows/android-release.yml
     with:
       version_code: ${{ needs.version.outputs.code }}
@@ -45,8 +45,8 @@ jobs:
       KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
       WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
 
-  github:
-    needs: [ version, android ]
+  publish_release_github:
+    needs: [ publish_release_version, publish_release_android ]
     runs-on: ubuntu-latest
 
     permissions:
@@ -73,8 +73,8 @@ jobs:
             name:"Release v${{ needs.version.outputs.name }}" \
             commitish:"${{ github.sha }}"
 
-  play:
-    needs: [android]
+  publish_release_play:
+    needs: [ publish_release_android ]
     runs-on: ubuntu-latest
 
     steps:
@@ -96,8 +96,8 @@ jobs:
       - run: |
           bundle exec fastlane android play
 
-  web:
-    needs: [ version ]
+  publish_release_web:
+    needs: [ publish_release_version ]
     uses: ./.github/workflows/web-release.yml
     with:
       version_name: ${{ needs.version.outputs.name }}
@@ -107,7 +107,7 @@ jobs:
       GOOGLE_SERVICE_ACCOUNT_ID: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
       WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
 
-  firebase:
+  publish_release_firebase:
     needs: [version, web]
     runs-on: ubuntu-latest
 

@@ -6,7 +6,7 @@ on:
       - "*"
 
 jobs:
-  main:
+  terraform_plan_main:
     runs-on: ubuntu-latest
 
     permissions:
