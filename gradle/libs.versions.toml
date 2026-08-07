@@ -16,7 +16,7 @@ jetbrains-kotlin = "2.4.10"
 kotlinx-coroutines = "1.11.0"
 kotlinx-serialization = "1.11.0"
 ktor = "3.5.2"
-metro = "1.4.0"
+metro = "1.4.1"
 sqlJs = "1.8.0"
 webPack = "9.1.0"
 
