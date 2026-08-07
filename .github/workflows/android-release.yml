@@ -29,7 +29,7 @@ on:
         required: true
 
 jobs:
-  build:
+  android_release_main:
     runs-on: ubuntu-latest
 
     permissions:

@@ -1,4 +1,4 @@
-name: Run Integration Tests
+name: Integration Test
 
 on:
   schedule:
@@ -11,8 +11,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build:
-    name: Run Integration Tests
+  integration_test_main:
     runs-on: ubuntu-latest
 
     permissions:
