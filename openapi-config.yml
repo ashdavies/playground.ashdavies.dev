@@ -1,0 +1,160 @@
+swagger: "2.0"
+info:
+  title: "playground-api Playground Service"
+  description: "Playground Service definition hosted by Cloud Endpoints with a Cloud Run backend"
+  version: "1.0.0"
+host: "api.ashdavies.dev"
+schemes:
+  - "https"
+consumes:
+  - "application/json"
+produces:
+  - "application/json"
+paths:
+  /.well-known/assetlinks.json:
+    get:
+      tags: [ "static" ]
+      summary: "Returns AssetLinks protocol file"
+      operationId: "getAssetLinks"
+      responses:
+        "200":
+          description: "OK"
+      security: []
+  /events/upcoming:
+    get:
+      tags: [ "events" ]
+      summary: "Return upcoming events by start date"
+      operationId: "getUpcomingEvents"
+      parameters:
+        - name: "startAt"
+          in: "query"
+          type: "string"
+          format: "date"
+          description: "The start date to start this query at."
+        - name: "limit"
+          in: "query"
+          type: "integer"
+          format: "int32"
+          description: "The maximum number of items to return."
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Event"
+      security:
+        - ApiKeyAuth: []
+  /events:aggregate:
+    post:
+      tags: [ "events" ]
+      summary: "Aggregate events from data sources"
+      operationId: "aggregateEvents"
+      responses:
+        "200":
+          description: "OK"
+      security:
+        - ApiKeyAuth: []
+  /firebase/auth:
+    post:
+      tags: [ "firebase" ]
+      summary: "Signs in or signs up a user"
+      description: >
+        Signs in or signs up a user by exchanging a custom Auth token for the given UID. Upon a 
+        successful sign-in or sign-up, a new Identity Platform ID token and refresh token are
+        issued for the user.
+      operationId: "signIn"
+      parameters:
+        - name: "body"
+          in: "body"
+          required: true
+          schema:
+            type: "object"
+            required:
+              - "uid"
+            properties:
+              uid:
+                type: "string"
+                description: >
+                  The UID to store in the token. This identifies the user to other Firebase
+                  services (Realtime Database, Firebase Auth, etc.). Should be less than 128
+                  characters.
+                example: "jane.smith@example.com"
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            $ref: "#/definitions/AuthResult"
+  /hello:
+    get:
+      tags: [ "hello" ]
+      summary: "Greet the user"
+      operationId: "helloWorld"
+      responses:
+        "200":
+          description: "OK"
+definitions:
+  AuthResult:
+    type: "object"
+    properties:
+      idToken:
+        type: "string"
+        description: "A Firebase Auth ID token generated from the provided custom token."
+      refreshToken:
+        type: "string"
+        description: "A Firebase Auth refresh token generated from the provided custom token."
+      expiresIn:
+        type: "integer"
+        format: "int64"
+        description: "The number of seconds in which the ID token expires."
+        example: 3600
+  Event:
+    type: "object"
+    required:
+      - "id"
+      - "name"
+      - "website"
+      - "location"
+      - "dateStart"
+      - "dateEnd"
+    properties:
+      id:
+        type: "string"
+      name:
+        type: "string"
+      website:
+        type: "string"
+      location:
+        type: "string"
+      imageUrl:
+        type: "string"
+      status:
+        type: "string"
+      online:
+        type: "boolean"
+      dateStart:
+        type: "string"
+        format: "date"
+      dateEnd:
+        type: "string"
+        format: "date"
+      cfp:
+        type: "object"
+        properties:
+          start:
+            type: "string"
+            format: "date"
+          end:
+            type: "string"
+            format: "date"
+          site:
+            type: "string"
+securityDefinitions:
+  ApiKeyAuth:
+    type: "apiKey"
+    name: "X-API-Key"
+    in: "header"
+security:
+  - ApiKeyAuth: []
+x-google-backend:
+  address: "${backend_service_name}"
