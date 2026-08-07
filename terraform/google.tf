@@ -1,11 +1,49 @@
 locals {
   api_targets = [
-    google_project_service.api_ashdavies_dev.service,
-    google_project_service.firebaseappcheck_googleapis_com.service,
-    google_project_service.firebaseinstallations_googleapis_com.service,
-    google_project_service.firebaseremoteconfig_googleapis_com.service,
-    google_project_service.identitytoolkit_googleapis_com.service
+    "api.ashdavies.dev",
+    "firebaseappcheck.googleapis.com",
+    "firebaseinstallations.googleapis.com",
+    "firebaseremoteconfig.googleapis.com",
+    "identitytoolkit.googleapis.com",
   ]
+
+  enabled_apis = [
+    "apigateway.googleapis.com",
+    "servicecontrol.googleapis.com",
+    "servicemanagement.googleapis.com",
+  ]
+}
+
+resource "google_api_gateway_api" "main" {
+  project  = var.project_id
+  provider = google-beta
+  api_id   = "playground-api"
+}
+
+resource "google_api_gateway_api_config" "main" {
+  api      = google_api_gateway_api.main.api_id
+  project  = var.project_id
+  provider = google-beta
+
+  openapi_documents {
+    document {
+      contents = base64encode(local.openapi_config)
+      path     = "openapi_spec.yml"
+    }
+  }
+
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
+resource "google_api_gateway_gateway" "main" {
+  api_config = google_api_gateway_api_config.main.id
+  depends_on = [google_api_gateway_api_config.main]
+  gateway_id = "playground-api-gateway"
+  project    = var.project_id
+  provider   = google-beta
+  region     = var.project_region
 }
 
 resource "google_apikeys_key" "android_debug" {
@@ -100,30 +138,12 @@ resource "google_cloud_run_service" "build" {
 data "google_artifact_registry_docker_image" "main" {
   location      = var.project_region
   repository_id = "cloud-run-source-deploy"
-  image_name    = google_project_service.api_ashdavies_dev.service
+  image_name    = "api.ashdavies.dev"
 }
 
-resource "google_project_service" "api_ashdavies_dev" {
-  project = var.project_id
-  service = "api.ashdavies.dev"
-}
-
-resource "google_project_service" "firebaseappcheck_googleapis_com" {
-  project = var.project_id
-  service = "firebaseappcheck.googleapis.com"
-}
-
-resource "google_project_service" "firebaseinstallations_googleapis_com" {
-  project = var.project_id
-  service = "firebaseinstallations.googleapis.com"
-}
-
-resource "google_project_service" "firebaseremoteconfig_googleapis_com" {
-  project = var.project_id
-  service = "firebaseremoteconfig.googleapis.com"
-}
-
-resource "google_project_service" "identitytoolkit_googleapis_com" {
-  project = var.project_id
-  service = "identitytoolkit.googleapis.com"
+module "project-services" {
+  source        = "terraform-google-modules/project-factory/google//modules/project_services"
+  version       = "18.3.0"
+  project_id    = var.project_id
+  activate_apis = concat(local.api_targets, local.enabled_apis)
 }
