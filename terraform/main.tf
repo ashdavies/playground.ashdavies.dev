@@ -29,6 +29,7 @@ resource "google_project_iam_custom_role" "main" {
     "firebasehosting.sites.get",
     "iam.serviceAccountKeys.create",
     "iam.serviceAccountKeys.get",
+    "iam.serviceAccounts.actAs",
     "iam.serviceAccounts.get",
     "iam.serviceAccounts.getAccessToken",
     "iam.serviceAccounts.getIamPolicy",
@@ -41,6 +42,7 @@ resource "google_project_iam_custom_role" "main" {
     "run.domainmappings.get",
     "run.services.get",
     "run.services.getIamPolicy",
+    "run.services.update",
     "servicemanagement.services.get",
     "serviceusage.services.list",
     "storage.buckets.create",
@@ -49,6 +51,7 @@ resource "google_project_iam_custom_role" "main" {
     "storage.buckets.setIamPolicy",
     "storage.objects.create",
     "storage.objects.delete",
+    "storage.objects.get",
     "storage.objects.list",
   ]
 }

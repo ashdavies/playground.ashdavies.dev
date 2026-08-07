@@ -4,7 +4,13 @@ locals {
     "firebaseappcheck.googleapis.com",
     "firebaseinstallations.googleapis.com",
     "firebaseremoteconfig.googleapis.com",
-    "identitytoolkit.googleapis.com"
+    "identitytoolkit.googleapis.com",
+  ]
+
+  enabled_apis = [
+    "apigateway.googleapis.com",
+    "servicecontrol.googleapis.com",
+    "servicemanagement.googleapis.com",
   ]
 }
 
@@ -22,7 +28,7 @@ resource "google_api_gateway_api_config" "main" {
   openapi_documents {
     document {
       contents = base64encode(local.openapi_config)
-      path = "openapi_spec.yml"
+      path     = "openapi_spec.yml"
     }
   }
 
@@ -132,21 +138,12 @@ resource "google_cloud_run_service" "build" {
 data "google_artifact_registry_docker_image" "main" {
   location      = var.project_region
   repository_id = "cloud-run-source-deploy"
-  image_name = "api.ashdavies.dev"
+  image_name    = "api.ashdavies.dev"
 }
 
 module "project-services" {
-  source     = "terraform-google-modules/project-factory/google//modules/project_services"
-  version    = "18.3.0"
-  project_id = var.project_id
-  activate_apis = [
-    "api.ashdavies.dev",
-    "apigateway.googleapis.com",
-    "firebaseappcheck.googleapis.com",
-    "firebaseinstallations.googleapis.com",
-    "firebaseremoteconfig.googleapis.com",
-    "identitytoolkit.googleapis.com",
-    "servicemanagement.googleapis.com",
-    "servicecontrol.googleapis.com"
-  ]
+  source        = "terraform-google-modules/project-factory/google//modules/project_services"
+  version       = "18.3.0"
+  project_id    = var.project_id
+  activate_apis = concat(local.api_targets, local.enabled_apis)
 }
