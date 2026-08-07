@@ -14,15 +14,8 @@ plugins {
         classpath(kotlin.serialization)
         classpath(ktlint)
 
-        alias(gradle.doctor)
         alias(kotlinx.kover)
     }
-}
-
-doctor {
-    allowBuildingAllAndroidAppsSimultaneously.set(true)
-    disallowCleanTaskDependencies.set(false)
-    javaHome { failOnError.set(false) }
 }
 
 subprojects {
