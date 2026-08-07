@@ -21,7 +21,7 @@ variable "gh_token" {
 }
 
 variable "openapi_config" {
-  default     = "../openapi-v2.yml"
+  default     = "../openapi-config.yml"
   description = "The full path of the OpenAPI configuration."
   type        = string
 }
