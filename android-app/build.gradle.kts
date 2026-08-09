@@ -73,6 +73,7 @@ dependencies {
     implementation(libs.compose.material3)
     implementation(libs.google.accompanist.permissions)
     implementation(libs.google.android.location)
+    implementation(libs.google.android.material)
     implementation(libs.google.maps.android.compose)
     implementation(libs.google.maps.android.utils)
 
