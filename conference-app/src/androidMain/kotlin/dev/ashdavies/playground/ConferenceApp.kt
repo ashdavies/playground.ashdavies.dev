@@ -1,7 +1,7 @@
 package dev.ashdavies.playground
 
 import android.app.Activity
-import androidx.compose.material3.MaterialExpressiveTheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import com.slack.circuit.backstack.rememberSaveableBackStack
@@ -15,7 +15,7 @@ import dev.zacsweers.metro.createGraphFactory
 
 @Composable
 public fun ConferenceApp(activity: Activity) {
-    MaterialExpressiveTheme(dynamicColorScheme()) {
+    MaterialTheme(dynamicColorScheme()) {
         val conferenceGraph = remember(activity) {
             val factory = createGraphFactory<AndroidConferenceGraph.Factory>()
             factory.create(activity)

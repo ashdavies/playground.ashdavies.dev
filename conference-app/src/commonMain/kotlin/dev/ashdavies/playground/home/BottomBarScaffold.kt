@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.visible
 import androidx.compose.material3.BottomAppBar
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -29,7 +30,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.slack.circuit.foundation.CircuitContent
 import com.slack.circuit.runtime.screen.Screen
-import dev.ashdavies.playground.ui.CircularWavyProgressIndicator
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
@@ -82,7 +82,7 @@ internal fun BottomBarScaffoldLoading(modifier: Modifier = Modifier) {
         modifier = modifier.fillMaxSize(),
         contentAlignment = Alignment.Center,
     ) {
-        CircularWavyProgressIndicator()
+        CircularProgressIndicator()
     }
 }
 

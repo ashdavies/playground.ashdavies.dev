@@ -7,7 +7,7 @@ cash-sqldelight = "2.3.2"
 circuit = "0.36.0"
 coil-kt = "3.5.0"
 compose-adaptive = "1.2.0"
-compose-plugin = "1.11.1"
+compose-plugin = "1.12.0-beta03"
 google-accompanist = "0.37.3"
 google-android = "9.3.1"
 google-ksp = "2.3.6"
@@ -47,7 +47,7 @@ compose-adaptive-navigation = { module = "org.jetbrains.compose.material3.adapti
 compose-back-handler = { module = "org.jetbrains.compose.ui:ui-backhandler", version.ref = "compose-plugin" }
 compose-components-resources = { module = "org.jetbrains.compose.components:components-resources", version.ref = "compose-plugin" }
 compose-foundation = { module = "org.jetbrains.compose.foundation:foundation", version.ref = "compose-plugin" }
-compose-material3 = "org.jetbrains.compose.material3:material3:1.12.0-alpha03"
+compose-material3 = "org.jetbrains.compose.material3:material3:1.9.0"
 compose-materialIconsExtended = "org.jetbrains.compose.material:material-icons-extended:1.7.3"
 compose-runtime = { module = "org.jetbrains.compose.runtime:runtime", version.ref = "compose-plugin" }
 compose-shimmer = "com.valentinilk.shimmer:compose-shimmer:1.5.0"
