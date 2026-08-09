@@ -7,8 +7,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import org.jetbrains.compose.resources.stringResource
-import playground.ui_components.generated.resources.Res
-import playground.ui_components.generated.resources.back
 
 @Composable
 public fun BackButton(onClick: () -> Unit, modifier: Modifier = Modifier) {

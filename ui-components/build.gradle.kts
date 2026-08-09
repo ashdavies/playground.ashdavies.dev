@@ -6,6 +6,11 @@ plugins {
     id("dev.ashdavies.wasm")
 }
 
+compose.resources {
+    packageOfResClass = "dev.ashdavies.playground.ui"
+    publicResClass = true
+}
+
 kotlin {
     android {
         namespace = "dev.ashdavies.playground.ui"

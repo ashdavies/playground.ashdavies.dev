@@ -26,7 +26,6 @@ androidx-annotation = "androidx.annotation:annotation:1.10.0"
 androidx-core-splashscreen = "androidx.core:core-splashscreen:1.2.0"
 androidx-credentials-auth = "androidx.credentials:credentials-play-services-auth:1.6.0"
 androidx-startup-runtime = "androidx.startup:startup-runtime:1.2.0"
-
 androidx-paging-common = { module = "androidx.paging:paging-common", version.ref = "androidx-paging" }
 androidx-paging-compose = { module = "androidx.paging:paging-compose", version.ref = "androidx-paging" }
 androidx-paging-testing = { module = "androidx.paging:paging-testing", version.ref = "androidx-paging" }
@@ -48,7 +47,7 @@ compose-adaptive-navigation = { module = "org.jetbrains.compose.material3.adapti
 compose-back-handler = { module = "org.jetbrains.compose.ui:ui-backhandler", version.ref = "compose-plugin" }
 compose-components-resources = { module = "org.jetbrains.compose.components:components-resources", version.ref = "compose-plugin" }
 compose-foundation = { module = "org.jetbrains.compose.foundation:foundation", version.ref = "compose-plugin" }
-compose-material3 = "org.jetbrains.compose.material3:material3:1.9.0"
+compose-material3 = "org.jetbrains.compose.material3:material3:1.12.0-alpha03"
 compose-materialIconsExtended = "org.jetbrains.compose.material:material-icons-extended:1.7.3"
 compose-runtime = { module = "org.jetbrains.compose.runtime:runtime", version.ref = "compose-plugin" }
 compose-shimmer = "com.valentinilk.shimmer:compose-shimmer:1.5.0"
@@ -61,7 +60,6 @@ detekt-compose = "io.nlopez.compose.rules:detekt:0.6.4"
 google-accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "google-accompanist" }
 google-android-identity = "com.google.android.libraries.identity.googleid:googleid:1.2.0"
 google-android-location = "com.google.android.gms:play-services-location:21.4.0"
-google-android-material = "com.google.android.material:material:1.14.0"
 google-firebase-admin = "com.google.firebase:firebase-admin:9.10.0"
 google-firebase-appcheck-debug = { module = "com.google.firebase:firebase-appcheck-debug" }
 google-firebase-appcheck-playintegrity = { module = "com.google.firebase:firebase-appcheck-playintegrity" }

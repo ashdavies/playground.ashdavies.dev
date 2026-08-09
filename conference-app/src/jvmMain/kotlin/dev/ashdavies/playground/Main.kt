@@ -1,6 +1,6 @@
 package dev.ashdavies.playground
 
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MaterialExpressiveTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.window.Window
@@ -34,7 +34,7 @@ private fun ConferenceApp(
     context: PlatformContext,
     onClose: () -> Unit,
 ) {
-    MaterialTheme(dynamicColorScheme()) {
+    MaterialExpressiveTheme(dynamicColorScheme()) {
         val conferenceGraph = remember(context) {
             val factory = createGraphFactory<JvmConferenceGraph.Factory>()
             factory.create(context)

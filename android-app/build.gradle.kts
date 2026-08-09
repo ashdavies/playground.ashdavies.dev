@@ -70,9 +70,9 @@ dependencies {
     implementation(libs.androidx.core.splashscreen)
     implementation(libs.androidx.startup.runtime)
     implementation(libs.circuit.overlay)
+    implementation(libs.compose.material3)
     implementation(libs.google.accompanist.permissions)
     implementation(libs.google.android.location)
-    implementation(libs.google.android.material)
     implementation(libs.google.maps.android.compose)
     implementation(libs.google.maps.android.utils)
 
@@ -83,7 +83,6 @@ dependencies {
     implementation(libs.kotlinx.coroutines.play.services)
 
     debugImplementation(libs.google.firebase.appcheck.debug)
-    debugImplementation(libs.compose.uiTooling)
 
     testImplementation(projects.asgService)
     testImplementation(projects.feature.eventCommon)

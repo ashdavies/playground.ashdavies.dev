@@ -1,35 +1,11 @@
 package dev.ashdavies.playground.home
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.WindowInsetsSides
-import androidx.compose.foundation.layout.exclude
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.only
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.systemBars
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.PhotoLibrary
-import androidx.compose.material.icons.outlined.Route
-import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.ScaffoldDefaults
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.unit.dp
 import com.slack.circuit.codegen.annotations.CircuitInject
-import com.slack.circuit.foundation.CircuitContent
 import com.slack.circuit.foundation.NavEvent
 import com.slack.circuit.runtime.CircuitUiEvent
 import com.slack.circuit.runtime.CircuitUiState
@@ -39,15 +15,11 @@ import dev.ashdavies.identity.IdentityState
 import dev.ashdavies.parcelable.Parcelable
 import dev.ashdavies.parcelable.Parcelize
 import dev.ashdavies.playground.activity.FullyDrawnReporter
-import dev.ashdavies.playground.adaptive.ListDetailScaffoldScreen
-import dev.ashdavies.playground.event.EventScreen
-import dev.ashdavies.playground.gallery.GalleryScreen
-import dev.ashdavies.playground.material.icons.EventList
-import dev.ashdavies.playground.material.icons.EventUpcoming
-import dev.ashdavies.playground.routes.RoutesScreen
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.Inject
+import kotlinx.collections.immutable.PersistentList
 import kotlinx.serialization.Serializable
+import org.jetbrains.compose.resources.StringResource
 
 @Parcelize
 @Serializable
@@ -59,14 +31,24 @@ internal object BottomBarScaffoldScreen : Parcelable, Screen {
         data object Login : Event
     }
 
-    data class State(
-        val screen: Screen,
-        val identityState: IdentityState,
-        val isGalleryEnabled: Boolean,
-        val isRoutesEnabled: Boolean,
-        val isPastEventsEnabled: Boolean,
-        val eventSink: (Event) -> Unit,
-    ) : CircuitUiState
+    sealed interface State : CircuitUiState {
+        object Loading : State
+
+        data class Ready(
+            val items: PersistentList<Item>,
+            val identityState: IdentityState,
+            val selectedScreen: Screen,
+            val eventSink: (Event) -> Unit,
+        ) : State {
+
+            data class Item(
+                val selected: Boolean,
+                val screen: Screen,
+                val icon: ImageVector,
+                val label: StringResource,
+            )
+        }
+    }
 }
 
 @Inject
@@ -78,100 +60,17 @@ internal class BottomBarScaffoldUi(
     @Composable
     @OptIn(ExperimentalMaterial3Api::class)
     override fun Content(state: BottomBarScaffoldScreen.State, modifier: Modifier) {
-        val eventSink = state.eventSink
-
-        Scaffold(
-            modifier = modifier,
-            bottomBar = {
-                if (state.isGalleryEnabled || state.isRoutesEnabled || state.isPastEventsEnabled) {
-                    BottomBar(
-                        onClick = { eventSink(BottomBarScaffoldScreen.Event.BottomNav(it)) },
-                        selected = state.screen,
-                        isGalleryEnabled = state.isGalleryEnabled,
-                        isRoutesEnabled = state.isRoutesEnabled,
-                        isPastEventsEnabled = state.isPastEventsEnabled,
-                    )
-                }
-            },
-            contentWindowInsets = ScaffoldDefaults.contentWindowInsets.exclude(
-                insets = WindowInsets.systemBars.only(WindowInsetsSides.Vertical),
-            ),
-        ) { contentPadding ->
-            CircuitContent(
-                screen = state.screen,
-                modifier = Modifier.padding(contentPadding),
-                onNavEvent = { event ->
-                    eventSink(BottomBarScaffoldScreen.Event.ChildNav(event))
-                },
-                unavailableContent = { screen, modifier ->
-                    Box(
-                        modifier = modifier
-                            .fillMaxWidth()
-                            .background(Color.Blue)
-                            .padding(32.dp),
-                    ) {
-                        Text("$screen")
-                    }
-                },
+        when (state) {
+            is BottomBarScaffoldScreen.State.Ready -> BottomBarScaffoldReady(
+                state = state,
+                modifier = modifier,
             )
+
+            else -> BottomBarScaffoldLoading()
         }
 
         LaunchedEffect(Unit) {
             fullyDrawnReporter.reportFullyDrawn()
         }
     }
-}
-
-@Composable
-private fun BottomBar(
-    onClick: (Screen) -> Unit,
-    selected: Screen,
-    isGalleryEnabled: Boolean,
-    isRoutesEnabled: Boolean,
-    isPastEventsEnabled: Boolean,
-    modifier: Modifier = Modifier,
-) {
-    BottomAppBar(modifier) {
-        NavigationBar {
-            NavigationBarItem(
-                selected = selected is ListDetailScaffoldScreen,
-                onClick = { onClick(ListDetailScaffoldScreen(EventScreen.List())) },
-                icon = { NavigationBarImage(Icons.Outlined.EventUpcoming) },
-                label = { Text("Upcoming") },
-            )
-
-            if (isGalleryEnabled) {
-                NavigationBarItem(
-                    selected = selected is GalleryScreen,
-                    onClick = { onClick(GalleryScreen) },
-                    icon = { NavigationBarImage(Icons.Outlined.PhotoLibrary) },
-                )
-            }
-
-            if (isRoutesEnabled) {
-                NavigationBarItem(
-                    selected = selected is RoutesScreen,
-                    onClick = { onClick(RoutesScreen) },
-                    icon = { NavigationBarImage(Icons.Outlined.Route) },
-                )
-            }
-
-            if (isPastEventsEnabled) {
-                NavigationBarItem(
-                    selected = selected is EventScreen.Grid,
-                    onClick = { onClick(EventScreen.Grid()) },
-                    icon = { NavigationBarImage(Icons.Outlined.EventList) },
-                )
-            }
-        }
-    }
-}
-
-@Composable
-private fun NavigationBarImage(imageVector: ImageVector) {
-    Image(
-        colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurface),
-        contentDescription = null,
-        imageVector = imageVector,
-    )
 }

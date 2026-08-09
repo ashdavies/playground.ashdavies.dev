@@ -15,7 +15,6 @@ plugins {
 kotlin {
     android {
         namespace = "dev.ashdavies.playground.gallery"
-        androidResources.enable = true
     }
 
     sourceSets {

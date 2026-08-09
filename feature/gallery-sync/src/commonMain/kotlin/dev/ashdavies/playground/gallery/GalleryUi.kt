@@ -60,12 +60,12 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.rememberAsyncImagePainter
 import com.slack.circuit.codegen.annotations.CircuitInject
 import dev.ashdavies.playground.ui.CenterAlignedTopAppBar
+import dev.ashdavies.playground.ui.Res
+import dev.ashdavies.playground.ui.gallery
 import dev.zacsweers.metro.AppScope
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import org.jetbrains.compose.resources.stringResource
-import playground.feature.gallery_sync.generated.resources.Res
-import playground.feature.gallery_sync.generated.resources.gallery
 import kotlin.uuid.Uuid
 
 private const val DEFAULT_COLUMN_COUNT = 4

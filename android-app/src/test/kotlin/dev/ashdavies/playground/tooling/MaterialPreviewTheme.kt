@@ -1,7 +1,7 @@
 package dev.ashdavies.playground.tooling
 
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MaterialExpressiveTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
@@ -17,7 +17,7 @@ internal fun MaterialPreviewTheme(content: @Composable () -> Unit) {
     CompositionLocalProvider(LocalInspectionMode provides true) {
         PreviewContextConfigurationEffect()
 
-        MaterialTheme(if (isSystemInDarkTheme()) darkColorScheme() else lightColorScheme()) {
+        MaterialExpressiveTheme(if (isSystemInDarkTheme()) darkColorScheme() else lightColorScheme()) {
             Surface(content = content)
         }
     }
