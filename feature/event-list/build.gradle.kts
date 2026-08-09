@@ -14,7 +14,6 @@ plugins {
 kotlin {
     android {
         namespace = "dev.ashdavies.playground.event.list"
-        androidResources.enable = true
     }
 
     sourceSets {

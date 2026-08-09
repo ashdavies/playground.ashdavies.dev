@@ -13,8 +13,6 @@ import com.slack.circuit.foundation.onNavEvent
 import com.slack.circuit.runtime.Navigator
 import com.slack.circuit.runtime.presenter.Presenter
 import com.slack.circuit.runtime.screen.Screen
-import dev.ashdavies.config.RemoteConfig
-import dev.ashdavies.config.getBoolean
 import dev.ashdavies.identity.IdentityManager
 import dev.ashdavies.identity.IdentityState
 import dev.ashdavies.playground.adaptive.ListDetailScaffoldScreen
@@ -23,35 +21,45 @@ import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.Assisted
 import dev.zacsweers.metro.AssistedFactory
 import dev.zacsweers.metro.AssistedInject
+import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.launch
 
 internal class BottomBarScaffoldPresenter @AssistedInject constructor(
     @Assisted private val navigator: Navigator,
-    private val remoteConfig: RemoteConfig,
+    private val bottomBarItemsProvider: suspend () -> List<Pair<Screen, BottomBarScaffoldMetadata>>,
     private val identityManager: IdentityManager,
 ) : Presenter<BottomBarScaffoldScreen.State> {
 
     @Composable
     override fun present(): BottomBarScaffoldScreen.State {
-        val isGalleryEnabled by produceState(false) { remoteConfig.isGalleryEnabled() }
-        val isPastEventsEnabled by produceState(false) { remoteConfig.isPastEventsEnabled() }
-        val isRoutesEnabled by produceState(false) { remoteConfig.isRoutesEnabled() }
-
-        var screen by retain { mutableStateOf<Screen>(ListDetailScaffoldScreen(EventScreen.List())) }
+        var selectedScreen by retain { mutableStateOf<Screen>(ListDetailScaffoldScreen(EventScreen.List())) }
         val identityState by identityManager.state.collectAsState(IdentityState.Unauthenticated)
         val coroutineScope = rememberCoroutineScope()
 
-        return BottomBarScaffoldScreen.State(
-            screen = screen,
-            isGalleryEnabled = isGalleryEnabled,
-            isRoutesEnabled = isRoutesEnabled,
-            isPastEventsEnabled = isPastEventsEnabled,
-            identityState = identityState,
-        ) { event ->
-            when (event) {
-                is BottomBarScaffoldScreen.Event.Login -> coroutineScope.launch { identityManager.signIn() }
-                is BottomBarScaffoldScreen.Event.ChildNav -> navigator.onNavEvent(event.navEvent)
-                is BottomBarScaffoldScreen.Event.BottomNav -> screen = event.screen
+        val bottomBarItemsState = produceState<List<Pair<Screen, BottomBarScaffoldMetadata>>?>(null) {
+            value = bottomBarItemsProvider()
+        }
+
+        return when (val bottomBarItems = bottomBarItemsState.value) {
+            null -> BottomBarScaffoldScreen.State.Loading
+
+            else -> BottomBarScaffoldScreen.State.Ready(
+                items = bottomBarItems.map {
+                    BottomBarScaffoldScreen.State.Ready.Item(
+                        screen = it.first,
+                        label = it.second.label,
+                        icon = it.second.icon,
+                        selected = selectedScreen == it.first,
+                    )
+                }.toPersistentList(),
+                identityState = identityState,
+                selectedScreen = selectedScreen,
+            ) { event ->
+                when (event) {
+                    is BottomBarScaffoldScreen.Event.Login -> coroutineScope.launch { identityManager.signIn() }
+                    is BottomBarScaffoldScreen.Event.ChildNav -> navigator.onNavEvent(event.navEvent)
+                    is BottomBarScaffoldScreen.Event.BottomNav -> selectedScreen = event.screen
+                }
             }
         }
     }
@@ -62,9 +70,3 @@ internal class BottomBarScaffoldPresenter @AssistedInject constructor(
         override operator fun invoke(navigator: Navigator): BottomBarScaffoldPresenter
     }
 }
-
-private suspend fun RemoteConfig.isGalleryEnabled() = getBoolean("gallery_enabled")
-
-private suspend fun RemoteConfig.isPastEventsEnabled() = getBoolean("past_events_enabled")
-
-private suspend fun RemoteConfig.isRoutesEnabled() = getBoolean("routes_enabled")

@@ -40,6 +40,7 @@ buildConfig {
     }
 
     sourceSets.named("jvmMain") {
+        // TODO Use desktop client credentials
         buildConfigField("API_KEY", stringPropertyOrNull("browser.api.key"))
         buildConfigField("APP_ID", stringPropertyOrNull("browser.app.id"))
     }
@@ -64,6 +65,10 @@ compose.desktop {
             packageVersion = "1.0.0"
         }
     }
+}
+
+dependencies {
+    androidRuntimeClasspath(libs.compose.uiTooling)
 }
 
 kotlin {
@@ -96,11 +101,14 @@ kotlin {
             implementation(libs.androidx.annotation)
             implementation(libs.androidx.paging.common)
             implementation(libs.androidx.window.core)
+
             implementation(libs.circuit.foundation)
             implementation(libs.circuit.overlay)
             implementation(libs.circuit.serialization)
+
             implementation(libs.coil.compose)
             implementation(libs.coil.network)
+
             implementation(libs.compose.adaptive.layout)
             implementation(libs.compose.adaptive.navigation)
             implementation(libs.compose.back.handler)
@@ -108,16 +116,20 @@ kotlin {
             implementation(libs.compose.foundation)
             implementation(libs.compose.material3)
             implementation(libs.compose.materialIconsExtended)
+            implementation(libs.compose.uiToolingPreview)
             implementation(libs.compose.ui)
+
             implementation(libs.kotlinx.collections.immutable)
             implementation(libs.kotlinx.datetime)
             implementation(libs.kotlinx.io.core)
             implementation(libs.kotlinx.serialization.core)
             implementation(libs.kotlinx.serialization.json)
+
             implementation(libs.ktor.client.core)
             implementation(libs.ktor.client.mock)
             implementation(libs.ktor.http)
             implementation(libs.ktor.io)
+
             implementation(libs.sqldelight.coroutines.extensions)
             implementation(libs.sqldelight.paging3.extensions)
             implementation(libs.sqldelight.runtime)
@@ -136,7 +148,6 @@ kotlin {
             implementation(libs.circuit.overlay)
             implementation(libs.google.accompanist.permissions)
             implementation(libs.google.android.location)
-            implementation(libs.google.android.material)
             implementation(libs.google.maps.android.compose)
             implementation(libs.google.maps.android.utils)
 
