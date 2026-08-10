@@ -86,12 +86,14 @@ dependencies {
     debugImplementation(libs.google.firebase.appcheck.debug)
 
     testImplementation(projects.asgService)
+    testImplementation(projects.composeMaterial)
     testImplementation(projects.feature.eventCommon)
     testImplementation(projects.feature.eventDetail)
     testImplementation(projects.feature.eventGrid)
     testImplementation(projects.feature.eventList)
     testImplementation(projects.feature.gallerySync)
 
+    testImplementation(libs.circuit.runtime)
     testImplementation(libs.compose.components.resources)
     testImplementation(libs.compose.material3)
     testImplementation(libs.kotlinx.collections.immutable)

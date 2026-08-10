@@ -41,7 +41,6 @@ internal interface CircuitModule {
         .build()
 
     @Provides
-    @OptIn(ExperimentalSerializationApi::class)
     fun savedStateConfiguration(): SavedStateConfiguration = SavedStateConfiguration {
         serializersModule = SerializersModule {
             polymorphic(CircuitSaveable::class) {

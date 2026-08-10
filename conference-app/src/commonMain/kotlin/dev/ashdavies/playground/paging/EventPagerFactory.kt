@@ -38,6 +38,7 @@ internal class EventPagerFactory(
         coroutineContext = Dispatchers.Main,
     )
 
+    @OptIn(ExperimentalPagingApi::class)
     override suspend fun create(config: PagerConfig<Long>): Pager<Long, Event> {
         val eventsQueries = eventsQueries.await()
 
@@ -75,7 +76,6 @@ internal class EventPagerFactory(
             }
         }
 
-        @OptIn(ExperimentalPagingApi::class)
         return Pager(
             config = PagingConfig(config.pageSize),
             initialKey = config.initialKey,

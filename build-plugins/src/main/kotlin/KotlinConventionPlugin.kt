@@ -13,6 +13,7 @@ import org.jlleitschuh.gradle.ktlint.KtlintExtension
 public val NamedDomainObjectContainer<KotlinSourceSet>.androidJvmMain: NamedDomainObjectProvider<KotlinSourceSet>
     get() = named("androidJvmMain")
 
+@OptIn(ExperimentalKotlinGradlePluginApi::class)
 public class KotlinConventionPlugin : Plugin<Project> {
     override fun apply(target: Project): Unit = with(target) {
         pluginManager.withPlugin(libs.plugins.kotlin.multiplatform) {
@@ -23,7 +24,6 @@ public class KotlinConventionPlugin : Plugin<Project> {
             plugins.apply(libs.plugins.ktlint)
 
             extensions.configure<KotlinMultiplatformExtension> {
-                @OptIn(ExperimentalKotlinGradlePluginApi::class)
                 applyHierarchyTemplate {
                     common {
                         group("androidJvm") {

@@ -46,6 +46,7 @@ internal object EventGridScreenDefaults {
 
 @Inject
 @Composable
+@OptIn(ExperimentalMaterial3Api::class)
 @CircuitInject(EventScreen.Grid::class, AppScope::class)
 public fun EventGridUi(state: EventGridState, modifier: Modifier = Modifier) {
     val isWidthAtLeastMedium = currentWindowAdaptiveInfo()
@@ -61,10 +62,7 @@ public fun EventGridUi(state: EventGridState, modifier: Modifier = Modifier) {
 
     Scaffold(
         modifier = modifier,
-        topBar = {
-            @OptIn(ExperimentalMaterial3Api::class)
-            CenterAlignedTopAppBar(stringResource(Res.string.past_events))
-        },
+        topBar = { CenterAlignedTopAppBar(stringResource(Res.string.past_events)) },
         contentWindowInsets = ScaffoldDefaults.contentWindowInsets.exclude(
             insets = BottomAppBarDefaults.windowInsets,
         ),
