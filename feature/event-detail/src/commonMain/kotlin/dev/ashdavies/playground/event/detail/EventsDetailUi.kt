@@ -47,6 +47,7 @@ import kotlinx.datetime.LocalDate
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
+@OptIn(ExperimentalMaterial3Api::class)
 @CircuitInject(EventScreen.Detail::class, AppScope::class)
 public fun EventsDetailUi(state: EventDetailState, modifier: Modifier = Modifier) {
     val itemOrNull = (state.itemState as? EventDetailState.ItemState.Done)?.item
@@ -57,7 +58,6 @@ public fun EventsDetailUi(state: EventDetailState, modifier: Modifier = Modifier
     Scaffold(
         modifier = modifier,
         topBar = {
-            @OptIn(ExperimentalMaterial3Api::class)
             CenterAlignedTopAppBar(
                 title = itemOrNull?.name ?: emptyString(),
                 navigationIcon = { BackButton(state.onBackPressed) },

@@ -6,7 +6,6 @@ import io.ktor.client.plugins.api.createClientPlugin
 import io.ktor.http.HttpHeaders
 import kotlinx.coroutines.await
 
-@OptIn(ExperimentalWasmJsInterop::class)
 internal actual val FirebaseAppCheck: ClientPlugin<Unit> = createClientPlugin("AppCheck") {
     onRequest { request, _ ->
         request.headers.append(

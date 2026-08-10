@@ -75,7 +75,6 @@ internal class EventScreenTests {
     }
 }
 
-@OptIn(ExperimentalUuidApi::class)
 private fun Event.toEventGridStateItem(): EventGridState.Item {
     val year = LocalDate.parse(dateStart).year
     return EventGridState.Item(
@@ -87,7 +86,6 @@ private fun Event.toEventGridStateItem(): EventGridState.Item {
     )
 }
 
-@OptIn(ExperimentalSerializationApi::class)
 internal fun Json.upcomingEvents(): List<Event> = decodeFromStream<List<AsgConference>>(
     stream = Event::class.java
         .getResource("/upcoming.json")

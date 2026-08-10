@@ -58,7 +58,6 @@ internal class BottomBarScaffoldUi(
 ) : Ui<BottomBarScaffoldScreen.State> {
 
     @Composable
-    @OptIn(ExperimentalMaterial3Api::class)
     override fun Content(state: BottomBarScaffoldScreen.State, modifier: Modifier) {
         when (state) {
             is BottomBarScaffoldScreen.State.Ready -> BottomBarScaffoldReady(

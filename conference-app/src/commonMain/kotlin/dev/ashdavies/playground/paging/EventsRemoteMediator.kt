@@ -8,7 +8,7 @@ import dev.ashdavies.http.common.models.ApiConference
 import dev.ashdavies.playground.event.Event
 import dev.ashdavies.playground.event.EventQueries
 
-@OptIn(ExperimentalPagingApi::class)
+@ExperimentalPagingApi
 internal class EventsRemoteMediator<T : Any>(
     private val eventsQueries: EventQueries,
     private val eventsCallable: UpcomingEventsCallable,
