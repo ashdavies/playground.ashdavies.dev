@@ -156,7 +156,7 @@ data "google_artifact_registry_docker_image" "main" {
   image_name    = "api.ashdavies.dev"
 }
 
-module "project-services" {
+module "project_services" {
   source        = "terraform-google-modules/project-factory/google//modules/project_services"
   version       = "18.3.0"
   project_id    = var.project_id
