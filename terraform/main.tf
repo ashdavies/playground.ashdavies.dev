@@ -14,16 +14,20 @@ resource "google_project_service" "main" {
 resource "google_project_iam_custom_role" "main" {
   description = "Can create, update, and delete services necessary for the automatic deployment"
   title       = "GitHub Actions Publisher"
-  provider    = google.impersonation
   role_id     = "actionsPublisher"
   permissions = [
+    "apigateway.apiconfigs.create",
+    "apigateway.apiconfigs.delete",
     "apigateway.apiconfigs.get",
+    "apigateway.gateways.update",
     "apigateway.apis.get",
     "apigateway.gateways.get",
     "apikeys.keys.get",
     "apikeys.keys.getKeyString",
+    "apikeys.keys.update",
     "artifactregistry.dockerimages.list",
     "artifactregistry.repositories.get",
+    "cloudbuild.builds.create",
     "firebase.clients.get",
     "firebase.projects.get",
     "firebasehosting.sites.get",
@@ -44,6 +48,8 @@ resource "google_project_iam_custom_role" "main" {
     "run.services.getIamPolicy",
     "run.services.update",
     "servicemanagement.services.get",
+    "servicemanagement.services.update",
+    "serviceusage.apiKeys.update",
     "serviceusage.services.list",
     "storage.buckets.create",
     "storage.buckets.getIamPolicy",
