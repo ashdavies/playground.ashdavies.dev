@@ -33,11 +33,11 @@ import dev.ashdavies.playground.material.padding
 import dev.ashdavies.playground.material.spacing
 import dev.ashdavies.playground.material.values
 import dev.ashdavies.playground.ui.CenterAlignedTopAppBar
+import dev.ashdavies.playground.ui.Res
+import dev.ashdavies.playground.ui.past_events
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.Inject
 import org.jetbrains.compose.resources.stringResource
-import playground.feature.event_grid.generated.resources.Res
-import playground.feature.event_grid.generated.resources.past_events
 
 internal object EventGridScreenDefaults {
     const val MIN_COLUMN_COUNT = 2
@@ -46,6 +46,7 @@ internal object EventGridScreenDefaults {
 
 @Inject
 @Composable
+@OptIn(ExperimentalMaterial3Api::class)
 @CircuitInject(EventScreen.Grid::class, AppScope::class)
 public fun EventGridUi(state: EventGridState, modifier: Modifier = Modifier) {
     val isWidthAtLeastMedium = currentWindowAdaptiveInfo()
@@ -61,10 +62,7 @@ public fun EventGridUi(state: EventGridState, modifier: Modifier = Modifier) {
 
     Scaffold(
         modifier = modifier,
-        topBar = {
-            @OptIn(ExperimentalMaterial3Api::class)
-            CenterAlignedTopAppBar(stringResource(Res.string.past_events))
-        },
+        topBar = { CenterAlignedTopAppBar(stringResource(Res.string.past_events)) },
         contentWindowInsets = ScaffoldDefaults.contentWindowInsets.exclude(
             insets = BottomAppBarDefaults.windowInsets,
         ),

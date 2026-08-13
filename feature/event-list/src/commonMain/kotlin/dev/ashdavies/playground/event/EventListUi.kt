@@ -45,7 +45,11 @@ import dev.ashdavies.playground.material.values
 import dev.ashdavies.playground.ui.CenterAlignedTopAppBar
 import dev.ashdavies.playground.ui.DateRangeBadge
 import dev.ashdavies.playground.ui.DateRangeBadgeState
+import dev.ashdavies.playground.ui.Res
+import dev.ashdavies.playground.ui.call_for_papers_open
 import dev.ashdavies.playground.ui.emptyString
+import dev.ashdavies.playground.ui.online_only
+import dev.ashdavies.playground.ui.upcoming_events
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.Inject
 import kotlinx.datetime.LocalDate
@@ -53,20 +57,16 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.daysUntil
 import kotlinx.datetime.toLocalDateTime
 import org.jetbrains.compose.resources.stringResource
-import playground.feature.event_list.generated.resources.Res
-import playground.feature.event_list.generated.resources.call_for_papers_open
-import playground.feature.event_list.generated.resources.online_only
-import playground.feature.event_list.generated.resources.upcoming_events
 import kotlin.time.Clock
 
 @Inject
 @Composable
+@OptIn(ExperimentalMaterial3Api::class)
 @CircuitInject(EventScreen.List::class, AppScope::class)
 public fun EventListUi(state: EventListState, modifier: Modifier = Modifier) {
     Scaffold(
         modifier = modifier,
         topBar = {
-            @OptIn(ExperimentalMaterial3Api::class)
             CenterAlignedTopAppBar(stringResource(Res.string.upcoming_events))
         },
     ) { contentPadding ->
@@ -157,9 +157,9 @@ private fun EventItemContent(
             Column(Modifier.weight(1f)) {
                 Text(
                     text = if (event != null) {
-                        val year = event?.dateStart
-                            ?.let(LocalDate::parse)
-                            ?.let { it.year % 100 }
+                        val year = LocalDate
+                            .parse(event.dateStart)
+                            .year % 100
 
                         "${event.name} '$year"
                     } else {

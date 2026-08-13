@@ -37,16 +37,17 @@ import dev.ashdavies.playground.ui.CenterAlignedTopAppBar
 import dev.ashdavies.playground.ui.DateRangeBadge
 import dev.ashdavies.playground.ui.DateRangeBadgeState
 import dev.ashdavies.playground.ui.ProfileActionButton
+import dev.ashdavies.playground.ui.Res
+import dev.ashdavies.playground.ui.call_for_papers_closed
+import dev.ashdavies.playground.ui.call_for_papers_days_remaining
 import dev.ashdavies.playground.ui.emptyString
 import dev.zacsweers.metro.AppScope
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
 import org.jetbrains.compose.resources.stringResource
-import playground.feature.event_detail.generated.resources.Res
-import playground.feature.event_detail.generated.resources.call_for_papers_closed
-import playground.feature.event_detail.generated.resources.call_for_papers_days_remaining
 
 @Composable
+@OptIn(ExperimentalMaterial3Api::class)
 @CircuitInject(EventScreen.Detail::class, AppScope::class)
 public fun EventsDetailUi(state: EventDetailState, modifier: Modifier = Modifier) {
     val itemOrNull = (state.itemState as? EventDetailState.ItemState.Done)?.item
@@ -57,7 +58,6 @@ public fun EventsDetailUi(state: EventDetailState, modifier: Modifier = Modifier
     Scaffold(
         modifier = modifier,
         topBar = {
-            @OptIn(ExperimentalMaterial3Api::class)
             CenterAlignedTopAppBar(
                 title = itemOrNull?.name ?: emptyString(),
                 navigationIcon = { BackButton(state.onBackPressed) },

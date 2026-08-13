@@ -7,7 +7,6 @@ import kotlinx.datetime.toLocalDateTime
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 
-@OptIn(ExperimentalTime::class)
 private val Today = Clock.System.now()
     .toLocalDateTime(TimeZone.currentSystemDefault())
     .date

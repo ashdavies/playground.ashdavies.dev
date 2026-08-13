@@ -8,7 +8,6 @@ public typealias GoogleIdIdentityService = IdentityService<GoogleIdIdentityReque
 
 public expect fun GoogleIdIdentityService(context: PlatformContext): GoogleIdIdentityService
 
-@OptIn(ExperimentalUuidApi::class)
 public data class GoogleIdIdentityRequest(
     internal val serverClientId: String,
     internal val autoSelectEnabled: Boolean = true,

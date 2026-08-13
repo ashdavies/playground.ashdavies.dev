@@ -70,6 +70,7 @@ dependencies {
     implementation(libs.androidx.core.splashscreen)
     implementation(libs.androidx.startup.runtime)
     implementation(libs.circuit.overlay)
+    implementation(libs.compose.material3)
     implementation(libs.google.accompanist.permissions)
     implementation(libs.google.android.location)
     implementation(libs.google.android.material)
@@ -83,15 +84,16 @@ dependencies {
     implementation(libs.kotlinx.coroutines.play.services)
 
     debugImplementation(libs.google.firebase.appcheck.debug)
-    debugImplementation(libs.compose.uiTooling)
 
     testImplementation(projects.asgService)
+    testImplementation(projects.composeMaterial)
     testImplementation(projects.feature.eventCommon)
     testImplementation(projects.feature.eventDetail)
     testImplementation(projects.feature.eventGrid)
     testImplementation(projects.feature.eventList)
     testImplementation(projects.feature.gallerySync)
 
+    testImplementation(libs.circuit.runtime)
     testImplementation(libs.compose.components.resources)
     testImplementation(libs.compose.material3)
     testImplementation(libs.kotlinx.collections.immutable)

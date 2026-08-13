@@ -117,6 +117,21 @@ resource "google_apikeys_key" "browser" {
   }
 }
 
+resource "google_apikeys_key" "desktop" {
+  display_name = "Browser key (auto created by Firebase)"
+  name         = "eb05ae8e-f26f-4e66-b3fb-01681b414a21"
+  project      = var.project_id
+
+  restrictions {
+    dynamic "api_targets" {
+      for_each = local.api_targets
+      content {
+        service = api_targets.value
+      }
+    }
+  }
+}
+
 resource "google_cloud_run_service" "build" {
   name     = "playground-service"
   location = var.project_region
@@ -141,7 +156,7 @@ data "google_artifact_registry_docker_image" "main" {
   image_name    = "api.ashdavies.dev"
 }
 
-module "project-services" {
+module "project_services" {
   source        = "terraform-google-modules/project-factory/google//modules/project_services"
   version       = "18.3.0"
   project_id    = var.project_id

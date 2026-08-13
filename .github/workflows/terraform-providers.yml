@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  main:
+  terraform_providers_main:
     runs-on: ubuntu-latest
 
     permissions:

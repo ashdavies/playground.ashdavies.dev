@@ -15,7 +15,6 @@ import io.ktor.http.HttpMethod
 import io.ktor.serialization.Configuration
 import io.ktor.serialization.kotlinx.json.json
 import io.ktor.server.application.Application
-import io.ktor.server.application.createApplicationPlugin
 import io.ktor.server.application.install
 import io.ktor.server.auth.Authentication
 import io.ktor.server.auth.AuthenticationConfig
@@ -30,8 +29,6 @@ import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.server.plugins.cors.CORSConfig
 import io.ktor.server.plugins.cors.routing.CORS
 import io.ktor.server.plugins.defaultheaders.DefaultHeaders
-import io.ktor.server.request.httpMethod
-import io.ktor.server.request.uri
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.Routing
 import io.ktor.server.routing.routing
@@ -60,8 +57,6 @@ internal interface CloudRunGraph {
 }
 
 internal fun Application.main(routes: Set<CloudRunRoute>) {
-    install(RequestHeaderDumper)
-
     install(Authentication, AuthenticationConfig::appCheck)
 
     install(CallLogging)
@@ -71,7 +66,7 @@ internal fun Application.main(routes: Set<CloudRunRoute>) {
     install(CORS, CORSConfig::install)
 
     install(DefaultHeaders) {
-        header(HttpHeaders.Server, System.getProperty("os.name"))
+        // TODO Include server version signature
     }
 
     routing(routes)
@@ -102,17 +97,4 @@ private fun Application.routing(routes: Set<CloudRunRoute>) = routing {
 
 public interface CloudRunRoute {
     public operator fun Routing.invoke(): Route
-}
-
-private val RequestHeaderDumper = createApplicationPlugin("RequestHeaderDumper") {
-    onCall { call ->
-        // Standard System.out bypasses Logback/SLF4J levels completely
-        println("==================================================")
-        println("--> INCOMING REQUEST: ${call.request.httpMethod.value} ${call.request.uri}")
-        println("------------------- HEADERS -------------------")
-        call.request.headers.forEach { name, values ->
-            println("$name: ${values.joinToString(", ")}")
-        }
-        println("==================================================\n")
-    }
 }

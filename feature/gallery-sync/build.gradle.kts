@@ -15,7 +15,6 @@ plugins {
 kotlin {
     android {
         namespace = "dev.ashdavies.playground.gallery"
-        androidResources.enable = true
     }
 
     sourceSets {
@@ -28,10 +27,10 @@ kotlin {
             implementation(libs.circuit.annotations)
             implementation(libs.circuit.foundation)
             implementation(libs.coil.compose)
-            implementation(libs.compose.back.handler)
             implementation(libs.compose.components.resources)
             implementation(libs.compose.material3)
             implementation(libs.compose.materialIconsExtended)
+            implementation(libs.compose.navigation.event)
             implementation(libs.ktor.client.core)
             implementation(libs.kotlinx.collections.immutable)
             implementation(libs.metro.runtime.coroutines)
@@ -43,6 +42,10 @@ kotlin {
             implementation(libs.kotlin.test)
             implementation(libs.kotlinx.coroutines.test)
             implementation(libs.ktor.client.mock)
+        }
+
+        androidMain.dependencies {
+            implementation(libs.androidx.activity.compose)
         }
     }
 }

@@ -41,7 +41,6 @@ internal class UpcomingEventsRoute @Inject constructor(
     }
 }
 
-@OptIn(ExperimentalTime::class)
 private fun todayAsString(): String = Clock.System
     .todayIn(TimeZone.currentSystemDefault())
     .toString()

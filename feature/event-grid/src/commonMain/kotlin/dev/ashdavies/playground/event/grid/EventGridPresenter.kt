@@ -24,11 +24,11 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
 import kotlin.time.Clock
-import kotlin.time.ExperimentalTime
 
+@Inject
 @ExperimentalMetroCoroutinesApi
 @CircuitInject(EventScreen.Grid::class, AppScope::class)
-internal class EventGridPresenter @Inject constructor(
+internal class EventGridPresenter(
     private val playgroundDatabase: SuspendLazy<PlaygroundDatabase>,
     private val httpClient: HttpClient,
 ) : Presenter<EventGridState> {
@@ -64,7 +64,6 @@ internal class EventGridPresenter @Inject constructor(
 
         val coroutineScope = rememberCoroutineScope()
 
-        @OptIn(ExperimentalTime::class)
         return EventGridState(itemList) { event ->
             when (event) {
                 is EventGridState.Event.MarkAttendance -> coroutineScope.launch {

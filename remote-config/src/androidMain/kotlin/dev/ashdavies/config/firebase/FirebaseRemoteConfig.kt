@@ -9,7 +9,6 @@ import dev.zacsweers.metro.suspendLazy
 import kotlinx.coroutines.tasks.await
 import kotlin.time.Duration.Companion.minutes
 
-@OptIn(ExperimentalMetroCoroutinesApi::class)
 public class FirebaseRemoteConfig(firebaseApp: FirebaseApp) : RemoteConfig {
 
     private val firebaseRemoteConfig = suspendLazy {

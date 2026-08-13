@@ -3,6 +3,8 @@ resource "github_actions_secret" "main" {
     ANDROID_API_KEY              = google_apikeys_key.android_release.key_string
     BROWSER_API_KEY              = google_apikeys_key.browser.key_string
     BROWSER_APP_ID               = google_firebase_web_app.browser.app_id
+    DESKTOP_API_KEY              = google_apikeys_key.desktop.key_string
+    DESKTOP_APP_ID               = google_firebase_web_app.desktop.app_id
     FASTLANE_SERVICE_ACCOUNT_KEY = google_service_account_key.fastlane_supply_key.private_key
     FIREBASE_GOOGLE_SERVICES     = data.google_firebase_android_app_config.android_release.config_file_contents
     GH_APP_ID                    = data.onepassword_item.github_developer_application.section_map[""].field_map["app id"].value

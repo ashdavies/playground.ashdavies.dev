@@ -34,7 +34,6 @@ module "fastlane_service_account" {
 module "github_service_account" {
   source       = "terraform-google-modules/service-accounts/google"
   version      = "4.7.0"
-  providers    = { google = google.impersonation }
   display_name = "GitHub Service Account"
   names        = ["oidc"]
   prefix       = "gh"

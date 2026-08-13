@@ -9,10 +9,11 @@ import androidx.compose.material3.adaptive.navigation.rememberListDetailPaneScaf
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.backhandler.BackHandler
 import androidx.compose.ui.unit.dp
+import androidx.navigationevent.NavigationEventInfo
+import androidx.navigationevent.compose.NavigationBackHandler
+import androidx.navigationevent.compose.rememberNavigationEventState
 import com.slack.circuit.codegen.annotations.CircuitInject
 import com.slack.circuit.foundation.CircuitContent
 import com.slack.circuit.runtime.CircuitUiState
@@ -46,10 +47,13 @@ internal class ListDetailScaffoldUi @Inject constructor() : Ui<ListDetailScaffol
 
         val coroutineScope = rememberCoroutineScope()
 
-        @OptIn(ExperimentalComposeUiApi::class)
-        BackHandler(scaffoldNavigator.canNavigateBack()) {
-            coroutineScope.launch { scaffoldNavigator.navigateBack() }
-        }
+        NavigationBackHandler(
+            state = rememberNavigationEventState(NavigationEventInfo.None),
+            isBackEnabled = true,
+            onBackCompleted = {
+                coroutineScope.launch { scaffoldNavigator.navigateBack() }
+            },
+        )
 
         val circuitNavigator = remember(scaffoldNavigator) {
             ListDetailScaffoldNavigator(

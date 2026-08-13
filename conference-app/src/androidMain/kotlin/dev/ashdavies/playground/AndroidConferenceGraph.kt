@@ -8,11 +8,14 @@ import com.google.firebase.FirebaseApp
 import dev.ashdavies.config.RemoteConfig
 import dev.ashdavies.config.firebase.FirebaseRemoteConfig
 import dev.ashdavies.content.PlatformContext
+import dev.ashdavies.http.common.models.XAndroidCert
+import dev.ashdavies.http.common.models.XAndroidPackage
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.Binds
 import dev.zacsweers.metro.DependencyGraph
 import dev.zacsweers.metro.Named
 import dev.zacsweers.metro.Provides
+import io.ktor.http.HttpHeaders
 import java.security.MessageDigest
 import java.util.Locale
 
@@ -25,9 +28,9 @@ internal interface AndroidConferenceGraph : ConferenceGraph {
     @Provides
     @Named("httpClientHeaders")
     fun httpClientHeaders(activity: Activity): Set<Pair<String, String>> = setOf(
-        "X-Android-Cert" to activity.getFirstSignatureOrThrow(),
-        "X-Android-Package" to activity.packageName,
-        "User-Agent" to Build.PRODUCT,
+        HttpHeaders.XAndroidCert to activity.getFirstSignatureOrThrow(),
+        HttpHeaders.XAndroidPackage to activity.packageName,
+        HttpHeaders.UserAgent to Build.PRODUCT,
     )
 
     @Provides

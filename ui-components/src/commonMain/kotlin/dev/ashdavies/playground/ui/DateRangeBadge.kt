@@ -74,7 +74,6 @@ public fun DateRangeBadge(state: DateRangeBadgeState, modifier: Modifier = Modif
                 }
             }
 
-            @OptIn(ExperimentalTime::class)
             val currentYear = Clock.System.now()
                 .toLocalDateTime(TimeZone.currentSystemDefault())
                 .year

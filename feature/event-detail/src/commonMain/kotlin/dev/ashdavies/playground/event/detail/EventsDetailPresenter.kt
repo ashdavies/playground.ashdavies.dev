@@ -16,8 +16,9 @@ import dev.zacsweers.metro.AssistedInject
 import dev.zacsweers.metro.ExperimentalMetroCoroutinesApi
 import dev.zacsweers.metro.SuspendLazy
 
+@AssistedInject
 @ExperimentalMetroCoroutinesApi
-internal class EventsDetailPresenter @AssistedInject constructor(
+internal class EventsDetailPresenter(
     @Assisted private val screen: EventScreen.Detail,
     @Assisted private val navigator: Navigator,
     private val database: SuspendLazy<PlaygroundDatabase>,

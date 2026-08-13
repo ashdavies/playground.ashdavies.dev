@@ -8,7 +8,6 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkOut
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -30,8 +29,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.CheckCircle
-import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.CircularWavyProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -43,9 +43,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.backhandler.BackHandler
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
@@ -57,15 +55,18 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.navigationevent.NavigationEventInfo
+import androidx.navigationevent.compose.NavigationBackHandler
+import androidx.navigationevent.compose.rememberNavigationEventState
 import coil3.compose.rememberAsyncImagePainter
 import com.slack.circuit.codegen.annotations.CircuitInject
 import dev.ashdavies.playground.ui.CenterAlignedTopAppBar
+import dev.ashdavies.playground.ui.Res
+import dev.ashdavies.playground.ui.gallery
 import dev.zacsweers.metro.AppScope
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import org.jetbrains.compose.resources.stringResource
-import playground.feature.gallery_sync.generated.resources.Res
-import playground.feature.gallery_sync.generated.resources.gallery
 import kotlin.uuid.Uuid
 
 private const val DEFAULT_COLUMN_COUNT = 4
@@ -113,10 +114,11 @@ public fun GalleryUi(state: GalleryScreenState, modifier: Modifier = Modifier) {
                 if (state.expandedItem != null) {
                     GalleryExpandedItem(state.expandedItem)
 
-                    @OptIn(ExperimentalComposeUiApi::class)
-                    BackHandler(enabled = true) {
-                        eventSink(GalleryScreenEvent.Selection.Collapse)
-                    }
+                    NavigationBackHandler(
+                        state = rememberNavigationEventState(NavigationEventInfo.None),
+                        isBackEnabled = true,
+                        onBackCompleted = { eventSink(GalleryScreenEvent.Selection.Collapse) },
+                    )
                 }
             }
         }
@@ -198,7 +200,6 @@ internal fun GalleryGrid(
 }
 
 @Composable
-@OptIn(ExperimentalFoundationApi::class)
 internal fun GalleryItem(
     item: GalleryScreenState.StandardItem,
     onSelect: () -> Unit,
@@ -306,6 +307,7 @@ private fun UnselectedIndicator(
 }
 
 @Composable
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 private fun GalleryActionButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -319,7 +321,7 @@ private fun GalleryActionButton(
     ) {
         Crossfade(targetState = isActive) { state ->
             when (state) {
-                true -> CircularProgressIndicator(
+                true -> CircularWavyProgressIndicator(
                     modifier = Modifier.size(imageVector.defaultWidth),
                 )
 

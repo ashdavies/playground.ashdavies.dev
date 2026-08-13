@@ -10,7 +10,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  verifyScreenshots:
+  verify_screenshots_main:
     runs-on: ubuntu-latest
 
     permissions:

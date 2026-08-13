@@ -38,7 +38,6 @@ internal class EventPagerFactoryTest {
     )
 
     @Test
-    @OptIn(ExperimentalMetroCoroutinesApi::class)
     fun `should not include boundary events on same start date`() = runTest {
         val knownLocationDeque = ArrayDeque(Json.locations())
         val upcomingApiEventListSize = 24
@@ -72,7 +71,6 @@ internal class EventPagerFactoryTest {
     }
 }
 
-@OptIn(ExperimentalSerializationApi::class)
 internal fun Json.locations(): List<Location> = decodeFromStream(
     stream = Location::class.java
         .getResource("/locations.json")
@@ -80,7 +78,6 @@ internal fun Json.locations(): List<Location> = decodeFromStream(
         .openStream(),
 )
 
-@OptIn(ExperimentalTime::class)
 private fun LocalDate.Companion.nearFuture(
     startAt: LocalDate = Clock.System.now()
         .toLocalDateTime(TimeZone.UTC)

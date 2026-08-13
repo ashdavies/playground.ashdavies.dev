@@ -9,7 +9,7 @@ import com.slack.circuit.runtime.screen.Screen
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3AdaptiveApi::class)
+@ExperimentalMaterial3AdaptiveApi
 internal class ListDetailScaffoldNavigator(
     private val scaffoldNavigator: ThreePaneScaffoldNavigator<Screen>,
     private val coroutineScope: CoroutineScope,
