@@ -178,15 +178,6 @@ kotlin {
             implementation(libs.app.cash.turbine)
             implementation(libs.kotlinx.coroutines.test)
         }
-
-        wasmJsMain.dependencies {
-            implementation(libs.circuit.foundation)
-            implementation(libs.circuit.overlay)
-            implementation(libs.compose.foundation)
-            implementation(libs.compose.material3)
-            implementation(libs.compose.runtime)
-            implementation(libs.compose.ui)
-        }
     }
 }
 
