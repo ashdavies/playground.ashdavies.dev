@@ -2,6 +2,7 @@ package dev.ashdavies.playground.paging
 
 import dev.ashdavies.http.UnaryCallable
 import dev.ashdavies.http.common.models.ApiConference
+import dev.ashdavies.http.qualifier.AppCheckHttpClient
 import dev.ashdavies.http.throwClientRequestExceptionAs
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesBinding
@@ -24,7 +25,9 @@ internal data class GetEventsRequest(
 
 @Inject
 @ContributesBinding(AppScope::class)
-internal class ErrorHandlingUpcomingEventsCallable(httpClient: HttpClient) : UpcomingEventsCallable {
+internal class ErrorHandlingUpcomingEventsCallable(
+    @AppCheckHttpClient httpClient: HttpClient,
+) : UpcomingEventsCallable {
 
     private val errorHandlingHttpClient = httpClient.config {
         install(HttpCallValidator) { throwClientRequestExceptionAs<GetEventsError>() }

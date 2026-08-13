@@ -9,6 +9,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import app.cash.sqldelight.coroutines.mapToList
 import com.slack.circuit.codegen.annotations.CircuitInject
 import com.slack.circuit.runtime.presenter.Presenter
+import dev.ashdavies.http.qualifier.AppCheckHttpClient
 import dev.ashdavies.playground.event.EventScreen
 import dev.ashdavies.playground.event.common.PlaygroundDatabase
 import dev.ashdavies.playground.metro.map
@@ -30,7 +31,7 @@ import kotlin.time.Clock
 @CircuitInject(EventScreen.Grid::class, AppScope::class)
 internal class EventGridPresenter(
     private val playgroundDatabase: SuspendLazy<PlaygroundDatabase>,
-    private val httpClient: HttpClient,
+    @AppCheckHttpClient private val httpClient: HttpClient,
 ) : Presenter<EventGridState> {
 
     @Composable

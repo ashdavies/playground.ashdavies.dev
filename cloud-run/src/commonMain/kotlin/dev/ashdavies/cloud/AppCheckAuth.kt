@@ -1,15 +1,18 @@
 package dev.ashdavies.cloud
 
 import com.auth0.jwk.UrlJwkProvider
+import dev.ashdavies.http.common.models.AppCheck
 import dev.ashdavies.http.common.models.XFirebaseAppCheck
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
+import io.ktor.http.auth.AuthScheme
 import io.ktor.http.auth.HttpAuthHeader
 import io.ktor.server.application.log
 import io.ktor.server.auth.AuthenticationConfig
 import io.ktor.server.auth.authenticate
 import io.ktor.server.auth.jwt.JWTPrincipal
 import io.ktor.server.auth.jwt.jwt
+import io.ktor.server.response.header
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
 import java.net.URI
@@ -26,12 +29,12 @@ internal fun AuthenticationConfig.appCheck() {
             "APP_ID is missing or invalid in BuildConfig"
         }
 
-        realm = "Firebase App Check"
+        realm = "Firebase"
 
         authHeader { call ->
             val token = call.request.headers[HttpHeaders.XFirebaseAppCheck]
             if (token?.isNotEmpty() == true) {
-                HttpAuthHeader.Single("Bearer", token)
+                HttpAuthHeader.Single(AuthScheme.AppCheck, token)
             } else {
                 call.application.log.warn("[AppCheck] Auth failed: '${HttpHeaders.XFirebaseAppCheck}' header is missing or blank")
                 null
@@ -39,9 +42,11 @@ internal fun AuthenticationConfig.appCheck() {
         }
 
         challenge { defaultScheme, realm ->
-            call.response.headers.append(
-                HttpHeaders.WWWAuthenticate,
-                "Bearer realm=\"Firebase App Check\", error=\"unauthorized\", error_description=\"Missing or invalid X-Firebase-AppCheck header\"",
+            call.response.header(
+                name = HttpHeaders.WWWAuthenticate,
+                value = "$defaultScheme realm=\"$realm\", " +
+                    "error=\"unauthorized\", " +
+                    "error_description=\"Missing or invalid X-Firebase-AppCheck header\"",
             )
 
             call.respond(

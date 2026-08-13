@@ -4,11 +4,14 @@ import dev.ashdavies.analytics.RemoteAnalytics
 import dev.ashdavies.config.RemoteConfig
 import dev.ashdavies.config.getBoolean
 import dev.ashdavies.content.PlatformContext
+import dev.ashdavies.http.common.models.AppCheckToken
 import dev.ashdavies.http.common.models.XApiKey
 import dev.ashdavies.http.defaultHttpClient
+import dev.ashdavies.http.qualifier.AppCheckHttpClient
+import dev.ashdavies.http.qualifier.DefaultHttpClient
 import dev.ashdavies.playground.gallery.LocalGallery
 import dev.ashdavies.playground.gallery.imageAdapter
-import dev.ashdavies.playground.http.FirebaseAppCheck
+import dev.ashdavies.playground.http.appCheck
 import dev.ashdavies.sql.DriverFactory
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.Binds
@@ -18,6 +21,7 @@ import dev.zacsweers.metro.Named
 import dev.zacsweers.metro.Provides
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.DefaultRequest
+import io.ktor.client.plugins.auth.Auth
 import io.ktor.client.request.header
 import io.ktor.http.HttpHeaders
 import dev.ashdavies.playground.event.common.PlaygroundDatabase as CommonDatabase
@@ -42,15 +46,27 @@ internal interface ConferenceModule {
     )
 
     @Provides
-    fun httpClient(@Named("httpClientHeaders") headers: Set<Pair<String, String>>): HttpClient = defaultHttpClient {
+    @DefaultHttpClient
+    fun defaultHttpClient(
+        @Named("httpClientHeaders") headers: Set<Pair<String, String>>,
+    ): HttpClient = defaultHttpClient {
         install(DefaultRequest) {
             header(HttpHeaders.XApiKey, requireNotNull(BuildConfig.API_KEY) { "API_KEY was null" })
             headers.forEach { (key, value) -> header(key, value) }
 
             url(BuildConfig.PLAYGROUND_BASE_URL ?: "https://api.ashdavies.dev/")
         }
+    }
 
-        install(FirebaseAppCheck)
+    @Provides
+    @AppCheckHttpClient
+    fun appCheckHttpClient(
+        @DefaultHttpClient httpClient: HttpClient,
+        appCheckTokenProvider: suspend () -> AppCheckToken,
+    ): HttpClient = httpClient.config {
+        install(Auth) {
+            appCheck { getToken(appCheckTokenProvider) }
+        }
     }
 
     @Provides

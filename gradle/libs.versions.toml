@@ -84,6 +84,7 @@ kotlinx-io-core = "org.jetbrains.kotlinx:kotlinx-io-core:0.9.1"
 kotlinx-serialization-core = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version.ref = "kotlinx-serialization" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
 
+ktor-client-auth = { module = "io.ktor:ktor-client-auth", version.ref = "ktor" }
 ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
 ktor-client-js = { module = "io.ktor:ktor-client-js", version.ref = "ktor" }
@@ -106,6 +107,7 @@ ktor-server-host-common = { module = "io.ktor:ktor-server-host-common", version.
 ktor-server-netty = { module = "io.ktor:ktor-server-netty", version.ref = "ktor" }
 ktor-server-test-host = { module = "io.ktor:ktor-server-test-host", version.ref = "ktor" }
 
+metro-runtime = { module = "dev.zacsweers.metro:runtime", version.ref = "metro" }
 metro-runtime-coroutines = { module = "dev.zacsweers.metro:runtime-coroutines", version.ref = "metro" }
 pinterest-ktlint-bom = "com.pinterest.ktlint:ktlint-bom:1.8.0"
 
