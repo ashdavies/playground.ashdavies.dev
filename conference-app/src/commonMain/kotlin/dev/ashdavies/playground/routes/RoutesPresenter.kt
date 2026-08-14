@@ -8,6 +8,7 @@ import androidx.compose.runtime.retain.retain
 import androidx.compose.runtime.setValue
 import com.slack.circuit.codegen.annotations.CircuitInject
 import com.slack.circuit.runtime.presenter.Presenter
+import dev.ashdavies.http.qualifier.DefaultHttpClient
 import dev.ashdavies.playground.BuildConfig
 import dev.ashdavies.routing.ComputeRoutesCallable
 import dev.ashdavies.routing.ComputeRoutesError
@@ -28,8 +29,8 @@ private val InitialRoutesMapState = RoutesMapState(
 @Inject
 @CircuitInject(RoutesScreen::class, AppScope::class)
 internal class RoutesPresenter(
+    @DefaultHttpClient private val httpClient: HttpClient,
     private val locationService: LocationService,
-    private val httpClient: HttpClient,
 ) : Presenter<RoutesScreen.State> {
 
     @Composable
