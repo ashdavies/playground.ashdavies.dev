@@ -118,7 +118,7 @@ resource "google_apikeys_key" "browser" {
 }
 
 resource "google_apikeys_key" "desktop" {
-  display_name = "Browser key (auto created by Firebase)"
+  display_name = "Desktop key (auto created by Firebase)"
   name         = "eb05ae8e-f26f-4e66-b3fb-01681b414a21"
   project      = var.project_id
 
