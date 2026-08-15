@@ -6,6 +6,7 @@ plugins {
     id("dev.ashdavies.properties")
 
     alias(libs.plugins.cash.paparazzi)
+    alias(libs.plugins.google.services)
 }
 
 android {

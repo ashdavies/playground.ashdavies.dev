@@ -29,9 +29,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.CheckCircle
-import androidx.compose.material3.CircularWavyProgressIndicator
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -307,7 +306,6 @@ private fun UnselectedIndicator(
 }
 
 @Composable
-@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 private fun GalleryActionButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -321,7 +319,7 @@ private fun GalleryActionButton(
     ) {
         Crossfade(targetState = isActive) { state ->
             when (state) {
-                true -> CircularWavyProgressIndicator(
+                true -> CircularProgressIndicator(
                     modifier = Modifier.size(imageVector.defaultWidth),
                 )
 

@@ -13,8 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.visible
 import androidx.compose.material3.BottomAppBar
-import androidx.compose.material3.CircularWavyProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -78,13 +77,12 @@ internal fun BottomBarScaffoldReady(
 
 @Preview
 @Composable
-@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 internal fun BottomBarScaffoldLoading(modifier: Modifier = Modifier) {
     Box(
         modifier = modifier.fillMaxSize(),
         contentAlignment = Alignment.Center,
     ) {
-        CircularWavyProgressIndicator()
+        CircularProgressIndicator()
     }
 }
 
