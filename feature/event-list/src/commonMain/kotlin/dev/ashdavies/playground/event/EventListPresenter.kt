@@ -13,7 +13,6 @@ import com.slack.circuit.codegen.annotations.CircuitInject
 import com.slack.circuit.runtime.Navigator
 import com.slack.circuit.runtime.presenter.Presenter
 import dev.ashdavies.analytics.RemoteAnalytics
-import dev.ashdavies.analytics.logEvent
 import dev.ashdavies.paging.PagerConfig
 import dev.ashdavies.paging.PagerFactory
 import dev.ashdavies.playground.coroutines.retainCoroutineScope

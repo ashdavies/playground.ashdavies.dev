@@ -3,6 +3,8 @@ plugins {
     id("dev.ashdavies.jvm")
     id("dev.ashdavies.kotlin")
     id("dev.ashdavies.wasm")
+
+    alias(libs.plugins.metro)
 }
 
 kotlin {
@@ -11,5 +13,6 @@ kotlin {
     sourceSets.androidMain.dependencies {
         implementation(dependencies.platform(libs.google.firebase.bom))
         implementation(libs.google.firebase.analytics)
+        implementation(libs.google.firebase.crashlytics)
     }
 }

@@ -30,6 +30,7 @@ class FirebaseRestRemoteConfigTest {
                 },
                 appInstanceId = "${Uuid.random()}",
             ),
+            onError = { },
         )
 
         assertEquals(137, remoteConfig.getLong("fine_structure"))
