@@ -143,6 +143,8 @@ kotlin {
         }
 
         androidMain.dependencies {
+            implementation(projects.analytics)
+
             implementation(libs.androidx.activity.compose)
             implementation(libs.androidx.core.splashscreen)
             implementation(libs.circuit.overlay)

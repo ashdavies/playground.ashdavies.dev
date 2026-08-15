@@ -16,3 +16,7 @@ kotlin {
         implementation(libs.google.firebase.crashlytics)
     }
 }
+
+metro {
+    generateContributionProviders = true
+}
