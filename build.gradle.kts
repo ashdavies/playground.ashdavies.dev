@@ -12,15 +12,7 @@ plugins {
         classpath(jetbrains.compose)
         classpath(kotlin.multiplatform)
         classpath(kotlin.serialization)
+        classpath(kotlinx.kover)
         classpath(ktlint)
-
-        alias(kotlinx.kover)
-    }
-}
-
-subprojects {
-    pluginManager.withPlugin("dev.ashdavies.kotlin") {
-        project.apply(plugin = "org.jetbrains.kotlinx.kover")
-        rootProject.dependencies.kover(project)
     }
 }
