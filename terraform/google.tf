@@ -12,6 +12,32 @@ locals {
     "servicecontrol.googleapis.com",
     "servicemanagement.googleapis.com",
   ]
+
+  # Added automatically by Firebase
+  unused_apis = [
+    "firebasedatabase.googleapis.com",
+    "firebasehosting.googleapis.com",
+    "firebaserules.googleapis.com",
+    "sqladmin.googleapis.com",
+    "cloudconfig.googleapis.com",
+    "datastore.googleapis.com",
+    "fcmregistrations.googleapis.com",
+    "firebase.googleapis.com",
+    "firebaseappdistribution.googleapis.com",
+    "firebaseapphosting.googleapis.com",
+    "firebaseapptesters.googleapis.com",
+    "firebasedataconnect.googleapis.com",
+    "firebaseinappmessaging.googleapis.com",
+    "firebaseml.googleapis.com",
+    "firebaseremoteconfigrealtime.googleapis.com",
+    "firebasestorage.googleapis.com",
+    "firebasevertexai.googleapis.com",
+    "firestore.googleapis.com",
+    "logging.googleapis.com",
+    "mlkit.googleapis.com",
+    "play.googleapis.com",
+    "securetoken.googleapis.com",
+  ]
 }
 
 resource "google_api_gateway_api" "main" {
@@ -52,23 +78,6 @@ resource "google_apikeys_key" "android" {
   project      = var.project_id
 
   restrictions {
-    android_key_restrictions {
-      allowed_applications {
-        package_name     = "dev.ashdavies.playground.debug"
-        sha1_fingerprint = "fab7388053ba85ca62c23824ed98b2b73ec259cf"
-      }
-
-      allowed_applications {
-        package_name     = "dev.ashdavies.playground"
-        sha1_fingerprint = "9ae708c691c74827422b33586cdc4d11535c3595"
-      }
-
-      allowed_applications {
-        package_name     = "dev.ashdavies.playground"
-        sha1_fingerprint = "e7cd022a23e47b3d09940af0cd1f85d0928d1abd"
-      }
-    }
-
     dynamic "api_targets" {
       for_each = local.api_targets
       content {
@@ -76,6 +85,26 @@ resource "google_apikeys_key" "android" {
       }
     }
   }
+}
+
+resource "google_apikeys_key" "android_firebase" {
+  display_name = "Android key (auto created by Firebase)"
+  name         = "e08dafd4-574e-4bd0-bdf7-d6120fbc0e9d"
+  project      = var.project_id
+
+  restrictions {
+    dynamic "api_targets" {
+      for_each = concat(local.api_targets, local.unused_apis)
+      content {
+        service = api_targets.value
+      }
+    }
+  }
+}
+
+import {
+  id = "e08dafd4-574e-4bd0-bdf7-d6120fbc0e9d"
+  to = google_apikeys_key.android_firebase
 }
 
 resource "google_apikeys_key" "browser" {
