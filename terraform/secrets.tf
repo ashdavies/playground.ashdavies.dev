@@ -1,6 +1,6 @@
 resource "github_actions_secret" "main" {
   for_each = {
-    ANDROID_API_KEY              = google_apikeys_key.android_release.key_string
+    ANDROID_API_KEY              = google_apikeys_key.android.key_string
     BROWSER_API_KEY              = google_apikeys_key.browser.key_string
     BROWSER_APP_ID               = google_firebase_web_app.browser.app_id
     DESKTOP_API_KEY              = google_apikeys_key.desktop.key_string
