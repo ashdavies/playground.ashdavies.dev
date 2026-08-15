@@ -7,11 +7,9 @@ import dev.zacsweers.metro.ExperimentalMetroCoroutinesApi
 import dev.zacsweers.metro.suspendLazy
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
-import io.ktor.client.request.header
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.client.statement.bodyAsText
-import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.catch
@@ -25,10 +23,12 @@ private val RetryDelayInMillis = 1.minutes.inWholeMilliseconds
 
 private const val RETRY_MAX_ATTEMPTS = 3L
 
-public class FirebaseRestRemoteConfig(
+@OptIn(ExperimentalMetroCoroutinesApi::class)
+public class FirebaseRestRemoteConfig constructor(
     private val httpClient: HttpClient,
     private val environment: Environment,
     private val request: Request,
+    private val onError: (Throwable) -> Unit,
 ) : RemoteConfig {
 
     private val entries = suspendLazy {
@@ -38,7 +38,7 @@ public class FirebaseRestRemoteConfig(
                 true
             }
             .catch {
-                // TODO Log non fatal
+                onError(it)
                 emit(emptyMap())
             }
             .first()
@@ -55,10 +55,8 @@ public class FirebaseRestRemoteConfig(
             urlString = "https://firebaseremoteconfig.googleapis.com" +
                 "/v1/projects/${environment.projectId}/namespaces" +
                 "/firebase:fetch?key=${environment.apiKey}",
-        ) {
-            header(HttpHeaders.Referrer, "http://localhost") // TODO: Remove
-            setBody(request)
-        }
+            block = { setBody(request) },
+        )
 
         if (response.status != HttpStatusCode.OK) {
             throw IllegalStateException(response.bodyAsText())

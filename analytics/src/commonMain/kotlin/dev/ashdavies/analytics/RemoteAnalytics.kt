@@ -1,15 +1,10 @@
 package dev.ashdavies.analytics
 
-public fun interface RemoteAnalytics {
-    public fun logEvent(name: String, block: ParametersBuilder.() -> Unit)
+public interface RemoteAnalytics {
+    public fun logEvent(name: String, block: ParametersBuilder.() -> Unit = { })
+    public fun recordException(throwable: Throwable)
 }
 
 public fun interface ParametersBuilder {
     public fun param(key: String, value: String)
-}
-
-public expect fun RemoteAnalytics(): RemoteAnalytics
-
-public fun RemoteAnalytics.logEvent(name: String) {
-    logEvent(name) { }
 }

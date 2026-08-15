@@ -1,6 +1,5 @@
 package dev.ashdavies.playground
 
-import dev.ashdavies.analytics.RemoteAnalytics
 import dev.ashdavies.config.RemoteConfig
 import dev.ashdavies.config.getBoolean
 import dev.ashdavies.content.PlatformContext
@@ -74,7 +73,4 @@ internal interface ConferenceModule {
     suspend fun localGallery(remoteConfig: RemoteConfig): LocalGallery = LocalGallery(
         enabled = remoteConfig.getBoolean("local_gallery"),
     )
-
-    @Provides
-    fun remoteAnalytics(): RemoteAnalytics = RemoteAnalytics()
 }

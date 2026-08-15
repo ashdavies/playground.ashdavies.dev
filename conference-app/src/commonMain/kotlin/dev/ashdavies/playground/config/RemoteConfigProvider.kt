@@ -1,5 +1,6 @@
 package dev.ashdavies.playground.config
 
+import dev.ashdavies.analytics.RemoteAnalytics
 import dev.ashdavies.config.firebase.rest.FirebaseRestRemoteConfig
 import dev.ashdavies.http.defaultHttpClient
 import dev.ashdavies.playground.BuildConfig
@@ -13,7 +14,7 @@ import kotlin.random.Random
 internal interface RemoteConfigProvider {
 
     @Provides
-    fun firebaseRestRemoteConfig(): FirebaseRestRemoteConfig {
+    fun firebaseRestRemoteConfig(analytics: RemoteAnalytics): FirebaseRestRemoteConfig {
         return FirebaseRestRemoteConfig(
             httpClient = defaultHttpClient { },
             environment = FirebaseRestRemoteConfig.Environment(
@@ -26,6 +27,7 @@ internal interface RemoteConfigProvider {
                     .encode(Random.nextBytes(17))
                     .take(22),
             ),
+            onError = analytics::recordException,
         )
     }
 }

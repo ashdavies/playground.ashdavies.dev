@@ -9,7 +9,6 @@ import androidx.compose.runtime.setValue
 import com.slack.circuit.codegen.annotations.CircuitInject
 import com.slack.circuit.retained.collectAsRetainedState
 import dev.ashdavies.analytics.RemoteAnalytics
-import dev.ashdavies.analytics.logEvent
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.launch
