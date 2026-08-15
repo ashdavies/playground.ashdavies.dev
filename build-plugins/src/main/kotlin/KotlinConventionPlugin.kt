@@ -21,6 +21,7 @@ public class KotlinConventionPlugin : Plugin<Project> {
             plugins.apply(libs.plugins.kotlin.multiplatform)
 
             plugins.apply(libs.plugins.detekt)
+            plugins.apply(libs.plugins.kotlinx.kover)
             plugins.apply(libs.plugins.ktlint)
 
             extensions.configure<KotlinMultiplatformExtension> {
@@ -46,7 +47,7 @@ public class KotlinConventionPlugin : Plugin<Project> {
             dependencies.add("detektPlugins", libs.detekt.compose)
 
             extensions.configure<DetektExtension> {
-                config.setFrom(rootProject.file("detekt-config.yml"))
+                config.setFrom(file("../detekt-config.yml"))
                 parallel = true
                 buildUponDefaultConfig = true
 
