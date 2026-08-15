@@ -31,23 +31,22 @@ buildConfig {
     buildConfigField("API_KEY", expect<String?>(null))
     buildConfigField("APP_ID", expect<String?>(null))
 
-    buildConfigField("PLAYGROUND_BASE_URL", stringPropertyOrNull("PLAYGROUND_BASE_URL"))
-    buildConfigField("GOOGLE_CLOUD_PROJECT", stringPropertyOrNull("GOOGLE_CLOUD_PROJECT"))
+    buildConfigField("PLAYGROUND_BASE_URL", stringPropertyOrNull("playgroundBaseUrl"))
+    buildConfigField("GOOGLE_CLOUD_PROJECT", stringPropertyOrNull("googleCloudProject"))
 
     sourceSets.named("androidMain") {
-        buildConfigField("API_KEY", stringPropertyOrNull("android.api.key"))
-        buildConfigField("APP_ID", stringPropertyOrNull("android.app.id"))
+        buildConfigField("API_KEY", stringPropertyOrNull("androidApiKey"))
+        buildConfigField("APP_ID", stringPropertyOrNull("androidAppId"))
     }
 
     sourceSets.named("jvmMain") {
-        // TODO Use desktop client credentials
-        buildConfigField("API_KEY", stringPropertyOrNull("browser.api.key"))
-        buildConfigField("APP_ID", stringPropertyOrNull("browser.app.id"))
+        buildConfigField("API_KEY", stringPropertyOrNull("desktopApiKey"))
+        buildConfigField("APP_ID", stringPropertyOrNull("desktopAppId"))
     }
 
     sourceSets.named("wasmJsMain") {
-        buildConfigField("API_KEY", stringPropertyOrNull("browser.api.key"))
-        buildConfigField("APP_ID", stringPropertyOrNull("browser.app.id"))
+        buildConfigField("API_KEY", stringPropertyOrNull("browserApiKey"))
+        buildConfigField("APP_ID", stringPropertyOrNull("browserAppId"))
     }
 
     className.set("BuildConfig")

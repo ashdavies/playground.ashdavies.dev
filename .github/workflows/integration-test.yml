@@ -31,8 +31,8 @@ jobs:
 
       - run: ./gradlew integrationTest --console=plain
         env:
-          BROWSER_API_KEY: ${{ secrets.BROWSER_API_KEY }}
-          BROWSER_APP_ID: ${{ secrets.BROWSER_APP_ID }}
+          DESKTOP_API_KEY: ${{ secrets.DESKTOP_API_KEY }}
+          DESKTOP_APP_ID: ${{ secrets.DESKTOP_APP_ID }}
           GOOGLE_SERVICE_ACCOUNT_ID: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
 
       - uses: test-summary/action@v2

@@ -13,8 +13,6 @@ on:
     secrets:
       ANDROID_API_KEY:
         required: true
-      BROWSER_API_KEY:
-        required: true
       FASTLANE_SERVICE_ACCOUNT_KEY:
         required: true
       FIREBASE_GOOGLE_SERVICES:
@@ -59,7 +57,6 @@ jobs:
             --console=plain
         env:
           ANDROID_API_KEY: ${{ secrets.ANDROID_API_KEY }}
-          BROWSER_API_KEY: ${{ secrets.BROWSER_API_KEY }}
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
 
       - uses: actions/upload-artifact@v7
