@@ -46,9 +46,9 @@ resource "google_api_gateway_gateway" "main" {
   region     = var.project_region
 }
 
-resource "google_apikeys_key" "android_debug" {
-  display_name = "Android debug key (auto created by Firebase)"
-  name         = "ecc12a8f-74fe-4f10-bede-c60d4b5db5e3"
+resource "google_apikeys_key" "android" {
+  display_name = "Android key (auto created by Firebase)"
+  name         = "2a2d6e2d-f140-4546-bcb2-358042878757"
   project      = var.project_id
 
   restrictions {
@@ -57,24 +57,7 @@ resource "google_apikeys_key" "android_debug" {
         package_name     = "dev.ashdavies.playground.debug"
         sha1_fingerprint = "fab7388053ba85ca62c23824ed98b2b73ec259cf"
       }
-    }
 
-    dynamic "api_targets" {
-      for_each = local.api_targets
-      content {
-        service = api_targets.value
-      }
-    }
-  }
-}
-
-resource "google_apikeys_key" "android_release" {
-  display_name = "Android release key (auto created by Firebase)"
-  name         = "75dd5a3f-abd4-4f48-bb63-58ebad5ea3e8"
-  project      = var.project_id
-
-  restrictions {
-    android_key_restrictions {
       allowed_applications {
         package_name     = "dev.ashdavies.playground"
         sha1_fingerprint = "9ae708c691c74827422b33586cdc4d11535c3595"
