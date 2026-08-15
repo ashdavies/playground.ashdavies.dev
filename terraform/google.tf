@@ -78,6 +78,23 @@ resource "google_apikeys_key" "android" {
   project      = var.project_id
 
   restrictions {
+    android_key_restrictions {
+      allowed_applications {
+        package_name     = "dev.ashdavies.playground.debug"
+        sha1_fingerprint = "fab7388053ba85ca62c23824ed98b2b73ec259cf"
+      }
+
+      allowed_applications {
+        package_name     = "dev.ashdavies.playground"
+        sha1_fingerprint = "9ae708c691c74827422b33586cdc4d11535c3595"
+      }
+
+      allowed_applications {
+        package_name     = "dev.ashdavies.playground"
+        sha1_fingerprint = "e7cd022a23e47b3d09940af0cd1f85d0928d1abd"
+      }
+    }
+
     dynamic "api_targets" {
       for_each = local.api_targets
       content {
