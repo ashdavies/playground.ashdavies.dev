@@ -47,7 +47,7 @@ resource "google_api_gateway_gateway" "main" {
 }
 
 resource "google_apikeys_key" "android_debug" {
-  display_name = "Android key (auto created by Firebase)"
+  display_name = "Android debug key (auto created by Firebase)"
   name         = "ecc12a8f-74fe-4f10-bede-c60d4b5db5e3"
   project      = var.project_id
 
@@ -69,7 +69,7 @@ resource "google_apikeys_key" "android_debug" {
 }
 
 resource "google_apikeys_key" "android_release" {
-  display_name = "Android key (auto created by Firebase)"
+  display_name = "Android release key (auto created by Firebase)"
   name         = "75dd5a3f-abd4-4f48-bb63-58ebad5ea3e8"
   project      = var.project_id
 
@@ -118,7 +118,7 @@ resource "google_apikeys_key" "browser" {
 }
 
 resource "google_apikeys_key" "desktop" {
-  display_name = "Browser key (auto created by Firebase)"
+  display_name = "Desktop key (auto created by Firebase)"
   name         = "eb05ae8e-f26f-4e66-b3fb-01681b414a21"
   project      = var.project_id
 
