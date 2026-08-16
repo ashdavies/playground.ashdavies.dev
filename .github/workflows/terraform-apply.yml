@@ -33,7 +33,7 @@ jobs:
       - run: |
           ./gradlew cloud-run:deploy \
             -Pimage=europe-west1-docker.pkg.dev/${{ steps.google-cloud-auth.outputs.project_id }}/cloud-run-source-deploy/api.ashdavies.dev \
-            -Pversion.name=$(git rev-parse --short HEAD)
+            -Pversion.name=$(git rev-parse --short HEAD) \
             --no-configuration-cache \
             --console=plain
 
