@@ -50,6 +50,7 @@ resource "google_project_iam_custom_role" "main" {
     "servicemanagement.services.update",
     "serviceusage.apiKeys.update",
     "serviceusage.services.list",
+    "serviceusage.services.use",
     "storage.buckets.create",
     "storage.buckets.getIamPolicy",
     "storage.buckets.list",
