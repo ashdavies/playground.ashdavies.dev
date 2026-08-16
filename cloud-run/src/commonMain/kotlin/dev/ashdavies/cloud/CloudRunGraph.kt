@@ -3,6 +3,7 @@ package dev.ashdavies.cloud
 import dev.ashdavies.cloud.google.GoogleApiException
 import dev.ashdavies.http.common.models.XApiKey
 import dev.ashdavies.http.common.models.XFirebaseAppCheck
+import dev.ashdavies.http.common.models.XVersionName
 import dev.ashdavies.http.defaultHttpClient
 import dev.ashdavies.http.throwClientRequestExceptionAs
 import dev.zacsweers.metro.AppScope
@@ -66,7 +67,7 @@ internal fun Application.main(routes: Set<CloudRunRoute>) {
     install(CORS, CORSConfig::install)
 
     install(DefaultHeaders) {
-        // TODO Include server version signature
+        header(HttpHeaders.XVersionName, BuildConfig.VERSION_NAME)
     }
 
     routing(routes)

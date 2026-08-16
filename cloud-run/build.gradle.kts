@@ -17,12 +17,14 @@ plugins {
 }
 
 buildConfig {
-    buildConfigField("APP_ID", stringPropertyOrNull("browser.app.id"))
-    buildConfigField("GOOGLE_SERVICE_ACCOUNT_ID", stringPropertyOrNull("google.service.account.id"))
+    buildConfigField("APP_ID", stringPropertyOrNull("browserAppId"))
+    buildConfigField("GOOGLE_SERVICE_ACCOUNT_ID", stringPropertyOrNull("googleServiceAccountId"))
 
     sourceSets.named("jvmIntegrationTest") {
-        buildConfigField("API_KEY", stringPropertyOrNull("browser.api.key"))
+        buildConfigField("API_KEY", stringPropertyOrNull("desktopApiKey"))
     }
+
+    buildConfigField("VERSION_NAME", stringPropertyOrNull("versionName") ?: "")
 
     packageName.set(CloudRunConfig.PACKAGE_NAME)
 }
