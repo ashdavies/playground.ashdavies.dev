@@ -30,6 +30,13 @@ jobs:
           service_account: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
           token_format: access_token
 
+      - name: Docker Auth
+        uses: docker/login-action@v3
+        with:
+          registry: europe-west1-docker.pkg.dev
+          username: oauth2accesstoken
+          password: ${{ steps.google-cloud-auth.outputs.access_token }}
+
       - run: |
           ./gradlew cloud-run:deploy \
             -Pimage=europe-west1-docker.pkg.dev/${{ steps.google-cloud-auth.outputs.project_id }}/cloud-run-source-deploy/api.ashdavies.dev \

@@ -44,7 +44,9 @@ internal interface CloudRunGraph {
     fun embeddedServer(routes: Set<CloudRunRoute>): EmbeddedServer<*, *> = embeddedServer(
         module = { main(routes) },
         factory = Netty,
-        port = 8080,
+        port = System.getenv("PORT")
+            ?.toIntOrNull()
+            ?: 8080,
     )
 
     @Provides
