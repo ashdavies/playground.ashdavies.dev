@@ -15,3 +15,6 @@ public val HttpHeaders.XApiKey: String
 
 public val HttpHeaders.XFirebaseAppCheck: String
     get() = "X-Firebase-AppCheck"
+
+public val HttpHeaders.XVersionName: String
+    get() = "X-Version-Name"
