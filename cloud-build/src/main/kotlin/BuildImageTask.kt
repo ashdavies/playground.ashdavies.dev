@@ -41,7 +41,7 @@ public abstract class BuildImageTask : DefaultTask() {
 
         Jib.from(BASE_IMAGE_REFERENCE)
             .addLayer(listOf(jarFile.get().toPath()), AbsoluteUnixPath.get("/"))
-            .setEntrypoint("java", "-cp", mainClass.get())
+            .setEntrypoint("java", "-cp", "/${jarFile.get().name}", mainClass.get())
             .containerize(Containerizer.to(registryImage))
     }
 }
