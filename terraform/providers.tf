@@ -7,8 +7,18 @@ provider "github" {
   owner = var.gh_owner
 }
 
+provider "google" {
+  project               = var.project_id
+  region                = var.project_region
+  billing_project       = var.project_id
+  user_project_override = true
+}
+
 provider "google-beta" {
-  project      = var.project_id
+  project               = var.project_id
+  region                = var.project_region
+  billing_project       = var.project_id
+  user_project_override = true
 }
 
 provider "onepassword" {

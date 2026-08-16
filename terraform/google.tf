@@ -8,7 +8,6 @@ locals {
   ]
 
   enabled_apis = [
-    "apigateway.googleapis.com",
     "servicecontrol.googleapis.com",
     "servicemanagement.googleapis.com",
   ]
@@ -40,37 +39,6 @@ locals {
   ]
 }
 
-resource "google_api_gateway_api" "main" {
-  project  = var.project_id
-  provider = google-beta
-  api_id   = "playground-api"
-}
-
-resource "google_api_gateway_api_config" "main" {
-  api      = google_api_gateway_api.main.api_id
-  project  = var.project_id
-  provider = google-beta
-
-  openapi_documents {
-    document {
-      contents = base64encode(local.openapi_config)
-      path     = "openapi_spec.yml"
-    }
-  }
-
-  lifecycle {
-    create_before_destroy = true
-  }
-}
-
-resource "google_api_gateway_gateway" "main" {
-  api_config = google_api_gateway_api_config.main.id
-  depends_on = [google_api_gateway_api_config.main]
-  gateway_id = "playground-api-gateway"
-  project    = var.project_id
-  provider   = google-beta
-  region     = var.project_region
-}
 
 resource "google_apikeys_key" "android" {
   display_name = "Android key (auto created by Firebase)"
@@ -119,11 +87,6 @@ resource "google_apikeys_key" "android_firebase" {
   }
 }
 
-import {
-  id = "e08dafd4-574e-4bd0-bdf7-d6120fbc0e9d"
-  to = google_apikeys_key.android_firebase
-}
-
 resource "google_apikeys_key" "browser" {
   display_name = "Browser key (auto created by Firebase)"
   name         = "ce7cc75b-bc2e-4c6c-b1f5-d7110248b16d"
@@ -161,14 +124,54 @@ resource "google_apikeys_key" "desktop" {
   }
 }
 
-resource "google_cloud_run_service" "build" {
+resource "google_endpoints_service" "main" {
+  openapi_config = local.openapi_config
+  service_name   = "api.ashdavies.dev"
+  project        = var.project_id
+}
+
+resource "google_cloud_run_service" "main" {
   name     = "playground-service"
   location = var.project_region
+  project  = var.project_id
+
+  metadata {
+    annotations = {
+      "run.googleapis.com/launch-stage" = "BETA"
+    }
+  }
 
   template {
     spec {
       containers {
+        name  = "gateway"
+        image = "gcr.io/endpoints-release/endpoints-runtime-serverless:2"
+
+        args = [
+          "--service=api.ashdavies.dev",
+          "--rollout_strategy=managed",
+          "--listener_port=8080",
+          "--backend=http://127.0.0.1:8081"
+        ]
+
+        env {
+          name  = "ENDPOINTS_SERVICE_NAME"
+          value = "api.ashdavies.dev"
+        }
+
+        ports {
+          container_port = 8080
+        }
+      }
+
+      containers {
+        name  = "backend"
         image = data.google_artifact_registry_docker_image.main.self_link
+
+        env {
+          name  = "PORT"
+          value = "8081"
+        }
       }
     }
   }
@@ -176,6 +179,24 @@ resource "google_cloud_run_service" "build" {
   traffic {
     latest_revision = true
     percent         = 100
+  }
+
+  lifecycle {
+    prevent_destroy = true
+  }
+}
+
+resource "google_cloud_run_domain_mapping" "main" {
+  name     = "api.ashdavies.dev"
+  location = google_cloud_run_service.main.location
+  project  = var.project_id
+
+  metadata {
+    namespace = var.project_id
+  }
+
+  spec {
+    route_name = google_cloud_run_service.main.name
   }
 }
 

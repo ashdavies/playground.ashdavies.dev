@@ -1,23 +1,8 @@
-# module.cloud-run-endpoint is deprecated
-module "cloud_run_endpoint" {
-  source           = "./modules/cloud-run-endpoint"
-  config_id        = module.cloud_run_endpoint.config_id
-  image_name       = "endpoints-runtime-serverless"
-  repository_id    = "endpoints-release"
-  endpoint_name    = "api.ashdavies.dev"
-  image_repository = "${var.project_region}-docker.pkg.dev/${var.project_id}/endpoints-release"
-  location         = var.project_region
-  openapi_config   = local.openapi_config
-  project          = var.project_id
-  service_name     = "playground-endpoint"
-}
-
-# module endpoint-iam-binding is deprecated
 module "endpoint_iam_binding" {
   source             = "terraform-google-modules/iam/google//modules/cloud_run_services_iam"
   version            = "8.2.0"
   bindings           = { "roles/run.invoker" = ["allUsers"] }
-  cloud_run_services = [module.cloud_run_endpoint.name]
+  cloud_run_services = [google_cloud_run_service.main.name]
   location           = var.project_region
   mode               = "authoritative"
   project            = var.project_id

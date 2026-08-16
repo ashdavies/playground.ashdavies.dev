@@ -1,7 +1,9 @@
 import com.google.cloud.tools.jib.api.Containerizer
-import com.google.cloud.tools.jib.api.DockerDaemonImage
+import com.google.cloud.tools.jib.api.ImageReference
 import com.google.cloud.tools.jib.api.Jib
+import com.google.cloud.tools.jib.api.RegistryImage
 import com.google.cloud.tools.jib.api.buildplan.AbsoluteUnixPath
+import com.google.cloud.tools.jib.frontend.CredentialRetrieverFactory
 import org.gradle.api.DefaultTask
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
@@ -24,9 +26,22 @@ public abstract class BuildImageTask : DefaultTask() {
 
     @TaskAction
     public fun build() {
+        val dockerCredentialRetriever = CredentialRetrieverFactory
+            .forImage(ImageReference.parse(image.get())) { }
+            .dockerConfig()
+
+        val googleCredentialRetriever = CredentialRetrieverFactory
+            .forImage(ImageReference.parse(image.get())) { }
+            .googleApplicationDefaultCredentials()
+
+        val registryImage = RegistryImage
+            .named(image.get())
+            .addCredentialRetriever(dockerCredentialRetriever)
+            .addCredentialRetriever(googleCredentialRetriever)
+
         Jib.from(BASE_IMAGE_REFERENCE)
             .addLayer(listOf(jarFile.get().toPath()), AbsoluteUnixPath.get("/"))
             .setEntrypoint("java", "-cp", mainClass.get())
-            .containerize(Containerizer.to(DockerDaemonImage.named(image.get())))
+            .containerize(Containerizer.to(registryImage))
     }
 }

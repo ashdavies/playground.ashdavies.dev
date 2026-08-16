@@ -1,14 +1,12 @@
 locals {
   openapi_config = templatefile(var.openapi_config, {
-    backend_service_name = google_cloud_run_service.build.status[0].url
+    backend_service_name = "http://127.0.0.1:8081"
   })
 }
 
-# google_project_service.main is deprecated
 resource "google_project_service" "main" {
-  service    = module.cloud_run_endpoint.service_name
-  depends_on = [module.cloud_run_endpoint]
-  project    = var.project_id
+  service = google_endpoints_service.main.service_name
+  project = var.project_id
 }
 
 resource "google_project_iam_custom_role" "main" {
@@ -27,6 +25,7 @@ resource "google_project_iam_custom_role" "main" {
     "apikeys.keys.update",
     "artifactregistry.dockerimages.list",
     "artifactregistry.repositories.get",
+    "artifactregistry.repositories.uploadArtifacts",
     "cloudbuild.builds.create",
     "firebase.clients.get",
     "firebase.projects.get",
