@@ -19,9 +19,6 @@ plugins {
 buildConfig {
     buildConfigField("APP_ID", stringPropertyOrNull("browserAppId"))
 
-    buildConfigField("GOOGLE_CLOUD_PROJECT", stringPropertyOrNull("googleCloudProject"))
-    buildConfigField("GOOGLE_SERVICE_ACCOUNT_ID", stringPropertyOrNull("googleServiceAccountId"))
-
     sourceSets.named("jvmIntegrationTest") {
         buildConfigField("API_KEY", stringPropertyOrNull("desktopApiKey"))
     }
