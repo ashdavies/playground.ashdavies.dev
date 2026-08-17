@@ -203,7 +203,7 @@ resource "google_cloud_run_domain_mapping" "main" {
 data "google_artifact_registry_docker_image" "main" {
   location      = var.project_region
   repository_id = "cloud-run-source-deploy"
-  image_name    = "api.ashdavies.dev"
+  image_name    = "api.ashdavies.dev:latest"
 }
 
 module "project_services" {
