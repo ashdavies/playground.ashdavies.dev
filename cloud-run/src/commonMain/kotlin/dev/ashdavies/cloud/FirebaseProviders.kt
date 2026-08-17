@@ -19,21 +19,24 @@ internal interface FirebaseProviders {
     @Provides
     @SingleIn(AppScope::class)
     @Suppress("SENSELESS_NULL_IN_WHEN")
-    fun firebaseApp(): FirebaseApp {
-        return FirebaseApp.getApps().firstOrNull { it.name == FirebaseApp.DEFAULT_APP_NAME }
-            ?: when (val serviceAccountId = BuildConfig.GOOGLE_SERVICE_ACCOUNT_ID) {
-                null -> FirebaseApp.initializeApp()
+    fun firebaseApp(): FirebaseApp = FirebaseApp.getApps()
+        .firstOrNull { it.name == FirebaseApp.DEFAULT_APP_NAME }
+        ?: let {
+            val googleServiceAccountId = BuildConfig.GOOGLE_SERVICE_ACCOUNT_ID
+            val googleCloudProject = BuildConfig.GOOGLE_CLOUD_PROJECT
 
-                else -> {
-                    val firebaseOptions = FirebaseOptions.builder()
-                        .setCredentials(GoogleCredentials.getApplicationDefault())
-                        .setServiceAccountId(serviceAccountId)
-                        .build()
+            if (googleServiceAccountId != null && googleCloudProject != null) {
+                val firebaseOptions = FirebaseOptions.builder()
+                    .setCredentials(GoogleCredentials.getApplicationDefault())
+                    .setServiceAccountId(googleServiceAccountId)
+                    .setProjectId(googleCloudProject)
+                    .build()
 
-                    FirebaseApp.initializeApp(firebaseOptions)
-                }
+                FirebaseApp.initializeApp(firebaseOptions)
+            } else {
+                FirebaseApp.initializeApp()
             }
-    }
+        }
 
     @Provides
     fun firebaseAuth(firebaseApp: FirebaseApp): FirebaseAuth {
