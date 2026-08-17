@@ -145,7 +145,7 @@ resource "google_cloud_run_service" "main" {
     spec {
       containers {
         name  = "gateway"
-        image = "gcr.io/endpoints-release/endpoints-runtime-serverless:2"
+        image = "gcr.io/endpoints-release/endpoints-runtime-serverless:2.53.0"
 
         args = [
           "--service=api.ashdavies.dev",
