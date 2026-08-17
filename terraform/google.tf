@@ -159,11 +159,6 @@ resource "google_cloud_run_service" "main" {
           value = "api.ashdavies.dev"
         }
 
-        env {
-          name  = "GOOGLE_CLOUD_PROJECT"
-          value = var.project_id
-        }
-
         ports {
           container_port = 8080
         }
@@ -176,6 +171,11 @@ resource "google_cloud_run_service" "main" {
         env {
           name  = "PORT"
           value = "8081"
+        }
+
+        env {
+          name  = "GOOGLE_CLOUD_PROJECT"
+          value = var.project_id
         }
       }
     }
