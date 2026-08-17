@@ -5,9 +5,11 @@ import com.google.cloud.tools.jib.api.RegistryImage
 import com.google.cloud.tools.jib.api.buildplan.AbsoluteUnixPath
 import com.google.cloud.tools.jib.frontend.CredentialRetrieverFactory
 import org.gradle.api.DefaultTask
+import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFile
+import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.TaskAction
 import java.io.File
 
@@ -23,6 +25,9 @@ public abstract class BuildImageTask : DefaultTask() {
 
     @get:Input
     public abstract val mainClass: Property<String>
+
+    @get:InputFiles
+    public abstract val runtimeClasspath: ConfigurableFileCollection
 
     @TaskAction
     public fun build() {
@@ -40,8 +45,10 @@ public abstract class BuildImageTask : DefaultTask() {
             .addCredentialRetriever(googleCredentialRetriever)
 
         Jib.from(BASE_IMAGE_REFERENCE)
-            .addLayer(listOf(jarFile.get().toPath()), AbsoluteUnixPath.get("/"))
-            .setEntrypoint("java", "-cp", mainClass.get())
+            .addLayer(listOf(jarFile.get().toPath()), AbsoluteUnixPath.get("/app/libs"))
+            .addLayer(runtimeClasspath.files.map { it.toPath() }, AbsoluteUnixPath.get("/app/libs"))
+            .setEntrypoint("java", "-cp", "/app/libs/*", mainClass.get())
             .containerize(Containerizer.to(registryImage))
     }
 }
+

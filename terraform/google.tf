@@ -145,7 +145,7 @@ resource "google_cloud_run_service" "main" {
     spec {
       containers {
         name  = "gateway"
-        image = "gcr.io/endpoints-release/endpoints-runtime-serverless:2"
+        image = "gcr.io/endpoints-release/endpoints-runtime-serverless:2.53.0"
 
         args = [
           "--service=api.ashdavies.dev",
@@ -171,6 +171,11 @@ resource "google_cloud_run_service" "main" {
         env {
           name  = "PORT"
           value = "8081"
+        }
+
+        env {
+          name  = "GOOGLE_CLOUD_PROJECT"
+          value = var.project_id
         }
       }
     }
@@ -203,7 +208,7 @@ resource "google_cloud_run_domain_mapping" "main" {
 data "google_artifact_registry_docker_image" "main" {
   location      = var.project_region
   repository_id = "cloud-run-source-deploy"
-  image_name    = "api.ashdavies.dev"
+  image_name    = "api.ashdavies.dev:latest"
 }
 
 module "project_services" {

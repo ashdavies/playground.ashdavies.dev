@@ -1,10 +1,8 @@
 package dev.ashdavies.cloud
 
-import com.google.auth.oauth2.GoogleCredentials
 import com.google.cloud.firestore.CollectionReference
 import com.google.cloud.firestore.Firestore
 import com.google.firebase.FirebaseApp
-import com.google.firebase.FirebaseOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.cloud.FirestoreClient
 import dev.zacsweers.metro.AppScope
@@ -18,22 +16,7 @@ internal interface FirebaseProviders {
 
     @Provides
     @SingleIn(AppScope::class)
-    @Suppress("SENSELESS_NULL_IN_WHEN")
-    fun firebaseApp(): FirebaseApp {
-        return FirebaseApp.getApps().firstOrNull { it.name == FirebaseApp.DEFAULT_APP_NAME }
-            ?: when (val serviceAccountId = BuildConfig.GOOGLE_SERVICE_ACCOUNT_ID) {
-                null -> FirebaseApp.initializeApp()
-
-                else -> {
-                    val firebaseOptions = FirebaseOptions.builder()
-                        .setCredentials(GoogleCredentials.getApplicationDefault())
-                        .setServiceAccountId(serviceAccountId)
-                        .build()
-
-                    FirebaseApp.initializeApp(firebaseOptions)
-                }
-            }
-    }
+    fun firebaseApp(): FirebaseApp = FirebaseApp.initializeApp()
 
     @Provides
     fun firebaseAuth(firebaseApp: FirebaseApp): FirebaseAuth {

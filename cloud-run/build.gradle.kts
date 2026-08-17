@@ -17,14 +17,12 @@ plugins {
 }
 
 buildConfig {
-    buildConfigField("APP_ID", stringPropertyOrNull("browserAppId"))
-    buildConfigField("GOOGLE_SERVICE_ACCOUNT_ID", stringPropertyOrNull("googleServiceAccountId"))
-
     sourceSets.named("jvmIntegrationTest") {
         buildConfigField("API_KEY", stringPropertyOrNull("desktopApiKey"))
     }
 
-    buildConfigField("VERSION_NAME", stringPropertyOrNull("versionName") ?: "")
+    buildConfigField("PROJECT_NUMBER", stringPropertyOrNull("projectNumber"))
+    buildConfigField("VERSION_NAME", stringPropertyOrNull("versionName") ?: "UNKNOWN")
 
     packageName.set(CloudRunConfig.PACKAGE_NAME)
 }
@@ -85,5 +83,6 @@ tasks.register<BuildImageTask>("deploy") {
     image.set(project.provider { project.property("image") as String })
     jarFile.set(jvmJar.archiveFile.get().asFile)
     mainClass.set(CloudRunConfig.MAIN_CLASS)
+    runtimeClasspath.setFrom(project.configurations.getByName("jvmRuntimeClasspath"))
     dependsOn(jvmJar)
 }
