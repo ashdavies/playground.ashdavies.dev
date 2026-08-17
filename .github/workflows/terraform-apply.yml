@@ -43,6 +43,8 @@ jobs:
             -Pversion.name=$(git rev-parse --short HEAD) \
             --no-configuration-cache \
             --console=plain
+        env:
+          PROJECT_NUMBER: ${{ secrets.PROJECT_NUMBER }}
 
       - id: app-token
         uses: ./.github/actions/github-token

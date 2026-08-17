@@ -17,13 +17,12 @@ plugins {
 }
 
 buildConfig {
-    buildConfigField("APP_ID", stringPropertyOrNull("browserAppId"))
-
     sourceSets.named("jvmIntegrationTest") {
         buildConfigField("API_KEY", stringPropertyOrNull("desktopApiKey"))
     }
 
-    buildConfigField("VERSION_NAME", stringPropertyOrNull("versionName") ?: "")
+    buildConfigField("PROJECT_NUMBER", stringPropertyOrNull("projectNumber"))
+    buildConfigField("VERSION_NAME", stringPropertyOrNull("versionName") ?: "UNKNOWN")
 
     packageName.set(CloudRunConfig.PACKAGE_NAME)
 }

@@ -25,12 +25,6 @@ internal fun Route.appCheckAuthentication(build: Route.() -> Unit): Route {
 
 internal fun AuthenticationConfig.appCheck() {
     jwt(CONFIGURATION_NAME) {
-        val projectNumber = requireNotNull(BuildConfig.APP_ID?.split(":")?.getOrNull(1)) {
-            "APP_ID is missing or invalid in BuildConfig"
-        }
-
-        realm = "Firebase"
-
         authHeader { call ->
             val token = call.request.headers[HttpHeaders.XFirebaseAppCheck]
             if (token?.isNotEmpty() == true) {
@@ -58,16 +52,19 @@ internal fun AuthenticationConfig.appCheck() {
             )
         }
 
+        realm = "Firebase"
+
         validate { credential ->
             if (credential.payload.subject.isNotEmpty()) {
                 JWTPrincipal(credential.payload)
             } else {
-                application.log.warn("[AppCheck] Auth failed: JWT payload subject (App ID) is empty")
+                application.log.warn("[AppCheck] Auth failed: JWT payload subject is empty")
                 null
             }
         }
 
         verifier(UrlJwkProvider(URI("https://firebaseappcheck.googleapis.com/v1/jwks").toURL())) {
+            val projectNumber = requireNotNull(BuildConfig.PROJECT_NUMBER) { "PROJECT_NUMBER was null" }
             withIssuer("https://firebaseappcheck.googleapis.com/$projectNumber")
         }
     }

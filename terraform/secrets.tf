@@ -13,6 +13,7 @@ resource "github_actions_secret" "main" {
     KEYSTORE_FILE                = data.onepassword_item.android_keystore.file[0].content_base64
     KEYSTORE_PASSWORD            = data.onepassword_item.android_keystore.section_map[""].field_map["password"].value
     OP_SERVICE_ACCOUNT_TOKEN     = var.op_service_account_token
+    PROJECT_NUMBER               = data.google_project.main.number
     WORKLOAD_IDENTITY_PROVIDER   = module.github_workload_identity.provider_name
   }
 

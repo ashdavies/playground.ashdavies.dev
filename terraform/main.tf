@@ -4,6 +4,10 @@ locals {
   })
 }
 
+data "google_project" "main" {
+  project_id = var.project_id
+}
+
 resource "google_project_service" "main" {
   service = google_endpoints_service.main.service_name
   project = var.project_id
