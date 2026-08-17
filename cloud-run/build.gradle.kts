@@ -85,5 +85,6 @@ tasks.register<BuildImageTask>("deploy") {
     image.set(project.provider { project.property("image") as String })
     jarFile.set(jvmJar.archiveFile.get().asFile)
     mainClass.set(CloudRunConfig.MAIN_CLASS)
+    runtimeClasspath.setFrom(project.configurations.getByName("jvmRuntimeClasspath"))
     dependsOn(jvmJar)
 }
