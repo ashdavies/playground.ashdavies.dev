@@ -11,7 +11,7 @@ import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.TaskAction
 import java.io.File
 
-private const val BASE_IMAGE_REFERENCE = "eclipse-temurin:17.0.14_7-jre"
+private const val BASE_IMAGE_REFERENCE = "eclipse-temurin:21-jre"
 
 public abstract class BuildImageTask : DefaultTask() {
 
