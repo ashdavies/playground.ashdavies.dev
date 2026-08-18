@@ -149,7 +149,7 @@ resource "google_cloud_run_service" "main" {
 
         args = [
           "--backend=http://127.0.0.1:8081",
-          "--cors_allow_headers=Content-Type,Authorization,X-Api-Key,X-Firebase-AppCheck",
+          "--cors_allow_headers=Accept,Content-Type,User-Agent,X-Api-Key,X-Firebase-AppCheck",
           "--cors_preset=basic",
           "--listener_port=8080",
           "--rollout_strategy=managed",
