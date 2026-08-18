@@ -13,18 +13,15 @@ import kotlin.js.Promise
 internal interface AppCheckTokenProvider {
 
     @Provides
-    suspend fun appCheckToken(): AppCheckToken {
-        val result = getAppCheckToken(false).await()
-
-        return AppCheckToken(
-            token = result.token,
-            ttlMillis = result.expireTimeMillis,
-        )
-    }
+    suspend fun appCheckToken(): AppCheckToken = AppCheckToken(
+        token = getAppCheckToken(false)
+            .await()
+            .token,
+    )
 }
+
 public external fun getAppCheckToken(forceRefresh: Boolean): Promise<AppCheckTokenResult>
 
 public external interface AppCheckTokenResult : JsAny {
-    public val expireTimeMillis: Long
     public val token: String
 }

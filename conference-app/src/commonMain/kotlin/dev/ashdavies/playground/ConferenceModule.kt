@@ -3,6 +3,7 @@ package dev.ashdavies.playground
 import dev.ashdavies.config.RemoteConfig
 import dev.ashdavies.config.getBoolean
 import dev.ashdavies.content.PlatformContext
+import dev.ashdavies.http.appCheck
 import dev.ashdavies.http.common.models.AppCheckToken
 import dev.ashdavies.http.common.models.XApiKey
 import dev.ashdavies.http.defaultHttpClient
@@ -10,7 +11,6 @@ import dev.ashdavies.http.qualifier.AppCheckHttpClient
 import dev.ashdavies.http.qualifier.DefaultHttpClient
 import dev.ashdavies.playground.gallery.LocalGallery
 import dev.ashdavies.playground.gallery.imageAdapter
-import dev.ashdavies.playground.http.appCheck
 import dev.ashdavies.sql.DriverFactory
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.Binds

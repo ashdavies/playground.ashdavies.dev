@@ -60,8 +60,9 @@ internal class EventListPresenter(
             selectedIndex = null,
             isRefreshing = pagingItems.loadState.refresh is LoadState.Loading,
             errorMessage = pagingItems.loadState.refresh
-                .let { it as? LoadState.Error }
-                ?.error?.message,
+                .let { (it as? LoadState.Error)?.error }
+                ?.also(remoteAnalytics::recordException)
+                ?.message,
         ) { event ->
             when (event) {
                 is EventListState.Event.ItemClick -> {

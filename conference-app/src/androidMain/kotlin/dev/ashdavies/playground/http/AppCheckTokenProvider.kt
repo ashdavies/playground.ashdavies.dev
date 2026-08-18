@@ -11,14 +11,10 @@ import kotlinx.coroutines.tasks.await
 internal interface AppCheckTokenProvider {
 
     @Provides
-    suspend fun appCheckToken(): AppCheckToken {
-        val token = FirebaseAppCheck.getInstance()
+    suspend fun appCheckToken(): AppCheckToken = AppCheckToken(
+        token = FirebaseAppCheck.getInstance()
             .getAppCheckToken(true)
             .await()
-
-        return AppCheckToken(
-            token = token.token,
-            ttlMillis = token.expireTimeMillis,
-        )
-    }
+            .token,
+    )
 }

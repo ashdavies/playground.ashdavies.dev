@@ -22,7 +22,6 @@ kotlin {
             implementation(projects.cloudCommon)
             implementation(projects.composeMaterial)
             implementation(projects.feature.eventCommon)
-            implementation(projects.httpClient)
             implementation(projects.httpCommon)
             implementation(projects.metroExtensions)
             implementation(projects.platformSupport)
