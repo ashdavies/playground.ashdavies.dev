@@ -10,7 +10,7 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            implementation(projects.httpClient)
+            implementation(projects.httpCommon)
             implementation(projects.metroExtensions)
 
             implementation(libs.kotlinx.coroutines.core)

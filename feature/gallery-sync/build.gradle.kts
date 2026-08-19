@@ -21,6 +21,7 @@ kotlin {
         commonMain.dependencies {
             implementation(projects.analytics)
             implementation(projects.httpClient)
+            implementation(projects.httpCommon)
             implementation(projects.metroExtensions)
             implementation(projects.uiComponents)
 

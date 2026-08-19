@@ -1,4 +1,4 @@
-package dev.ashdavies.http
+package dev.ashdavies.http.callable
 
 public fun interface UnaryCallable<Request, Response> {
     public suspend operator fun invoke(request: Request): Response
