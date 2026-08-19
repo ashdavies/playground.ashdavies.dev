@@ -1,6 +1,6 @@
 package dev.ashdavies.playground.paging
 
-import dev.ashdavies.http.UnaryCallable
+import dev.ashdavies.http.callable.UnaryCallable
 import dev.ashdavies.http.common.models.ApiConference
 import dev.ashdavies.http.qualifier.AppCheckHttpClient
 import dev.ashdavies.http.throwClientRequestExceptionAs

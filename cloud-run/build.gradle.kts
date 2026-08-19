@@ -65,6 +65,10 @@ kotlin {
             implementation(libs.ktor.server.netty)
         }
 
+        jvmMain.dependencies {
+            runtimeOnly(libs.logback.classic)
+        }
+
         jvmIntegrationTest.dependencies {
             implementation(libs.app.cash.turbine)
             implementation(libs.kotlinx.coroutines.test)

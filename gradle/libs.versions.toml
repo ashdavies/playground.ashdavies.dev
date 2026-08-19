@@ -85,6 +85,7 @@ kotlinx-serialization-core = { module = "org.jetbrains.kotlinx:kotlinx-serializa
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
 
 ktor-client-auth = { module = "io.ktor:ktor-client-auth", version.ref = "ktor" }
+ktor-server-auth-jwt = { module = "io.ktor:ktor-server-auth-jwt", version.ref = "ktor" }
 ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
 ktor-client-js = { module = "io.ktor:ktor-client-js", version.ref = "ktor" }
@@ -92,10 +93,8 @@ ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "k
 ktor-client-mock = { module = "io.ktor:ktor-client-mock", version.ref = "ktor" }
 ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
 ktor-http = { module = "io.ktor:ktor-http", version.ref = "ktor" }
-ktor-io = { module = "io.ktor:ktor-io", version.ref = "ktor" }
 ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
 ktor-server-auth = { module = "io.ktor:ktor-server-auth", version.ref = "ktor" }
-ktor-server-auth-jwt = { module = "io.ktor:ktor-server-auth-jwt", version.ref = "ktor" }
 ktor-server-call-logging = { module = "io.ktor:ktor-server-call-logging", version.ref = "ktor" }
 ktor-server-compression = { module = "io.ktor:ktor-server-compression", version.ref = "ktor" }
 ktor-server-conditional-headers = { module = "io.ktor:ktor-server-conditional-headers", version.ref = "ktor" }
@@ -107,11 +106,10 @@ ktor-server-host-common = { module = "io.ktor:ktor-server-host-common", version.
 ktor-server-netty = { module = "io.ktor:ktor-server-netty", version.ref = "ktor" }
 ktor-server-test-host = { module = "io.ktor:ktor-server-test-host", version.ref = "ktor" }
 
+logback-classic = "ch.qos.logback:logback-classic:1.3.16"
 metro-runtime = { module = "dev.zacsweers.metro:runtime", version.ref = "metro" }
 metro-runtime-coroutines = { module = "dev.zacsweers.metro:runtime-coroutines", version.ref = "metro" }
 pinterest-ktlint-bom = "com.pinterest.ktlint:ktlint-bom:1.8.0"
-
-slf4j-simple = "org.slf4j:slf4j-simple:2.0.18"
 
 sqldelight-android-driver = { module = "app.cash.sqldelight:android-driver", version.ref = "cash-sqldelight" }
 sqldelight-async-extensions = { module = "app.cash.sqldelight:async-extensions", version.ref = "cash-sqldelight" }
