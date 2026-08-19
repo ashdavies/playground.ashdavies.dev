@@ -1,6 +1,6 @@
 package dev.ashdavies.routing
 
-import dev.ashdavies.http.UnaryCallable
+import dev.ashdavies.http.callable.UnaryCallable
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.ClientRequestException

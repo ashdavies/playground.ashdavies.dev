@@ -3,7 +3,6 @@ package dev.ashdavies.cloud
 import com.google.cloud.firestore.CollectionReference
 import com.google.cloud.firestore.Firestore
 import com.google.firebase.FirebaseApp
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.cloud.FirestoreClient
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesTo
@@ -17,11 +16,6 @@ internal interface FirebaseProviders {
     @Provides
     @SingleIn(AppScope::class)
     fun firebaseApp(): FirebaseApp = FirebaseApp.initializeApp()
-
-    @Provides
-    fun firebaseAuth(firebaseApp: FirebaseApp): FirebaseAuth {
-        return FirebaseAuth.getInstance(firebaseApp)
-    }
 
     @Provides
     fun firestore(firebaseApp: FirebaseApp): Firestore {

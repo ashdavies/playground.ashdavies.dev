@@ -4,10 +4,13 @@
             <pattern>%d{YYYY-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
         </encoder>
     </appender>
-    <root level="trace">
+
+    <root level="INFO">
         <appender-ref ref="STDOUT"/>
     </root>
 
-    <logger name="io.netty" level="INFO"/>
-    <logger name="io.netty.handler.logging.LoggingHandler" level="INFO"/>
+    <logger name="io.netty" level="INFO" />
+    <logger name="io.netty.handler.logging.LoggingHandler" level="INFO" />
+
+    <logger name="io.ktor.auth.jwt" level="TRACE"/>
 </configuration>
