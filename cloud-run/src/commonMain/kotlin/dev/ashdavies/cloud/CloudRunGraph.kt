@@ -19,7 +19,6 @@ import io.ktor.serialization.kotlinx.json.json
 import io.ktor.server.application.Application
 import io.ktor.server.application.install
 import io.ktor.server.auth.Authentication
-import io.ktor.server.auth.AuthenticationConfig
 import io.ktor.server.engine.EmbeddedServer
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
@@ -61,7 +60,7 @@ internal interface CloudRunGraph {
 }
 
 internal fun Application.main(routes: Set<CloudRunRoute>) {
-    install(Authentication, AuthenticationConfig::appCheck)
+    install(Authentication) { appCheck(requireProjectNumber()) }
 
     install(CallLogging)
     install(Compression, CompressionConfig::default)
@@ -101,4 +100,8 @@ private fun Application.routing(routes: Set<CloudRunRoute>) = routing {
 
 public interface CloudRunRoute {
     public operator fun Routing.invoke(): Route
+}
+
+private fun requireProjectNumber() = requireNotNull(BuildConfig.PROJECT_NUMBER) {
+    "PROJECT_NUMBER was null"
 }
