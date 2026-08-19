@@ -1,4 +1,4 @@
-package dev.ashdavies.playground.http
+package dev.ashdavies.http
 
 import dev.ashdavies.http.common.models.AppCheck
 import dev.ashdavies.http.common.models.AppCheckToken
@@ -18,24 +18,24 @@ import kotlinx.coroutines.sync.withLock
 import kotlin.concurrent.atomics.AtomicReference
 import kotlin.concurrent.atomics.ExperimentalAtomicApi
 
-internal fun AuthConfig.appCheck(block: AppCheckAuthConfig.() -> Unit) {
+public fun AuthConfig.appCheck(block: AppCheckAuthConfig.() -> Unit) {
     with(AppCheckAuthConfig().apply(block)) {
         this@appCheck.providers.add(AppCheckAuthProvider(getToken, realm))
     }
 }
 
 @KtorDsl
-internal class AppCheckAuthConfig {
-    var getToken: suspend () -> AppCheckToken? = { null }
-    var realm: String? = null
+public class AppCheckAuthConfig {
+    public var getToken: suspend () -> AppCheckToken? = { null }
+    public var realm: String? = null
 
-    fun getToken(block: suspend () -> AppCheckToken?) {
+    public fun getToken(block: suspend () -> AppCheckToken?) {
         getToken = block
     }
 }
 
 @OptIn(ExperimentalAtomicApi::class)
-internal class AppCheckAuthProvider(
+private class AppCheckAuthProvider(
     private val getToken: suspend () -> AppCheckToken?,
     private val realm: String?,
 ) : AuthProvider {

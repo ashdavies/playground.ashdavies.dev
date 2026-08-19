@@ -70,6 +70,7 @@ dependencies {
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.core.splashscreen)
     implementation(libs.androidx.startup.runtime)
+
     implementation(libs.circuit.overlay)
     implementation(libs.compose.material3)
     implementation(libs.google.accompanist.permissions)

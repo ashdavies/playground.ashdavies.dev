@@ -2,7 +2,7 @@ package dev.ashdavies.cloud.events
 
 import com.google.cloud.firestore.CollectionReference
 import dev.ashdavies.cloud.CloudRunRoute
-import dev.ashdavies.cloud.appCheckAuthentication
+import dev.ashdavies.cloud.appcheck.appCheckAuthentication
 import dev.ashdavies.cloud.decodeFromSnapshot
 import dev.ashdavies.cloud.google.await
 import dev.ashdavies.http.common.models.ApiConference
@@ -18,7 +18,6 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.todayIn
 import kotlinx.serialization.json.Json
 import kotlin.time.Clock
-import kotlin.time.ExperimentalTime
 
 private const val DEFAULT_ORDER_BY = "dateStart"
 private const val DEFAULT_LIMIT = 50

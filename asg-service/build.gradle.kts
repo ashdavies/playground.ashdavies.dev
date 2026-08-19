@@ -6,7 +6,7 @@ plugins {
 
 kotlin {
     sourceSets.commonMain.dependencies {
-        implementation(projects.httpClient)
+        implementation(projects.httpCommon)
 
         implementation(libs.kotlinx.serialization.core)
         implementation(libs.ktor.client.core)

@@ -1,4 +1,4 @@
-package dev.ashdavies.cloud
+package dev.ashdavies.cloud.appcheck
 
 import com.auth0.jwk.UrlJwkProvider
 import dev.ashdavies.http.common.models.AppCheck
@@ -23,11 +23,12 @@ internal fun Route.appCheckAuthentication(build: Route.() -> Unit): Route {
     return authenticate(CONFIGURATION_NAME, build = build)
 }
 
-internal fun AuthenticationConfig.appCheck() {
+internal fun AuthenticationConfig.appCheck(projectNumber: String) {
     jwt(CONFIGURATION_NAME) {
         authHeader { call ->
             val token = call.request.headers[HttpHeaders.XFirebaseAppCheck]
-            if (token?.isNotEmpty() == true) {
+
+            if (!token.isNullOrEmpty()) {
                 HttpAuthHeader.Single(AuthScheme.AppCheck, token)
             } else {
                 call.application.log.warn("[AppCheck] Auth failed: '${HttpHeaders.XFirebaseAppCheck}' header is missing or blank")
@@ -40,31 +41,31 @@ internal fun AuthenticationConfig.appCheck() {
                 name = HttpHeaders.WWWAuthenticate,
                 value = "$defaultScheme realm=\"$realm\", " +
                     "error=\"unauthorized\", " +
-                    "error_description=\"Missing or invalid X-Firebase-AppCheck header\"",
+                    "error_description=\"Missing or invalid '${HttpHeaders.XFirebaseAppCheck}' header\"",
             )
 
             call.respond(
                 status = HttpStatusCode.Unauthorized,
                 message = mapOf(
                     "code" to "APP_CHECK_FAILED",
-                    "message" to "401 Unauthorized: Valid 'X-Firebase-AppCheck' header required.",
+                    "message" to "401 Unauthorized: Valid '${HttpHeaders.XFirebaseAppCheck}' header required.",
                 ),
             )
         }
 
+        authSchemes(AuthScheme.AppCheck)
         realm = "Firebase"
 
         validate { credential ->
-            if (credential.payload.subject.isNotEmpty()) {
+            if (!credential.payload.subject.isNullOrEmpty()) {
                 JWTPrincipal(credential.payload)
             } else {
-                application.log.warn("[AppCheck] Auth failed: JWT payload subject is empty")
+                application.log.warn("[AppCheck] Validate failed: subject (App ID) was null or empty")
                 null
             }
         }
 
         verifier(UrlJwkProvider(URI("https://firebaseappcheck.googleapis.com/v1/jwks").toURL())) {
-            val projectNumber = requireNotNull(BuildConfig.PROJECT_NUMBER) { "PROJECT_NUMBER was null" }
             withIssuer("https://firebaseappcheck.googleapis.com/$projectNumber")
         }
     }

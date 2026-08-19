@@ -126,9 +126,6 @@ kotlin {
 
             implementation(libs.ktor.client.auth)
             implementation(libs.ktor.client.core)
-            implementation(libs.ktor.client.mock)
-            implementation(libs.ktor.http)
-            implementation(libs.ktor.io)
 
             implementation(libs.sqldelight.coroutines.extensions)
             implementation(libs.sqldelight.paging3.extensions)
@@ -165,7 +162,6 @@ kotlin {
             implementation(projects.keyNavigation)
 
             runtimeOnly(libs.kotlinx.coroutines.swing)
-            runtimeOnly(libs.slf4j.simple)
         }
 
         jvmTest.dependencies {
