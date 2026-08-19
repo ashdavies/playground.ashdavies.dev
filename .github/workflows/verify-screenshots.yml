@@ -34,7 +34,10 @@ jobs:
       - run: echo ${{ secrets.FIREBASE_GOOGLE_SERVICES }} | base64 --decode > android-app/google-services.json
 
       - id: verify
-        run: ./gradlew verifyPaparazziDebug --console=plain
+        run: |
+          ./gradlew verifyPaparazziDebug \
+            ${{ contains(github.event.pull_request.labels.*.name, 'Dry Run') && '--dry-run' || '' }} \
+            --console=plain
 
       - uses: actions/upload-artifact@v7
         if: ${{ failure() && steps.verify.outcome == 'failure' }}
