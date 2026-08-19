@@ -4,7 +4,7 @@ import dev.ashdavies.asg.AsgConference
 import dev.ashdavies.asg.PastConferencesCallable
 import dev.ashdavies.cloud.Identifier
 import dev.ashdavies.cloud.toApiConference
-import dev.ashdavies.http.UnaryCallable
+import dev.ashdavies.http.callable.UnaryCallable
 import dev.ashdavies.http.common.models.ApiConference
 import io.ktor.client.HttpClient
 

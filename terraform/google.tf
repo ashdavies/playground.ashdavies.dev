@@ -148,10 +148,10 @@ resource "google_cloud_run_service" "main" {
         image = "gcr.io/endpoints-release/endpoints-runtime-serverless:2.53.0"
 
         args = [
-          "--service=api.ashdavies.dev",
-          "--rollout_strategy=managed",
+          "--backend=http://127.0.0.1:8081",
           "--listener_port=8080",
-          "--backend=http://127.0.0.1:8081"
+          "--rollout_strategy=managed",
+          "--service=api.ashdavies.dev"
         ]
 
         env {

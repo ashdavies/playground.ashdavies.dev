@@ -9,7 +9,6 @@ kotlin {
     android.namespace = "dev.ashdavies.routing"
 
     sourceSets.commonMain.dependencies {
-        implementation(projects.httpClient)
         implementation(projects.httpCommon)
 
         implementation(libs.kotlinx.serialization.core)
