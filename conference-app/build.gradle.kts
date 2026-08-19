@@ -162,7 +162,6 @@ kotlin {
             implementation(projects.keyNavigation)
 
             runtimeOnly(libs.kotlinx.coroutines.swing)
-            runtimeOnly(libs.slf4j.simple)
         }
 
         jvmTest.dependencies {

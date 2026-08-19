@@ -6,7 +6,7 @@ import dev.ashdavies.asg.AsgService
 import dev.ashdavies.cloud.CloudRunRoute
 import dev.ashdavies.cloud.CollectionWriter
 import dev.ashdavies.cloud.Identifier
-import dev.ashdavies.cloud.appCheckAuthentication
+import dev.ashdavies.cloud.appcheck.appCheckAuthentication
 import dev.ashdavies.cloud.decodeFromSnapshot
 import dev.ashdavies.cloud.google.await
 import dev.ashdavies.cloud.toApiConference

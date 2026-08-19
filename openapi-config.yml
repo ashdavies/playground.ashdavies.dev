@@ -55,36 +55,6 @@ paths:
           description: "OK"
       security:
         - ApiKeyAuth: []
-  /firebase/auth:
-    post:
-      tags: [ "firebase" ]
-      summary: "Signs in or signs up a user"
-      description: >
-        Signs in or signs up a user by exchanging a custom Auth token for the given UID. Upon a 
-        successful sign-in or sign-up, a new Identity Platform ID token and refresh token are
-        issued for the user.
-      operationId: "signIn"
-      parameters:
-        - name: "body"
-          in: "body"
-          required: true
-          schema:
-            type: "object"
-            required:
-              - "uid"
-            properties:
-              uid:
-                type: "string"
-                description: >
-                  The UID to store in the token. This identifies the user to other Firebase
-                  services (Realtime Database, Firebase Auth, etc.). Should be less than 128
-                  characters.
-                example: "jane.smith@example.com"
-      responses:
-        "200":
-          description: "OK"
-          schema:
-            $ref: "#/definitions/AuthResult"
   /hello:
     get:
       tags: [ "hello" ]
@@ -94,20 +64,6 @@ paths:
         "200":
           description: "OK"
 definitions:
-  AuthResult:
-    type: "object"
-    properties:
-      idToken:
-        type: "string"
-        description: "A Firebase Auth ID token generated from the provided custom token."
-      refreshToken:
-        type: "string"
-        description: "A Firebase Auth refresh token generated from the provided custom token."
-      expiresIn:
-        type: "integer"
-        format: "int64"
-        description: "The number of seconds in which the ID token expires."
-        example: 3600
   Event:
     type: "object"
     required:

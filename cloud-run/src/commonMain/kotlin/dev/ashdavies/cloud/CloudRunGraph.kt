@@ -1,5 +1,6 @@
 package dev.ashdavies.cloud
 
+import dev.ashdavies.cloud.appcheck.appCheck
 import dev.ashdavies.cloud.google.GoogleApiException
 import dev.ashdavies.http.common.models.XApiKey
 import dev.ashdavies.http.common.models.XFirebaseAppCheck
@@ -77,7 +78,7 @@ internal fun Application.main(routes: Set<CloudRunRoute>) {
 
 private fun CORSConfig.install() {
     allowHost("playground.ashdavies.dev")
-    allowHost("localhost")
+    allowHost("localhost:8081")
 
     allowHeader(HttpHeaders.Authorization)
     allowHeader(HttpHeaders.ContentType)
