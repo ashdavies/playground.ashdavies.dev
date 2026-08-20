@@ -17,5 +17,4 @@ jobs:
 
       - run: |
           GH_TOKEN="${{ secrets.GITHUB_TOKEN }}" gh workflow run terraform-apply.yml \
-            -f pr_number="${{ github.event.pull_request.number }}" \
             --ref "${{ github.event.pull_request.head.ref }}"
