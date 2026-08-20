@@ -132,12 +132,6 @@ resource "google_endpoints_service" "main" {
 
 resource "google_cloud_run_v2_service" "main" {
   name     = "playground-service"
-  location = var.project_region
-  project  = var.project_id
-
-  annotations = {
-    "run.googleapis.com/launch-stage" = "BETA"
-  }
 
   template {
       containers {
@@ -187,8 +181,11 @@ resource "google_cloud_run_v2_service" "main" {
       }
   }
 
+  location = var.project_region
+  launch_stage = "BETA"
+
   traffic {
-    type    = "TRAFFIC_TARGET_ALLOCATION_TYPE_REVISION"
+    type    = "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST"
     percent = 100
   }
 

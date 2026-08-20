@@ -13,7 +13,8 @@ jobs:
       actions: write
 
     steps:
+      - uses: actions/checkout@v7
+
       - run: |
           GH_TOKEN="${{ secrets.GITHUB_TOKEN }}" gh workflow run terraform-apply.yml \
-            -f pr_number="${{ github.event.pull_request.number }}" \
             --ref "${{ github.event.pull_request.head.ref }}"
