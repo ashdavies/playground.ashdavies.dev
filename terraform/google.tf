@@ -175,7 +175,7 @@ resource "google_cloud_run_v2_service" "main" {
   launch_stage = "BETA"
 
   traffic {
-    type    = "TRAFFIC_TARGET_ALLOCATION_TYPE_REVISION"
+    type    = "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST"
     percent = 100
   }
 
