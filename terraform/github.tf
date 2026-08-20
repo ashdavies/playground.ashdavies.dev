@@ -42,8 +42,3 @@ resource "github_issue_label" "terraform_apply" {
   name       = "Terraform Apply"
   color      = "8123fc"
 }
-
-import {
-    id = "playground.ashdavies.dev:Terraform Apply"
-    to = github_issue_label.terraform_apply
-}
