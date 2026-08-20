@@ -132,17 +132,11 @@ resource "google_endpoints_service" "main" {
 
 resource "google_cloud_run_v2_service" "main" {
   name     = "playground-service"
-  location = var.project_region
-  project  = var.project_id
-
-  annotations = {
-    "run.googleapis.com/launch-stage" = "BETA"
-  }
 
   template {
       containers {
         name  = "gateway"
-        image = "gcr.io/endpoints-release/endpoints-runtime-serverless:2.53.0"
+        image = "gcr.io/endpoints-release/endpoints-runtime-serverless:2"
 
         args = [
           "--backend=http://127.0.0.1:8081",
@@ -174,11 +168,24 @@ resource "google_cloud_run_v2_service" "main" {
           name  = "GOOGLE_CLOUD_PROJECT"
           value = var.project_id
         }
+
+        startup_probe {
+          initial_delay_seconds = 0
+          period_seconds        = 2
+          failure_threshold     = 30
+
+          tcp_socket {
+            port = 8081
+          }
+        }
       }
   }
 
+  location = var.project_region
+  launch_stage = "BETA"
+
   traffic {
-    type    = "TRAFFIC_TARGET_ALLOCATION_TYPE_REVISION"
+    type    = "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST"
     percent = 100
   }
 
