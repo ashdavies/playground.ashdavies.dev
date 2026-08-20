@@ -2,14 +2,16 @@ name: Label Dispatch
 
 on:
   pull_request:
-    types: [ labeled ]
+    types: [labeled, synchronize]
 
 jobs:
   terraform_apply:
-    if: github.event.label.name == 'Terraform Apply'
+    if: contains(github.event.pull_request.labels.*.name, 'Terraform Apply')
     runs-on: ubuntu-latest
+
     permissions:
       actions: write
+
     steps:
       - run: |
           GH_TOKEN="${{ secrets.GITHUB_TOKEN }}" gh workflow run terraform-apply.yml \
