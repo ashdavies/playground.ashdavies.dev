@@ -130,19 +130,16 @@ resource "google_endpoints_service" "main" {
   project        = var.project_id
 }
 
-resource "google_cloud_run_service" "main" {
+resource "google_cloud_run_v2_service" "main" {
   name     = "playground-service"
   location = var.project_region
   project  = var.project_id
 
-  metadata {
-    annotations = {
-      "run.googleapis.com/launch-stage" = "BETA"
-    }
+  annotations = {
+    "run.googleapis.com/launch-stage" = "BETA"
   }
 
   template {
-    spec {
       containers {
         name  = "gateway"
         image = "gcr.io/endpoints-release/endpoints-runtime-serverless:2.53.0"
@@ -178,12 +175,11 @@ resource "google_cloud_run_service" "main" {
           value = var.project_id
         }
       }
-    }
   }
 
   traffic {
-    latest_revision = true
-    percent         = 100
+    type    = "TRAFFIC_TARGET_ALLOCATION_TYPE_REVISION"
+    percent = 100
   }
 
   lifecycle {
@@ -193,7 +189,7 @@ resource "google_cloud_run_service" "main" {
 
 resource "google_cloud_run_domain_mapping" "main" {
   name     = "api.ashdavies.dev"
-  location = google_cloud_run_service.main.location
+  location = google_cloud_run_v2_service.main.location
   project  = var.project_id
 
   metadata {
@@ -201,7 +197,7 @@ resource "google_cloud_run_domain_mapping" "main" {
   }
 
   spec {
-    route_name = google_cloud_run_service.main.name
+    route_name = google_cloud_run_v2_service.main.name
   }
 }
 
