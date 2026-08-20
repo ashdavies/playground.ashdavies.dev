@@ -142,7 +142,7 @@ resource "google_cloud_run_v2_service" "main" {
   template {
       containers {
         name  = "gateway"
-        image = "gcr.io/endpoints-release/endpoints-runtime-serverless:2.53.0"
+        image = "gcr.io/endpoints-release/endpoints-runtime-serverless:2"
 
         args = [
           "--backend=http://127.0.0.1:8081",
@@ -173,6 +173,16 @@ resource "google_cloud_run_v2_service" "main" {
         env {
           name  = "GOOGLE_CLOUD_PROJECT"
           value = var.project_id
+        }
+
+        startup_probe {
+          initial_delay_seconds = 0
+          period_seconds        = 2
+          failure_threshold     = 30
+
+          tcp_socket {
+            port = 8081
+          }
         }
       }
   }
