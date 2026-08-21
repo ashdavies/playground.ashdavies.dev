@@ -131,57 +131,71 @@ resource "google_endpoints_service" "main" {
 }
 
 resource "google_cloud_run_v2_service" "main" {
-  name     = "playground-service"
+  name = "playground-service"
 
   template {
-      containers {
-        name  = "gateway"
-        image = "gcr.io/endpoints-release/endpoints-runtime-serverless:2"
+    containers {
+      name  = "gateway"
+      image = "gcr.io/endpoints-release/endpoints-runtime-serverless:2"
 
-        args = [
-          "--backend=http://127.0.0.1:8080",
-          "--listener_port=8081",
-          "--rollout_strategy=managed",
-          "--service=api.ashdavies.dev"
-        ]
+      args = [
+        "--backend=http://127.0.0.1:8080",
+        "--listener_port=8081",
+        "--rollout_strategy=managed",
+        "--service=api.ashdavies.dev",
+        "--cors_preset=basic",
+        "--cors_allow_credentials",
+        "--cors_allow_headers=${join(",", [
+          "Authorization",
+          "Cache-Control",
+          "Content-Type",
+          "DNT",
+          "If-Modified-Since",
+          "Range",
+          "User-Agent",
+          "X-API-Key",
+          "X-Firebase-App-Check",
+          "X-Requested-With",
+        ])}"
+      ]
 
-        env {
-          name  = "ENDPOINTS_SERVICE_NAME"
-          value = "api.ashdavies.dev"
-        }
-
-        ports {
-          container_port = 8081
-        }
+      env {
+        name  = "ENDPOINTS_SERVICE_NAME"
+        value = "api.ashdavies.dev"
       }
 
-      containers {
-        name  = "backend"
-        image = data.google_artifact_registry_docker_image.main.self_link
+      ports {
+        container_port = 8081
+      }
+    }
 
-        env {
-          name  = "PORT"
-          value = "8080"
-        }
+    containers {
+      name  = "backend"
+      image = data.google_artifact_registry_docker_image.main.self_link
 
-        env {
-          name  = "GOOGLE_CLOUD_PROJECT"
-          value = var.project_id
-        }
+      env {
+        name  = "PORT"
+        value = "8080"
+      }
 
-        startup_probe {
-          initial_delay_seconds = 0
-          period_seconds        = 2
-          failure_threshold     = 30
+      env {
+        name  = "GOOGLE_CLOUD_PROJECT"
+        value = var.project_id
+      }
 
-          tcp_socket {
-            port = 8080
-          }
+      startup_probe {
+        initial_delay_seconds = 0
+        period_seconds        = 2
+        failure_threshold     = 30
+
+        tcp_socket {
+          port = 8080
         }
       }
+    }
   }
 
-  location = var.project_region
+  location     = var.project_region
   launch_stage = "BETA"
 
   traffic {
