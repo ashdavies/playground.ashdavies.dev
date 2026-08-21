@@ -106,7 +106,7 @@ ktor-server-host-common = { module = "io.ktor:ktor-server-host-common", version.
 ktor-server-netty = { module = "io.ktor:ktor-server-netty", version.ref = "ktor" }
 ktor-server-test-host = { module = "io.ktor:ktor-server-test-host", version.ref = "ktor" }
 
-logback-classic = "ch.qos.logback:logback-classic:1.3.16"
+logback-classic = "ch.qos.logback:logback-classic:1.6.3"
 metro-runtime = { module = "dev.zacsweers.metro:runtime", version.ref = "metro" }
 metro-runtime-coroutines = { module = "dev.zacsweers.metro:runtime-coroutines", version.ref = "metro" }
 pinterest-ktlint-bom = "com.pinterest.ktlint:ktlint-bom:1.8.0"
