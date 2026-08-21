@@ -1,6 +1,6 @@
 locals {
   openapi_config = templatefile(var.openapi_config, {
-    backend_service_name = "http://127.0.0.1:8081"
+    backend_service_name = "http://127.0.0.1:8080"
   })
 }
 
