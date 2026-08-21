@@ -4,6 +4,7 @@ import com.auth0.jwk.UrlJwkProvider
 import dev.ashdavies.http.common.models.AppCheck
 import dev.ashdavies.http.common.models.XFirebaseAppCheck
 import io.ktor.http.HttpHeaders
+import io.ktor.http.HttpMethod
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.auth.AuthScheme
 import io.ktor.http.auth.HttpAuthHeader
@@ -12,6 +13,7 @@ import io.ktor.server.auth.AuthenticationConfig
 import io.ktor.server.auth.authenticate
 import io.ktor.server.auth.jwt.JWTPrincipal
 import io.ktor.server.auth.jwt.jwt
+import io.ktor.server.request.httpMethod
 import io.ktor.server.response.header
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
@@ -55,6 +57,8 @@ internal fun AuthenticationConfig.appCheck(projectNumber: String) {
 
         authSchemes(AuthScheme.AppCheck)
         realm = "Firebase"
+
+        skipWhen { it.request.httpMethod == HttpMethod.Options }
 
         validate { credential ->
             if (!credential.payload.subject.isNullOrEmpty()) {

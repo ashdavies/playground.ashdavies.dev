@@ -9,8 +9,9 @@
         <appender-ref ref="STDOUT"/>
     </root>
 
+    <logger name="io.ktor.auth.jwt" level="TRACE"/>
+    <logger name="io.ktor.server.plugins.cors.CORS" level="TRACE"/>
+
     <logger name="io.netty" level="INFO" />
     <logger name="io.netty.handler.logging.LoggingHandler" level="INFO" />
-
-    <logger name="io.ktor.auth.jwt" level="TRACE"/>
 </configuration>
