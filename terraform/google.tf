@@ -140,10 +140,7 @@ resource "google_cloud_run_v2_service" "main" {
 
       args = [
         "--backend=http://127.0.0.1:8080",
-        "--listener_port=8081",
-        "--rollout_strategy=managed",
-        "--service=api.ashdavies.dev",
-        "--cors_preset=basic",
+        "--cors_allow_origin=http://localhost:8081",
         "--cors_allow_credentials",
         "--cors_allow_headers=${join(",", [
           "Authorization",
@@ -156,7 +153,11 @@ resource "google_cloud_run_v2_service" "main" {
           "X-API-Key",
           "X-Firebase-App-Check",
           "X-Requested-With",
-        ])}"
+        ])}",
+        "--cors_preset=basic",
+        "--listener_port=8081",
+        "--rollout_strategy=managed",
+        "--service=api.ashdavies.dev",
       ]
 
       env {
