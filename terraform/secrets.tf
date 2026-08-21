@@ -8,7 +8,7 @@ resource "github_actions_secret" "main" {
     FASTLANE_SERVICE_ACCOUNT_KEY = google_service_account_key.fastlane_supply_key.private_key
     FIREBASE_GOOGLE_SERVICES     = data.google_firebase_android_app_config.android_release.config_file_contents
     GH_APP_ID                    = data.onepassword_item.github_developer_application.section_map[""].field_map["app id"].value
-    GH_PRIVATE_KEY               = base64encode(data.onepassword_item.github_developer_application.private_key)
+    GH_PRIVATE_KEY               = data.onepassword_item.github_developer_application.private_key
     GOOGLE_SERVICE_ACCOUNT_ID    = module.github_service_account.email
     KEYSTORE_FILE                = data.onepassword_item.android_keystore.file[0].content_base64
     KEYSTORE_PASSWORD            = data.onepassword_item.android_keystore.section_map[""].field_map["password"].value

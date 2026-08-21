@@ -24,10 +24,10 @@ jobs:
           token_format: access_token
 
       - id: app-token
-        uses: ./.github/actions/github-token
+        uses: actions/create-github-app-token@v3
         with:
-          app_id: ${{ secrets.GH_APP_ID }}
-          private_key: ${{ secrets.GH_PRIVATE_KEY }}
+          client-id: ${{ secrets.GH_APP_ID }}
+          private-key: ${{ secrets.GH_PRIVATE_KEY }}
 
       - uses: hashicorp/setup-terraform@v4
         with:
