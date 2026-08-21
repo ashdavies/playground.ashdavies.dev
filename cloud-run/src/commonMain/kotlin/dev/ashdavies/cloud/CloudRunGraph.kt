@@ -30,6 +30,7 @@ import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.server.plugins.cors.CORSConfig
 import io.ktor.server.plugins.cors.routing.CORS
 import io.ktor.server.plugins.defaultheaders.DefaultHeaders
+import io.ktor.server.plugins.forwardedheaders.ForwardedHeaders
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.Routing
 import io.ktor.server.routing.routing
@@ -71,6 +72,8 @@ internal fun Application.main(routes: Set<CloudRunRoute>) {
     install(DefaultHeaders) {
         header(HttpHeaders.XVersionName, BuildConfig.VERSION_NAME)
     }
+
+    install(ForwardedHeaders)
 
     routing(routes)
 }
