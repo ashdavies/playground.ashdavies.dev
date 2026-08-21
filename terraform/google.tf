@@ -139,7 +139,7 @@ resource "google_cloud_run_v2_service" "main" {
         image = "gcr.io/endpoints-release/endpoints-runtime-serverless:2"
 
         args = [
-          "--backend=http://127.0.0.1:8081",
+          "--backend=http://127.0.0.1:8080",
           "--listener_port=8080",
           "--rollout_strategy=managed",
           "--service=api.ashdavies.dev"
@@ -151,7 +151,7 @@ resource "google_cloud_run_v2_service" "main" {
         }
 
         ports {
-          container_port = 8080
+          container_port = 8081
         }
       }
 
@@ -161,7 +161,7 @@ resource "google_cloud_run_v2_service" "main" {
 
         env {
           name  = "PORT"
-          value = "8081"
+          value = "8080"
         }
 
         env {
@@ -175,7 +175,7 @@ resource "google_cloud_run_v2_service" "main" {
           failure_threshold     = 30
 
           tcp_socket {
-            port = 8081
+            port = 8080
           }
         }
       }
