@@ -151,7 +151,7 @@ resource "google_cloud_run_v2_service" "main" {
           "Range",
           "User-Agent",
           "X-API-Key",
-          "X-Firebase-App-Check",
+          "X-Firebase-AppCheck",
           "X-Requested-With",
         ])}",
         "--cors_preset=basic",
