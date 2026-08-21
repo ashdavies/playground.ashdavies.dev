@@ -140,7 +140,7 @@ resource "google_cloud_run_v2_service" "main" {
 
         args = [
           "--backend=http://127.0.0.1:8080",
-          "--listener_port=8080",
+          "--listener_port=8081",
           "--rollout_strategy=managed",
           "--service=api.ashdavies.dev"
         ]
