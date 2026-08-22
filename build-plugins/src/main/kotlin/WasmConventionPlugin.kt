@@ -15,6 +15,7 @@ internal class WasmConventionPlugin : Plugin<Project> {
 
                 browser {
                     commonWebpackConfig {
+                        devServer?.port = 8081
                         sourceMaps = true
                     }
                 }

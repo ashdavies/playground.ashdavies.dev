@@ -116,4 +116,3 @@ x-google-backend:
   address: "${backend_service_name}"
 x-google-endpoints:
   - name: "api.ashdavies.dev"
-    allowCors: true
