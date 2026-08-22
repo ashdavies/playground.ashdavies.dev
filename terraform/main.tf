@@ -13,7 +13,7 @@ resource "google_project_service" "main" {
   project = var.project_id
 }
 
-resource "google_project_iam_custom_role" "main" {
+resource "google_project_iam_custom_role" "actions_publisher" {
   description = "Can create, update, and delete services necessary for the automatic deployment"
   title       = "GitHub Actions Publisher"
   role_id     = "actionsPublisher"
@@ -63,6 +63,19 @@ resource "google_project_iam_custom_role" "main" {
     "storage.objects.delete",
     "storage.objects.get",
     "storage.objects.list",
+  ]
+}
+
+resource "google_project_iam_custom_role" "cloud_run" {
+  description = "Includes necessary permissions for Cloud Run backend"
+  title       = "Cloud Run Executor"
+  role_id     = "runExecutor"
+  permissions = [
+    "datastore.entities.create",
+    "datastore.entities.delete",
+    "datastore.entities.get",
+    "datastore.entities.list",
+    "datastore.entities.update",
   ]
 }
 
