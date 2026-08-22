@@ -134,17 +134,11 @@ resource "google_cloud_run_v2_service" "main" {
   name = "playground-service"
 
   template {
-<<<<<<< Updated upstream
-    containers {
-      name  = "gateway"
-      image = "gcr.io/endpoints-release/endpoints-runtime-serverless:2"
-=======
     service_account = module.backend_service_account.email
 
     containers {
-        name  = "gateway"
-        image = "gcr.io/endpoints-release/endpoints-runtime-serverless:2"
->>>>>>> Stashed changes
+      name  = "gateway"
+      image = "gcr.io/endpoints-release/endpoints-runtime-serverless:2"
 
       args = [
         "--backend=http://127.0.0.1:8080",
