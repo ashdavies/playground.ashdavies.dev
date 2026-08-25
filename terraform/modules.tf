@@ -2,9 +2,9 @@ module "backend_service_account" {
   source       = "terraform-google-modules/service-accounts/google"
   version      = "4.7.0"
   display_name = "Backend Service Account"
-  names        = ["backend"]
+  names        = ["cloud-backend"]
   project_id   = var.project_id
-  project_roles = ["${var.project_id}=>${google_project_iam_custom_role.cloud_run.id}"]
+  project_roles = ["${var.project_id}=>${google_project_iam_custom_role.run_executor.id}"]
 }
 
 module "endpoint_iam_binding" {
