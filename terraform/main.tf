@@ -75,6 +75,11 @@ resource "google_project_iam_custom_role" "run_executor" {
     "run.instances.invoke",
     "run.jobs.run",
     "run.routes.invoke",
+    "servicemanagement.services.check",
+    "servicemanagement.services.get",
+    "servicemanagement.services.list",
+    "servicemanagement.services.report",
+
   ]
   stage      = "BETA"
 }
