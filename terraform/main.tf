@@ -13,9 +13,9 @@ resource "google_project_service" "main" {
   project = var.project_id
 }
 
-resource "google_project_iam_custom_role" "main" {
-  description = "Can create, update, and delete services necessary for the automatic deployment"
+resource "google_project_iam_custom_role" "actions_publisher" {
   title       = "GitHub Actions Publisher"
+  description = "Managed by Terraform"
   role_id     = "actionsPublisher"
   permissions = [
     "apigateway.apiconfigs.create",
@@ -64,6 +64,19 @@ resource "google_project_iam_custom_role" "main" {
     "storage.objects.get",
     "storage.objects.list",
   ]
+  stage = "BETA"
+}
+
+resource "google_project_iam_custom_role" "run_executor" {
+  title       = "Cloud Run Executor"
+  description = "Managed by Terraform"
+  role_id     = "runExecutor"
+  permissions = [
+    "run.instances.invoke",
+    "run.jobs.run",
+    "run.routes.invoke",
+  ]
+  stage      = "BETA"
 }
 
 resource "google_service_account_key" "fastlane_supply_key" {

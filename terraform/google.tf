@@ -134,6 +134,8 @@ resource "google_cloud_run_v2_service" "main" {
   name = "playground-service"
 
   template {
+    service_account = module.backend_service_account.email
+
     containers {
       name  = "gateway"
       image = "gcr.io/endpoints-release/endpoints-runtime-serverless:2"
