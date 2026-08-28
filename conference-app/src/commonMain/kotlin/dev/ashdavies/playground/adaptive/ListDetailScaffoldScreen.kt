@@ -19,16 +19,13 @@ import com.slack.circuit.foundation.CircuitContent
 import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.screen.Screen
 import com.slack.circuit.runtime.ui.Ui
-import dev.ashdavies.parcelable.Parcelable
-import dev.ashdavies.parcelable.Parcelize
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 
-@Parcelize
 @Serializable
-internal data class ListDetailScaffoldScreen(val initialScreen: Screen) : Parcelable, Screen {
+internal data class ListDetailScaffoldScreen(val initialScreen: Screen) : Screen {
     data class State(val initialScreen: Screen) : CircuitUiState
 }
 
