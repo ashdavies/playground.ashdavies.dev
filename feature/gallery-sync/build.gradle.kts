@@ -5,7 +5,6 @@ plugins {
     id("dev.ashdavies.compose")
     id("dev.ashdavies.jvm")
     id("dev.ashdavies.kotlin")
-    id("dev.ashdavies.parcelable")
     id("dev.ashdavies.wasm")
 
     alias(libs.plugins.cash.sqldelight)

@@ -56,11 +56,6 @@ gradlePlugin {
             id = "dev.ashdavies.kotlin"
         }
 
-        register("parcelableConventionPlugin") {
-            implementationClass = "ParcelableConventionPlugin"
-            id = "dev.ashdavies.parcelable"
-        }
-
         register("wasmConventionPlugin") {
             implementationClass = "WasmConventionPlugin"
             id = "dev.ashdavies.wasm"

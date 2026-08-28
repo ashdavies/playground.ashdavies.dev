@@ -14,7 +14,6 @@ plugins {
     id("dev.ashdavies.integration")
     id("dev.ashdavies.jvm")
     id("dev.ashdavies.kotlin")
-    id("dev.ashdavies.parcelable")
     id("dev.ashdavies.properties")
     id("dev.ashdavies.wasm")
 

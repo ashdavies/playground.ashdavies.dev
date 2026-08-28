@@ -69,7 +69,6 @@ include(
     ":kotlin-gb",
     ":maps-routing",
     ":metro-extensions",
-    ":parcelable-support",
     ":platform-support",
     ":remote-config",
     ":sql-driver",
