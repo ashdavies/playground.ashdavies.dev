@@ -34,6 +34,7 @@ resource "google_project_iam_custom_role" "actions_publisher" {
     "firebase.clients.get",
     "firebase.projects.get",
     "firebasehosting.sites.get",
+    "iam.roles.update",
     "iam.serviceAccountKeys.create",
     "iam.serviceAccountKeys.get",
     "iam.serviceAccounts.actAs",
@@ -75,8 +76,13 @@ resource "google_project_iam_custom_role" "run_executor" {
     "run.instances.invoke",
     "run.jobs.run",
     "run.routes.invoke",
+    "servicemanagement.services.check",
+    "servicemanagement.services.get",
+    "servicemanagement.services.list",
+    "servicemanagement.services.report",
+
   ]
-  stage      = "BETA"
+  stage = "BETA"
 }
 
 resource "google_service_account_key" "fastlane_supply_key" {
