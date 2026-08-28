@@ -2,7 +2,6 @@ plugins {
     id("dev.ashdavies.android.library")
     id("dev.ashdavies.jvm")
     id("dev.ashdavies.kotlin")
-    id("dev.ashdavies.parcelable")
     id("dev.ashdavies.wasm")
 
     alias(libs.plugins.cash.sqldelight)

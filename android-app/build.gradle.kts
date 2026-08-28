@@ -2,7 +2,6 @@ plugins {
     id("dev.ashdavies.android.application")
     id("dev.ashdavies.compose")
     id("dev.ashdavies.kotlin")
-    id("dev.ashdavies.parcelable")
     id("dev.ashdavies.properties")
 
     alias(libs.plugins.cash.paparazzi)
