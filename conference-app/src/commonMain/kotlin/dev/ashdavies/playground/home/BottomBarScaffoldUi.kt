@@ -1,6 +1,5 @@
 package dev.ashdavies.playground.home
 
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
@@ -12,8 +11,6 @@ import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.screen.Screen
 import com.slack.circuit.runtime.ui.Ui
 import dev.ashdavies.identity.IdentityState
-import dev.ashdavies.parcelable.Parcelable
-import dev.ashdavies.parcelable.Parcelize
 import dev.ashdavies.playground.activity.FullyDrawnReporter
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.Inject
@@ -21,9 +18,8 @@ import kotlinx.collections.immutable.PersistentList
 import kotlinx.serialization.Serializable
 import org.jetbrains.compose.resources.StringResource
 
-@Parcelize
 @Serializable
-internal object BottomBarScaffoldScreen : Parcelable, Screen {
+internal object BottomBarScaffoldScreen : Screen {
     sealed interface Event : CircuitUiEvent {
         data class ChildNav(val navEvent: NavEvent) : Event
         data class BottomNav(val screen: Screen) : Event
