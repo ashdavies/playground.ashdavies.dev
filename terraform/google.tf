@@ -140,6 +140,7 @@ resource "google_cloud_run_v2_service" "main" {
       name  = "gateway"
       image = "gcr.io/endpoints-release/endpoints-runtime-serverless:2"
 
+<<<<<<< Updated upstream
       args = [
         "--backend=http://127.0.0.1:8080",
         "--cors_allow_origin=http://localhost:8081",
@@ -162,9 +163,36 @@ resource "google_cloud_run_v2_service" "main" {
         "--service=api.ashdavies.dev",
       ]
 
+=======
+>>>>>>> Stashed changes
       env {
         name  = "ENDPOINTS_SERVICE_NAME"
         value = "api.ashdavies.dev"
+      }
+
+      env {
+        name = "ESPv2_ARGS"
+        value = "^++^${join("++", [
+          "--backend=http://127.0.0.1:8080",
+          "--cors_allow_origin=http://localhost:8081",
+          "--cors_allow_credentials",
+          "--cors_allow_headers=${join(",", [
+            "Authorization",
+            "Cache-Control",
+            "Content-Type",
+            "DNT",
+            "If-Modified-Since",
+            "Range",
+            "User-Agent",
+            "X-API-Key",
+            "X-Firebase-AppCheck",
+            "X-Requested-With",
+          ])}",
+          "--cors_preset=basic",
+          "--listener_port=8081",
+          "--rollout_strategy=managed",
+          "--service=api.ashdavies.dev",
+        ])}"
       }
 
       ports {
