@@ -141,7 +141,7 @@ resource "google_cloud_run_v2_service" "main" {
       image = "gcr.io/endpoints-release/endpoints-runtime-serverless:2"
 
       args = [
-        "--backend=http://127.0.0.1:8080",
+        "^++^--backend=http://127.0.0.1:8080",
         "--cors_allow_origin=http://localhost:8081",
         "--cors_allow_credentials",
         "--cors_allow_headers=${join(",", [
