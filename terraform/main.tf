@@ -73,6 +73,9 @@ resource "google_project_iam_custom_role" "run_executor" {
   description = "Managed by Terraform"
   role_id     = "runExecutor"
   permissions = [
+    "datastore.databases.get",
+    "datastore.entities.get",
+    "datastore.entities.list",
     "run.instances.invoke",
     "run.jobs.run",
     "run.routes.invoke",
@@ -80,7 +83,6 @@ resource "google_project_iam_custom_role" "run_executor" {
     "servicemanagement.services.get",
     "servicemanagement.services.list",
     "servicemanagement.services.report",
-
   ]
   stage = "BETA"
 }
