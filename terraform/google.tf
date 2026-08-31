@@ -164,7 +164,6 @@ resource "google_cloud_run_v2_service" "main" {
             "X-Requested-With",
           ])}",
           "--cors_preset=basic",
-          "--listener_port=8081",
           "--rollout_strategy=managed",
           "--service=api.ashdavies.dev",
         ])}"
