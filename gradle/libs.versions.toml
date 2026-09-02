@@ -55,7 +55,7 @@ compose-ui = { module = "org.jetbrains.compose.ui:ui", version.ref = "compose-pl
 compose-uiTooling = { module = "org.jetbrains.compose.ui:ui-tooling", version.ref = "compose-plugin" }
 compose-uiToolingPreview = { module = "org.jetbrains.compose.ui:ui-tooling-preview", version.ref = "compose-plugin" }
 
-detekt-compose = "io.nlopez.compose.rules:detekt:0.6.4"
+detekt-compose = "io.nlopez.compose.rules:detekt:0.6.6"
 
 google-accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "google-accompanist" }
 google-android-identity = "com.google.android.libraries.identity.googleid:googleid:1.2.0"
