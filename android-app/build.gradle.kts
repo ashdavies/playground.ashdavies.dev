@@ -65,6 +65,7 @@ android {
 
 dependencies {
     implementation(projects.conferenceApp)
+    implementation(projects.uiComponents)
 
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.core.splashscreen)
@@ -97,6 +98,7 @@ dependencies {
     testImplementation(libs.circuit.runtime)
     testImplementation(libs.compose.components.resources)
     testImplementation(libs.compose.material3)
+    testImplementation(libs.compose.materialIconsExtended)
     testImplementation(libs.kotlinx.collections.immutable)
     testImplementation(libs.kotlinx.datetime)
     testImplementation(libs.kotlinx.serialization.json)
