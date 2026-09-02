@@ -48,6 +48,7 @@ resource "google_project_iam_custom_role" "actions_publisher" {
     "iam.workloadIdentityPools.get",
     "iam.workloadIdentityPools.getAttestationRules",
     "resourcemanager.projects.get",
+    "resourcemanager.projects.getIamPolicy",
     "run.domainmappings.get",
     "run.services.get",
     "run.services.getIamPolicy",
