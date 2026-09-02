@@ -25,6 +25,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dev.ashdavies.playground.material.dynamicColorScheme
+import dev.ashdavies.playground.material.sizing
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
@@ -46,7 +47,7 @@ public fun ErrorLayout(
                 Surface(
                     shape = CircleShape,
                     color = MaterialTheme.colorScheme.surfaceContainerHigh,
-                    modifier = Modifier.size(72.dp),
+                    modifier = Modifier.size(MaterialTheme.sizing.icon.large),
                 ) {
                     Box(
                         contentAlignment = Alignment.Center,
@@ -55,7 +56,7 @@ public fun ErrorLayout(
                         Icon(
                             imageVector = icon,
                             contentDescription = null,
-                            modifier = Modifier.size(32.dp),
+                            modifier = Modifier.size(MaterialTheme.sizing.icon.medium),
                             tint = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
                     }
@@ -84,13 +85,12 @@ public fun ErrorLayout(
                 }
             }
 
-
             if (onRefresh != null) {
                 FilledTonalButton(onRefresh) {
                     Icon(
                         imageVector = Icons.Default.Refresh,
                         contentDescription = null,
-                        modifier = Modifier.size(18.dp),
+                        modifier = Modifier.size(MaterialTheme.sizing.icon.small),
                     )
 
                     Spacer(Modifier.width(8.dp))
