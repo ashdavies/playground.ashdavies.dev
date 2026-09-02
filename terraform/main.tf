@@ -34,6 +34,7 @@ resource "google_project_iam_custom_role" "actions_publisher" {
     "firebase.clients.get",
     "firebase.projects.get",
     "firebasehosting.sites.get",
+    "iam.roles.get",
     "iam.roles.update",
     "iam.serviceAccountKeys.create",
     "iam.serviceAccountKeys.get",
