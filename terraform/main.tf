@@ -51,6 +51,7 @@ resource "google_project_iam_custom_role" "actions_publisher" {
     "resourcemanager.projects.get",
     "resourcemanager.projects.getIamPolicy",
     "run.domainmappings.get",
+    "run.operations.get",
     "run.services.get",
     "run.services.getIamPolicy",
     "run.services.update",
