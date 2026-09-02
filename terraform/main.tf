@@ -28,6 +28,7 @@ resource "google_project_iam_custom_role" "actions_publisher" {
     "apikeys.keys.getKeyString",
     "apikeys.keys.update",
     "artifactregistry.dockerimages.list",
+    "artifactregistry.repositories.downloadArtifacts",
     "artifactregistry.repositories.get",
     "artifactregistry.repositories.uploadArtifacts",
     "cloudbuild.builds.create",
