@@ -2,7 +2,7 @@ package dev.ashdavies.playground.routes
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import dev.ashdavies.playground.ui.OperationNotImplemented
+import dev.ashdavies.playground.ui.ErrorLayout
 
 @Composable
 internal actual fun RoutesMap(
@@ -10,5 +10,5 @@ internal actual fun RoutesMap(
     onEndPosition: (LatLng) -> Unit,
     modifier: Modifier,
 ) {
-    OperationNotImplemented()
+    ErrorLayout("Not Implemented")
 }

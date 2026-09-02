@@ -11,6 +11,10 @@ compose.resources {
     publicResClass = true
 }
 
+dependencies {
+    androidRuntimeClasspath(libs.compose.uiTooling)
+}
+
 kotlin {
     android {
         namespace = "dev.ashdavies.playground.ui"
@@ -25,6 +29,8 @@ kotlin {
             implementation(libs.compose.foundation)
             implementation(libs.compose.material3)
             implementation(libs.compose.materialIconsExtended)
+            implementation(libs.compose.uiToolingPreview)
+
             implementation(libs.kotlinx.datetime)
         }
     }
