@@ -33,8 +33,8 @@ jobs:
     needs: [ publish_release_version ]
     uses: ./.github/workflows/android-release.yml
     with:
-      version_code: ${{ needs.version.outputs.code }}
-      version_name: ${{ needs.version.outputs.name }}
+      version_code: ${{ needs.publish_release_version.outputs.code }}
+      version_name: ${{ needs.publish_release_version.outputs.name }}
     secrets:
       ANDROID_API_KEY: ${{ secrets.ANDROID_API_KEY }}
       FASTLANE_SERVICE_ACCOUNT_KEY: ${{ secrets.FASTLANE_SERVICE_ACCOUNT_KEY }}
@@ -68,8 +68,8 @@ jobs:
           bundle exec fastlane android github \
             repository_name:"${{ github.repository }}" \
             api_bearer:"${{ secrets.GITHUB_TOKEN }}" \
-            tag_name:"v${{ needs.version.outputs.name }}" \
-            name:"Release v${{ needs.version.outputs.name }}" \
+            tag_name:"v${{ needs.publish_release_version.outputs.name }}" \
+            name:"Release v${{ needs.publish_release_version.outputs.name }}" \
             commitish:"${{ github.sha }}"
 
   publish_release_play:
@@ -99,7 +99,7 @@ jobs:
     needs: [ publish_release_version ]
     uses: ./.github/workflows/web-release.yml
     with:
-      version_name: ${{ needs.version.outputs.name }}
+      version_name: ${{ needs.publish_release_version.outputs.name }}
     secrets:
       BROWSER_API_KEY: ${{ secrets.BROWSER_API_KEY }}
       BROWSER_APP_ID: ${{ secrets.BROWSER_APP_ID }}

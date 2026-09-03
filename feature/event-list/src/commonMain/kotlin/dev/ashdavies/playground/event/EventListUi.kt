@@ -45,6 +45,7 @@ import dev.ashdavies.playground.material.values
 import dev.ashdavies.playground.ui.CenterAlignedTopAppBar
 import dev.ashdavies.playground.ui.DateRangeBadge
 import dev.ashdavies.playground.ui.DateRangeBadgeState
+import dev.ashdavies.playground.ui.ErrorLayout
 import dev.ashdavies.playground.ui.Res
 import dev.ashdavies.playground.ui.call_for_papers_open
 import dev.ashdavies.playground.ui.emptyString
@@ -66,65 +67,63 @@ import kotlin.time.Clock
 public fun EventListUi(state: EventListState, modifier: Modifier = Modifier) {
     Scaffold(
         modifier = modifier,
-        topBar = {
-            CenterAlignedTopAppBar(stringResource(Res.string.upcoming_events))
-        },
+        topBar = { CenterAlignedTopAppBar(stringResource(Res.string.upcoming_events)) },
     ) { contentPadding ->
-        PullToRefreshBox(
-            isRefreshing = false,
-            onRefresh = { state.eventSink(EventListState.Event.Refresh) },
-            modifier = Modifier.padding(contentPadding),
+        when (state) {
+            is EventListState.Success -> EventListContent(
+                state = state,
+                modifier = Modifier.padding(contentPadding),
+            )
+
+            is EventListState.Failure -> ErrorLayout(
+                message = state.message,
+                icon = state.icon,
+            )
+        }
+    }
+}
+
+@Composable
+private fun EventListContent(
+    state: EventListState.Success,
+    modifier: Modifier = Modifier,
+) {
+    PullToRefreshBox(
+        isRefreshing = false,
+        onRefresh = { state.eventSink(EventListState.Success.Event.Refresh) },
+        modifier = modifier,
+    ) {
+        LazyColumn(
+            modifier = Modifier.fillMaxSize(),
+            contentPadding = MaterialTheme.spacing.large.values,
+            verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.large.vertical),
         ) {
-            LazyColumn(
-                modifier = Modifier.fillMaxSize(),
-                contentPadding = MaterialTheme.spacing.large.values,
-                verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.large.vertical),
-            ) {
-                if (state.errorMessage != null) {
-                    item {
-                        Card(
-                            modifier = modifier
-                                .fillMaxWidth()
-                                .padding(MaterialTheme.spacing.large),
-                            colors = CardDefaults.cardColors(
-                                containerColor = MaterialTheme.colorScheme.errorContainer,
-                                contentColor = MaterialTheme.colorScheme.onErrorContainer,
-                            ),
-                        ) {
-                            Text(
-                                text = state.errorMessage,
-                                modifier = Modifier.padding(MaterialTheme.spacing.large),
-                                style = MaterialTheme.typography.bodyMedium,
-                            )
-                        }
-                    }
-                }
+            itemsIndexed(state.itemList) { index, item ->
+                val modifier = Modifier
+                    .animateItem()
+                    .fillMaxWidth()
+                    .clip(MaterialTheme.shapes.medium)
 
-                itemsIndexed(state.itemList) { index, item ->
-                    val modifier = Modifier
-                        .animateItem()
-                        .fillMaxWidth()
-                        .clip(MaterialTheme.shapes.medium)
+                when {
+                    item != null -> EventListItemContent(
+                        event = item,
+                        isRefreshing = state.isRefreshing,
+                        isSelected = index == state.selectedIndex,
+                        onCfpClick = item.cfpSite?.let {
+                            { state.eventSink(EventListState.Success.Event.ItemCfpClick(it)) }
+                        },
+                        modifier = modifier
+                            .clickable { state.eventSink(EventListState.Success.Event.ItemClick(item.id)) }
+                            .paint(rememberBackgroundPainter(item.imageUrl)),
+                    )
 
-                    when {
-                        item != null -> EventItemContent(
-                            event = item,
-                            isRefreshing = state.isRefreshing,
-                            isSelected = index == state.selectedIndex,
-                            onCfpClick = item.cfpSite?.let { { state.eventSink(EventListState.Event.ItemCfpClick(it)) } },
-                            modifier = modifier
-                                .clickable { state.eventSink(EventListState.Event.ItemClick(item.id)) }
-                                .paint(rememberBackgroundPainter(item.imageUrl)),
-                        )
-
-                        else -> EventItemContent(
-                            event = null,
-                            isRefreshing = state.isRefreshing,
-                            isSelected = false,
-                            onCfpClick = { },
-                            modifier = modifier,
-                        )
-                    }
+                    else -> EventListItemContent(
+                        event = null,
+                        isRefreshing = state.isRefreshing,
+                        isSelected = false,
+                        onCfpClick = { },
+                        modifier = modifier,
+                    )
                 }
             }
         }
@@ -132,7 +131,7 @@ public fun EventListUi(state: EventListState, modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun EventItemContent(
+private fun EventListItemContent(
     event: Event?,
     isRefreshing: Boolean,
     isSelected: Boolean,

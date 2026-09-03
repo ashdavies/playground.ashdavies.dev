@@ -1,6 +1,7 @@
 package dev.ashdavies.playground.http
 
 import com.google.firebase.appcheck.FirebaseAppCheck
+import dev.ashdavies.analytics.RemoteAnalytics
 import dev.ashdavies.http.common.models.AppCheckToken
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesTo
@@ -11,7 +12,7 @@ import kotlinx.coroutines.tasks.await
 internal interface AppCheckTokenProvider {
 
     @Provides
-    suspend fun appCheckToken(): AppCheckToken = AppCheckToken(
+    suspend fun appCheckToken(analytics: RemoteAnalytics): AppCheckToken = AppCheckToken(
         token = FirebaseAppCheck.getInstance()
             .getAppCheckToken(true)
             .await()

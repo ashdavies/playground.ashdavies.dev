@@ -1,5 +1,7 @@
 package dev.ashdavies.playground.event
 
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.CloudOff
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.produceState
@@ -43,39 +45,46 @@ internal class EventListPresenter(
             val coroutineScope = retainCoroutineScope()
             val pagingData = retain { it.flow.cachedIn(coroutineScope) }
             pagingData.collectAsLazyPagingItems()
-        } ?: return EventListState(
+        } ?: return EventListState.Success(
             itemList = persistentListOf(),
             selectedIndex = null,
             isRefreshing = true,
-            errorMessage = null,
             eventSink = { },
         )
 
+        val error = (pagingItems.loadState.refresh as? LoadState.Error)?.error
+        if (error != null) {
+            remoteAnalytics.recordException(error)
+
+            return EventListState.Failure(
+                icon = Icons.Outlined.CloudOff,
+                message = error.message
+                    ?.substringAfterLast(":")
+                    ?: error.message,
+            )
+        }
+
         val uriHandler = LocalUriHandler.current
 
-        return EventListState(
+        return EventListState.Success(
             itemList = pagingItems
                 .itemSnapshotList
                 .toImmutableList(),
             selectedIndex = null,
             isRefreshing = pagingItems.loadState.refresh is LoadState.Loading,
-            errorMessage = pagingItems.loadState.refresh
-                .let { (it as? LoadState.Error)?.error }
-                ?.also(remoteAnalytics::recordException)
-                ?.message,
         ) { event ->
             when (event) {
-                is EventListState.Event.ItemClick -> {
+                is EventListState.Success.Event.ItemClick -> {
                     remoteAnalytics.logEvent("events_click") { param("id", "${event.id}") }
                     navigator.goTo(EventScreen.Detail(event.id))
                 }
 
-                is EventListState.Event.ItemCfpClick -> {
+                is EventListState.Success.Event.ItemCfpClick -> {
                     remoteAnalytics.logEvent("events_cfp_click") { param("id", event.uri) }
                     uriHandler.openUri(event.uri)
                 }
 
-                is EventListState.Event.Refresh -> {
+                is EventListState.Success.Event.Refresh -> {
                     remoteAnalytics.logEvent("events_refresh")
                     pagingItems.refresh()
                 }

@@ -43,7 +43,11 @@ private class AppCheckAuthProvider(
     private val holder = AtomicReference<AppCheckToken?>(null)
     private val mutex = Mutex()
 
-    @Deprecated("Please use sendWithoutRequest function instead", level = DeprecationLevel.ERROR)
+    @Deprecated(
+        message = "Please use sendWithoutRequest function instead",
+        replaceWith = ReplaceWith("error(\"Deprecated\")"),
+        level = DeprecationLevel.ERROR,
+    )
     override val sendWithoutRequest: Boolean
         get() = error("Deprecated")
 

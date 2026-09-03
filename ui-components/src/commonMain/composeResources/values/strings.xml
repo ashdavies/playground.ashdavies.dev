@@ -11,4 +11,8 @@
     <string name="past_events">Past Events</string>
     <string name="routes">Routes</string>
     <string name="upcoming_events">Upcoming Events</string>
+
+    <string name="operation_not_implemented">Operation Not Implemented</string>
+    <string name="something_went_wrong">Something went wrong</string>
+    <string name="retry">Retry</string>
 </resources>

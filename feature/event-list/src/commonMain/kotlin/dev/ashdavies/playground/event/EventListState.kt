@@ -1,20 +1,28 @@
 package dev.ashdavies.playground.event
 
+import androidx.compose.ui.graphics.vector.ImageVector
 import com.slack.circuit.runtime.CircuitUiState
 import kotlinx.collections.immutable.ImmutableList
 
-public data class EventListState(
-    val itemList: ImmutableList<dev.ashdavies.playground.event.Event?>,
-    val selectedIndex: Int?,
-    val isRefreshing: Boolean,
-    val errorMessage: String?,
-    val eventSink: (Event) -> Unit,
-) : CircuitUiState {
+public sealed interface EventListState : CircuitUiState {
 
-    public sealed interface Event {
-        public data class ItemClick(val id: Long) : Event
-        public data class ItemCfpClick(val uri: String) : Event
+    public data class Success(
+        val itemList: ImmutableList<dev.ashdavies.playground.event.Event?>,
+        val selectedIndex: Int?,
+        val isRefreshing: Boolean,
+        val eventSink: (Event) -> Unit,
+    ) : EventListState {
 
-        public data object Refresh : Event
+        public sealed interface Event {
+            public data class ItemClick(val id: Long) : Event
+            public data class ItemCfpClick(val uri: String) : Event
+
+            public data object Refresh : Event
+        }
     }
+
+    public data class Failure(
+        val icon: ImageVector,
+        val message: String?,
+    ) : EventListState
 }
