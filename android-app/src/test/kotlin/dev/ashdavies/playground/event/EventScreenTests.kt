@@ -1,20 +1,25 @@
 package dev.ashdavies.playground.event
 
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.CloudOff
 import app.cash.paparazzi.Paparazzi
 import dev.ashdavies.asg.AsgConference
+import dev.ashdavies.playground.event.EventListState.Failure
 import dev.ashdavies.playground.event.detail.EventDetailState
 import dev.ashdavies.playground.event.detail.EventsDetailUi
 import dev.ashdavies.playground.event.grid.EventGridState
 import dev.ashdavies.playground.event.grid.EventGridUi
 import dev.ashdavies.playground.tooling.MaterialPreviewTheme
+import dev.ashdavies.playground.ui.Res
+import dev.ashdavies.playground.ui.operation_not_implemented
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.datetime.LocalDate
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.decodeFromStream
+import org.jetbrains.compose.resources.stringResource
 import org.junit.Rule
 import org.junit.Test
-import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
 internal class EventScreenTests {
@@ -27,14 +32,27 @@ internal class EventScreenTests {
         paparazzi.snapshot {
             MaterialPreviewTheme {
                 EventListUi(
-                    state = EventListState(
+                    state = EventListState.Success(
                         itemList = Json
                             .upcomingEvents()
                             .toImmutableList(),
                         selectedIndex = null,
                         isRefreshing = false,
-                        errorMessage = null,
                         eventSink = { },
+                    ),
+                )
+            }
+        }
+    }
+
+    @Test
+    fun eventListFailure() {
+        paparazzi.snapshot {
+            MaterialPreviewTheme {
+                EventListUi(
+                    state = Failure(
+                        icon = Icons.Outlined.CloudOff,
+                        message = stringResource(Res.string.operation_not_implemented),
                     ),
                 )
             }
@@ -86,6 +104,7 @@ private fun Event.toEventGridStateItem(): EventGridState.Item {
     )
 }
 
+@OptIn(ExperimentalSerializationApi::class)
 internal fun Json.upcomingEvents(): List<Event> = decodeFromStream<List<AsgConference>>(
     stream = Event::class.java
         .getResource("/upcoming.json")

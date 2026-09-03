@@ -49,5 +49,5 @@ internal class ErrorHandlingUpcomingEventsCallable(
 @Serializable
 internal data class GetEventsError(
     override val message: String,
-    val code: String,
+    val code: Int,
 ) : Throwable()
