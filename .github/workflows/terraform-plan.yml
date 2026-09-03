@@ -31,7 +31,7 @@ jobs:
 
       - uses: hashicorp/setup-terraform@v4
         with:
-          terraform_version: 1.16.0
+          terraform_version: 1.16.1
 
       - uses: terraform-linters/setup-tflint@v6
         with:
