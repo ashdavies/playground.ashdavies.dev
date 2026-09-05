@@ -119,7 +119,7 @@ sqldelight-sqlite-dialect = { module = "app.cash.sqldelight:sqlite-3-38-dialect"
 sqldelight-sqlite-driver = { module = "app.cash.sqldelight:sqlite-driver", version.ref = "cash-sqldelight" }
 sqldelight-web-driver = { module = "app.cash.sqldelight:web-worker-driver", version.ref = "cash-sqldelight" }
 
-squareup-okio = "com.squareup.okio:okio:3.18.1"
+squareup-okio = "com.squareup.okio:okio:3.18.2"
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "google-android" }
