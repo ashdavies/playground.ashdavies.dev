@@ -149,7 +149,6 @@ resource "google_cloud_run_v2_service" "main" {
         name = "ESPv2_ARGS"
         value = "^++^${join("++", [
           "--backend=http://127.0.0.1:8080",
-          "--cors_allow_origin=http://localhost:8081",
           "--cors_allow_credentials",
           "--cors_allow_headers=${join(",", [
             "Authorization",
@@ -163,7 +162,8 @@ resource "google_cloud_run_v2_service" "main" {
             "X-Firebase-AppCheck",
             "X-Requested-With",
           ])}",
-          "--cors_preset=basic",
+          "--cors_allow_origin_regex=^https?://(localhost(:[0-9]+)?|playground[.]ashdavies[.]dev)$",
+          "--cors_preset=cors_with_regex",
           "--rollout_strategy=managed",
           "--service=api.ashdavies.dev",
         ])}"
