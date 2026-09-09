@@ -21,19 +21,23 @@
 
         const res = await fetch('/__/firebase/init.json');
         const config = await res.json();
-        const app = initializeApp(config);
 
         // self.FIREBASE_APPCHECK_DEBUG_TOKEN = true;
-        const appCheck = initializeAppCheck(app, {
-          provider: new ReCaptchaV3Provider('6LeQL20tAAAAAEKopAOvgb1zmUajeRuVZfdTzvUB'),
+        const appCheck = initializeAppCheck(initializeApp(config), {
+          provider: new ReCaptchaV3Provider('6Le4n7ItAAAAAOKLcOA5zinjPnoEXBszNjBgT_VJ'),
           isTokenAutoRefreshEnabled: true
         });
 
         window.getAppCheckToken = (forceRefresh) => getToken(appCheck, forceRefresh);
 
-        const script = document.createElement('script');
-        script.src = "conference-app.js";
-        document.body.appendChild(script);
+        try {
+          const token = await getToken(appCheck);
+          const script = document.createElement('script');
+          script.src = "conference-app.js";
+          document.body.appendChild(script);
+        } catch (err) {
+          console.error('Failed to initialize App Check before loading app:', err);
+        }
     </script>
 </head>
 <body>

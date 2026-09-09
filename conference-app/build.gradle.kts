@@ -32,6 +32,7 @@ buildConfig {
 
     buildConfigField("PLAYGROUND_BASE_URL", stringPropertyOrNull("playgroundBaseUrl"))
     buildConfigField("GOOGLE_CLOUD_PROJECT", stringPropertyOrNull("googleCloudProject"))
+    buildConfigField("VERSION_NAME", stringPropertyOrNull("versionName") ?: "UNKNOWN")
 
     sourceSets.named("androidMain") {
         buildConfigField("API_KEY", stringPropertyOrNull("androidApiKey"))
@@ -126,6 +127,7 @@ kotlin {
             implementation(libs.ktor.client.auth)
             implementation(libs.ktor.client.core)
 
+            implementation(libs.sqldelight.async.extensions)
             implementation(libs.sqldelight.coroutines.extensions)
             implementation(libs.sqldelight.paging3.extensions)
             implementation(libs.sqldelight.runtime)
