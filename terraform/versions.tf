@@ -17,7 +17,7 @@ terraform {
 
     google-beta = {
       source  = "hashicorp/google-beta"
-      version = "7.46.1"
+      version = "8.2.0"
     }
 
     onepassword = {
