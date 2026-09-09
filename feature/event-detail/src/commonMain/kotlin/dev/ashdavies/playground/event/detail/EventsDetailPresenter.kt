@@ -3,6 +3,7 @@ package dev.ashdavies.playground.event.detail
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.produceState
+import app.cash.sqldelight.async.coroutines.awaitAsOne
 import com.slack.circuit.codegen.annotations.CircuitInject
 import com.slack.circuit.runtime.Navigator
 import com.slack.circuit.runtime.presenter.Presenter
@@ -33,7 +34,7 @@ internal class EventsDetailPresenter(
             val item = database
                 .map { it.eventQueries.getById(screen.id) }
                 .await()
-                .executeAsOne()
+                .awaitAsOne()
 
             value = EventDetailState.ItemState.Done(item)
         }

@@ -101,7 +101,7 @@ resource "google_apikeys_key" "browser" {
     }
 
     dynamic "api_targets" {
-      for_each = local.api_targets
+      for_each = concat(local.api_targets, ["recaptchaenterprise.googleapis.com"])
       content {
         service = api_targets.value
       }

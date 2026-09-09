@@ -18,6 +18,7 @@ import dev.zacsweers.metro.ContributesTo
 import dev.zacsweers.metro.ExperimentalMetroCoroutinesApi
 import dev.zacsweers.metro.Named
 import dev.zacsweers.metro.Provides
+import dev.zacsweers.metro.SingleIn
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.DefaultRequest
 import io.ktor.client.plugins.auth.Auth
@@ -38,6 +39,7 @@ internal interface ConferenceModule {
     fun galleryDatabase(playgroundDatabase: PlaygroundDatabase): GalleryDatabase
 
     @Provides
+    @SingleIn(AppScope::class)
     @ExperimentalMetroCoroutinesApi
     suspend fun playgroundDatabase(context: PlatformContext): PlaygroundDatabase = PlaygroundDatabase(
         driver = DriverFactory(PlaygroundDatabase.Schema, context, "database.db"),

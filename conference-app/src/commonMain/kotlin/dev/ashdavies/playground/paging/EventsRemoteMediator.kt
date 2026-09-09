@@ -23,19 +23,23 @@ internal class EventsRemoteMediator<T : Any>(
             LoadType.REFRESH -> null
         }
 
-        return eventsCallable(GetEventsRequest(loadKey?.dateStart)).fold(
-            onSuccess = { MediatorResult.Success(eventsQueries.insertOrIgnoreAll(it) == 0L).also { onInvalidate() } },
-            onFailure = { MediatorResult.Error(it) },
-        )
+        return eventsCallable(GetEventsRequest(loadKey?.dateStart))
+            .mapCatching {
+                eventsQueries.insertOrIgnoreAll(it)
+                onInvalidate()
+                it
+            }
+            .fold(
+                onSuccess = { MediatorResult.Success(it.size < state.config.pageSize) },
+                onFailure = { MediatorResult.Error(it) },
+            )
     }
 }
 
-private suspend fun EventQueries.insertOrIgnoreAll(items: List<ApiConference>): Long {
-    var rowsInserted = 0L
-
+private suspend fun EventQueries.insertOrIgnoreAll(items: List<ApiConference>): Boolean {
     transaction {
         items.forEach {
-            rowsInserted += insertOrIgnore(
+            insertOrIgnore(
                 name = it.name,
                 website = it.website,
                 location = it.location,
@@ -51,7 +55,7 @@ private suspend fun EventQueries.insertOrIgnoreAll(items: List<ApiConference>): 
         }
     }
 
-    return rowsInserted
+    return true
 }
 
 @ExperimentalPagingApi
