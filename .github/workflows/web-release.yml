@@ -40,6 +40,7 @@ jobs:
       - run: |
           ./gradlew \
             :conference-app:wasmJsBrowserDistribution \
+            -Pversion.name=${{ inputs.version_name }} \
             --console=plain
         env:
           BROWSER_API_KEY: ${{ secrets.BROWSER_API_KEY }}
