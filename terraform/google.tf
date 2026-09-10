@@ -201,7 +201,6 @@ resource "google_cloud_run_v2_service" "main" {
   }
 
   location     = var.project_region
-  launch_stage = "BETA"
 
   traffic {
     type    = "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST"
