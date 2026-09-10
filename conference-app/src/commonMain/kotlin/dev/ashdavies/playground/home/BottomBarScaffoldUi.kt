@@ -12,6 +12,7 @@ import com.slack.circuit.runtime.screen.Screen
 import com.slack.circuit.runtime.ui.Ui
 import dev.ashdavies.identity.IdentityState
 import dev.ashdavies.playground.activity.FullyDrawnReporter
+import dev.ashdavies.playground.snackbar.SnackbarContributor
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.Inject
 import kotlinx.collections.immutable.PersistentList
@@ -50,6 +51,7 @@ internal object BottomBarScaffoldScreen : Screen {
 @Inject
 @CircuitInject(BottomBarScaffoldScreen::class, AppScope::class)
 internal class BottomBarScaffoldUi(
+    private val snackbarContributor: SnackbarContributor,
     private val fullyDrawnReporter: FullyDrawnReporter,
 ) : Ui<BottomBarScaffoldScreen.State> {
 
@@ -58,6 +60,7 @@ internal class BottomBarScaffoldUi(
         when (state) {
             is BottomBarScaffoldScreen.State.Ready -> BottomBarScaffoldReady(
                 state = state,
+                snackbarContributor = snackbarContributor,
                 modifier = modifier,
             )
 

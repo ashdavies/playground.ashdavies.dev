@@ -1,7 +1,6 @@
 package dev.ashdavies.playground.home
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
@@ -11,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBars
-import androidx.compose.foundation.layout.visible
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -19,40 +17,56 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.ScaffoldDefaults
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.slack.circuit.foundation.CircuitContent
 import com.slack.circuit.runtime.screen.Screen
+import dev.ashdavies.playground.snackbar.SnackbarContributor
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
 internal fun BottomBarScaffoldReady(
     state: BottomBarScaffoldScreen.State.Ready,
+    snackbarContributor: SnackbarContributor,
     modifier: Modifier = Modifier,
 ) {
+    val hostState = remember { SnackbarHostState() }
+
+    LaunchedEffect(snackbarContributor) {
+        snackbarContributor.source.collect {
+            it(hostState::showSnackbar)
+        }
+    }
+
     Scaffold(
         modifier = modifier,
         bottomBar = {
-            BottomAppBar(Modifier.visible(state.items.isNotEmpty())) {
-                NavigationBar {
-                    state.items.forEach {
-                        NavigationBarItem(
-                            selected = it.selected,
-                            onClick = { state.eventSink(it.screen) },
-                            icon = { NavigationBarImage(it.icon) },
-                            label = { Text(stringResource(it.label)) },
-                        )
+            if (state.items.isNotEmpty()) {
+                BottomAppBar {
+                    NavigationBar {
+                        state.items.forEach {
+                            NavigationBarItem(
+                                selected = it.selected,
+                                onClick = { state.eventSink(it.screen) },
+                                icon = { NavigationBarImage(it.icon) },
+                                label = { Text(stringResource(it.label)) },
+                            )
+                        }
                     }
                 }
             }
         },
+        snackbarHost = { SnackbarHost(hostState) },
         contentWindowInsets = ScaffoldDefaults.contentWindowInsets.exclude(
             insets = WindowInsets.systemBars.only(WindowInsetsSides.Vertical),
         ),
@@ -65,7 +79,6 @@ internal fun BottomBarScaffoldReady(
                 Box(
                     modifier = modifier
                         .fillMaxWidth()
-                        .background(Color.Blue)
                         .padding(32.dp),
                 ) {
                     Text("$screen")
