@@ -1,6 +1,6 @@
 module "backend_service_account" {
   source        = "terraform-google-modules/service-accounts/google"
-  version       = "4.7.0"
+  version       = "5.0.0"
   display_name  = "Backend Service Account"
   names         = ["cloud-backend"]
   project_id    = var.project_id
@@ -19,7 +19,7 @@ module "endpoint_iam_binding" {
 
 module "fastlane_service_account" {
   source       = "terraform-google-modules/service-accounts/google"
-  version      = "4.7.0"
+  version      = "5.0.0"
   display_name = "Fastlane Service Account"
   names        = ["fastlane-supply"]
   project_id   = var.project_id
@@ -27,7 +27,7 @@ module "fastlane_service_account" {
 
 module "github_service_account" {
   source        = "terraform-google-modules/service-accounts/google"
-  version       = "4.7.0"
+  version       = "5.0.0"
   display_name  = "GitHub Service Account"
   names         = ["oidc"]
   prefix        = "gh"
