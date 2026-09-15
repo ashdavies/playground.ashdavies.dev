@@ -32,6 +32,7 @@ androidx-paging-testing = { module = "androidx.paging:paging-testing", version.r
 androidx-window-core = "org.jetbrains.androidx.window:window-core:1.5.1"
 
 app-cash-turbine = "app.cash.turbine:turbine:1.2.1"
+auth-java-jwt = "com.auth0:java-jwt:4.6.0"
 
 circuit-annotations = { module = "com.slack.circuit:circuit-codegen-annotations", version.ref = "circuit" }
 circuit-foundation = { module = "com.slack.circuit:circuit-foundation", version.ref = "circuit" }
