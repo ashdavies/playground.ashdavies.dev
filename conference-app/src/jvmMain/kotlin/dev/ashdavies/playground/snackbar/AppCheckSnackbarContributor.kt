@@ -31,7 +31,7 @@ internal class AppCheckSnackbarContributor(
 
         if (result == SnackbarResult.ActionPerformed) {
             coroutineScope {
-                launch { appCheckTokenServer.start() }
+                launch(Dispatchers.IO) { appCheckTokenServer.start() }
 
                 val urlString = appCheckTokenServer.state
                     .filterIsInstance<AppCheckTokenState.Started>()
