@@ -22,7 +22,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewDynamicColors
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import dev.ashdavies.playground.material.dynamicColorScheme
 import dev.ashdavies.playground.material.sizing
@@ -103,13 +104,21 @@ public fun ErrorLayout(
 }
 
 @Composable
-@Preview(showBackground = true)
+@PreviewLightDark
+@PreviewDynamicColors
 private fun ErrorLayoutPreview() {
-    MaterialTheme(dynamicColorScheme()) {
+    MaterialPreviewTheme {
         ErrorLayout(
             message = stringResource(Res.string.operation_not_implemented),
             icon = Icons.Default.DeveloperMode,
             onRefresh = { },
         )
+    }
+}
+
+@Composable
+private fun MaterialPreviewTheme(content: @Composable () -> Unit) {
+    MaterialTheme(dynamicColorScheme()) {
+        Surface(content = content)
     }
 }
