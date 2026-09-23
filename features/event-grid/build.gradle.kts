@@ -12,33 +12,38 @@ plugins {
 
 kotlin {
     android {
-        namespace = "dev.ashdavies.playground.event.list"
+        namespace = "dev.ashdavies.playground.event.grid"
     }
 
     sourceSets {
         commonMain.dependencies {
-            implementation(projects.analytics)
+            implementation(projects.asgService)
+            implementation(projects.cloudCommon)
             implementation(projects.composeMaterial)
-            implementation(projects.feature.eventCommon)
-            implementation(projects.feature.pagerFactory)
+            implementation(projects.features.eventCommon)
+            implementation(projects.httpCommon)
+            implementation(projects.metroExtensions)
+            implementation(projects.platformSupport)
             implementation(projects.uiComponents)
 
-            implementation(libs.androidx.paging.compose)
+            implementation(libs.androidx.window.core)
             implementation(libs.circuit.annotations)
             implementation(libs.circuit.foundation)
+            implementation(libs.compose.adaptive.layout)
             implementation(libs.compose.components.resources)
             implementation(libs.compose.foundation)
             implementation(libs.compose.material3)
-            implementation(libs.compose.materialIconsExtended)
-            implementation(libs.compose.shimmer)
-            implementation(libs.coil.compose)
+            implementation(libs.compose.ui)
             implementation(libs.kotlinx.collections.immutable)
             implementation(libs.kotlinx.datetime)
+            implementation(libs.ktor.client.core)
+            implementation(libs.sqldelight.coroutines.extensions)
         }
     }
 }
 
+@OptIn(ExperimentalMetroGradleApi::class)
 metro {
-    @OptIn(ExperimentalMetroGradleApi::class)
     enableCircuitCodegen = true
+    enableSuspendProviders = true
 }

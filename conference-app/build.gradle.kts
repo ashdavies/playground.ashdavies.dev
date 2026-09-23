@@ -81,12 +81,12 @@ kotlin {
             implementation(projects.asgService)
             implementation(projects.cloudCommon)
             implementation(projects.composeMaterial)
-            implementation(projects.feature.eventCommon)
-            implementation(projects.feature.eventDetail)
-            implementation(projects.feature.eventGrid)
-            implementation(projects.feature.eventList)
-            implementation(projects.feature.gallerySync)
-            implementation(projects.feature.pagerFactory)
+            implementation(projects.features.eventCommon)
+            implementation(projects.features.eventDetail)
+            implementation(projects.features.eventGrid)
+            implementation(projects.features.eventList)
+            implementation(projects.features.gallerySync)
+            implementation(projects.features.pagerFactory)
             implementation(projects.httpClient)
             implementation(projects.httpCommon)
             implementation(projects.identityManager)
@@ -200,8 +200,8 @@ sqldelight {
             generateAsync = true
 
             dialect(libs.sqldelight.sqlite.dialect)
-            dependency(project(":feature:event-common"))
-            dependency(project(":feature:gallery-sync"))
+            dependency(project(":features:event-common"))
+            dependency(project(":features:gallery-sync"))
             dependency(project(":identity-manager"))
         }
     }
