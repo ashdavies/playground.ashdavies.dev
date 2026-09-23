@@ -9,7 +9,7 @@ module "backend_service_account" {
 
 module "endpoint_iam_binding" {
   source             = "terraform-google-modules/iam/google//modules/cloud_run_services_iam"
-  version            = "8.2.0"
+  version            = "8.3.0"
   bindings           = { "roles/run.invoker" = ["allUsers"] }
   cloud_run_services = [google_cloud_run_v2_service.main.name]
   location           = var.project_region
