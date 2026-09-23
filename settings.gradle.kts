@@ -14,6 +14,8 @@ pluginManagement.repositories {
     includeBuild("cloud-build")
     includeBuild("fused-properties")
 
+    includeBuild("fixtures/generated")
+
     gradlePluginPortal()
     google()
     mavenCentral()
@@ -56,12 +58,13 @@ include(
     ":cloud-run",
     ":compose-material",
     ":conference-app",
-    ":feature:event-common",
-    ":feature:event-detail",
-    ":feature:event-grid",
-    ":feature:event-list",
-    ":feature:gallery-sync",
-    ":feature:pager-factory",
+    ":features:event-common",
+    ":features:event-detail",
+    ":features:event-grid",
+    ":features:event-list",
+    ":features:gallery-sync",
+    ":features:pager-factory",
+    ":fixtures:events",
     ":http-client",
     ":http-common",
     ":identity-manager",
@@ -70,6 +73,7 @@ include(
     ":maps-routing",
     ":metro-extensions",
     ":platform-support",
+    ":previews:event-list",
     ":remote-config",
     ":sql-driver",
     ":ui-components",

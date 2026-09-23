@@ -3,7 +3,6 @@ package dev.ashdavies.playground.event
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.CloudOff
 import app.cash.paparazzi.Paparazzi
-import dev.ashdavies.asg.AsgConference
 import dev.ashdavies.playground.event.EventListState.Failure
 import dev.ashdavies.playground.event.detail.EventDetailState
 import dev.ashdavies.playground.event.detail.EventsDetailUi
@@ -14,9 +13,7 @@ import dev.ashdavies.playground.ui.Res
 import dev.ashdavies.playground.ui.operation_not_implemented
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.datetime.LocalDate
-import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.decodeFromStream
 import org.jetbrains.compose.resources.stringResource
 import org.junit.Rule
 import org.junit.Test
@@ -103,28 +100,3 @@ private fun Event.toEventGridStateItem(): EventGridState.Item {
         attended = false,
     )
 }
-
-@OptIn(ExperimentalSerializationApi::class)
-internal fun Json.upcomingEvents(): List<Event> = decodeFromStream<List<AsgConference>>(
-    stream = Event::class.java
-        .getResource("/upcoming.json")
-        .let(::requireNotNull)
-        .openStream(),
-).mapIndexed { index, item ->
-    item.toEvent(index.toLong())
-}
-
-private fun AsgConference.toEvent(id: Long) = Event(
-    id = id,
-    name = name,
-    website = website,
-    location = location,
-    imageUrl = null,
-    status = status,
-    online = online,
-    dateStart = dateStart,
-    dateEnd = dateEnd,
-    cfpStart = cfp?.start,
-    cfpEnd = cfp?.end,
-    cfpSite = cfp?.site,
-)

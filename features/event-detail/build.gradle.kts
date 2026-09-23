@@ -12,32 +12,25 @@ plugins {
 
 kotlin {
     android {
-        namespace = "dev.ashdavies.playground.event.grid"
+        namespace = "dev.ashdavies.playground.event.detail"
     }
 
     sourceSets {
         commonMain.dependencies {
-            implementation(projects.asgService)
-            implementation(projects.cloudCommon)
             implementation(projects.composeMaterial)
-            implementation(projects.feature.eventCommon)
-            implementation(projects.httpCommon)
+            implementation(projects.features.eventCommon)
+            implementation(projects.identityManager)
             implementation(projects.metroExtensions)
-            implementation(projects.platformSupport)
             implementation(projects.uiComponents)
 
-            implementation(libs.androidx.window.core)
             implementation(libs.circuit.annotations)
             implementation(libs.circuit.foundation)
-            implementation(libs.compose.adaptive.layout)
+            implementation(libs.coil.compose)
             implementation(libs.compose.components.resources)
-            implementation(libs.compose.foundation)
+            implementation(libs.compose.materialIconsExtended)
             implementation(libs.compose.material3)
-            implementation(libs.compose.ui)
-            implementation(libs.kotlinx.collections.immutable)
+            implementation(libs.compose.shimmer)
             implementation(libs.kotlinx.datetime)
-            implementation(libs.ktor.client.core)
-            implementation(libs.sqldelight.coroutines.extensions)
         }
     }
 }
