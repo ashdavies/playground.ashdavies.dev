@@ -135,6 +135,6 @@ google-services = { id = "com.google.gms.google-services", version.ref = "google
 jetbrains-compose = { id = "org.jetbrains.compose", version.ref = "compose-plugin" }
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "jetbrains-kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "jetbrains-kotlin" }
-kotlinx-kover = "org.jetbrains.kotlinx.kover:0.9.9"
+kotlinx-kover = "org.jetbrains.kotlinx.kover:0.9.10"
 ktlint = "org.jlleitschuh.gradle.ktlint:14.2.0"
 metro = { id = "dev.zacsweers.metro", version.ref = "metro" }
