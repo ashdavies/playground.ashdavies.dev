@@ -3,4 +3,5 @@ resource "cloudflare_dns_record" "playground_ashdavies_dev" {
   name    = "playground.ashdavies.dev"
   ttl     = 3600
   type    = "CNAME"
+  content = replace(google_firebase_hosting_site.main.default_url, "/^https?:\\/\\//", "")
 }
