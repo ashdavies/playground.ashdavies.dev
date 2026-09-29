@@ -1,14 +1,19 @@
 package dev.ashdavies.playground.event.detail
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Campaign
+import androidx.compose.material.icons.outlined.Link
 import androidx.compose.material.icons.outlined.MyLocation
+import androidx.compose.material3.AssistChip
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -30,6 +35,7 @@ import com.slack.circuit.codegen.annotations.CircuitInject
 import com.valentinilk.shimmer.shimmer
 import dev.ashdavies.identity.IdentityState
 import dev.ashdavies.playground.event.EventScreen
+import dev.ashdavies.playground.event.daysUntilCfpEnd
 import dev.ashdavies.playground.material.padding
 import dev.ashdavies.playground.material.spacing
 import dev.ashdavies.playground.ui.BackButton
@@ -38,18 +44,22 @@ import dev.ashdavies.playground.ui.DateRangeBadge
 import dev.ashdavies.playground.ui.DateRangeBadgeState
 import dev.ashdavies.playground.ui.ProfileActionButton
 import dev.ashdavies.playground.ui.Res
-import dev.ashdavies.playground.ui.call_for_papers_closed
-import dev.ashdavies.playground.ui.call_for_papers_days_remaining
+import dev.ashdavies.playground.ui.cfp_closed
+import dev.ashdavies.playground.ui.cfp_open
+import dev.ashdavies.playground.ui.common_days_ago
+import dev.ashdavies.playground.ui.common_days_left
 import dev.ashdavies.playground.ui.emptyString
 import dev.zacsweers.metro.AppScope
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
+import org.jetbrains.compose.resources.pluralStringResource
 import org.jetbrains.compose.resources.stringResource
+import kotlin.math.abs
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 @CircuitInject(EventScreen.Detail::class, AppScope::class)
-public fun EventsDetailUi(state: EventDetailState, modifier: Modifier = Modifier) {
+public fun EventDetailUi(state: EventDetailState, modifier: Modifier = Modifier) {
     val itemOrNull = (state.itemState as? EventDetailState.ItemState.Done)?.item
     val isLoading = state.itemState is EventDetailState.ItemState.Loading
     val snackbarHostState = remember { SnackbarHostState() }
@@ -78,9 +88,11 @@ public fun EventsDetailUi(state: EventDetailState, modifier: Modifier = Modifier
         Column(
             modifier = Modifier
                 .then(if (isLoading) Modifier.shimmer() else Modifier)
+                .padding(horizontal = MaterialTheme.spacing.large.horizontal)
                 .padding(contentPadding),
+            verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.large.vertical),
         ) {
-            Card(Modifier.padding(MaterialTheme.spacing.large)) {
+            Card {
                 Box {
                     EventsDetailImage(
                         imageUrl = itemOrNull?.imageUrl,
@@ -103,7 +115,14 @@ public fun EventsDetailUi(state: EventDetailState, modifier: Modifier = Modifier
                 }
             }
 
-            EventsDetailLocation(itemOrNull?.location ?: emptyString())
+            EventsDetailCard {
+                Icon(
+                    imageVector = Icons.Outlined.MyLocation,
+                    contentDescription = null,
+                )
+
+                Text(itemOrNull?.location ?: emptyString())
+            }
 
             itemOrNull?.cfpEnd?.let { cfpEnd ->
                 EventsDetailCfp(
@@ -137,23 +156,18 @@ private fun EventsDetailLocation(
     location: String,
     modifier: Modifier = Modifier,
 ) {
-    Card(
-        modifier = modifier
-            .padding(MaterialTheme.spacing.large)
-            .fillMaxWidth(),
-    ) {
+    Card(modifier.fillMaxWidth()) {
         Row(
+            modifier = Modifier.padding(MaterialTheme.spacing.large),
+            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.large.horizontal),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Icon(
                 imageVector = Icons.Outlined.MyLocation,
                 contentDescription = null,
-                modifier = Modifier.padding(16.dp),
             )
 
-            Column {
-                Text(location)
-            }
+            Text(location)
         }
     }
 }
@@ -164,29 +178,66 @@ private fun EventsDetailCfp(
     cfpEnd: String,
     modifier: Modifier = Modifier,
 ) {
-    val daysUntilCfpEnd = daysUntilCfpEnd(LocalDate.parse(cfpEnd))
-    val uriHandler = LocalUriHandler.current
-    val newModifier = modifier
-        .padding(MaterialTheme.spacing.large)
-        .fillMaxWidth()
+    EventsDetailCard {
+        Icon(
+            imageVector = Icons.Outlined.Campaign,
+            contentDescription = null,
+        )
 
-    when {
-        daysUntilCfpEnd > 0 && cfpSite != null -> Card(
-            onClick = { uriHandler.openUri(cfpSite) },
-            modifier = newModifier,
-        ) {
+        val daysUntilCfpEnd = daysUntilCfpEnd(LocalDate.parse(cfpEnd))
+        if (daysUntilCfpEnd > 0) {
             Text(
-                text = stringResource(Res.string.call_for_papers_days_remaining, daysUntilCfpEnd),
-                modifier = Modifier.padding(16.dp),
+                text = stringResource(Res.string.cfp_open),
+                modifier = Modifier.weight(1f),
+            )
+
+            if (cfpSite != null) {
+                val uriHandler = LocalUriHandler.current
+
+                AssistChip(
+                    onClick = { uriHandler.openUri(cfpSite) },
+                    leadingIcon = {
+                        Icon(
+                            imageVector = Icons.Outlined.Link,
+                            contentDescription = null,
+                        )
+                    },
+                    label = {
+                        Text(pluralStringResource(Res.plurals.common_days_left, daysUntilCfpEnd, daysUntilCfpEnd))
+                    },
+                )
+            }
+        } else {
+            Text(
+                text = stringResource(Res.string.cfp_closed),
+                modifier = Modifier.weight(1f),
+            )
+
+            AssistChip(
+                onClick = { },
+                enabled = false,
+                label = {
+                    val daysSinceCfpEnd = abs(daysUntilCfpEnd)
+
+                    Text(pluralStringResource(Res.plurals.common_days_ago, daysSinceCfpEnd, daysSinceCfpEnd))
+                },
             )
         }
+    }
+}
 
-        else -> Card(newModifier) {
-            Text(
-                text = stringResource(Res.string.call_for_papers_closed),
-                modifier = Modifier.padding(16.dp),
-            )
-        }
+@Composable
+private fun EventsDetailCard(
+    modifier: Modifier = Modifier,
+    content: @Composable RowScope.() -> Unit,
+) {
+    Card(modifier.fillMaxWidth()) {
+        Row(
+            modifier = Modifier.padding(MaterialTheme.spacing.large),
+            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.large.horizontal),
+            verticalAlignment = Alignment.CenterVertically,
+            content = content,
+        )
     }
 }
 

@@ -1,16 +1,15 @@
-package dev.ashdavies.playground.event.detail
+package dev.ashdavies.playground.event
 
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.daysUntil
 import kotlinx.datetime.toLocalDateTime
 import kotlin.time.Clock
-import kotlin.time.ExperimentalTime
 
 private val Today = Clock.System.now()
     .toLocalDateTime(TimeZone.currentSystemDefault())
     .date
 
-internal fun daysUntilCfpEnd(cfpEnd: LocalDate): Int {
+public fun daysUntilCfpEnd(cfpEnd: LocalDate): Int {
     return Today.daysUntil(cfpEnd)
 }

@@ -5,7 +5,7 @@ import androidx.compose.material.icons.outlined.CloudOff
 import app.cash.paparazzi.Paparazzi
 import dev.ashdavies.playground.event.EventListState.Failure
 import dev.ashdavies.playground.event.detail.EventDetailState
-import dev.ashdavies.playground.event.detail.EventsDetailUi
+import dev.ashdavies.playground.event.detail.EventDetailUi
 import dev.ashdavies.playground.event.grid.EventGridState
 import dev.ashdavies.playground.event.grid.EventGridUi
 import dev.ashdavies.playground.tooling.MaterialPreviewTheme
@@ -77,7 +77,7 @@ internal class EventScreenTests {
     fun eventDetail() {
         paparazzi.snapshot {
             MaterialPreviewTheme {
-                EventsDetailUi(
+                EventDetailUi(
                     state = EventDetailState(
                         itemState = EventDetailState.ItemState.Done(
                             item = Json.upcomingEvents().first(),

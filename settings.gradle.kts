@@ -73,6 +73,7 @@ include(
     ":maps-routing",
     ":metro-extensions",
     ":platform-support",
+    ":previews:event-detail",
     ":previews:event-list",
     ":remote-config",
     ":sql-driver",
