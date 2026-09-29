@@ -19,7 +19,7 @@ import dev.zacsweers.metro.SuspendLazy
 
 @AssistedInject
 @ExperimentalMetroCoroutinesApi
-internal class EventsDetailPresenter(
+internal class EventDetailPresenter(
     @Assisted private val screen: EventScreen.Detail,
     @Assisted private val navigator: Navigator,
     private val database: SuspendLazy<PlaygroundDatabase>,
@@ -53,6 +53,6 @@ internal class EventsDetailPresenter(
         operator fun invoke(
             screen: EventScreen.Detail,
             navigator: Navigator,
-        ): EventsDetailPresenter
+        ): EventDetailPresenter
     }
 }

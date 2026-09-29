@@ -1,6 +1,5 @@
 package dev.ashdavies.playground.event
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -18,10 +17,8 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
@@ -39,26 +36,26 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.rememberAsyncImagePainter
 import com.slack.circuit.codegen.annotations.CircuitInject
 import com.valentinilk.shimmer.shimmer
+import dev.ashdavies.playground.material.applyIfNotNull
 import dev.ashdavies.playground.material.padding
+import dev.ashdavies.playground.material.sizing
 import dev.ashdavies.playground.material.spacing
 import dev.ashdavies.playground.material.values
+import dev.ashdavies.playground.ui.BadgeContainer
 import dev.ashdavies.playground.ui.CenterAlignedTopAppBar
 import dev.ashdavies.playground.ui.DateRangeBadge
 import dev.ashdavies.playground.ui.DateRangeBadgeState
 import dev.ashdavies.playground.ui.ErrorLayout
 import dev.ashdavies.playground.ui.Res
-import dev.ashdavies.playground.ui.call_for_papers_open
+import dev.ashdavies.playground.ui.cfp_closed
+import dev.ashdavies.playground.ui.cfp_open
 import dev.ashdavies.playground.ui.emptyString
 import dev.ashdavies.playground.ui.online_only
 import dev.ashdavies.playground.ui.upcoming_events
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.Inject
 import kotlinx.datetime.LocalDate
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.daysUntil
-import kotlinx.datetime.toLocalDateTime
 import org.jetbrains.compose.resources.stringResource
-import kotlin.time.Clock
 
 @Inject
 @Composable
@@ -99,32 +96,23 @@ private fun EventListContent(
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.large.vertical),
         ) {
             itemsIndexed(state.itemList) { index, item ->
-                val modifier = Modifier
-                    .animateItem()
-                    .fillMaxWidth()
-                    .clip(MaterialTheme.shapes.medium)
-
-                when {
-                    item != null -> EventListItemContent(
-                        event = item,
-                        isRefreshing = state.isRefreshing,
-                        isSelected = index == state.selectedIndex,
-                        onCfpClick = item.cfpSite?.let {
-                            { state.eventSink(EventListState.Success.Event.ItemCfpClick(it)) }
+                EventListItemContent(
+                    event = item,
+                    isRefreshing = state.isRefreshing,
+                    isSelected = item != null && index == state.selectedIndex,
+                    onCfpClick = item?.cfpSite?.let {
+                        { state.eventSink(EventListState.Success.Event.ItemCfpClick(it)) }
+                    },
+                    modifier = Modifier
+                        .animateItem()
+                        .fillMaxWidth()
+                        .clip(MaterialTheme.shapes.medium)
+                        .applyIfNotNull(item) {
+                            Modifier
+                                .clickable { state.eventSink(EventListState.Success.Event.ItemClick(it.id)) }
+                                .paint(rememberBackgroundPainter(it.imageUrl))
                         },
-                        modifier = modifier
-                            .clickable { state.eventSink(EventListState.Success.Event.ItemClick(item.id)) }
-                            .paint(rememberBackgroundPainter(item.imageUrl)),
-                    )
-
-                    else -> EventListItemContent(
-                        event = null,
-                        isRefreshing = state.isRefreshing,
-                        isSelected = false,
-                        onCfpClick = { },
-                        modifier = modifier,
-                    )
-                }
+                )
             }
         }
     }
@@ -181,81 +169,55 @@ private fun EventListItemContent(
                 )
             }
 
-            event?.cfpEnd?.let { cfpEnd ->
-                val today = Clock.System.now()
-                    .toLocalDateTime(TimeZone.currentSystemDefault())
-                    .date
-
-                if (today.daysUntil(LocalDate.parse(cfpEnd)) > 0) {
-                    EventLabel(
-                        text = stringResource(Res.string.call_for_papers_open),
-                        modifier = Modifier.fillMaxHeight().then(
-                            other = if (onCfpClick != null) {
-                                Modifier.clickable(onClick = onCfpClick)
-                            } else {
-                                Modifier
-                            },
-                        ),
+            if (event?.online == true) {
+                BadgeContainer(Modifier.fillMaxHeight()) {
+                    Text(
+                        text = stringResource(Res.string.online_only),
+                        modifier = Modifier.width(MaterialTheme.sizing.icon.medium),
+                        style = MaterialTheme.typography.labelSmall,
                     )
                 }
             }
 
-            if (event?.online == true) {
-                Column {
-                    EventLabel(
-                        text = stringResource(Res.string.online_only),
-                        modifier = Modifier.fillMaxHeight(),
+            event?.cfpEnd?.let { cfpEnd ->
+                val daysUntilCfpEnd = daysUntilCfpEnd(LocalDate.parse(cfpEnd))
+
+                BadgeContainer(
+                    modifier = Modifier.fillMaxHeight(),
+                    color = if (daysUntilCfpEnd > 0) {
+                        MaterialTheme.colorScheme.surface
+                    } else {
+                        MaterialTheme.colorScheme.surfaceDim
+                    },
+                ) {
+                    Text(
+                        text = stringResource(
+                            resource = if (daysUntilCfpEnd > 0) {
+                                Res.string.cfp_open
+                            } else {
+                                Res.string.cfp_closed
+                            },
+                        ),
+                        modifier = Modifier.width(40.dp),
+                        textAlign = TextAlign.Center,
+                        style = MaterialTheme.typography.labelSmall,
                     )
                 }
             }
 
             if (event?.dateStart != null) {
-                Column {
-                    DateRangeBadge(
-                        state = remember(event.dateStart, event.dateEnd) {
-                            DateRangeBadgeState(
-                                dateStart = LocalDate.parse(event.dateStart),
-                                dateEnd = LocalDate.parse(event.dateEnd),
-                            )
-                        },
-                        modifier = Modifier
-                            .defaultMinSize(minWidth = 64.dp)
-                            .fillMaxHeight(),
-                    )
-                }
+                DateRangeBadge(
+                    state = remember(event.dateStart, event.dateEnd) {
+                        DateRangeBadgeState(
+                            dateStart = LocalDate.parse(event.dateStart),
+                            dateEnd = LocalDate.parse(event.dateEnd),
+                        )
+                    },
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .width(64.dp),
+                )
             }
-        }
-    }
-}
-
-@Composable
-private fun EventLabel(
-    text: String,
-    modifier: Modifier = Modifier,
-) {
-    Surface(
-        modifier = modifier,
-        shape = MaterialTheme.shapes.small,
-        color = Color.Transparent,
-        border = BorderStroke(
-            width = 1.0.dp,
-            color = MaterialTheme.colorScheme.outline,
-        ),
-    ) {
-        Column(
-            modifier = Modifier.fillMaxHeight(),
-            verticalArrangement = Arrangement.Center,
-        ) {
-            Text(
-                text = text,
-                modifier = Modifier
-                    .padding(MaterialTheme.spacing.small)
-                    .width(32.dp),
-                color = LocalContentColor.current,
-                textAlign = TextAlign.Center,
-                maxLines = 1,
-                style = MaterialTheme.typography.labelSmall,
-            )
         }
     }
 }

@@ -96,7 +96,7 @@ public fun ErrorLayout(
 
                     Spacer(Modifier.width(8.dp))
 
-                    Text(stringResource(Res.string.retry))
+                    Text(stringResource(Res.string.common_retry))
                 }
             }
         }

@@ -1,15 +1,14 @@
 package dev.ashdavies.playground.ui
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import dev.ashdavies.playground.material.padding
 import dev.ashdavies.playground.material.spacing
 import kotlinx.datetime.LocalDate
@@ -18,7 +17,6 @@ import kotlinx.datetime.format
 import kotlinx.datetime.format.MonthNames
 import kotlinx.datetime.toLocalDateTime
 import kotlin.time.Clock
-import kotlin.time.ExperimentalTime
 
 private val EnglishMonthNamesFormat = LocalDate.Format { monthName(MonthNames.ENGLISH_ABBREVIATED) }
 private val DayFormat = LocalDate.Format { day() }
@@ -31,59 +29,57 @@ public data class DateRangeBadgeState(
 )
 
 @Composable
-public fun DateRangeBadge(state: DateRangeBadgeState, modifier: Modifier = Modifier) {
-    Surface(modifier.clip(MaterialTheme.shapes.small)) {
-        Column(
-            modifier = Modifier.padding(MaterialTheme.spacing.small),
-            verticalArrangement = Arrangement.aligned(Alignment.CenterVertically),
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            val startMonth = state.dateStart.format(EnglishMonthNamesFormat)
-            val endMonth = state.dateEnd.format(EnglishMonthNamesFormat)
+public fun DateRangeBadge(
+    state: DateRangeBadgeState,
+    color: Color = MaterialTheme.colorScheme.surface,
+    modifier: Modifier = Modifier,
+) {
+    BadgeContainer(modifier, color) {
+        val startMonth = state.dateStart.format(EnglishMonthNamesFormat)
+        val endMonth = state.dateEnd.format(EnglishMonthNamesFormat)
 
-            val startDay = state.dateStart.format(DayFormat)
-            val endDay = state.dateEnd.format(DayFormat)
+        val startDay = state.dateStart.format(DayFormat)
+        val endDay = state.dateEnd.format(DayFormat)
 
-            when {
-                startMonth != endMonth -> Row(verticalAlignment = Alignment.CenterVertically) {
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Text(startMonth, style = MaterialTheme.typography.labelSmall)
-                        Text(startDay, style = MaterialTheme.typography.labelLarge)
-                    }
-
-                    Text(
-                        text = HYPHEN,
-                        modifier = Modifier.padding(MaterialTheme.spacing.small),
-                        style = MaterialTheme.typography.labelLarge,
-                    )
-
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Text(endMonth, style = MaterialTheme.typography.labelSmall)
-                        Text(endDay, style = MaterialTheme.typography.labelLarge)
-                    }
-                }
-
-                startDay != endDay -> {
-                    Text(startMonth, style = MaterialTheme.typography.labelSmall)
-                    Text("$startDay $HYPHEN $endDay", style = MaterialTheme.typography.labelLarge)
-                }
-
-                else -> {
+        when {
+            startMonth != endMonth -> Row(verticalAlignment = Alignment.CenterVertically) {
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(startMonth, style = MaterialTheme.typography.labelSmall)
                     Text(startDay, style = MaterialTheme.typography.labelLarge)
                 }
-            }
 
-            val currentYear = Clock.System.now()
-                .toLocalDateTime(TimeZone.currentSystemDefault())
-                .year
-
-            if (state.dateStart.year != currentYear) {
                 Text(
-                    text = state.dateStart.format(LocalDate.Format { year() }),
-                    style = MaterialTheme.typography.labelSmall,
+                    text = HYPHEN,
+                    modifier = Modifier.padding(MaterialTheme.spacing.small),
+                    style = MaterialTheme.typography.labelLarge,
                 )
+
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text(endMonth, style = MaterialTheme.typography.labelSmall)
+                    Text(endDay, style = MaterialTheme.typography.labelLarge)
+                }
             }
+
+            startDay != endDay -> {
+                Text(startMonth, style = MaterialTheme.typography.labelSmall)
+                Text("$startDay $HYPHEN $endDay", style = MaterialTheme.typography.labelLarge)
+            }
+
+            else -> {
+                Text(startMonth, style = MaterialTheme.typography.labelSmall)
+                Text(startDay, style = MaterialTheme.typography.labelLarge)
+            }
+        }
+
+        val currentYear = Clock.System.now()
+            .toLocalDateTime(TimeZone.currentSystemDefault())
+            .year
+
+        if (state.dateStart.year != currentYear) {
+            Text(
+                text = state.dateStart.format(LocalDate.Format { year() }),
+                style = MaterialTheme.typography.labelSmall,
+            )
         }
     }
 }
