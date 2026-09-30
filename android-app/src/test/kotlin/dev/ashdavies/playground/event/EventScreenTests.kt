@@ -9,8 +9,8 @@ import dev.ashdavies.playground.event.detail.EventDetailUi
 import dev.ashdavies.playground.event.grid.EventGridState
 import dev.ashdavies.playground.event.grid.EventGridUi
 import dev.ashdavies.playground.tooling.MaterialPreviewTheme
-import dev.ashdavies.playground.ui.Res
-import dev.ashdavies.playground.ui.operation_not_implemented
+import dev.ashdavies.playground.ui.resources.Res
+import dev.ashdavies.playground.ui.resources.operation_not_implemented
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.datetime.LocalDate
 import kotlinx.serialization.json.Json

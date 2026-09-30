@@ -20,11 +20,12 @@ kotlin {
             implementation(projects.asgService)
             implementation(projects.cloudCommon)
             implementation(projects.composeMaterial)
+            implementation(projects.core.ui.components)
+            implementation(projects.core.ui.resources)
             implementation(projects.features.eventCommon)
             implementation(projects.httpCommon)
             implementation(projects.metroExtensions)
             implementation(projects.platformSupport)
-            implementation(projects.uiComponents)
 
             implementation(libs.androidx.window.core)
             implementation(libs.circuit.annotations)

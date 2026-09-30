@@ -43,12 +43,12 @@ import dev.ashdavies.playground.ui.CenterAlignedTopAppBar
 import dev.ashdavies.playground.ui.DateRangeBadge
 import dev.ashdavies.playground.ui.DateRangeBadgeState
 import dev.ashdavies.playground.ui.ProfileActionButton
-import dev.ashdavies.playground.ui.Res
-import dev.ashdavies.playground.ui.cfp_closed
-import dev.ashdavies.playground.ui.cfp_open
-import dev.ashdavies.playground.ui.common_days_ago
-import dev.ashdavies.playground.ui.common_days_left
 import dev.ashdavies.playground.ui.emptyString
+import dev.ashdavies.playground.ui.resources.Res
+import dev.ashdavies.playground.ui.resources.cfp_closed
+import dev.ashdavies.playground.ui.resources.cfp_open
+import dev.ashdavies.playground.ui.resources.common_days_ago
+import dev.ashdavies.playground.ui.resources.common_days_left
 import dev.zacsweers.metro.AppScope
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate

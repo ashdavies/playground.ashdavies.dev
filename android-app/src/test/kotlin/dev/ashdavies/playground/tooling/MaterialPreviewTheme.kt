@@ -1,6 +1,6 @@
 package dev.ashdavies.playground.tooling
 
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MaterialExpressiveTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -13,7 +13,7 @@ internal fun MaterialPreviewTheme(content: @Composable () -> Unit) {
     CompositionLocalProvider(LocalInspectionMode provides true) {
         PreviewContextConfigurationEffect()
 
-        MaterialTheme(dynamicColorScheme()) {
+        MaterialExpressiveTheme(dynamicColorScheme()) {
             Surface(content = content)
         }
     }

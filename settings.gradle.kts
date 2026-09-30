@@ -58,6 +58,10 @@ include(
     ":cloud-run",
     ":compose-material",
     ":conference-app",
+    ":core:ui:components",
+    ":core:ui:resources",
+    ":core:ui:scaffold",
+    ":core:ui:snackbar",
     ":features:event-common",
     ":features:event-detail",
     ":features:event-grid",
@@ -75,9 +79,9 @@ include(
     ":platform-support",
     ":previews:event-detail",
     ":previews:event-list",
+    ":previews:tooling",
     ":remote-config",
     ":sql-driver",
-    ":ui-components",
 )
 
 rootProject.name = "playground"

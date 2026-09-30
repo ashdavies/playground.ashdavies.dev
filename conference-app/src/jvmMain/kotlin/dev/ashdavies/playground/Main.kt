@@ -1,6 +1,6 @@
 package dev.ashdavies.playground
 
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MaterialExpressiveTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.window.Window
@@ -11,8 +11,8 @@ import com.slack.circuit.foundation.NavigableCircuitContent
 import com.slack.circuit.foundation.rememberCircuitNavigator
 import com.slack.circuit.overlay.ContentWithOverlays
 import dev.ashdavies.content.PlatformContext
-import dev.ashdavies.playground.home.BottomBarScaffoldScreen
 import dev.ashdavies.playground.material.dynamicColorScheme
+import dev.ashdavies.playground.ui.scaffold.navigation.BottomBarScaffoldScreen
 import dev.zacsweers.metro.createGraphFactory
 
 public fun main() {
@@ -31,7 +31,7 @@ public fun main() {
 
 @Composable
 private fun ConferenceApp(context: PlatformContext, onClose: () -> Unit) {
-    MaterialTheme(dynamicColorScheme()) {
+    MaterialExpressiveTheme(dynamicColorScheme()) {
         val conferenceGraph = remember(context) {
             val factory = createGraphFactory<JvmConferenceGraph.Factory>()
             factory.create(context)

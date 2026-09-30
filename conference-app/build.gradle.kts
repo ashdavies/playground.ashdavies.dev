@@ -81,6 +81,10 @@ kotlin {
             implementation(projects.asgService)
             implementation(projects.cloudCommon)
             implementation(projects.composeMaterial)
+            implementation(projects.core.ui.components)
+            implementation(projects.core.ui.resources)
+            implementation(projects.core.ui.scaffold)
+            implementation(projects.core.ui.snackbar)
             implementation(projects.features.eventCommon)
             implementation(projects.features.eventDetail)
             implementation(projects.features.eventGrid)
@@ -95,7 +99,6 @@ kotlin {
             implementation(projects.platformSupport)
             implementation(projects.remoteConfig)
             implementation(projects.sqlDriver)
-            implementation(projects.uiComponents)
 
             implementation(libs.androidx.annotation)
             implementation(libs.androidx.paging.common)
@@ -108,8 +111,6 @@ kotlin {
             implementation(libs.coil.compose)
             implementation(libs.coil.network)
 
-            implementation(libs.compose.adaptive.layout)
-            implementation(libs.compose.adaptive.navigation)
             implementation(libs.compose.components.resources)
             implementation(libs.compose.foundation)
             implementation(libs.compose.material3)

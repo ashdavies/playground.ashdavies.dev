@@ -29,7 +29,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.CheckCircle
-import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.CircularWavyProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -60,8 +60,8 @@ import androidx.navigationevent.compose.rememberNavigationEventState
 import coil3.compose.rememberAsyncImagePainter
 import com.slack.circuit.codegen.annotations.CircuitInject
 import dev.ashdavies.playground.ui.CenterAlignedTopAppBar
-import dev.ashdavies.playground.ui.Res
-import dev.ashdavies.playground.ui.gallery
+import dev.ashdavies.playground.ui.resources.Res
+import dev.ashdavies.playground.ui.resources.gallery
 import dev.zacsweers.metro.AppScope
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
@@ -319,7 +319,7 @@ private fun GalleryActionButton(
     ) {
         Crossfade(targetState = isActive) { state ->
             when (state) {
-                true -> CircularProgressIndicator(
+                true -> CircularWavyProgressIndicator(
                     modifier = Modifier.size(imageVector.defaultWidth),
                 )
 

@@ -19,10 +19,11 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             implementation(projects.analytics)
+            implementation(projects.core.ui.components)
+            implementation(projects.core.ui.resources)
             implementation(projects.httpClient)
             implementation(projects.httpCommon)
             implementation(projects.metroExtensions)
-            implementation(projects.uiComponents)
 
             implementation(libs.circuit.annotations)
             implementation(libs.circuit.foundation)
