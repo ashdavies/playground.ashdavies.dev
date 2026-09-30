@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -50,7 +49,6 @@ import com.slack.circuit.codegen.annotations.CircuitInject
 import com.valentinilk.shimmer.shimmer
 import dev.ashdavies.playground.material.applyIf
 import dev.ashdavies.playground.material.padding
-import dev.ashdavies.playground.material.sizing
 import dev.ashdavies.playground.material.spacing
 import dev.ashdavies.playground.material.uniform
 import dev.ashdavies.playground.material.values
