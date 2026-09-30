@@ -16,9 +16,9 @@ import com.slack.circuit.foundation.NavigableCircuitContent
 import com.slack.circuit.foundation.rememberCircuitNavigator
 import com.slack.circuit.overlay.ContentWithOverlays
 import dev.ashdavies.content.PlatformContext
-import dev.ashdavies.playground.home.BottomBarScaffoldScreen
 import dev.ashdavies.playground.material.padding
 import dev.ashdavies.playground.material.spacing
+import dev.ashdavies.playground.ui.scaffold.navigation.BottomBarScaffoldScreen
 import dev.zacsweers.metro.createGraphFactory
 
 @OptIn(ExperimentalComposeUiApi::class)

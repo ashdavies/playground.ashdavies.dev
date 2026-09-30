@@ -64,8 +64,8 @@ android {
 }
 
 dependencies {
+    implementation(projects.core.ui.resources)
     implementation(projects.conferenceApp)
-    implementation(projects.uiComponents)
 
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.core.splashscreen)
@@ -95,6 +95,7 @@ dependencies {
     testImplementation(projects.features.eventList)
     testImplementation(projects.features.gallerySync)
     testImplementation(projects.fixtures.events)
+    testImplementation(projects.previews.tooling)
 
     testImplementation(libs.circuit.runtime)
     testImplementation(libs.compose.components.resources)

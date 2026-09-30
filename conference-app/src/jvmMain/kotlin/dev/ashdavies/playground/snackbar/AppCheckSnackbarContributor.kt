@@ -3,6 +3,9 @@ package dev.ashdavies.playground.snackbar
 import androidx.compose.material3.SnackbarResult
 import dev.ashdavies.playground.http.AppCheckTokenServer
 import dev.ashdavies.playground.http.AppCheckTokenState
+import dev.ashdavies.playground.ui.snackbar.SnackbarContributor
+import dev.ashdavies.playground.ui.snackbar.SnackbarEvent
+import dev.ashdavies.playground.ui.snackbar.invoke
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesIntoSet
 import dev.zacsweers.metro.Inject
@@ -19,9 +22,7 @@ import java.net.URI
 
 @Inject
 @ContributesIntoSet(AppScope::class)
-internal class AppCheckSnackbarContributor(
-    private val appCheckTokenServer: AppCheckTokenServer,
-) : SnackbarContributor {
+internal class AppCheckSnackbarContributor(private val appCheckTokenServer: AppCheckTokenServer) : SnackbarContributor {
 
     override val source = flowOf<SnackbarEvent> { host ->
         val result = host(

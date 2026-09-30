@@ -19,9 +19,10 @@ kotlin {
         commonMain.dependencies {
             implementation(projects.analytics)
             implementation(projects.composeMaterial)
+            implementation(projects.core.ui.components)
+            implementation(projects.core.ui.resources)
             implementation(projects.features.eventCommon)
             implementation(projects.features.pagerFactory)
-            implementation(projects.uiComponents)
 
             implementation(libs.androidx.paging.compose)
             implementation(libs.circuit.annotations)

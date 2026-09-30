@@ -33,8 +33,8 @@ import dev.ashdavies.playground.material.padding
 import dev.ashdavies.playground.material.spacing
 import dev.ashdavies.playground.material.values
 import dev.ashdavies.playground.ui.CenterAlignedTopAppBar
-import dev.ashdavies.playground.ui.Res
-import dev.ashdavies.playground.ui.past_events
+import dev.ashdavies.playground.ui.resources.Res
+import dev.ashdavies.playground.ui.resources.past_events
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.Inject
 import org.jetbrains.compose.resources.stringResource

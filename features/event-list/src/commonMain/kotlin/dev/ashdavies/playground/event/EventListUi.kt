@@ -46,12 +46,12 @@ import dev.ashdavies.playground.ui.CenterAlignedTopAppBar
 import dev.ashdavies.playground.ui.DateRangeBadge
 import dev.ashdavies.playground.ui.DateRangeBadgeState
 import dev.ashdavies.playground.ui.ErrorLayout
-import dev.ashdavies.playground.ui.Res
-import dev.ashdavies.playground.ui.cfp_closed
-import dev.ashdavies.playground.ui.cfp_open
 import dev.ashdavies.playground.ui.emptyString
-import dev.ashdavies.playground.ui.online_only
-import dev.ashdavies.playground.ui.upcoming_events
+import dev.ashdavies.playground.ui.resources.Res
+import dev.ashdavies.playground.ui.resources.cfp_closed
+import dev.ashdavies.playground.ui.resources.cfp_open
+import dev.ashdavies.playground.ui.resources.online_only
+import dev.ashdavies.playground.ui.resources.upcoming_events
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.Inject
 import kotlinx.datetime.LocalDate

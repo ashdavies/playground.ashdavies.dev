@@ -18,10 +18,11 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             implementation(projects.composeMaterial)
+            implementation(projects.core.ui.components)
+            implementation(projects.core.ui.resources)
             implementation(projects.features.eventCommon)
             implementation(projects.identityManager)
             implementation(projects.metroExtensions)
-            implementation(projects.uiComponents)
 
             implementation(libs.circuit.annotations)
             implementation(libs.circuit.foundation)
