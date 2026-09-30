@@ -19,6 +19,7 @@ kotlin {
             implementation(projects.fixtures.events)
             implementation(projects.previews.tooling)
 
+            implementation(libs.compose.materialIconsExtended)
             implementation(libs.compose.uiToolingPreview)
             implementation(libs.kotlinx.collections.immutable)
             implementation(libs.kotlinx.serialization.json)
