@@ -234,7 +234,7 @@ data "google_artifact_registry_docker_image" "main" {
 
 module "project_services" {
   source        = "terraform-google-modules/project-factory/google//modules/project_services"
-  version       = "18.3.0"
+  version       = "18.4.0"
   project_id    = var.project_id
   activate_apis = concat(local.api_targets, local.enabled_apis)
 }
