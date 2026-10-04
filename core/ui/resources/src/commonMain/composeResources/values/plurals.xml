@@ -9,4 +9,14 @@
         <item quantity="one">%1$s day left</item>
         <item quantity="other">%1$s days left</item>
     </plurals>
+
+    <plurals name="conference_attendees">
+        <item quantity="one">%1$s Attendee</item>
+        <item quantity="other">%1$s Attendees</item>
+    </plurals>
+
+    <plurals name="conference_tracks">
+        <item quantity="one">%1$s Track</item>
+        <item quantity="other">%1$s Tracks</item>
+    </plurals>
 </resources>

@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewWrapper
 import dev.ashdavies.playground.tooling.MaterialThemeWrapper
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.serialization.json.Json
 
@@ -17,8 +18,9 @@ private fun EventListUiSuccessPreview() {
         state = EventListState.Success(
             itemList = Json
                 .upcomingEvents()
+                .map { it.toEventListStateSuccessItem() }
                 .toPersistentList(),
-            selectedIndex = 0,
+            searchResults = persistentListOf(),
             isRefreshing = false,
             eventSink = { },
         ),

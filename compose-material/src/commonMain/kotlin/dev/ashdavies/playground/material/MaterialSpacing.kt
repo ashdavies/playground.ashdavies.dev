@@ -15,6 +15,9 @@ public val Spacing.values: PaddingValues
         vertical = vertical,
     )
 
+public val Spacing.uniform: Dp
+    get() = horizontal
+
 public object MaterialSpacing {
     public val small: Spacing = Spacing(
         horizontal = 8.dp,

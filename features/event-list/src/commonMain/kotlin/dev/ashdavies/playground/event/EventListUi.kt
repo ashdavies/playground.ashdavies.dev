@@ -2,10 +2,10 @@ package dev.ashdavies.playground.event
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,47 +14,60 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.ArrowDownward
+import androidx.compose.material.icons.outlined.ArrowUpward
+import androidx.compose.material.icons.outlined.BookmarkAdd
+import androidx.compose.material.icons.outlined.LocationOn
+import androidx.compose.material3.Badge
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SearchBar
+import androidx.compose.material3.SearchBarDefaults
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.VerticalDivider
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.paint
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import coil3.compose.rememberAsyncImagePainter
 import com.slack.circuit.codegen.annotations.CircuitInject
 import com.valentinilk.shimmer.shimmer
-import dev.ashdavies.playground.material.applyIfNotNull
+import dev.ashdavies.playground.material.applyIf
 import dev.ashdavies.playground.material.padding
 import dev.ashdavies.playground.material.sizing
 import dev.ashdavies.playground.material.spacing
+import dev.ashdavies.playground.material.uniform
 import dev.ashdavies.playground.material.values
-import dev.ashdavies.playground.ui.BadgeContainer
 import dev.ashdavies.playground.ui.CenterAlignedTopAppBar
-import dev.ashdavies.playground.ui.DateRangeBadge
-import dev.ashdavies.playground.ui.DateRangeBadgeState
 import dev.ashdavies.playground.ui.ErrorLayout
 import dev.ashdavies.playground.ui.emptyString
 import dev.ashdavies.playground.ui.resources.Res
 import dev.ashdavies.playground.ui.resources.cfp_closed
-import dev.ashdavies.playground.ui.resources.cfp_open
-import dev.ashdavies.playground.ui.resources.online_only
+import dev.ashdavies.playground.ui.resources.common_search
+import dev.ashdavies.playground.ui.resources.conference_attendees
+import dev.ashdavies.playground.ui.resources.conference_tracks
+import dev.ashdavies.playground.ui.resources.sort_by_date
 import dev.ashdavies.playground.ui.resources.upcoming_events
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.Inject
-import kotlinx.datetime.LocalDate
+import kotlinx.collections.immutable.ImmutableList
+import org.jetbrains.compose.resources.pluralStringResource
 import org.jetbrains.compose.resources.stringResource
 
 @Inject
@@ -85,157 +98,221 @@ private fun EventListContent(
     state: EventListState.Success,
     modifier: Modifier = Modifier,
 ) {
-    PullToRefreshBox(
-        isRefreshing = false,
-        onRefresh = { state.eventSink(EventListState.Success.Event.Refresh) },
+    Column(modifier) {
+        /*SearchBar(
+            results = state.searchResults,
+            onSearch = { state.eventSink(EventListState.Success.Event.Search(it)) },
+            modifier = Modifier.align(Alignment.CenterHorizontally),
+        )*/
+
+        SortingButton(
+            sorting = state.sorting,
+            onClick = { state.eventSink(EventListState.Success.Event.ToggleSorting) },
+            modifier = Modifier.padding(MaterialTheme.spacing.medium.horizontal),
+        )
+
+        PullToRefreshBox(
+            isRefreshing = false,
+            onRefresh = { state.eventSink(EventListState.Success.Event.Refresh) },
+        ) {
+            LazyColumn(
+                modifier = Modifier.fillMaxSize(),
+                contentPadding = MaterialTheme.spacing.large.values,
+                verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.large.vertical),
+            ) {
+                itemsIndexed(state.itemList) { index, item ->
+                    EventListItemContent(
+                        item = item,
+                        isRefreshing = state.isRefreshing,
+                        onClick = { state.eventSink(EventListState.Success.Event.ItemClick(index)) },
+                        modifier = Modifier
+                            .animateItem()
+                            .fillMaxWidth(),
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+@OptIn(ExperimentalMaterial3Api::class)
+private fun SearchBar(
+    results: ImmutableList<String>,
+    onSearch: (String) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    var expanded by rememberSaveable { mutableStateOf(false) }
+    val textFieldState = remember { TextFieldState() }
+
+    SearchBar(
+        inputField = {
+            SearchBarDefaults.InputField(
+                query = textFieldState.text.toString(),
+                onQueryChange = { textFieldState.edit { replace(0, length, it) } },
+                onSearch = {
+                    onSearch(it)
+                    expanded = false
+                },
+                expanded = expanded,
+                onExpandedChange = { expanded = it },
+                placeholder = { Text(stringResource(Res.string.common_search)) },
+            )
+        },
+        expanded = expanded,
+        onExpandedChange = { expanded = it },
         modifier = modifier,
     ) {
-        LazyColumn(
-            modifier = Modifier.fillMaxSize(),
-            contentPadding = MaterialTheme.spacing.large.values,
-            verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.large.vertical),
-        ) {
-            itemsIndexed(state.itemList) { index, item ->
-                EventListItemContent(
-                    event = item,
-                    isRefreshing = state.isRefreshing,
-                    isSelected = item != null && index == state.selectedIndex,
-                    onCfpClick = item?.cfpSite?.let {
-                        { state.eventSink(EventListState.Success.Event.ItemCfpClick(it)) }
-                    },
+        Column(Modifier.verticalScroll(rememberScrollState())) {
+            results.forEach { result ->
+                ListItem(
+                    headlineContent = { Text(result) },
                     modifier = Modifier
-                        .animateItem()
-                        .fillMaxWidth()
-                        .clip(MaterialTheme.shapes.medium)
-                        .applyIfNotNull(item) {
-                            Modifier
-                                .clickable { state.eventSink(EventListState.Success.Event.ItemClick(it.id)) }
-                                .paint(rememberBackgroundPainter(it.imageUrl))
-                        },
+                        .clickable {
+                            textFieldState.edit { replace(0, length, result) }
+                            expanded = false
+                        }
+                        .fillMaxWidth(),
                 )
             }
+        }
+    }
+}
+
+@Composable
+private fun SortingButton(
+    sorting: EventListState.Success.Sorting,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Box(modifier.fillMaxWidth()) {
+        TextButton(
+            onClick = onClick,
+            modifier = Modifier.align(Alignment.CenterEnd),
+        ) {
+            Text(stringResource(Res.string.sort_by_date))
+
+            Icon(
+                imageVector = when (sorting) {
+                    EventListState.Success.Sorting.DESCENDING -> Icons.Outlined.ArrowDownward
+                    EventListState.Success.Sorting.ASCENDING -> Icons.Outlined.ArrowUpward
+                },
+                contentDescription = null,
+            )
         }
     }
 }
 
 @Composable
 private fun EventListItemContent(
-    event: Event?,
+    item: EventListState.Success.Item?,
     isRefreshing: Boolean,
-    isSelected: Boolean,
-    onCfpClick: (() -> Unit)?,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Card(
-        modifier = if (isRefreshing) modifier.shimmer() else modifier,
-        colors = CardDefaults.cardColors(
-            containerColor = when {
-                isSelected -> MaterialTheme.colorScheme.surfaceVariant
-                else -> Color.Unspecified
-            },
-        ),
+        modifier = modifier
+            .applyIf(isRefreshing) { it.shimmer() }
+            .fillMaxWidth(),
     ) {
-        Row(
+        Box(
             modifier = Modifier
-                .padding(MaterialTheme.spacing.large)
-                .height(IntrinsicSize.Max),
-            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small.horizontal),
+                .padding(MaterialTheme.spacing.large.uniform)
+                .fillMaxWidth(),
         ) {
-            Column(Modifier.weight(1f)) {
-                Text(
-                    text = if (event != null) {
-                        val year = LocalDate
-                            .parse(event.dateStart)
-                            .year % 100
+            Column(verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small.vertical)) {
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small.horizontal),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Badge {
+                        Text(stringResource(Res.string.cfp_closed))
+                    }
 
-                        "${event.name} '$year"
-                    } else {
-                        emptyString()
-                    },
-                    modifier = Modifier
-                        .defaultMinSize(minWidth = 64.dp)
-                        .padding(vertical = 2.dp),
-                    overflow = TextOverflow.Ellipsis,
-                    maxLines = 1,
+                    VerticalDivider(Modifier.height(1.dp))
+
+                    item?.trackCount?.let { trackCount ->
+                        Text(pluralStringResource(Res.plurals.conference_tracks, trackCount, trackCount))
+                    }
+
+                    VerticalDivider(Modifier.height(1.dp))
+
+                    Text(item?.series ?: emptyString())
+                }
+
+                Text(
+                    text = item?.name ?: emptyString(),
                     style = MaterialTheme.typography.headlineSmall,
                 )
 
-                Text(
-                    text = event?.location ?: emptyString(),
-                    modifier = Modifier
-                        .defaultMinSize(minWidth = 64.dp)
-                        .padding(vertical = 2.dp),
-                    style = MaterialTheme.typography.titleSmall,
-                )
-            }
-
-            if (event?.online == true) {
-                BadgeContainer(Modifier.fillMaxHeight()) {
-                    Text(
-                        text = stringResource(Res.string.online_only),
-                        modifier = Modifier.width(MaterialTheme.sizing.icon.medium),
-                        style = MaterialTheme.typography.labelSmall,
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Icon(
+                        imageVector = Icons.Outlined.LocationOn,
+                        contentDescription = null,
                     )
+
+                    Text(
+                        text = item?.location ?: emptyString(),
+                        style = MaterialTheme.typography.labelMedium,
+                    )
+                }
+
+                Spacer(Modifier.height(MaterialTheme.spacing.medium.vertical))
+
+                Row(horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small.horizontal)) {
+                    item?.tagList?.forEach {
+                        Badge { Text(it) }
+                    }
+
+                    item?.attendeeCount?.let { attendeeCount ->
+                        Badge {
+                            Text(
+                                pluralStringResource(
+                                    Res.plurals.conference_attendees,
+                                    attendeeCount,
+                                    attendeeCount,
+                                ),
+                            )
+                        }
+                    }
                 }
             }
 
-            event?.cfpEnd?.let { cfpEnd ->
-                val daysUntilCfpEnd = daysUntilCfpEnd(LocalDate.parse(cfpEnd))
-
-                BadgeContainer(
-                    modifier = Modifier.fillMaxHeight(),
-                    color = if (daysUntilCfpEnd > 0) {
-                        MaterialTheme.colorScheme.surface
-                    } else {
-                        MaterialTheme.colorScheme.surfaceDim
-                    },
+            Surface(
+                modifier = Modifier
+                    .applyIf(isRefreshing) { it.shimmer() }
+                    .align(Alignment.TopEnd),
+                shape = MaterialTheme.shapes.small,
+                color = MaterialTheme.colorScheme.surface,
+            ) {
+                Column(
+                    modifier = Modifier
+                        .width(60.dp)
+                        .padding(MaterialTheme.spacing.small),
+                    verticalArrangement = Arrangement.aligned(Alignment.CenterVertically),
+                    horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     Text(
-                        text = stringResource(
-                            resource = if (daysUntilCfpEnd > 0) {
-                                Res.string.cfp_open
-                            } else {
-                                Res.string.cfp_closed
-                            },
-                        ),
-                        modifier = Modifier.width(40.dp),
-                        textAlign = TextAlign.Center,
+                        text = item?.dateSubtitle ?: emptyString(),
                         style = MaterialTheme.typography.labelSmall,
+                    )
+
+                    Text(
+                        text = item?.dateTitle ?: emptyString(),
+                        style = MaterialTheme.typography.labelLarge,
                     )
                 }
             }
 
-            if (event?.dateStart != null) {
-                DateRangeBadge(
-                    state = remember(event.dateStart, event.dateEnd) {
-                        DateRangeBadgeState(
-                            dateStart = LocalDate.parse(event.dateStart),
-                            dateEnd = LocalDate.parse(event.dateEnd),
-                        )
-                    },
-                    modifier = Modifier
-                        .fillMaxHeight()
-                        .width(64.dp),
+            IconButton(
+                modifier = Modifier.align(Alignment.BottomEnd),
+                onClick = { },
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.BookmarkAdd,
+                    contentDescription = null,
                 )
             }
         }
     }
-}
-
-@Composable
-private fun rememberBackgroundPainter(
-    backgroundImageUrl: String?,
-    colorStopStart: Float = 0.25f,
-    colorStopEnd: Float = 0.5f,
-): Painter {
-    @Suppress("unused")
-    val brush = Brush.horizontalGradient(
-        colorStopStart to Color.Transparent,
-        colorStopEnd to Color.Black,
-    )
-
-    return rememberAsyncImagePainter(
-        model = backgroundImageUrl,
-        contentScale = ContentScale.Crop,
-    )
 }

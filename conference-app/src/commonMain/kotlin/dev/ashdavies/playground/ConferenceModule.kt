@@ -24,6 +24,7 @@ import io.ktor.client.plugins.DefaultRequest
 import io.ktor.client.plugins.auth.Auth
 import io.ktor.client.request.header
 import io.ktor.http.HttpHeaders
+import kotlin.time.Clock
 import dev.ashdavies.playground.event.common.PlaygroundDatabase as CommonDatabase
 import dev.ashdavies.playground.gallery.PlaygroundDatabase as GalleryDatabase
 
@@ -47,6 +48,20 @@ internal interface ConferenceModule {
     )
 
     @Provides
+    @AppCheckHttpClient
+    fun appCheckHttpClient(
+        @DefaultHttpClient httpClient: HttpClient,
+        appCheckTokenProvider: suspend () -> AppCheckToken,
+    ): HttpClient = httpClient.config {
+        install(Auth) {
+            appCheck { getToken(appCheckTokenProvider) }
+        }
+    }
+
+    @Provides
+    fun clock(): Clock = Clock.System
+
+    @Provides
     @DefaultHttpClient
     fun defaultHttpClient(
         @Named("httpClientHeaders") headers: Set<Pair<String, String>>,
@@ -56,17 +71,6 @@ internal interface ConferenceModule {
             headers.forEach { (key, value) -> header(key, value) }
 
             url(BuildConfig.PLAYGROUND_BASE_URL ?: "https://api.ashdavies.dev/")
-        }
-    }
-
-    @Provides
-    @AppCheckHttpClient
-    fun appCheckHttpClient(
-        @DefaultHttpClient httpClient: HttpClient,
-        appCheckTokenProvider: suspend () -> AppCheckToken,
-    ): HttpClient = httpClient.config {
-        install(Auth) {
-            appCheck { getToken(appCheckTokenProvider) }
         }
     }
 
