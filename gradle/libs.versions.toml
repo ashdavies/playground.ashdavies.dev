@@ -49,7 +49,7 @@ compose-components-resources = { module = "org.jetbrains.compose.components:comp
 compose-foundation = { module = "org.jetbrains.compose.foundation:foundation", version.ref = "compose-plugin" }
 compose-material3 = "org.jetbrains.compose.material3:material3:1.12.0-alpha03"
 compose-materialIconsExtended = "org.jetbrains.compose.material:material-icons-extended:1.7.3"
-compose-navigation-event = "androidx.navigationevent:navigationevent-compose:1.1.2"
+compose-navigation-event = "androidx.navigationevent:navigationevent-compose:1.2.0"
 compose-runtime = { module = "org.jetbrains.compose.runtime:runtime", version.ref = "compose-plugin" }
 compose-shimmer = "com.valentinilk.shimmer:compose-shimmer:1.5.0"
 compose-ui = { module = "org.jetbrains.compose.ui:ui", version.ref = "compose-plugin" }
