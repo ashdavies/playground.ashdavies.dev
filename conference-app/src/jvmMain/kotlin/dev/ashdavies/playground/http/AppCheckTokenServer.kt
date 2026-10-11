@@ -38,7 +38,7 @@ internal sealed interface AppCheckTokenState {
 
 @SingleIn(AppScope::class)
 @ContributesBinding(AppScope::class)
-internal class LocalAppCheckServer : AppCheckTokenServer {
+internal class LocalAppCheckServer() : AppCheckTokenServer {
 
     override val state = MutableStateFlow<AppCheckTokenState>(AppCheckTokenState.Idle)
 
@@ -63,9 +63,9 @@ internal class LocalAppCheckServer : AppCheckTokenServer {
             }
 
             routing {
-                staticResources("/__firebase/init.json", null, "/__firebase/init.json")
-                staticResources("/conference-app.js", null, "conference-app.js")
-                staticResources("/", null, "index.html")
+                staticResources("/", null) {
+                    default("index.html")
+                }
 
                 post("/") {
                     onComplete(call.receive())
@@ -74,8 +74,8 @@ internal class LocalAppCheckServer : AppCheckTokenServer {
             }
         }
             .startSuspend(wait = false)
-            .engineConfig
-            .connectors
+            .engine
+            .resolvedConnectors()
             .single()
     }
 }
