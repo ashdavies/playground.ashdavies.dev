@@ -171,6 +171,7 @@ kotlin {
             implementation(libs.ktor.server.netty)
 
             runtimeOnly(libs.kotlinx.coroutines.swing)
+            runtimeOnly(libs.logback.classic)
         }
 
         jvmTest.dependencies {
@@ -178,6 +179,7 @@ kotlin {
 
             implementation(libs.androidx.paging.testing)
             implementation(libs.kotlinx.coroutines.test)
+            implementation(libs.ktor.server.test.host)
             implementation(libs.sqldelight.sqlite.driver)
         }
 
