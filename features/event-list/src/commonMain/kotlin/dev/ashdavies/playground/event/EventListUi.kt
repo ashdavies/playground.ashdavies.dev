@@ -30,6 +30,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -179,29 +180,31 @@ private fun EventListItemContent(
                 }
             }
 
-            event?.cfpEnd?.let { cfpEnd ->
-                val daysUntilCfpEnd = daysUntilCfpEnd(LocalDate.parse(cfpEnd))
+            if (!LocalInspectionMode.current) {
+                event?.cfpEnd?.let { cfpEnd ->
+                    val daysUntilCfpEnd = daysUntilCfpEnd(LocalDate.parse(cfpEnd))
 
-                BadgeContainer(
-                    modifier = Modifier.fillMaxHeight(),
-                    color = if (daysUntilCfpEnd > 0) {
-                        MaterialTheme.colorScheme.surface
-                    } else {
-                        MaterialTheme.colorScheme.surfaceDim
-                    },
-                ) {
-                    Text(
-                        text = stringResource(
-                            resource = if (daysUntilCfpEnd > 0) {
-                                Res.string.cfp_open
-                            } else {
-                                Res.string.cfp_closed
-                            },
-                        ),
-                        modifier = Modifier.width(40.dp),
-                        textAlign = TextAlign.Center,
-                        style = MaterialTheme.typography.labelSmall,
-                    )
+                    BadgeContainer(
+                        modifier = Modifier.fillMaxHeight(),
+                        color = if (daysUntilCfpEnd > 0) {
+                            MaterialTheme.colorScheme.surface
+                        } else {
+                            MaterialTheme.colorScheme.surfaceDim
+                        },
+                    ) {
+                        Text(
+                            text = stringResource(
+                                resource = if (daysUntilCfpEnd > 0) {
+                                    Res.string.cfp_open
+                                } else {
+                                    Res.string.cfp_closed
+                                },
+                            ),
+                            modifier = Modifier.width(40.dp),
+                            textAlign = TextAlign.Center,
+                            style = MaterialTheme.typography.labelSmall,
+                        )
+                    }
                 }
             }
 
