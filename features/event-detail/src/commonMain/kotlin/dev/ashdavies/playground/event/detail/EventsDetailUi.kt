@@ -225,7 +225,6 @@ private fun EventsDetailCfp(
                     },
                 )
             }
-
         }
     }
 }
