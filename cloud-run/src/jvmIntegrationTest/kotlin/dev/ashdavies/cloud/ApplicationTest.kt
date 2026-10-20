@@ -6,6 +6,7 @@ import io.ktor.client.HttpClientConfig
 import io.ktor.client.engine.HttpClientEngineConfig
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiationConfig
+import io.ktor.client.request.get
 import io.ktor.client.request.post
 import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
@@ -26,9 +27,13 @@ private val DefaultHttpConfig: HttpClientConfig<out HttpClientEngineConfig>.() -
 internal class ApplicationTest {
 
     @Test
-    @Ignore
-    fun `should request app check token after expiry`() {
-        TODO("Not yet implemented")
+    fun `should fetch upcoming events`() = testMainApplication { client ->
+        val response = client.get("/events/upcoming") {
+            headers["X-Firebase-AppCheck"] = createAppCheckToken().token
+            contentType(ContentType.Application.Json)
+        }
+
+        assertEquals(HttpStatusCode.OK, response.status)
     }
 
     @Test
