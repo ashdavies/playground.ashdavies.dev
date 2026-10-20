@@ -28,6 +28,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
@@ -184,44 +185,46 @@ private fun EventsDetailCfp(
             contentDescription = null,
         )
 
-        val daysUntilCfpEnd = daysUntilCfpEnd(LocalDate.parse(cfpEnd))
-        if (daysUntilCfpEnd > 0) {
-            Text(
-                text = stringResource(Res.string.cfp_open),
-                modifier = Modifier.weight(1f),
-            )
+        if (!LocalInspectionMode.current) {
+            val daysUntilCfpEnd = daysUntilCfpEnd(LocalDate.parse(cfpEnd))
+            if (daysUntilCfpEnd > 0) {
+                Text(
+                    text = stringResource(Res.string.cfp_open),
+                    modifier = Modifier.weight(1f),
+                )
 
-            if (cfpSite != null) {
-                val uriHandler = LocalUriHandler.current
+                if (cfpSite != null) {
+                    val uriHandler = LocalUriHandler.current
+
+                    AssistChip(
+                        onClick = { uriHandler.openUri(cfpSite) },
+                        leadingIcon = {
+                            Icon(
+                                imageVector = Icons.Outlined.Link,
+                                contentDescription = null,
+                            )
+                        },
+                        label = {
+                            Text(pluralStringResource(Res.plurals.common_days_left, daysUntilCfpEnd, daysUntilCfpEnd))
+                        },
+                    )
+                }
+            } else {
+                Text(
+                    text = stringResource(Res.string.cfp_closed),
+                    modifier = Modifier.weight(1f),
+                )
 
                 AssistChip(
-                    onClick = { uriHandler.openUri(cfpSite) },
-                    leadingIcon = {
-                        Icon(
-                            imageVector = Icons.Outlined.Link,
-                            contentDescription = null,
-                        )
-                    },
+                    onClick = { },
+                    enabled = false,
                     label = {
-                        Text(pluralStringResource(Res.plurals.common_days_left, daysUntilCfpEnd, daysUntilCfpEnd))
+                        val daysSinceCfpEnd = abs(daysUntilCfpEnd)
+
+                        Text(pluralStringResource(Res.plurals.common_days_ago, daysSinceCfpEnd, daysSinceCfpEnd))
                     },
                 )
             }
-        } else {
-            Text(
-                text = stringResource(Res.string.cfp_closed),
-                modifier = Modifier.weight(1f),
-            )
-
-            AssistChip(
-                onClick = { },
-                enabled = false,
-                label = {
-                    val daysSinceCfpEnd = abs(daysUntilCfpEnd)
-
-                    Text(pluralStringResource(Res.plurals.common_days_ago, daysSinceCfpEnd, daysSinceCfpEnd))
-                },
-            )
         }
     }
 }
