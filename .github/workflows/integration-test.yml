@@ -34,6 +34,7 @@ jobs:
           DESKTOP_API_KEY: ${{ secrets.DESKTOP_API_KEY }}
           DESKTOP_APP_ID: ${{ secrets.DESKTOP_APP_ID }}
           GOOGLE_SERVICE_ACCOUNT_ID: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
+          PROJECT_NUMBER: ${{ secrets.PROJECT_NUMBER }}
 
       - uses: test-summary/action@v2
         with:
