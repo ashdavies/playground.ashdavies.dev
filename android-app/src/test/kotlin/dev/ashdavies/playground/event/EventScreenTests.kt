@@ -12,12 +12,10 @@ import dev.ashdavies.playground.tooling.MaterialPreviewTheme
 import dev.ashdavies.playground.ui.resources.Res
 import dev.ashdavies.playground.ui.resources.operation_not_implemented
 import kotlinx.collections.immutable.toImmutableList
-import kotlinx.datetime.LocalDate
 import kotlinx.serialization.json.Json
 import org.jetbrains.compose.resources.stringResource
 import org.junit.Rule
 import org.junit.Test
-import kotlin.uuid.Uuid
 
 internal class EventScreenTests {
 
@@ -90,13 +88,9 @@ internal class EventScreenTests {
     }
 }
 
-private fun Event.toEventGridStateItem(): EventGridState.Item {
-    val year = LocalDate.parse(dateStart).year
-    return EventGridState.Item(
-        uuid = "${Uuid.random()}",
-        title = "$name $year",
-        subtitle = location,
-        group = "$year",
-        attended = false,
-    )
-}
+private fun Event.toEventGridStateItem() = EventGridState.Item(
+    title = "$name ${dateStart.year}",
+    group = "${dateStart.year}",
+    subtitle = location,
+    attended = false,
+)

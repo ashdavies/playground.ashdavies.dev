@@ -51,6 +51,7 @@ kotlin {
             implementation(libs.google.firebase.admin)
             implementation(libs.kotlinx.datetime)
             implementation(libs.kotlinx.serialization.core)
+            implementation(libs.kotlinx.serialization.properties)
             implementation(libs.ktor.client.core)
             implementation(libs.ktor.serialization.kotlinx.json)
             implementation(libs.ktor.server.auth)
@@ -63,15 +64,24 @@ kotlin {
             implementation(libs.ktor.server.default.headers)
             implementation(libs.ktor.server.host.common)
             implementation(libs.ktor.server.netty)
+            implementation(libs.squareup.okio)
         }
 
         jvmMain.dependencies {
+            implementation(libs.kotlinx.coroutines.guava)
+
             runtimeOnly(libs.logback.classic)
+        }
+
+        commonTest.dependencies {
+            implementation(projects.fixtures.events)
+            implementation(libs.kotlin.test)
+            implementation(libs.kotlinx.coroutines.test)
         }
 
         jvmIntegrationTest.dependencies {
             implementation(libs.app.cash.turbine)
-            implementation(libs.auth.java.jwt)
+            // implementation(libs.auth.java.jwt)
             implementation(libs.kotlinx.coroutines.test)
             implementation(libs.ktor.client.content.negotiation)
             implementation(libs.ktor.server.test.host)

@@ -10,13 +10,12 @@ public data class EventGridState(
 
     public sealed interface Event {
         public data class MarkAttendance(
-            val id: String,
+            val index: Int,
             val value: Boolean,
         ) : Event
     }
 
     public data class Item(
-        val uuid: String,
         val title: String,
         val group: String,
         val subtitle: String,

@@ -12,6 +12,7 @@ import com.slack.circuit.runtime.CircuitUiEvent
 import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.screen.Screen
 import com.slack.circuit.runtime.ui.Ui
+import com.slack.circuit.serialization.CircuitSerializable
 import dev.ashdavies.playground.ui.snackbar.SnackbarContributor
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.Inject
@@ -20,6 +21,7 @@ import kotlinx.serialization.Serializable
 import org.jetbrains.compose.resources.StringResource
 
 @Serializable
+@CircuitSerializable(AppScope::class)
 public object BottomBarScaffoldScreen : Screen {
     public sealed interface Event : CircuitUiEvent {
         public data class ChildNav(val navEvent: NavEvent) : Event

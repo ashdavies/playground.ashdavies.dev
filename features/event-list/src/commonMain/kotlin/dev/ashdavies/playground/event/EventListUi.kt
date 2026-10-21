@@ -101,7 +101,7 @@ private fun EventListContent(
                     event = item,
                     isRefreshing = state.isRefreshing,
                     isSelected = item != null && index == state.selectedIndex,
-                    onCfpClick = item?.cfpSite?.let {
+                    onCfpClick = TODO("item?.cfpSite")?.let {
                         { state.eventSink(EventListState.Success.Event.ItemCfpClick(it)) }
                     },
                     modifier = Modifier
@@ -110,8 +110,8 @@ private fun EventListContent(
                         .clip(MaterialTheme.shapes.medium)
                         .applyIfNotNull(item) {
                             Modifier
-                                .clickable { state.eventSink(EventListState.Success.Event.ItemClick(it.id)) }
-                                .paint(rememberBackgroundPainter(it.imageUrl))
+                                .clickable { state.eventSink(EventListState.Success.Event.ItemClick(index)) }
+                                .paint(rememberBackgroundPainter(TODO("it.imageUrl")))
                         },
                 )
             }
@@ -145,11 +145,7 @@ private fun EventListItemContent(
             Column(Modifier.weight(1f)) {
                 Text(
                     text = if (event != null) {
-                        val year = LocalDate
-                            .parse(event.dateStart)
-                            .year % 100
-
-                        "${event.name} '$year"
+                        "${event.name} '${event.dateStart.year % 100}"
                     } else {
                         emptyString()
                     },
@@ -170,7 +166,7 @@ private fun EventListItemContent(
                 )
             }
 
-            if (event?.online == true) {
+            if (TODO("event?.online") == true) {
                 BadgeContainer(Modifier.fillMaxHeight()) {
                     Text(
                         text = stringResource(Res.string.online_only),
@@ -181,7 +177,7 @@ private fun EventListItemContent(
             }
 
             if (!LocalInspectionMode.current) {
-                event?.cfpEnd?.let { cfpEnd ->
+                TODO("event?.cfpEnd")?.let { cfpEnd ->
                     val daysUntilCfpEnd = daysUntilCfpEnd(LocalDate.parse(cfpEnd))
 
                     BadgeContainer(
@@ -212,8 +208,8 @@ private fun EventListItemContent(
                 DateRangeBadge(
                     state = remember(event.dateStart, event.dateEnd) {
                         DateRangeBadgeState(
-                            dateStart = LocalDate.parse(event.dateStart),
-                            dateEnd = LocalDate.parse(event.dateEnd),
+                            dateStart = event.dateStart,
+                            dateEnd = event.dateEnd,
                         )
                     },
                     modifier = Modifier

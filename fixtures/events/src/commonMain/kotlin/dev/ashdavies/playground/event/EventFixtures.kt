@@ -1,24 +1,24 @@
 package dev.ashdavies.playground.event
 
 import dev.ashdavies.asg.AsgConference
+import dev.ashdavies.cloud.uuid
 import kotlinx.serialization.json.Json
 import playground.fixtures.events.fixtures.UpcomingJson
+import dev.ashdavies.playground.event.Event as DatabaseEvent
 
-public fun Json.upcomingEvents(): List<Event> = decodeFromString<List<AsgConference>>(
+public fun <T : Any> Json.asgUpcomingConferences(
+    transform: (AsgConference) -> T,
+): List<T> = decodeFromString<List<AsgConference>>(
     string = UpcomingJson,
-).mapIndexed { index, item ->
-    Event(
-        id = index.toLong(),
+).map(transform)
+
+public fun Json.upcomingEvents(): List<DatabaseEvent> = asgUpcomingConferences { item ->
+    DatabaseEvent(
+        uuid = item.uuid(),
         name = item.name,
         website = item.website,
         location = item.location,
-        imageUrl = null,
-        status = item.status,
-        online = item.online,
         dateStart = item.dateStart,
         dateEnd = item.dateEnd,
-        cfpStart = item.cfp?.start,
-        cfpEnd = item.cfp?.end,
-        cfpSite = item.cfp?.site,
     )
 }

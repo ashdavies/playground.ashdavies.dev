@@ -1,5 +1,6 @@
 package dev.ashdavies.playground
 
+import app.cash.sqldelight.ColumnAdapter
 import dev.ashdavies.config.RemoteConfig
 import dev.ashdavies.config.getBoolean
 import dev.ashdavies.content.PlatformContext
@@ -9,6 +10,9 @@ import dev.ashdavies.http.common.models.XApiKey
 import dev.ashdavies.http.defaultHttpClient
 import dev.ashdavies.http.qualifier.AppCheckHttpClient
 import dev.ashdavies.http.qualifier.DefaultHttpClient
+import dev.ashdavies.playground.event.Attendance
+import dev.ashdavies.playground.event.Attr
+import dev.ashdavies.playground.event.Event
 import dev.ashdavies.playground.gallery.LocalGallery
 import dev.ashdavies.playground.gallery.imageAdapter
 import dev.ashdavies.sql.DriverFactory
@@ -24,6 +28,8 @@ import io.ktor.client.plugins.DefaultRequest
 import io.ktor.client.plugins.auth.Auth
 import io.ktor.client.request.header
 import io.ktor.http.HttpHeaders
+import kotlinx.datetime.LocalDate
+import kotlin.uuid.Uuid
 import dev.ashdavies.playground.event.common.PlaygroundDatabase as CommonDatabase
 import dev.ashdavies.playground.gallery.PlaygroundDatabase as GalleryDatabase
 
@@ -43,6 +49,13 @@ internal interface ConferenceModule {
     @ExperimentalMetroCoroutinesApi
     suspend fun playgroundDatabase(context: PlatformContext): PlaygroundDatabase = PlaygroundDatabase(
         driver = DriverFactory(PlaygroundDatabase.Schema, context, "database.db"),
+        attendanceAdapter = Attendance.Adapter(uuidAdapter()),
+        attrAdapter = Attr.Adapter(uuidAdapter()),
+        eventAdapter = Event.Adapter(
+            uuidAdapter = uuidAdapter(),
+            dateStartAdapter = localDateAdapter(),
+            dateEndAdapter = localDateAdapter(),
+        ),
         imageAdapter = imageAdapter(),
     )
 
@@ -75,4 +88,14 @@ internal interface ConferenceModule {
     suspend fun localGallery(remoteConfig: RemoteConfig): LocalGallery = LocalGallery(
         enabled = remoteConfig.getBoolean("local_gallery"),
     )
+}
+
+private fun localDateAdapter() = object : ColumnAdapter<LocalDate, String> {
+    override fun decode(databaseValue: String) = LocalDate.parse(databaseValue)
+    override fun encode(value: LocalDate): String = value.toString()
+}
+
+private fun uuidAdapter() = object : ColumnAdapter<Uuid, String> {
+    override fun decode(databaseValue: String) = Uuid.parse(databaseValue)
+    override fun encode(value: Uuid): String = value.toString()
 }

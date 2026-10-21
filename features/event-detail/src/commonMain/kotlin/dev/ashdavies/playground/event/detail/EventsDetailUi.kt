@@ -96,18 +96,16 @@ public fun EventDetailUi(state: EventDetailState, modifier: Modifier = Modifier)
             Card {
                 Box {
                     EventsDetailImage(
-                        imageUrl = itemOrNull?.imageUrl,
+                        imageUrl = TODO("itemOrNull?.imageUrl"),
                         backgroundSeed = itemOrNull?.location ?: emptyString(),
                     )
 
                     if (itemOrNull != null) {
                         DateRangeBadge(
-                            state = remember(itemOrNull.dateStart, itemOrNull.dateEnd) {
-                                DateRangeBadgeState(
-                                    dateStart = LocalDate.parse(itemOrNull.dateStart),
-                                    dateEnd = LocalDate.parse(itemOrNull.dateEnd),
-                                )
-                            },
+                            state = DateRangeBadgeState(
+                                dateStart = itemOrNull.dateStart,
+                                dateEnd = itemOrNull.dateEnd,
+                            ),
                             modifier = Modifier
                                 .padding(MaterialTheme.spacing.large)
                                 .align(Alignment.TopEnd),
@@ -125,9 +123,9 @@ public fun EventDetailUi(state: EventDetailState, modifier: Modifier = Modifier)
                 Text(itemOrNull?.location ?: emptyString())
             }
 
-            itemOrNull?.cfpEnd?.let { cfpEnd ->
+            TODO("itemOrNull?.cfpEnd")?.let { cfpEnd ->
                 EventsDetailCfp(
-                    cfpSite = itemOrNull.cfpSite,
+                    cfpSite = TODO("itemOrNull.cfpSite"),
                     cfpEnd = cfpEnd,
                 )
             }

@@ -29,10 +29,10 @@ internal class EventDetailPresenter(
     override fun present(): EventDetailState {
         val itemState by produceState<EventDetailState.ItemState>(
             initialValue = EventDetailState.ItemState.Loading,
-            key1 = screen.id,
+            key1 = screen.uuid,
         ) {
             val item = database
-                .map { it.eventQueries.getById(screen.id) }
+                .map { it.eventQueries.getByUuid(screen.uuid) }
                 .await()
                 .awaitAsOne()
 

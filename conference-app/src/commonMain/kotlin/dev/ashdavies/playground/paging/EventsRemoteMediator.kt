@@ -4,13 +4,16 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
-import dev.ashdavies.http.common.models.ApiConference
+import dev.ashdavies.http.common.models.DomainEvent
+import dev.ashdavies.http.common.models.DomainWrapper
+import dev.ashdavies.playground.event.AttrQueries
 import dev.ashdavies.playground.event.Event
 import dev.ashdavies.playground.event.EventQueries
 
 @ExperimentalPagingApi
 internal class EventsRemoteMediator<T : Any>(
-    private val eventsQueries: EventQueries,
+    private val eventQueries: EventQueries,
+    private val attrQueries: AttrQueries,
     private val eventsCallable: UpcomingEventsCallable,
     private val onInvalidate: () -> Unit,
 ) : RemoteMediator<T, Event>() {
@@ -24,10 +27,11 @@ internal class EventsRemoteMediator<T : Any>(
         }
 
         return eventsCallable(GetEventsRequest(loadKey?.dateStart))
-            .mapCatching {
-                eventsQueries.insertOrIgnoreAll(it)
+            .mapCatching { list ->
+                eventQueries.transaction { list.forEach { eventQueries.upsert(it.value.toDatabaseEvent()) } }
+                attrQueries.transaction { list.forEach { attrQueries.upsert(it) } }
                 onInvalidate()
-                it
+                list
             }
             .fold(
                 onSuccess = { MediatorResult.Success(it.size < state.config.pageSize) },
@@ -36,29 +40,27 @@ internal class EventsRemoteMediator<T : Any>(
     }
 }
 
-private suspend fun EventQueries.insertOrIgnoreAll(items: List<ApiConference>): Boolean {
-    transaction {
-        items.forEach {
-            insertOrIgnore(
-                name = it.name,
-                website = it.website,
-                location = it.location,
-                imageUrl = it.imageUrl,
-                status = it.status,
-                online = it.online,
-                dateStart = it.dateStart,
-                dateEnd = it.dateEnd,
-                cfpStart = it.cfp?.start,
-                cfpEnd = it.cfp?.end,
-                cfpSite = it.cfp?.site,
-            )
-        }
-    }
-
-    return true
-}
-
 @ExperimentalPagingApi
-private fun endOfPaginationReached(): RemoteMediator.MediatorResult {
-    return RemoteMediator.MediatorResult.Success(endOfPaginationReached = true)
+private fun endOfPaginationReached() = RemoteMediator.MediatorResult.Success(
+    endOfPaginationReached = true,
+)
+
+private fun DomainEvent.toDatabaseEvent() = Event(
+    uuid = uuid,
+    name = name,
+    website = website,
+    location = location,
+    dateStart = dateStart,
+    dateEnd = dateEnd,
+)
+
+private suspend fun AttrQueries.upsert(
+    wrapper: DomainWrapper<DomainEvent>,
+) = wrapper.attrs.forEach { (key, value) ->
+    upsert(
+        parent = "event",
+        uuid = wrapper.value.uuid,
+        key = key,
+        value_ = value,
+    )
 }

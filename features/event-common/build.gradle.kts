@@ -12,7 +12,8 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            implementation(libs.circuit.runtime)
+            implementation(libs.circuit.serialization)
+            implementation(libs.metro.runtime)
             implementation(libs.kotlinx.datetime)
             implementation(libs.kotlinx.serialization.core)
         }

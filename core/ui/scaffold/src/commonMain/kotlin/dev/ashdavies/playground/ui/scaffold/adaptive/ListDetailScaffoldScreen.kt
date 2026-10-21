@@ -19,12 +19,14 @@ import com.slack.circuit.foundation.CircuitContent
 import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.screen.Screen
 import com.slack.circuit.runtime.ui.Ui
+import com.slack.circuit.serialization.CircuitSerializable
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 
 @Serializable
+@CircuitSerializable(AppScope::class)
 public data class ListDetailScaffoldScreen(val initialScreen: Screen) : Screen {
     public data class State(val initialScreen: Screen) : CircuitUiState
 }

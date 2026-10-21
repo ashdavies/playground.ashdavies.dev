@@ -9,7 +9,12 @@ kotlin {
         implementation(projects.asgService)
         implementation(projects.httpCommon)
 
+        implementation(libs.kotlinx.datetime)
         implementation(libs.kotlinx.serialization.json)
         implementation(libs.squareup.okio)
+    }
+
+    sourceSets.commonTest.dependencies {
+        implementation(libs.kotlin.test)
     }
 }
