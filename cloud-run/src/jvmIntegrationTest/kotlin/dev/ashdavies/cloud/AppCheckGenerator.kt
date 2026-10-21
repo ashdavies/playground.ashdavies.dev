@@ -4,7 +4,9 @@ import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import com.auth0.jwt.interfaces.DecodedJWT
 import com.google.auth.ServiceAccountSigner
+import com.google.auth.oauth2.ExternalAccountCredentials
 import com.google.auth.oauth2.GoogleCredentials
+import com.google.auth.oauth2.ImpersonatedCredentials
 import dev.ashdavies.http.common.models.AppCheckToken
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -19,13 +21,12 @@ private const val APP_CHECK_AUDIENCE = "https://firebaseappcheck.googleapis.com/
 private const val CLOUD_PLATFORM_SCOPE = "https://www.googleapis.com/auth/cloud-platform"
 
 internal suspend fun HttpClient.createAppCheckToken(): AppCheckToken {
-    val credentials = GoogleCredentials.getApplicationDefault().createScoped(CLOUD_PLATFORM_SCOPE)
-    val signer = requireNotNull(credentials as? ServiceAccountSigner) {
-        "Credentials must be of type ServiceAccountSigner to sign as a service account (found: ${credentials.javaClass})"
-    }
-
     val projectNumber = requireNotNull(BuildConfig.PROJECT_NUMBER) { "PROJECT_NUMBER was null" }
     val appId = requireNotNull(JvmIntegrationTestBuildConfig.APP_ID) { "APP_ID was null" }
+
+    val credentials = GoogleCredentials.getApplicationDefault().createScoped(CLOUD_PLATFORM_SCOPE)
+    val signer = credentials.toServiceAccountSigner()
+
     val now = Instant.now()
 
     val customToken = JWT.create()
@@ -47,4 +48,18 @@ internal suspend fun HttpClient.createAppCheckToken(): AppCheckToken {
 private class ServiceAccountAlgorithm(private val signer: ServiceAccountSigner) : Algorithm("RS256", "SHA256withRSA") {
     override fun sign(contentBytes: ByteArray): ByteArray = signer.sign(contentBytes)
     override fun verify(jwt: DecodedJWT) = throw UnsupportedOperationException()
+}
+
+private fun GoogleCredentials.toServiceAccountSigner(): ServiceAccountSigner = when (this) {
+    is ServiceAccountSigner -> this
+
+    is ExternalAccountCredentials -> ImpersonatedCredentials.create(
+        /* sourceCredentials = */ this,
+        /* targetPrincipal = */ requireNotNull(serviceAccountEmail) { "External account credentials must impersonate a service account" },
+        /* delegates = */ null,
+        /* scopes = */ listOf(CLOUD_PLATFORM_SCOPE),
+        /* lifetime = */ 300,
+    )
+
+    else -> error("${this::class.simpleName} cannot sign as a service account")
 }
