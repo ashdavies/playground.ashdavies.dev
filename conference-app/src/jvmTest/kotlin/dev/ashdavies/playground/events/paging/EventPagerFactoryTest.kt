@@ -7,13 +7,8 @@ import dev.ashdavies.http.common.models.DomainEvent
 import dev.ashdavies.http.common.models.DomainWrapper
 import dev.ashdavies.paging.PagerConfig
 import dev.ashdavies.playground.PlaygroundDatabase
-import dev.ashdavies.playground.event.Attendance
-import dev.ashdavies.playground.event.Event
-import dev.ashdavies.playground.event.EventAttrs
-import dev.ashdavies.playground.gallery.imageAdapter
-import dev.ashdavies.playground.localDateAdapter
+import dev.ashdavies.playground.invoke
 import dev.ashdavies.playground.paging.EventPagerFactory
-import dev.ashdavies.playground.uuidAdapter
 import dev.zacsweers.metro.suspendLazyOf
 import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.DateTimeUnit
@@ -37,14 +32,6 @@ internal class EventPagerFactoryTest {
             url = JdbcSqliteDriver.IN_MEMORY,
             schema = PlaygroundDatabase.Schema.synchronous(),
         ).apply(PlaygroundDatabase.Schema::create),
-        attendanceAdapter = Attendance.Adapter(uuidAdapter()),
-        eventAdapter = Event.Adapter(
-            uuidAdapter = uuidAdapter(),
-            dateStartAdapter = localDateAdapter(),
-            dateEndAdapter = localDateAdapter(),
-            attrsAdapter = EventAttrs.Adapter,
-        ),
-        imageAdapter = imageAdapter(),
     )
 
     @Test
