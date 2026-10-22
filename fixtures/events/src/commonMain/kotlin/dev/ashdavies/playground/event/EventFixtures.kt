@@ -1,6 +1,7 @@
 package dev.ashdavies.playground.event
 
 import dev.ashdavies.asg.AsgConference
+import dev.ashdavies.cloud.toAttrs
 import dev.ashdavies.cloud.uuid
 import kotlinx.serialization.json.Json
 import playground.fixtures.events.fixtures.UpcomingJson
@@ -20,5 +21,6 @@ public fun Json.upcomingEvents(): List<DatabaseEvent> = asgUpcomingConferences {
         location = item.location,
         dateStart = item.dateStart,
         dateEnd = item.dateEnd,
+        attrs = EventAttrs(item.toAttrs()),
     )
 }

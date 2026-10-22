@@ -1,7 +1,9 @@
+import dev.ashdavies.playground.event.EventAttrs;
 import kotlinx.datetime.LocalDate;
 import kotlin.uuid.Uuid;
 
 CREATE TABLE event(
+    attrs TEXT AS EventAttrs NOT NULL DEFAULT '{}',
     uuid TEXT AS Uuid NOT NULL PRIMARY KEY,
     name TEXT NOT NULL,
     website TEXT NOT NULL,

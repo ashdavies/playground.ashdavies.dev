@@ -16,6 +16,7 @@ kotlin {
             implementation(libs.metro.runtime)
             implementation(libs.kotlinx.datetime)
             implementation(libs.kotlinx.serialization.core)
+            implementation(libs.kotlinx.serialization.json)
         }
     }
 }

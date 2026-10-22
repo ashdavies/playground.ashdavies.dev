@@ -101,7 +101,7 @@ private fun EventListContent(
                     event = item,
                     isRefreshing = state.isRefreshing,
                     isSelected = item != null && index == state.selectedIndex,
-                    onCfpClick = TODO("item?.cfpSite")?.let {
+                    onCfpClick = item?.attrs?.cfpSite?.let {
                         { state.eventSink(EventListState.Success.Event.ItemCfpClick(it)) }
                     },
                     modifier = Modifier
@@ -111,7 +111,7 @@ private fun EventListContent(
                         .applyIfNotNull(item) {
                             Modifier
                                 .clickable { state.eventSink(EventListState.Success.Event.ItemClick(index)) }
-                                .paint(rememberBackgroundPainter(TODO("it.imageUrl")))
+                                .paint(rememberBackgroundPainter(it.attrs.imageUrl))
                         },
                 )
             }
@@ -166,7 +166,7 @@ private fun EventListItemContent(
                 )
             }
 
-            if (TODO("event?.online") == true) {
+            if (event?.attrs?.online == true) {
                 BadgeContainer(Modifier.fillMaxHeight()) {
                     Text(
                         text = stringResource(Res.string.online_only),
@@ -177,7 +177,7 @@ private fun EventListItemContent(
             }
 
             if (!LocalInspectionMode.current) {
-                TODO("event?.cfpEnd")?.let { cfpEnd ->
+                event?.attrs?.cfpEnd?.let { cfpEnd ->
                     val daysUntilCfpEnd = daysUntilCfpEnd(LocalDate.parse(cfpEnd))
 
                     BadgeContainer(

@@ -11,8 +11,8 @@ import dev.ashdavies.http.defaultHttpClient
 import dev.ashdavies.http.qualifier.AppCheckHttpClient
 import dev.ashdavies.http.qualifier.DefaultHttpClient
 import dev.ashdavies.playground.event.Attendance
-import dev.ashdavies.playground.event.Attr
 import dev.ashdavies.playground.event.Event
+import dev.ashdavies.playground.event.EventAttrs
 import dev.ashdavies.playground.gallery.LocalGallery
 import dev.ashdavies.playground.gallery.imageAdapter
 import dev.ashdavies.sql.DriverFactory
@@ -50,11 +50,11 @@ internal interface ConferenceModule {
     suspend fun playgroundDatabase(context: PlatformContext): PlaygroundDatabase = PlaygroundDatabase(
         driver = DriverFactory(PlaygroundDatabase.Schema, context, "database.db"),
         attendanceAdapter = Attendance.Adapter(uuidAdapter()),
-        attrAdapter = Attr.Adapter(uuidAdapter()),
         eventAdapter = Event.Adapter(
             uuidAdapter = uuidAdapter(),
             dateStartAdapter = localDateAdapter(),
             dateEndAdapter = localDateAdapter(),
+            attrsAdapter = EventAttrs.Adapter,
         ),
         imageAdapter = imageAdapter(),
     )
@@ -90,12 +90,12 @@ internal interface ConferenceModule {
     )
 }
 
-private fun localDateAdapter() = object : ColumnAdapter<LocalDate, String> {
+internal fun localDateAdapter() = object : ColumnAdapter<LocalDate, String> {
     override fun decode(databaseValue: String) = LocalDate.parse(databaseValue)
     override fun encode(value: LocalDate): String = value.toString()
 }
 
-private fun uuidAdapter() = object : ColumnAdapter<Uuid, String> {
+internal fun uuidAdapter() = object : ColumnAdapter<Uuid, String> {
     override fun decode(databaseValue: String) = Uuid.parse(databaseValue)
     override fun encode(value: Uuid): String = value.toString()
 }

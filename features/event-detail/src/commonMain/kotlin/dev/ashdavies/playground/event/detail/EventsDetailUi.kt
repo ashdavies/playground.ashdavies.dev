@@ -96,7 +96,7 @@ public fun EventDetailUi(state: EventDetailState, modifier: Modifier = Modifier)
             Card {
                 Box {
                     EventsDetailImage(
-                        imageUrl = TODO("itemOrNull?.imageUrl"),
+                        imageUrl = itemOrNull?.attrs?.imageUrl,
                         backgroundSeed = itemOrNull?.location ?: emptyString(),
                     )
 
@@ -123,9 +123,9 @@ public fun EventDetailUi(state: EventDetailState, modifier: Modifier = Modifier)
                 Text(itemOrNull?.location ?: emptyString())
             }
 
-            TODO("itemOrNull?.cfpEnd")?.let { cfpEnd ->
+            itemOrNull?.attrs?.cfpEnd?.let { cfpEnd ->
                 EventsDetailCfp(
-                    cfpSite = TODO("itemOrNull.cfpSite"),
+                    cfpSite = itemOrNull.attrs.cfpSite,
                     cfpEnd = cfpEnd,
                 )
             }

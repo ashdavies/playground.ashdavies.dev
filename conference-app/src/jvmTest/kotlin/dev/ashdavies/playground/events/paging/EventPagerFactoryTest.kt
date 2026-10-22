@@ -4,10 +4,16 @@ import androidx.paging.testing.asSnapshot
 import app.cash.sqldelight.async.coroutines.synchronous
 import app.cash.sqldelight.driver.jdbc.sqlite.JdbcSqliteDriver
 import dev.ashdavies.http.common.models.DomainEvent
+import dev.ashdavies.http.common.models.DomainWrapper
 import dev.ashdavies.paging.PagerConfig
 import dev.ashdavies.playground.PlaygroundDatabase
+import dev.ashdavies.playground.event.Attendance
+import dev.ashdavies.playground.event.Event
+import dev.ashdavies.playground.event.EventAttrs
 import dev.ashdavies.playground.gallery.imageAdapter
+import dev.ashdavies.playground.localDateAdapter
 import dev.ashdavies.playground.paging.EventPagerFactory
+import dev.ashdavies.playground.uuidAdapter
 import dev.zacsweers.metro.suspendLazyOf
 import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.DateTimeUnit
@@ -31,6 +37,13 @@ internal class EventPagerFactoryTest {
             url = JdbcSqliteDriver.IN_MEMORY,
             schema = PlaygroundDatabase.Schema.synchronous(),
         ).apply(PlaygroundDatabase.Schema::create),
+        attendanceAdapter = Attendance.Adapter(uuidAdapter()),
+        eventAdapter = Event.Adapter(
+            uuidAdapter = uuidAdapter(),
+            dateStartAdapter = localDateAdapter(),
+            dateEndAdapter = localDateAdapter(),
+            attrsAdapter = EventAttrs.Adapter,
+        ),
         imageAdapter = imageAdapter(),
     )
 
@@ -55,8 +68,8 @@ internal class EventPagerFactoryTest {
             }
 
         val eventPager = EventPagerFactory(
+            databaseFactory = suspendLazyOf(playgroundDatabase),
             eventsCallable = { Result.success(upcomingApiEventList) },
-            eventsQueries = suspendLazyOf(playgroundDatabase.eventQueries),
             coroutineContext = coroutineContext,
         ).create(PagerConfig(null, pageSize))
 
@@ -82,13 +95,16 @@ private fun LocalDate.Companion.nearFuture(
     random: Int = Random.nextInt(52),
 ) = startAt.plus(random, DateTimeUnit.WEEK)
 
-private fun apiEvent(location: String, dateStart: LocalDate) = DomainEvent(
-    uuid = Uuid.random(),
-    name = "Playground Conf $location '${"${dateStart.year}".substring(2)}",
-    website = "https://playground.ashdavies.dev/",
-    location = location,
-    dateStart = dateStart,
-    dateEnd = dateStart.plus(Random.nextInt(3), DateTimeUnit.DAY),
+private fun apiEvent(location: String, dateStart: LocalDate) = DomainWrapper(
+    attrs = emptyMap(),
+    value = DomainEvent(
+        uuid = Uuid.random(),
+        name = "Playground Conf $location '${"${dateStart.year}".substring(2)}",
+        website = "https://playground.ashdavies.dev/",
+        location = location,
+        dateStart = dateStart,
+        dateEnd = dateStart.plus(Random.nextInt(3), DateTimeUnit.DAY),
+    ),
 )
 
 @Serializable

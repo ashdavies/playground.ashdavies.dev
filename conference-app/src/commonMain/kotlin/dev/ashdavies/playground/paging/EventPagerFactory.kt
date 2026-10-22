@@ -58,7 +58,6 @@ internal class EventPagerFactory(
             initialKey = config.initialKey,
             remoteMediator = EventsRemoteMediator(
                 eventQueries = eventQueries,
-                attrQueries = database.attrQueries,
                 eventsCallable = eventsCallable,
                 onInvalidate = pagingSourceFactory::invalidate,
             ),
