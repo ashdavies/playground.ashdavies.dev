@@ -27,6 +27,7 @@ kotlin {
 
             implementation(libs.circuit.foundation)
             implementation(libs.circuit.runtime)
+            implementation(libs.circuit.serialization)
 
             implementation(libs.compose.adaptive.layout)
             implementation(libs.compose.adaptive.navigation)

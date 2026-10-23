@@ -27,6 +27,8 @@ kotlin {
 
             implementation(libs.circuit.annotations)
             implementation(libs.circuit.foundation)
+            implementation(libs.circuit.serialization)
+
             implementation(libs.coil.compose)
             implementation(libs.compose.components.resources)
             implementation(libs.compose.material3)

@@ -12,9 +12,18 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            implementation(libs.circuit.runtime)
+            api(projects.httpCommon)
+
+            implementation(libs.circuit.serialization)
+            implementation(libs.metro.runtime)
             implementation(libs.kotlinx.datetime)
             implementation(libs.kotlinx.serialization.core)
+            implementation(libs.kotlinx.serialization.json)
+        }
+
+        commonTest.dependencies {
+            implementation(libs.kotlin.test)
+            implementation(libs.kotlinx.coroutines.test)
         }
     }
 }

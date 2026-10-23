@@ -8,6 +8,7 @@ kotlin {
     sourceSets.commonMain.dependencies {
         compileOnly(libs.metro.runtime)
 
+        implementation(libs.kotlinx.datetime)
         implementation(libs.kotlinx.serialization.json)
         implementation(libs.ktor.client.core)
     }

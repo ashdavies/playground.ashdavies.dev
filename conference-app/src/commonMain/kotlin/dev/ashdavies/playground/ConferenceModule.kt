@@ -1,5 +1,6 @@
 package dev.ashdavies.playground
 
+import app.cash.sqldelight.ColumnAdapter
 import dev.ashdavies.config.RemoteConfig
 import dev.ashdavies.config.getBoolean
 import dev.ashdavies.content.PlatformContext
@@ -10,7 +11,6 @@ import dev.ashdavies.http.defaultHttpClient
 import dev.ashdavies.http.qualifier.AppCheckHttpClient
 import dev.ashdavies.http.qualifier.DefaultHttpClient
 import dev.ashdavies.playground.gallery.LocalGallery
-import dev.ashdavies.playground.gallery.imageAdapter
 import dev.ashdavies.sql.DriverFactory
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.Binds
@@ -25,6 +25,8 @@ import io.ktor.client.plugins.auth.Auth
 import io.ktor.client.request.header
 import io.ktor.http.HttpHeaders
 import kotlin.time.Clock
+import kotlinx.datetime.LocalDate
+import kotlin.uuid.Uuid
 import dev.ashdavies.playground.event.common.PlaygroundDatabase as CommonDatabase
 import dev.ashdavies.playground.gallery.PlaygroundDatabase as GalleryDatabase
 
@@ -44,7 +46,6 @@ internal interface ConferenceModule {
     @ExperimentalMetroCoroutinesApi
     suspend fun playgroundDatabase(context: PlatformContext): PlaygroundDatabase = PlaygroundDatabase(
         driver = DriverFactory(PlaygroundDatabase.Schema, context, "database.db"),
-        imageAdapter = imageAdapter(),
     )
 
     @Provides

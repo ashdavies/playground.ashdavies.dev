@@ -3,11 +3,12 @@ package dev.ashdavies.playground.events.paging
 import androidx.paging.testing.asSnapshot
 import app.cash.sqldelight.async.coroutines.synchronous
 import app.cash.sqldelight.driver.jdbc.sqlite.JdbcSqliteDriver
+import dev.ashdavies.http.common.models.DomainEvent
+import dev.ashdavies.http.common.models.DomainWrapper
 import dev.ashdavies.paging.PagerConfig
 import dev.ashdavies.playground.PlaygroundDatabase
-import dev.ashdavies.playground.gallery.imageAdapter
+import dev.ashdavies.playground.invoke
 import dev.ashdavies.playground.paging.EventPagerFactory
-import dev.zacsweers.metro.ExperimentalMetroCoroutinesApi
 import dev.zacsweers.metro.suspendLazyOf
 import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.DateTimeUnit
@@ -15,7 +16,6 @@ import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.plus
 import kotlinx.datetime.toLocalDateTime
-import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.decodeFromStream
@@ -23,9 +23,7 @@ import org.junit.Test
 import kotlin.random.Random
 import kotlin.test.assertEquals
 import kotlin.time.Clock
-import kotlin.time.ExperimentalTime
 import kotlin.uuid.Uuid
-import dev.ashdavies.http.common.models.ApiConference as ApiEvent
 
 internal class EventPagerFactoryTest {
 
@@ -34,7 +32,6 @@ internal class EventPagerFactoryTest {
             url = JdbcSqliteDriver.IN_MEMORY,
             schema = PlaygroundDatabase.Schema.synchronous(),
         ).apply(PlaygroundDatabase.Schema::create),
-        imageAdapter = imageAdapter(),
     )
 
     @Test
@@ -58,8 +55,8 @@ internal class EventPagerFactoryTest {
             }
 
         val eventPager = EventPagerFactory(
+            databaseFactory = suspendLazyOf(playgroundDatabase),
             eventsCallable = { Result.success(upcomingApiEventList) },
-            eventsQueries = suspendLazyOf(playgroundDatabase.eventQueries),
             coroutineContext = coroutineContext,
         ).create(PagerConfig(null, pageSize))
 
@@ -85,17 +82,16 @@ private fun LocalDate.Companion.nearFuture(
     random: Int = Random.nextInt(52),
 ) = startAt.plus(random, DateTimeUnit.WEEK)
 
-private fun apiEvent(location: String, dateStart: LocalDate) = ApiEvent(
-    id = "${Uuid.random()}",
-    name = "Playground Conf $location '${"${dateStart.year}".substring(2)}",
-    website = "https://playground.ashdavies.dev/",
-    location = location,
-    imageUrl = null,
-    status = null,
-    online = false,
-    dateStart = "$dateStart",
-    dateEnd = "${dateStart.plus(Random.nextInt(3), DateTimeUnit.DAY)}",
-    cfp = null,
+private fun apiEvent(location: String, dateStart: LocalDate) = DomainWrapper(
+    attrs = emptyMap(),
+    value = DomainEvent(
+        uuid = Uuid.random(),
+        name = "Playground Conf $location '${"${dateStart.year}".substring(2)}",
+        website = "https://playground.ashdavies.dev/",
+        location = location,
+        dateStart = dateStart,
+        dateEnd = dateStart.plus(Random.nextInt(3), DateTimeUnit.DAY),
+    ),
 )
 
 @Serializable
