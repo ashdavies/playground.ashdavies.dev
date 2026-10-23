@@ -81,7 +81,6 @@ kotlin {
 
         jvmIntegrationTest.dependencies {
             implementation(libs.app.cash.turbine)
-            // implementation(libs.auth.java.jwt)
             implementation(libs.kotlinx.coroutines.test)
             implementation(libs.ktor.client.content.negotiation)
             implementation(libs.ktor.server.test.host)
