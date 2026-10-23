@@ -1,6 +1,7 @@
 package dev.ashdavies.cloud
 
-import dev.ashdavies.http.common.models.ApiConference
+import dev.ashdavies.http.common.models.DomainEvent
+import dev.ashdavies.http.common.models.DomainWrapper
 import dev.zacsweers.metro.createGraph
 import io.ktor.client.HttpClient
 import io.ktor.client.HttpClientConfig
@@ -16,11 +17,9 @@ import io.ktor.serialization.kotlinx.json.json
 import io.ktor.server.testing.ApplicationTestBuilder
 import io.ktor.server.testing.testApplication
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import kotlinx.serialization.json.Json
-import kotlin.test.Ignore
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -46,7 +45,7 @@ internal class ApplicationTest {
 
         assertEquals(HttpStatusCode.OK, response.status)
 
-        val body = response.body<List<ApiConference>>()
+        val body = response.body<List<DomainWrapper<DomainEvent>>>()
         val today = Clock.System.now()
             .toLocalDateTime(TimeZone.UTC)
             .date
@@ -54,20 +53,24 @@ internal class ApplicationTest {
         assertTrue(body.isNotEmpty())
 
         body.forEach {
-            assertTrue(LocalDate.parse(it.dateStart) > today)
+            assertTrue(it.value.dateStart > today)
         }
     }
 
     @Test
-    @Ignore
     fun `should aggregate github events`() = testMainApplication { client ->
         val response = client.post("/events:aggregate") {
+            headers["X-Firebase-AppCheck"] = appCheckToken()
             contentType(ContentType.Application.Json)
         }
 
         assertEquals(HttpStatusCode.OK, response.status)
     }
 }
+
+private suspend fun appCheckToken() = HttpClient(DefaultHttpConfig)
+    .createAppCheckToken()
+    .token
 
 private fun testMainApplication(block: suspend ApplicationTestBuilder.(HttpClient) -> Unit) = testApplication {
     val client = createClient(DefaultHttpConfig)

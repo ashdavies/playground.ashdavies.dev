@@ -1,5 +1,6 @@
 package dev.ashdavies.asg
 
+import kotlinx.datetime.LocalDate
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -7,10 +8,10 @@ public data class AsgConference(
     public val name: String,
     public val website: String,
     public val location: String,
-    public val online: Boolean? = false,
+    public val dateStart: LocalDate,
+    public val dateEnd: LocalDate,
+    public val online: Boolean? = null,
     public val status: String? = null,
-    public val dateStart: String,
-    public val dateEnd: String,
     public val cfp: Cfp? = null,
 ) {
 
@@ -18,6 +19,6 @@ public data class AsgConference(
     public data class Cfp(
         public val start: String,
         public val end: String,
-        public val site: String? = null,
+        public val site: String?,
     )
 }

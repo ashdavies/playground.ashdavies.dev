@@ -23,7 +23,6 @@ import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import kotlinx.datetime.LocalDate
 import kotlin.time.Clock
 
 @Inject
@@ -41,12 +40,12 @@ internal class EventGridPresenter(
 
         val eventList by produceState(emptyList()) {
             value = eventGridCallable(Unit).map {
-                it to LocalDate.parse(it.dateStart)
+                it to it.dateStart
             }
         }
 
         val attendanceList by attendanceQueries
-            .mapAsFlow { it.selectAll { id, _ -> id } }
+            .mapAsFlow { it.selectAll { uuid, _ -> uuid } }
             .mapToList(Dispatchers.Default)
             .map { it.toSet() }
             .collectAsState(emptySet())
@@ -54,11 +53,10 @@ internal class EventGridPresenter(
         val itemList = remember(eventList, attendanceList) {
             eventList.map {
                 EventGridState.Item(
-                    uuid = it.first.id,
                     title = "${it.first.name} ${it.second.year}",
                     subtitle = it.first.location,
                     group = "${it.second.year}",
-                    attended = it.first.id in attendanceList,
+                    attended = it.first.uuid in attendanceList,
                 )
             }.toImmutableList()
         }
@@ -70,8 +68,8 @@ internal class EventGridPresenter(
                 is EventGridState.Event.MarkAttendance -> coroutineScope.launch {
                     attendanceQueries.await().let {
                         when (event.value) {
-                            true -> it.insert(event.id, "${Clock.System.now()}")
-                            false -> it.delete(event.id)
+                            true -> it.insert(eventList[event.index].first.uuid, "${Clock.System.now()}")
+                            false -> it.delete(eventList[event.index].first.uuid)
                         }
                     }
                 }

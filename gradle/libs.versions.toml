@@ -14,7 +14,7 @@ google-ksp = "2.3.6"
 google-services = "4.5.0"
 jetbrains-kotlin = "2.4.21"
 kotlinx-coroutines = "1.11.0"
-kotlinx-serialization = "1.11.0"
+kotlinx-serialization = "1.12.0"
 ktor = "3.6.0"
 metro = "1.4.5"
 sqlJs = "1.8.0"
@@ -66,17 +66,18 @@ google-firebase-admin = "com.google.firebase:firebase-admin:9.11.0"
 google-firebase-appcheck-debug = { module = "com.google.firebase:firebase-appcheck-debug" }
 google-firebase-appcheck-playintegrity = { module = "com.google.firebase:firebase-appcheck-playintegrity" }
 google-firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
-google-firebase-bom = "com.google.firebase:firebase-bom:35.0.2"
+google-firebase-bom = "com.google.firebase:firebase-bom:35.1.0"
 google-firebase-config = { module = "com.google.firebase:firebase-config" }
 google-firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
 google-maps-android-compose = "com.google.maps.android:maps-compose:9.0.1"
-google-maps-android-utils = "com.google.maps.android:android-maps-utils:5.2.0"
+google-maps-android-utils = "com.google.maps.android:android-maps-utils:6.1.0"
 
 jib-core = "com.google.cloud.tools:jib-core:0.28.2"
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "jetbrains-kotlin" }
 
 kotlinx-collections-immutable = "org.jetbrains.kotlinx:kotlinx-collections-immutable:0.5.2"
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
+kotlinx-coroutines-guava = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-guava", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutines-play-services = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutines-swing = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-swing", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinx-coroutines" }
@@ -84,6 +85,7 @@ kotlinx-datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.8.0-0.6.x-compat"
 kotlinx-io-core = "org.jetbrains.kotlinx:kotlinx-io-core:0.9.1"
 kotlinx-serialization-core = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version.ref = "kotlinx-serialization" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
+kotlinx-serialization-properties = { module = "org.jetbrains.kotlinx:kotlinx-serialization-properties", version.ref = "kotlinx-serialization" }
 
 ktor-client-auth = { module = "io.ktor:ktor-client-auth", version.ref = "ktor" }
 ktor-server-auth-jwt = { module = "io.ktor:ktor-server-auth-jwt", version.ref = "ktor" }

@@ -8,6 +8,7 @@ kotlin {
     sourceSets.commonMain.dependencies {
         implementation(projects.httpCommon)
 
+        implementation(libs.kotlinx.datetime)
         implementation(libs.kotlinx.serialization.core)
         implementation(libs.ktor.client.core)
     }

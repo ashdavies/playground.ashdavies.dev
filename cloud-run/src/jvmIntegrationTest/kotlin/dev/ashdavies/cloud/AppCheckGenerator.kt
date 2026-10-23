@@ -21,6 +21,8 @@ private const val APP_CHECK_AUDIENCE = "https://firebaseappcheck.googleapis.com/
 private const val CLOUD_PLATFORM_SCOPE = "https://www.googleapis.com/auth/cloud-platform"
 
 internal suspend fun HttpClient.createAppCheckToken(): AppCheckToken {
+    val credentials = GoogleCredentials.getApplicationDefault().createScoped(CLOUD_PLATFORM_SCOPE)
+    val signer = requireNotNull(credentials as? ServiceAccountSigner) { "Credentials must be able to sign as a service account" }
     val projectNumber = requireNotNull(BuildConfig.PROJECT_NUMBER) { "PROJECT_NUMBER was null" }
     val appId = requireNotNull(JvmIntegrationTestBuildConfig.APP_ID) { "APP_ID was null" }
 

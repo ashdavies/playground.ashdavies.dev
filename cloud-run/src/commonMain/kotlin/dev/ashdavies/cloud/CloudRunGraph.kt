@@ -1,5 +1,7 @@
 package dev.ashdavies.cloud
 
+import com.google.firebase.FirebaseApp
+import dev.ashdavies.asg.AsgService
 import dev.ashdavies.cloud.appcheck.appCheck
 import dev.ashdavies.cloud.google.GoogleApiException
 import dev.ashdavies.http.common.models.XVersionName
@@ -8,6 +10,7 @@ import dev.ashdavies.http.throwClientRequestExceptionAs
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.DependencyGraph
 import dev.zacsweers.metro.Provides
+import dev.zacsweers.metro.SingleIn
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.HttpCallValidator
 import io.ktor.http.HttpHeaders
@@ -28,12 +31,16 @@ import io.ktor.server.plugins.defaultheaders.DefaultHeaders
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.Routing
 import io.ktor.server.routing.routing
+import kotlinx.serialization.json.Json
 
 @DependencyGraph(AppScope::class)
 internal interface CloudRunGraph {
 
     val embeddedServer: EmbeddedServer<*, *>
     val routes: Set<CloudRunRoute>
+
+    @Provides
+    fun asgService(httpClient: HttpClient): AsgService = AsgService(httpClient)
 
     @Provides
     fun embeddedServer(routes: Set<CloudRunRoute>): EmbeddedServer<*, *> = embeddedServer(
@@ -45,12 +52,24 @@ internal interface CloudRunGraph {
     )
 
     @Provides
+    @SingleIn(AppScope::class)
+    fun firebaseApp(): FirebaseApp = FirebaseApp.getApps()
+        .firstOrNull { it.name == FirebaseApp.DEFAULT_APP_NAME }
+        ?: FirebaseApp.initializeApp()
+
+    @Provides
     fun httpClient(): HttpClient = defaultHttpClient {
         install(HttpCallValidator) {
             throwClientRequestExceptionAs<GoogleApiException>()
         }
 
         expectSuccess = true
+    }
+
+    @Provides
+    fun json(): Json = Json {
+        ignoreUnknownKeys = true
+        isLenient = true
     }
 }
 

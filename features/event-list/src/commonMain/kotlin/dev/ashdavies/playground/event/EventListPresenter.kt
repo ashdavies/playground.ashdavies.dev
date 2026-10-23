@@ -31,13 +31,13 @@ private const val DEFAULT_PAGE_SIZE = 10
 internal class EventListPresenter(
     @Assisted private val screen: EventScreen.List,
     @Assisted private val navigator: Navigator,
-    private val eventPagerFactory: PagerFactory<Long, Event>,
+    private val eventPagerFactory: PagerFactory<Int, Event>,
     private val remoteAnalytics: RemoteAnalytics,
 ) : Presenter<EventListState> {
 
     @Composable
     override fun present(): EventListState {
-        val eventPager by produceState<Pager<Long, Event>?>(null) {
+        val eventPager by produceState<Pager<Int, Event>?>(null) {
             value = eventPagerFactory.create(PagerConfig(screen.initialKey, DEFAULT_PAGE_SIZE))
         }
 
@@ -75,8 +75,11 @@ internal class EventListPresenter(
         ) { event ->
             when (event) {
                 is EventListState.Success.Event.ItemClick -> {
-                    remoteAnalytics.logEvent("events_click") { param("id", "${event.id}") }
-                    navigator.goTo(EventScreen.Detail(event.id))
+                    remoteAnalytics.logEvent("events_click") { param("index", "${event.index}") }
+
+                    pagingItems.itemSnapshotList[event.index]?.let {
+                        navigator.goTo(EventScreen.Detail(it.uuid))
+                    }
                 }
 
                 is EventListState.Success.Event.ItemCfpClick -> {

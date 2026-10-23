@@ -1,53 +1,33 @@
-import kotlin.Boolean;
+import dev.ashdavies.http.common.models.EventAttrs;
+import kotlinx.datetime.LocalDate;
+import kotlin.uuid.Uuid;
 
 CREATE TABLE event(
-    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-
+    attrs TEXT AS EventAttrs NOT NULL DEFAULT '{}',
+    uuid TEXT AS Uuid NOT NULL PRIMARY KEY,
     name TEXT NOT NULL,
     website TEXT NOT NULL,
     location TEXT NOT NULL,
-    imageUrl TEXT DEFAULT NULL,
-    status TEXT DEFAULT NULL,
-    online INTEGER AS Boolean,
-    dateStart TEXT NOT NULL,
-    dateEnd TEXT NOT NULL,
-    cfpStart TEXT DEFAULT NULL,
-    cfpEnd TEXT DEFAULT NULL,
-    cfpSite TEXT DEFAULT NULL,
-
-    UNIQUE(name, location, dateStart)
+    dateStart TEXT AS LocalDate NOT NULL,
+    dateEnd TEXT AS LocalDate NOT NULL
 );
 
-keyedQueryAscending:
+countAll:
+    SELECT COUNT(*) FROM event;
+
+getAllDescending:
+    SELECT * FROM event
+    ORDER BY uuid DESC
+    LIMIT :limit OFFSET :offset;
+
+getByUuid:
     SELECT *
     FROM event
-    WHERE id >= :beginInclusive AND (id < :endExclusive OR :endExclusive IS NULL)
-    ORDER BY dateStart ASC;
+    WHERE uuid = :uuid;
 
-pageBoundariesAscending:
-    SELECT id
-    FROM (
-        SELECT
-            id,
-            CASE
-                WHEN ((row_number() OVER(ORDER BY id ASC) - 1) % CAST(:limit AS INTEGER)) = 0 THEN 1
-                WHEN :anchor IS NOT NULL AND id = :anchor THEN 1
-                ELSE 0
-            END page_boundary
-        FROM event
-        ORDER BY id ASC
-    )
-    WHERE page_boundary = 1;
-
-getById:
-    SELECT *
-    FROM event
-    WHERE id = :id;
-
-insertOrIgnore:
-    INSERT OR IGNORE
-    INTO event(name, website, location, imageUrl, status, online, dateStart, dateEnd, cfpStart, cfpEnd, cfpSite)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+upsert:
+    INSERT OR REPLACE INTO event
+    VALUES ?;
 
 deleteAll:
     DELETE FROM event;

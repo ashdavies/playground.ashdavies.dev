@@ -1,26 +1,20 @@
-package dev.ashdavies.playground.circuit
+package dev.ashdavies.playground
 
-import androidx.savedstate.serialization.SavedStateConfiguration
 import com.slack.circuit.foundation.Circuit
 import com.slack.circuit.runtime.presenter.Presenter
-import com.slack.circuit.runtime.screen.CircuitSaveable
 import com.slack.circuit.runtime.ui.Ui
+import com.slack.circuit.serialization.CircuitSerializerRegistration
 import com.slack.circuit.serialization.SerializableCircuitSaver
-import dev.ashdavies.playground.event.EventScreen
-import dev.ashdavies.playground.gallery.GalleryScreen
-import dev.ashdavies.playground.routes.RoutesScreen
-import dev.ashdavies.playground.ui.scaffold.adaptive.ListDetailScaffoldScreen
-import dev.ashdavies.playground.ui.scaffold.navigation.BottomBarScaffoldScreen
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesTo
 import dev.zacsweers.metro.Multibinds
 import dev.zacsweers.metro.Provides
-import kotlinx.serialization.modules.SerializersModule
-import kotlinx.serialization.modules.polymorphic
-import kotlinx.serialization.modules.subclass
 
 @ContributesTo(AppScope::class)
 internal interface CircuitModule {
+
+    @Multibinds
+    fun circuitSerializerRegistrations(): Set<CircuitSerializerRegistration>
 
     @Multibinds
     fun presenterFactories(): Set<Presenter.Factory>
@@ -30,26 +24,12 @@ internal interface CircuitModule {
 
     @Provides
     fun circuit(
-        savedStateConfiguration: SavedStateConfiguration,
+        circuitSerializerRegistrations: Set<CircuitSerializerRegistration>,
         presenterFactories: Set<Presenter.Factory>,
         uiFactories: Set<Ui.Factory>,
     ): Circuit = Circuit.Builder()
-        .setCircuitSaver(SerializableCircuitSaver(savedStateConfiguration))
+        .setCircuitSaver(SerializableCircuitSaver(circuitSerializerRegistrations))
         .addPresenterFactories(presenterFactories)
         .addUiFactories(uiFactories)
         .build()
-
-    @Provides
-    fun savedStateConfiguration(): SavedStateConfiguration = SavedStateConfiguration {
-        serializersModule = SerializersModule {
-            polymorphic(CircuitSaveable::class) {
-                subclass(BottomBarScaffoldScreen::class)
-                subclass(GalleryScreen::class)
-                subclass(ListDetailScaffoldScreen::class)
-                subclass(RoutesScreen::class)
-
-                subclassesOfSealed<EventScreen>()
-            }
-        }
-    }
 }
