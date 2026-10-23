@@ -1,5 +1,7 @@
+import kotlin.uuid.Uuid;
+
 CREATE TABLE attendance(
-    id TEXT NOT NULL UNIQUE PRIMARY KEY,
+    uuid TEXT AS Uuid NOT NULL PRIMARY KEY,
     registeredOn TEXT
 );
 
@@ -12,7 +14,7 @@ insert:
     INSERT INTO attendance VALUES (?, ?);
 
 delete:
-    DELETE FROM attendance WHERE id = :id;
+    DELETE FROM attendance WHERE uuid = :uuid;
 
 deleteAll:
     DELETE FROM attendance;

@@ -4,11 +4,11 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.InvalidatingPagingSourceFactory
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
+import app.cash.sqldelight.paging3.QueryPagingSource
 import dev.ashdavies.paging.PagerConfig
 import dev.ashdavies.paging.PagerFactory
 import dev.ashdavies.playground.PlaygroundDatabase
 import dev.ashdavies.playground.event.Event
-import dev.ashdavies.playground.event.EventQueries
 import dev.ashdavies.playground.metro.map
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesBinding
@@ -21,52 +21,47 @@ import kotlin.coroutines.CoroutineContext
 @ExperimentalMetroCoroutinesApi
 @ContributesBinding(AppScope::class)
 internal class EventPagerFactory(
+    private val databaseFactory: SuspendLazy<PlaygroundDatabase>,
     private val eventsCallable: UpcomingEventsCallable,
-    private val eventsQueries: SuspendLazy<EventQueries>,
     private val coroutineContext: CoroutineContext,
-) : PagerFactory<Long, Event> {
+) : PagerFactory<Int, Event> {
 
     @Inject constructor(
-        eventsCallable: UpcomingEventsCallable,
         databaseFactory: SuspendLazy<PlaygroundDatabase>,
+        eventsCallable: UpcomingEventsCallable,
     ) : this(
+        databaseFactory = databaseFactory,
         eventsCallable = eventsCallable,
-        eventsQueries = databaseFactory.map { it.eventQueries },
         coroutineContext = Dispatchers.Main,
     )
 
     @OptIn(ExperimentalPagingApi::class)
-    override suspend fun create(config: PagerConfig<Long>): Pager<Long, Event> {
-        val eventsQueries = eventsQueries.await()
+    override suspend fun create(config: PagerConfig<Int>): Pager<Int, Event> = databaseFactory.map { database ->
+        val eventQueries = database.eventQueries
 
         val pagingSourceFactory = InvalidatingPagingSourceFactory {
-            KeyedQueryPagingSource<Long, Event>(
-                transacter = eventsQueries,
+            QueryPagingSource(
+                countQuery = eventQueries.countAll(),
+                transacter = eventQueries,
                 context = coroutineContext,
-                pageBoundariesProvider = { anchor, limit ->
-                    eventsQueries.pageBoundariesAscending(
+                queryProvider = { limit, offset ->
+                    eventQueries.getAllDescending(
                         limit = limit,
-                        anchor = anchor,
-                    )
-                },
-                queryProvider = { beginInclusive, endExclusive ->
-                    eventsQueries.keyedQueryAscending(
-                        beginInclusive = beginInclusive,
-                        endExclusive = endExclusive,
+                        offset = offset,
                     )
                 },
             )
         }
 
-        return Pager(
+        Pager(
             config = PagingConfig(config.pageSize),
             initialKey = config.initialKey,
             remoteMediator = EventsRemoteMediator(
-                eventsQueries = eventsQueries,
+                eventQueries = eventQueries,
                 eventsCallable = eventsCallable,
                 onInvalidate = pagingSourceFactory::invalidate,
             ),
             pagingSourceFactory = pagingSourceFactory::invoke,
         )
-    }
+    }.await()
 }
