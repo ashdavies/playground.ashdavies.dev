@@ -34,12 +34,8 @@ internal class ApplicationTest {
 
     @Test
     fun `should fetch upcoming events`() = testMainApplication { client ->
-        val appCheckToken = HttpClient(DefaultHttpConfig)
-            .createAppCheckToken()
-            .token
-
         val response = client.get("/events/upcoming") {
-            headers["X-Firebase-AppCheck"] = appCheckToken
+            headers["X-Firebase-AppCheck"] = appCheckToken()
             contentType(ContentType.Application.Json)
         }
 
