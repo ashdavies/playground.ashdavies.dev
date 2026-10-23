@@ -6,8 +6,8 @@ import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import dev.ashdavies.http.common.models.DomainEvent
 import dev.ashdavies.http.common.models.DomainWrapper
+import dev.ashdavies.http.common.models.EventAttrs
 import dev.ashdavies.playground.event.Event
-import dev.ashdavies.playground.event.EventAttrs
 import dev.ashdavies.playground.event.EventQueries
 
 @ExperimentalPagingApi
@@ -51,6 +51,6 @@ private fun DomainWrapper<DomainEvent>.toDatabaseEvent() = with(value) {
         location = location,
         dateStart = dateStart,
         dateEnd = dateEnd,
-        attrs = EventAttrs(attrs),
+        attrs = EventAttrs(attrs.toMutableMap()),
     )
 }

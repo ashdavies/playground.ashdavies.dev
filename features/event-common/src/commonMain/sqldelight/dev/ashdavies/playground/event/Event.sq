@@ -1,4 +1,4 @@
-import dev.ashdavies.playground.event.EventAttrs;
+import dev.ashdavies.http.common.models.EventAttrs;
 import kotlinx.datetime.LocalDate;
 import kotlin.uuid.Uuid;
 

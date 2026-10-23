@@ -16,7 +16,7 @@ internal class AsgEventAggregateProvider(private val asgService: AsgService) : E
     override suspend fun invoke(): List<DomainWrapper<DomainEvent>> = asgService { asgConference ->
         DomainWrapper(
             value = asgConference.toDomainEvent(),
-            attrs = asgConference.toAttrs(),
+            attrs = asgConference.toAttrs().toMap(),
         )
     }
 }

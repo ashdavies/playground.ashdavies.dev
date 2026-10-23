@@ -166,7 +166,7 @@ private fun EventListItemContent(
                 )
             }
 
-            if (event?.attrs?.online == true) {
+            if (event?.attrs?.online.toBoolean()) {
                 BadgeContainer(Modifier.fillMaxHeight()) {
                     Text(
                         text = stringResource(Res.string.online_only),

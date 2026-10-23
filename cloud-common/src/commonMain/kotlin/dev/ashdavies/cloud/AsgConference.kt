@@ -2,6 +2,7 @@ package dev.ashdavies.cloud
 
 import dev.ashdavies.asg.AsgConference
 import dev.ashdavies.http.common.models.DomainEvent
+import dev.ashdavies.http.common.models.EventAttrs
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.atStartOfDayIn
 import okio.Buffer
@@ -33,14 +34,10 @@ public fun uuid(timestamp: Instant, content: String): Uuid {
     return Uuid.fromLongs(msb, lsb)
 }
 
-public fun AsgConference.toAttrs(): Map<String, String> = buildMap {
-    online?.let { put("online", "$it") }
-    status?.let { put("status", it) }
-
-    cfp?.let { cfp ->
-        put("cfpStart", cfp.start)
-        put("cfpEnd", cfp.end)
-
-        cfp.site?.let { put("cfpSite", it) }
-    }
+public fun AsgConference.toAttrs(): EventAttrs = EventAttrs {
+    online = this@toAttrs.online?.toString()
+    status = this@toAttrs.status
+    cfpStart = cfp?.start
+    cfpEnd = cfp?.end
+    cfpSite = cfp?.site
 }

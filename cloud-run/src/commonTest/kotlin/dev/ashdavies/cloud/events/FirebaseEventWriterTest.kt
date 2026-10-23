@@ -15,7 +15,10 @@ import kotlin.uuid.Uuid
 internal class FirebaseEventWriterTest {
 
     private val data = Json.asgUpcomingConferences { item ->
-        DomainWrapper(item.toDomainEvent(), item.toAttrs())
+        DomainWrapper(
+            attrs = item.toAttrs().toMap(),
+            value = item.toDomainEvent(),
+        )
     }
 
     @Test
@@ -26,7 +29,7 @@ internal class FirebaseEventWriterTest {
                 value = data,
             )
 
-            data.zip(writer.documents.values) { (event, attrs), document ->
+            data.zip(writer.documents.values) { (attrs, event), document ->
                 assertEquals(EventAggregateSource.AndroidStudyGroup.name, document["_source"])
                 assertEquals(event.uuid, Uuid.parse(document["uuid"] as String))
 
@@ -82,7 +85,7 @@ internal class FirebaseEventWriterTest {
                     value = modifiedData,
                 )
 
-                modifiedData.zip(writer.documents.values) { (event, attrs), document ->
+                modifiedData.zip(writer.documents.values) { (_, event), document ->
                     assertEquals(event.uuid, Uuid.parse(document["uuid"] as String))
                 }
 

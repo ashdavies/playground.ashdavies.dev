@@ -77,4 +77,3 @@ internal interface ConferenceModule {
         enabled = remoteConfig.getBoolean("local_gallery"),
     )
 }
-

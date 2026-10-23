@@ -21,6 +21,6 @@ public fun Json.upcomingEvents(): List<DatabaseEvent> = asgUpcomingConferences {
         location = item.location,
         dateStart = item.dateStart,
         dateEnd = item.dateEnd,
-        attrs = EventAttrs(item.toAttrs()),
+        attrs = item.toAttrs(),
     )
 }
