@@ -11,8 +11,6 @@ public interface AsgService {
     public suspend operator fun <T : Any> invoke(transform: (AsgConference) -> T): List<T>
 }
 
-public suspend operator fun AsgService.invoke(): List<AsgConference> = invoke { it }
-
 public fun AsgService(httpClient: HttpClient): AsgService = object : AsgService {
     override suspend operator fun <T : Any> invoke(transform: (AsgConference) -> T): List<T> {
         val upcoming = UpcomingConferencesCallable(httpClient, ASG_BASE_URL)

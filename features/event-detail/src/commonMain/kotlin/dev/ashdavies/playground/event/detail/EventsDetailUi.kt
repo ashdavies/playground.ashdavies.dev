@@ -47,13 +47,11 @@ import dev.ashdavies.playground.ui.ProfileActionButton
 import dev.ashdavies.playground.ui.emptyString
 import dev.ashdavies.playground.ui.resources.Res
 import dev.ashdavies.playground.ui.resources.cfp_closed
+import dev.ashdavies.playground.ui.resources.cfp_closing
 import dev.ashdavies.playground.ui.resources.cfp_open
-import dev.ashdavies.playground.ui.resources.common_days_ago
-import dev.ashdavies.playground.ui.resources.common_days_left
 import dev.zacsweers.metro.AppScope
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
-import org.jetbrains.compose.resources.pluralStringResource
 import org.jetbrains.compose.resources.stringResource
 import kotlin.math.abs
 
@@ -203,7 +201,7 @@ private fun EventsDetailCfp(
                             )
                         },
                         label = {
-                            Text(pluralStringResource(Res.plurals.common_days_left, daysUntilCfpEnd, daysUntilCfpEnd))
+                            Text(stringResource(Res.string.cfp_closing, daysUntilCfpEnd))
                         },
                     )
                 }
@@ -217,9 +215,7 @@ private fun EventsDetailCfp(
                     onClick = { },
                     enabled = false,
                     label = {
-                        val daysSinceCfpEnd = abs(daysUntilCfpEnd)
-
-                        Text(pluralStringResource(Res.plurals.common_days_ago, daysSinceCfpEnd, daysSinceCfpEnd))
+                        Text(stringResource(Res.string.cfp_closed, abs(daysUntilCfpEnd)))
                     },
                 )
             }

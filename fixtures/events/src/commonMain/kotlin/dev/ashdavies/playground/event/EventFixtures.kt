@@ -15,12 +15,12 @@ public fun <T : Any> Json.asgUpcomingConferences(
 
 public fun Json.upcomingEvents(): List<DatabaseEvent> = asgUpcomingConferences { item ->
     DatabaseEvent(
+        attrs = item.toAttrs(),
         uuid = item.uuid(),
         name = item.name,
         website = item.website,
         location = item.location,
         dateStart = item.dateStart,
         dateEnd = item.dateEnd,
-        attrs = item.toAttrs(),
     )
 }

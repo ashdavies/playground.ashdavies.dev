@@ -1,21 +1,40 @@
 package dev.ashdavies.playground.event
 
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.slack.circuit.runtime.CircuitUiState
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 
 public sealed interface EventListState : CircuitUiState {
 
     public data class Success(
-        val itemList: ImmutableList<dev.ashdavies.playground.event.Event?>,
-        val selectedIndex: Int?,
+        val itemList: ImmutableList<Item?>,
+        val searchResults: ImmutableList<String>,
         val isRefreshing: Boolean,
         val eventSink: (Event) -> Unit,
     ) : EventListState {
 
+        public data class Item(
+            public val thumbnailImageSeed: Long,
+            public val name: String,
+            public val location: String,
+            public val date: String,
+            public val status: StatusBadge?,
+            public val isBookmarked: Boolean,
+        ) {
+
+            public data class StatusBadge(
+                public val containerColor: Color,
+                public val icon: ImageVector,
+                public val text: String,
+            )
+        }
+
         public sealed interface Event {
+            public data class ToggleBookmark(val index: Int) : Event
             public data class ItemClick(val index: Int) : Event
-            public data class ItemCfpClick(val uri: String) : Event
+            public data class Search(val query: String) : Event
 
             public data object Refresh : Event
         }
@@ -25,4 +44,13 @@ public sealed interface EventListState : CircuitUiState {
         val icon: ImageVector,
         val message: String?,
     ) : EventListState
+
+    public companion object {
+        public val Initial: EventListState = Success(
+            itemList = persistentListOf(),
+            searchResults = persistentListOf(),
+            isRefreshing = true,
+            eventSink = { },
+        )
+    }
 }

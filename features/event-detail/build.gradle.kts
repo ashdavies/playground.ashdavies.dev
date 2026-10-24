@@ -21,6 +21,7 @@ kotlin {
             implementation(projects.core.ui.components)
             implementation(projects.core.ui.resources)
             implementation(projects.features.eventCommon)
+            implementation(projects.httpCommon)
             implementation(projects.identityManager)
             implementation(projects.metroExtensions)
 

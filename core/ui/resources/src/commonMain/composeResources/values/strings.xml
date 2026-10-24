@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="cfp_open">CfP Open</string>
     <string name="cfp_closed">CfP Closed</string>
+    <string name="cfp_closing">CfP Closes in %1$s</string>
+    <string name="cfp_open">CfP Open</string>
+    <string name="cfp_opening">CfP Opens %1$s</string>
 
     <string name="common_back">Back</string>
     <string name="common_retry">Retry</string>
+    <string name="common_search">Search</string>
 
     <string name="gallery">Gallery</string>
     <string name="online_only">Online Only</string>
@@ -12,5 +15,6 @@
     <string name="past_events">Past Events</string>
     <string name="routes">Routes</string>
     <string name="something_went_wrong">Something went wrong</string>
+    <string name="sort_by_date">Sort by date</string>
     <string name="upcoming_events">Upcoming Events</string>
 </resources>

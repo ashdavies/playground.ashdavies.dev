@@ -23,6 +23,7 @@ kotlin {
             implementation(libs.compose.materialIconsExtended)
             implementation(libs.compose.uiToolingPreview)
             implementation(libs.kotlinx.collections.immutable)
+            implementation(libs.kotlinx.datetime)
             implementation(libs.kotlinx.serialization.json)
         }
     }

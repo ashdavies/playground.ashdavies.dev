@@ -6,8 +6,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewWrapper
 import dev.ashdavies.playground.tooling.MaterialThemeWrapper
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.todayIn
 import kotlinx.serialization.json.Json
+import kotlin.random.Random
+import kotlin.time.Clock
 
 @Composable
 @PreviewLightDark
@@ -17,8 +22,14 @@ private fun EventListUiSuccessPreview() {
         state = EventListState.Success(
             itemList = Json
                 .upcomingEvents()
+                .map { event ->
+                    event.toEventListStateSuccessItem(
+                        today = Clock.System.todayIn(TimeZone.UTC),
+                        isBookmarked = Random.nextBoolean(),
+                    )
+                }
                 .toPersistentList(),
-            selectedIndex = 0,
+            searchResults = persistentListOf(),
             isRefreshing = false,
             eventSink = { },
         ),
