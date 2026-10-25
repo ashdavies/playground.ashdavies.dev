@@ -20,6 +20,7 @@ kotlin {
             implementation(projects.fixtures.events)
             implementation(projects.previews.tooling)
 
+            implementation(libs.circuit.runtime)
             implementation(libs.compose.materialIconsExtended)
             implementation(libs.compose.uiToolingPreview)
             implementation(libs.kotlinx.collections.immutable)

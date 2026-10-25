@@ -9,6 +9,9 @@ import androidx.compose.ui.unit.dp
 public val MaterialTheme.spacing: MaterialSpacing
     get() = MaterialSpacing
 
+public val Spacing.uniform: Dp
+    get() = horizontal
+
 public val Spacing.values: PaddingValues
     get() = PaddingValues(
         horizontal = horizontal,
@@ -16,6 +19,11 @@ public val Spacing.values: PaddingValues
     )
 
 public object MaterialSpacing {
+    public val extraSmall: Spacing = Spacing(
+        horizontal = 4.dp,
+        vertical = 4.dp,
+    )
+
     public val small: Spacing = Spacing(
         horizontal = 8.dp,
         vertical = 4.dp,

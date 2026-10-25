@@ -5,8 +5,8 @@ import androidx.compose.runtime.Stable
 import androidx.compose.ui.Modifier
 
 @Stable
-public inline fun Modifier.applyIf(predicate: Boolean, block: () -> Modifier): Modifier = then(
-    other = if (predicate) block() else Modifier,
+public inline fun Modifier.applyIf(predicate: Boolean, block: (Modifier) -> Modifier): Modifier = then(
+    other = if (predicate) block(Modifier) else Modifier,
 )
 
 @Stable

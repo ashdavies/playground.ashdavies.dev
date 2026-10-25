@@ -11,11 +11,15 @@ import dev.ashdavies.playground.event.grid.EventGridUi
 import dev.ashdavies.playground.tooling.MaterialPreviewTheme
 import dev.ashdavies.playground.ui.resources.Res
 import dev.ashdavies.playground.ui.resources.operation_not_implemented
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.datetime.LocalDate
 import kotlinx.serialization.json.Json
 import org.jetbrains.compose.resources.stringResource
 import org.junit.Rule
 import org.junit.Test
+
+private val SnapshotDate = LocalDate(2026, 1, 1)
 
 internal class EventScreenTests {
 
@@ -30,8 +34,9 @@ internal class EventScreenTests {
                     state = EventListState.Success(
                         itemList = Json
                             .upcomingEvents()
+                            .map { it.toEventListStateSuccessItem(SnapshotDate, isBookmarked = false) }
                             .toImmutableList(),
-                        selectedIndex = null,
+                        searchResults = persistentListOf(),
                         isRefreshing = false,
                         eventSink = { },
                     ),

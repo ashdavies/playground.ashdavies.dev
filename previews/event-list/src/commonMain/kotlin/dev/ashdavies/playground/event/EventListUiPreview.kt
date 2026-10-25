@@ -28,6 +28,13 @@ private fun EventListUiSuccessPreview() {
 @Composable
 @PreviewLightDark
 @PreviewWrapper(MaterialThemeWrapper::class)
+private fun EventListUiInitialPreview() {
+    EventListUi(EventListState.Initial)
+}
+
+@Composable
+@PreviewLightDark
+@PreviewWrapper(MaterialThemeWrapper::class)
 private fun EventListUiFailurePreview() {
     EventListUi(
         state = EventListState.Failure(
