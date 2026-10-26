@@ -15,6 +15,7 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
+            implementation(projects.asgService)
             implementation(projects.features.eventCommon)
             implementation(projects.features.eventList)
             implementation(projects.fixtures.events)
