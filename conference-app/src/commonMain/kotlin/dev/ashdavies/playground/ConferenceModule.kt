@@ -1,6 +1,5 @@
 package dev.ashdavies.playground
 
-import app.cash.sqldelight.ColumnAdapter
 import dev.ashdavies.config.RemoteConfig
 import dev.ashdavies.config.getBoolean
 import dev.ashdavies.content.PlatformContext
@@ -24,13 +23,26 @@ import io.ktor.client.plugins.DefaultRequest
 import io.ktor.client.plugins.auth.Auth
 import io.ktor.client.request.header
 import io.ktor.http.HttpHeaders
-import kotlinx.datetime.LocalDate
-import kotlin.uuid.Uuid
+import kotlin.time.Clock
 import dev.ashdavies.playground.event.common.PlaygroundDatabase as CommonDatabase
 import dev.ashdavies.playground.gallery.PlaygroundDatabase as GalleryDatabase
 
 @ContributesTo(AppScope::class)
 internal interface ConferenceModule {
+
+    @Provides
+    @AppCheckHttpClient
+    fun appCheckHttpClient(
+        @DefaultHttpClient httpClient: HttpClient,
+        appCheckTokenProvider: suspend () -> AppCheckToken,
+    ): HttpClient = httpClient.config {
+        install(Auth) {
+            appCheck { getToken(appCheckTokenProvider) }
+        }
+    }
+
+    @Provides
+    fun clock(): Clock = Clock.System
 
     @Binds
     @ExperimentalMetroCoroutinesApi
@@ -57,17 +69,6 @@ internal interface ConferenceModule {
             headers.forEach { (key, value) -> header(key, value) }
 
             url(BuildConfig.PLAYGROUND_BASE_URL ?: "https://api.ashdavies.dev/")
-        }
-    }
-
-    @Provides
-    @AppCheckHttpClient
-    fun appCheckHttpClient(
-        @DefaultHttpClient httpClient: HttpClient,
-        appCheckTokenProvider: suspend () -> AppCheckToken,
-    ): HttpClient = httpClient.config {
-        install(Auth) {
-            appCheck { getToken(appCheckTokenProvider) }
         }
     }
 
