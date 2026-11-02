@@ -36,6 +36,13 @@ kotlin {
             implementation(libs.kotlinx.collections.immutable)
             implementation(libs.kotlinx.datetime)
         }
+
+        commonTest.dependencies {
+            implementation(projects.fixtures.events)
+
+            implementation(libs.kotlin.test)
+            implementation(libs.kotlinx.serialization.json)
+        }
     }
 }
 

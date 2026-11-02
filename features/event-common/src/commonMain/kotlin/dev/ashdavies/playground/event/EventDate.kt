@@ -18,8 +18,8 @@ public fun formatDateRange(start: LocalDate, end: LocalDate = start): String {
 
     return when {
         start == end -> "$startDate, ${start.year}"
-        start.year != end.year -> "$startDate, ${start.year} – $endDate, ${end.year}"
-        start.month != end.month -> "$startDate – $endDate, ${end.year}"
-        else -> "$startDate–${end.day}, ${end.year}"
+        start.year != end.year -> "$startDate, ${start.year} - $endDate, ${end.year}"
+        start.month != end.month -> "$startDate - $endDate, ${end.year}"
+        else -> "$startDate - ${end.day}, ${end.year}"
     }
 }

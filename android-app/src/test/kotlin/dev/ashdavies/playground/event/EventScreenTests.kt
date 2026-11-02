@@ -28,6 +28,8 @@ private val SnapshotDate = LocalDate(2026, 1, 1)
 
 internal class EventScreenTests {
 
+    private val factory = eventListItemFactory(SnapshotDate.asClock())
+
     @get:Rule
     val paparazzi = Paparazzi()
 
@@ -39,7 +41,7 @@ internal class EventScreenTests {
                     state = EventListState.Success(
                         itemList = Json
                             .upcomingEvents()
-                            .map { it.toEventListStateSuccessItem(SnapshotDate, isBookmarked = false) }
+                            .map { factory(it, false) }
                             .toLazyPagingItems(),
                         isRefreshing = false,
                         eventSink = { },
