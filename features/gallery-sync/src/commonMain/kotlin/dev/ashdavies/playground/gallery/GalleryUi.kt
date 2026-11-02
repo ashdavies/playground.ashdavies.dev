@@ -128,12 +128,7 @@ public fun GalleryUi(state: GalleryScreenState, modifier: Modifier = Modifier) {
             ImageCapture(
                 onResult = {
                     when (it) {
-                        is Path -> eventSink(
-                            GalleryScreenEvent.Capture.Result(
-                                target,
-                            ),
-                        )
-
+                        is Path -> eventSink(GalleryScreenEvent.Capture.Result(target))
                         null -> eventSink(GalleryScreenEvent.Capture.Cancel)
                     }
                 },
@@ -171,7 +166,7 @@ private fun GalleryExpandedItem(
 }
 
 @Composable
-internal fun GalleryGrid(
+private fun GalleryGrid(
     itemList: ImmutableList<GalleryScreenState.StandardItem>,
     onExpand: (Int) -> Unit,
     onSelect: (Int) -> Unit,
@@ -199,7 +194,7 @@ internal fun GalleryGrid(
 }
 
 @Composable
-internal fun GalleryItem(
+private fun GalleryItem(
     item: GalleryScreenState.StandardItem,
     onSelect: () -> Unit,
     onExpand: () -> Unit,

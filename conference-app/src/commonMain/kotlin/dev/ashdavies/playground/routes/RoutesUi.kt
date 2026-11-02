@@ -9,7 +9,7 @@ import dev.zacsweers.metro.Inject
 
 @Inject
 @CircuitInject(RoutesScreen::class, AppScope::class)
-internal class RoutesUi() : Ui<RoutesScreen.State> {
+internal class RoutesUi : Ui<RoutesScreen.State> {
 
     @Composable
     override fun Content(state: RoutesScreen.State, modifier: Modifier) {

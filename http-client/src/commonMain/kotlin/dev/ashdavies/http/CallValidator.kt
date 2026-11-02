@@ -17,12 +17,13 @@ public inline fun <reified T : Throwable> HttpCallValidatorConfig.throwClientReq
                 "Host '${exception.response.request.url.host}' not found",
             )
 
-            is ServerResponseException if exception.response.status == HttpStatusCode.InternalServerError -> IOException(
-                exception.response
-                    .body<JsonObject>()
-                    .getValue("message")
-                    .toString(),
-            )
+            is ServerResponseException if exception.response.status == HttpStatusCode.InternalServerError ->
+                IOException(
+                    exception.response
+                        .body<JsonObject>()
+                        .getValue("message")
+                        .toString(),
+                )
 
             is ResponseException -> exception.response.body<T>()
 

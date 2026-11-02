@@ -41,7 +41,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.slack.circuit.codegen.annotations.CircuitInject
 import com.valentinilk.shimmer.shimmer
-import dev.ashdavies.playground.material.applyIf
 import dev.ashdavies.playground.material.sizing
 import dev.ashdavies.playground.material.spacing
 import dev.ashdavies.playground.material.uniform
@@ -127,7 +126,7 @@ private fun EventListItemContent(
     Card(
         onClick = onClick,
         modifier = modifier
-            .applyIf(isRefreshing) { it.shimmer() }
+            .then(if (isRefreshing) Modifier.shimmer() else Modifier)
             .fillMaxWidth(),
         shape = MaterialTheme.shapes.extraLarge,
         colors = CardDefaults.cardColors(
