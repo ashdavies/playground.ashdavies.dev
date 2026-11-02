@@ -17,7 +17,10 @@ import kotlinx.serialization.Serializable
 
 private const val NETWORK_PAGE_SIZE = 100
 
-internal fun interface UpcomingEventsCallable : UnaryCallable<GetEventsRequest, Result<List<DomainWrapper<DomainEvent>>>>
+internal fun interface UpcomingEventsCallable : UnaryCallable<
+    GetEventsRequest,
+    Result<List<DomainWrapper<DomainEvent>>>,
+    >
 
 @Serializable
 internal data class GetEventsRequest(

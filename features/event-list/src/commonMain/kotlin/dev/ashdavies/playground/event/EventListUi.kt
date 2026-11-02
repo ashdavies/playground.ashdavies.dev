@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -37,7 +38,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.slack.circuit.codegen.annotations.CircuitInject
 import com.valentinilk.shimmer.shimmer
-import dev.ashdavies.playground.material.applyIf
 import dev.ashdavies.playground.material.sizing
 import dev.ashdavies.playground.material.spacing
 import dev.ashdavies.playground.material.uniform
@@ -95,7 +95,6 @@ private fun EventListContent(
                     item = item,
                     isRefreshing = state.isRefreshing,
                     onBookmarkClick = { state.eventSink(EventListState.Success.Event.ToggleBookmark(index)) },
-                    onStatusClick = { state.eventSink(EventListState.Success.Event.ToggleBookmark(index)) },
                     onClick = { state.eventSink(EventListState.Success.Event.ItemClick(index)) },
                     modifier = Modifier
                         .animateItem()
@@ -111,14 +110,13 @@ private fun EventListItemContent(
     item: EventListState.Success.Item?,
     isRefreshing: Boolean,
     onBookmarkClick: () -> Unit,
-    onStatusClick: () -> Unit,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Card(
         onClick = onClick,
         modifier = modifier
-            .applyIf(isRefreshing) { it.shimmer() }
+            .then(if (isRefreshing) Modifier.shimmer() else Modifier)
             .fillMaxWidth(),
         shape = MaterialTheme.shapes.extraLarge,
         colors = CardDefaults.cardColors(
@@ -144,7 +142,9 @@ private fun EventListItemContent(
             )
 
             Column(
-                modifier = Modifier.weight(1.0f),
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .weight(1.0f),
                 verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.extraSmall.vertical),
             ) {
                 Text(
@@ -162,6 +162,8 @@ private fun EventListItemContent(
                     overflow = TextOverflow.Ellipsis,
                 )
 
+                Spacer(Modifier.height(MaterialTheme.spacing.extraSmall.vertical))
+
                 item?.status?.let { status ->
                     StatusBadge(status, Modifier.padding(top = MaterialTheme.spacing.small.vertical))
                 }
@@ -173,7 +175,10 @@ private fun EventListItemContent(
                 modifier = Modifier.align(Alignment.CenterVertically),
             ) {
                 Icon(
-                    imageVector = if (item?.isBookmarked == true) Icons.Filled.Bookmark else Icons.Outlined.BookmarkBorder,
+                    imageVector = when (item?.isBookmarked) {
+                        true -> Icons.Filled.Bookmark
+                        else -> Icons.Outlined.BookmarkBorder
+                    },
                     contentDescription = null,
                 )
             }
@@ -194,7 +199,10 @@ private fun StatusBadge(
     ) {
         Row(
             modifier = Modifier.padding(
-                start = if (status.icon != null) MaterialTheme.spacing.small.horizontal else MaterialTheme.spacing.medium.horizontal,
+                start = when {
+                    status.icon != null -> MaterialTheme.spacing.small.horizontal
+                    else -> MaterialTheme.spacing.medium.horizontal
+                },
                 end = MaterialTheme.spacing.medium.horizontal,
                 top = MaterialTheme.spacing.small.vertical,
                 bottom = MaterialTheme.spacing.small.vertical,

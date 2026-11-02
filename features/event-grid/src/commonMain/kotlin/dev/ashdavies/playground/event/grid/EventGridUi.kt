@@ -39,7 +39,7 @@ import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.Inject
 import org.jetbrains.compose.resources.stringResource
 
-internal object EventGridScreenDefaults {
+private object EventGridScreenDefaults {
     const val MIN_COLUMN_COUNT = 2
     const val MAX_COLUMN_COUNT = 5
 }

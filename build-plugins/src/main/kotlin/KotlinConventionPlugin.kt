@@ -46,8 +46,10 @@ public class KotlinConventionPlugin : Plugin<Project> {
 
             dependencies.add("detektPlugins", libs.detekt.compose)
 
+            @Suppress("UnstableApiUsage")
             extensions.configure<DetektExtension> {
-                config.setFrom(file("../detekt-config.yml"))
+                config.setFrom(isolated.rootProject.projectDirectory.file("detekt-config.yml"))
+                source.setFrom("src")
                 parallel = true
                 buildUponDefaultConfig = true
 

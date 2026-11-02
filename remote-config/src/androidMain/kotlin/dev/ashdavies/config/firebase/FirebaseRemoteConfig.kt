@@ -4,21 +4,20 @@ import com.google.firebase.FirebaseApp
 import com.google.firebase.remoteconfig.remoteConfigSettings
 import dev.ashdavies.config.RemoteConfig
 import dev.ashdavies.config.RemoteConfigValue
-import dev.zacsweers.metro.ExperimentalMetroCoroutinesApi
 import dev.zacsweers.metro.suspendLazy
 import kotlinx.coroutines.tasks.await
 import kotlin.time.Duration.Companion.minutes
 
 public class FirebaseRemoteConfig(firebaseApp: FirebaseApp) : RemoteConfig {
 
-    private val firebaseRemoteConfig = suspendLazy {
+    private val remoteConfig = suspendLazy {
         com.google.firebase.remoteconfig.FirebaseRemoteConfig
             .getInstance(firebaseApp)
             .also { it.configure() }
     }
 
     override suspend fun <T : Any> getValue(key: String, transform: (RemoteConfigValue) -> T): T {
-        return transform(FirebaseRemoteConfigValue(firebaseRemoteConfig.await().getValue(key)))
+        return transform(FirebaseRemoteConfigValue(remoteConfig.await().getValue(key)))
     }
 }
 

@@ -31,7 +31,9 @@ internal interface BottomBarScaffoldModule {
     )
 
     @Provides
-    suspend fun bottomBarScaffoldScreenMetadataPairs(remoteConfig: RemoteConfig): List<Pair<Screen, BottomBarScaffoldMetadata>> {
+    suspend fun bottomBarScaffoldScreenMetadataPairs(
+        remoteConfig: RemoteConfig,
+    ): List<Pair<Screen, BottomBarScaffoldMetadata>> {
         val isGalleryEnabled = remoteConfig.getBoolean("gallery_enabled")
         val isRoutesEnabled = remoteConfig.getBoolean("routes_enabled")
         val isPastEventsEnabled = remoteConfig.getBoolean("past_events_enabled")
