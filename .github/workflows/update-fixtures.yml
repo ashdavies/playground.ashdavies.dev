@@ -1,0 +1,34 @@
+name: Update Fixtures
+
+on:
+  schedule:
+    - cron: "0 8 * * 1"
+
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  update_fixtures_main:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - run: |
+          curl --fail --silent --show-error --location \
+            https://androidstudygroup.github.io/conferences/upcoming.json \
+            | jq --indent 2 . > fixtures/events/fixtures/upcoming.json
+
+      - env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          ./scripts/github_pull_request.sh \
+            --base-branch "${{ github.head_ref || github.ref_name }}" \
+            --commit-msg "chore: update upcoming events fixture"
