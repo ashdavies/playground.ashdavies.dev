@@ -1,9 +1,14 @@
 complexity:
+  LongMethod:
+    ignoreAnnotated: ['Composable']
   LongParameterList:
     ignoreDefaultParameters: true
 Compose:
   ComposableNaming:
     excludes: ['**/*Presenter.kt']
+exceptions:
+  TooGenericExceptionCaught:
+    allowedExceptionNameRegex: '_|(cause|expected|ignore).*'
 naming:
   InvalidPackageDeclaration:
     active: false
@@ -11,12 +16,14 @@ naming:
     excludes: ['**/*Test.kt']
     functionPattern: '[\w]+'
   MatchingDeclarationName:
-    multiplatformTargets: ['android', 'androidJvm', 'jvm', 'jvmWasmJs' 'wasmJs']
+    multiplatformTargets: ['android', 'androidJvm', 'jvm', 'jvmWasmJs', 'wasmJs']
 style:
   MagicNumber:
+    excludes: ['**/test/**', '**/*Test/**']
+    ignoreLocalVariableDeclaration: true
     ignorePropertyDeclaration: true
   UnusedPrivateMember:
-    ignoreAnnotated: ['Preview', 'PreviewDayNight']
+    ignoreAnnotated: ['Preview', 'PreviewLightDark']
   UnusedPrivateProperty:
     excludes:
       - '**/*.gradle.kts'

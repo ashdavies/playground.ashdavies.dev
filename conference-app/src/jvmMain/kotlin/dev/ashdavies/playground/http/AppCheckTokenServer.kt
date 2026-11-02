@@ -38,7 +38,7 @@ internal sealed interface AppCheckTokenState {
 
 @SingleIn(AppScope::class)
 @ContributesBinding(AppScope::class)
-internal class LocalAppCheckServer() : AppCheckTokenServer {
+internal class LocalAppCheckServer : AppCheckTokenServer {
 
     override val state = MutableStateFlow<AppCheckTokenState>(AppCheckTokenState.Idle)
 

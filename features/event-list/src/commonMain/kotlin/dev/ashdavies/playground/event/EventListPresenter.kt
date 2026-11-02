@@ -16,6 +16,7 @@ import androidx.compose.runtime.setValue
 import androidx.paging.LoadState
 import androidx.paging.Pager
 import androidx.paging.cachedIn
+import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.slack.circuit.codegen.annotations.CircuitInject
 import com.slack.circuit.runtime.Navigator
@@ -72,9 +73,9 @@ internal class EventListPresenter(
             val coroutineScope = retainCoroutineScope()
             val pagingData = retain { it.flow.cachedIn(coroutineScope) }
             pagingData.collectAsLazyPagingItems()
-        } ?: return EventListState.Initial
+        }
 
-        val error = (pagingItems.loadState.refresh as? LoadState.Error)?.error
+        val error = (pagingItems?.loadState?.refresh as? LoadState.Error)?.error
         if (error != null) {
             remoteAnalytics.recordException(error)
 
@@ -89,35 +90,39 @@ internal class EventListPresenter(
         var bookmarks by remember { mutableStateOf(mapOf<Uuid, Boolean>()) }
         var searchResults by remember { mutableStateOf(listOf<Event>()) }
 
-        return EventListState.Success(
-            itemList = pagingItems.itemSnapshotList
-                .map { it?.toEventListStateSuccessItem(clock.todayIn(TimeZone.UTC), it.uuid in bookmarks) }
-                .toPersistentList(),
-            searchResults = searchResults
-                .map { it.name }
-                .toPersistentList(),
-            isRefreshing = pagingItems.loadState.refresh is LoadState.Loading,
-        ) { event ->
-            when (event) {
-                is EventListState.Success.Event.ToggleBookmark -> pagingItems.itemSnapshotList[event.index]?.let {
-                    bookmarks += it.uuid to !(bookmarks[it.uuid] ?: false)
-                }
+        return when (pagingItems) {
+            is LazyPagingItems<Event> -> EventListState.Success(
+                itemList = pagingItems.itemSnapshotList
+                    .map { it?.toEventListStateSuccessItem(clock.todayIn(TimeZone.UTC), it.uuid in bookmarks) }
+                    .toPersistentList(),
+                searchResults = searchResults
+                    .map { it.name }
+                    .toPersistentList(),
+                isRefreshing = pagingItems.loadState.refresh is LoadState.Loading,
+            ) { event ->
+                when (event) {
+                    is EventListState.Success.Event.ToggleBookmark -> pagingItems.itemSnapshotList[event.index]?.let {
+                        bookmarks += it.uuid to !(bookmarks[it.uuid] ?: false)
+                    }
 
-                is EventListState.Success.Event.ItemClick -> pagingItems.itemSnapshotList[event.index]?.let {
-                    remoteAnalytics.logEvent("events_click") { param("id", "${it.uuid}") }
-                    navigator.goTo(EventScreen.Detail(it.uuid))
-                }
+                    is EventListState.Success.Event.ItemClick -> pagingItems.itemSnapshotList[event.index]?.let {
+                        remoteAnalytics.logEvent("events_click") { param("id", "${it.uuid}") }
+                        navigator.goTo(EventScreen.Detail(it.uuid))
+                    }
 
-                is EventListState.Success.Event.Refresh -> {
-                    remoteAnalytics.logEvent("events_refresh")
-                    pagingItems.refresh()
-                }
+                    is EventListState.Success.Event.Refresh -> {
+                        remoteAnalytics.logEvent("events_refresh")
+                        pagingItems.refresh()
+                    }
 
-                is EventListState.Success.Event.Search ->
-                    searchResults = pagingItems.itemSnapshotList
-                        .filterNotNull()
-                        .filter { event.query in it.name }
+                    is EventListState.Success.Event.Search ->
+                        searchResults = pagingItems.itemSnapshotList
+                            .filterNotNull()
+                            .filter { event.query in it.name }
+                }
             }
+
+            else -> EventListState.Initial
         }
     }
 
@@ -130,9 +135,6 @@ internal class EventListPresenter(
 
 @Composable
 public fun Event.toEventListStateSuccessItem(today: LocalDate, isBookmarked: Boolean): EventListState.Success.Item {
-    val cfpStart = attrs.cfpStart?.let(LocalDate::parse)
-    val cfpEnd = attrs.cfpEnd?.let(LocalDate::parse)
-
     return EventListState.Success.Item(
         thumbnailImageSeed = thumbnailImageSeed,
         name = "$name ${dateStart.year}",
@@ -150,67 +152,78 @@ public fun Event.toEventListStateSuccessItem(today: LocalDate, isBookmarked: Boo
             }
         },
         date = formatDateRange(dateStart, dateEnd),
-        status = when {
-            cfpEnd != null && today > cfpEnd -> EventListState.Success.Item.StatusBadge(
-                containerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
-                contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                text = stringResource(Res.string.cfp_closed),
-                icon = Icons.Outlined.Block,
-            )
+        status = eventListStateSuccessItemState(
+            cfpStart = attrs.cfpStart?.let(LocalDate::parse),
+            cfpEnd = attrs.cfpEnd?.let(LocalDate::parse),
+            today = today,
+        ),
+        isBookmarked = isBookmarked,
+    )
+}
 
-            cfpStart != null && today > cfpStart -> {
-                val timeUntilCfpEnd = cfpEnd?.let { cfpEnd ->
-                    today
-                        .atStartOfDayIn(TimeZone.UTC)
-                        .periodUntil(
-                            other = cfpEnd
-                                .plus(1, DateTimeUnit.DAY)
-                                .atStartOfDayIn(TimeZone.UTC),
-                            timeZone = TimeZone.UTC,
-                        )
-                }
+@Composable
+private fun eventListStateSuccessItemState(
+    cfpStart: LocalDate?,
+    cfpEnd: LocalDate?,
+    today: LocalDate,
+): EventListState.Success.Item.StatusBadge = when {
+    cfpEnd != null && today > cfpEnd -> EventListState.Success.Item.StatusBadge(
+        containerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
+        contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+        text = stringResource(Res.string.cfp_closed),
+        icon = Icons.Outlined.Block,
+    )
 
-                when {
-                    timeUntilCfpEnd != null -> EventListState.Success.Item.StatusBadge(
-                        text = stringResource(
-                            resource = Res.string.cfp_closing,
-                            when {
-                                timeUntilCfpEnd.hours < 1 -> "${timeUntilCfpEnd.minutes}m"
-                                timeUntilCfpEnd.days <= 2 -> "${timeUntilCfpEnd.hours}h"
-                                else -> "${timeUntilCfpEnd.days}d"
-                            },
-                        ),
-                        containerColor = MaterialTheme.colorScheme.errorContainer,
-                        contentColor = MaterialTheme.colorScheme.onErrorContainer,
-                        icon = Icons.Outlined.Schedule,
-                    )
+    cfpStart != null && today > cfpStart -> {
+        val timeUntilCfpEnd = cfpEnd?.let { cfpEnd ->
+            today
+                .atStartOfDayIn(TimeZone.UTC)
+                .periodUntil(
+                    other = cfpEnd
+                        .plus(1, DateTimeUnit.DAY)
+                        .atStartOfDayIn(TimeZone.UTC),
+                    timeZone = TimeZone.UTC,
+                )
+        }
 
-                    else -> EventListState.Success.Item.StatusBadge(
-                        containerColor = MaterialTheme.colorScheme.tertiaryContainer,
-                        contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                        text = stringResource(Res.string.cfp_open),
-                        icon = Icons.Outlined.Schedule,
-                    )
-                }
-            }
-
-            cfpStart != null && today < cfpStart -> EventListState.Success.Item.StatusBadge(
+        when {
+            timeUntilCfpEnd != null -> EventListState.Success.Item.StatusBadge(
                 text = stringResource(
-                    resource = Res.string.cfp_opening,
-                    formatDateRange(cfpStart),
+                    resource = Res.string.cfp_closing,
+                    when {
+                        timeUntilCfpEnd.hours < 1 -> "${timeUntilCfpEnd.minutes}m"
+                        timeUntilCfpEnd.days <= 2 -> "${timeUntilCfpEnd.hours}h"
+                        else -> "${timeUntilCfpEnd.days}d"
+                    },
                 ),
-                containerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
-                contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                icon = Icons.Outlined.LockClock,
+                containerColor = MaterialTheme.colorScheme.errorContainer,
+                contentColor = MaterialTheme.colorScheme.onErrorContainer,
+                icon = Icons.Outlined.Schedule,
             )
 
             else -> EventListState.Success.Item.StatusBadge(
-                containerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
-                contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                text = stringResource(Res.string.cfp_not_announced),
-                icon = null,
+                containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+                contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
+                text = stringResource(Res.string.cfp_open),
+                icon = Icons.Outlined.Schedule,
             )
-        },
-        isBookmarked = isBookmarked,
+        }
+    }
+
+    cfpStart != null && today < cfpStart -> EventListState.Success.Item.StatusBadge(
+        text = stringResource(
+            resource = Res.string.cfp_opening,
+            formatDateRange(cfpStart),
+        ),
+        containerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
+        contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+        icon = Icons.Outlined.LockClock,
+    )
+
+    else -> EventListState.Success.Item.StatusBadge(
+        containerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
+        contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+        text = stringResource(Res.string.cfp_not_announced),
+        icon = null,
     )
 }

@@ -12,9 +12,14 @@ private val MonthDayFormat = LocalDate.Format {
     day(padding = Padding.NONE)
 }
 
-public fun formatDateRange(start: LocalDate, end: LocalDate = start): String = when {
-    start == end -> "${start.format(MonthDayFormat)}, ${start.year}"
-    start.year != end.year -> "${start.format(MonthDayFormat)}, ${start.year} – ${end.format(MonthDayFormat)}, ${end.year}"
-    start.month != end.month -> "${start.format(MonthDayFormat)} – ${end.format(MonthDayFormat)}, ${end.year}"
-    else -> "${start.format(MonthDayFormat)}–${end.day}, ${end.year}"
+public fun formatDateRange(start: LocalDate, end: LocalDate = start): String {
+    val startDate = start.format(MonthDayFormat)
+    val endDate = end.format(MonthDayFormat)
+
+    return when {
+        start == end -> "$startDate, ${start.year}"
+        start.year != end.year -> "$startDate, ${start.year} – $endDate, ${end.year}"
+        start.month != end.month -> "$startDate – $endDate, ${end.year}"
+        else -> "$startDate–${end.day}, ${end.year}"
+    }
 }
