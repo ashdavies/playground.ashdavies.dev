@@ -1,25 +1,6 @@
 [
   {
     "name": "Droidcon",
-    "website": "https://www.uganda.droidcon.com/",
-    "location": "Kampala, Uganda",
-    "dateStart": "2026-10-28",
-    "dateEnd": "2026-10-29",
-    "cfp": {
-      "start": "2026-04-13",
-      "end": "2026-09-12",
-      "site": "https://sessionize.com/droidcon-uganda-2026/"
-    }
-  },
-  {
-    "name": "DevFest.cz",
-    "website": "https://devfest.cz/",
-    "location": "Prague, Czech Republic",
-    "dateStart": "2026-10-30",
-    "dateEnd": "2026-10-30"
-  },
-  {
-    "name": "Droidcon",
     "website": "https://droidcon.co.ke/",
     "location": "Nairobi, Kenya",
     "dateStart": "2026-11-05",
@@ -28,6 +9,18 @@
       "start": "2026-03-01",
       "end": "2026-07-31",
       "site": "https://sessionize.com/droidcon-fluttercon-kenya-2026/"
+    }
+  },
+  {
+    "name": "DevFest Berlin",
+    "website": "https://2026.devfest-berlin.de/",
+    "location": "Berlin, Germany",
+    "dateStart": "2026-11-14",
+    "dateEnd": "2026-11-14",
+    "cfp": {
+      "start": "2026-10-01",
+      "end": "2026-11-01",
+      "site": "https://sessionize.com/devfest-berlin-2026"
     }
   },
   {
