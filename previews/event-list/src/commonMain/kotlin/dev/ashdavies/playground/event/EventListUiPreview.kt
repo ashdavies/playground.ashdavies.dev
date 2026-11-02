@@ -1,19 +1,19 @@
 package dev.ashdavies.playground.event
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Block
 import androidx.compose.material.icons.outlined.CloudOff
-import androidx.compose.material.icons.outlined.Schedule
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewWrapper
+import androidx.paging.PagingData
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
 import dev.ashdavies.asg.AsgConference
 import dev.ashdavies.playground.tooling.MaterialThemeWrapper
-import kotlinx.collections.immutable.persistentListOf
-import kotlinx.collections.immutable.toPersistentList
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.serialization.json.Json
 import kotlin.random.Random
+import kotlin.uuid.Uuid
 
 @Composable
 @PreviewLightDark
@@ -23,8 +23,7 @@ private fun EventListUiSuccessPreview() {
         state = EventListState.Success(
             itemList = Json
                 .asgUpcomingConferences { it.toEventListStateSuccessItem() }
-                .toPersistentList(),
-            searchResults = persistentListOf(),
+                .toLazyPagingItems(),
             isRefreshing = false,
             eventSink = { },
         ),
@@ -35,7 +34,13 @@ private fun EventListUiSuccessPreview() {
 @PreviewLightDark
 @PreviewWrapper(MaterialThemeWrapper::class)
 private fun EventListUiInitialPreview() {
-    EventListUi(EventListState.Initial)
+    EventListUi(
+        state = EventListState.Success(
+            itemList = emptyList<EventListState.Success.Item>().toLazyPagingItems(placeholdersAfter = 6),
+            isRefreshing = true,
+            eventSink = { },
+        ),
+    )
 }
 
 @Composable
@@ -52,23 +57,21 @@ private fun EventListUiFailurePreview() {
 
 private fun AsgConference.toEventListStateSuccessItem() = EventListState.Success.Item(
     thumbnailImageSeed = Random.nextLong(),
+    uuid = Uuid.random(),
     name = name,
     location = location,
     date = formatDateRange(dateStart, dateEnd),
     status = when {
-        cfp != null -> EventListState.Success.Item.StatusBadge(
-            containerColor = Color(red = 255, green = 216, blue = 228),
-            contentColor = Color(red = 49, green = 17, blue = 29),
-            icon = Icons.Outlined.Schedule,
-            text = "CfP Announced",
-        )
-
-        else -> EventListState.Success.Item.StatusBadge(
-            containerColor = Color(red = 230, green = 224, blue = 233),
-            contentColor = Color(red = 73, green = 69, blue = 79),
-            icon = Icons.Outlined.Block,
-            text = "Not Announced",
-        )
+        cfp != null -> EventListState.Success.Item.Status.Open
+        else -> EventListState.Success.Item.Status.NotAnnounced
     },
     isBookmarked = Random.nextBoolean(),
 )
+
+@Composable
+private fun <T : Any> List<T>.toLazyPagingItems(
+    placeholdersAfter: Int = 0,
+): LazyPagingItems<T> = PagingData
+    .from(this, placeholdersAfter = placeholdersAfter)
+    .let(::MutableStateFlow)
+    .collectAsLazyPagingItems()
