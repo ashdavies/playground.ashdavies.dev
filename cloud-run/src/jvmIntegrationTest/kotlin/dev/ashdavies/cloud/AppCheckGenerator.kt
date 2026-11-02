@@ -17,7 +17,8 @@ import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import java.time.Instant
 
-private const val APP_CHECK_AUDIENCE = "https://firebaseappcheck.googleapis.com/google.firebase.appcheck.v1.TokenExchangeService"
+private const val APP_CHECK_HOST = "https://firebaseappcheck.googleapis.com"
+private const val APP_CHECK_AUDIENCE = "$APP_CHECK_HOST/google.firebase.appcheck.v1.TokenExchangeService"
 private const val CLOUD_PLATFORM_SCOPE = "https://www.googleapis.com/auth/cloud-platform"
 
 internal suspend fun HttpClient.createAppCheckToken(): AppCheckToken {
@@ -38,7 +39,7 @@ internal suspend fun HttpClient.createAppCheckToken(): AppCheckToken {
         .withExpiresAt(now.plusSeconds(300))
         .sign(ServiceAccountAlgorithm(signer))
 
-    return post("https://firebaseappcheck.googleapis.com/v1/projects/$projectNumber/apps/$appId:exchangeCustomToken") {
+    return post("$APP_CHECK_HOST/v1/projects/$projectNumber/apps/$appId:exchangeCustomToken") {
         bearerAuth(credentials.refreshAccessToken().tokenValue)
         setBody(mapOf("customToken" to customToken))
         contentType(ContentType.Application.Json)
@@ -55,7 +56,9 @@ private fun GoogleCredentials.toServiceAccountSigner(): ServiceAccountSigner = w
 
     is ExternalAccountCredentials -> ImpersonatedCredentials.create(
         /* sourceCredentials = */ this,
-        /* targetPrincipal = */ requireNotNull(serviceAccountEmail) { "External account credentials must impersonate a service account" },
+        /* targetPrincipal = */ requireNotNull(serviceAccountEmail) {
+            "External account credentials must impersonate a service account"
+        },
         /* delegates = */ null,
         /* scopes = */ listOf(CLOUD_PLATFORM_SCOPE),
         /* lifetime = */ 300,

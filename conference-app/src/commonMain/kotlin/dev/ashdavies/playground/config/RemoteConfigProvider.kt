@@ -24,8 +24,8 @@ internal interface RemoteConfigProvider {
             request = FirebaseRestRemoteConfig.Request(
                 appId = requireNotNull(BuildConfig.APP_ID),
                 appInstanceId = Base64.UrlSafe
-                    .encode(Random.nextBytes(17))
-                    .take(22),
+                    .encode(Random.nextBytes(size = 17))
+                    .take(n = 22),
             ),
             onError = analytics::recordException,
         )

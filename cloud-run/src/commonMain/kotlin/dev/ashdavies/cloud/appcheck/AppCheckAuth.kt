@@ -33,7 +33,7 @@ internal fun AuthenticationConfig.appCheck(projectNumber: String) {
             if (!token.isNullOrEmpty()) {
                 HttpAuthHeader.Single(AuthScheme.AppCheck, token)
             } else {
-                call.application.log.warn("[AppCheck] Auth failed: '${HttpHeaders.XFirebaseAppCheck}' header is missing or blank")
+                call.application.log.warn("Auth failed: '${HttpHeaders.XFirebaseAppCheck}' header is missing or blank")
                 null
             }
         }

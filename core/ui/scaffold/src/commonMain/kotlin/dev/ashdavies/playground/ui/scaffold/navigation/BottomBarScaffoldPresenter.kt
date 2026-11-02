@@ -20,16 +20,16 @@ import kotlinx.collections.immutable.toPersistentList
 
 internal class BottomBarScaffoldPresenter @AssistedInject constructor(
     @Assisted private val navigator: Navigator,
-    private val bottomBarScaffoldConfig: BottomBarScaffoldConfig,
-    private val bottomBarItemsProvider: suspend () -> List<Pair<Screen, BottomBarScaffoldMetadata>>,
+    private val scaffoldConfig: BottomBarScaffoldConfig,
+    private val itemsProvider: suspend () -> List<Pair<Screen, BottomBarScaffoldMetadata>>,
 ) : Presenter<BottomBarScaffoldScreen.State> {
 
     @Composable
     override fun present(): BottomBarScaffoldScreen.State {
-        var selectedScreen by retain { mutableStateOf<Screen>(ListDetailScaffoldScreen(bottomBarScaffoldConfig.initialScreen)) }
+        var selectedScreen by retain { mutableStateOf<Screen>(ListDetailScaffoldScreen(scaffoldConfig.initialScreen)) }
 
         val bottomBarItemsState = produceState<List<Pair<Screen, BottomBarScaffoldMetadata>>?>(null) {
-            value = bottomBarItemsProvider()
+            value = itemsProvider()
         }
 
         return when (val bottomBarItems = bottomBarItemsState.value) {
