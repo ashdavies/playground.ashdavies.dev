@@ -61,10 +61,6 @@ android {
     }
 
     namespace = "dev.ashdavies.android.playground"
-
-    testOptions {
-        // unitTests.isReturnDefaultValues = true
-    }
 }
 
 dependencies {
