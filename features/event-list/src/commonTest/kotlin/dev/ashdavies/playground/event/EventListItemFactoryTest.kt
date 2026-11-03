@@ -33,7 +33,7 @@ internal class EventListItemFactoryTest {
         assertEquals(
             expected = "🇩🇪 Berlin",
             actual = awaitItem(
-                flagStore = mapOf("Germany" to "🇩🇪"),
+                flagMap = mapOf("Germany" to "🇩🇪"),
                 event = event,
             ).location,
         )
@@ -164,10 +164,10 @@ internal class EventListItemFactoryTest {
 private fun awaitItem(
     event: Event = createEvent { it },
     today: LocalDate = LocalDate(2026, 5, 1),
-    flagStore: Map<String, String> = emptyMap(),
+    flagMap: Map<String, String> = emptyMap(),
     isBookmarked: Boolean = false,
 ): EventListState.Success.Item = EventListItemFactory(
-    flagStore = flagStore,
+    flagResolver = LocalCountryFlagResolver(flagMap),
     clock = today.asClock(),
 ).invoke(
     event = event,

@@ -4,7 +4,7 @@ import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesBinding
 import dev.zacsweers.metro.Inject
 
-internal interface CountryFlagResolver {
+internal fun interface CountryFlagResolver {
     operator fun get(key: String): String?
 }
 
