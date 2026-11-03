@@ -51,6 +51,7 @@ internal class EventListPresenter(
                 .create(PagerConfig(screen.initialKey, DEFAULT_PAGE_SIZE))
                 .flow.cachedIn(coroutineScope)
 
+            // TODO Insert separators for each month / year
             value = combine(pagingData, snapshotFlow { bookmarks }) { pagingData, bookmarks ->
                 pagingData.map { eventListItemFactory(it, it.uuid in bookmarks) }
             }
@@ -65,34 +66,36 @@ internal class EventListPresenter(
             .let { it as? LoadState.Error }
             ?.error
 
-        if (error != null) {
-            remoteAnalytics.recordException(error)
+        return when {
+            error != null -> {
+                remoteAnalytics.recordException(error)
 
-            return EventListState.Failure(
-                icon = Icons.Outlined.CloudOff,
-                message = error.message
-                    ?.substringAfterLast(":")
-                    ?: error.message,
-            )
-        }
+                EventListState.Failure(
+                    icon = Icons.Outlined.CloudOff,
+                    message = error.message
+                        ?.substringAfterLast(":")
+                        ?: error.message,
+                )
+            }
 
-        return EventListState.Success(
-            itemList = pagingItems,
-            isRefreshing = pagingItems.loadState.refresh is LoadState.Loading,
-        ) { event ->
-            when (event) {
-                is EventListState.Success.Event.ToggleBookmark -> pagingItems[event.index]?.let { item ->
-                    bookmarks = if (item.uuid in bookmarks) bookmarks - item.uuid else bookmarks + item.uuid
-                }
+            else -> EventListState.Success(
+                itemList = pagingItems,
+                isRefreshing = pagingItems.loadState.refresh is LoadState.Loading,
+            ) { event ->
+                when (event) {
+                    is EventListState.Success.Event.ToggleBookmark -> pagingItems[event.index]?.let { item ->
+                        bookmarks = if (item.uuid in bookmarks) bookmarks - item.uuid else bookmarks + item.uuid
+                    }
 
-                is EventListState.Success.Event.ItemClick -> pagingItems[event.index]?.let {
-                    remoteAnalytics.logEvent("events_click") { param("id", "${it.uuid}") }
-                    navigator.goTo(EventScreen.Detail(it.uuid))
-                }
+                    is EventListState.Success.Event.ItemClick -> pagingItems[event.index]?.let {
+                        remoteAnalytics.logEvent("events_click") { param("id", "${it.uuid}") }
+                        navigator.goTo(EventScreen.Detail(it.uuid))
+                    }
 
-                is EventListState.Success.Event.Refresh -> {
-                    remoteAnalytics.logEvent("events_refresh")
-                    pagingItems.refresh()
+                    is EventListState.Success.Event.Refresh -> {
+                        remoteAnalytics.logEvent("events_refresh")
+                        pagingItems.refresh()
+                    }
                 }
             }
         }

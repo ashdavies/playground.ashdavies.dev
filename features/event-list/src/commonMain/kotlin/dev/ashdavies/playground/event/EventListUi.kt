@@ -103,7 +103,6 @@ private fun EventListContent(
                     item = state.itemList[index],
                     isRefreshing = state.isRefreshing,
                     onBookmarkClick = { state.eventSink(EventListState.Success.Event.ToggleBookmark(index)) },
-                    onStatusClick = { state.eventSink(EventListState.Success.Event.ToggleBookmark(index)) },
                     onClick = { state.eventSink(EventListState.Success.Event.ItemClick(index)) },
                     modifier = Modifier
                         .animateItem()
@@ -119,7 +118,6 @@ private fun EventListItemContent(
     item: EventListState.Success.Item?,
     isRefreshing: Boolean,
     onBookmarkClick: () -> Unit,
-    onStatusClick: () -> Unit,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -181,7 +179,10 @@ private fun EventListItemContent(
                 modifier = Modifier.align(Alignment.CenterVertically),
             ) {
                 Icon(
-                    imageVector = if (item?.isBookmarked == true) Icons.Filled.Bookmark else Icons.Outlined.BookmarkBorder,
+                    imageVector = when {
+                        item?.isBookmarked == true -> Icons.Filled.Bookmark
+                        else -> Icons.Outlined.BookmarkBorder
+                    },
                     contentDescription = null,
                 )
             }
@@ -198,6 +199,7 @@ private fun StatusBadge(
         EventListState.Success.Item.Status.Closed -> StatusBadge(
             text = stringResource(Res.string.cfp_closed),
             imageVector = Icons.Outlined.Block,
+            modifier = modifier,
         )
 
         is EventListState.Success.Item.Status.Closing -> StatusBadge(
@@ -205,6 +207,7 @@ private fun StatusBadge(
             surfaceColor = MaterialTheme.colorScheme.errorContainer,
             contentColor = MaterialTheme.colorScheme.onErrorContainer,
             imageVector = Icons.Outlined.Schedule,
+            modifier = modifier,
         )
 
         EventListState.Success.Item.Status.Open -> StatusBadge(
@@ -212,15 +215,18 @@ private fun StatusBadge(
             contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
             text = stringResource(Res.string.cfp_open),
             imageVector = Icons.Outlined.Schedule,
+            modifier = modifier,
         )
 
         is EventListState.Success.Item.Status.Opening -> StatusBadge(
             text = stringResource(Res.string.cfp_opening, status.remaining),
             imageVector = Icons.Outlined.LockClock,
+            modifier = modifier,
         )
 
         is EventListState.Success.Item.Status.NotAnnounced -> StatusBadge(
             text = stringResource(Res.string.cfp_not_announced),
+            modifier = modifier,
         )
     }
 }
@@ -241,7 +247,10 @@ private fun StatusBadge(
     ) {
         Row(
             modifier = Modifier.padding(
-                start = if (imageVector != null) MaterialTheme.spacing.small.horizontal else MaterialTheme.spacing.medium.horizontal,
+                start = when {
+                    imageVector != null -> MaterialTheme.spacing.small.horizontal
+                    else -> MaterialTheme.spacing.medium.horizontal
+                },
                 end = MaterialTheme.spacing.medium.horizontal,
                 top = MaterialTheme.spacing.small.vertical,
                 bottom = MaterialTheme.spacing.small.vertical,

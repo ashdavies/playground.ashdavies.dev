@@ -45,7 +45,7 @@ internal class EventPagerFactory(
                 transacter = eventQueries,
                 context = coroutineContext,
                 queryProvider = { limit, offset ->
-                    eventQueries.getAllDescending(
+                    eventQueries.getAllAscending(
                         limit = limit,
                         offset = offset,
                     )

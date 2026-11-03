@@ -11,6 +11,10 @@ import kotlinx.datetime.todayIn
 import kotlinx.datetime.until
 import kotlin.time.Clock
 
+private const val DAY_IN_SECONDS = 86_400
+private const val HOUR_IN_SECONDS = 3_600
+private const val MINUTE_IN_SECONDS = 60
+
 private val Event.thumbnailImageSeed: Long
     get() = "$name$location"
         .hashCode()
@@ -18,7 +22,7 @@ private val Event.thumbnailImageSeed: Long
 
 @Inject
 internal class EventListItemFactory(
-    @CountryFlagStore private val flagStore: Map<String, String>,
+    private val flagResolver: CountryFlagResolver,
     private val clock: Clock,
 ) {
 
@@ -27,7 +31,7 @@ internal class EventListItemFactory(
         uuid = event.uuid,
         name = "${event.name} ${event.dateStart.year}",
         location = event.location.split(", ", limit = 2).let { (city, country) ->
-            "${(flagStore[country] ?: "📍")} $city"
+            "${(flagResolver[country] ?: "📍")} $city"
         },
         date = formatDateRange(event.dateStart, event.dateEnd),
         status = status(event.attrs.cfpStart, event.attrs.cfpEnd),
@@ -53,10 +57,10 @@ internal class EventListItemFactory(
                         .until(cfpEndInclusive, DateTimeUnit.SECOND)
 
                     when {
-                        secondsUntilCfp > 172_800 -> "${secondsUntilCfp / 86_400}d"
-                        secondsUntilCfp > 7_200 -> "${secondsUntilCfp / 3_600}h"
-                        secondsUntilCfp > 60 -> "${secondsUntilCfp / 60}m"
-                        else -> "${secondsUntilCfp % 60}s"
+                        secondsUntilCfp > DAY_IN_SECONDS * 2 -> "${secondsUntilCfp / DAY_IN_SECONDS}d"
+                        secondsUntilCfp > HOUR_IN_SECONDS * 2 -> "${secondsUntilCfp / HOUR_IN_SECONDS}h"
+                        secondsUntilCfp > MINUTE_IN_SECONDS * 2 -> "${secondsUntilCfp / MINUTE_IN_SECONDS}m"
+                        else -> "${secondsUntilCfp % MINUTE_IN_SECONDS}s"
                     }
                 },
             )
@@ -72,6 +76,6 @@ internal class EventListItemFactory(
 
 @VisibleForTesting(otherwise = VisibleForTesting.NONE)
 public fun eventListItemFactory(clock: Clock): (Event, Boolean) -> EventListState.Success.Item = EventListItemFactory(
-    flagStore = CountryFlagsBindings.provideCountryFlagStore(),
+    flagResolver = LocalCountryFlagResolver(),
     clock = clock,
 )::invoke

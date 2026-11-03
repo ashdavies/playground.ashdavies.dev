@@ -46,7 +46,8 @@ kotlin {
     }
 }
 
+@OptIn(ExperimentalMetroGradleApi::class)
 metro {
-    @OptIn(ExperimentalMetroGradleApi::class)
     enableCircuitCodegen = true
+    generateContributionProviders = true
 }

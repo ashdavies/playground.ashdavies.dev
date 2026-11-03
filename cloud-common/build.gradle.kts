@@ -15,6 +15,8 @@ kotlin {
     }
 
     sourceSets.commonTest.dependencies {
+        implementation(projects.fixtures.events)
+
         implementation(libs.kotlin.test)
     }
 }
