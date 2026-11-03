@@ -15,9 +15,9 @@ CREATE TABLE event(
 countAll:
     SELECT COUNT(*) FROM event;
 
-getAllDescending:
+getAllAscending:
     SELECT * FROM event
-    ORDER BY uuid DESC
+    ORDER BY dateStart ASC, uuid ASC
     LIMIT :limit OFFSET :offset;
 
 getByUuid:

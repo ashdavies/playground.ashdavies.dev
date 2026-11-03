@@ -97,6 +97,7 @@ dependencies {
     testImplementation(projects.fixtures.events)
     testImplementation(projects.previews.tooling)
 
+    testImplementation(libs.androidx.paging.compose)
     testImplementation(libs.circuit.runtime)
     testImplementation(libs.compose.components.resources)
     testImplementation(libs.compose.material3)

@@ -21,6 +21,7 @@ kotlin {
             implementation(projects.fixtures.events)
             implementation(projects.previews.tooling)
 
+            implementation(libs.androidx.paging.compose)
             implementation(libs.circuit.runtime)
             implementation(libs.compose.materialIconsExtended)
             implementation(libs.compose.uiToolingPreview)

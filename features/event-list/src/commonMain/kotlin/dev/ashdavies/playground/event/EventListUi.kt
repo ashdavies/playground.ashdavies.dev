@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -16,10 +15,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Bookmark
+import androidx.compose.material.icons.outlined.Block
 import androidx.compose.material.icons.outlined.BookmarkBorder
+import androidx.compose.material.icons.outlined.LockClock
+import androidx.compose.material.icons.outlined.Schedule
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -34,6 +35,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.slack.circuit.codegen.annotations.CircuitInject
@@ -47,6 +50,11 @@ import dev.ashdavies.playground.ui.ErrorLayout
 import dev.ashdavies.playground.ui.emptyString
 import dev.ashdavies.playground.ui.gradientBrush
 import dev.ashdavies.playground.ui.resources.Res
+import dev.ashdavies.playground.ui.resources.cfp_closed
+import dev.ashdavies.playground.ui.resources.cfp_closing
+import dev.ashdavies.playground.ui.resources.cfp_not_announced
+import dev.ashdavies.playground.ui.resources.cfp_open
+import dev.ashdavies.playground.ui.resources.cfp_opening
 import dev.ashdavies.playground.ui.resources.upcoming_events
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.Inject
@@ -90,9 +98,9 @@ private fun EventListContent(
             contentPadding = MaterialTheme.spacing.large.values,
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.medium.vertical),
         ) {
-            itemsIndexed(state.itemList) { index, item ->
+            items(state.itemList.itemCount) { index ->
                 EventListItemContent(
-                    item = item,
+                    item = state.itemList[index],
                     isRefreshing = state.isRefreshing,
                     onBookmarkClick = { state.eventSink(EventListState.Success.Event.ToggleBookmark(index)) },
                     onClick = { state.eventSink(EventListState.Success.Event.ItemClick(index)) },
@@ -142,9 +150,7 @@ private fun EventListItemContent(
             )
 
             Column(
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .weight(1.0f),
+                modifier = Modifier.weight(1.0f),
                 verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.extraSmall.vertical),
             ) {
                 Text(
@@ -162,8 +168,6 @@ private fun EventListItemContent(
                     overflow = TextOverflow.Ellipsis,
                 )
 
-                Spacer(Modifier.height(MaterialTheme.spacing.extraSmall.vertical))
-
                 item?.status?.let { status ->
                     StatusBadge(status, Modifier.padding(top = MaterialTheme.spacing.small.vertical))
                 }
@@ -175,8 +179,8 @@ private fun EventListItemContent(
                 modifier = Modifier.align(Alignment.CenterVertically),
             ) {
                 Icon(
-                    imageVector = when (item?.isBookmarked) {
-                        true -> Icons.Filled.Bookmark
+                    imageVector = when {
+                        item?.isBookmarked == true -> Icons.Filled.Bookmark
                         else -> Icons.Outlined.BookmarkBorder
                     },
                     contentDescription = null,
@@ -188,19 +192,63 @@ private fun EventListItemContent(
 
 @Composable
 private fun StatusBadge(
-    status: EventListState.Success.Item.StatusBadge,
+    status: EventListState.Success.Item.Status,
+    modifier: Modifier = Modifier,
+) {
+    when (status) {
+        EventListState.Success.Item.Status.Closed -> StatusBadge(
+            text = stringResource(Res.string.cfp_closed),
+            imageVector = Icons.Outlined.Block,
+            modifier = modifier,
+        )
+
+        is EventListState.Success.Item.Status.Closing -> StatusBadge(
+            text = stringResource(Res.string.cfp_closing, status.remaining),
+            surfaceColor = MaterialTheme.colorScheme.errorContainer,
+            contentColor = MaterialTheme.colorScheme.onErrorContainer,
+            imageVector = Icons.Outlined.Schedule,
+            modifier = modifier,
+        )
+
+        EventListState.Success.Item.Status.Open -> StatusBadge(
+            surfaceColor = MaterialTheme.colorScheme.tertiaryContainer,
+            contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
+            text = stringResource(Res.string.cfp_open),
+            imageVector = Icons.Outlined.Schedule,
+            modifier = modifier,
+        )
+
+        is EventListState.Success.Item.Status.Opening -> StatusBadge(
+            text = stringResource(Res.string.cfp_opening, status.remaining),
+            imageVector = Icons.Outlined.LockClock,
+            modifier = modifier,
+        )
+
+        is EventListState.Success.Item.Status.NotAnnounced -> StatusBadge(
+            text = stringResource(Res.string.cfp_not_announced),
+            modifier = modifier,
+        )
+    }
+}
+
+@Composable
+private fun StatusBadge(
+    text: String,
+    surfaceColor: Color = MaterialTheme.colorScheme.onSurfaceVariant,
+    contentColor: Color = MaterialTheme.colorScheme.surfaceContainerHighest,
+    imageVector: ImageVector? = null,
     modifier: Modifier = Modifier,
 ) {
     Surface(
         modifier = modifier,
         shape = MaterialTheme.shapes.medium,
-        color = status.containerColor,
-        contentColor = status.contentColor,
+        color = surfaceColor,
+        contentColor = contentColor,
     ) {
         Row(
             modifier = Modifier.padding(
                 start = when {
-                    status.icon != null -> MaterialTheme.spacing.small.horizontal
+                    imageVector != null -> MaterialTheme.spacing.small.horizontal
                     else -> MaterialTheme.spacing.medium.horizontal
                 },
                 end = MaterialTheme.spacing.medium.horizontal,
@@ -210,16 +258,16 @@ private fun StatusBadge(
             horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small.horizontal),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            if (status.icon != null) {
+            if (imageVector != null) {
                 Icon(
-                    imageVector = status.icon,
+                    imageVector = imageVector,
                     modifier = Modifier.size(MaterialTheme.sizing.icon.small),
                     contentDescription = null,
                 )
             }
 
             Text(
-                text = status.text,
+                text = text,
                 style = MaterialTheme.typography.labelLarge,
             )
         }
