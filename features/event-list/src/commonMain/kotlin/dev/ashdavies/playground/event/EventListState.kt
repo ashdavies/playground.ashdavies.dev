@@ -13,24 +13,29 @@ public sealed interface EventListState : CircuitUiState {
         val eventSink: (Event) -> Unit,
     ) : EventListState {
 
-        public data class Item(
-            public val thumbnailImageSeed: Long,
-            public val uuid: Uuid,
-            public val name: String,
-            public val location: String,
-            public val date: String,
-            public val status: Status?,
-            public val isBookmarked: Boolean,
-        ) {
+        public sealed interface Item {
+            public data class Standard(
+                public val thumbnailImageSeed: Long,
+                public val header: String,
+                public val uuid: Uuid,
+                public val name: String,
+                public val location: String,
+                public val date: String,
+                public val status: Status?,
+                public val isBookmarked: Boolean,
+            ) : Item {
 
-            public sealed interface Status {
-                public data class Closing(val remaining: String) : Status
-                public data class Opening(val remaining: String) : Status
+                public sealed interface Status {
+                    public data class Closing(val remaining: String) : Status
+                    public data class Opening(val remaining: String) : Status
 
-                public data object Closed : Status
-                public data object Open : Status
-                public data object NotAnnounced : Status
+                    public data object Closed : Status
+                    public data object Open : Status
+                    public data object NotAnnounced : Status
+                }
             }
+
+            public data class Separator(val header: String) : Item
         }
 
         public sealed interface Event {

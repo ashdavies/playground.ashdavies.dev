@@ -37,10 +37,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.slack.circuit.codegen.annotations.CircuitInject
 import com.valentinilk.shimmer.shimmer
+import dev.ashdavies.playground.event.EventListState.Success.Event.ItemClick
+import dev.ashdavies.playground.event.EventListState.Success.Event.ToggleBookmark
 import dev.ashdavies.playground.material.sizing
 import dev.ashdavies.playground.material.spacing
 import dev.ashdavies.playground.material.uniform
@@ -99,23 +102,40 @@ private fun EventListContent(
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.medium.vertical),
         ) {
             items(state.itemList.itemCount) { index ->
-                EventListItemContent(
-                    item = state.itemList[index],
-                    isRefreshing = state.isRefreshing,
-                    onBookmarkClick = { state.eventSink(EventListState.Success.Event.ToggleBookmark(index)) },
-                    onClick = { state.eventSink(EventListState.Success.Event.ItemClick(index)) },
-                    modifier = Modifier
-                        .animateItem()
-                        .fillMaxWidth(),
-                )
+                when (val item = state.itemList[index]) {
+                    is EventListState.Success.Item.Standard, null -> EventListItemContent(
+                        item = item,
+                        isRefreshing = state.isRefreshing,
+                        onBookmarkClick = { state.eventSink(ToggleBookmark(index)) },
+                        onClick = { state.eventSink(ItemClick(index)) },
+                        modifier = Modifier
+                            .animateItem()
+                            .fillMaxWidth(),
+                    )
+
+                    is EventListState.Success.Item.Separator -> EventListItemHeader(
+                        text = item.header,
+                        modifier = Modifier.padding(horizontal = MaterialTheme.spacing.small.horizontal),
+                    )
+                }
             }
         }
     }
 }
 
 @Composable
+private fun EventListItemHeader(text: String, modifier: Modifier = Modifier) {
+    Text(
+        text = text,
+        fontWeight = FontWeight.Bold,
+        modifier = modifier,
+        style = MaterialTheme.typography.titleSmallEmphasized,
+    )
+}
+
+@Composable
 private fun EventListItemContent(
-    item: EventListState.Success.Item?,
+    item: EventListState.Success.Item.Standard?,
     isRefreshing: Boolean,
     onBookmarkClick: () -> Unit,
     onClick: () -> Unit,
@@ -192,17 +212,17 @@ private fun EventListItemContent(
 
 @Composable
 private fun StatusBadge(
-    status: EventListState.Success.Item.Status,
+    status: EventListState.Success.Item.Standard.Status,
     modifier: Modifier = Modifier,
 ) {
     when (status) {
-        EventListState.Success.Item.Status.Closed -> StatusBadge(
+        EventListState.Success.Item.Standard.Status.Closed -> StatusBadge(
             text = stringResource(Res.string.cfp_closed),
             imageVector = Icons.Outlined.Block,
             modifier = modifier,
         )
 
-        is EventListState.Success.Item.Status.Closing -> StatusBadge(
+        is EventListState.Success.Item.Standard.Status.Closing -> StatusBadge(
             text = stringResource(Res.string.cfp_closing, status.remaining),
             surfaceColor = MaterialTheme.colorScheme.errorContainer,
             contentColor = MaterialTheme.colorScheme.onErrorContainer,
@@ -210,7 +230,7 @@ private fun StatusBadge(
             modifier = modifier,
         )
 
-        EventListState.Success.Item.Status.Open -> StatusBadge(
+        EventListState.Success.Item.Standard.Status.Open -> StatusBadge(
             surfaceColor = MaterialTheme.colorScheme.tertiaryContainer,
             contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
             text = stringResource(Res.string.cfp_open),
@@ -218,13 +238,13 @@ private fun StatusBadge(
             modifier = modifier,
         )
 
-        is EventListState.Success.Item.Status.Opening -> StatusBadge(
+        is EventListState.Success.Item.Standard.Status.Opening -> StatusBadge(
             text = stringResource(Res.string.cfp_opening, status.remaining),
             imageVector = Icons.Outlined.LockClock,
             modifier = modifier,
         )
 
-        is EventListState.Success.Item.Status.NotAnnounced -> StatusBadge(
+        is EventListState.Success.Item.Standard.Status.NotAnnounced -> StatusBadge(
             text = stringResource(Res.string.cfp_not_announced),
             modifier = modifier,
         )

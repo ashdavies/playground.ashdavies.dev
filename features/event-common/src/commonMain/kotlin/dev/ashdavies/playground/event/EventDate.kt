@@ -12,6 +12,12 @@ private val MonthDayFormat = LocalDate.Format {
     day(padding = Padding.NONE)
 }
 
+public fun formatDateHeader(start: LocalDate): String = start.format(LocalDate.Format {
+    monthName(MonthNames.ENGLISH_FULL)
+    char(' ')
+    year()
+})
+
 public fun formatDateRange(start: LocalDate, end: LocalDate = start): String {
     val startDate = start.format(MonthDayFormat)
     val endDate = end.format(MonthDayFormat)

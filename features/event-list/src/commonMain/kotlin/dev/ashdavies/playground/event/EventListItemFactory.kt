@@ -26,8 +26,9 @@ internal class EventListItemFactory(
     private val clock: Clock,
 ) {
 
-    operator fun invoke(event: Event, isBookmarked: Boolean) = EventListState.Success.Item(
+    operator fun invoke(event: Event, isBookmarked: Boolean) = EventListState.Success.Item.Standard(
         thumbnailImageSeed = event.thumbnailImageSeed,
+        header = formatDateHeader(event.dateStart),
         uuid = event.uuid,
         name = "${event.name} ${event.dateStart.year}",
         location = event.location.split(", ", limit = 2).let { (city, country) ->
@@ -38,15 +39,15 @@ internal class EventListItemFactory(
         isBookmarked = isBookmarked,
     )
 
-    private fun status(cfpStart: String?, cfpEnd: String?): EventListState.Success.Item.Status {
+    private fun status(cfpStart: String?, cfpEnd: String?): EventListState.Success.Item.Standard.Status {
         val cfpStart = cfpStart?.let(LocalDate::parse)
         val cfpEnd = cfpEnd?.let(LocalDate::parse)
         val today = clock.todayIn(TimeZone.UTC)
 
         return when {
-            cfpEnd != null && today > cfpEnd -> EventListState.Success.Item.Status.Closed
+            cfpEnd != null && today > cfpEnd -> EventListState.Success.Item.Standard.Status.Closed
 
-            cfpEnd != null -> EventListState.Success.Item.Status.Closing(
+            cfpEnd != null -> EventListState.Success.Item.Standard.Status.Closing(
                 remaining = run {
                     val cfpEndInclusive = cfpEnd
                         .plus(1, DateTimeUnit.DAY)
@@ -65,11 +66,11 @@ internal class EventListItemFactory(
                 },
             )
 
-            cfpStart != null && today >= cfpStart -> EventListState.Success.Item.Status.Open
+            cfpStart != null && today >= cfpStart -> EventListState.Success.Item.Standard.Status.Open
 
-            cfpStart != null -> EventListState.Success.Item.Status.Opening(formatDateRange(cfpStart))
+            cfpStart != null -> EventListState.Success.Item.Standard.Status.Opening(formatDateRange(cfpStart))
 
-            else -> EventListState.Success.Item.Status.NotAnnounced
+            else -> EventListState.Success.Item.Standard.Status.NotAnnounced
         }
     }
 }
