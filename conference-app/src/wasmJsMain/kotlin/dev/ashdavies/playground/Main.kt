@@ -2,6 +2,7 @@ package dev.ashdavies.playground
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.MaterialExpressiveTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -16,6 +17,7 @@ import com.slack.circuit.foundation.NavigableCircuitContent
 import com.slack.circuit.foundation.rememberCircuitNavigator
 import com.slack.circuit.overlay.ContentWithOverlays
 import dev.ashdavies.content.PlatformContext
+import dev.ashdavies.playground.material.dynamicColorScheme
 import dev.ashdavies.playground.material.padding
 import dev.ashdavies.playground.material.spacing
 import dev.ashdavies.playground.ui.scaffold.navigation.BottomBarScaffoldScreen
@@ -30,7 +32,7 @@ public fun main() {
 
 @Composable
 private fun ConferenceApp(context: PlatformContext) {
-    MaterialTheme {
+    MaterialExpressiveTheme(dynamicColorScheme()) {
         val conferenceGraph = remember(context) {
             val factory = createGraphFactory<WasmConferenceGraph.Factory>()
             factory.create(context)
@@ -53,7 +55,10 @@ private fun ConferenceApp(context: PlatformContext) {
                 .fillMaxSize(),
             contentAlignment = Alignment.BottomEnd,
         ) {
-            Text(BuildConfig.VERSION_NAME)
+            Text(
+                text = BuildConfig.VERSION_NAME,
+                color = MaterialTheme.colorScheme.onSurface,
+            )
         }
     }
 }

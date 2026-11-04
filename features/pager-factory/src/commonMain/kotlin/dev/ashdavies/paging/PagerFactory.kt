@@ -7,6 +7,7 @@ public fun interface PagerFactory<Key : Any, Value : Any> {
 }
 
 public data class PagerConfig<Key : Any>(
-    val initialKey: Key?,
-    val pageSize: Int,
+    val initialKey: Key? = null,
+    val pageSize: Int = 10,
+    val placeholderCount: Int = 6,
 )

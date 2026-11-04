@@ -31,8 +31,6 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flowOf
 import kotlin.uuid.Uuid
 
-private const val DEFAULT_PAGE_SIZE = 10
-
 private val EmptyPagingData = flowOf(PagingData.empty<EventListState.Success.Item>())
 
 @AssistedInject
@@ -51,7 +49,7 @@ internal class EventListPresenter(
 
         val itemList by produceRetainedState<Flow<PagingData<EventListState.Success.Item>>?>(null) {
             val pagingData = eventPagerFactory
-                .create(PagerConfig(screen.initialKey, DEFAULT_PAGE_SIZE))
+                .create(PagerConfig(screen.initialKey))
                 .flow.cachedIn(coroutineScope)
 
             value = combine(pagingData, snapshotFlow { bookmarks }) { pagingData, bookmarks ->

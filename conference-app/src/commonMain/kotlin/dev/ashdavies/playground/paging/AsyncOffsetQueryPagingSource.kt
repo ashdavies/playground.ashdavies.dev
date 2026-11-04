@@ -17,6 +17,7 @@ internal class AsyncOffsetQueryPagingSource<RowType : Any> private constructor(
     private val countQuery: Query<Int>,
     private val transacter: SuspendingTransacter,
     private val context: CoroutineContext,
+    private val placeholderCount: Int,
     private val initialOffset: Int,
 ) : PagingSource<Int, RowType>(), Query.Listener {
 
@@ -39,12 +40,14 @@ internal class AsyncOffsetQueryPagingSource<RowType : Any> private constructor(
         transacter: SuspendingTransacter,
         context: CoroutineContext,
         queryProvider: (limit: Long, offset: Long) -> Query<RowType>,
+        placeholderCount: Int,
         initialOffset: Long = 0,
     ) : this(
         queryProvider = { limit, offset -> queryProvider(limit.toLong(), offset.toLong()) },
         countQuery = countQuery.toInt(),
         transacter = transacter,
         context = context,
+        placeholderCount = placeholderCount,
         initialOffset = initialOffset.toInt(),
     )
 
@@ -55,25 +58,29 @@ internal class AsyncOffsetQueryPagingSource<RowType : Any> private constructor(
             else -> params.loadSize
         }
 
-        if (invalid) LoadResult.Invalid() else transacter.transactionWithResult {
-            val count = countQuery.awaitAsOne()
-            val offset = when (params) {
-                is LoadParams.Prepend -> maxOf(0, key - params.loadSize)
-                is LoadParams.Append -> key
-                is LoadParams.Refresh -> if (key >= count - params.loadSize) maxOf(0, count - params.loadSize) else key
-            }
-            val data = queryProvider(limit, offset)
-                .also { currentQuery = it }
-                .awaitAsList()
-            val nextPosToLoad = offset + data.size
+        if (invalid) {
+            LoadResult.Invalid()
+        } else {
+            transacter.transactionWithResult {
+                val count = countQuery.awaitAsOne()
+                val offset = when (params) {
+                    is LoadParams.Prepend -> maxOf(0, key - params.loadSize)
+                    is LoadParams.Append -> key
+                    is LoadParams.Refresh -> if (key >= count - params.loadSize) maxOf(0, count - params.loadSize) else key
+                }
+                val data = queryProvider(limit, offset)
+                    .also { currentQuery = it }
+                    .awaitAsList()
+                val nextPosToLoad = offset + data.size
 
-            LoadResult.Page(
-                data = data,
-                prevKey = offset.takeIf { it > 0 && data.isNotEmpty() },
-                nextKey = nextPosToLoad.takeIf { data.isNotEmpty() && data.size >= limit && it < count },
-                itemsBefore = offset,
-                itemsAfter = maxOf(0, count - nextPosToLoad),
-            )
+                LoadResult.Page(
+                    data = data,
+                    prevKey = offset.takeIf { it > 0 && data.isNotEmpty() },
+                    nextKey = nextPosToLoad.takeIf { data.isNotEmpty() && data.size >= limit && it < count },
+                    itemsBefore = offset,
+                    itemsAfter = if (count > 0) maxOf(0, count - nextPosToLoad) else placeholderCount,
+                )
+            }
         }
     }
 

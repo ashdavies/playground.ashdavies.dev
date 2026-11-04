@@ -49,6 +49,7 @@ internal class EventPagerFactory(
                         offset = offset,
                     )
                 },
+                placeholderCount = config.placeholderCount,
             )
         }
 
