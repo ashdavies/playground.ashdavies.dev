@@ -57,6 +57,8 @@ import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
 import org.jetbrains.compose.resources.stringResource
 
+// TODO Empty layout for desktop
+
 private val Event.thumbnailImageSeed: Long
     get() = "$name$location"
         .hashCode()

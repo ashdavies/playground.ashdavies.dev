@@ -13,8 +13,12 @@ internal class EventListItemFactoryTest {
         transform = { it.copy(attrs = EventAttrs()) },
     ) { event ->
         assertEquals(
-            expected = awaitItem(event).thumbnailImageSeed,
-            actual = awaitItem(event).thumbnailImageSeed,
+            expected = awaitItem<EventListState.Success.Item.Standard>(
+                event = event,
+            ).thumbnailImageSeed,
+            actual = awaitItem<EventListState.Success.Item.Standard>(
+                event = event,
+            ).thumbnailImageSeed,
         )
     }
 
@@ -22,7 +26,9 @@ internal class EventListItemFactoryTest {
     fun `should append name with start year`() = createEvent { event ->
         assertEquals(
             expected = "${event.name} ${event.dateStart.year}",
-            actual = awaitItem(event).name,
+            actual = awaitItem<EventListState.Success.Item.Standard>(
+                event = event,
+            ).name,
         )
     }
 
@@ -32,7 +38,7 @@ internal class EventListItemFactoryTest {
     ) { event ->
         assertEquals(
             expected = "🇩🇪 Berlin",
-            actual = awaitItem(
+            actual = awaitItem<EventListState.Success.Item.Standard>(
                 flagMap = mapOf("Germany" to "🇩🇪"),
                 event = event,
             ).location,
@@ -45,7 +51,9 @@ internal class EventListItemFactoryTest {
     ) { event ->
         assertEquals(
             expected = "📍 Berlin",
-            actual = awaitItem(event).location,
+            actual = awaitItem<EventListState.Success.Item.Standard>(
+                event = event,
+            ).location,
         )
     }
 
@@ -60,7 +68,9 @@ internal class EventListItemFactoryTest {
     ) { event ->
         assertEquals(
             expected = "Aug 1, 2026",
-            actual = awaitItem(event).date,
+            actual = awaitItem<EventListState.Success.Item.Standard>(
+                event = event,
+            ).date,
         )
     }
 
@@ -75,7 +85,9 @@ internal class EventListItemFactoryTest {
     ) { event ->
         assertEquals(
             expected = "Dec 30, 2026 - Jan 1, 2027",
-            actual = awaitItem(event).date,
+            actual = awaitItem<EventListState.Success.Item.Standard>(
+                event = event,
+            ).date,
         )
     }
 
@@ -90,7 +102,9 @@ internal class EventListItemFactoryTest {
     ) { event ->
         assertEquals(
             expected = "Sep 30 - Oct 1, 2026",
-            actual = awaitItem(event).date,
+            actual = awaitItem<EventListState.Success.Item.Standard>(
+                event = event,
+            ).date,
         )
     }
 
@@ -105,7 +119,9 @@ internal class EventListItemFactoryTest {
     ) { event ->
         assertEquals(
             expected = "Jul 15 - 16, 2026",
-            actual = awaitItem(event).date,
+            actual = awaitItem<EventListState.Success.Item.Standard>(
+                event = event,
+            ).date,
         )
     }
 
@@ -114,19 +130,24 @@ internal class EventListItemFactoryTest {
         transform = { it.copy(attrs = EventAttrs { cfpEnd = "2026-05-01" }) },
     ) { event ->
         assertEquals(
-            expected = EventListState.Success.Item.Status.Closed,
-            actual = awaitItem(event, LocalDate(2026, 6, 1)).status,
+            expected = EventListState.Success.Item.Standard.Status.Closed,
+            actual = awaitItem<EventListState.Success.Item.Standard>(
+                event = event,
+                today = LocalDate(2026, 6, 1),
+            ).status,
         )
     }
 
-    // TODO Args or delegate function for d/h/m
     @Test
     fun `should show closing if today after cfp end`() = createEvent(
         transform = { it.copy(attrs = EventAttrs { cfpEnd = "2026-06-12" }) },
     ) { event ->
         assertEquals(
-            expected = EventListState.Success.Item.Status.Closing("12d"),
-            actual = awaitItem(event, LocalDate(2026, 6, 1)).status,
+            expected = EventListState.Success.Item.Standard.Status.Closing("12d"),
+            actual = awaitItem<EventListState.Success.Item.Standard>(
+                event = event,
+                today = LocalDate(2026, 6, 1),
+            ).status,
         )
     }
 
@@ -135,8 +156,11 @@ internal class EventListItemFactoryTest {
         transform = { it.copy(attrs = EventAttrs { cfpStart = "2026-05-01" }) },
     ) { event ->
         assertEquals(
-            expected = EventListState.Success.Item.Status.Open,
-            actual = awaitItem(event, LocalDate(2026, 6, 1)).status,
+            expected = EventListState.Success.Item.Standard.Status.Open,
+            actual = awaitItem<EventListState.Success.Item.Standard>(
+                event = event,
+                today = LocalDate(2026, 6, 1),
+            ).status,
         )
     }
 
@@ -145,8 +169,11 @@ internal class EventListItemFactoryTest {
         transform = { it.copy(attrs = EventAttrs { cfpStart = "2026-06-01" }) },
     ) { event ->
         assertEquals(
-            expected = EventListState.Success.Item.Status.Opening("Jun 1, 2026"),
-            actual = awaitItem(event, LocalDate(2026, 5, 1)).status,
+            expected = EventListState.Success.Item.Standard.Status.Opening("Jun 1, 2026"),
+            actual = awaitItem<EventListState.Success.Item.Standard>(
+                event = event,
+                today = LocalDate(2026, 5, 1),
+            ).status,
         )
     }
 
@@ -155,24 +182,28 @@ internal class EventListItemFactoryTest {
         transform = { it.copy(attrs = EventAttrs()) },
     ) { event ->
         assertEquals(
-            expected = EventListState.Success.Item.Status.NotAnnounced,
-            actual = awaitItem(event, LocalDate(2026, 5, 1)).status,
+            expected = EventListState.Success.Item.Standard.Status.NotAnnounced,
+            actual = awaitItem<EventListState.Success.Item.Standard>(
+                event = event,
+                today = LocalDate(2026, 5, 1),
+            ).status,
         )
     }
 }
 
-private fun awaitItem(
+@Suppress("UNCHECKED_CAST")
+private fun <T : EventListState.Success.Item> awaitItem(
     event: Event = createEvent { it },
     today: LocalDate = LocalDate(2026, 5, 1),
     flagMap: Map<String, String> = emptyMap(),
     isBookmarked: Boolean = false,
-): EventListState.Success.Item = EventListItemFactory(
+): T = EventListItemFactory(
     flagResolver = LocalCountryFlagResolver(flagMap),
     clock = today.asClock(),
 ).invoke(
     event = event,
     isBookmarked = isBookmarked,
-)
+) as T
 
 private fun <T> createEvent(transform: (Event) -> Event = { it }, action: (Event) -> T): T {
     return action(transform(Json.upcomingEvents().first()))

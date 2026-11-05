@@ -14,6 +14,7 @@
     <string name="event_location">Location</string>
 
     <string name="gallery">Gallery</string>
+    <string name="nothing_selected">Select an item to view its details</string>
     <string name="online_only">Online Only</string>
     <string name="operation_not_implemented">Operation Not Implemented</string>
     <string name="past_events">Past Events</string>

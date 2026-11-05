@@ -9,6 +9,8 @@ import dev.ashdavies.http.common.models.DomainWrapper
 import dev.ashdavies.http.common.models.EventAttrs
 import dev.ashdavies.playground.event.Event
 import dev.ashdavies.playground.event.EventQueries
+import kotlinx.coroutines.delay
+import kotlin.time.Duration.Companion.seconds
 
 @ExperimentalPagingApi
 internal class EventsRemoteMediator<T : Any>(
@@ -24,6 +26,8 @@ internal class EventsRemoteMediator<T : Any>(
             LoadType.PREPEND -> return endOfPaginationReached()
             LoadType.REFRESH -> null
         }
+
+        delay(5.seconds)
 
         return eventsCallable(GetEventsRequest(loadKey?.dateStart))
             .mapCatching { list ->
@@ -45,12 +49,12 @@ private fun endOfPaginationReached() = RemoteMediator.MediatorResult.Success(
 
 private fun DomainWrapper<DomainEvent>.toDatabaseEvent() = with(value) {
     Event(
+        attrs = EventAttrs(attrs.toMutableMap()),
         uuid = uuid,
         name = name,
         website = website,
         location = location,
         dateStart = dateStart,
         dateEnd = dateEnd,
-        attrs = EventAttrs(attrs.toMutableMap()),
     )
 }

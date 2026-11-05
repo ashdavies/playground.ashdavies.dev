@@ -4,7 +4,6 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.InvalidatingPagingSourceFactory
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
-import app.cash.sqldelight.paging3.QueryPagingSource
 import dev.ashdavies.paging.PagerConfig
 import dev.ashdavies.paging.PagerFactory
 import dev.ashdavies.playground.PlaygroundDatabase
@@ -40,7 +39,7 @@ internal class EventPagerFactory(
         val eventQueries = database.eventQueries
 
         val pagingSourceFactory = InvalidatingPagingSourceFactory {
-            QueryPagingSource(
+            AsyncOffsetQueryPagingSource(
                 countQuery = eventQueries.countAll(),
                 transacter = eventQueries,
                 context = coroutineContext,
@@ -50,6 +49,7 @@ internal class EventPagerFactory(
                         offset = offset,
                     )
                 },
+                placeholderCount = config.placeholderCount,
             )
         }
 
