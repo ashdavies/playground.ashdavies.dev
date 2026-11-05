@@ -55,15 +55,16 @@ private fun EventListUiFailurePreview() {
     )
 }
 
-private fun AsgConference.toEventListStateSuccessItem() = EventListState.Success.Item(
+private fun AsgConference.toEventListStateSuccessItem() = EventListState.Success.Item.Standard(
     thumbnailImageSeed = Random.nextLong(),
+    header = formatDateHeader(dateStart),
     uuid = Uuid.random(),
     name = name,
     location = location,
     date = formatDateRange(dateStart, dateEnd),
     status = when {
-        cfp != null -> EventListState.Success.Item.Status.Open
-        else -> EventListState.Success.Item.Status.NotAnnounced
+        cfp != null -> EventListState.Success.Item.Standard.Status.Open
+        else -> EventListState.Success.Item.Standard.Status.NotAnnounced
     },
     isBookmarked = Random.nextBoolean(),
 )
