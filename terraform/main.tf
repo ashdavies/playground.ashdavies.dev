@@ -59,6 +59,7 @@ resource "google_project_iam_custom_role" "actions_publisher" {
     "servicemanagement.services.get",
     "servicemanagement.services.update",
     "serviceusage.apiKeys.update",
+    "serviceusage.services.get",
     "serviceusage.services.list",
     "serviceusage.services.use",
     "storage.buckets.create",
