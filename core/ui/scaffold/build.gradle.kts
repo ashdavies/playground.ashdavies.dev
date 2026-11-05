@@ -22,6 +22,7 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             implementation(projects.composeMaterial)
+            implementation(projects.core.ui.resources)
             implementation(projects.core.ui.snackbar)
             implementation(projects.previews.tooling)
 

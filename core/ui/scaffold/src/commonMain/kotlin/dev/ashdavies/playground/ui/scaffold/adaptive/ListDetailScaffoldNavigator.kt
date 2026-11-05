@@ -2,6 +2,7 @@ package dev.ashdavies.playground.ui.scaffold.adaptive
 
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
 import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffoldRole
+import androidx.compose.material3.adaptive.navigation.BackNavigationBehavior
 import androidx.compose.material3.adaptive.navigation.ThreePaneScaffoldNavigator
 import com.slack.circuit.runtime.Navigator
 import com.slack.circuit.runtime.screen.PopResult
@@ -21,9 +22,9 @@ internal class ListDetailScaffoldNavigator(
     }
 
     override fun pop(result: PopResult?): Screen? {
-        if (scaffoldNavigator.canNavigateBack()) {
+        if (scaffoldNavigator.canNavigateBack(BackNavigationBehavior.PopUntilContentChange)) {
             val screen = scaffoldNavigator.currentDestination?.contentKey
-            coroutineScope.launch { scaffoldNavigator.navigateBack() }
+            coroutineScope.launch { scaffoldNavigator.navigateBack(BackNavigationBehavior.PopUntilContentChange) }
             return screen
         }
 

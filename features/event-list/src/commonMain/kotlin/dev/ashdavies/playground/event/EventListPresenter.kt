@@ -71,19 +71,21 @@ internal class EventListPresenter(
             .let { it as? LoadState.Error }
             ?.error
 
+        fun pagingItemOrNull(index: Int) = pagingItems[index] as? EventListState.Success.Item.Standard
+
         return if (error == null) {
             EventListState.Success(
                 itemList = pagingItems,
                 isRefreshing = pagingItems.loadState.refresh is LoadState.Loading,
             ) { event ->
                 when (event) {
-                    is EventListState.Success.Event.ToggleBookmark -> (pagingItems[event.index] as? EventListState.Success.Item.Standard)?.let { item ->
+                    is EventListState.Success.Event.ToggleBookmark -> pagingItemOrNull(event.index)?.let { item ->
                         bookmarks = if (item.uuid in bookmarks) bookmarks - item.uuid else bookmarks + item.uuid
                     }
 
-                    is EventListState.Success.Event.ItemClick -> (pagingItems[event.index] as? EventListState.Success.Item.Standard)?.let {
-                        remoteAnalytics.logEvent("events_click") { param("id", "${it.uuid}") }
-                        navigator.goTo(EventScreen.Detail(it.uuid))
+                    is EventListState.Success.Event.ItemClick -> pagingItemOrNull(event.index)?.let { item ->
+                        remoteAnalytics.logEvent("events_click") { param("id", "${item.uuid}") }
+                        navigator.goTo(EventScreen.Detail(item.uuid))
                     }
 
                     is EventListState.Success.Event.Refresh -> {

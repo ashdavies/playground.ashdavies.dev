@@ -65,8 +65,14 @@ internal class AsyncOffsetQueryPagingSource<RowType : Any> private constructor(
                 val count = countQuery.awaitAsOne()
                 val offset = when (params) {
                     is LoadParams.Prepend -> maxOf(0, key - params.loadSize)
+
                     is LoadParams.Append -> key
-                    is LoadParams.Refresh -> if (key >= count - params.loadSize) maxOf(0, count - params.loadSize) else key
+
+                    is LoadParams.Refresh -> if (key >= count - params.loadSize) {
+                        maxOf(0, count - params.loadSize)
+                    } else {
+                        key
+                    }
                 }
                 val data = queryProvider(limit, offset)
                     .also { currentQuery = it }
