@@ -5,6 +5,7 @@ plugins {
     id("dev.ashdavies.properties")
 
     alias(libs.plugins.cash.paparazzi)
+    alias(libs.plugins.firebase.perf)
     alias(libs.plugins.google.services)
 }
 
@@ -82,6 +83,7 @@ dependencies {
     implementation(dependencies.platform(libs.google.firebase.bom))
     implementation(libs.google.firebase.appcheck.playintegrity)
     implementation(libs.google.firebase.crashlytics)
+    implementation(libs.google.firebase.perf)
 
     implementation(libs.kotlinx.coroutines.play.services)
 

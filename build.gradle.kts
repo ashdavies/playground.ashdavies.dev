@@ -8,6 +8,7 @@ plugins {
         classpath(compose.compiler)
         classpath(detekt)
         classpath(firebase.crashlytics)
+        classpath(firebase.perf)
         classpath(google.services)
         classpath(jetbrains.compose)
         classpath(kotlin.multiplatform)
