@@ -37,7 +37,7 @@ module "github_service_account" {
 
 module "github_workload_identity" {
   source      = "terraform-google-modules/github-actions-runners/google//modules/gh-oidc"
-  version     = "5.1.0"
+  version     = "6.0.0"
   pool_id     = "gh-oidc-pool"
   project_id  = var.project_id
   provider_id = "gh-oidc-provider"
