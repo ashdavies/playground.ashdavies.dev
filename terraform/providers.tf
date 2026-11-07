@@ -4,7 +4,7 @@ provider "cloudflare" {
 
 provider "github" {
   token = var.gh_token
-  owner = var.gh_owner
+  owner = split("/", var.gh_repository)[0]
 }
 
 provider "google" {

@@ -1,16 +1,14 @@
 variable "op_service_account_token" {
-  description = "A valid token for the 1Password Service Account."
+  description = "A valid token for the 1Password Service Account"
   type        = string
 }
 
-variable "gh_owner" {
-  default     = "ashdavies"
-  description = "Username of the GitHub repository owner"
+variable "gh_owner_id" {
+  description = "The repository owner's account ID"
   type        = string
 }
 
-variable "gh_repo_name" {
-  default     = "playground.ashdavies.dev"
+variable "gh_repository" {
   description = "GitHub repository to set actions secrets"
   type        = string
 }
@@ -22,7 +20,7 @@ variable "gh_token" {
 
 variable "openapi_config" {
   default     = "../openapi-config.yml"
-  description = "The full path of the OpenAPI configuration."
+  description = "The full path of the OpenAPI configuration"
   type        = string
 }
 

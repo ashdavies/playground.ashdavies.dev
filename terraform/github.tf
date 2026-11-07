@@ -1,5 +1,5 @@
 resource "github_repository" "main" {
-  name        = var.gh_repo_name
+  name        = split("/", var.gh_repository)[1]
   description = "Playground"
 
   has_issues             = true
@@ -20,25 +20,25 @@ resource "github_repository" "main" {
 }
 
 resource "github_issue_label" "automated" {
-  repository = var.gh_repo_name
+  repository = github_repository.main.name
   name       = "Automated"
   color      = "2198D8"
 }
 
 resource "github_issue_label" "dry_run" {
-  repository = var.gh_repo_name
+  repository = github_repository.main.name
   name       = "Dry Run"
   color      = "55F756"
 }
 
 resource "github_issue_label" "feature" {
-  repository = var.gh_repo_name
+  repository = github_repository.main.name
   name       = "Feature"
   color      = "14a88d"
 }
 
 resource "github_issue_label" "terraform_apply" {
-  repository = var.gh_repo_name
+  repository = github_repository.main.name
   name       = "Terraform Apply"
   color      = "8123fc"
 }

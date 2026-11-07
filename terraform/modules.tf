@@ -41,9 +41,10 @@ module "github_workload_identity" {
   pool_id     = "gh-oidc-pool"
   project_id  = var.project_id
   provider_id = "gh-oidc-provider"
+  attribute_condition = "assertion.repository_owner_id=='${var.gh_owner_id}'"
   sa_mapping = {
     (module.github_service_account.service_account.account_id) = {
-      attribute = "attribute.repository/${var.gh_owner}/${var.gh_repo_name}"
+      attribute = "attribute.repository/${var.gh_repository}"
       sa_name   = module.github_service_account.service_account.name
     }
   }
