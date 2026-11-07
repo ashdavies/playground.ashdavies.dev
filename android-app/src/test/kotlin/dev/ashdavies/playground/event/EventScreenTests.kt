@@ -24,7 +24,7 @@ import org.jetbrains.compose.resources.stringResource
 import org.junit.Rule
 import org.junit.Test
 
-private val SnapshotDate = LocalDate(2026, 1, 1)
+private val SnapshotDate = LocalDate(2025, 1, 1)
 
 internal class EventScreenTests {
 

@@ -101,6 +101,7 @@ dependencies {
 
     testImplementation(libs.androidx.paging.compose)
     testImplementation(libs.circuit.runtime)
+    testImplementation(libs.circuit.test)
     testImplementation(libs.compose.components.resources)
     testImplementation(libs.compose.material3)
     testImplementation(libs.compose.materialIconsExtended)
