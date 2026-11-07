@@ -47,6 +47,7 @@ resource "google_project_iam_custom_role" "actions_publisher" {
     "iam.serviceAccounts.signBlob",
     "iam.workloadIdentityPoolProviders.get",
     "iam.workloadIdentityPoolProviders.list",
+    "iam.workloadIdentityPoolProviders.update",
     "iam.workloadIdentityPools.get",
     "iam.workloadIdentityPools.getAttestationRules",
     "resourcemanager.projects.get",
