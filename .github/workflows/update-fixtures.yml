@@ -30,5 +30,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:
-          branch: ${{ github.head_ref || github.ref_name }}
           commit-message: "chore: update upcoming events fixture"
+          branch: "chore/update-fixtures"

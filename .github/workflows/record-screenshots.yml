@@ -38,5 +38,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:
-          branch: ${{ github.head_ref || github.ref_name }}
           commit-message: "chore: record screenshots"
+          branch: "chore/record-screenshots"
