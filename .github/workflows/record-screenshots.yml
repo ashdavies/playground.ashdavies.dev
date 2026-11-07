@@ -40,3 +40,4 @@ jobs:
         with:
           commit-message: "chore: record screenshots"
           branch: "chore/record-screenshots"
+          sign-commits: true

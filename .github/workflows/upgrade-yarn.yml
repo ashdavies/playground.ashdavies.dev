@@ -36,3 +36,4 @@ jobs:
         with:
           commit-message: "chore: upgrade yarn lock"
           branch: "chore/upgrade-yarn"
+          sign-commits: true

@@ -32,3 +32,4 @@ jobs:
         with:
           commit-message: "chore: update upcoming events fixture"
           branch: "chore/update-fixtures"
+          sign-commits: true
