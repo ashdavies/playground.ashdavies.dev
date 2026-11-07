@@ -34,9 +34,9 @@ jobs:
 
       - run: ./gradlew recordPaparazziDebug --console=plain
 
-      - env:
+      - uses: peter-evans/create-pull-request@v8
+        env:
           GITHUB_TOKEN: ${{ github.token }}
-        run: |
-          ./scripts/github_pull_request.sh \
-            --base-branch "${{ github.head_ref || github.ref_name }}" \
-            --commit-msg "chore: record screenshots"
+        with:
+          branch: ${{ github.head_ref || github.ref_name }}
+          commit-message: "chore: record screenshots"
