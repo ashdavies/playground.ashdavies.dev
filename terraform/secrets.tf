@@ -17,7 +17,7 @@ resource "github_actions_secret" "main" {
     WORKLOAD_IDENTITY_PROVIDER   = module.github_workload_identity.provider_name
   }
 
-  repository  = var.gh_repo_name
+  repository  = github_repository.main.name
   secret_name = each.key
   value       = each.value
 }

@@ -48,6 +48,8 @@ jobs:
       - id: terraform-plan
         env:
           TF_VAR_op_service_account_token: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+          TF_VAR_gh_owner_id: ${{ github.repository_owner_id }}
+          TF_VAR_gh_repository: ${{ github.repository }}
           TF_VAR_gh_token: ${{ steps.app-token.outputs.token }}
           TF_INPUT: false
         run: |
