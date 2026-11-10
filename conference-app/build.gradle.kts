@@ -87,7 +87,7 @@ kotlin {
             implementation(projects.core.ui.snackbar)
             implementation(projects.features.eventCommon)
             implementation(projects.features.eventDetail)
-            implementation(projects.features.eventGrid)
+            implementation(projects.features.eventHistory)
             implementation(projects.features.eventList)
             implementation(projects.features.gallerySync)
             implementation(projects.features.pagerFactory)

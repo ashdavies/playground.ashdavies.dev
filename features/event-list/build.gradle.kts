@@ -22,7 +22,9 @@ kotlin {
             implementation(projects.core.ui.components)
             implementation(projects.core.ui.resources)
             implementation(projects.features.eventCommon)
+            implementation(projects.features.eventDetail)
             implementation(projects.features.pagerFactory)
+            implementation(projects.httpCommon)
 
             implementation(libs.androidx.paging.compose)
             implementation(libs.circuit.annotations)

@@ -1,4 +1,4 @@
-package dev.ashdavies.playground.ui
+package dev.ashdavies.playground
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Route
@@ -7,12 +7,10 @@ import dev.ashdavies.config.RemoteConfig
 import dev.ashdavies.config.getBoolean
 import dev.ashdavies.playground.event.EventScreen
 import dev.ashdavies.playground.gallery.GalleryScreen
-import dev.ashdavies.playground.material.icons.EventList
 import dev.ashdavies.playground.material.icons.EventUpcoming
 import dev.ashdavies.playground.routes.RoutesScreen
 import dev.ashdavies.playground.ui.resources.Res
 import dev.ashdavies.playground.ui.resources.gallery
-import dev.ashdavies.playground.ui.resources.past_events
 import dev.ashdavies.playground.ui.resources.routes
 import dev.ashdavies.playground.ui.resources.upcoming_events
 import dev.ashdavies.playground.ui.scaffold.adaptive.ListDetailScaffoldScreen
@@ -36,9 +34,8 @@ internal interface BottomBarScaffoldModule {
     ): List<Pair<Screen, BottomBarScaffoldMetadata>> {
         val isGalleryEnabled = remoteConfig.getBoolean("gallery_enabled")
         val isRoutesEnabled = remoteConfig.getBoolean("routes_enabled")
-        val isPastEventsEnabled = remoteConfig.getBoolean("past_events_enabled")
 
-        return if (!isPastEventsEnabled && !isGalleryEnabled && !isRoutesEnabled) {
+        return if (!isGalleryEnabled && !isRoutesEnabled) {
             emptyList()
         } else {
             buildList {
@@ -63,15 +60,6 @@ internal interface BottomBarScaffoldModule {
                         element = RoutesScreen to BottomBarScaffoldMetadata(
                             label = Res.string.routes,
                             icon = Icons.Outlined.Route,
-                        ),
-                    )
-                }
-
-                if (isPastEventsEnabled) {
-                    add(
-                        element = EventScreen.Grid() to BottomBarScaffoldMetadata(
-                            label = Res.string.past_events,
-                            icon = Icons.Outlined.EventList,
                         ),
                     )
                 }

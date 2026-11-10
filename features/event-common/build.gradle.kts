@@ -12,7 +12,8 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            api(projects.httpCommon)
+            implementation(projects.core.ui.scaffold)
+            implementation(projects.httpCommon)
 
             implementation(libs.circuit.serialization)
             implementation(libs.metro.runtime)

@@ -12,13 +12,11 @@ plugins {
 
 kotlin {
     android {
-        namespace = "dev.ashdavies.playground.event.grid"
+        namespace = "dev.ashdavies.playground.event.history"
     }
 
     sourceSets {
         commonMain.dependencies {
-            implementation(projects.asgService)
-            implementation(projects.cloudCommon)
             implementation(projects.composeMaterial)
             implementation(projects.core.ui.components)
             implementation(projects.core.ui.resources)

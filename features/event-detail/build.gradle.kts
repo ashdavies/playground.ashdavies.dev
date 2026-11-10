@@ -20,7 +20,10 @@ kotlin {
             implementation(projects.composeMaterial)
             implementation(projects.core.ui.components)
             implementation(projects.core.ui.resources)
+            implementation(projects.core.ui.scaffold)
             implementation(projects.features.eventCommon)
+            implementation(projects.features.eventHistory)
+            implementation(projects.httpCommon)
             implementation(projects.identityManager)
             implementation(projects.metroExtensions)
 

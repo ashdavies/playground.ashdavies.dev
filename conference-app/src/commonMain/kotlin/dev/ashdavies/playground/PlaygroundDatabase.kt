@@ -3,7 +3,6 @@ package dev.ashdavies.playground
 import app.cash.sqldelight.ColumnAdapter
 import app.cash.sqldelight.db.SqlDriver
 import dev.ashdavies.http.common.models.EventAttrs
-import dev.ashdavies.playground.event.Attendance
 import dev.ashdavies.playground.event.Event
 import dev.ashdavies.playground.gallery.Image
 import dev.ashdavies.playground.gallery.Path
@@ -13,7 +12,6 @@ import kotlin.uuid.Uuid
 
 internal operator fun PlaygroundDatabase.Companion.invoke(driver: SqlDriver): PlaygroundDatabase = PlaygroundDatabase(
     driver = driver,
-    attendanceAdapter = Attendance.Adapter(uuidAdapter()),
     eventAdapter = Event.Adapter(
         uuidAdapter = uuidAdapter(),
         dateStartAdapter = localDateAdapter(),

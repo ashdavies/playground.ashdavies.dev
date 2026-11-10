@@ -7,6 +7,7 @@ import kotlinx.serialization.json.Json
 import playground.fixtures.events.fixtures.UpcomingJson
 import dev.ashdavies.playground.event.Event as DatabaseEvent
 
+// TODO Change to Playground API output
 public fun <T : Any> Json.asgUpcomingConferences(
     transform: (AsgConference) -> T,
 ): List<T> = decodeFromString<List<AsgConference>>(

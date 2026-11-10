@@ -93,7 +93,7 @@ dependencies {
     testImplementation(projects.composeMaterial)
     testImplementation(projects.features.eventCommon)
     testImplementation(projects.features.eventDetail)
-    testImplementation(projects.features.eventGrid)
+    testImplementation(projects.features.eventHistory)
     testImplementation(projects.features.eventList)
     testImplementation(projects.features.gallerySync)
     testImplementation(projects.fixtures.events)

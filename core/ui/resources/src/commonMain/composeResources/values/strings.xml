@@ -11,13 +11,13 @@
     <string name="common_search">Search</string>
 
     <string name="event_date">Date</string>
+    <string name="event_history">History</string>
     <string name="event_location">Location</string>
 
     <string name="gallery">Gallery</string>
     <string name="nothing_selected">Select an item to view its details</string>
     <string name="online_only">Online Only</string>
     <string name="operation_not_implemented">Operation Not Implemented</string>
-    <string name="past_events">Past Events</string>
     <string name="routes">Routes</string>
     <string name="something_went_wrong">Something went wrong</string>
     <string name="sort_by_date">Sort by date</string>
