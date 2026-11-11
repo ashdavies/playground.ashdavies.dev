@@ -13,10 +13,9 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            implementation(projects.composeMaterial)
+            api(libs.compose.uiToolingPreview)
 
-            implementation(libs.compose.material3)
-            implementation(libs.compose.uiToolingPreview)
+            implementation(projects.composeMaterial)
         }
     }
 }

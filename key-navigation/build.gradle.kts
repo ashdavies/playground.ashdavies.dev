@@ -6,6 +6,6 @@ plugins {
 
 kotlin {
     sourceSets.commonMain.dependencies {
-        implementation(libs.circuit.foundation)
+        api(libs.circuit.foundation)
     }
 }

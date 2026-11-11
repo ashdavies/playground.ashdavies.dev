@@ -17,27 +17,20 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            implementation(projects.asgService)
+            api(libs.compose.ui)
+            api(libs.kotlinx.collections.immutable)
+
             implementation(projects.cloudCommon)
             implementation(projects.composeMaterial)
             implementation(projects.core.ui.components)
             implementation(projects.core.ui.resources)
             implementation(projects.features.eventCommon)
-            implementation(projects.httpCommon)
             implementation(projects.metroExtensions)
-            implementation(projects.platformSupport)
 
             implementation(libs.androidx.window.core)
             implementation(libs.circuit.annotations)
             implementation(libs.circuit.foundation)
             implementation(libs.compose.adaptive.layout)
-            implementation(libs.compose.components.resources)
-            implementation(libs.compose.foundation)
-            implementation(libs.compose.material3)
-            implementation(libs.compose.ui)
-            implementation(libs.kotlinx.collections.immutable)
-            implementation(libs.kotlinx.datetime)
-            implementation(libs.ktor.client.core)
             implementation(libs.sqldelight.coroutines.extensions)
         }
     }

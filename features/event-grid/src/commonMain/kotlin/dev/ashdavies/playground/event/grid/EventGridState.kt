@@ -4,8 +4,8 @@ import com.slack.circuit.runtime.CircuitUiState
 import kotlinx.collections.immutable.ImmutableList
 
 public data class EventGridState(
-    val itemList: ImmutableList<Item>,
-    val eventSink: (Event) -> Unit,
+    public val itemList: ImmutableList<Item>,
+    public val eventSink: (Event) -> Unit,
 ) : CircuitUiState {
 
     public sealed interface Event {

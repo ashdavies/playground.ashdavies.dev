@@ -41,7 +41,7 @@ public class KotlinConventionPlugin : Plugin<Project> {
                 }
 
                 compilerOptions.freeCompilerArgs.add("-opt-in=kotlin.uuid.ExperimentalUuidApi")
-                explicitApi()
+                explicitApi() // TODO Verify this is working
             }
 
             dependencies.add("detektPlugins", libs.detekt.compose)

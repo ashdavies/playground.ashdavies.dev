@@ -36,6 +36,8 @@ internal class IntegrationTestPlugin : Plugin<Project> {
                     }
                 }
             }
+
+            sourceSets.commonMain
         }
     }
 }

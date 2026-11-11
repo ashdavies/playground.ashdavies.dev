@@ -65,48 +65,28 @@ android {
 }
 
 dependencies {
-    implementation(projects.core.ui.resources)
     implementation(projects.conferenceApp)
 
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.core.splashscreen)
     implementation(libs.androidx.startup.runtime)
-
-    implementation(libs.circuit.overlay)
-    implementation(libs.compose.material3)
-    implementation(libs.google.accompanist.permissions)
-    implementation(libs.google.android.location)
     implementation(libs.google.android.material)
-    implementation(libs.google.maps.android.compose)
-    implementation(libs.google.maps.android.utils)
 
     implementation(dependencies.platform(libs.google.firebase.bom))
     implementation(libs.google.firebase.appcheck.playintegrity)
-    implementation(libs.google.firebase.crashlytics)
     implementation(libs.google.firebase.perf)
-
-    implementation(libs.kotlinx.coroutines.play.services)
 
     debugImplementation(libs.google.firebase.appcheck.debug)
 
-    testImplementation(projects.asgService)
     testImplementation(projects.composeMaterial)
-    testImplementation(projects.features.eventCommon)
+    testImplementation(projects.core.ui.resources)
     testImplementation(projects.features.eventDetail)
     testImplementation(projects.features.eventGrid)
     testImplementation(projects.features.eventList)
     testImplementation(projects.features.gallerySync)
     testImplementation(projects.fixtures.events)
-    testImplementation(projects.previews.tooling)
 
-    testImplementation(libs.androidx.paging.compose)
-    testImplementation(libs.circuit.runtime)
-    testImplementation(libs.compose.components.resources)
-    testImplementation(libs.compose.material3)
     testImplementation(libs.compose.materialIconsExtended)
-    testImplementation(libs.kotlinx.collections.immutable)
-    testImplementation(libs.kotlinx.datetime)
-    testImplementation(libs.kotlinx.serialization.json)
 }
 
 tasks.withType<Test>().configureEach {

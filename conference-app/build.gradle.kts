@@ -71,103 +71,61 @@ dependencies {
 }
 
 kotlin {
-    compilerOptions {
-        freeCompilerArgs.add("-opt-in=kotlin.uuid.ExperimentalUuidApi")
-    }
-
     sourceSets {
         commonMain.dependencies {
             implementation(projects.analytics)
-            implementation(projects.asgService)
-            implementation(projects.cloudCommon)
-            implementation(projects.composeMaterial)
             implementation(projects.core.ui.components)
             implementation(projects.core.ui.resources)
             implementation(projects.core.ui.scaffold)
             implementation(projects.core.ui.snackbar)
             implementation(projects.features.eventCommon)
-            implementation(projects.features.eventDetail)
-            implementation(projects.features.eventGrid)
-            implementation(projects.features.eventList)
             implementation(projects.features.gallerySync)
             implementation(projects.features.pagerFactory)
+
             implementation(projects.httpClient)
-            implementation(projects.httpCommon)
             implementation(projects.identityManager)
             implementation(projects.mapsRouting)
             implementation(projects.metroExtensions)
-            implementation(projects.platformSupport)
             implementation(projects.remoteConfig)
             implementation(projects.sqlDriver)
-
-            implementation(libs.androidx.annotation)
-            implementation(libs.androidx.paging.common)
-            implementation(libs.androidx.window.core)
 
             implementation(libs.circuit.foundation)
             implementation(libs.circuit.overlay)
             implementation(libs.circuit.serialization)
 
-            implementation(libs.coil.compose)
-            implementation(libs.coil.network)
-
-            implementation(libs.compose.components.resources)
-            implementation(libs.compose.foundation)
             implementation(libs.compose.material3)
             implementation(libs.compose.materialIconsExtended)
-            implementation(libs.compose.navigation.event)
-            implementation(libs.compose.uiToolingPreview)
-            implementation(libs.compose.ui)
 
-            implementation(libs.kotlinx.collections.immutable)
-            implementation(libs.kotlinx.datetime)
-            implementation(libs.kotlinx.io.core)
-            implementation(libs.kotlinx.serialization.core)
             implementation(libs.kotlinx.serialization.json)
-
-            implementation(libs.ktor.client.auth)
-            implementation(libs.ktor.client.core)
-
-            implementation(libs.sqldelight.async.extensions)
-            implementation(libs.sqldelight.coroutines.extensions)
-            implementation(libs.sqldelight.paging3.extensions)
-            implementation(libs.sqldelight.runtime)
         }
 
         commonTest.dependencies {
-            implementation(kotlin("test"))
-
-            implementation(libs.app.cash.turbine)
+            implementation(libs.kotlin.test)
             implementation(libs.kotlinx.coroutines.test)
         }
 
         androidMain.dependencies {
-            implementation(projects.analytics)
+            implementation(libs.androidx.core)
 
-            implementation(libs.androidx.activity.compose)
-            implementation(libs.androidx.core.splashscreen)
-            implementation(libs.circuit.overlay)
             implementation(libs.google.accompanist.permissions)
             implementation(libs.google.android.location)
             implementation(libs.google.maps.android.compose)
             implementation(libs.google.maps.android.utils)
 
             implementation(dependencies.platform(libs.google.firebase.bom))
+            implementation(libs.google.firebase.common)
             implementation(libs.google.firebase.appcheck.playintegrity)
-            implementation(libs.google.firebase.crashlytics)
+        }
 
-            implementation(libs.kotlinx.coroutines.play.services)
+        androidJvmMain.dependencies {
+            implementation(projects.composeMaterial)
         }
 
         jvmMain.dependencies {
-            implementation(compose.desktop.currentOs)
             implementation(projects.keyNavigation)
 
-            implementation(libs.auth.java.jwt)
-            implementation(libs.ktor.serialization.kotlinx.json)
             implementation(libs.ktor.serialization.kotlinx.json)
             implementation(libs.ktor.server.content.negotiation)
-            implementation(libs.ktor.server.core)
             implementation(libs.ktor.server.netty)
 
             runtimeOnly(libs.kotlinx.coroutines.swing)
@@ -175,17 +133,16 @@ kotlin {
         }
 
         jvmTest.dependencies {
-            implementation(kotlin("test"))
-
             implementation(libs.androidx.paging.testing)
-            implementation(libs.kotlinx.coroutines.test)
-            implementation(libs.ktor.server.test.host)
             implementation(libs.sqldelight.sqlite.driver)
         }
 
         jvmIntegrationTest.dependencies {
-            implementation(libs.app.cash.turbine)
             implementation(libs.kotlinx.coroutines.test)
+        }
+
+        wasmJsMain.dependencies {
+            implementation(projects.composeMaterial)
         }
     }
 }

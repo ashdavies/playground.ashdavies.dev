@@ -15,14 +15,9 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            implementation(projects.features.eventCommon)
             implementation(projects.features.eventDetail)
             implementation(projects.fixtures.events)
             implementation(projects.previews.tooling)
-
-            implementation(libs.compose.uiToolingPreview)
-            implementation(libs.kotlinx.collections.immutable)
-            implementation(libs.kotlinx.serialization.json)
         }
     }
 }

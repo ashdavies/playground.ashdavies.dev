@@ -21,25 +21,20 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
+            api(projects.core.ui.snackbar)
+
+            api(libs.circuit.foundation)
+            api(libs.compose.components.resources)
+            api(libs.kotlinx.collections.immutable)
+
             implementation(projects.composeMaterial)
             implementation(projects.core.ui.resources)
-            implementation(projects.core.ui.snackbar)
             implementation(projects.previews.tooling)
 
-            implementation(libs.circuit.foundation)
-            implementation(libs.circuit.runtime)
             implementation(libs.circuit.serialization)
 
-            implementation(libs.compose.adaptive.layout)
             implementation(libs.compose.adaptive.navigation)
-            implementation(libs.compose.components.resources)
-            implementation(libs.compose.foundation)
-            implementation(libs.compose.material3)
             implementation(libs.compose.navigation.event)
-            implementation(libs.compose.uiToolingPreview)
-
-            implementation(libs.kotlinx.collections.immutable)
-            implementation(libs.kotlinx.datetime)
         }
     }
 }
