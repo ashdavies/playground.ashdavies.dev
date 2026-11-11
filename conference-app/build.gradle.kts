@@ -137,6 +137,10 @@ kotlin {
             implementation(libs.sqldelight.sqlite.driver)
         }
 
+        jvmIntegrationTest.dependencies {
+            implementation(libs.kotlinx.coroutines.test)
+        }
+
         wasmJsMain.dependencies {
             implementation(projects.composeMaterial)
         }
