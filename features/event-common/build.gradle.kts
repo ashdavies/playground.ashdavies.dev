@@ -13,10 +13,10 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             api(projects.httpCommon)
+            api(libs.kotlinx.datetime)
 
             implementation(libs.circuit.serialization)
             implementation(libs.metro.runtime)
-            implementation(libs.kotlinx.datetime)
             implementation(libs.kotlinx.serialization.core)
             implementation(libs.kotlinx.serialization.json)
         }

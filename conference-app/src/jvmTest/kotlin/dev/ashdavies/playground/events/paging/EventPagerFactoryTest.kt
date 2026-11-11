@@ -9,6 +9,7 @@ import dev.ashdavies.paging.PagerConfig
 import dev.ashdavies.playground.PlaygroundDatabase
 import dev.ashdavies.playground.invoke
 import dev.ashdavies.playground.paging.EventPagerFactory
+import dev.zacsweers.metro.ExperimentalMetroCoroutinesApi
 import dev.zacsweers.metro.suspendLazyOf
 import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.DateTimeUnit
@@ -16,6 +17,7 @@ import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.plus
 import kotlinx.datetime.toLocalDateTime
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.decodeFromStream
@@ -35,6 +37,7 @@ internal class EventPagerFactoryTest {
     )
 
     @Test
+    @OptIn(ExperimentalMetroCoroutinesApi::class, ExperimentalSerializationApi::class)
     fun `should not include boundary events on same start date`() = runTest {
         val knownLocationDeque = ArrayDeque(Json.locations())
         val upcomingApiEventListSize = 24
@@ -68,7 +71,8 @@ internal class EventPagerFactoryTest {
     }
 }
 
-internal fun Json.locations(): List<Location> = decodeFromStream(
+@ExperimentalSerializationApi
+private fun Json.locations(): List<Location> = decodeFromStream(
     stream = Location::class.java
         .getResource("/locations.json")
         .let(::requireNotNull)
@@ -82,6 +86,7 @@ private fun LocalDate.Companion.nearFuture(
     random: Int = Random.nextInt(52),
 ) = startAt.plus(random, DateTimeUnit.WEEK)
 
+// TODO Use fixtures
 private fun apiEvent(location: String, dateStart: LocalDate) = DomainWrapper(
     attrs = emptyMap(),
     value = DomainEvent(

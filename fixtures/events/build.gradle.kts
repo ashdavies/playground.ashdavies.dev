@@ -14,13 +14,14 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
+            api(libs.kotlinx.serialization.json)
+
             implementation(projects.asgService)
             implementation(projects.cloudCommon)
             implementation(projects.httpCommon)
             implementation(projects.features.eventCommon)
 
             implementation(libs.kotlinx.datetime)
-            implementation(libs.kotlinx.serialization.json)
         }
     }
 }

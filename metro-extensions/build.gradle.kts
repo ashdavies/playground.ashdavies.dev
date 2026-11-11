@@ -7,6 +7,8 @@ plugins {
 kotlin {
     sourceSets {
         commonMain.dependencies {
+            api(libs.metro.runtime)
+
             implementation(libs.kotlinx.coroutines.core)
             implementation(libs.metro.runtime.coroutines)
         }

@@ -17,14 +17,16 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
+            api(projects.features.eventCommon)
+            api(libs.androidx.paging.compose)
+            api(libs.compose.ui)
+
             implementation(projects.analytics)
             implementation(projects.composeMaterial)
             implementation(projects.core.ui.components)
             implementation(projects.core.ui.resources)
-            implementation(projects.features.eventCommon)
             implementation(projects.features.pagerFactory)
 
-            implementation(libs.androidx.paging.compose)
             implementation(libs.circuit.annotations)
             implementation(libs.circuit.foundation)
             implementation(libs.coil.compose)
