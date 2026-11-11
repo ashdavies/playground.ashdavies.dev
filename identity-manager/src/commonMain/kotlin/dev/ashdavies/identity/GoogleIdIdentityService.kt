@@ -1,7 +1,6 @@
 package dev.ashdavies.identity
 
 import dev.ashdavies.content.PlatformContext
-import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
 public typealias GoogleIdIdentityService = IdentityService<GoogleIdIdentityRequest>

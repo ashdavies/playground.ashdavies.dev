@@ -71,10 +71,6 @@ dependencies {
 }
 
 kotlin {
-    compilerOptions {
-        freeCompilerArgs.add("-opt-in=kotlin.uuid.ExperimentalUuidApi")
-    }
-
     sourceSets {
         commonMain.dependencies {
             implementation(projects.analytics)
@@ -86,32 +82,21 @@ kotlin {
             implementation(projects.features.gallerySync)
             implementation(projects.features.pagerFactory)
 
-            implementation(projects.httpCommon)
             implementation(projects.httpClient)
             implementation(projects.identityManager)
             implementation(projects.mapsRouting)
             implementation(projects.metroExtensions)
-            implementation(projects.platformSupport)
             implementation(projects.remoteConfig)
             implementation(projects.sqlDriver)
 
-            implementation(libs.androidx.paging.common)
-
-            implementation(libs.circuit.runtime)
             implementation(libs.circuit.foundation)
             implementation(libs.circuit.overlay)
             implementation(libs.circuit.serialization)
 
             implementation(libs.compose.material3)
-            implementation(libs.compose.materialIconsCore)
             implementation(libs.compose.materialIconsExtended)
-            implementation(libs.compose.ui)
 
-            implementation(libs.kotlinx.serialization.core)
             implementation(libs.kotlinx.serialization.json)
-
-            implementation(libs.ktor.client.auth)
-            implementation(libs.ktor.client.core)
         }
 
         commonTest.dependencies {
@@ -121,7 +106,6 @@ kotlin {
 
         androidMain.dependencies {
             implementation(libs.androidx.core)
-            implementation(libs.circuit.overlay)
 
             implementation(libs.google.accompanist.permissions)
             implementation(libs.google.android.location)
@@ -142,7 +126,6 @@ kotlin {
 
             implementation(libs.ktor.serialization.kotlinx.json)
             implementation(libs.ktor.server.content.negotiation)
-            implementation(libs.ktor.server.core)
             implementation(libs.ktor.server.netty)
 
             runtimeOnly(libs.kotlinx.coroutines.swing)
@@ -152,9 +135,6 @@ kotlin {
         jvmTest.dependencies {
             implementation(libs.androidx.paging.testing)
             implementation(libs.sqldelight.sqlite.driver)
-        }
-
-        jvmIntegrationTest.dependencies {
         }
 
         wasmJsMain.dependencies {

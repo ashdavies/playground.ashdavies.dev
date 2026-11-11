@@ -6,10 +6,10 @@ plugins {
 
 kotlin {
     sourceSets.commonMain.dependencies {
-        compileOnly(libs.metro.runtime)
+        api(libs.kotlinx.datetime)
+        api(libs.kotlinx.serialization.core)
+        api(libs.ktor.http)
 
-        implementation(libs.kotlinx.datetime)
-        implementation(libs.kotlinx.serialization.json)
-        implementation(libs.ktor.client.core)
+        compileOnly(libs.metro.runtime) // TODO Move to dedicated module with api
     }
 }

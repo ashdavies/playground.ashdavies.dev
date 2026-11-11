@@ -18,26 +18,30 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
+            api(libs.circuit.foundation)
+            api(libs.compose.ui)
+            api(libs.kotlinx.coroutines.core)
+            api(libs.metro.runtime.coroutines)
+
             implementation(projects.analytics)
             implementation(projects.core.ui.components)
             implementation(projects.core.ui.resources)
             implementation(projects.httpClient)
-            implementation(projects.httpCommon)
             implementation(projects.metroExtensions)
 
             implementation(libs.circuit.annotations)
-            implementation(libs.circuit.foundation)
             implementation(libs.circuit.serialization)
 
             implementation(libs.coil.compose)
-            implementation(libs.compose.components.resources)
             implementation(libs.compose.material3)
             implementation(libs.compose.materialIconsExtended)
             implementation(libs.compose.navigation.event)
-            implementation(libs.ktor.client.core)
             implementation(libs.kotlinx.collections.immutable)
-            implementation(libs.metro.runtime.coroutines)
             implementation(libs.sqldelight.coroutines.extensions)
+        }
+
+        androidJvmMain.dependencies {
+            api(libs.kotlinx.io.core)
         }
 
         commonTest.dependencies {

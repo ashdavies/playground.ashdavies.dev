@@ -19,6 +19,7 @@ kotlin {
         commonMain.dependencies {
             api(projects.features.eventCommon)
             api(libs.androidx.paging.compose)
+            api(libs.circuit.foundation)
             api(libs.compose.ui)
 
             implementation(projects.analytics)
@@ -28,22 +29,16 @@ kotlin {
             implementation(projects.features.pagerFactory)
 
             implementation(libs.circuit.annotations)
-            implementation(libs.circuit.foundation)
             implementation(libs.coil.compose)
-            implementation(libs.compose.components.resources)
-            implementation(libs.compose.foundation)
-            implementation(libs.compose.material3)
             implementation(libs.compose.materialIconsExtended)
             implementation(libs.compose.shimmer)
             implementation(libs.kotlinx.collections.immutable)
-            implementation(libs.kotlinx.datetime)
         }
 
         commonTest.dependencies {
             implementation(projects.fixtures.events)
 
             implementation(libs.kotlin.test)
-            implementation(libs.kotlinx.serialization.json)
         }
     }
 }

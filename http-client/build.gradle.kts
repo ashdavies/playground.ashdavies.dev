@@ -10,14 +10,12 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            implementation(projects.httpCommon)
-            implementation(projects.platformSupport)
+            api(projects.httpCommon)
+            api(libs.ktor.client.auth)
 
             implementation(libs.kotlinx.io.core)
             implementation(libs.ktor.serialization.kotlinx.json)
             implementation(libs.ktor.client.content.negotiation)
-            implementation(libs.ktor.client.auth)
-            implementation(libs.ktor.client.core)
             implementation(libs.ktor.client.logging)
         }
 

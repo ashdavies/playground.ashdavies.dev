@@ -86,10 +86,7 @@ dependencies {
     testImplementation(projects.features.gallerySync)
     testImplementation(projects.fixtures.events)
 
-    testImplementation(libs.compose.components.resources)
-    testImplementation(libs.compose.material3)
     testImplementation(libs.compose.materialIconsExtended)
-    testImplementation(libs.kotlinx.datetime)
 }
 
 tasks.withType<Test>().configureEach {

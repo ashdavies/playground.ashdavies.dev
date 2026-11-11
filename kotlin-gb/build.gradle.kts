@@ -5,7 +5,7 @@ plugins {
 
 kotlin {
     sourceSets.commonMain.dependencies {
-        implementation(libs.kotlinx.serialization.core)
-        implementation(libs.ktor.http)
+        api(libs.kotlinx.serialization.core)
+        api(libs.ktor.http)
     }
 }
