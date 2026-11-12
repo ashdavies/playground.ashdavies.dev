@@ -1,6 +1,7 @@
 import dev.zacsweers.metro.gradle.ExperimentalMetroGradleApi
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.compose.reload.gradle.ComposeHotRun
+import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 
 private object ConferenceAppConfig {
     const val APPLICATION_NAME = "dev.ashdavies.playground"
@@ -143,6 +144,18 @@ kotlin {
 
         wasmJsMain.dependencies {
             implementation(projects.composeMaterial)
+        }
+    }
+
+    @OptIn(ExperimentalWasmDsl::class)
+    wasmJs {
+        binaries.executable()
+
+        browser {
+            commonWebpackConfig {
+                devServer?.port = 8081
+                sourceMaps = true
+            }
         }
     }
 }
