@@ -24,7 +24,7 @@ private val RetryDelayInMillis = 1.minutes.inWholeMilliseconds
 private const val RETRY_MAX_ATTEMPTS = 3L
 
 @OptIn(ExperimentalMetroCoroutinesApi::class)
-public class FirebaseRestRemoteConfig constructor(
+public class FirebaseRestRemoteConfig(
     private val httpClient: HttpClient,
     private val environment: Environment,
     private val request: Request,

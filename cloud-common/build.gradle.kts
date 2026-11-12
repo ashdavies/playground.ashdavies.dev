@@ -6,11 +6,8 @@ plugins {
 
 kotlin {
     sourceSets.commonMain.dependencies {
-        implementation(projects.asgService)
-        implementation(projects.httpCommon)
+        api(projects.asgService)
 
-        implementation(libs.kotlinx.datetime)
-        implementation(libs.kotlinx.serialization.json)
         implementation(libs.squareup.okio)
     }
 

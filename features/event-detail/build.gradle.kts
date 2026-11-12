@@ -17,24 +17,20 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
+            api(projects.features.eventCommon)
+            api(libs.compose.ui)
+
             implementation(projects.composeMaterial)
             implementation(projects.core.ui.components)
             implementation(projects.core.ui.resources)
-            implementation(projects.core.ui.scaffold)
-            implementation(projects.features.eventCommon)
-            implementation(projects.features.eventHistory)
-            implementation(projects.httpCommon)
             implementation(projects.identityManager)
             implementation(projects.metroExtensions)
 
             implementation(libs.circuit.annotations)
             implementation(libs.circuit.foundation)
             implementation(libs.coil.compose)
-            implementation(libs.compose.components.resources)
             implementation(libs.compose.materialIconsExtended)
-            implementation(libs.compose.material3)
             implementation(libs.compose.shimmer)
-            implementation(libs.kotlinx.datetime)
         }
     }
 }

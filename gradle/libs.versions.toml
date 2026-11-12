@@ -23,6 +23,7 @@ webPack = "9.1.0"
 [libraries]
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity" }
 androidx-annotation = "androidx.annotation:annotation:1.11.0"
+androidx-core = "androidx.core:core:1.18.0"
 androidx-core-splashscreen = "androidx.core:core-splashscreen:1.2.0"
 androidx-credentials-auth = "androidx.credentials:credentials-play-services-auth:1.6.0"
 androidx-startup-runtime = "androidx.startup:startup-runtime:1.2.0"
@@ -49,6 +50,7 @@ compose-adaptive-navigation = { module = "org.jetbrains.compose.material3.adapti
 compose-components-resources = { module = "org.jetbrains.compose.components:components-resources", version.ref = "compose-plugin" }
 compose-foundation = { module = "org.jetbrains.compose.foundation:foundation", version.ref = "compose-plugin" }
 compose-material3 = "org.jetbrains.compose.material3:material3:1.12.0-alpha03"
+compose-materialIconsCore = "org.jetbrains.compose.material:material-icons-core:1.7.3"
 compose-materialIconsExtended = "org.jetbrains.compose.material:material-icons-extended:1.7.3"
 compose-navigation-event = "androidx.navigationevent:navigationevent-compose:1.2.0"
 compose-runtime = { module = "org.jetbrains.compose.runtime:runtime", version.ref = "compose-plugin" }
@@ -68,6 +70,7 @@ google-firebase-appcheck-debug = { module = "com.google.firebase:firebase-appche
 google-firebase-appcheck-playintegrity = { module = "com.google.firebase:firebase-appcheck-playintegrity" }
 google-firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
 google-firebase-bom = "com.google.firebase:firebase-bom:35.1.0"
+google-firebase-common = { module = "com.google.firebase:firebase-common" }
 google-firebase-config = { module = "com.google.firebase:firebase-config" }
 google-firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
 google-firebase-perf = { module = "com.google.firebase:firebase-perf" }

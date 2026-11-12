@@ -15,14 +15,8 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            implementation(projects.composeMaterial)
-            implementation(projects.previews.tooling)
-
-            implementation(libs.compose.foundation)
-            implementation(libs.compose.material3)
-            implementation(libs.compose.uiToolingPreview)
-
-            implementation(libs.kotlinx.coroutines.core)
+            api(libs.compose.material3)
+            api(libs.kotlinx.coroutines.core)
         }
     }
 }

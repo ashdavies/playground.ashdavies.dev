@@ -10,13 +10,11 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            implementation(projects.httpCommon)
+            api(libs.ktor.client.core)
+
             implementation(projects.metroExtensions)
 
-            implementation(libs.kotlinx.coroutines.core)
-            implementation(libs.kotlinx.serialization.json)
-            implementation(libs.ktor.client.core)
-            implementation(libs.metro.runtime.coroutines)
+            implementation(libs.kotlinx.serialization.core)
         }
 
         commonTest.dependencies {
@@ -25,8 +23,8 @@ kotlin {
         }
 
         androidMain.dependencies {
-            implementation(dependencies.platform(libs.google.firebase.bom))
-            implementation(libs.google.firebase.config)
+            api(dependencies.platform(libs.google.firebase.bom))
+            api(libs.google.firebase.config)
         }
     }
 }

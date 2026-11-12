@@ -12,14 +12,11 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            implementation(projects.core.ui.scaffold)
-            implementation(projects.httpCommon)
+            api(projects.httpCommon)
+            api(projects.core.ui.scaffold)
+            api(libs.circuit.serialization)
 
-            implementation(libs.circuit.serialization)
             implementation(libs.metro.runtime)
-            implementation(libs.kotlinx.datetime)
-            implementation(libs.kotlinx.serialization.core)
-            implementation(libs.kotlinx.serialization.json)
         }
 
         commonTest.dependencies {

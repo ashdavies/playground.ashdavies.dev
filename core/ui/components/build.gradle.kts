@@ -17,17 +17,13 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
+            api(libs.compose.foundation)
+
             implementation(projects.composeMaterial)
             implementation(projects.core.ui.resources)
             implementation(projects.previews.tooling)
 
-            implementation(libs.compose.components.resources)
-            implementation(libs.compose.foundation)
-            implementation(libs.compose.material3)
             implementation(libs.compose.materialIconsExtended)
-            implementation(libs.compose.uiToolingPreview)
-
-            implementation(libs.kotlinx.datetime)
         }
     }
 }

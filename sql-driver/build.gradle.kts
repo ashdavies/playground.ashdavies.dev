@@ -10,12 +10,10 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            implementation(projects.platformSupport)
+            api(projects.platformSupport)
+            api(libs.sqldelight.runtime)
 
-            implementation(libs.kotlinx.coroutines.core)
             implementation(libs.sqldelight.async.extensions)
-            implementation(libs.sqldelight.coroutines.extensions)
-            implementation(libs.sqldelight.runtime)
         }
 
         androidMain.dependencies {

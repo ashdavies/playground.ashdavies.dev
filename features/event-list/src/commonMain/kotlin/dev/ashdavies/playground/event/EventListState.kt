@@ -8,9 +8,9 @@ import kotlin.uuid.Uuid
 public sealed interface EventListState : CircuitUiState {
 
     public data class Success(
-        val itemList: LazyPagingItems<Item>,
-        val isRefreshing: Boolean,
-        val eventSink: (Event) -> Unit,
+        public val itemList: LazyPagingItems<Item>,
+        public val isRefreshing: Boolean,
+        public val eventSink: (Event) -> Unit,
     ) : EventListState {
 
         public sealed interface Item {
@@ -47,7 +47,7 @@ public sealed interface EventListState : CircuitUiState {
     }
 
     public data class Failure(
-        val icon: ImageVector,
-        val message: String?,
+        public val icon: ImageVector,
+        public val message: String?,
     ) : EventListState
 }
