@@ -7,12 +7,14 @@ import androidx.compose.runtime.remember
 import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
+import app.cash.paparazzi.DeviceConfig
 import app.cash.paparazzi.Paparazzi
+import com.android.resources.Density
 import dev.ashdavies.playground.event.EventListState.Failure
 import dev.ashdavies.playground.event.detail.EventDetailState
 import dev.ashdavies.playground.event.detail.EventDetailUi
-import dev.ashdavies.playground.event.grid.EventGridState
-import dev.ashdavies.playground.event.grid.EventGridUi
+import dev.ashdavies.playground.event.history.EventHistoryState
+import dev.ashdavies.playground.event.history.EventHistoryUi
 import dev.ashdavies.playground.tooling.MaterialPreviewTheme
 import dev.ashdavies.playground.ui.resources.Res
 import dev.ashdavies.playground.ui.resources.operation_not_implemented
@@ -23,15 +25,20 @@ import kotlinx.serialization.json.Json
 import org.jetbrains.compose.resources.stringResource
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.junit.runners.Parameterized
 
 private val SnapshotDate = LocalDate(2026, 1, 1)
 
-internal class EventScreenTests {
+@RunWith(Parameterized::class)
+internal class EventScreenTests(deviceConfig: DeviceConfig) {
 
     private val factory = eventListItemFactory(SnapshotDate.asClock())
 
     @get:Rule
-    val paparazzi = Paparazzi()
+    val paparazzi = Paparazzi(deviceConfig = deviceConfig)
+
+    // TODO Test against ListDetailScaffold
 
     @Test
     fun eventList() {
@@ -66,14 +73,14 @@ internal class EventScreenTests {
     }
 
     @Test
-    fun eventGrid() {
+    fun eventHistory() {
         paparazzi.snapshot {
             MaterialPreviewTheme {
-                EventGridUi(
-                    state = EventGridState(
+                EventHistoryUi(
+                    state = EventHistoryState(
                         itemList = Json
                             .upcomingEvents()
-                            .map(Event::toEventGridStateItem)
+                            .map(Event::toEventHistoryStateItem)
                             .toImmutableList(),
                         eventSink = { },
                     ),
@@ -97,13 +104,25 @@ internal class EventScreenTests {
             }
         }
     }
+
+    companion object {
+
+        @JvmStatic
+        @Parameterized.Parameters
+        fun deviceConfigs() = listOf(
+            // TODO Include desktop layout
+            DeviceConfig.PIXEL_9_PRO_FOLD,
+            DeviceConfig.PIXEL_8_PRO,
+            DeviceConfig.PIXEL_6A,
+        )
+    }
 }
 
-private fun Event.toEventGridStateItem() = EventGridState.Item(
-    title = "$name ${dateStart.year}",
-    group = "${dateStart.year}",
-    subtitle = location,
-    attended = false,
+private fun Event.toEventHistoryStateItem() = EventHistoryState.Item(
+    thumbnailImageSeed = thumbnailImageSeed,
+    uuid = uuid,
+    name = name,
+    year = "${dateStart.year}",
 )
 
 @Composable

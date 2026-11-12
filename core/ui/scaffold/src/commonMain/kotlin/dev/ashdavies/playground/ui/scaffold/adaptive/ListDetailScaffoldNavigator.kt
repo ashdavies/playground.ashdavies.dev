@@ -22,10 +22,9 @@ internal class ListDetailScaffoldNavigator(
     }
 
     override fun pop(result: PopResult?): Screen? {
-        if (scaffoldNavigator.canNavigateBack(BackNavigationBehavior.PopUntilContentChange)) {
-            val screen = scaffoldNavigator.currentDestination?.contentKey
-            coroutineScope.launch { scaffoldNavigator.navigateBack(BackNavigationBehavior.PopUntilContentChange) }
-            return screen
+        if (scaffoldNavigator.canNavigateBack(BackNavigationBehavior.PopUntilScaffoldValueChange)) {
+            coroutineScope.launch { scaffoldNavigator.navigateBack(BackNavigationBehavior.PopUntilScaffoldValueChange) }
+            return scaffoldNavigator.currentDestination?.contentKey
         }
 
         return null

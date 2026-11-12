@@ -29,7 +29,7 @@ internal class EventsRemoteMediator<T : Any>(
 
         delay(5.seconds)
 
-        return eventsCallable(GetEventsRequest(loadKey?.dateStart))
+        return eventsCallable(UpcomingEventsRequest(loadKey?.dateStart))
             .mapCatching { list ->
                 eventQueries.transaction { list.forEach { eventQueries.upsert(it.toDatabaseEvent()) } }
                 onInvalidate()

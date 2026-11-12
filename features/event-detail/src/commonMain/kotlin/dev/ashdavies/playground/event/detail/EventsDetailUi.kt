@@ -3,8 +3,8 @@ package dev.ashdavies.playground.event.detail
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -57,8 +57,6 @@ import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
 import org.jetbrains.compose.resources.stringResource
 
-// TODO Empty layout for desktop
-
 private val Event.thumbnailImageSeed: Long
     get() = "$name$location"
         .hashCode()
@@ -110,19 +108,19 @@ public fun EventDetailUi(state: EventDetailState, modifier: Modifier = Modifier)
                 )
             }
 
-            EventsDetailRow(
-                icon = Icons.Outlined.MyLocation,
-                label = stringResource(Res.string.event_location),
-                text = itemOrNull?.location ?: emptyString(),
-            )
-
             if (itemOrNull != null) {
                 EventsDetailRow(
-                    icon = Icons.Outlined.Event,
-                    label = stringResource(Res.string.event_date),
-                    text = formatDateRange(itemOrNull.dateStart, itemOrNull.dateEnd),
+                    leadingIcon = Icons.Outlined.Event,
+                    title = formatDateRange(itemOrNull.dateStart, itemOrNull.dateEnd),
+                    subtitle = stringResource(Res.string.event_date),
                 )
             }
+
+            EventsDetailRow(
+                leadingIcon = Icons.Outlined.MyLocation,
+                title = itemOrNull?.location ?: emptyString(),
+                subtitle = stringResource(Res.string.event_location),
+            )
 
             itemOrNull?.attrs?.cfpEnd?.let { cfpEnd ->
                 EventsDetailCfp(
@@ -154,40 +152,64 @@ private fun EventsDetailImage(
 
 @Composable
 private fun EventsDetailRow(
-    icon: ImageVector,
-    label: String,
-    text: String,
+    leadingIcon: ImageVector,
+    title: String,
+    subtitle: String,
     modifier: Modifier = Modifier,
     onClick: (() -> Unit)? = null,
     trailingIcon: ImageVector? = null,
 ) {
-    EventsDetailCard(modifier, onClick) {
-        Icon(
-            imageVector = icon,
-            contentDescription = null,
-        )
-
-        Column(Modifier.weight(1f)) {
-            Text(
-                text = text,
-                style = MaterialTheme.typography.titleMedium,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-            )
-
-            Text(
-                text = label,
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-        }
-
-        if (trailingIcon != null) {
+    val colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer)
+    val content: @Composable ColumnScope.() -> Unit = {
+        Row(
+            modifier = Modifier.padding(MaterialTheme.spacing.medium.uniform),
+            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.medium.horizontal),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
             Icon(
-                imageVector = trailingIcon,
+                imageVector = leadingIcon,
                 contentDescription = null,
             )
+
+            Column(Modifier.weight(1f)) {
+                Text(
+                    text = title,
+                    style = MaterialTheme.typography.titleMedium,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+
+                Text(
+                    text = subtitle,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+
+            if (trailingIcon != null) {
+                Icon(
+                    imageVector = trailingIcon,
+                    contentDescription = null,
+                )
+            }
         }
+    }
+
+    when (onClick) {
+        null -> Card(
+            modifier = modifier.fillMaxWidth(),
+            shape = MaterialTheme.shapes.large,
+            colors = colors,
+            content = content,
+        )
+
+        else -> Card(
+            onClick = onClick,
+            modifier = modifier.fillMaxWidth(),
+            shape = MaterialTheme.shapes.large,
+            colors = colors,
+            content = content,
+        )
     }
 }
 
@@ -202,9 +224,9 @@ private fun EventsDetailCfp(
     val uriHandler = LocalUriHandler.current
 
     EventsDetailRow(
-        icon = Icons.Outlined.Campaign,
-        label = stringResource(if (isOpen) Res.string.cfp_open else Res.string.cfp_closed),
-        text = formatDateRange(cfpStart ?: cfpEnd, cfpEnd),
+        leadingIcon = Icons.Outlined.Campaign,
+        subtitle = stringResource(if (isOpen) Res.string.cfp_open else Res.string.cfp_closed),
+        title = formatDateRange(cfpStart ?: cfpEnd, cfpEnd),
         modifier = modifier,
         onClick = if (isOpen && cfpSite != null) {
             { uriHandler.openUri(cfpSite) }
@@ -213,27 +235,4 @@ private fun EventsDetailCfp(
         },
         trailingIcon = if (isOpen && cfpSite != null) Icons.Outlined.Link else null,
     )
-}
-
-@Composable
-private fun EventsDetailCard(
-    modifier: Modifier = Modifier,
-    onClick: (() -> Unit)? = null,
-    content: @Composable RowScope.() -> Unit,
-) {
-    val shape = MaterialTheme.shapes.large
-    val colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer)
-    val rowContent: @Composable () -> Unit = {
-        Row(
-            modifier = Modifier.padding(MaterialTheme.spacing.medium.uniform),
-            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.medium.horizontal),
-            verticalAlignment = Alignment.CenterVertically,
-            content = content,
-        )
-    }
-
-    when (onClick) {
-        null -> Card(modifier.fillMaxWidth(), shape, colors) { rowContent() }
-        else -> Card(onClick, modifier.fillMaxWidth(), shape = shape, colors = colors) { rowContent() }
-    }
 }

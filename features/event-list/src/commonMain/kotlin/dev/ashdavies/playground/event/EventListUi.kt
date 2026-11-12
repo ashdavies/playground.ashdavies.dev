@@ -23,6 +23,7 @@ import androidx.compose.material.icons.outlined.LockClock
 import androidx.compose.material.icons.outlined.Schedule
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularWavyProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconToggleButton
@@ -70,7 +71,17 @@ import org.jetbrains.compose.resources.stringResource
 public fun EventListUi(state: EventListState, modifier: Modifier = Modifier) {
     Scaffold(
         modifier = modifier,
-        topBar = { CenterAlignedTopAppBar(stringResource(Res.string.upcoming_events)) },
+        topBar = {
+            CenterAlignedTopAppBar(stringResource(Res.string.upcoming_events)) {
+                if (state is EventListState.Success && state.isRefreshing) {
+                    CircularWavyProgressIndicator(
+                        modifier = Modifier
+                            .padding(horizontal = MaterialTheme.spacing.medium.horizontal)
+                            .size(MaterialTheme.sizing.icon.medium),
+                    )
+                }
+            }
+        },
     ) { contentPadding ->
         when (state) {
             is EventListState.Success -> EventListContent(
@@ -101,7 +112,11 @@ private fun EventListContent(
             contentPadding = MaterialTheme.spacing.large.values,
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.medium.vertical),
         ) {
-            items(state.itemList.itemCount) { index ->
+            items(
+                count = state.itemList.itemCount,
+                key = { (state.itemList[it] as? EventListState.Success.Item.Standard)?.uuid ?: it },
+                contentType = { (state.itemList[it] is EventListState.Success.Item.Standard) },
+            ) { index ->
                 when (val item = state.itemList[index]) {
                     is EventListState.Success.Item.Standard, null -> EventListItemContent(
                         item = item,
@@ -144,7 +159,7 @@ private fun EventListItemContent(
     Card(
         onClick = onClick,
         modifier = modifier
-            .then(if (isRefreshing) Modifier.shimmer() else Modifier)
+            .then(if (item == null && isRefreshing) Modifier.shimmer() else Modifier)
             .fillMaxWidth(),
         shape = MaterialTheme.shapes.extraLarge,
         colors = CardDefaults.cardColors(
@@ -288,7 +303,7 @@ private fun StatusBadge(
 
             Text(
                 text = text,
-                style = MaterialTheme.typography.labelLarge,
+                style = MaterialTheme.typography.labelMedium,
             )
         }
     }

@@ -7,7 +7,7 @@ import dev.ashdavies.http.appCheck
 import dev.ashdavies.http.common.models.AppCheckToken
 import dev.ashdavies.http.common.models.XApiKey
 import dev.ashdavies.http.defaultHttpClient
-import dev.ashdavies.http.qualifier.AppCheckHttpClient
+import dev.ashdavies.http.qualifier.AuthenticatedHttpClient
 import dev.ashdavies.http.qualifier.DefaultHttpClient
 import dev.ashdavies.playground.gallery.LocalGallery
 import dev.ashdavies.sql.DriverFactory
@@ -31,13 +31,21 @@ import dev.ashdavies.playground.gallery.PlaygroundDatabase as GalleryDatabase
 internal interface ConferenceModule {
 
     @Provides
-    @AppCheckHttpClient
+    @AuthenticatedHttpClient
     fun appCheckHttpClient(
         @DefaultHttpClient httpClient: HttpClient,
+        @Named("httpClientHeaders") headers: Set<Pair<String, String>>,
         appCheckTokenProvider: suspend () -> AppCheckToken,
     ): HttpClient = httpClient.config {
         install(Auth) {
             appCheck { getToken(appCheckTokenProvider) }
+        }
+
+        install(DefaultRequest) {
+            header(HttpHeaders.XApiKey, requireNotNull(BuildConfig.API_KEY) { "API_KEY was null" })
+            headers.forEach { (key, value) -> header(key, value) }
+
+            url(BuildConfig.PLAYGROUND_BASE_URL ?: "https://api.ashdavies.dev/")
         }
     }
 
@@ -61,16 +69,7 @@ internal interface ConferenceModule {
 
     @Provides
     @DefaultHttpClient
-    fun defaultHttpClient(
-        @Named("httpClientHeaders") headers: Set<Pair<String, String>>,
-    ): HttpClient = defaultHttpClient {
-        install(DefaultRequest) {
-            header(HttpHeaders.XApiKey, requireNotNull(BuildConfig.API_KEY) { "API_KEY was null" })
-            headers.forEach { (key, value) -> header(key, value) }
-
-            url(BuildConfig.PLAYGROUND_BASE_URL ?: "https://api.ashdavies.dev/")
-        }
-    }
+    fun defaultHttpClient(): HttpClient = defaultHttpClient { }
 
     @Provides
     @ExperimentalMetroCoroutinesApi

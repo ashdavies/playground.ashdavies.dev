@@ -10,16 +10,7 @@ internal class WasmConventionPlugin : Plugin<Project> {
         plugins.apply(libs.plugins.kotlin.multiplatform)
 
         configure<KotlinMultiplatformExtension> {
-            wasmJs {
-                binaries.executable()
-
-                browser {
-                    commonWebpackConfig {
-                        devServer?.port = 8081
-                        sourceMaps = true
-                    }
-                }
-            }
+            wasmJs { browser() }
         }
     }
 }

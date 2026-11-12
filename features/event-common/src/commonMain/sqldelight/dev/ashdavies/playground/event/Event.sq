@@ -1,6 +1,6 @@
 import dev.ashdavies.http.common.models.EventAttrs;
-import kotlinx.datetime.LocalDate;
 import kotlin.uuid.Uuid;
+import kotlinx.datetime.LocalDate;
 
 CREATE TABLE event(
     attrs TEXT AS EventAttrs NOT NULL DEFAULT '{}',
@@ -20,9 +20,14 @@ getAllAscending:
     ORDER BY dateStart ASC, uuid ASC
     LIMIT :limit OFFSET :offset;
 
+getAllWithNameDescending:
+    WITH target AS (SELECT name, location FROM event WHERE uuid = :uuid LIMIT 1)
+    SELECT event.* FROM event, target
+    WHERE event.name IS target.name AND event.location IS target.location
+    ORDER BY dateStart DESC, uuid DESC;
+
 getByUuid:
-    SELECT *
-    FROM event
+    SELECT * FROM event
     WHERE uuid = :uuid;
 
 upsert:

@@ -3,6 +3,7 @@ package dev.ashdavies.http
 import io.ktor.client.HttpClient
 import io.ktor.client.HttpClientConfig
 import io.ktor.client.plugins.DefaultRequest
+import io.ktor.client.plugins.HttpCallValidator
 import io.ktor.client.plugins.cache.HttpCache
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.logging.LogLevel
@@ -34,8 +35,14 @@ public val DefaultHttpConfiguration: HttpClientConfig<*>.() -> Unit = {
         publicStorage(resolveCacheStorage())
     }
 
+    install(HttpCallValidator) {
+        throwClientRequestExceptionAs<ServerError>()
+    }
+
     install(Logging) {
         logger = Logger.SIMPLE
         level = LogLevel.ALL
     }
+
+    expectSuccess = true
 }

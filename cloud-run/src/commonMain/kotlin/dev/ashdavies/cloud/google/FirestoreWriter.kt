@@ -42,7 +42,6 @@ internal class FirestoreBulkWriter(
     }
 
     override suspend fun set(childPath: String, fields: Map<String, Any>) {
-        println("=== FirestoreBulkWriter.set($childPath, $fields) ===")
         writer.set(collection.document(childPath), fields)
     }
 
