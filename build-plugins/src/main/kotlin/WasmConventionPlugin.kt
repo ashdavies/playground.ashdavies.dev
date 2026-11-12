@@ -10,7 +10,7 @@ internal class WasmConventionPlugin : Plugin<Project> {
         plugins.apply(libs.plugins.kotlin.multiplatform)
 
         configure<KotlinMultiplatformExtension> {
-            wasmJs()
+            wasmJs { browser() }
         }
     }
 }
