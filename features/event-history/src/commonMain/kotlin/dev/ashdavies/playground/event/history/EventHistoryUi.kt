@@ -71,6 +71,7 @@ public fun EventHistoryUi(state: EventHistoryState, modifier: Modifier = Modifie
                         ) {
                             Text(
                                 text = "'${item.year.substring(2)}",
+                                color = MaterialTheme.colorScheme.onSurface,
                                 fontWeight = FontWeight.Bold,
                                 style = MaterialTheme.typography.headlineSmall,
                             )

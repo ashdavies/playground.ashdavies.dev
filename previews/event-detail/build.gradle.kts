@@ -17,6 +17,7 @@ kotlin {
         commonMain.dependencies {
             implementation(projects.features.eventDetail)
             implementation(projects.fixtures.events)
+            implementation(projects.httpExtended)
             implementation(projects.previews.tooling)
         }
     }

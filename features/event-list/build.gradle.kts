@@ -38,6 +38,7 @@ kotlin {
 
         commonTest.dependencies {
             implementation(projects.fixtures.events)
+            implementation(projects.httpExtended)
 
             implementation(libs.kotlin.test)
         }

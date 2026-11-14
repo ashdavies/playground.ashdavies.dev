@@ -1,8 +1,8 @@
 package dev.ashdavies.playground.event
 
 import dev.ashdavies.http.common.models.EventAttrs
+import dev.ashdavies.http.common.models.toDatabaseEvent
 import kotlinx.datetime.LocalDate
-import kotlinx.serialization.json.Json
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -206,5 +206,5 @@ private fun <T : EventListState.Success.Item> awaitItem(
 ) as T
 
 private fun <T> createEvent(transform: (Event) -> Event = { it }, action: (Event) -> T): T {
-    return action(transform(Json.upcomingEvents().first()))
+    return action(transform(EventFixtures.upcoming { it }.first().toDatabaseEvent()))
 }

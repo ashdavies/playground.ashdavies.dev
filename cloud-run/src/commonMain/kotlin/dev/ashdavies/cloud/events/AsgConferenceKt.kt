@@ -1,4 +1,4 @@
-package dev.ashdavies.cloud
+package dev.ashdavies.cloud.events
 
 import dev.ashdavies.asg.AsgConference
 import dev.ashdavies.http.common.models.DomainEvent
@@ -11,7 +11,10 @@ import kotlin.time.Instant
 import kotlin.uuid.Uuid
 
 public fun AsgConference.toDomainEvent(): DomainEvent = DomainEvent(
-    uuid = uuid(),
+    uuid = uuid(
+        timestamp = dateStart.atStartOfDayIn(TimeZone.UTC),
+        content = "$name\u0000$location\u0000$dateStart",
+    ),
     name = name,
     website = website,
     location = location,
@@ -19,12 +22,7 @@ public fun AsgConference.toDomainEvent(): DomainEvent = DomainEvent(
     dateEnd = dateEnd,
 )
 
-public fun AsgConference.uuid(): Uuid = uuid(
-    timestamp = dateStart.atStartOfDayIn(TimeZone.UTC),
-    content = "$name\u0000$location\u0000$dateStart",
-)
-
-public fun uuid(timestamp: Instant, content: String): Uuid {
+private fun uuid(timestamp: Instant, content: String): Uuid {
     val buffer = Buffer().write(content.encodeUtf8().sha256())
     val epochMillis = timestamp.toEpochMilliseconds()
 

@@ -42,7 +42,7 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            implementation(projects.cloudCommon)
+            implementation(projects.asgService)
             implementation(projects.httpClient)
 
             implementation(libs.google.firebase.admin)

@@ -1,12 +1,8 @@
 package dev.ashdavies.cloud.events
 
 import dev.ashdavies.cloud.google.attrs
-import dev.ashdavies.cloud.toAttrs
-import dev.ashdavies.cloud.toDomainEvent
-import dev.ashdavies.http.common.models.DomainWrapper
-import dev.ashdavies.playground.event.asgUpcomingConferences
+import dev.ashdavies.playground.event.EventFixtures
 import kotlinx.coroutines.test.runTest
-import kotlinx.serialization.json.Json
 import org.junit.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -14,12 +10,7 @@ import kotlin.uuid.Uuid
 
 internal class FirebaseEventWriterTest {
 
-    private val data = Json.asgUpcomingConferences { item ->
-        DomainWrapper(
-            attrs = item.toAttrs().toMap(),
-            value = item.toDomainEvent(),
-        )
-    }
+    private val data = EventFixtures.upcoming { it }
 
     @Test
     fun `should write events with attributes`() = runTest {

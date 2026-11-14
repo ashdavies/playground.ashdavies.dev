@@ -20,7 +20,6 @@ kotlin {
             api(libs.compose.ui)
             api(libs.kotlinx.collections.immutable)
 
-            implementation(projects.cloudCommon)
             implementation(projects.composeMaterial)
             implementation(projects.core.ui.components)
             implementation(projects.core.ui.resources)

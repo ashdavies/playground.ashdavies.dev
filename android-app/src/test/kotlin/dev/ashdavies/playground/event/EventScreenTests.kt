@@ -9,7 +9,7 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import app.cash.paparazzi.DeviceConfig
 import app.cash.paparazzi.Paparazzi
-import com.android.resources.Density
+import dev.ashdavies.http.common.models.toDatabaseEvent
 import dev.ashdavies.playground.event.EventListState.Failure
 import dev.ashdavies.playground.event.detail.EventDetailState
 import dev.ashdavies.playground.event.detail.EventDetailUi
@@ -21,7 +21,6 @@ import dev.ashdavies.playground.ui.resources.operation_not_implemented
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.datetime.LocalDate
-import kotlinx.serialization.json.Json
 import org.jetbrains.compose.resources.stringResource
 import org.junit.Rule
 import org.junit.Test
@@ -46,9 +45,8 @@ internal class EventScreenTests(deviceConfig: DeviceConfig) {
             MaterialPreviewTheme {
                 EventListUi(
                     state = EventListState.Success(
-                        itemList = Json
-                            .upcomingEvents()
-                            .map { factory(it, false) }
+                        itemList = EventFixtures
+                            .upcoming { factory(it.toDatabaseEvent(), false) }
                             .toLazyPagingItems(),
                         isRefreshing = false,
                         eventSink = { },
@@ -78,9 +76,8 @@ internal class EventScreenTests(deviceConfig: DeviceConfig) {
             MaterialPreviewTheme {
                 EventHistoryUi(
                     state = EventHistoryState(
-                        itemList = Json
-                            .upcomingEvents()
-                            .map(Event::toEventHistoryStateItem)
+                        itemList = EventFixtures
+                            .upcoming { it.toDatabaseEvent().toEventHistoryStateItem() }
                             .toImmutableList(),
                         eventSink = { },
                     ),
@@ -96,7 +93,7 @@ internal class EventScreenTests(deviceConfig: DeviceConfig) {
                 EventDetailUi(
                     state = EventDetailState(
                         itemState = EventDetailState.ItemState.Done(
-                            item = Json.upcomingEvents().first(),
+                            item = EventFixtures.upcoming { it }.first().toDatabaseEvent(),
                         ),
                         onBackPressed = { },
                     ),

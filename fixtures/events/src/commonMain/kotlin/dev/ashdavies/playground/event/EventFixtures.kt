@@ -1,27 +1,12 @@
 package dev.ashdavies.playground.event
 
-import dev.ashdavies.asg.AsgConference
-import dev.ashdavies.cloud.toAttrs
-import dev.ashdavies.cloud.uuid
+import dev.ashdavies.http.common.models.DomainEvent
+import dev.ashdavies.http.common.models.DomainWrapper
 import kotlinx.serialization.json.Json
 import playground.fixtures.events.fixtures.UpcomingJson
-import dev.ashdavies.playground.event.Event as DatabaseEvent
 
-// TODO Change to Playground API output
-public fun <T : Any> Json.asgUpcomingConferences(
-    transform: (AsgConference) -> T,
-): List<T> = decodeFromString<List<AsgConference>>(
-    string = UpcomingJson,
-).map(transform)
-
-public fun Json.upcomingEvents(): List<DatabaseEvent> = asgUpcomingConferences { item ->
-    DatabaseEvent(
-        uuid = item.uuid(),
-        name = item.name,
-        website = item.website,
-        location = item.location,
-        dateStart = item.dateStart,
-        dateEnd = item.dateEnd,
-        attrs = item.toAttrs(),
-    )
+public object EventFixtures {
+    public fun <T : Any> upcoming(transform: (DomainWrapper<DomainEvent>) -> T): List<T> = Json
+        .decodeFromString<List<DomainWrapper<DomainEvent>>>(UpcomingJson)
+        .map(transform)
 }

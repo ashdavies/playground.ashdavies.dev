@@ -86,7 +86,7 @@ kotlin {
             implementation(projects.features.gallerySync)
             implementation(projects.features.pagerFactory)
 
-            implementation(projects.httpClient)
+            implementation(projects.httpExtended)
             implementation(projects.identityManager)
             implementation(projects.mapsRouting)
             implementation(projects.metroExtensions)
