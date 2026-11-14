@@ -31,6 +31,7 @@ kotlin {
             implementation(libs.circuit.annotations)
             implementation(libs.circuit.foundation)
             implementation(libs.compose.adaptive.layout)
+            implementation(libs.ktor.client.core)
             implementation(libs.sqldelight.coroutines.extensions)
         }
     }
