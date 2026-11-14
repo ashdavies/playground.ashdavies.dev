@@ -11,6 +11,7 @@ import dev.ashdavies.playground.event.Event
 import dev.ashdavies.playground.event.EventScreen
 import dev.ashdavies.playground.event.common.PlaygroundDatabase
 import dev.ashdavies.playground.metro.mapAsFlow
+import dev.ashdavies.playground.ui.scaffold.adaptive.DetailExtraScaffoldScreen
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.Assisted
 import dev.zacsweers.metro.AssistedFactory
@@ -44,7 +45,14 @@ internal class EventHistoryPresenter(
 
         return EventHistoryState(itemList.toPersistentList()) {
             when {
-                it is EventHistoryState.Event.ItemClick -> navigator.goTo(EventScreen.Detail(itemList[it.index].uuid))
+                it is EventHistoryState.Event.ItemClick -> navigator.goTo(
+                    screen = with(itemList[it.index]) {
+                        DetailExtraScaffoldScreen(
+                            detailScreen = EventScreen.Detail(uuid),
+                            extraScreen = EventScreen.History(uuid),
+                        )
+                    },
+                )
             }
         }
     }
