@@ -98,6 +98,10 @@ kotlin {
             implementation(libs.compose.materialIconsExtended)
 
             implementation(libs.kotlinx.serialization.json)
+
+            runtimeOnly(projects.features.eventList)
+            runtimeOnly(projects.features.eventDetail)
+            runtimeOnly(projects.features.eventHistory)
         }
 
         commonTest.dependencies {
@@ -129,6 +133,7 @@ kotlin {
             implementation(libs.ktor.server.content.negotiation)
             implementation(libs.ktor.server.netty)
 
+            runtimeOnly(compose.desktop.currentOs)
             runtimeOnly(libs.kotlinx.coroutines.swing)
             runtimeOnly(libs.logback.classic)
         }

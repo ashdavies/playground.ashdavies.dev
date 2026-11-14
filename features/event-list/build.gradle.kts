@@ -26,6 +26,7 @@ kotlin {
             implementation(projects.composeMaterial)
             implementation(projects.core.ui.components)
             implementation(projects.core.ui.resources)
+            implementation(projects.core.ui.scaffold)
             implementation(projects.features.pagerFactory)
 
             implementation(libs.circuit.annotations)

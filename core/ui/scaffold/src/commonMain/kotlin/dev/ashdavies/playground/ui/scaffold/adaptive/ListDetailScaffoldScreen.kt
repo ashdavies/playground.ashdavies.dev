@@ -9,10 +9,10 @@ import kotlinx.serialization.Serializable
 @Serializable
 @CircuitSerializable(AppScope::class)
 public data class ListDetailScaffoldScreen(val initialScreen: Screen) : Screen {
-
     public data class State(val initialScreen: Screen) : CircuitUiState
-
-    public interface ExtraPaneScreen {
-        public val extraScreen: Screen
-    }
 }
+
+public data class DetailExtraScaffoldScreen(
+    val detailScreen: Screen,
+    val extraScreen: Screen?,
+) : Screen

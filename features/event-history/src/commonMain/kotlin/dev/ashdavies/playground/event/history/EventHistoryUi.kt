@@ -17,6 +17,7 @@ import androidx.compose.material3.MaterialShapes
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.toShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -57,21 +58,23 @@ public fun EventHistoryUi(state: EventHistoryState, modifier: Modifier = Modifie
         ) {
             itemsIndexed(state.itemList) { index, item ->
                 Column {
-                    Box(
-                        modifier = Modifier
-                            .padding(MaterialTheme.spacing.medium)
-                            .clip(MaterialShapes.Cookie7Sided.toShape())
-                            .background(gradientBrush(item.thumbnailImageSeed))
-                            .clickable { state.eventSink(EventHistoryState.Event.ItemClick(index)) }
-                            .fillMaxWidth()
-                            .aspectRatio(1f),
-                        contentAlignment = Alignment.Center,
-                    ) {
-                        Text(
-                            text = "'${item.year.substring(2)}",
-                            fontWeight = FontWeight.Bold,
-                            style = MaterialTheme.typography.headlineSmall,
-                        )
+                    MaterialTheme(darkColorScheme()) {
+                        Box(
+                            modifier = Modifier
+                                .padding(MaterialTheme.spacing.medium)
+                                .clip(MaterialShapes.Cookie7Sided.toShape())
+                                .background(gradientBrush(item.thumbnailImageSeed))
+                                .clickable { state.eventSink(EventHistoryState.Event.ItemClick(index)) }
+                                .fillMaxWidth()
+                                .aspectRatio(1f),
+                            contentAlignment = Alignment.Center,
+                        ) {
+                            Text(
+                                text = "'${item.year.substring(2)}",
+                                fontWeight = FontWeight.Bold,
+                                style = MaterialTheme.typography.headlineSmall,
+                            )
+                        }
                     }
 
                     Text(
