@@ -80,6 +80,9 @@ kotlin {
             implementation(projects.core.ui.scaffold)
             implementation(projects.core.ui.snackbar)
             implementation(projects.features.eventCommon)
+            implementation(projects.features.eventDetail)
+            implementation(projects.features.eventHistory)
+            implementation(projects.features.eventList)
             implementation(projects.features.gallerySync)
             implementation(projects.features.pagerFactory)
 
@@ -98,10 +101,6 @@ kotlin {
             implementation(libs.compose.materialIconsExtended)
 
             implementation(libs.kotlinx.serialization.json)
-
-            runtimeOnly(projects.features.eventList)
-            runtimeOnly(projects.features.eventDetail)
-            runtimeOnly(projects.features.eventHistory)
         }
 
         commonTest.dependencies {
