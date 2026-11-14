@@ -80,6 +80,9 @@ kotlin {
             implementation(projects.core.ui.scaffold)
             implementation(projects.core.ui.snackbar)
             implementation(projects.features.eventCommon)
+            implementation(projects.features.eventDetail)
+            implementation(projects.features.eventHistory)
+            implementation(projects.features.eventList)
             implementation(projects.features.gallerySync)
             implementation(projects.features.pagerFactory)
 
@@ -129,6 +132,7 @@ kotlin {
             implementation(libs.ktor.server.content.negotiation)
             implementation(libs.ktor.server.netty)
 
+            runtimeOnly(compose.desktop.currentOs)
             runtimeOnly(libs.kotlinx.coroutines.swing)
             runtimeOnly(libs.logback.classic)
         }

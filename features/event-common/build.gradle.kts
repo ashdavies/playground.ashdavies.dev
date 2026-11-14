@@ -12,7 +12,6 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            api(projects.core.ui.scaffold) // TODO Leaks ui context into domain
             api(projects.httpCommon)
             api(libs.circuit.serialization)
 

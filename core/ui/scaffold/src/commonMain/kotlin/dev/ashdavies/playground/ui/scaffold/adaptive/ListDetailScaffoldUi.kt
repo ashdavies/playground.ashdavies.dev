@@ -75,15 +75,17 @@ internal class ListDetailScaffoldUi : Ui<ListDetailScaffoldScreen.State> {
             },
             detailPane = {
                 AnimatedPane {
-                    scaffoldNavigator.currentDestination?.contentKey?.let { contentKey ->
-                        CircuitContent(contentKey, circuitNavigator)
-                    } ?: EmptyDetailPane()
+                    when (val contentKey = scaffoldNavigator.currentDestination?.contentKey) {
+                        is DetailExtraScaffoldScreen -> CircuitContent(contentKey.detailScreen, circuitNavigator)
+                        is Screen -> CircuitContent(contentKey, circuitNavigator)
+                        else -> EmptyDetailPane()
+                    }
                 }
             },
             extraPane = {
                 AnimatedPane {
                     val contentKey = scaffoldNavigator.currentDestination?.contentKey
-                    if (contentKey is ListDetailScaffoldScreen.ExtraPaneScreen) {
+                    if (contentKey is DetailExtraScaffoldScreen && contentKey.extraScreen != null) {
                         CircuitContent(contentKey.extraScreen, circuitNavigator)
                     }
                 }

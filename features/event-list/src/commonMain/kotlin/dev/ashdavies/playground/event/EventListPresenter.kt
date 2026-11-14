@@ -22,6 +22,7 @@ import dev.ashdavies.analytics.RemoteAnalytics
 import dev.ashdavies.paging.PagerConfig
 import dev.ashdavies.paging.PagerFactory
 import dev.ashdavies.playground.coroutines.retainStableCoroutineScope
+import dev.ashdavies.playground.ui.scaffold.adaptive.DetailExtraScaffoldScreen
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.Assisted
 import dev.zacsweers.metro.AssistedFactory
@@ -85,7 +86,13 @@ internal class EventListPresenter(
 
                     is EventListState.Success.Event.ItemClick -> pagingItemOrNull(event.index)?.let { item ->
                         remoteAnalytics.logEvent("events_click") { param("id", "${item.uuid}") }
-                        navigator.goTo(EventScreen.Detail(item.uuid))
+
+                        navigator.goTo(
+                            screen = DetailExtraScaffoldScreen(
+                                detailScreen = EventScreen.Detail(item.uuid),
+                                extraScreen = EventScreen.History(item.uuid),
+                            ),
+                        )
                     }
 
                     is EventListState.Success.Event.Refresh -> {
