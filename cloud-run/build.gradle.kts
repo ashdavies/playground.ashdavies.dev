@@ -42,8 +42,8 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            implementation(projects.cloudCommon)
-            implementation(projects.httpClient)
+            implementation(projects.asgService)
+            implementation(projects.core.http.client)
 
             implementation(libs.google.firebase.admin)
             implementation(libs.kotlinx.serialization.properties)

@@ -3,10 +3,9 @@ package dev.ashdavies.playground.events.paging
 import androidx.paging.testing.asSnapshot
 import app.cash.sqldelight.async.coroutines.synchronous
 import app.cash.sqldelight.driver.jdbc.sqlite.JdbcSqliteDriver
-import dev.ashdavies.http.common.models.DomainEvent
-import dev.ashdavies.http.common.models.DomainWrapper
 import dev.ashdavies.paging.PagerConfig
 import dev.ashdavies.playground.PlaygroundDatabase
+import dev.ashdavies.playground.event.EventFixtures
 import dev.ashdavies.playground.invoke
 import dev.ashdavies.playground.paging.EventPagerFactory
 import dev.zacsweers.metro.ExperimentalMetroCoroutinesApi
@@ -40,6 +39,7 @@ internal class EventPagerFactoryTest {
     @OptIn(ExperimentalMetroCoroutinesApi::class, ExperimentalSerializationApi::class)
     fun `should not include boundary events on same start date`() = runTest {
         val knownLocationDeque = ArrayDeque(Json.locations())
+        val eventFixtures = EventFixtures.upcoming { it }
         val upcomingApiEventListSize = 24
         val pageSize = 12
 
@@ -50,11 +50,16 @@ internal class EventPagerFactoryTest {
                     else -> acc
                 }
             }
-            .map { startDate ->
-                apiEvent(
-                    location = knownLocationDeque.removeFirst().city,
-                    dateStart = startDate,
-                )
+            .mapIndexed { index, startDate ->
+                eventFixtures[index % (eventFixtures.size - 1)].let { fixture ->
+                    fixture.copy(
+                        value = fixture.value.copy(
+                            uuid = Uuid.random(),
+                            location = knownLocationDeque.removeFirst().city,
+                            dateStart = startDate,
+                        ),
+                    )
+                }
             }
 
         val eventPager = EventPagerFactory(
@@ -85,19 +90,6 @@ private fun LocalDate.Companion.nearFuture(
         .date,
     random: Int = Random.nextInt(52),
 ) = startAt.plus(random, DateTimeUnit.WEEK)
-
-// TODO Use fixtures
-private fun apiEvent(location: String, dateStart: LocalDate) = DomainWrapper(
-    attrs = emptyMap(),
-    value = DomainEvent(
-        uuid = Uuid.random(),
-        name = "Playground Conf $location '${"${dateStart.year}".substring(2)}",
-        website = "https://playground.ashdavies.dev/",
-        location = location,
-        dateStart = dateStart,
-        dateEnd = dateStart.plus(Random.nextInt(3), DateTimeUnit.DAY),
-    ),
-)
 
 @Serializable
 internal data class Location(val city: String, val country: String)

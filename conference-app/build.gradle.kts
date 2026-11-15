@@ -75,6 +75,10 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             implementation(projects.analytics)
+            implementation(projects.core.http.auth)
+            implementation(projects.core.http.client)
+            implementation(projects.core.http.extended)
+            implementation(projects.core.http.qualifier)
             implementation(projects.core.ui.components)
             implementation(projects.core.ui.resources)
             implementation(projects.core.ui.scaffold)
@@ -86,7 +90,6 @@ kotlin {
             implementation(projects.features.gallerySync)
             implementation(projects.features.pagerFactory)
 
-            implementation(projects.httpClient)
             implementation(projects.identityManager)
             implementation(projects.mapsRouting)
             implementation(projects.metroExtensions)
@@ -138,6 +141,8 @@ kotlin {
         }
 
         jvmTest.dependencies {
+            implementation(projects.fixtures.events)
+
             implementation(libs.androidx.paging.testing)
             implementation(libs.sqldelight.sqlite.driver)
         }

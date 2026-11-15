@@ -4,13 +4,9 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
-import dev.ashdavies.http.common.models.DomainEvent
-import dev.ashdavies.http.common.models.DomainWrapper
-import dev.ashdavies.http.common.models.EventAttrs
+import dev.ashdavies.http.common.models.toDatabaseEvent
 import dev.ashdavies.playground.event.Event
 import dev.ashdavies.playground.event.EventQueries
-import kotlinx.coroutines.delay
-import kotlin.time.Duration.Companion.seconds
 
 @ExperimentalPagingApi
 internal class EventsRemoteMediator<T : Any>(
@@ -26,8 +22,6 @@ internal class EventsRemoteMediator<T : Any>(
             LoadType.PREPEND -> return endOfPaginationReached()
             LoadType.REFRESH -> null
         }
-
-        delay(5.seconds)
 
         return eventsCallable(UpcomingEventsRequest(loadKey?.dateStart))
             .mapCatching { list ->
@@ -46,15 +40,3 @@ internal class EventsRemoteMediator<T : Any>(
 private fun endOfPaginationReached() = RemoteMediator.MediatorResult.Success(
     endOfPaginationReached = true,
 )
-
-private fun DomainWrapper<DomainEvent>.toDatabaseEvent() = with(value) {
-    Event(
-        attrs = EventAttrs(attrs.toMutableMap()),
-        uuid = uuid,
-        name = name,
-        website = website,
-        location = location,
-        dateStart = dateStart,
-        dateEnd = dateEnd,
-    )
-}

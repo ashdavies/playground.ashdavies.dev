@@ -8,12 +8,11 @@ import androidx.compose.ui.tooling.preview.PreviewWrapper
 import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
-import dev.ashdavies.asg.AsgConference
+import dev.ashdavies.http.common.models.DomainEvent
+import dev.ashdavies.http.common.models.DomainWrapper
 import dev.ashdavies.playground.tooling.MaterialThemeWrapper
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.serialization.json.Json
 import kotlin.random.Random
-import kotlin.uuid.Uuid
 
 @Composable
 @PreviewLightDark
@@ -21,8 +20,8 @@ import kotlin.uuid.Uuid
 private fun EventListUiSuccessPreview() {
     EventListUi(
         state = EventListState.Success(
-            itemList = Json
-                .asgUpcomingConferences { it.toEventListStateSuccessItem() }
+            itemList = EventFixtures
+                .upcoming { it.toEventListStateSuccessItem() }
                 .toLazyPagingItems(),
             isRefreshing = false,
             eventSink = { },
@@ -55,15 +54,15 @@ private fun EventListUiFailurePreview() {
     )
 }
 
-private fun AsgConference.toEventListStateSuccessItem() = EventListState.Success.Item.Standard(
+private fun DomainWrapper<DomainEvent>.toEventListStateSuccessItem() = EventListState.Success.Item.Standard(
     thumbnailImageSeed = Random.nextLong(),
-    header = formatDateHeader(dateStart),
-    uuid = Uuid.random(),
-    name = name,
-    location = location,
-    date = formatDateRange(dateStart, dateEnd),
+    header = formatDateHeader(value.dateStart),
+    uuid = value.uuid,
+    name = value.name,
+    location = value.location,
+    date = formatDateRange(value.dateStart, value.dateEnd),
     status = when {
-        cfp != null -> EventListState.Success.Item.Standard.Status.Open
+        attrs["cfpStart"] != null -> EventListState.Success.Item.Standard.Status.Open
         else -> EventListState.Success.Item.Standard.Status.NotAnnounced
     },
     isBookmarked = Random.nextBoolean(),

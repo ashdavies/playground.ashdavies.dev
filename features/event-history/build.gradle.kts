@@ -20,8 +20,8 @@ kotlin {
             api(libs.compose.ui)
             api(libs.kotlinx.collections.immutable)
 
-            implementation(projects.cloudCommon)
             implementation(projects.composeMaterial)
+            implementation(projects.core.http.qualifier)
             implementation(projects.core.ui.components)
             implementation(projects.core.ui.resources)
             implementation(projects.core.ui.scaffold)
@@ -32,6 +32,7 @@ kotlin {
             implementation(libs.circuit.annotations)
             implementation(libs.circuit.foundation)
             implementation(libs.compose.adaptive.layout)
+            implementation(libs.ktor.client.core)
             implementation(libs.sqldelight.coroutines.extensions)
         }
     }
