@@ -24,6 +24,7 @@ import org.junit.Test
 import kotlin.random.Random
 import kotlin.test.assertEquals
 import kotlin.time.Clock
+import kotlin.uuid.Uuid
 
 internal class EventPagerFactoryTest {
 
@@ -53,6 +54,7 @@ internal class EventPagerFactoryTest {
                 eventFixtures[index % (eventFixtures.size - 1)].let { fixture ->
                     fixture.copy(
                         value = fixture.value.copy(
+                            uuid = Uuid.random(),
                             location = knownLocationDeque.removeFirst().city,
                             dateStart = startDate,
                         ),
