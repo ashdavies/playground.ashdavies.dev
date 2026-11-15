@@ -14,7 +14,7 @@ google-ksp = "2.3.6"
 google-services = "4.6.0"
 jetbrains-kotlin = "2.4.21"
 kotlinx-coroutines = "1.11.0"
-kotlinx-serialization = "1.12.0"
+kotlinx-serialization = "1.13.0"
 ktor = "3.6.1"
 metro = "1.5.2"
 sqlJs = "1.8.0"
@@ -113,7 +113,7 @@ ktor-server-host-common = { module = "io.ktor:ktor-server-host-common", version.
 ktor-server-netty = { module = "io.ktor:ktor-server-netty", version.ref = "ktor" }
 ktor-server-test-host = { module = "io.ktor:ktor-server-test-host", version.ref = "ktor" }
 
-logback-classic = "ch.qos.logback:logback-classic:1.6.6"
+logback-classic = "ch.qos.logback:logback-classic:1.6.7"
 metro-runtime = { module = "dev.zacsweers.metro:runtime", version.ref = "metro" }
 metro-runtime-coroutines = { module = "dev.zacsweers.metro:runtime-coroutines", version.ref = "metro" }
 pinterest-ktlint-bom = "com.pinterest.ktlint:ktlint-bom:1.8.0"
