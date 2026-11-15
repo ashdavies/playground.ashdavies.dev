@@ -85,7 +85,7 @@ dependencies {
     testImplementation(projects.features.eventList)
     testImplementation(projects.features.gallerySync)
     testImplementation(projects.fixtures.events)
-    testImplementation(projects.httpExtended)
+    testImplementation(projects.core.http.extended)
 
     testImplementation(libs.compose.materialIconsExtended)
 }

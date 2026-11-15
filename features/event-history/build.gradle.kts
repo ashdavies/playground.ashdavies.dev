@@ -21,6 +21,7 @@ kotlin {
             api(libs.kotlinx.collections.immutable)
 
             implementation(projects.composeMaterial)
+            implementation(projects.core.http.qualifier)
             implementation(projects.core.ui.components)
             implementation(projects.core.ui.resources)
             implementation(projects.core.ui.scaffold)

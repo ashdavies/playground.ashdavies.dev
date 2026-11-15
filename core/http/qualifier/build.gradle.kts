@@ -6,7 +6,6 @@ plugins {
 
 kotlin {
     sourceSets.commonMain.dependencies {
-        api(projects.features.eventCommon)
-        api(projects.httpCommon)
+        api(libs.metro.runtime)
     }
 }

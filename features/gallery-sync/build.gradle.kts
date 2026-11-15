@@ -26,7 +26,7 @@ kotlin {
             implementation(projects.analytics)
             implementation(projects.core.ui.components)
             implementation(projects.core.ui.resources)
-            implementation(projects.httpClient)
+            implementation(projects.core.http.client)
             implementation(projects.metroExtensions)
 
             implementation(libs.circuit.annotations)

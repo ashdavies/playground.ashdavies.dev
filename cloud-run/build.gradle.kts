@@ -43,7 +43,7 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             implementation(projects.asgService)
-            implementation(projects.httpClient)
+            implementation(projects.core.http.client)
 
             implementation(libs.google.firebase.admin)
             implementation(libs.kotlinx.serialization.properties)

@@ -10,8 +10,8 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            api(projects.httpCommon)
-            api(libs.ktor.client.auth)
+            api(libs.ktor.client.core)
+            api(projects.core.http.common)
 
             implementation(libs.kotlinx.io.core)
             implementation(libs.ktor.serialization.kotlinx.json)

@@ -12,7 +12,7 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            api(projects.httpCommon)
+            api(projects.core.http.common)
             api(libs.circuit.serialization)
 
             implementation(libs.metro.runtime)

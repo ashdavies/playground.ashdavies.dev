@@ -9,7 +9,7 @@ kotlin {
     android.namespace = "dev.ashdavies.routing"
 
     sourceSets.commonMain.dependencies {
-        api(projects.httpCommon)
+        api(projects.core.http.common)
         api(libs.ktor.client.core)
     }
 }

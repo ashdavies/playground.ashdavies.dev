@@ -7,8 +7,6 @@ import androidx.paging.RemoteMediator
 import dev.ashdavies.http.common.models.toDatabaseEvent
 import dev.ashdavies.playground.event.Event
 import dev.ashdavies.playground.event.EventQueries
-import kotlinx.coroutines.delay
-import kotlin.time.Duration.Companion.seconds
 
 @ExperimentalPagingApi
 internal class EventsRemoteMediator<T : Any>(
@@ -24,8 +22,6 @@ internal class EventsRemoteMediator<T : Any>(
             LoadType.PREPEND -> return endOfPaginationReached()
             LoadType.REFRESH -> null
         }
-
-        delay(5.seconds)
 
         return eventsCallable(UpcomingEventsRequest(loadKey?.dateStart))
             .mapCatching { list ->

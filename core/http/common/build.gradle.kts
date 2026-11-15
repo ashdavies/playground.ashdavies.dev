@@ -9,7 +9,5 @@ kotlin {
         api(libs.kotlinx.datetime)
         api(libs.kotlinx.serialization.core)
         api(libs.ktor.http)
-
-        compileOnly(libs.metro.runtime) // TODO Move to dedicated module with api
     }
 }

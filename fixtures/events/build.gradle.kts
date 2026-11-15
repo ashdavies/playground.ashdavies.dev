@@ -15,7 +15,7 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             api(projects.features.eventCommon)
-            api(projects.httpExtended)
+            api(projects.core.http.extended)
 
             api(libs.kotlinx.serialization.json)
         }
