@@ -1,92 +1,86 @@
 [
   {
-    "attrs": {
-      "cfpStart": "2026-10-01",
-      "cfpSite": "https://sessionize.com/devfest-berlin-2026",
-      "cfpEnd": "2026-11-01"
-    },
-    "value": {
-      "uuid": "01a1d75a-9400-7aff-b61b-80cde38dcdf3",
-      "name": "DevFest Berlin",
-      "website": "https://2026.devfest-berlin.de/",
-      "location": "Berlin, Germany",
-      "dateStart": "2026-11-14",
-      "dateEnd": "2026-11-14"
+    "name": "Droidcon",
+    "website": "https://droidcon.co.ke/",
+    "location": "Nairobi, Kenya",
+    "dateStart": "2026-11-05",
+    "dateEnd": "2026-11-06",
+    "cfp": {
+      "start": "2026-03-01",
+      "end": "2026-07-31",
+      "site": "https://sessionize.com/droidcon-fluttercon-kenya-2026/"
     }
   },
   {
-    "attrs": {
-      "cfpStart": "2026-05-24",
-      "cfpSite": "https://sessionize.com/droidcon-india-2026",
-      "cfpEnd": "2026-08-16"
-    },
-    "value": {
-      "uuid": "01a1f640-bc00-7347-92ce-ab86fc0bc874",
-      "name": "Droidcon",
-      "website": "https://india.droidcon.com/",
-      "location": "Bengaluru, India",
-      "dateStart": "2026-11-20",
-      "dateEnd": "2026-11-20"
+    "name": "DevFest Berlin",
+    "website": "https://2026.devfest-berlin.de/",
+    "location": "Berlin, Germany",
+    "dateStart": "2026-11-14",
+    "dateEnd": "2026-11-14",
+    "cfp": {
+      "start": "2026-10-01",
+      "end": "2026-11-01",
+      "site": "https://sessionize.com/devfest-berlin-2026"
     }
   },
   {
-    "attrs": {
-      "cfpStart": "2026-05-14",
-      "cfpSite": "https://sessionize.com/droidcon-london-2026",
-      "cfpEnd": "2026-09-06"
-    },
-    "value": {
-      "uuid": "01a25d3f-ec00-71f3-893e-48aebd09be07",
-      "name": "Droidcon",
-      "website": "https://london.droidcon.com/",
-      "location": "London, UK",
-      "dateStart": "2026-12-10",
-      "dateEnd": "2026-12-11"
+    "name": "Droidcon",
+    "website": "https://india.droidcon.com/",
+    "location": "Bengaluru, India",
+    "dateStart": "2026-11-20",
+    "dateEnd": "2026-11-20",
+    "cfp": {
+      "start": "2026-05-24",
+      "end": "2026-08-16",
+      "site": "https://sessionize.com/droidcon-india-2026"
     }
   },
   {
-    "attrs": {
-      "cfpStart": "2026-09-01",
-      "cfpSite": "https://sessionize.com/dawn-conferences-2027/",
-      "cfpEnd": "2026-12-18"
-    },
-    "value": {
-      "uuid": "01a44ba2-6c00-793d-9679-c1d1d5422d14",
-      "name": "AppDevCon",
-      "website": "https://appdevcon.nl/",
-      "location": "Amsterdam, Netherlands",
-      "dateStart": "2027-03-16",
-      "dateEnd": "2027-03-18"
+    "name": "Droidcon",
+    "website": "https://london.droidcon.com/",
+    "location": "London, UK",
+    "dateStart": "2026-12-10",
+    "dateEnd": "2026-12-11",
+    "cfp": {
+      "start": "2026-05-14",
+      "end": "2026-09-06",
+      "site": "https://sessionize.com/droidcon-london-2026"
     }
   },
   {
-    "attrs": {
-      "cfpStart": "2026-10-01",
-      "cfpSite": "https://sessionize.com/kotlinconf-2027/",
-      "cfpEnd": "2026-11-27"
-    },
-    "value": {
-      "uuid": "01a50507-5c00-7e78-8c9f-183e5c102472",
-      "name": "KotlinConf",
-      "website": "https://kotlinconf.com/",
-      "location": "Krakow, Poland",
-      "dateStart": "2027-04-21",
-      "dateEnd": "2027-04-23"
+    "name": "AppDevCon",
+    "website": "https://appdevcon.nl/",
+    "location": "Amsterdam, Netherlands",
+    "dateStart": "2027-03-16",
+    "dateEnd": "2027-03-18",
+    "cfp": {
+      "start": "2026-09-01",
+      "end": "2026-12-18",
+      "site": "https://sessionize.com/dawn-conferences-2027/"
     }
   },
   {
-    "attrs": {
-      "cfpStart": "2026-09-24",
-      "cfpSite": "https://conference-hall.io/mobile-makers-2027",
-      "cfpEnd": "2027-01-18"
-    },
-    "value": {
-      "uuid": "01a53360-9800-7a3d-a69c-18f2faee18e4",
-      "name": "Mobile Makers 2027",
-      "website": "https://mobilemakers.fr/",
-      "location": "Paris, France",
-      "dateStart": "2027-04-30",
-      "dateEnd": "2027-04-30"
+    "name": "KotlinConf",
+    "website": "https://kotlinconf.com/",
+    "location": "Krakow, Poland",
+    "dateStart": "2027-04-21",
+    "dateEnd": "2027-04-23",
+    "cfp": {
+      "start": "2026-10-01",
+      "end": "2026-11-27",
+      "site": "https://sessionize.com/kotlinconf-2027/"
+    }
+  },
+  {
+    "name": "Mobile Makers 2027",
+    "website": "https://mobilemakers.fr/",
+    "location": "Paris, France",
+    "dateStart": "2027-04-30",
+    "dateEnd": "2027-04-30",
+    "cfp": {
+      "start": "2026-09-24",
+      "end": "2027-01-18",
+      "site": "https://conference-hall.io/mobile-makers-2027"
     }
   }
 ]
