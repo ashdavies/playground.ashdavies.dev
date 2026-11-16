@@ -90,7 +90,6 @@ kotlin {
             implementation(projects.features.gallerySync)
             implementation(projects.features.pagerFactory)
 
-            implementation(projects.identityManager)
             implementation(projects.mapsRouting)
             implementation(projects.metroExtensions)
             implementation(projects.remoteConfig)
@@ -184,7 +183,6 @@ sqldelight {
             dialect(libs.sqldelight.sqlite.dialect)
             dependency(project(":features:event-common"))
             dependency(project(":features:gallery-sync"))
-            dependency(project(":identity-manager"))
         }
     }
 }

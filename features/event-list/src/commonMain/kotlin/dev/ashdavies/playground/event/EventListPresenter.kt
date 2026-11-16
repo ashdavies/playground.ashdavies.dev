@@ -95,6 +95,11 @@ internal class EventListPresenter(
                         )
                     }
 
+                    is EventListState.Success.Event.SignIn -> {
+                        remoteAnalytics.logEvent("sign_in")
+                        println("Operation Not Supported")
+                    }
+
                     is EventListState.Success.Event.Refresh -> {
                         remoteAnalytics.logEvent("events_refresh")
                         pagingItems.refresh()
