@@ -46,33 +46,14 @@ internal class EventListPresenter(
     @Composable
     override fun present(): EventListState {
         var bookmarks by retain { mutableStateOf(emptySet<Uuid>()) }
-        val coroutineScope = retainStableCoroutineScope()
 
-        val itemList by produceRetainedState<Flow<PagingData<EventListState.Success.Item>>?>(null) {
-            val pagingData = eventPagerFactory
-                .create(PagerConfig(screen.initialKey))
-                .flow.cachedIn(coroutineScope)
-
-            value = combine(pagingData, snapshotFlow { bookmarks }) { pagingData, bookmarks ->
-                pagingData
-                    .map { eventListItemFactory(it, it.uuid in bookmarks) }
-                    .insertSeparators { before, after ->
-                        if (after != null && before?.header != after.header) {
-                            EventListState.Success.Item.Separator(after.header.uppercase())
-                        } else {
-                            null
-                        }
-                    }
-            }
-        }
-
-        val pagingItems = (itemList ?: EmptyPagingData).collectAsLazyPagingItems()
+        val pagingItems = (observePagingState(bookmarks) ?: EmptyPagingData).collectAsLazyPagingItems()
 
         val error = pagingItems.loadState.refresh
             .let { it as? LoadState.Error }
             ?.error
 
-        fun pagingItemOrNull(index: Int) = pagingItems[index] as? EventListState.Success.Item.Standard
+        fun standardItemOrNull(index: Int) = pagingItems[index] as? EventListState.Success.Item.Standard
 
         return if (error == null) {
             EventListState.Success(
@@ -80,11 +61,11 @@ internal class EventListPresenter(
                 isRefreshing = pagingItems.loadState.refresh is LoadState.Loading,
             ) { event ->
                 when (event) {
-                    is EventListState.Success.Event.ToggleBookmark -> pagingItemOrNull(event.index)?.let { item ->
+                    is EventListState.Success.Event.ToggleBookmark -> standardItemOrNull(event.index)?.let { item ->
                         bookmarks = if (item.uuid in bookmarks) bookmarks - item.uuid else bookmarks + item.uuid
                     }
 
-                    is EventListState.Success.Event.ItemClick -> pagingItemOrNull(event.index)?.let { item ->
+                    is EventListState.Success.Event.ItemClick -> standardItemOrNull(event.index)?.let { item ->
                         remoteAnalytics.logEvent("events_click") { param("id", "${item.uuid}") }
 
                         navigator.goTo(
@@ -116,6 +97,29 @@ internal class EventListPresenter(
                     ?: error.message,
             )
         }
+    }
+
+    @Composable
+    private fun observePagingState(bookmarks: Set<Uuid>): Flow<PagingData<EventListState.Success.Item>>? {
+        val coroutineScope = retainStableCoroutineScope()
+
+        return produceRetainedState<Flow<PagingData<EventListState.Success.Item>>?>(null) {
+            val pagingData = eventPagerFactory
+                .create(PagerConfig(screen.initialKey))
+                .flow.cachedIn(coroutineScope)
+
+            value = combine(pagingData, snapshotFlow { bookmarks }) { pagingData, bookmarks ->
+                pagingData
+                    .map { eventListItemFactory(it, it.uuid in bookmarks) }
+                    .insertSeparators { before, after ->
+                        if (after != null && before?.header != after.header) {
+                            EventListState.Success.Item.Separator(after.header.uppercase())
+                        } else {
+                            null
+                        }
+                    }
+            }
+        }.value
     }
 
     @AssistedFactory
