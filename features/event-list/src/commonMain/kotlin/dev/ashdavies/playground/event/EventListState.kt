@@ -42,6 +42,7 @@ public sealed interface EventListState : CircuitUiState {
             public data class ToggleBookmark(val index: Int) : Event
             public data class ItemClick(val index: Int) : Event
 
+            public data object SignIn : Event
             public data object Refresh : Event
         }
     }

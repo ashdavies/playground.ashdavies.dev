@@ -42,6 +42,11 @@ kotlin {
 
             implementation(libs.kotlin.test)
         }
+
+        androidMain.dependencies {
+            implementation(libs.androidx.credentials)
+            implementation(libs.androidx.credentials.auth)
+        }
     }
 }
 

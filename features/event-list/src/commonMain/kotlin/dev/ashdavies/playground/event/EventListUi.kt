@@ -1,5 +1,6 @@
 package dev.ashdavies.playground.event
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -16,6 +17,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Bookmark
 import androidx.compose.material.icons.outlined.Block
 import androidx.compose.material.icons.outlined.BookmarkBorder
@@ -26,6 +28,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularWavyProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconToggleButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -37,6 +40,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -73,12 +77,22 @@ public fun EventListUi(state: EventListState, modifier: Modifier = Modifier) {
         modifier = modifier,
         topBar = {
             CenterAlignedTopAppBar(stringResource(Res.string.upcoming_events)) {
-                if (state is EventListState.Success && state.isRefreshing) {
-                    CircularWavyProgressIndicator(
-                        modifier = Modifier
-                            .padding(horizontal = MaterialTheme.spacing.medium.horizontal)
-                            .size(MaterialTheme.sizing.icon.medium),
-                    )
+                if (state is EventListState.Success) {
+                    if (state.isRefreshing) {
+                        CircularWavyProgressIndicator(
+                            modifier = Modifier
+                                .padding(horizontal = MaterialTheme.spacing.medium.horizontal)
+                                .size(MaterialTheme.sizing.icon.medium),
+                        )
+                    }
+
+                    IconButton(onClick = { state.eventSink(EventListState.Success.Event.SignIn) }) {
+                        Image(
+                            imageVector = Icons.Filled.AccountCircle,
+                            contentDescription = null,
+                            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onBackground),
+                        )
+                    }
                 }
             }
         },

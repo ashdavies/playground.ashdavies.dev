@@ -19,12 +19,8 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -35,7 +31,6 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.slack.circuit.codegen.annotations.CircuitInject
 import com.valentinilk.shimmer.shimmer
-import dev.ashdavies.identity.IdentityState
 import dev.ashdavies.playground.event.Event
 import dev.ashdavies.playground.event.EventScreen
 import dev.ashdavies.playground.event.daysUntilCfpEnd
@@ -44,7 +39,6 @@ import dev.ashdavies.playground.material.spacing
 import dev.ashdavies.playground.material.uniform
 import dev.ashdavies.playground.ui.BackButton
 import dev.ashdavies.playground.ui.CenterAlignedTopAppBar
-import dev.ashdavies.playground.ui.ProfileActionButton
 import dev.ashdavies.playground.ui.emptyString
 import dev.ashdavies.playground.ui.gradientBrush
 import dev.ashdavies.playground.ui.resources.Res
@@ -53,7 +47,6 @@ import dev.ashdavies.playground.ui.resources.cfp_open
 import dev.ashdavies.playground.ui.resources.event_date
 import dev.ashdavies.playground.ui.resources.event_location
 import dev.zacsweers.metro.AppScope
-import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
 import org.jetbrains.compose.resources.stringResource
 
@@ -68,8 +61,6 @@ private val Event.thumbnailImageSeed: Long
 public fun EventDetailUi(state: EventDetailState, modifier: Modifier = Modifier) {
     val itemOrNull = (state.itemState as? EventDetailState.ItemState.Done)?.item
     val isLoading = state.itemState is EventDetailState.ItemState.Loading
-    val snackbarHostState = remember { SnackbarHostState() }
-    val coroutineScope = rememberCoroutineScope()
 
     Scaffold(
         modifier = modifier,
@@ -77,19 +68,8 @@ public fun EventDetailUi(state: EventDetailState, modifier: Modifier = Modifier)
             CenterAlignedTopAppBar(
                 title = itemOrNull?.name ?: emptyString(),
                 navigationIcon = { BackButton(state.onBackPressed) },
-                actions = {
-                    ProfileActionButton(
-                        identityState = IdentityState.Unsupported,
-                        onClick = {
-                            coroutineScope.launch {
-                                snackbarHostState.showSnackbar("Unsupported Platform")
-                            }
-                        },
-                    )
-                },
             )
         },
-        snackbarHost = { SnackbarHost(snackbarHostState) },
     ) { contentPadding ->
         Column(
             modifier = Modifier

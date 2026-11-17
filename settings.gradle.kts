@@ -73,7 +73,6 @@ include(
     ":features:gallery-sync",
     ":features:pager-factory",
     ":fixtures:events",
-    ":identity-manager",
     ":key-navigation",
     ":kotlin-gb",
     ":maps-routing",

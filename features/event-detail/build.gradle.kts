@@ -23,7 +23,6 @@ kotlin {
             implementation(projects.composeMaterial)
             implementation(projects.core.ui.components)
             implementation(projects.core.ui.resources)
-            implementation(projects.identityManager)
             implementation(projects.metroExtensions)
 
             implementation(libs.circuit.annotations)
