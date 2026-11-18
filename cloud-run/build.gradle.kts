@@ -18,8 +18,7 @@ plugins {
 
 buildConfig {
     sourceSets.named("jvmIntegrationTest") {
-        buildConfigField("API_KEY", stringPropertyOrNull("desktopApiKey"))
-        buildConfigField("APP_ID", stringPropertyOrNull("desktopAppId"))
+        buildConfigField("APP_CHECK_TOKEN", stringPropertyOrNull("appCheckToken"))
     }
 
     buildConfigField("PROJECT_NUMBER", stringPropertyOrNull("projectNumber"))
@@ -72,8 +71,6 @@ kotlin {
         }
 
         jvmIntegrationTest.dependencies {
-            implementation(libs.app.cash.turbine)
-            implementation(libs.kotlinx.coroutines.test)
             implementation(libs.ktor.client.content.negotiation)
             implementation(libs.ktor.server.test.host)
         }
