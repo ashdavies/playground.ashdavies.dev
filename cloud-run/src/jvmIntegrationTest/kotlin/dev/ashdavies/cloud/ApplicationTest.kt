@@ -16,7 +16,6 @@ import io.ktor.http.contentType
 import io.ktor.serialization.kotlinx.json.json
 import io.ktor.server.testing.ApplicationTestBuilder
 import io.ktor.server.testing.testApplication
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import kotlinx.serialization.json.Json
@@ -29,7 +28,6 @@ private val DefaultHttpConfig: HttpClientConfig<out HttpClientEngineConfig>.() -
     install(ContentNegotiation) { json(Json { ignoreUnknownKeys = true }) }
 }
 
-@ExperimentalCoroutinesApi
 internal class ApplicationTest {
 
     @Test
@@ -64,9 +62,9 @@ internal class ApplicationTest {
     }
 }
 
-private suspend fun appCheckToken() = HttpClient(DefaultHttpConfig)
-    .createAppCheckToken()
-    .token
+private fun appCheckToken() = requireNotNull(JvmIntegrationTestBuildConfig.APP_CHECK_TOKEN) {
+    "APP_CHECK_TOKEN was null"
+}
 
 private fun testMainApplication(block: suspend ApplicationTestBuilder.(HttpClient) -> Unit) = testApplication {
     val client = createClient(DefaultHttpConfig)

@@ -29,11 +29,17 @@ jobs:
           workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
           service_account: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
 
+      - id: app_check
+        run: |
+          token=$(./scripts/create_app_check_token.mjs "${{ secrets.DESKTOP_APP_ID }}")
+          echo "::add-mask::$token"
+          echo "token=$token" >> "$GITHUB_OUTPUT"
+
       - run: ./gradlew integrationTest --console=plain
         env:
+          APP_CHECK_TOKEN: ${{ steps.app_check.outputs.token }}
           DESKTOP_API_KEY: ${{ secrets.DESKTOP_API_KEY }}
           DESKTOP_APP_ID: ${{ secrets.DESKTOP_APP_ID }}
-          GOOGLE_SERVICE_ACCOUNT_ID: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_ID }}
           PROJECT_NUMBER: ${{ secrets.PROJECT_NUMBER }}
 
       - uses: test-summary/action@v2
