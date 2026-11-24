@@ -1,21 +1,6 @@
 [
   {
     "attrs": {
-      "cfpStart": "2026-05-24",
-      "cfpSite": "https://sessionize.com/droidcon-india-2026",
-      "cfpEnd": "2026-08-16"
-    },
-    "value": {
-      "uuid": "01a1f640-bc00-7347-92ce-ab86fc0bc874",
-      "name": "Droidcon",
-      "website": "https://india.droidcon.com/",
-      "location": "Bengaluru, India",
-      "dateStart": "2026-11-20",
-      "dateEnd": "2026-11-20"
-    }
-  },
-  {
-    "attrs": {
       "cfpStart": "2026-05-14",
       "cfpSite": "https://sessionize.com/droidcon-london-2026",
       "cfpEnd": "2026-09-06"
